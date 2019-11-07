@@ -44,15 +44,19 @@ class AdminPluginController extends JControllerAdmin
 		{
 			list($controller, $plugin, $task) = $parts;
 
+			ob_start();
+			$res = $app->triggerEvent('onJEventsPluginController', array($plugin, $task));
+			$output = ob_get_clean();
+
 			if (!GSLMSIE10)
 			{
 				echo LayoutHelper::render('gslframework.header');
-				$res = $app->triggerEvent('onJEventsPluginController', array($plugin, $task));
+				echo $output;
 				echo LayoutHelper::render('gslframework.footer');
 			}
 			else
 			{
-				$res = $app->triggerEvent('onJEventsPluginController', array($plugin, $task));
+				echo $output;
 			}
 		}
 	}

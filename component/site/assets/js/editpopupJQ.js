@@ -165,7 +165,7 @@ function addEditModalHtml() {
             +'</div>';
         }
         else {
-            myEditModal = '<div class="jevbootstrap"><div class="modal  hide fade" id="myEditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >'
+            myEditModal = '<div class="jevbootstrap"><div class="modal  hide " id="myEditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >'
                 + '<div class="modal-dialog modal-lg">'
                 + '<div class="modal-content">'
                 + '<div class="modal-header">'

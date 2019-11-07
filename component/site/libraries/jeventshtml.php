@@ -219,7 +219,7 @@ class JEventsHTML
 	 * @param boolean $require_sel		First entry: true = Choose one category, false = All categories
 	 * @param int $catidtop				Top level category ancestor
 	 */
-	public static function buildCategorySelect($catid, $args, $catidList = null, $with_unpublished = false, $require_sel = false, $catidtop = 0, $fieldname = "catid", $sectionname = JEV_COM_COMPONENT, $excludeid = false, $order = "ordering", $eventediting = false)
+	public static function buildCategorySelect($catid, $args, $catidList = null, $with_unpublished = false, $require_sel = false, $catidtop = 0, $fieldname = "catid", $sectionname = JEV_COM_COMPONENT, $excludeid = false, $order = "ordering", $eventediting = false, $allowMultiCat = false)
 	{
 		// need to declare this because of bug in Joomla HTMLHelper::_('select.options', on content pages - it loade the WRONG CLASS!
 		include_once(JPATH_SITE . "/libraries/cms/html/category.php");
@@ -447,7 +447,7 @@ class JEventsHTML
 		// should we offer multi-choice categories?
 		// do not use jev_com_component incase we call this from locations etc.
 		$params = ComponentHelper::getParams($input->getCmd("option", "com_jevents"));
-		if ($eventediting && $params->get("multicategory", 0))
+		if ($allowMultiCat || ($eventediting && $params->get("multicategory", 0)))
 		{
 			$size = count($options) > 6 ? 6 : count($options) + 1;
 			?>
@@ -516,6 +516,53 @@ class JEventsHTML
 				    . '<input type="checkbox" id="cb_wd' . $d . '" name="' . $name . '[]" value="'
 				    . $d . '" ' . $args . $checked . ' onclick="updateRepeatWarning();" class="checkbox " />'
 				    . '<label for="cb_wd' . $d . '" class="checkbox btn">'
+				    . $day_name[$d]
+				    . '</label>' . "\n"
+			    ;
+		    }
+		    echo $tosend;
+	    }
+
+	    public static function buildWeekDaysCheckUikit($reccurweekdays, $args, $name = "reccurweekdays")
+	    {
+
+		    // get array
+		    $day_name = JEVHelper::getWeekdayLetter(null, 1);
+		    $day_name[0] = '<span class="sunday">' . $day_name[0] . '</span>';
+		    $day_name[6] = '<span class="saturday">' . $day_name[6] . '</span>';
+
+		    $tosend = '';
+
+		    if ($reccurweekdays === '')
+		    {
+			    $split = array();
+			    $countsplit = 0;
+		    }
+		    else
+		    {
+			    $split = explode('|', $reccurweekdays);
+			    $countsplit = count($split);
+		    }
+
+		    $cfg                = JEVConfig::getInstance();
+    		$offset             = $cfg->get("com_starday", 1);
+
+		    for ($a = 0; $a < 7; $a++)
+		    {
+                $d = $a + $offset;
+                $d %= 7;
+			    $checked = '';
+			    for ($x = 0; $x < $countsplit; $x++)
+			    {
+				    if ($split[$x] == $d)
+				    {
+					    $checked = ' checked="checked"';
+				    }
+			    }
+			    $tosend .= ''
+				    . '<input type="checkbox" id="cb_wd' . $d . '" name="' . $name . '[]" value="'
+				    . $d . '" ' . $args . $checked . ' onclick="updateRepeatWarning();" class="gsl-hidden " data-activeclass="primary"/>'
+				    . '<label for="cb_wd' . $d . '" class="gsl-button gsl-button-small ' . (empty($checked) ? "gsl-button-default" : "gsl-button-primary") .'">'
 				    . $day_name[$d]
 				    . '</label>' . "\n"
 			    ;
@@ -592,6 +639,83 @@ class JEventsHTML
 				    . '<input type="checkbox" id="cb_wn' . $a . '" name="' . $name . '[]" value="'
 				    . $a . '" ' . $args . $checked . ' onclick="updateRepeatWarning();" />'
 				    . '<label for="cb_wn' . $a . '" class="checkbox btn">'
+				    . '<span class="weeknameforward" ' . $fwdstyle . '>' . $week_name[$a] . "</span>"
+				    . '<span class="weeknameback" ' . $bckstyle . '>' . $backwards_week_name[$a] . "</span>"
+				    . '</label>' . "\n"
+			    ;
+		    }
+		    echo $tosend;
+	    }
+
+	    public static function buildWeeksCheckUikit($reccurweeks, $args, $name = "reccurweeks", $direction = 0)
+	    {
+		    // language check
+		    if (JText::_('JEV_FIRST') !== "JEV_FIRST")
+		    {
+			    $week_name = array('',
+				JText::_('JEV_FIRST'),
+				JText::_('JEV_SECOND'),
+				JText::_('JEV_THIRD'),
+				JText::_('JEV_FOURTH'),
+				JText::_('JEV_FIFTH')
+			    );
+			    $backwards_week_name = array('',
+				JText::_('JEV_LAST'),
+				JText::_('JEV_SECOND_TO_LAST'),
+				JText::_('JEV_THIRD_FROM_LAST'),
+				JText::_('JEV_FOURTH_FROM_LAST'),
+				JText::_('JEV_FIFTH_FROM_LAST')
+			    );
+		    }
+		    else
+		    {
+			    $week_name = array('',
+				JText::_('JEV_REP_WEEK') . ' 1 ',
+				JText::_('JEV_REP_WEEK') . ' 2 ',
+				JText::_('JEV_REP_WEEK') . ' 3 ',
+				JText::_('JEV_REP_WEEK') . ' 4 ',
+				JText::_('JEV_REP_WEEK') . ' 5 '
+			    );
+			    $backwards_week_name = $week_name;
+		    }
+		    $tosend = '';
+		    $checked = '';
+
+		    if ($reccurweeks == '')
+		    {
+			    $split = array();
+			    $countsplit = 0;
+		    }
+		    else
+		    {
+			    $split = explode('|', $reccurweeks);
+			    $countsplit = count($split);
+		    }
+
+		    for ($a = 1; $a < 6; $a++)
+		    {
+			    $checked = '';
+			    if ($reccurweeks == '')
+			    {
+				    $checked = ' checked="checked"';
+			    }
+
+			    for ($x = 0; $x < $countsplit; $x++)
+			    {
+				    if ($split[$x] == $a)
+				    {
+					    $checked = ' checked="checked"';
+				    }
+			    }
+
+			    // bootstrap version
+			    $fwdstyle = $direction ? '' : 'style="display:none"';
+			    $bckstyle = $direction ? 'style="display:none"' : '';
+
+			    $tosend .= ''
+				    . '<input type="checkbox" id="cb_wn' . $a . '" name="' . $name . '[]" value="'
+				    . $a . '" ' . $args . $checked . ' onclick="updateRepeatWarning();" class="gsl-hidden"  data-activeclass="primary"/>'
+				    . '<label for="cb_wn' . $a . '"  class="gsl-button gsl-button-small ' . (empty($checked) ? "gsl-button-default" : "gsl-button-primary") .'">'
 				    . '<span class="weeknameforward" ' . $fwdstyle . '>' . $week_name[$a] . "</span>"
 				    . '<span class="weeknameback" ' . $bckstyle . '>' . $backwards_week_name[$a] . "</span>"
 				    . '</label>' . "\n"

@@ -37,6 +37,7 @@ class jevJustmineFilter extends jevFilter
 		$this->yesLabel        = JText::_($yesLabel);
 		$this->noLabel         = JText::_($noLabel);
 		$this->filterLabel     = JText::_("Show_Only_My_Events");
+		$this->filterLabelEscaped      = JText::_("Show_Only_My_Events", true);
 
 		// this is a special filter - we always want memory here since only used in frontend management
 
@@ -66,7 +67,7 @@ class jevJustmineFilter extends jevFilter
 		$options             = array();
 		$options[]           = HTMLHelper::_('select.option', "0", $this->noLabel, "value", "yesno");
 		$options[]           = HTMLHelper::_('select.option', "1", $this->yesLabel, "value", "yesno");
-		$filterList["html"]  = HTMLHelper::_('select.genericlist', $options, $this->filterType . '_fv', 'class="inputbox" size="1" onchange="form.submit();"', 'value', 'yesno', $this->filter_value);
+		$filterList["html"]  = HTMLHelper::_('select.genericlist', $options, $this->filterType . '_fv', 'class="inputbox" aria-label="' . $this->filterLabelEscaped . '" size="1" onchange="form.submit();"', 'value', 'yesno', $this->filter_value);
 
 		return $filterList;
 	}

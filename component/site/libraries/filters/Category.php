@@ -182,11 +182,17 @@ class jevCategoryFilter extends jevFilter
 
 		if ($allowAutoSubmit)
 		{
-			$filterList["html"] = JEventsHTML::buildCategorySelect($filter_value, 'onchange="if (document.getElementById(\'catidsfv\')) document.getElementById(\'catidsfv\').value=this.value;submit(this.form)" ', $this->allAccessibleCategories, false, false, 0, $this->filterType . '_fv');
+			$filterList["html"] = JEventsHTML::buildCategorySelect($filter_value, 'onchange="if (document.getElementById(\'catidsfv\')) document.getElementById(\'catidsfv\').value=this.value;submit(this.form)" ', $this->allAccessibleCategories, false, false, 0, $this->filterType . '_fv',
+				// Use this to allow multi-category filtering
+				// JEV_COM_COMPONENT, false,  "ordering",  false, true );
+				JEV_COM_COMPONENT, false,  "ordering",  false, false );
 		}
 		else
 		{
-			$filterList["html"] = JEventsHTML::buildCategorySelect($filter_value, 'onchange="if (document.getElementById(\'catidsfv\')) document.getElementById(\'catidsfv\').value=this.value;" ', $this->allAccessibleCategories, false, false, 0, $this->filterType . '_fv');
+			$filterList["html"] = JEventsHTML::buildCategorySelect($filter_value, 'onchange="if (document.getElementById(\'catidsfv\')) document.getElementById(\'catidsfv\').value=this.value;" ', $this->allAccessibleCategories, false, false, 0, $this->filterType . '_fv',
+				// Use this to allow multi-category filtering
+				// JEV_COM_COMPONENT, false,  "ordering",  false, true );
+				JEV_COM_COMPONENT, false,  "ordering",  false, false );
 		}
 
 		// if there is only one category then do not show the filter

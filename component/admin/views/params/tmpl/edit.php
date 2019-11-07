@@ -360,7 +360,18 @@ if (count($jevplugins))
 							}
 
 							$hasconfig = true;
-							$html[]    = $field->renderField();
+							$fieldhtml = $field->renderField();
+
+							// Short cut replacement pending plugin updates!
+							$fieldhtml = str_replace('class="row ', 'class="row  gsl-grid gsl-margin-remove ',$fieldhtml );
+							$fieldhtml = str_replace('class="span2', 'class="gsl-width-1-6@m gsl-width-1-1 gsl-margin-small-bottom', $fieldhtml );
+							$fieldhtml = str_replace(array('class="span10', 'class=" span10'), 'class="gsl-width-expand gsl-margin-small-bottom  ', $fieldhtml );
+
+							// Needed to deal with early execution of initTemplate in backend
+							$fieldhtml = str_replace('btn-group', 'btn-group-ysts',$fieldhtml );
+
+							$html[] = $fieldhtml;
+
 							/*
 $class = isset($field->class) ? $field->class : "";
 

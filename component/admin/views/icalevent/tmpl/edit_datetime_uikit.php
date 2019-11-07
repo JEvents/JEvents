@@ -13,13 +13,6 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 
-$app    = Factory::getApplication();
-if ($app->isClient('administrator'))
-{
-	echo $this->loadTemplate('datetime_uikit');
-	return;
-}
-
 // get configuration object
 $cfg = JEVConfig::getInstance();
 if ($this->editCopy || $this->repeatId == 0)
@@ -157,15 +150,15 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 
 			<label style="font-weight:bold;"><?php echo JText::_('JEV_EVENT_MULTIDAY'); ?></label><br/>
 			<div style="float:left;margin-right:20px!important;"><?php echo JText::_('JEV_EVENT_MULTIDAY_LONG') . "&nbsp;"; ?></div>
-			<div class="radio btn-group" style="float:left;">
-				<label for="yes" class="radio btn">
-					<input type="radio" id="yes" name="multiday"
+			<div class="gsl-button-group" >
+				<label for="yes" class=" gsl-button gsl-button-small gsl-button-default <?php echo $this->row->multiday() ? ' gsl-button-primary' : ''; ?>">
+					<input type="radio" id="yes" name="multiday" class="gsl-hidden"
 					       value="1" <?php echo $this->row->multiday() ? 'checked="checked"' : ''; ?>
 					       onclick="updateRepeatWarning();"/>
 					<?php echo JText::_("JEV_YES"); ?>
 				</label>
-				<label for="no" class="radio btn">
-					<input type="radio" id="no" name="multiday"
+				<label for="no" class="gsl-button gsl-button-small gsl-button-default <?php echo $this->row->multiday() ? '' : ' gsl-button-danger' ; ?>">
+					<input type="radio" id="no" name="multiday"  class="gsl-hidden"
 					       value="0" <?php echo $this->row->multiday() ? '' : 'checked="checked"'; ?>
 					       onclick="updateRepeatWarning();"/>
 					<?php echo JText::_("JEV_NO"); ?>
@@ -178,35 +171,38 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 <div <?php echo $repeatStyle; ?>>
 	<!-- REPEAT FREQ -->
 	<div style="clear:both;">
-		<fieldset class="radio btn-group">
+        <?php
+        $freq = strtoupper($this->row->freq());
+        ?>
+		<fieldset class="gsl-button-group">
 			<legend><?php echo JText::_('JEV_EVENT_REPEATTYPE'); ?></legend>
-			<label for='NONE' class="btn radio">
-				<input type="radio" name="freq" id="NONE"
-				       value="none" <?php if ($this->row->freq() == "NONE") echo 'checked="checked"'; ?>
+			<label for='NONE' class="gsl-button gsl-button-small gsl-button-default <?php echo $freq ==  "NONE" ? ' gsl-button-primary' : ''; ?>">
+				<input type="radio" name="freq" id="NONE" class="gsl-hidden"
+				       value="none" <?php if ($freq ==  "NONE") echo 'checked="checked"'; ?>
 				       onclick="toggleFreq('NONE');"/>
 				<?php echo JText::_('NO_REPEAT'); ?>
 			</label>
-			<label for='DAILY' class="btn radio">
-				<input type="radio" name="freq" id="DAILY"
-				       value="DAILY" <?php if ($this->row->freq() == "DAILY") echo 'checked="checked"'; ?>
+            <label for='DAILY' class="gsl-button gsl-button-small gsl-button-default <?php echo $freq ==  "DAILY" ? ' gsl-button-primary' : ''; ?>">
+				<input type="radio" name="freq" id="DAILY" class="gsl-hidden"
+				       value="DAILY" <?php if ($freq ==  "DAILY") echo 'checked="checked"'; ?>
 				       onclick="toggleFreq('DAILY');"/>
 				<?php echo JText::_('DAILY'); ?>
 			</label>
-			<label for='WEEKLY' class="btn radio">
-				<input type="radio" name="freq" id="WEEKLY"
-				       value="WEEKLY" <?php if ($this->row->freq() == "WEEKLY") echo 'checked="checked"'; ?>
+            <label for='WEEKLY' class="gsl-button gsl-button-small gsl-button-default <?php echo $freq ==  "WEEKLY" ? ' gsl-button-primary' : ''; ?>">
+				<input type="radio" name="freq" id="WEEKLY" class="gsl-hidden"
+				       value="WEEKLY" <?php if ($freq ==  "WEEKLY") echo 'checked="checked"'; ?>
 				       onclick="toggleFreq('WEEKLY');"/>
 				<?php echo JText::_('WEEKLY'); ?>
 			</label>
-			<label for='MONTHLY' class="btn radio">
-				<input type="radio" name="freq" id="MONTHLY"
-				       value="MONTHLY" <?php if ($this->row->freq() == "MONTHLY") echo 'checked="checked"'; ?>
+            <label for='MONTHLY' class="gsl-button gsl-button-small gsl-button-default <?php echo $freq ==  "MONTHLY" ? ' gsl-button-primary' : ''; ?>">
+				<input type="radio" name="freq" id="MONTHLY" class="gsl-hidden"
+				       value="MONTHLY" <?php if ($freq ==  "MONTHLY") echo 'checked="checked"'; ?>
 				       onclick="toggleFreq('MONTHLY');"/>
 				<?php echo JText::_('MONTHLY'); ?>
 			</label>
-			<label for='YEARLY' class="btn radio">
-				<input type="radio" name="freq" id="YEARLY"
-				       value="YEARLY" <?php if ($this->row->freq() == "YEARLY") echo 'checked="checked"'; ?>
+            <label for='YEARLY' class="gsl-button gsl-button-small gsl-button-default <?php echo $freq ==  "YEARLY" ? ' gsl-button-primary' : ''; ?>">
+				<input type="radio" name="freq" id="YEARLY" class="gsl-hidden"
+				       value="YEARLY" <?php if ($freq ==  "YEARLY") echo 'checked="checked"'; ?>
 				       onclick="toggleFreq('YEARLY');"/>
 				<?php echo JText::_('YEARLY'); ?>
 			</label>
@@ -215,15 +211,17 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 			if ($params->get("dayselect", 0))
 			{
 				?>
-				<label for='IRREGULARBTN' class="btn radio">
-					<input type="radio" name="freq" id="IRREGULARBTN" value="IRREGULAR"
-					       onclick="toggleFreq('IRREGULAR');" <?php if ($this->row->freq() == "IRREGULAR") echo 'checked="checked"'; ?>/>
+                <label for='IRREGULARBTN' class="gsl-button gsl-button-small gsl-button-default <?php echo $freq ==  "IRREGULAR" ? ' gsl-button-primary' : ''; ?>">
+					<input type="radio" name="freq" id="IRREGULARBTN" value="IRREGULAR" class="gsl-hidden"
+					       onclick="toggleFreq('IRREGULAR');" <?php if ($freq ==  "IRREGULAR") echo 'checked="checked"'; ?>/>
 					<?php echo JText::_('IRREGULAR'); ?>
 				</label>
 			<?php } ?>
 		</fieldset>
 	</div>
 	<!-- END REPEAT FREQ-->
+
+
 	<div id="interval_div">
 		<div style="float:left">
 			<fieldset>
@@ -234,7 +232,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 			</fieldset>
 		</div>
 		<div style="float:left;margin-left:20px!important" id="cu_count">
-			<fieldset>
+			<fieldset >
 				<legend><input type="radio" name="countuntil" value="count" id="cuc" checked="checked"
 				               onclick="toggleCountUntil('cu_count');"/><?php echo JText::_('REPEAT_COUNT') ?></legend>
 				<input class="inputbox" type="text" name="count" id="count" size="3" maxlength="3"
@@ -315,17 +313,17 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 			<fieldset>
 				<legend><input type="radio" name="whichby" id="jevbd" value="bd"
 				               onclick="toggleWhichBy('byday');"/><?php echo JText::_('BY_DAY'); ?></legend>
-				<div class="checkbox <?php echo version_compare(JVERSION, '3.8.12', '<') ? "btn" : "jev-button"; ?>-group">
+				<div class="gsl-button-group">
 					<?php
-					JEventsHTML::buildWeekDaysCheck($this->row->getByDay_days(), '', "weekdays");
+					JEventsHTML::buildWeekDaysCheckUikit($this->row->getByDay_days(), '', "weekdays");
 					?>
 				</div>
 			</fieldset>
 			<fieldset id="weekofmonth">
 				<legend><?php echo JText::_('WHICH_WEEK'); ?></legend>
-				<div class="checkbox <?php echo version_compare(JVERSION, '3.8.12', '<') ? "btn" : "jev-button"; ?>-group">
+				<div class="gsl-button-group">
 					<?php
-					JEventsHTML::buildWeeksCheck($this->row->getByDay_weeks(), "", "weeknums", $this->row->getByDirection("byday"));
+					JEventsHTML::buildWeeksCheckUikit($this->row->getByDay_weeks(), "", "weeknums", $this->row->getByDirection("byday"));
 					?>
 				</div>
 				<div class="countback">
@@ -453,7 +451,6 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 		<?php
 		}
 		?>
-        setupJEventsBootstrap();
     }
 
     //if (window.attachEvent) window.attachEvent("onload",setupRepeats);
@@ -465,111 +462,5 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
     set12hTime(document.adminForm.end_time);
     // toggle unvisible time fields
     toggleView12Hour();
-
-    function setupJEventsBootstrap() {
-        (function ($) {
-            // Turn radios into btn-group
-            $('.radio.btn-group label').addClass('btn');
-            var el = $(".radio.btn-group label");
-
-            // Isis template and others may already have done this so remove these!
-            $(".radio.btn-group label").unbind('click');
-
-            $(".radio.btn-group label").click(function () {
-                var label = $(this);
-                var input = $('#' + label.attr('for'));
-                if (!input.prop('checked') && !input.prop('disabled')) {
-                    label.closest('.btn-group').find("label").removeClass('active btn-success btn-danger btn-primary');
-                    if (input.prop('value') != 0) {
-                        label.addClass('active btn-success');
-                    } else {
-                        label.addClass('active btn-danger');
-                    }
-                    input.prop('checked', true);
-                    input.trigger('change');
-                }
-            });
-
-            // Turn checkboxes into btn-group
-            $('.checkbox.btn-group label').addClass('btn');
-
-            // Isis template and others may already have done this so remove these!
-            $(".checkbox.btn-group label").unbind('click');
-            $(".checkbox.btn-group label input[type='checkbox']").unbind('click');
-
-            $(".checkbox.btn-group label").click(function (event) {
-                event || (event = window.event);
-
-                // stop the event being triggered twice is click on input AND label outside it!
-                if (event.target.tagName.toUpperCase() == "INPUT") {
-                    //event.preventDefault();
-                    return;
-                }
-
-                var label = $(this);
-                var input = $('#' + label.attr('for'));
-                //alert(label.val()+ " "+event.target.tagName+" checked? "+input.prop('checked')+ " disabled? "+input.prop('disabled')+ " label disabled? "+label.hasClass('disabled'));
-                if (input.prop('disabled')) {
-                    label.removeClass('active btn-success btn-danger btn-primary');
-                    input.prop('checked', false);
-                    event.stopImmediatePropagation();
-                    input.trigger('change');
-                    return;
-                }
-                if (!input.prop('checked')) {
-                    if (input.prop('value') != 0) {
-                        label.addClass('active btn-success');
-                    } else {
-                        label.addClass('active btn-danger');
-                    }
-                } else {
-                    label.removeClass('active btn-success btn-danger btn-primary');
-                }
-                input.trigger('change');
-                // bootstrap takes care of the checkboxes themselves!
-
-            });
-
-            $(".btn-group input[type=checkbox]").each(function () {
-                var input = $(this);
-                input.css('display', 'none');
-            });
-        })(jQuery);
-
-        initialiseBootstrapButtons();
-    }
-
-    function initialiseBootstrapButtons() {
-        (function ($) {
-            // this doesn't seem to find just the checked ones!'
-            //$(".btn-group input[checked=checked]").each(function() {
-            var clickelems = $(".btn-group input[type=checkbox] , .btn-group input[type=radio]");
-
-            clickelems.each(function (idx, val) {
-                if (!$(this).attr('id')) {
-                    return;
-                }
-                var label = $("label[for=" + $(this).attr('id') + "]");
-                var elem = $(this);
-                if (elem.prop('disabled')) {
-                    label.addClass('disabled');
-                    label.removeClass('active btn-success btn-danger btn-primary');
-                    return;
-                }
-                label.removeClass('disabled');
-                if (!elem.prop('checked')) {
-                    label.removeClass('active btn-success btn-danger btn-primary');
-                    return;
-                }
-                if (elem.val() != 0) {
-                    label.addClass('active btn-success');
-                } else {
-                    label.addClass('active btn-danger');
-                }
-
-            });
-
-        })(jQuery);
-    }
 
 </script>

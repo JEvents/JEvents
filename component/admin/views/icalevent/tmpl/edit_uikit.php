@@ -10,6 +10,10 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+if (defined("EDITING_JEVENT"))
+	return;
+define("EDITING_JEVENT", 1);
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
@@ -18,18 +22,6 @@ use Joomla\CMS\Session\Session;
 use Joomla\CMS\Component\ComponentHelper;
 
 $app    = Factory::getApplication();
-if ($app->isClient('administrator'))
-{
-	echo $this->loadTemplate('uikit');
-	return;
-}
-
-if (defined("EDITING_JEVENT"))
-	return;
-define("EDITING_JEVENT", 1);
-
-HTMLHelper::_('jquery.ui', array('core', 'sortable'));
-
 $input  = $app->input;
 $params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 // get configuration object
@@ -39,40 +31,12 @@ $assoc = false && JLanguageAssociations::isEnabled() && Factory::getApplication(
 // Load Bootstrap
 JevHtmlBootstrap::framework();
 HTMLHelper::_('behavior.keepalive');
-//HTMLHelper::_('behavior.calendar');
-//HTMLHelper::_('behavior.formvalidation');
+
 if ($params->get("bootstrapchosen", 1))
 {
 	HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
-	// Use this as a basis for setting the primary category
-	/*
-	HTMLHelper::_('jquery.ui', array("core","sortable"));
-	$script = <<< SCRIPT
-window.setTimeout(function() {
-	jQuery("#catid").chosen().change(
-		function() {
-			if (jQuery("#catid_chzn li.search-choice")) {
-				jQuery("#catid_chzn li.search-choice").on('mousedown', function() {
-					alert(this);
-					return true;
-				});
-			}
-		}
-	);
-}, 1000);
-SCRIPT;
-	Factory::getDocument()->addScriptDeclaration($script);
-	 */
 }
-if ($params->get("bootstrapcss", 1) == 1)
-{
-	// This version of bootstrap has maximum compatability with JEvents due to enhanced namespacing
-	HTMLHelper::stylesheet("com_jevents/bootstrap.css", array(), true);
-}
-else if ($params->get("bootstrapcss", 1) == 2)
-{
-	JHtmlBootstrap::loadCss();
-}
+// Do not load bootstrap
 
 // use JRoute to preseve language selection
 $action = Factory::getApplication()->isClient('administrator') ? "index.php" : Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=" . JEVHelper::getItemid());
@@ -86,7 +50,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 	echo (!Factory::getApplication()->isClient('administrator') && $params->get("darktemplate", 0)) ? "class='jeventsdark $accesslevels'" : "class='$accesslevels' ";
 	?> >
 		<form action="<?php echo $action; ?>" method="post" name="adminForm" enctype='multipart/form-data'
-		      id="adminForm" class="form-horizontal jevbootstrap">
+		      id="adminForm" class="form-horizontal">
 			<?php
 			ob_start();
 
@@ -341,9 +305,8 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 				if (!$cfg->get('com_single_pane_edit', 0))
 				{
 					?>
-					<ul class="nav nav-tabs" id="myEditTabs">
-						<li class="active"><a data-toggle="tab"
-						                      href="#common"><?php echo JText::_("JEV_TAB_COMMON"); ?></a></li>
+					<ul  id="myEditTabs" gsl-tab>
+						<li class="active"><a href="#common"><?php echo JText::_("JEV_TAB_COMMON"); ?></a></li>
 						<?php
 						if (!$cfg->get('com_single_pane_edit', 0) && !$cfg->get('timebeforedescription', 0))
 						{
@@ -367,8 +330,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 										$extraTab['title'] = JText::_($extraTab['title']);
 									}
 									?>
-									<li <?php JEventsHelper::showOnRel($this->form, 'catid'); ?>><a data-toggle="tab"
-									       href="#<?php echo $extraTab['paneid'] ?>"><?php echo $extraTab['title']; ?></a>
+									<li <?php JEventsHelper::showOnRel($this->form, 'catid'); ?>><a href="#<?php echo $extraTab['paneid'] ?>"><?php echo $extraTab['title']; ?></a>
 									</li>
 									<?php
 								}
@@ -377,36 +339,36 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 						if ($assoc)
 						{
 							?>
-							<li><a data-toggle="tab"
-							       href="#associations"><?php echo JText::_('COM_JEVENTS_ITEM_ASSOCIATIONS_FIELDSET_LABEL', true); ?></a>
+							<li><a href="#associations"><?php echo JText::_('COM_JEVENTS_ITEM_ASSOCIATIONS_FIELDSET_LABEL', true); ?></a>
 							</li>
 							<?php
 						}
 						?>
 					</ul>
-					<?php
-					// Tabs
-					echo HTMLHelper::_('bootstrap.startPane', 'myEditTabs', array('active' => 'common'));
-					echo HTMLHelper::_('bootstrap.addPanel', 'myEditTabs', "common");
+					<!-- Tabs themselves //-->
+                    <ul class="gsl-switcher gsl-margin">
+                        <li>
+                    <?php
 				}
 				?>
-				<div class="row jevtitle" <?php JEventsHelper::showOnRel($this->form, 'title'); ?>>
-					<div class="span2">
+				<div class="row jevtitle gsl-child-width-1-1 gsl-grid" <?php JEventsHelper::showOnRel($this->form, 'title'); ?> >
+					<div class="gsl-width-1-6@m gsl-width-1-3"  >
 						<?php echo $this->form->getLabel("title"); ?>
 					</div>
-					<div class="span10">
+                    <div class="gsl-width-expand"  >
 						<?php echo str_replace("/>", " data-placeholder='xx' />", $this->form->getInput("title")); ?>
 					</div>
 				</div>
+                            <div class="gsl-child-width-1-2@m gsl-margin-remove-top  gsl-grid">
 				<?php
 				if ($this->form->getInput("priority"))
 				{
 					?>
-					<div class="row jevpriority" <?php JEventsHelper::showOnRel($this->form, 'priority'); ?>>
-						<div class="span2">
+					<div class="row jevpriority gsl-grid" <?php JEventsHelper::showOnRel($this->form, 'priority'); ?> >
+                        <div class="gsl-width-1-3"  >
 							<?php echo $this->form->getLabel("priority"); ?>
 						</div>
-						<div class="span10">
+                        <div class="gsl-width-expand"  >
 							<?php echo $this->form->getInput("priority"); ?>
 						</div>
 					</div>
@@ -417,26 +379,29 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 				if ($this->form->getInput("creator"))
 				{
 					?>
-					<div class="row jevcreator" <?php JEventsHelper::showOnRel($this->form, 'creator'); ?>>
-						<div class="span2">
+					<div class="row jevcreator  gsl-grid gsl-margin-remove-top" <?php JEventsHelper::showOnRel($this->form, 'creator'); ?>>
+                        <div class="gsl-width-1-3"  >
 							<?php echo $this->form->getLabel("creator"); ?>
 						</div>
-						<div class="span10">
+                        <div class="gsl-width-expand">
 							<?php echo $this->form->getInput("creator"); ?>
 						</div>
 					</div>
 					<?php
 				}
-
+            ?>
+            </div>
+                            <div class="gsl-child-width-1-2@m gsl-margin-remove-top  gsl-grid">
+                            <?php
 				// This could be hidden!
 				if ($this->form->getLabel("ics_id"))
 				{
 					?>
-					<div class="row jevcalendar" <?php JEventsHelper::showOnRel($this->form, 'ics_id'); ?>>
-						<div class="span2">
+					<div class="row jevcalendar  gsl-grid gsl-margin-remove-top" <?php JEventsHelper::showOnRel($this->form, 'ics_id'); ?> >
+                        <div class="gsl-width-1-3"  >
 							<?php echo $this->form->getLabel("ics_id"); ?>
 						</div>
-						<div class="span10">
+						<div class="gsl-width-expand">
 							<?php echo $this->form->getInput("ics_id"); ?>
 						</div>
 					</div>
@@ -450,11 +415,11 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 				if ($this->form->getInput("lockevent"))
 				{
 					?>
-					<div class="row jevlockevent" <?php JEventsHelper::showOnRel($this->form, 'lockevent'); ?>>
-						<div class="span2">
+					<div class="row jevlockevent  gsl-grid gsl-margin-remove-top" <?php JEventsHelper::showOnRel($this->form, 'lockevent'); ?> >
+                        <div class="gsl-width-1-3"  >
 							<?php echo $this->form->getLabel("lockevent"); ?>
 						</div>
-						<div class="span10 radio btn-group">
+						<div class="gsl-width-expand radio btn-group">
 							<?php echo $this->form->getInput("lockevent"); ?>
 						</div>
 					</div>
@@ -464,17 +429,17 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 				if ($this->form->getLabel("catid"))
 				{
 					?>
-					<div class="row  jevcategory" <?php JEventsHelper::showOnRel($this->form, 'catid'); ?>>
+					<div class="row  jevcategory  gsl-grid gsl-margin-remove-top" <?php JEventsHelper::showOnRel($this->form, 'catid'); ?> >
 						<?php
 						if ($this->form->getLabel("catid"))
 						{
 							?>
-							<div class="span2">
+                            <div class="gsl-width-1-3"  >
 								<?php
 								echo $this->form->getLabel("catid");
 								?>
 							</div>
-							<div class="span10 jevcategory">
+							<div class="gsl-width-expand jevcategory">
 								<?php echo $this->form->getInput("catid"); ?>
 							</div>
 							<?php
@@ -483,6 +448,9 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 					</div>
 					<?php
 				}
+				?>
+                            </div>
+                            <?php
 				/*
 							if ($this->form->getLabel("primarycatid"))
 							{
@@ -492,12 +460,12 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 									if ($this->form->getLabel("primarycatid"))
 									{
 										?>
-										<div class="span2">
+										<div class="gsl-width-auto">
 											<?php
 											echo $this->form->getLabel("primarycatid");
 											?>
 										</div>
-										<div class="span10 jevprimarycategory">
+										<div class="gsl-width-expand jevprimarycategory">
 											<?php echo $this->form->getInput("primarycatid"); ?>
 										</div>
 										<?php
@@ -507,20 +475,24 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 								<?php
 							}
 				*/
+				?>
+
+                            <div class="gsl-child-width-1-2@m gsl-margin-remove-top  gsl-grid">
+                                <?php
 				if ($this->repeatId === 0 && $this->form->getLabel("access"))
 				{
 					?>
-					<div class="row  jevaccess" <?php JEventsHelper::showOnRel($this->form, 'access'); ?>>
+					<div class="row  jevaccess gsl-grid gsl-margin-remove-top" <?php JEventsHelper::showOnRel($this->form, 'access'); ?> >
 						<?php
 						if ($this->form->getLabel("access"))
 						{
 							?>
-							<div class="span2">
+                            <div class="gsl-width-1-3"  >
 								<?php
 								echo $this->form->getLabel("access");
 								?>
 							</div>
-							<div class="span10 accesslevel ">
+							<div class="gsl-width-expand accesslevel ">
 								<?php echo $this->form->getInput("access"); ?>
 							</div>
 							<?php
@@ -537,11 +509,11 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 				else if ($this->form->getLabel("state"))
 				{
 					?>
-					<div class="row jevpublished" <?php JEventsHelper::showOnRel($this->form, 'state'); ?>>
-						<div class="span2">
+					<div class="row jevpublished gsl-grid gsl-margin-remove-top" <?php JEventsHelper::showOnRel($this->form, 'state'); ?> >
+                        <div class="gsl-width-1-3"  >
 							<?php echo $this->form->getLabel("state"); ?>
 						</div>
-						<div class="span10">
+						<div class="gsl-width-expand">
 							<?php echo $this->form->getInput("state"); ?>
 						</div>
 					</div>
@@ -552,20 +524,26 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 					// hidden field!
 					echo $this->form->getInput("state");
 				}
-
+                ?>
+                            </div>
+                                <?php
 				if ($this->form->getInput("color"))
 				{
 					?>
-					<div class="row jevcolour" <?php JEventsHelper::showOnRel($this->form, 'color'); ?>>
-						<div class="span2">
+                            <div class=" gsl-margin-remove-top gsl-child-width-1-1" gsl-grid>
+					<div class="row jevcolour gsl-grid gsl-margin-remove-top" <?php JEventsHelper::showOnRel($this->form, 'color'); ?> >
+                        <div class="gsl-width-1-6@m gsl-width-1-3"  >
 							<?php echo $this->form->getLabel("color"); ?>
 						</div>
-						<div class="span10">
+						<div class="gsl-width-expand">
 							<?php echo $this->form->getInput("color"); ?>
 						</div>
 					</div>
+                            </div>
 					<?php
 				}
+				?>
+                            <?php
 
 				if ($cfg->get('timebeforedescription', 0))
 				{
@@ -578,12 +556,11 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 					$this->blanktags[] = "";
 				}
 				?>
-
-				<div class="row jev_description" <?php JEventsHelper::showOnRel($this->form, 'jevcontent'); ?>>
-					<div class="span2">
+				<div class="row jev_description gsl-margin-remove-top gsl-child-width-1-1 gsl-grid" <?php JEventsHelper::showOnRel($this->form, 'jevcontent'); ?>>
+					<div>
 						<?php echo $this->form->getLabel("jevcontent"); ?>
 					</div>
-					<div class="span10" id='jeveditor'>
+					<div id='jeveditor'  class="gsl-margin-small-top">
 						<?php
 						// There is a TinyMCE issue in Joomla 3.6 where it loads the javascript twice if we do this
 						//echo $this->form->getInput("jevcontent");
@@ -596,27 +573,27 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 						?>
 					</div>
 				</div>
-				<div class="row jeveditlocation" id="jeveditlocation" <?php JEventsHelper::showOnRel($this->form, 'location'); ?>>
-					<div class="span2">
+				<div class="row jeveditlocation gsl-margin-remove-top gsl-child-width-1-1 gsl-grid" id="jeveditlocation" <?php JEventsHelper::showOnRel($this->form, 'location'); ?>>
+                    <div class="gsl-width-1-6@m gsl-width-1-3"  >
 						<?php echo $this->form->getLabel("location"); ?>
 					</div>
-					<div class="span10">
+					<div class="gsl-width-expand">
 						<?php echo $this->form->getInput("location"); ?>
 					</div>
 				</div>
-				<div class="row jev_contact" <?php JEventsHelper::showOnRel($this->form, 'contact_info'); ?>>
-					<div class="span2">
+				<div class="row jev_contact gsl-margin-remove-top gsl-child-width-1-1 gsl-grid" <?php JEventsHelper::showOnRel($this->form, 'contact_info'); ?>>
+                    <div class="gsl-width-1-6@m gsl-width-1-3"  >
 						<?php echo $this->form->getLabel("contact_info"); ?>
 					</div>
-					<div class="span10">
+					<div class="gsl-width-expand">
 						<?php echo $this->form->getInput("contact_info"); ?>
 					</div>
 				</div>
-				<div class="row jev_extrainfo" <?php JEventsHelper::showOnRel($this->form, 'extrainfo'); ?>>
-					<div class="span2">
+				<div class="row jev_extrainfo gsl-margin-remove-top gsl-child-width-1-1 gsl-grid" <?php JEventsHelper::showOnRel($this->form, 'extrainfo'); ?>>
+                    <div class="gsl-width-1-6@m gsl-width-1-3"  >
 						<?php echo $this->form->getLabel("extra_info"); ?>
 					</div>
-					<div class="span10">
+					<div class="gsl-width-expand">
 						<?php echo $this->form->getInput("extra_info"); ?>
 					</div>
 				</div>
@@ -631,11 +608,11 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 					}
 
 					?>
-					<div class="row jevplugin_<?php echo $key; ?>" <?php echo isset($this->customfields[$key]["showon"]) ? $this->customfields[$key]["showon"] : ""; ?>>
-						<div class="span2">
+					<div class="row gsl-margin-remove-top gsl-child-width-1-1 gsl-grid jevplugin_<?php echo $key; ?>" <?php echo isset($this->customfields[$key]["showon"]) ? $this->customfields[$key]["showon"] : ""; ?>>
+                        <div class="gsl-width-1-6@m gsl-width-1-3"  >
 							<label><?php echo $this->customfields[$key]["label"]; ?></label>
 						</div>
-						<div class="span10">
+						<div class="gsl-width-expand">
 							<?php echo $this->customfields[$key]["input"]; ?>
 						</div>
 					</div>
@@ -646,11 +623,11 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
                 if ($cfg->get('joomlatags', 1))
                 {
 	                ?>
-                    <div class="row jev_joomlatags" <?php JEventsHelper::showOnRel($this->form, 'tags'); ?>>
-                        <div class="span2">
+                    <div class="row jev_joomlatags gsl-child-width-1-1 gsl-grid " <?php JEventsHelper::showOnRel($this->form, 'tags'); ?>>
+                        <div class="gsl-width-1-6@m gsl-width-1-3"  >
 			                <?php echo $this->form->getLabel("tags"); ?>
                         </div>
-                        <div class="span10">
+                        <div class="gsl-width-expand">
 			                <?php echo $this->form->getInput("tags"); ?>
                         </div>
                     </div>
@@ -659,8 +636,10 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 				*/
                 if (!$cfg->get('com_single_pane_edit', 0) && !$cfg->get('timebeforedescription', 0))
 				{
-					echo HTMLHelper::_('bootstrap.endPanel');
-					echo HTMLHelper::_('bootstrap.addPanel', "myEditTabs", "calendar");
+				    ?>
+                    </li>
+                    <li id="calendar">
+                    <?php
 				}
 				if (!$cfg->get('timebeforedescription', 0))
 				{
@@ -685,10 +664,23 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 
 						if (!$cfg->get('com_single_pane_edit', 0))
 						{
-							echo HTMLHelper::_('bootstrap.endPanel');
-							echo HTMLHelper::_('bootstrap.addPanel', "myEditTabs", $extraTab['paneid']);
+						    ?>
+                            </li>
+                            <li id="<?php echo $extraTab['paneid'];?>">
+                            <?php
 						}
 						echo "<div class='jevextrablock'>";
+
+                        // Short cut replacement pending plugin updates!
+                        $extraTab['content'] = str_replace('class="row ', 'class="row  gsl-grid gsl-margin-remove ',$extraTab['content'] );
+                        $extraTab['content'] = str_replace('class="span2', 'class="gsl-width-1-6@m gsl-width-1-1 gsl-margin-small-bottom', $extraTab['content'] );
+                        $extraTab['content'] = str_replace(array('class="span10', 'class=" span10'), 'class="gsl-width-expand gsl-margin-small-bottom  ', $extraTab['content'] );
+
+                            // Needed to deal with early execution of initTemplate in backend
+                        $extraTab['content'] = str_replace('btn-group', 'btn-group-ysts', $extraTab['content']);
+
+                        echo "<h2>Do controls and control-label replacements too</h2>";
+
 						echo $extraTab['content'];
 						echo "</div>";
 					}
@@ -697,15 +689,22 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 
 				if (!$cfg->get('com_single_pane_edit', 0))
 				{
-					echo HTMLHelper::_('bootstrap.endPanel');
+					?>
+                    </li>
+                    <?php
 					if ($assoc)
 					{
-						echo HTMLHelper::_('bootstrap.addPanel', "myEditTabs", "associations");
+					    ?>
+                        <li id="associations">
+					    <?php
 						echo $this->loadTemplate('associations');
-						echo HTMLHelper::_('bootstrap.endPanel');
+						?>
+						</li>
+						<?php
 					}
-
-					echo HTMLHelper::_('bootstrap.endPane', 'myEditTabs');
+					?>
+                    </ul>
+                    <?php
 				}
 				?>
 			</div>

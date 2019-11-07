@@ -388,7 +388,10 @@ class jIcalEventDB extends jEventCal
 
 	function getByDay_weeks()
 	{
-
+		if (!isset($this->_byday) || $this->_byday === "")
+		{
+			$this->_byday = "+1WE,+2WE,+3WE,+4WE,+5WE";
+		}
 		if (isset($this->_byday) && $this->_byday != "")
 		{
 			$days = explode(",", $this->_byday);

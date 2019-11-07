@@ -364,10 +364,21 @@ class JEventsDBModel
 		{
 			$instances = array();
 		}
+
+		if (is_array($catidList))
+		{
+			\Joomla\Utilities\ArrayHelper::toInteger($catidList);
+			$catidListIndex = implode(", ", $catidList);
+		}
+		else
+		{
+			$catidListIndex = $catidList;
+		}
+
 		// calculate unique index identifier
-		$index = $aid . '+' . $catidList;
+		$index = $aid . '+' . $catidListIndex;
 		// if catidList = 0 then the result is the same as a blank so slight time saving
-		if (is_null($catidList) || $catidList == 0)
+		if (is_null($catidList) || $catidListIndex == 0)
 		{
 			$index = $aid . '+';
 		}
@@ -425,7 +436,7 @@ class JEventsDBModel
 				$catidList = JEVHelper::forceIntegerArray($catids, true);
 			}
 
-			$catids   = explode(",", $catidList);
+			$catids   = is_array($catidList) ? $catidList : explode(",", $catidList);
 			$catwhere = array();
 			$hascatid = false;
 			foreach ($catids as $catid)

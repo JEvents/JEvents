@@ -4,8 +4,8 @@
 		<field
 			name="search"
 			type="text"
-			label="COM_YOURSITES_SEARCH_FILTER"
-			description="COM_YOURSITES_SEARCH_FILTER_DESC"
+			label="COM_JEVENTS_SEARCH_FILTER"
+			description="COM_JEVENTS_SEARCH_FILTER_DESC"
 			hint="JSEARCH_FILTER"
 		/>
 

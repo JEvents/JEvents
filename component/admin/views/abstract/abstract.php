@@ -889,9 +889,11 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 				$this->requiredtags[]  = $requiredTags;
 			}
 			?>
-			<div class="control-group jevplugin_<?php echo $key; ?>" <?php echo isset($this->customfields[$key]["showon"]) ? $this->customfields[$key]["showon"] : ""; ?>>
-				<label class="control-label "><?php echo $this->customfields[$key]["label"]; ?></label>
-				<div class="controls">
+			<div class=" gsl-margin-remove-top gsl-child-width-1-1 gsl-grid  jevplugin_<?php echo $key; ?>" <?php echo isset($this->customfields[$key]["showon"]) ? $this->customfields[$key]["showon"] : ""; ?>>
+                <div class="gsl-width-1-6@m gsl-width-1-3">
+				    <label class="control-label "><?php echo $this->customfields[$key]["label"]; ?></label>
+                </div>
+                <div class="gsl-width-expand">
 					<?php echo $this->customfields[$key]["input"]; ?>
 				</div>
 			</div>

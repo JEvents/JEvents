@@ -20,7 +20,8 @@ jimport('joomla.filesystem.folder');
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
-include_once(JPATH_SITE . '/libraries/src/Form/Field/TextField.php');
+JFormHelper::loadFieldClass('text');
+
 include_once(JPATH_ADMINISTRATOR . "/components/com_jevents/jevents.defines.php");
 
 class JFormFieldJevfilters extends JFormFieldText

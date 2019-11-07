@@ -29,7 +29,12 @@
 		<field name="ics_id" type="jeveventcalendar" default="0"   layoutfield="ICAL"  label="JEV_EVENT_CALENDAR" description="JEV_EVENT_CALENDAR_TIP" />
 		<field name="lockevent" type="jeveventlock" default="0"   layoutfield="LOCK" label="JEV_LOCK_EVENT" description="JEV_LOCK_EVENT_TIP" />
 		<field name="access" type="jeveventaccess" default="1"   layoutfield="ACCESS" labelclass="accesslevel"   label="JEV_EVENT_ACCESSLEVEL" description="JEV_EVENT_ACCESSLEVEL_TIP" />
-		<field name="state" type="jeveventpublished" default="0"   layoutfield="STATE" labelclass="jevpublished"   label="JEV_EVENT_STATE" description="JEV_EVENT_STATE_TIP" />
+		<field name="state"
+			   type="jeveventpublished" default="0"
+			   layoutfield="STATE"
+			   labelclass="jevpublished"
+			   label="JEV_EVENT_STATE"
+			   description="JEV_EVENT_STATE_TIP" />
 
 		<field name="jevcontent"
 			   type="editor"

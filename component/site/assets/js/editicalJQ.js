@@ -1244,3 +1244,117 @@ function reorderCategorySelections()
     // old style version - still needed!
     catids.trigger("liszt:updated");
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+	let elems = document.querySelectorAll('#gslc .btn-group, #gslc .btn-group-ysts');
+	for (let e = 0; e < elems.length; e++)
+	{
+		elems[e].classList.remove('btn-group');
+		elems[e].classList.remove('radio');
+		elems[e].classList.add('gsl-button-group');
+		let inputs = elems[e].querySelectorAll('.radio');
+		for (let i = 0; i < inputs.length; i++) {
+			inputs[i].classList.remove('radio');
+		}
+		inputs = elems[e].querySelectorAll("input[type='checkbox'], input[type='radio']");
+		for (let i = 0; i < inputs.length; i++) {
+			inputs[i].classList.add('gsl-hidden');
+		}
+		let labels = elems[e].querySelectorAll("label.btn");
+		for (let l = 0; l < labels.length; l++) {
+			let label = labels[l];
+			label.classList.remove('btn');
+			label.classList.add('gsl-button');
+			label.classList.add('gsl-button-default');
+			label.classList.add('gsl-button-small');
+
+			let activeClass = false;
+			let input = document.getElementById(label.getAttribute('for'));
+			if (input) {
+
+				if (label.classList.contains('btn-danger')) {
+					label.classList.remove('btn-danger');
+					input.setAttribute('data-activeclass', 'danger');
+				}
+				if (label.classList.contains('btn-success')) {
+					label.classList.remove('btn-success');
+					input.setAttribute('data-activeclass', 'success');
+				}
+				if (label.classList.contains('btn-warning')) {
+					label.classList.remove('btn-warning');
+					input.setAttribute('data-activeclass', 'warning');
+				}
+
+				if (input.checked || label.classList.contains('active')) {
+					activeClass = input.getAttribute('data-activeclass');
+					if (input.checked || label.classList.contains('active')) {
+						if (activeClass) {
+							label.classList.add('gsl-button-' + activeClass);
+						} else if (this.value == 0) {
+							label.classList.add('gsl-button-danger');
+						} else {
+							label.classList.add('gsl-button-primary');
+						}
+					} else {
+						if (activeClass) {
+							label.classList.remove('gsl-button-' + activeClass);
+						}
+						label.classList.remove('gsl-button-success');
+						label.classList.remove('gsl-button-primary');
+						label.classList.remove('gsl-button-danger');
+					}
+				}
+			}
+
+			label.classList.remove('active');
+		}
+	}
+
+	elems = document.querySelectorAll('#gslc .checkbox-group');
+	for (let e = 0; e < elems.length; e++)
+	{
+		elems[e].classList.remove('checkbox-group');
+		elems[e].classList.remove('checkbox');
+		elems[e].classList.add('gsl-button-group');
+
+		let inputs = elems[e].querySelectorAll('.checkbox');
+		for (let i = 0; i < inputs.length; i++) {
+			inputs[i].classList.remove('checkbox');
+		}
+		inputs = elems[e].querySelectorAll("input[type='checkbox'], input[type='radio']");
+		for (let i = 0; i < inputs.length; i++) {
+			inputs[i].classList.add('gsl-hidden');
+		}
+		let labels = elems[e].querySelectorAll("label.btn");
+		for (let l = 0; l < labels.length; l++) {
+			let label = labels[l];
+			label.classList.remove('btn');
+			label.classList.add('gsl-button');
+			label.classList.add('gsl-button-default');
+			label.classList.add('gsl-button-small');
+
+			let activeClass = false;
+			let input = document.getElementById(label.getAttribute('for'));
+			if (input) {
+				activeClass = input.getAttribute('data-activeclass');
+				if (input.checked || label.classList.contains('active')) {
+					if (activeClass) {
+						label.classList.add('gsl-button-' + activeClass);
+					} else if (this.value == 0) {
+						label.classList.add('gsl-button-danger');
+					} else {
+						label.classList.add('gsl-button-primary');
+					}
+				} else {
+					if (activeClass) {
+						label.classList.remove('gsl-button-' + activeClass);
+					}
+					label.classList.remove('gsl-button-primary');
+					label.classList.remove('gsl-button-danger');
+				}
+			}
+
+			label.classList.remove('active');
+		}
+	}
+});

@@ -161,7 +161,9 @@ class AdminCpanelController extends JControllerAdmin
 	{
 		$db     = Factory::getDbo();
 
-		$extensions = array("frogs", "jevlocations", "jeventstags", "jevpeople", "rsvppro");
+		// use frogs to simulate the need to merge
+		//$extensions = array("frogs", "jevlocations", "jeventstags", "jevpeople", "rsvppro");
+		$extensions = array("jevlocations", "jeventstags", "jevpeople", "rsvppro");
 		$toDisable = "";
 		foreach ($extensions as $extension)
 		{
