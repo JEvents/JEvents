@@ -299,8 +299,8 @@ class plgSearchEventsearch extends JPlugin
 			. "\n AND icsf.state = 1"
 			. "\n AND icsf.access IN ( $groups )"
 			. "\n AND ev.state = 1"
-			. "\n AND ev.access " . ((version_compare(JVERSION, '1.6.0', '>=')) ? ' IN (' . $groups . ')' : ' <=  ' . $user->gid)
-			. "\n AND b.access " . ((version_compare(JVERSION, '1.6.0', '>=')) ? ' IN (' . $groups . ')' : ' <=  ' . $user->gid)
+			. "\n AND ev.access IN ( $groups )"
+			. "\n AND b.access  IN ( $groups )"
 			. "\n AND b.published = '1'"
 			. $extrawhere
 			. $catwhere

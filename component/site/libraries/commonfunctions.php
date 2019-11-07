@@ -578,6 +578,11 @@ class JEV_CommonFunctions
 			ob_start();
 			DefaultLoadedFromTemplate(false, false, $event, 0, $messagetemplate);
 			$messagetemplate = ob_get_clean();
+
+			// Process the subject too
+            ob_start();
+            DefaultLoadedFromTemplate(false, false, $event, 0, $subject);
+            $subject = ob_get_clean();
 		}
 
 		$mail->setSubject($subject);

@@ -262,6 +262,9 @@ class ICalsController extends AdminIcalsController
 
 					$app->triggerEvent('onExportRow', array(&$row));
 					$icalEvents[$row->ev_id()] = $row;
+
+					// Parse Content Plugins for Description
+                    			$row->_description = JHtml::_('content.prepare', $row->_content);
 				}
 			}
 			unset($rows);

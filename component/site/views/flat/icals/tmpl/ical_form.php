@@ -31,14 +31,14 @@ if ($input->getString("submit", "") != "")
 			continue;
 		$cats[] = $cid;
 	}
-	if (count($cats) == 0)
+	if (is_array($cats) && count($cats) == 0)
 		$cats[] = 0;
 
 	$years = JEVHelper::forceIntegerArray($input->post->get('years', array(0), null), true);
 	$cats  = implode(",", $cats);
 
 	$link = Uri::root() . "index.php?option=com_jevents&task=icals.export&format=ical";
-	if (count($cats) > 0)
+	if (is_array($cats) && count($cats) > 0)
 	{
 		$link .= "&catids=" . $cats;
 	}
