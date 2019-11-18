@@ -88,7 +88,7 @@ $user = Factory::getUser();
                                     ?>
                                     <a href="javascript: void(0);"
                                        onclick="return listItemTask('cb<?php echo $i; ?>','icals.reload')">
-                                        <img src="<?php echo $pathJeventsIMG . "reload.png"; ?>" border="0" alt="reload"/>
+                                        <span gsl-icon="icon:refresh"></span>
                                     </a>
                                     <?php
                                 }

@@ -91,7 +91,7 @@ class ExtModCalView extends DefaultModCalView
 			$data = $this->datamodel->getCalendarData($cal_year, $cal_month, 1, true, $this->modparams->get("noeventcheck", 0));
 		}
 		$reg->set("jev.modparams", false);
-		$width     = $this->modparams->get("mod_cal_width", "135px");
+		$width     = $this->modparams->get("mod_cal_width", "100%");
 		$height    = $this->modparams->get("mod_cal_height", "auto");
 		$rowheight = $this->modparams->get("mod_cal_rowheight", "auto");
 

@@ -35,10 +35,14 @@ JFactory::getDocument()->addScriptDeclaration('ys_popover(".hasYsPopover");');
                 foreach ($leftIconLinks as $leftIconLink)
                 {
 	                $tooltip = "";
-	                if (!empty($leftIconLink->tooltip) && !empty($leftIconLink->tooltip_detail))
+	                if (!empty($leftIconLink->tooltip))
                     {
 	                    $leftIconLink->class .= " hasYsPopover ";
-	                    $tooltip = " data-yspoptitle='$leftIconLink->tooltip' data-yspopcontent='$leftIconLink->tooltip_detail'";
+	                    $tooltip = " data-yspoptitle='$leftIconLink->tooltip' ";
+	                    if(!empty($leftIconLink->tooltip_detail))
+	                    {
+		                    $tooltip .= "data-yspopcontent='$leftIconLink->tooltip_detail'";
+	                    }
                     }
 
 	                ?>

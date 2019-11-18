@@ -146,7 +146,8 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 
 
 		<div id="jevmultiday"
-		     style="display:<?php echo $this->row->endDate() > $this->row->startDate() ? "block" : "none"; ?>">
+		     style="display:<?php echo $this->row->endDate() > $this->row->startDate() ? "block" : "none"; ?>"
+			>
 
 			<label style="font-weight:bold;"><?php echo JText::_('JEV_EVENT_MULTIDAY'); ?></label><br/>
 			<div style="float:left;margin-right:20px!important;"><?php echo JText::_('JEV_EVENT_MULTIDAY_LONG') . "&nbsp;"; ?></div>
@@ -168,7 +169,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 	</fieldset>
 </div>
 
-<div <?php echo $repeatStyle; ?>>
+<div <?php echo $repeatStyle; ?> <?php JEventsHelper::showOnRel($this->form, 'repeattype'); ?>>
 	<!-- REPEAT FREQ -->
 	<div style="clear:both;">
         <?php

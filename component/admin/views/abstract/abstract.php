@@ -856,7 +856,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 			$this->replacetags[] = $this->customfields[$key]["label"];
 			$this->blanktags[]   = "";
 			$this->searchtags[]  = '{{' . $key . '_showon}}';
-			$this->replacetags[] = isset($this->customfields[$key]["showon"]) ? $this->customfields[$key]["showon"] : "";
+			$this->replacetags[] = (isset($this->customfields[$key]["showon"]) && !empty($this->customfields[$key]["showon"])) ? $this->customfields[$key]["showon"] : "";
 			$this->blanktags[]   = "";
 
 			if (in_array($key, $requiredFields))
@@ -889,7 +889,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 				$this->requiredtags[]  = $requiredTags;
 			}
 			?>
-			<div class=" gsl-margin-remove-top gsl-child-width-1-1 gsl-grid  jevplugin_<?php echo $key; ?>" <?php echo isset($this->customfields[$key]["showon"]) ? $this->customfields[$key]["showon"] : ""; ?>>
+			<div class=" gsl-margin-remove-top gsl-child-width-1-1 gsl-grid  jevplugin_<?php echo $key; ?>" <?php echo (isset($this->customfields[$key]["showon"]) && !empty($this->customfields[$key]["showon"])) ? $this->customfields[$key]["showon"] : JEventsHelper::showOnRel($this->form, 'customfields');; ?>>
                 <div class="gsl-width-1-6@m gsl-width-1-3">
 				    <label class="control-label "><?php echo $this->customfields[$key]["label"]; ?></label>
                 </div>

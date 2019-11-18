@@ -33,8 +33,7 @@ $customOptions = array(
 // Merge custom options in the options array Filters
 $data['options'] = array_merge($customOptions, $data['options']);
 
-$pathIMG        = Uri::Root() . 'administrator/images/';
-$pathJeventsIMG = Uri::Root() . "administrator/components/" . JEV_COM_COMPONENT . "/images/";
+
 $mainspan       = 10;
 $fullspan       = 12;
 ?>

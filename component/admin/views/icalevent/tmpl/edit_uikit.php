@@ -608,7 +608,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 					}
 
 					?>
-					<div class="row gsl-margin-remove-top gsl-child-width-1-1 gsl-grid jevplugin_<?php echo $key; ?>" <?php echo isset($this->customfields[$key]["showon"]) ? $this->customfields[$key]["showon"] : ""; ?>>
+					<div class="row gsl-margin-remove-top gsl-child-width-1-1 gsl-grid jevplugin_<?php echo $key; ?>" <?php echo (isset($this->customfields[$key]["showon"]) && !empty($this->customfields[$key]["showon"])) ? $this->customfields[$key]["showon"] : JEventsHelper::showOnRel($this->form, 'customfields'); ?>>
                         <div class="gsl-width-1-6@m gsl-width-1-3"  >
 							<label><?php echo $this->customfields[$key]["label"]; ?></label>
 						</div>

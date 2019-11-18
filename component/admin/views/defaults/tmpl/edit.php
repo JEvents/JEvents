@@ -236,20 +236,23 @@ $this->item->params = json_encode($templateparams);
 		$params = new JRegistry($this->item->params);
 		$customcss = $params->get("customcss", '');
 		$customjs = $params->get("customjs", '');
-		$customeditor =  JEditor::getInstance("none");
 
 		?>
         <div class="gsl-container gsl-container-expand">
             <div class="gsl-grid gsl-grid small">
                 <div class="form-group gsl-width-expand@m">
                 <h3><?php echo JText::_("JEV_DEFAULTS_CUSTOM_CSS");?></h3>
-                <?php echo $customeditor->display('params[customcss]', htmlspecialchars($customcss, ENT_QUOTES, 'UTF-8'), 700, 450, '70', '15', false,'customcss' );?>
+                    <textarea id="customcss" name="params[customcss]"  class="gsl-width-expand@m  gsl-height-medium">
+                        <?php echo htmlspecialchars($customcss, ENT_QUOTES, 'UTF-8');?>
+                    </textarea>
                 </div>
             </div>
             <div class="gsl-grid gsl-grid small">
                 <div class="form-group gsl-width-expand@m">
                 <h3><?php echo JText::_("JEV_DEFAULTS_CUSTOM_JS");?></h3>
-                <?php echo $customeditor->display('params[customjs]', htmlspecialchars($customjs, ENT_QUOTES, 'UTF-8'), 700, 450, '70', '15', false,'customjs' );?>
+                    <textarea id="customjs" name="params[customjs]" class="gsl-width-expand@m gsl-height-medium">
+                        <?php echo htmlspecialchars($customjs, ENT_QUOTES, 'UTF-8');?>
+                    </textarea>
                 </div>
             </div>
         </div>

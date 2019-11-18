@@ -8,7 +8,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 HtmlHelper::_('behavior.core');
 HtmlHelper::_('bootstrap.tooltip');
 
-$pathIMG  = Uri::root() . '/administrator/images/';
 $mainspan = 10;
 $fullspan = 12;
 

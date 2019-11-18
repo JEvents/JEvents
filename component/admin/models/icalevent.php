@@ -15,7 +15,7 @@ class JEventsModelicalevent extends JModelList
 {
 	public $queryModel;
 	private $total = 0;
-	var $_debug = false;
+	private $_debug = false;
 
 	/**
 	 * Constructor

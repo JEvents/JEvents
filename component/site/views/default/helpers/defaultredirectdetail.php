@@ -14,7 +14,7 @@ function DefaultRedirectDetail($view)
 
 	if ($redirect_to_event == 1)
 	{
-		$activeEvents = Factory();
+		$activeEvents = array();
 		$countevents  = count($view->data['hours']['timeless']['events']);
 		if ($countevents > 1) return;
 		if ($countevents == 1)

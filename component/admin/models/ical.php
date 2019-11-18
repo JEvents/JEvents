@@ -15,6 +15,7 @@ class JeventsModelical extends JModelList
 {
 	public $queryModel;
 	private $total = 0;
+	private $_debug = false;
 
 	/**
 	 * Constructor
@@ -189,6 +190,9 @@ class JeventsModelical extends JModelList
 				$row->category = "?";
 			}
 		}
+
+		$cfg          = JEVConfig::getInstance();
+		$this->_debug = $cfg->get('jev_debug', 0);
 
 		if ($this->_debug)
 		{

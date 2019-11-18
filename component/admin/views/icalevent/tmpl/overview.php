@@ -37,7 +37,6 @@ $cfg                 = JEVConfig::getInstance();
 $this->_largeDataSet = $cfg->get('largeDataSet', 0);
 $orderdir            = $app->getUserStateFromRequest("eventsorderdir", "filter_order_Dir", 'asc');
 $order               = $app->getUserStateFromRequest("eventsorder", "filter_order", 'start');
-$pathIMG             = Uri::root() . 'administrator/images/';
 $mainspan            = 10;
 $fullspan            = 12;
 

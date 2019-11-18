@@ -71,6 +71,12 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
 			$rows = array();
 			$total = 0;
 		}
+		$app    = Factory::getApplication();
+
+		$option = JEV_COM_COMPONENT;
+		$catid      = intval($app->getUserStateFromRequest("catid{$option}", 'catid', 0));
+		$limit      = intval($app->getUserStateFromRequest("viewlistlimit", 'limit', $app->get('list_limit', 10)));
+		$limitstart = intval($app->getUserStateFromRequest("view{$option}limitstart", 'limitstart', 0));
 
 		// get list of categories
 		$attribs = 'class="gsl-select" size="1" onchange="document.adminForm.submit();"';

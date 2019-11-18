@@ -73,12 +73,13 @@ body, body.@{mycomponent}
 
     z-index: 1000;
     transition: height 0.3s ease-out;
-/*    width:@leftColumn;*/
+    width:@leftColumn; /* msie */
 
     .left-nav-wrap {
       position: fixed;
       margin-top: 50px;
       height:~"calc(100% - 50px)";
+      z-index: 10; /* msie 11 */
 
       :hover {
         .left-nav {
@@ -86,7 +87,7 @@ body, body.@{mycomponent}
         }
       }
       .left-nav {
-        display: initial;
+        display: block; /* msie */
         padding: 0;
         /* Height to accomodate 5 icons - adjust if adding more */
         height: 200px;

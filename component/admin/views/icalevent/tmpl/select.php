@@ -28,7 +28,7 @@ $cfg                 = JEVConfig::getInstance();
 $this->_largeDataSet = $cfg->get('largeDataSet', 0);
 $orderdir            = $input->getCmd("filter_order_Dir", 'asc');
 $order               = $input->getCmd("filter_order", 'start');
-$pathIMG             = Uri::root() . 'administrator/images/';
+
 $document            = Factory::getDocument();
 $document->addStyleDeclaration("body, input, select, table {font-size:11px;}
 	table.filters, table.filters tr,table.filters td {border-width:0px!important;font-size:11px;}

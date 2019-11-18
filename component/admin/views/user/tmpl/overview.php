@@ -22,7 +22,6 @@ $app      = Factory::getApplication();
 $input   = $app->input;
 $user     = Factory::getUser();
 $db       = Factory::getDbo();
-$pathIMG  = Uri::root() . 'administrator/images/';
 $orderdir = $input->getCmd("filter_order_Dir", 'asc');
 $order    = $input->getCmd("filter_order", 'tl.id');
 

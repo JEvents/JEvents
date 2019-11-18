@@ -41,7 +41,6 @@ function DefaultEventManagementDialog($view, $row, $mask, $bootstrap = false)
 		}
 
 		$hasrepeat    = false;
-		$pathIMG      = Uri::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images';
 		$editImg      = HTMLHelper::image('com_jevents/icons-32/edit.png', JText::_("EDIT_EVENT"), null, true);
 		$editLink     = $row->editLink();
 		$editLink     = $popup ? "javascript:jevEditPopupNoHeader('" . $editLink . "');" : $editLink;

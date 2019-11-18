@@ -181,7 +181,7 @@ class AdminCpanelController extends JControllerAdmin
 		$db->setQuery($sql);
 		$disabledrows = $db->loadObjectList();
 
-		// Delete the old menu items
+		// Delete the old menu items (i.e. with parent_id = 1)
 		// use client_id = 2  since published = 0 doesn't disable it!
 		if (count($oldrows))
 		{

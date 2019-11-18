@@ -6,9 +6,28 @@
  * @license    GNU General Public License version 3 or later; see LICENSE.txt
  */
 
-// see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
-// https://stackoverflow.com/questions/36016327/how-to-make-promises-work-in-ie11#36018899
 'use strict';
+
+// Polyfills
+// from:https://github.com/jserz/js_piece/blob/master/DOM/ChildNode/remove()/remove().md
+(function (arr) {
+	arr.forEach(function (item) {
+		if (item.hasOwnProperty('remove')) {
+			return;
+		}
+		Object.defineProperty(item, 'remove', {
+			configurable: true,
+			enumerable: true,
+			writable: true,
+			value: function remove() {
+				if (this.parentNode === null) {
+					return;
+				}
+				this.parentNode.removeChild(this);
+			}
+		});
+	});
+})([Element.prototype, CharacterData.prototype, DocumentType.prototype]);
 
 // Helper function to get an element's exact position
 function getPosition(el) {
@@ -128,8 +147,16 @@ document.addEventListener('DOMContentLoaded', function () {
 	let ystoolbar_wrappers = document.querySelectorAll(".ystoolbar_wrapper");
 
 	// Isis scroll fix for positioning of elements underneath the subhead
-	let resizeEvent = new Event('resize');
-	window.dispatchEvent(resizeEvent);
+	// MSIE workaround
+	if (navigator.userAgent.indexOf('MSIE') !== -1 || navigator.appVersion.indexOf('Trident/') > 0) {
+		var evt = document.createEvent('UIEvents');
+		evt.initUIEvent('resize', true, false, window, 0);
+		window.dispatchEvent(evt);
+	}
+	else {
+		let resizeEvent = new Event('resize');
+		window.dispatchEvent(resizeEvent);
+	}
 
 	/* Toggle site info */
 	let toggles = document.querySelectorAll(".toggleSiteInfo");
@@ -334,7 +361,6 @@ function ys_resizepopover(dropdown)
 	dropdown.style.minHeight = height + 4 + 'px';
 }
 
-
 function ys_popover(selector) {
 	document.addEventListener('DOMContentLoaded', function () {
 		ys_setuppopover(selector || ".ys-popover");
@@ -489,59 +515,6 @@ function setupActionButtons(currenturl)
 			}
 		}
 	});
-}
-
-function clipboardAttach() {
-	navigator.permissions.query({name: "clipboard-read"}).then(result => {
-		if (result.state == "granted" || result.state == "prompt") {
-			alert('permission '  + result.state);
-			/* read the clipboard now */
-			navigator.clipboard.readText().then(
-				clipText => {
-					document.getElementById("testclipboard").innerText = clipText;
-					alert(clipText);
-				}
-			)
-				.catch(err => {
-					alert('Could not read the clipboard so we need to use fall back : ' + err)
-				})           ;
-		}
-		else if (result.state == "denied") {
-			alert('permission denied falling back ');
-		}
-	})
-		.catch(err => {
-			// This can happen if the user denies clipboard permissions:
-			alert('Could not set permission to get clipboard automatically so we need to use fall back : ' + err)
-
-			let button = document.getElementById('clipboardbutton');
-			button.style.display = 'inline-block';
-			button.addEventListener('click', e => {
-				navigator.clipboard.readText().then(
-					clipText => {
-						document.getElementById("testclipboard").innerText = clipText;
-						alert(clipText);
-					}
-				);
-			});
-
-		});
-
-	document.addEventListener('paste', async e => {
-		let text;
-		alert(0);
-		if (typeof navigator.clipboard !== 'undefined') {
-			alert(1);
-			text = await navigator.clipboard.readText()
-			alert(2);
-		}
-		else {
-			text = e.clipboardData.getData('text/plain');
-		}
-		document.getElementById("testclipboard").innerText = text;
-		e.preventDefault();
-	});
-
 }
 
 window.addEventListener('load', function() {

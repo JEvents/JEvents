@@ -21,8 +21,7 @@ HTMLHelper::_('behavior.tooltip');
 
 $input = Factory::getApplication()->input;
 
-$pathIMG        = Uri::Root() . 'administrator/images/';
-$pathJeventsIMG = Uri::Root() . "administrator/components/" . JEV_COM_COMPONENT . "/images/";
+
 $document       = Factory::getDocument();
 $document->addStyleDeclaration("body, input, select, table {font-size:11px;}
 	table.filters, table.filters tr,table.filters td {border-width:0px!important;font-size:11px;}
