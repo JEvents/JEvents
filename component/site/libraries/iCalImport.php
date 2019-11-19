@@ -237,6 +237,7 @@ class iCalImport
                                         $matches = explode(":",$vcLine,2);
                                     }
                                 }
+
 				if (count($matches) == 2) {
 					list($this->key,$value)= $matches;
 					//$value = str_replace('\n', "\n", $value);
@@ -308,12 +309,15 @@ class iCalImport
 				$this->vevents[] = iCalEvent::iCalEventFromData($vevent);
 			}
 		}
+		//exit(0);
+
 		return $this;
 	}
 
 	function add_to_cal($parent, $key, $value, $append)
 	{
-            
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+
 		// I'm not interested in when the events were created/modified
 		if (($key == "DTSTAMP") or ($key == "LAST-MODIFIED") or ($key == "CREATED")) return;
 
@@ -406,7 +410,12 @@ class iCalImport
 				// convert URLs to links but NOT in uid field!!
 				//$value = ereg_replace("[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]","<a href=\"\\0\">\\0</a>", $value);
 				//$value = preg_replace('@(?<![">])\b(?:(?:https?|ftp)://|www\.|ftp\.)[-A-Z0-9+&@#/%=~_|$?!:,.]*[A-Z0-9+&@#/%=~_|$]@',"<a href=\"\\0\">\\0</a>", $value);
-				if (is_string($value) && $key!="UID" && $key!="X-EXTRAINFO"){
+				// See http://stackoverflow.com/questions/8414675/preg-replace-for-url-and-download-links and http://regexr.com/3bup3 to test this
+				//$value = preg_replace('@(https?://([\w-.]+)+(:\d+)?(/([\w/_\.%\-+~=]*(\?\S+)?)?)?)@u', '<a href="$1">$1</a>', $value);
+				// See https://gist.github.com/winzig/8894715
+				//$value = preg_replace('@(https?:\/{1,3})?((?:(?:[\w.\-]+\.(?:[a-z]{2,13})|(?<=http:\/\/|https:\/\/)[\w.\-]+)\/)(?:[^\s()<>{}\[\]]+|\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\))+(?:\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\)|[^\s`!()\[\]{};:\'\".,<>?«»“”‘’])|(?:(?<!@)(?:\w+(?:[.\-]+\w+)*\.(?:[a-z]{2,13})|(?:(?:[0-9](?!\d)|[1-9][0-9](?!\d)|1[0-9]{2}(?!\d)|2[0-4][0-9](?!\d)|25[0-5](?!\d))[.]?){4})\b\/?(?!@)(?:[^\s()<>{}\[\]]+|\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\))*(?:\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\)|[^\s`!()\[\]{};:\'\".,<>?«»“”‘’])?))@gi', '<a href="$1$2">$1</a>', $value);
+
+				if  ($params->get("converturlstolinksonimport", 1) && is_string($value) && $key!="UID" && $key!="X-EXTRAINFO"){
 					if (JString::strpos(str_replace(" ","",JString::strtolower($value)),"<ahref=")===false && JString::strpos(str_replace(" ","",JString::strtolower($value)),"<img")===false && (JString::strpos(JString::strtolower($value),"http://")!==false || JString::strpos(JString::strtolower($value),"https://")!==false)){
                                                 // See http://stackoverflow.com/questions/8414675/preg-replace-for-url-and-download-links and http://regexr.com/3bup3 to test this
                                                 $value = preg_replace('@(https?://([\w-.]+)+(:\d+)?(/([\w/_\.%\-+~=]*(\?\S+)?)?)?)@u', '<a href="$1">$1</a>', $value);

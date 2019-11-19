@@ -934,11 +934,19 @@ class JEventsDBModel
 		$extratables = "";  // must have comma prefix
 		$needsgroup = false;
 
-		$filterarray = array("published", "justmine", "category", "search", "repeating");
-
-		// If there are extra filters from the module then apply them now
 		$reg =  JFactory::getConfig();
 		$modparams = $reg->get("jev.modparams", false);
+
+		if ($modparams && $modparams->get('ignorecatfilter',0) == 2 )
+		{
+			$filterarray = array("published", "justmine", "search", "repeating");
+		}
+		else
+		{
+			$filterarray = array("published", "justmine", "category", "search", "repeating");
+		}
+
+		// If there are extra filters from the module then apply them now
 		if ($modparams && $modparams->get("extrafilters", false))
 		{
 			$filterarray = array_merge($filterarray, explode(",", $modparams->get("extrafilters", false)));
@@ -2602,6 +2610,14 @@ class JEventsDBModel
 		$db->setQuery($query);
 		if ($adminuser)
 		{
+			/*
+			if (strpos($db->getQuery(), '2560' )>0)
+			{
+				echo $db->getQuery()."<br/>";
+				echo $db->explain();
+				exit();
+			}
+			*/
 			//echo $db->getQuery()."<br/>";
 			//echo $db->explain();
 			//exit();
@@ -3292,7 +3308,7 @@ select @@sql_mode;
 					. "\n , HOUR(rpt.startrepeat) as hup, MINUTE(rpt.startrepeat ) as minup, SECOND(rpt.startrepeat ) as sup"
 					. "\n , HOUR(rpt.endrepeat  ) as hdn, MINUTE(rpt.endrepeat   ) as mindn, SECOND(rpt.endrepeat   ) as sdn"
 					." \n , ev.state as state "
-					. "\n FROM (#__jevents_vevent as ev $extratables)"
+					. "\n FROM #__jevents_vevent as ev $extratables"
 					. "\n INNER JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
 					. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 					. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
@@ -3418,7 +3434,7 @@ select @@sql_mode;
 					. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
 					. "\n , HOUR(rpt.startrepeat) as hup, MINUTE(rpt.startrepeat ) as minup, SECOND(rpt.startrepeat ) as sup"
 					. "\n , HOUR(rpt.endrepeat  ) as hdn, MINUTE(rpt.endrepeat   ) as mindn, SECOND(rpt.endrepeat   ) as sdn"
-					. "\n FROM (#__jevents_vevent as ev $extratables)"
+					. "\n FROM #__jevents_vevent as ev $extratables"
 					. "\n INNER JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
 					. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 					. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"

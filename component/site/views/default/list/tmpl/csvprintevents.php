@@ -126,7 +126,7 @@ function outputCSV($data)
 			$data = $row;
 		}
 
-		fputcsv($filehandler, $data, ',', '"');
+		fputcsv($filehandler, htmlspecialchars_decode($data), ',', '"');
 
 	}
 

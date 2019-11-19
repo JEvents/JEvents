@@ -87,6 +87,10 @@ class jEventCal {
 		return !empty( $this->_extra_info );
 	}
 
+	function hasColor() {
+		return !empty( $this->_color);
+	}
+
 	function hasLocation() {
 		return !empty( $this->_adresse_info );
 	}

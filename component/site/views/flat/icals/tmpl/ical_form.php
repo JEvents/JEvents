@@ -6,7 +6,7 @@ $cfg = JEVConfig::getInstance();
 $view = $this->getViewName();
 
 echo $this->ExportScript();
-	
+
 $accessiblecats = explode(",", $this->datamodel->accessibleCategoryList());
 
 $jinput = JFactory::getApplication()->input;
@@ -27,7 +27,7 @@ if ($jinput->getString("submit","") != "")
 			continue;
 		$cats[] = $cid;
 	}
-	if (count($cats) == 0)
+	if (is_array($cats) && count($cats) == 0)
 		$cats[] = 0;
 
 
@@ -37,7 +37,7 @@ if ($jinput->getString("submit","") != "")
 	$cats = implode(",", $cats);
 
 	$link = JURI::root() . "index.php?option=com_jevents&task=icals.export&format=ical";
-	if (count($cats) > 0)
+	if (is_array($cats) && count($cats) > 0)
 	{
 		$link .="&catids=" . $cats;
 	}
@@ -63,19 +63,19 @@ if ($jinput->getString("submit","") != "")
 	} else {
 		$privatelink = "";
 	}
-		
+
 	echo "<h2 class='ical_generated'>" . JText::_("JEV_ICAL_GENERATED") . "</h2>";
-	
+
 	echo "<h3 class='export_pub'>" . JText::_("JEV_PUBLIC_EVENTS") . "</h3>";
 	if ($user->id != 0)
 	{
 		echo "<h3 class='export_priv'>" . JText::_("JEV_PUBLIC_AND_PRIVATE_EVENTS") . "</h3>";
 	}
-	
+
 	if ($cfg->get("show_webcal_url", 0) == 1){
 		echo $this->ExportWebCal($publiclink, $privatelink);
 	}
-	
+
 	if ($cfg->get("show_ical_download", 1) == 1){
 		echo $this->ExportIcalDownload($publiclink, $privatelink);
 	}
@@ -84,14 +84,14 @@ if ($jinput->getString("submit","") != "")
 	{
 		echo $this->ExportOutlook2003($publiclink, $privatelink);
 	}
-	
+
 	// New ICAL Export Options for Google,
 	if ($cfg->get("show_webcal_google", 0) == 1){
 		echo $this->ExportGoogle($publiclink, $privatelink);
 	}
 }
 if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download", 1) == 0 && $cfg->get("show_webcal_url", 0) == 0 && $cfg->get("show_webcal_google", 0) && $cfg->get("outlook2003icalexport", 0)) {
-	//If non are enabled we don't want to have user thinking the script is buggy as nothing is produced. 
+	//If non are enabled we don't want to have user thinking the script is buggy as nothing is produced.
 	echo "<div style='margin:15px;font-weight:bold;'>" . JText::_("JEV_ICAL_ALL_DISABLED") . "</div>";
 } else {
 ?>
@@ -190,14 +190,14 @@ if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download"
 		</div>
 	</div>
 	<?php
-	
+
 	echo "<div class='icalformat' style='clear:left; padding-top:5px;'>";
 	if ($params->get("icalformatted", 1) == 1){
 	echo "<h3>" . JText::_('JEV_ICAL_FORMATTING') . "</h3>\n";
 	?>
 	<input name="icalformatted" type="checkbox" value="1" <?php echo $jinput->getInt("icalformatted", 0) ? "checked='checked'" : ""; ?> />
 	<label>		<?php echo JText::_("JEV_PRESERVE_HTML_FORMATTING") ; ?>	</label>
-<?php } 
+<?php }
 	echo "</div>";
 ?>
 

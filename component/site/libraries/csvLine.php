@@ -143,6 +143,14 @@ class CsvLine {
         $this->extraInfo = $extraInfo;
     }
 
+	public function getColor() {
+		return $this->color;
+	}
+
+	public function setColor($color) {
+		$this->color = $color;
+	}
+
     public function getDtstamp() {
         return $this->dtstamp;
     }
@@ -214,6 +222,7 @@ class CsvLine {
         if($this->description !== "") $ical .= "DESCRIPTION:".$this->description."\n";
         if($this->contact !== "") $ical .= "CONTACT:".$this->contact."\n";
         if($this->extraInfo !== "") $ical .= "X-EXTRAINFO:".$this->extraInfo."\n";
+	    if($this->color !== "") $ical .= "X-COLOR:".$this->color."\n";
         if($this->rrule !=="") $ical .= "RRULE:".$this->rrule."\n";
         if($this->noendtime!== "") $ical .= "NOENDTIME:".$this->noendtime."\n";
         if($this->published!== "") $ical .= "X-STATE:".$this->published."\n";

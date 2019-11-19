@@ -110,9 +110,11 @@ foreach ($infields as $infield)
 </form>
 <script>
 	(function ($) {
-		$("table.eventlist").resizableColumns(
-			{store: window.store}
-		);
+		if ($("table.eventlist th").length > 1) {
+			$("table.eventlist").resizableColumns(
+				{store: window.store}
+			);
+		}
 	})(jevjq);
 </script>
 
