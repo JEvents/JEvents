@@ -88,13 +88,12 @@ function ystsPositionElements()
 
 	let headerOffsetHeight = document.getElementById('top-head').offsetHeight;
 
-	if (window.getComputedStyle(document.getElementById('top-head')).getPropertyValue('position') == "fixed")
-	{
-		document.getElementById('ysts_system_messages').style.marginTop = (10 + headerOffsetHeight) + 'px';
-	}
-	else
-	{
-		document.getElementById('ysts_system_messages').style.marginTop = '10px';
+	if (document.getElementById('ysts_system_messages')) {
+		if (window.getComputedStyle(document.getElementById('top-head')).getPropertyValue('position') == "fixed") {
+			document.getElementById('ysts_system_messages').style.marginTop = (10 + headerOffsetHeight) + 'px';
+		} else {
+			document.getElementById('ysts_system_messages').style.marginTop = '10px';
+		}
 	}
 
 	// Handle admin templates that set padding on narrow devices

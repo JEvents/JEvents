@@ -45,7 +45,10 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 		HTMLHelper::_('behavior.tooltip');
 
-		$this->sidebar = JHtmlSidebar::render();
+		if (GSLMSIE10)
+		{
+			$this->sidebar = JHtmlSidebar::render();
+		}
 
 		$this->checkForAddons();
 

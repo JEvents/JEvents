@@ -9,6 +9,10 @@
  * @link        http://www.jevents.net
  */
 defined('_JEXEC') or die('Restricted access');
+
+JEventsHelper::addSubmenu();
+$this->sidebar = JHtmlSidebar::render();
+
 $mainspan = 10;
 $fullspan = 12;
 ?>

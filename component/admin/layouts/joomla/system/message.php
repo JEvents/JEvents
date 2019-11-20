@@ -41,6 +41,8 @@ $messages = json_encode(ob_get_clean());
 ?>
 <script>
 	document.addEventListener('DOMContentLoaded', function () {
-		document.getElementById('ysts_system_messages').innerHTML = <?php echo $messages;?>;
+		if (document.getElementById('ysts_system_messages')) {
+			document.getElementById('ysts_system_messages').innerHTML = <?php echo $messages;?>;
+		}
 	});
 </script>

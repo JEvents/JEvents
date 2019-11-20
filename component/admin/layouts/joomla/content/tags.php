@@ -9,6 +9,12 @@
 
 defined('JPATH_BASE') or die;
 
+if (GSLMSIE10)
+{
+	include (JPATH_SITE . "/layouts/joomla/content/" .  basename(__FILE__));
+	return;
+}
+
 use Joomla\Registry\Registry;
 
 JLoader::register('TagsHelperRoute', JPATH_BASE . '/components/com_tags/helpers/route.php');

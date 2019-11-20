@@ -9,6 +9,12 @@
 
 defined('JPATH_BASE') or die;
 
+if (GSLMSIE10)
+{
+	include (JPATH_SITE . "/layouts/joomla/form/field/" .  basename(__FILE__));
+	return;
+}
+
 extract($displayData);
 
 /**

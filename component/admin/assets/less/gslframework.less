@@ -69,11 +69,11 @@ body, body.@{mycomponent}
     position: relative;
     left: 0;
     top: 0;
-    overflow-x: hidden;
+    /* overflow-x: hidden; safari */
 
     z-index: 1000;
     transition: height 0.3s ease-out;
-    width:@leftColumn; /* msie */
+    min-width:@leftColumn; /* msie */
 
     .left-nav-wrap {
       position: fixed;

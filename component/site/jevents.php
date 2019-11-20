@@ -33,6 +33,15 @@ jimport('joomla.filesystem.path');
  * $cfg->set('jev_debug', 1);
  **/
 
+if (isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], "MSIE") !== false || strpos($_SERVER['HTTP_USER_AGENT'], "Internet Explorer") !== false))
+{
+	define ("GSLMSIE10" , 1);
+}
+else
+{
+	define ("GSLMSIE10" , 0);
+}
+
 require_once JPATH_COMPONENT . '/jevents.defines.php';
 
 $isMobile = false;

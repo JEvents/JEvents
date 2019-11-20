@@ -1046,7 +1046,7 @@ class jIcalEventDB extends jEventCal
 			. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
 			. "\n , HOUR(rpt.startrepeat) as hup, MINUTE(rpt.startrepeat ) as minup, SECOND(rpt.startrepeat ) as sup"
 			. "\n , HOUR(rpt.endrepeat  ) as hdn, MINUTE(rpt.endrepeat   ) as mindn, SECOND(rpt.endrepeat   ) as sdn"
-			. "\n FROM (#__jevents_vevent as ev $extratables)"
+			. (empty($extratables) ? "\n FROM #__jevents_vevent as ev" : "\n FROM (#__jevents_vevent as ev $extratables)")
 			. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
 			// NB use ev detail id here!
 			. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = ev.detail_id"

@@ -289,7 +289,7 @@ class plgSearchEventsearch extends JPlugin
 			. "\n CONCAT('index.php?option=com_jevents&task=icalrepeat.detail&evid=',min(rpt.rp_id)) AS href,"
 			. "\n '2' AS browsernav ,"
 			. "\n rpt.startrepeat, rpt.rp_id "
-			. "\n FROM (#__jevents_vevent as ev)"
+			. "\n FROM #__jevents_vevent as ev"
 			. "\n LEFT  JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
 			. $catjoin
 			. "\n LEFT  JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"

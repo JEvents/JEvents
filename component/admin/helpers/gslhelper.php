@@ -109,7 +109,7 @@ class GslHelper
 	{
 		$app   = Factory::getApplication();
 		$input = $app->input;
-		$task  = $input->getCmd('jevtask', '');
+		$task  = $input->getCmd('jevtask', 'icalevent.list');
 		$option  = $input->getCmd('option', 'com_jevents');
 		list($view, $layout) = explode(".", $task);
 

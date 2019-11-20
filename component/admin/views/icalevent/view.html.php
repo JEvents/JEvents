@@ -34,7 +34,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		jimport('joomla.html.pagination');
 		$limit      = intval($this->getModel()->getState("list.limit", $app->getCfg('list_limit', 10)));
 		$limitstart = intval($this->getModel()->getState("list.start", 0));
-		$this->pagination = new \Joomla\CMS\Pagination\Pagination($total, $limitstart, $limit);
+		$this->pageNav = $this->pagination = new \Joomla\CMS\Pagination\Pagination($total, $limitstart, $limit);
 
 		$document = Factory::getDocument();
 		$document->setTitle(JText::_('ICAL_EVENTS'));
@@ -47,7 +47,6 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		JToolbarHelper::unpublishList('icalevent.unpublish');
 		JToolbarHelper::custom('icalevent.editcopy', 'copy.png', 'copy.png', 'JEV_ADMIN_COPYEDIT');
 
-
 		// Get fields from request if they exist
 		$state      = (int) $this->getModel()->getState('filter.state', 0);
 		$created_by = $this->getModel()->getState('filter.created_by', '');
@@ -55,7 +54,6 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		{
 			$created_by = (int) $created_by;
 		}
-		$icsFile  = (int) $this->getModel()->getState('filter.icsFile', 0);
 		$showpast = (int) $this->getModel()->getState('filter.showpast', '');
 
 		if (!$state)
@@ -96,6 +94,8 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		foreach ($dbicsfiles As $iscfile) {
 			$icsfiles[] = $iscfile;
 		}
+
+		$icsFile  = (int) $this->getModel()->getState('filter.icsFile', 0);
 
 		$this->filters = array('icsfile' =>
 			HTMLHelper::_('select.genericlist', $icsfiles, 'filter[icsFile]', 'class="gsl-select" onChange="Joomla.submitform();"', 'value', 'text', $icsFile)
@@ -151,12 +151,45 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			$this->filters['tag'] = str_replace('<option value="0">Select Tag(s)</option>', '<option value="">' . JText::_("JEV_SELECT_TAG") . ' </option>', $tagFilterHtml) . $earchBtn ;
 		}
 
-
-
 		$this->languages = $this->get('Languages');
 
 		$this->filterForm    = $this->get('FilterForm');
 		$this->activeFilters = $this->get('ActiveFilters');
+
+		if (GSLMSIE10)
+		{
+			JEventsHelper::addSubmenu();
+
+			JHtmlSidebar::setAction('index.php?option=com_jevents&task=icalevent.list');
+			JHtmlSidebar::addFilter(
+				JText::_('ALL_ICS_FILES'), 'filter[icsFile]', JHtml::_('select.options', $icsfiles, 'value', 'text', $icsFile)
+			);
+
+			$options = array();
+			$options[] = JHTML::_('select.option', '3', JText::_('JOPTION_SELECT_PUBLISHED'));
+			$options[] = JHTML::_('select.option', '1', JText::_('PUBLISHED'));
+			$options[] = JHTML::_('select.option', '2', JText::_('UNPUBLISHED'));
+			$options[] = JHTML::_('select.option', '-1', JText::_('JTRASH'));
+			$state = (int) $this->getModel()->getState('filter.state', 3);
+			JHtmlSidebar::addFilter(
+				JText::_('ALL_EVENTS'), 'filter[state]', JHtml::_('select.options', $options, 'value', 'text', $state)
+			);
+			JHtmlSidebar::addFilter(
+				JText::_('JEV_EVENT_CREATOR'), 'filter[created_by]', JHtml::_('select.options', $userOptions, 'value', 'text', $created_by)
+			);
+
+			$this->sidebar = JHtmlSidebar::render();
+
+			$this->pageNage = $this->pagination;
+			$this->plist    = $this->filters['showpast'];
+			$this->clist    = $this->filters['catid'];
+
+			$this->search		= $this->getModel()->getState('filter.search', 0);
+			$this->search		= $db->escape( trim( strtolower( $this->search ) ) );
+
+			$this->state      = (int) $this->getModel()->getState('filter.state', 0);
+
+		}
 
 	}
 
@@ -172,6 +205,10 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
 		JEVHelper::script('editicalJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
+		if (!GSLMSIE10)
+		{
+			JEVHelper::script('editicalGSL.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
+		}
 		JEVHelper::script('JevStdRequiredFieldsJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 
 		if ($this->row->title() === '')

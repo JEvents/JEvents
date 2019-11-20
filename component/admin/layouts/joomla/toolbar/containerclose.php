@@ -9,6 +9,12 @@
 
 defined('JPATH_BASE') or die;
 
+if (GSLMSIE10)
+{
+	include (JPATH_SITE . "/layouts/joomla/toolbar/" .  basename(__FILE__));
+	return;
+}
+
 $registry = JRegistry::getInstance('yoursites');
 $toolbarid = $registry->get("toolbarid" , "");
 if ($toolbarid == "toolbar" || $toolbarid == "toolbar2" )

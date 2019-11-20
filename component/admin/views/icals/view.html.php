@@ -50,6 +50,10 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 	{
 
 		JEVHelper::script('editicalJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
+		if (!GSLMSIE10)
+		{
+			JEVHelper::script('editicalGSL.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
+		}
 
 		$document = Factory::getDocument();
 		$document->setTitle(JText::_('EDIT_ICS'));

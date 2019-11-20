@@ -605,14 +605,6 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 		$cache = Factory::getCache(JEV_COM_COMPONENT);
 		$cache->clean(JEV_COM_COMPONENT);
 
-		/*
-		// Get/Create the model
-		if ($model = $this->getModel("icalevent", "icaleventsModel")) {
-			// Push the model into the view (as default)
-			$this->view->setModel($model, true);
-		}
-		 */
-
 		// Get the form
 		$this->form = $this->get('Form');
 

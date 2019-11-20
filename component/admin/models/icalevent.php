@@ -122,7 +122,11 @@ class JEventsModelicalevent extends JModelList
 
 		$icsFile = intval($this->getState('filter.icsFile', 0));
 		$state = intval($this->getState('filter.state', 3));
-		$created_by = intval($this->getState('filter.created_by', "-1"));
+		$created_by = $this->getState('filter.created_by', "");
+		if ($created_by !== '')
+		{
+			$created_by = (int) $created_by;
+		}
 		$catid    = intval($this->getState('filter.catid', 0));
 		$showpast = $this->getState("filter.showpast", '1');
 
@@ -268,10 +272,10 @@ class JEventsModelicalevent extends JModelList
 			}
 		}
 
-		if ($created_by >= 0)
+		if ($created_by !== "" && intval($created_by) >= 0)
 		{
 			$cby = intval($created_by);
-			if ($cby >= 0 && $created_by != "")
+			if ($cby >= 0 && $created_by !== "")
 				$where[] = "ev.created_by=" . $db->Quote($cby);
 		}
 

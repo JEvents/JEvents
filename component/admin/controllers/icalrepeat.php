@@ -162,7 +162,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 		$this->view = $this->getView("icalrepeat", "html");
 
 		// Get/Create the model
-		if ($model = $this->getModel("icalevent", "icaleventsModel"))
+		if ($model = $this->getModel("icalevent", "jeventsModel"))
 		{
 			// Push the model into the view (as default)
 			$this->view->setModel($model, true);
@@ -191,12 +191,13 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 
 		$db    = Factory::getDbo();
 		$query = "SELECT rpt.eventid"
-				. "\n FROM #__jevents_vevent as ev, #__jevents_icsfile as icsf"
+				. "\n FROM #__jevents_vevent as ev"
 				. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
+			    . "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid"
 				. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 				. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
 				. "\n WHERE rpt.rp_id=" . $id
-				. "\n AND icsf.ics_id=ev.icsid AND icsf.state=1";
+				. "\n AND icsf.state=1";
 		$db->setQuery($query);
 		$ev_id = $db->loadResult();
 		if ($ev_id == 0 || $id == 0)

@@ -9,6 +9,12 @@
 
 defined('JPATH_BASE') or die;
 
+if (GSLMSIE10)
+{
+	include (JPATH_SITE . "/layouts/joomla/toolbar/" .  basename(__FILE__));
+	return;
+}
+
 JHtml::_('behavior.core');
 
 $class      = $displayData['class'];
