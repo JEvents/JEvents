@@ -316,7 +316,7 @@ class GslHelper
 			$iconLink->class          = "notinstalled";
 			$iconLink->active         = $view == "rsvppro";
 			$iconLink->link           = "https://www.jevents.net/join-club-jevents";
-			$iconLink->icon           = "location";
+			$iconLink->icon           = "cart";
 			$iconLink->label          = JText::_('COM_JEVENTS_RSVPPRO');
 			$iconLink->tooltip        = JText::_("COM_JEVENTS_DISABLED_OPTION", true);
 			$iconLink->tooltip_detail = JText::_("COM_JEVENTS_DISABLED_OPTION_DESC", true);
@@ -336,12 +336,25 @@ class GslHelper
 
 			$iconLink                 = new stdClass();
 			$iconLink->class          = "";
-			$iconLink->active         = $view == "rsvppro";
+			$iconLink->active         = strpos($task, "plugin.jev_customfields") === 0;
 			$iconLink->link           = JRoute::_("index.php?option=com_jevents&task=plugin.jev_customfields.overview");
 			$iconLink->icon           = "code";
 			$iconLink->label          = JText::_('JEV_CUSTOM_FIELDS');
 			$iconLink->tooltip        = JText::_('JEV_CUSTOM_FIELDS', true);
 			$iconLink->tooltip_detail = "";
+			$iconLinks[]              = $iconLink;
+		}
+		else
+		{
+			$iconLink                 = new stdClass();
+			$iconLink->class          = "notinstalled";
+			$iconLink->active         = strpos($task, "plugin.jev_customfields") === 0;
+			$iconLink->link           = "https://www.jevents.net/join-club-jevents";
+			$iconLink->icon           = "code";
+			$iconLink->label          = JText::_('JEV_CUSTOM_FIELDS');
+			$iconLink->tooltip        = JText::_("COM_JEVENTS_DISABLED_OPTION", true);
+			$iconLink->tooltip_detail = JText::_("COM_JEVENTS_DISABLED_OPTION_DESC", true);
+			$iconLink->target         = "_blank";
 			$iconLinks[]              = $iconLink;
 		}
 
