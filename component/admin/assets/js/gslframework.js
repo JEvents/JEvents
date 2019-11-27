@@ -28,6 +28,10 @@
 		});
 	});
 })([Element.prototype, CharacterData.prototype, DocumentType.prototype]);
+// Polyfills for MSIE
+if (window.NodeList && !NodeList.prototype.forEach) {
+	NodeList.prototype.forEach = Array.prototype.forEach;
+}
 
 // Helper function to get an element's exact position
 function getPosition(el) {
@@ -227,10 +231,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // uikit popovers
-// Polyfills for MSIE
-if (window.NodeList && !NodeList.prototype.forEach) {
-	NodeList.prototype.forEach = Array.prototype.forEach;
-}
 
 // TODO - watch that these popups are block elements that could be within a span :(
 // Tooltip based version

@@ -48,6 +48,13 @@
 				       description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC"/>
 				<field name="include_subcats" class="btn-group" type="jevboolean" default="1"
 				       label="JEV_INCLUDE_SUBCATEGORIES" description="JEV_INCLUDE_SUBCATEGORIES_DESC"/>
+				<field name="categoryAllOrAny" type="radio" class="btn-group" default="0" label="JEV_CATEGORIES_ALL_OR_ANY"
+					   description="JEV_CATEGORIES_ALL_OR_ANY_TIP"
+					   showon="include_subcats:0"
+				>
+					<option value="0">JEV_ANY_CATEGORY</option>
+					<option value="1">JEV_ALL_CATEGORIES</option>
+				</field>
 				<field name="ignorecatfilter" type="radio" class="btn-group" default="0" label="JEV_LOCK_CAT_FILTERS"
 				       description="JEV_LOCK_CAT_FILTERS_TIP">
 					<option value="0">JEV_NO</option>

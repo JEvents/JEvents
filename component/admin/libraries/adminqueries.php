@@ -388,6 +388,11 @@ class JEventsAdminDBModel extends JEventsDBModel
 	// Used in Dashboard
 	function getUpcomingEventAttendees($max = 10)
 	{
+		if (! PluginHelper::isEnabled("jevents", "jevrsvppro"))
+		{
+			return array(0,0,0);
+		}
+
 		$db                   = Factory::getDbo();
 		$accessibleCategories = $this->accessibleCategoryList();
 		$user                 = Factory::getUser();

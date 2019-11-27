@@ -1244,11 +1244,23 @@ class JEventsDBModel
 
 		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList(JEVHelper::getAid($user)) . ")";
 		$params   = ComponentHelper::getParams("com_jevents");
+		$cathaving = "";
 		if ($params->get("multicategory", 0))
 		{
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmapcat.id ORDER BY catmapcat.lft ASC SEPARATOR ',' ) as catids";
+
+			if ($modparams->get("categoryAllOrAny", 0) == 1 && $modparams->get("include_subcats", 0) == 0)
+			{
+				$catidnew = $modparams->get("catidnew", array());
+				if ($catidnew && is_array($catidnew))
+				{
+					$extrafields .= ", COUNT(DISTINCT catmapcat.id ) as catidcount";
+					$cathaving = " HAVING catidcount = " . count($catidnew);
+				}
+			}
+
 			// accessibleCategoryList handles access checks on category
 			//$extrawhere[] = " catmapcat.access  IN (" . JEVHelper::getAid($user) . ")";
 			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
@@ -1350,6 +1362,7 @@ class JEventsDBModel
 				$rptwhere
 			) 
 			GROUP BY ev.ev_id
+			$cathaving
 			ORDER BY rpt.startrepeat";
 
 				// This limit will always be enough
@@ -1397,6 +1410,7 @@ class JEventsDBModel
 					$rptwhere
 				)
 				GROUP BY ev.ev_id
+				$cathaving
 				ORDER BY rpt.startrepeat desc";
 
 				// This limit will always be enough
@@ -1448,6 +1462,7 @@ class JEventsDBModel
 					// This is the alternative - it could produce unexpected results if you have overlapping repeats over 'now' but this is  low risk
 					. "\n AND rpt.startrepeat <= '$t_datenowSQL' AND rpt.endrepeat >= '$t_datenowSQL'"
 					. " \n GROUP BY ev.ev_id
+						$cathaving
 						ORDER BY rpt.startrepeat";
 
 				// This limit will always be enough
@@ -1535,6 +1550,7 @@ class JEventsDBModel
 						. "\n AND icsf.access  IN (" . JEVHelper::getAid($user) . ")"
 						// published state is now handled by filter
 						. "\n GROUP BY rpt.rp_id
+						$cathaving
 						ORDER BY rpt.startrepeat ASC";
 
 					// This limit will always be enough
@@ -1574,6 +1590,7 @@ class JEventsDBModel
 						. "\n AND icsf.access  IN (" . JEVHelper::getAid($user) . ")"
 						// published state is now handled by filter
 						. "\n GROUP BY rpt.rp_id
+							$cathaving
 							ORDER BY rpt.startrepeat desc";
 
 					// This limit will always be enough
@@ -1611,6 +1628,7 @@ class JEventsDBModel
 						. "\n AND icsf.access  IN (" . JEVHelper::getAid($user) . ")"
 						// published state is now handled by filter
 						. "\n GROUP BY rpt.rp_id
+							$cathaving
 							ORDER BY rpt.startrepeat asc";
 
 					// This limit will always be enough
@@ -1646,6 +1664,7 @@ class JEventsDBModel
 						. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 						. $extrajoin
 						. " \n WHERE rpt.rp_id IN (" . implode(",", $ids) . ")"
+						. " \n $cathaving"
 						. "\n GROUP BY rpt.rp_id";
 
 					// This limit will always be enough
@@ -1695,6 +1714,7 @@ class JEventsDBModel
 						// published state is now handled by filter
 						// duplicating the sort in the group statements improves MySQL performance
 						. "\n GROUP BY rpt.startrepeat , rpt.rp_id
+						$cathaving
 						ORDER BY rpt.startrepeat ASC";
 
 					// This limit will always be enough
@@ -1737,6 +1757,7 @@ class JEventsDBModel
 						// published state is now handled by filter
 						// duplicating the sort in the group statements improves MySQL performance
 						. "\n GROUP BY rpt.startrepeat , rpt.rp_id
+							$cathaving
 							ORDER BY rpt.startrepeat desc";
 
 					// This limit will always be enough
@@ -1778,6 +1799,7 @@ class JEventsDBModel
 						// published state is now handled by filter
 						// duplicating the sort in the group statements improves MySQL performance
 						. "\n GROUP BY rpt.startrepeat , rpt.rp_id
+							$cathaving
 							ORDER BY rpt.startrepeat asc";
 
 					// This limit will always be enough
