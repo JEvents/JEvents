@@ -15,7 +15,7 @@ if (GSLMSIE10)
     return;
 }
 
-$registry = JRegistry::getInstance('yoursites');
+$registry = JevRegistry::getinstance('yoursites');
 $toolbarid = $registry->get("toolbarid" , "");
 if ($toolbarid == "toolbar" || $toolbarid == "toolbar2" )
 {

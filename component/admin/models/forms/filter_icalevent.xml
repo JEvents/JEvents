@@ -65,8 +65,8 @@
 			<option value="a.title DESC">COM_JEVENTS_SORT_TITLE_DESC</option>
 			<option value="a.starttime ASC">COM_JEVENTS_SORT_STARTTIME_ASC</option>
 			<option value="a.starttime DESC">COM_JEVENTS_SORT_STARTTIME_DESC</option>
-			<option value="a.starttime ASC">COM_JEVENTS_SORT_STARTTIME_ASC</option>
-			<option value="a.starttime DESC">COM_JEVENTS_SORT_STARTTIME_DESC</option>
+			<option value="a.endtime ASC">COM_JEVENTS_SORT_ENDTIME_ASC</option>
+			<option value="a.endtime DESC">COM_JEVENTS_SORT_ENDTIME_DESC</option>
 		</field>
 
 		<field

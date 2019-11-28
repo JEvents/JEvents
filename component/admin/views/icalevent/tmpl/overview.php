@@ -77,25 +77,25 @@ $data['filters'] = $this->filters;
                         <th width="20" nowrap="nowrap">
                             <?php echo HTMLHelper::_('grid.checkall'); ?>
                         </th>
-                        <th class="title" width="40%" nowrap="nowrap">
+                        <th class="title"  nowrap="nowrap">
                             <?php echo HTMLHelper::_('grid.sort', 'JEV_ICAL_SUMMARY', 'title', $orderdir, $order, "icalevent.list"); ?>
                         </th>
-                        <th width="10%" nowrap="nowrap" class="center"><?php echo JText::_('ICAL_EVENT_REPEATS'); ?></th>
-                        <th width="10%" nowrap="nowrap" class="center"><?php echo JText::_('JEV_EVENT_CREATOR'); ?></th>
+                        <th  nowrap="nowrap" class="center"><?php echo JText::_('ICAL_EVENT_REPEATS'); ?></th>
+                        <th  nowrap="nowrap" class="center"><?php echo JText::_('JEV_EVENT_CREATOR'); ?></th>
                         <?php if (count($this->languages) > 1) { ?>
-                            <th width="10%" nowrap="nowrap" class="center"><?php echo JText::_('JEV_EVENT_TRANSLATION'); ?></th>
+                            <th  nowrap="nowrap" class="center"><?php echo JText::_('JEV_EVENT_TRANSLATION'); ?></th>
                         <?php } ?>
-                        <th width="10%" nowrap="nowrap" class="center"><?php echo JText::_('JSTATUS'); ?></th>
-                        <th width="20%" nowrap="nowrap">
+                        <th  nowrap="nowrap" class="center"><?php echo JText::_('JSTATUS'); ?></th>
+                        <th  nowrap="nowrap">
                             <?php echo HTMLHelper::_('grid.sort', 'JEV_TIME_SHEET', 'starttime', $orderdir, $order, "icalevent.list"); ?>
                         </th>
-                        <th width="20%" nowrap="nowrap">
+                        <th  nowrap="nowrap">
                             <?php echo HTMLHelper::_('grid.sort', 'JEV_FIELD_CREATIONDATE', 'created', $orderdir, $order, "icalevent.list"); ?>
                         </th>
-                        <th width="20%" nowrap="nowrap">
+                        <th  nowrap="nowrap">
                             <?php echo HTMLHelper::_('grid.sort', 'JEV_MODIFIED', 'modified', $orderdir, $order, "icalevent.list"); ?>
                         </th>
-                        <th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_ACCESS'); ?></th>
+                        <th  nowrap="nowrap"><?php echo JText::_('JEV_ACCESS'); ?></th>
                     </tr>
 
                     <?php
@@ -181,7 +181,7 @@ $data['filters'] = $this->filters;
                                 }
                                 ?>
                             </td>
-                            <td><?php echo $row->created(); ?> </td>
+                            <td><?php echo str_replace(" ", "<span class='createdseconds'> ", $row->created()) . "<span>"; ?> </td>
                             <td><?php echo StringHelper::substr($row->modified, 0, 10); ?> </td>
                             <td><?php echo $row->_groupname; ?></td>
                         </tr>

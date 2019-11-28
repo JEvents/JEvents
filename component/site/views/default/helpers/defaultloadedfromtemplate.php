@@ -399,7 +399,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			$blank[]       = "";
 			continue;
 		}
-		// Built in fields	
+		// Built in fields
 		switch ($strippedmatch)
 		{
 			case "{{TITLE}}":
@@ -679,7 +679,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					$catdata = array($event->getCategoryData());
 				}
 				// Is this being called from the latest events module - if so then use the target item instead of current Itemid
-				$reg       = JRegistry::getInstance("jevents");
+				$reg       = JevRegistry::getinstance("jevents");
 				$modparams = $reg->get("jevents.moduleparams", new JRegistry);
 				$modItemid = $modparams->get("target_itemid", JFactory::getApplication()->input->getInt("Itemid", 0));
 				$menuItem  = JFactory::getApplication()->getMenu('site')->getItem($modItemid);
