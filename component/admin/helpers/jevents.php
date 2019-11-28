@@ -22,6 +22,8 @@ class JEventsHelper
 
 	public static function validateSection($context, $form = null)
 	{
+		$vName      = JFactory::getApplication()->input->getCmd('view', 'categories');
+
 		if ($context == "categories" && Factory::getApplication()->input->get('view') == "category"  && Factory::getApplication()->input->get('layout') == "edit")
 		{
 			if (!defined("GSLMSIE10"))
@@ -37,13 +39,90 @@ class JEventsHelper
 			}
 			if (!GSLMSIE10)
 			{
-				$controller = JControllerLegacy::getInstance("Categories");
-				$view       = $controller->getView('category', 'html');
+				$jversion = new JVersion;
+				if ($jversion->isCompatible('4.0'))
+				{
+					// disable com_categories styling until we can get the toolbar buttons working!
+					//return 'site';
+					$app = JFactory::getApplication();
+					$component = $app->bootComponent('com_categories');
+					$dispatcher = $component->getDispatcher($app);
+					$controller = $dispatcher->getController('display', 'Administrator', array('option' => 'com_categories'));
 
-				$view->addTemplatePath(JPATH_ADMINISTRATOR . "/components/com_jevents/views/com_categories/category/tmpl/");
+					// Notice that administrator is lower case
+					$view = $controller->getView($vName, 'html', 'administrator');
+					$view->addTemplatePath(JPATH_ADMINISTRATOR . "/components/com_jevents/views/com_categories/$vName/tmpl/");
+
+					include_once(JPATH_ADMINISTRATOR . "/components/com_jevents/jevents.defines.php");
+				}
+				else
+				{
+					$controller = JControllerLegacy::getInstance("Categories");
+					$view       = $controller->getView('category', 'html');
+
+					$view->addTemplatePath(JPATH_ADMINISTRATOR . "/components/com_jevents/views/com_categories/category/tmpl/");
+				}
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Method to load the countItems method from the extensions
+	 *
+	 * @param   \stdClass[]  &$items     The category items
+	 * @param   string       $extension  The category extension
+	 *
+	 * @return  void
+	 *
+	 * @since   3.5
+	 */
+	public function countItems(&$items, $extension)
+	{
+		$vName      = JFactory::getApplication()->input->getCmd('view', 'categories');
+
+		if (Factory::getApplication()->input->get('view') == "categories")
+		{
+			if (!defined("GSLMSIE10"))
+			{
+				if (isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], "MSIE") !== false || strpos($_SERVER['HTTP_USER_AGENT'], "Internet Explorer") !== false))
+				{
+					define ("GSLMSIE10" , 1);
+				}
+				else
+				{
+					define ("GSLMSIE10" , 0);
+				}
+			}
+			if (!GSLMSIE10)
+			{
+				$jversion = new JVersion;
+				if ($jversion->isCompatible('4.0'))
+				{
+					// disable com_categories styling until we can get the toolbar buttons working!
+					//return 'site';
+					$app = JFactory::getApplication();
+					$component = $app->bootComponent('com_categories');
+					$dispatcher = $component->getDispatcher($app);
+					$controller = $dispatcher->getController('display', 'Administrator', array('option' => 'com_categories'));
+
+					// Notice that administrator is lower case
+					$view = $controller->getView($vName, 'html', 'administrator');
+					$view->addTemplatePath(JPATH_ADMINISTRATOR . "/components/com_jevents/views/com_categories/$vName/tmpl/");
+
+					include_once(JPATH_ADMINISTRATOR . "/components/com_jevents/jevents.defines.php");
+				}
+				else
+				{
+					$controller = JControllerLegacy::getInstance("Categories");
+					$view       = $controller->getView('category', 'html');
+
+					$view->addTemplatePath(JPATH_ADMINISTRATOR . "/components/com_jevents/views/com_categories/category/tmpl/");
+				}
+			}
+		}
+
+		return;
 	}
 
 	/**
@@ -77,10 +156,25 @@ class JEventsHelper
 		{
 			if (!GSLMSIE10)
 			{
-				$controller = JControllerLegacy::getInstance("Categories");
-				$view       = $controller->getView("categories", 'html', 'categoriesView');
+				$jversion = new JVersion;
+				if ($jversion->isCompatible('4.0'))
+				{
+					// disable com_fields styling until we can get the toolbar buttons working!
+					//return 'site';
+					$app = JFactory::getApplication();
+					$dispatcher = $app->bootComponent('com_categories')->getDispatcher($app);
+					$controller = $dispatcher->getController('display', 'Administrator', array('option' => 'com_categories'));
 
-				$view->addTemplatePath(JPATH_ADMINISTRATOR . "/components/com_jevents/views/com_categories/categories/tmpl/");
+					$view = $controller->getView($vName, 'html', 'Administrator');
+					$view->addTemplatePath(JPATH_ADMINISTRATOR . "/components/com_yoursites/views/com_categories/$vName/tmpl/");
+				}
+				else
+				{
+					$controller = JControllerLegacy::getInstance("Categories");
+					$view       = $controller->getView("categories", 'html', 'categoriesView');
+
+					$view->addTemplatePath(JPATH_ADMINISTRATOR . "/components/com_jevents/views/com_categories/categories/tmpl/");
+				}
 			}
 
 			$doc = Factory::getDocument();
@@ -90,7 +184,7 @@ class JEventsHelper
 				. '}';
 
 
-			// Category styling 
+			// Category styling
 			$style .= <<<STYLE
 #categoryList td.center a {
    /* border:none;*/
@@ -132,7 +226,7 @@ STYLE;
 			);
 		}
 		JHtmlSidebar::addEntry(
-			JText::_('JEV_INSTAL_CATS'), "index.php?option=com_categories&extension=com_jevents", $vName == 'categories'
+			JText::_('JEV_INSTAL_CATS'), "index.php?option=com_categories&view=categories&extension=com_jevents", $vName == 'categories'
 		);
 		if (JEVHelper::isAdminUser())
 		{
@@ -198,7 +292,7 @@ STYLE;
 				);
 
 			}
-			// Custom Fields				
+			// Custom Fields
 			$db = Factory::getDbo();
 			$db->setQuery("SELECT * FROM #__extensions WHERE element = 'jevcustomfields' AND type='plugin' AND folder='jevents' ");
 			$extension = $db->loadObject();

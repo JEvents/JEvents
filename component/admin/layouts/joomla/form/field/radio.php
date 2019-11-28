@@ -7,6 +7,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+// Joomla 3.x only
 defined('JPATH_BASE') or die;
 
 if (GSLMSIE10)

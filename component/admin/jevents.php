@@ -150,7 +150,7 @@ if ($view === 'icaleventform')
 }
 if ($view === 'categories')
 {
-	Factory::getApplication()->redirect('index.php?option=com_categories&extension=com_jevents');
+	Factory::getApplication()->redirect('index.php?option=com_categories&view=com_categories&extension=com_jevents');
 }
 
 

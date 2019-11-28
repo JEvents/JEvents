@@ -3,18 +3,22 @@
 
 	<fieldset name="JEV_TAB_COMPONENT" addfieldpath="/administrator/components/com_jevents/fields/" difficulty="1">
 
-		<field name="com_difficulty" type="radio" default="1" class="btn-group" label="JEV_CONFIG_OPTIONS_TO_SHOW"
+		<field name="com_difficulty" type="radio" default="1" class="gsl-button-group" label="JEV_CONFIG_OPTIONS_TO_SHOW"
 		       description="JEV_CONFIG_OPTIONS_TO_SHOW_DESC" difficulty="1">
 			<option value="1"
-			        onclick="jQuery('.difficulty2 , .difficulty3').each(function(idx, elem){jQuery(elem).addClass('hiddenDifficulty');});">
+					class="gsl-button-small"
+			        onclick="document.querySelectorAll('.difficulty2, .difficulty3').forEach(function(elem, index){elem.classList.add('hiddenDifficulty');});">
 				JEV_BASIC
 			</option>
-			<option value="2" onclick="jQuery('.difficulty3').each(function(idx, elem){jQuery(elem).addClass('hiddenDifficulty');});
-                                                        jQuery('.difficulty2').each(function(idx,elem){jQuery(elem).removeClass('hiddenDifficulty');});">
+			<option value="2" onclick="document.querySelectorAll('.difficulty3').forEach(function(elem, index){elem.classList.add('hiddenDifficulty');});
+                                       document.querySelectorAll('.difficulty2').forEach(function(elem, index){elem.classList.remove('hiddenDifficulty');});"
+				class="gsl-button-small"
+					>
 				JEV_INTERMEDIATE
 			</option>
 			<option value="3"
-			        onclick="jQuery('.difficulty2 , .difficulty3').each(function(idx,elem){jQuery(elem).removeClass('hiddenDifficulty');});">
+					class="gsl-button-small"
+			        onclick="document.querySelectorAll('.difficulty2, .difficulty3').forEach(function(elem,idx){elem.classList.remove('hiddenDifficulty');});">
 				JEV_ADVANCED
 			</option>
 		</field>
@@ -190,8 +194,8 @@
 
 	</fieldset>
 
-	
-	<fieldset  name="JEV_PERMISSIONS" difficulty="1">	
+
+	<fieldset  name="JEV_PERMISSIONS" difficulty="1">
 		<field name="jevadmin" type="jevuser" default="62"  menu="hide" label='ADMIN_USER'  description='ADMIN_USER_DESC' difficulty="1"/>
 
 		<field name="authorisedonly" type="jevboolean" class="btn-group" default="0" menu="hide"
@@ -388,14 +392,14 @@
 			<option value="0">JEV_USER_NAME</option>
 			<option value="1">JEV_NAME</option>
 		</field>
-		<field name="spacer_cv1" type="jevinfo" default='SETTINGS_RELATED_TO_DAY_VIEW'   menu="hide" label="" description="" difficulty="2"/>	
-		<field name="redirect_detail" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_DAY_REDIRECT_TO_EVENT" description="JEV_DAY_REDIRECT_TO_EVENT_DESC" difficulty="2"/>		
+		<field name="spacer_cv1" type="jevinfo" default='SETTINGS_RELATED_TO_DAY_VIEW'   menu="hide" label="" description="" difficulty="2"/>
+		<field name="redirect_detail" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_DAY_REDIRECT_TO_EVENT" description="JEV_DAY_REDIRECT_TO_EVENT_DESC" difficulty="2"/>
 		<field name="shownavbar_detail" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_DETAIL_SHOW_NAV_BAR" description="JEV_DETAIL_SHOW_NAV_BAR_DESC" difficulty="2"/>
         <field name="permatarget" type="jevmenu" default="" label="JEV_PERMALINK_MENU_ITEM"
                strict="1"
                description="JEV_PERMALINK_MENU_ITEM_TIP" />
         </fieldset>
-	
+
 	<fieldset name="JEV_MAIN_MONTHLY_CALENDAR" difficulty="1">
 		<field name="spacer_mv1" type="jevinfo" default='SETTINGS_RELATED_TO_MONTHLY_VIEW' menu="hide" label=""
 		       description="" difficulty="1"/>
@@ -472,7 +476,7 @@
 		<!-- see http://www.php.net/manual/en/datetimezone.listidentifiers.php //-->
 		<field name="icaltimezone" type="jevtimezone" default="" menu="hide" label="JEV_TIMEZONE"
 		       description="JEV_TIMEZONE_DESC" difficulty="3"/>
-		<!-- 
+		<!--
 		<field name="icaltimezone" type="text" default="" menu="hide" size="50" label="JEV_TIMEZONE" description="JEV_TIMEZONE DESC"/>
 		//-->
 		<field name="icalkey" type="text" default='SECRET_PHRASE' menu="hide" size="50" label="JEV_ICAL_KEY"
@@ -734,7 +738,7 @@
 	</fieldset>
 
 	<fields name="fieldset">
-		<!--		
+		<!--
 		<fieldset name="1" addfieldpath="/administrator/components/com_jevents/fields">
 			<field
 				name="target_itemid"
@@ -742,7 +746,7 @@
 				default=""
 				label='JEV_TARGET_MENU'
 				description='JEV_TARGET_MENU_TIP'  />
-		</fieldset>		
+		</fieldset>
 		//-->
 	</fields>
 

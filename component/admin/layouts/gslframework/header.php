@@ -1,6 +1,6 @@
 <?php
 /**
- * @version    CVS: 1.7.4
+ * @version    CVS: 3.5.0dev
  * @package    com_yoursites
  * @author     Geraint Edwards <yoursites@gwesystems.com>
  * @copyright  2016-2019 GWE Systems Ltd
@@ -115,7 +115,15 @@ GslHelper::loadAssets();
 
 	                    foreach ($toolbarButtons as $toolbarButton)
                         {
-                            $buttonoutput = $bar->renderButton($toolbarButton);
+	                        if (is_array($toolbarButton))
+	                        {
+		                        $buttonoutput = $bar->renderButton($toolbarButton);
+	                        }
+	                        else
+	                        {
+		                        // Joomla 4 in com_fields etc.
+		                        $buttonoutput = $toolbarButton->render();
+	                        }
 	                        $buttonoutput = str_replace("btn ", "gsl-button gsl-button-primary ", $buttonoutput);
 	                        $buttonoutput = str_replace('class=""', "class='gsl-button gsl-button-primary' ", $buttonoutput);
 	                        $buttonoutput = str_replace(array("btn-small"), "", $buttonoutput);

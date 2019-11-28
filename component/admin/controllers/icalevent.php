@@ -96,7 +96,7 @@ class AdminIcaleventController extends Joomla\CMS\MVC\Controller\AdminController
 		if ($count <= 0)
 		{
 			// RSH 9/28/10 - Added check for J!1.6 to use different URL for reroute
-			$redirectURL = "index.php?option=com_categories&extension=" . JEV_COM_COMPONENT;
+			$redirectURL = "index.php?option=com_categories&view=categories&extension=" . JEV_COM_COMPONENT;
 			$this->setRedirect($redirectURL, "You must first create at least one category");
 			$this->redirect();
 		}

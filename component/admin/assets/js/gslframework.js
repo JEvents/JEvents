@@ -1,5 +1,5 @@
 /**
- * @version    CVS: 1.7.4
+ * @version    CVS: 3.5.0dev
  * @package    com_yoursites
  * @author     Geraint Edwards
  * @copyright  2017-2019 GWE Systems Ltd
@@ -132,10 +132,12 @@ document.addEventListener('DOMContentLoaded', function () {
 	gslUIkit.container = document.getElementById('gslc');
 
 	// Clean up ISIS stuff etc.
-	let joomlaelements = document.querySelectorAll('#isisJsData, header.header, .btn.btn-subhead');
+	let joomlaelements = document.querySelectorAll('#isisJsData, header.header, .btn.btn-subhead, #subhead');
 	for (let j=0; j < joomlaelements.length; j++)
 	{
+		// hide not remove to stop JS error in Joomla 4
 		joomlaelements[j].remove();
+		//joomlaelements[j].style.display = 'none!important';
 	}
 
 	ystsPositionElements()
@@ -548,11 +550,12 @@ window.addEventListener('load', function() {
 // If loading from com_categories need to move the system messages
 document.addEventListener('DOMContentLoaded', function () {
 	let msgel = document.getElementById("system-message-container");
-	if (msgel)
+	if (msgel && msgel.parentNode)
 	{
 		let newmsgel = document.getElementById("ysts_system_messages");
-		newmsgel.innerHTML = msgel.innerHTML;
+		let innerHTML = msgel.innerHTML;
 		msgel.parentNode.removeChild(msgel);
+		newmsgel.innerHTML = innerHTML;
 	}
 
 	let maincontainer = document.getElementById("j-main-container");

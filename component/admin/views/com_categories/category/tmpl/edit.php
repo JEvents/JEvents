@@ -22,6 +22,15 @@ GWE mods
 
 echo LayoutHelper::render('gslframework.header', null, JPATH_ADMINISTRATOR. "/components/com_jevents/layouts" );
 
-include(JPATH_COMPONENT_ADMINISTRATOR . "/views/category/tmpl/edit.php");
+$jversion = new JVersion;
+if ($jversion->isCompatible('4.0'))
+{
+	include(JPATH_COMPONENT_ADMINISTRATOR . "/tmpl/category/edit.php");
+}
+else
+{
+
+	include(JPATH_COMPONENT_ADMINISTRATOR . "/views/category/tmpl/edit.php");
+}
 
 echo LayoutHelper::render('gslframework.footer', null, JPATH_ADMINISTRATOR. "/components/com_jevents/layouts" );

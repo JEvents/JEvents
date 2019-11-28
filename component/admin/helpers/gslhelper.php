@@ -1,6 +1,6 @@
 <?php
 /**
- * @version    CVS: 1.7.4
+ * @version    CVS: 3.5.0dev
  * @package    com_yoursites
  * @author     Geraint Edwards <yoursites@gwesystems.com>
  * @copyright  2016-2019 GWE Systems Ltd
@@ -20,12 +20,22 @@ class GslHelper
 		// set container scope for code
 		$document->addScriptDeclaration("gslUIkit.container = '.gsl-scope';");
 
-		JHtml::stylesheet('media/com_jevents/css/uikit.gsl.css', array('version' => '1.7.4', 'relative' => false));
-		JHtml::stylesheet('administrator/components/com_jevents/assets/css/jevents.css', array('version' => '1.7.4', 'relative' => false));
-		JHtml::script('media/com_jevents/js/uikit.js', array('version' => '1.7.4', 'relative' => false));
-		JHtml::script('media/com_jevents/js/uikit-icons.js', array('version' => '1.7.4', 'relative' => false));
-		JHtml::script('administrator/components/com_jevents/assets/js/gslframework.js', array('version' => '1.7.4', 'relative' => false));
-		JHtml::script('administrator/components/com_jevents/assets/js/jevents.js', array('version' => '1.7.4', 'relative' => false));
+		JHtml::stylesheet('media/com_jevents/css/uikit.gsl.css', array('version' => '3.5.0dev', 'relative' => false));
+		JHtml::stylesheet('administrator/components/com_jevents/assets/css/jevents.css', array('version' => '3.5.0dev', 'relative' => false));
+		$jversion = new JVersion;
+		if ($jversion->isCompatible('4.0'))
+		{
+			JHtml::stylesheet('administrator/components/com_jevents/assets/css/j4.css', array('version' => '3.5.0dev', 'relative' => false));
+		}
+		else
+		{
+			JHtml::stylesheet('administrator/components/com_jevents/assets/css/j3.css', array('version' => '3.5.0dev1', 'relative' => false));
+		}
+
+		JHtml::script('media/com_jevents/js/uikit.js', array('version' => '3.5.0dev', 'relative' => false));
+		JHtml::script('media/com_jevents/js/uikit-icons.js', array('version' => '3.5.0dev', 'relative' => false));
+		JHtml::script('administrator/components/com_jevents/assets/js/gslframework.js', array('version' => '3.5.0dev', 'relative' => false));
+		JHtml::script('administrator/components/com_jevents/assets/js/jevents.js', array('version' => '3.5.0dev', 'relative' => false));
 	}
 
 	public static function renderModal()
@@ -111,7 +121,15 @@ class GslHelper
 		$input = $app->input;
 		$task  = $input->getCmd('jevtask', 'icalevent.list');
 		$option  = $input->getCmd('option', 'com_jevents');
-		list($view, $layout) = explode(".", $task);
+		if ($option == "com_jevents")
+		{
+			list($view, $layout) = explode(".", $task);
+		}
+		else
+        {
+	        $view =  $layout = "";
+        }
+
 
 		$params = JComponentHelper::getParams("com_jevents");
 
@@ -130,7 +148,7 @@ class GslHelper
 		$iconLink                 = new stdClass();
 		$iconLink->class          = "";
 		$iconLink->active         = $option == "com_categories";
-		$iconLink->link           = JRoute::_("index.php?option=com_categories&extension=com_jevents");
+		$iconLink->link           = JRoute::_("index.php?option=com_categories&view=categories&extension=com_jevents");
 		$iconLink->icon           = "album";
 		$iconLink->label          = JText::_('JEV_INSTAL_CATS');
 		$iconLink->tooltip        = JText::_("JEV_INSTAL_CATS", true);

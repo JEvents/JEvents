@@ -15,7 +15,7 @@ use Joomla\CMS\Form\Form;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\String\StringHelper;
 
-jimport('joomla.html.html.bootstrap');
+//jimport('joomla.html.html.bootstrap');
 // We need to get the params first
 
 //HTMLHelper::_('formbehavior.chosen', '#adminForm select:not(.notchosen)');
@@ -38,7 +38,7 @@ $query      = $db->getQuery(true)
 	->select('folder AS type, element AS name, params, enabled, manifest_cache ')
 	->from('#__extensions')
 	// include unpublished plugins
-	//->where('enabled = 1')        
+	//->where('enabled = 1')
 	->where('type =' . $db->quote('plugin'))
 	->where('state IN (0,1)')
 	->where('(folder="jevents" OR element="gwejson" OR element="jevent_embed")')
@@ -68,10 +68,8 @@ if (count($jevplugins))
 					?>
 					<table class="settings_level">
 						<tr class=" difficulty1">
-							<?php
-							echo '<td class="paramlist_key"><span class="editlinktip">' . $field->label . '</span></td>';
-							echo '<td class="paramlist_value">' . $field->input . '</td>';
-							?>
+							<td class="paramlist_key"><span class="editlinktip"><?php echo $field->label;?></span></td>
+							<td class="paramlist_value"><?php echo $field->input;?></td>
 						</tr>
 					</table>
 					<?php
@@ -83,7 +81,7 @@ if (count($jevplugins))
 			<?php echo JText::_('JEV_EVENTS_CONFIG'); ?>
 		</legend>
 
-		<ul class="nav nav-list config" id="myParamsTabs">
+		<ul class="config" id="myParamsTabs" gsl-tab>
 			<?php
 			$fieldSets = $this->form->getFieldsets();
 			$first     = true;
@@ -161,9 +159,11 @@ if (count($jevplugins))
 			}
 			?>
 		</ul>
+        <!-- Tabs themselves //-->
+        <ul class="gsl-switcher gsl-margin">
 
-		<?php
-		echo HTMLHelper::_('bootstrap.startPane', 'myParamsTabs', array('active' => 'JEV_TAB_COMPONENT'));
+            <?php
+
 		$fieldSets = $this->form->getFieldsets();
 
 		foreach ($fieldSets as $name => $fieldSet)
@@ -173,7 +173,10 @@ if (count($jevplugins))
 				continue;
 			}
 			$label = empty($fieldSet->label) ? $name : $fieldSet->label;
-			echo HTMLHelper::_('bootstrap.addPanel', "myParamsTabs", $name);
+			//echo HTMLHelper::_('bootstrap.addPanel', "myParamsTabs", $name);
+            ?>
+            <li>
+                <?php
 
 			$html = array();
 
@@ -269,15 +272,16 @@ if (count($jevplugins))
 
 			echo implode("\n", $html);
 			?>
-
+            </li>
 			<?php
-			echo HTMLHelper::_('bootstrap.endPanel');
+			//echo HTMLHelper::_('bootstrap.endPanel');
 		}
 
 		if ($haslayouts)
 		{
-			echo HTMLHelper::_('bootstrap.addPanel', "myParamsTabs", "club_layouts");
+			//echo HTMLHelper::_('bootstrap.addPanel', "myParamsTabs", "club_layouts");
 			?>
+            <li>
 			<ul class="nav nav-tabs" id="myLayoutTabs">
 				<?php
 				$first = false;
@@ -305,7 +309,7 @@ if (count($jevplugins))
 				?>
 			</ul>
 			<?php
-			echo HTMLHelper::_('bootstrap.startPane', "myLayoutTabs", array('active' => $first));
+			//echo HTMLHelper::_('bootstrap.startPane', "myLayoutTabs", array('active' => $first));
 
 			// Now get layout specific parameters
 			//JForm::addFormPath(JPATH_COMPONENT ."/views/");
@@ -401,37 +405,37 @@ $html[] = '</tr>';
 					}
 					if ($hasconfig)
 					{
-						echo HTMLHelper::_('bootstrap.addPanel', 'myLayoutTabs', $viewfile);
-						//echo HTMLHelper::_('bootstrap.addPanel', 'myParamsTabs', $viewfile);
+						//echo HTMLHelper::_('bootstrap.addPanel', 'myLayoutTabs', $viewfile);
 
 						echo implode("\n", $html);
 
-						echo HTMLHelper::_('bootstrap.endPanel');
 						//echo HTMLHelper::_('bootstrap.endPanel');
 					}
 				}
 			}
-			echo HTMLHelper::_('bootstrap.endPane', 'myLayoutTabs');
-			echo HTMLHelper::_('bootstrap.endPanel');
+			//echo HTMLHelper::_('bootstrap.endPane', 'myLayoutTabs');
 		}
 
 		if ($hasPlugins)
 		{
-			echo HTMLHelper::_('bootstrap.addPanel', "myParamsTabs", "plugin_options");
-			echo HTMLHelper::_('bootstrap.startAccordion', 'myPluginAccordion', array('active' => 'collapsexx', 'parent' => 'plugin_options'));
+			//echo HTMLHelper::_('bootstrap.addPanel', "myParamsTabs", "plugin_options");
+            ?>
+            <li>
+            <?php
+			//echo HTMLHelper::_('bootstrap.startAccordion', 'myPluginAccordion', array('active' => 'collapsexx', 'parent' => 'plugin_options'));
 			$script = <<<SCRIPT
-jQuery(document).ready(function(){    
+jQuery(document).ready(function(){
     jQuery('#myPluginAccordion').on('show', function (evt) {
        jQuery(evt.target).closest('.accordion-group').find(".icon-chevron-right").removeClass("icon-chevron-right").addClass("icon-chevron-down");
     });
     jQuery('#myPluginAccordion').on('hidden', function (evt) {
        jQuery(evt.target).closest('.accordion-group').find(".icon-chevron-down").removeClass("icon-chevron-down").addClass("icon-chevron-right");
-    });                                
-});                                
+    });
+});
 SCRIPT;
 
-			JevHtmlBootstrap::popover('#myPluginAccordion .icon-info', array("trigger" => "hover focus", "placement" => "top", "container" => "#plugin_options", "delay" => array("show" => 150, "hide" => 150)));
-			Factory::getDocument()->addScriptDeclaration($script);
+			//JevHtmlBootstrap::popover('#myPluginAccordion .icon-info', array("trigger" => "hover focus", "placement" => "top", "container" => "#plugin_options", "delay" => array("show" => 150, "hide" => 150)));
+			//Factory::getDocument()->addScriptDeclaration($script);
 
 			$i = 0;
 			foreach ($jevplugins as $plugin)
@@ -502,7 +506,7 @@ SCRIPT;
 
 					if ($hasfields)
 					{
-						echo HTMLHelper::_('bootstrap.addSlide', 'myPluginAccordion', JText::_($label), 'collapse' . ($i++));
+						//echo HTMLHelper::_('bootstrap.addSlide', 'myPluginAccordion', JText::_($label), 'collapse' . ($i++));
 
 						$fieldSets = $pluginform->getFieldsets();
 						$html      = array();
@@ -581,7 +585,7 @@ SCRIPT;
 							$html[] = '</div>';
 							echo implode("\n", $html);
 						}
-						echo HTMLHelper::_('bootstrap.endSlide');
+						//echo HTMLHelper::_('bootstrap.endSlide');
 					}
 					else
 					{
@@ -603,12 +607,14 @@ SCRIPT;
 					//echo $plugin->name;
 				}
 			}
-			echo HTMLHelper::_('bootstrap.endAccordion');
-			echo HTMLHelper::_('bootstrap.endPanel');
+			//echo HTMLHelper::_('bootstrap.endAccordion');
+			?>
+            </li>
+            <?php
+			//echo HTMLHelper::_('bootstrap.endPanel');
 		}
 		?>
-
-
+        </ul>
 	</fieldset>
 
 	<input type="hidden" name="id" value="<?php echo $this->component->id; ?>"/>
