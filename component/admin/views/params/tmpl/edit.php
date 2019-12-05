@@ -116,8 +116,7 @@ if (count($jevplugins))
 					$class = " class=' $difficultySetClass'";
 				}
 				?>
-				<li <?php echo $class; ?>><a data-toggle="tab"
-				                             href="#<?php echo $name; ?>"><?php echo JText::_($label); ?></a></li>
+				<li <?php echo $class; ?>><a ="#<?php echo $name; ?>"><?php echo JText::_($label); ?></a></li>
 				<?php
 			}
 			/*

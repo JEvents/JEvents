@@ -7,6 +7,7 @@
  */
 
 'use strict';
+let j3 = true;
 
 // Polyfills
 // from:https://github.com/jserz/js_piece/blob/master/DOM/ChildNode/remove()/remove().md
@@ -131,13 +132,94 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	gslUIkit.container = document.getElementById('gslc');
 
-	// Clean up ISIS stuff etc.
-	let joomlaelements = document.querySelectorAll('#isisJsData, header.header, .btn.btn-subhead, #subhead');
-	for (let j=0; j < joomlaelements.length; j++)
+	let joomla4 = false;
+	// Joomla 4 template
+	if (document.querySelector('#sidebar-wrapper.sidebar-menu #sidebarmenu') || document.querySelector('#wrapper.d-flex.wrapper0'))
 	{
-		// hide not remove to stop JS error in Joomla 4
-		joomlaelements[j].remove();
-		//joomlaelements[j].style.display = 'none!important';
+		joomla4 = true;
+
+		//let joomlaelements = document.querySelectorAll('#sidebar-wrapper.sidebar-wrapper.sidebar-menu, #subhead.subhead ');
+		let joomlaelements = document.querySelectorAll('#subhead.subhead');
+		for (let j = 0; j < joomlaelements.length; j++) {
+			joomlaelements[j].style.display = 'none';
+		}
+		// Need to remove the duplicates since they can break javascript
+		joomlaelements = document.querySelectorAll('#header.header-item');
+		for (let j = 0; j < joomlaelements.length; j++) {
+			joomlaelements[j].remove();
+		}
+
+		// Toggle closed the left menu in Joomla 4
+		let joomlaLeftMenu = document.getElementById('menu-collapse');
+		if (joomlaLeftMenu)
+		{
+			const wrapper = document.getElementById('wrapper');
+
+			if (wrapper.classList.contains('closed')) {
+			}
+			else
+			{
+				document.getElementById('gslc').classList.add('joomla-menu-open');
+
+				/*
+				// if we choose to close the left menu at each page load then we can use this
+				var evt = new MouseEvent("click", {
+					bubbles: true,
+					cancelable: true,
+					view: window
+				});
+				 joomlaLeftMenu.dispatchEvent(evt);
+				 */
+			}
+
+			// Use Try/Catch for browsers with no support
+			try {
+				let observer = new MutationObserver(mutationRecords => {
+					// console.log(mutationRecords);
+					const wrapper = document.getElementById('wrapper');
+					if (wrapper.classList.contains('closed')) {
+						document.getElementById('gslc').classList.remove('joomla-menu-open');
+					} else {
+						document.getElementById('gslc').classList.add('joomla-menu-open');
+					}
+				});
+
+				// observe everything except attributes
+				observer.observe(wrapper, {
+					childList: false, // observe direct children
+					subtree: false, // and lower descendants too
+					characterDataOldValue: false, // pass old data to callback
+					attributes: true
+				});
+			}
+			catch (e)
+			{
+
+			}
+
+			// respond to Joomla left menu opening and closing
+			joomlaLeftMenu.addEventListener('click', function()
+			{
+				const wrapper = document.getElementById('wrapper');
+				if (wrapper.classList.contains('closed')) {
+					document.getElementById('gslc').classList.remove('joomla-menu-open');
+				}
+				else {
+					document.getElementById('gslc').classList.add('joomla-menu-open');
+				}
+			});
+		}
+		else
+		{
+			document.getElementById('gslc').classList.add('no-joomla-menu');
+		}
+	}
+	else {
+		// Clean up ISIS stuff etc.
+		let joomlaelements = document.querySelectorAll('#isisJsData, header.header, .btn.btn-subhead');
+		for (let j = 0; j < joomlaelements.length; j++) {
+			joomlaelements[j].remove();
+		}
 	}
 
 	ystsPositionElements()
@@ -550,7 +632,7 @@ window.addEventListener('load', function() {
 // If loading from com_categories need to move the system messages
 document.addEventListener('DOMContentLoaded', function () {
 	let msgel = document.getElementById("system-message-container");
-	if (msgel && msgel.parentNode)
+	if (j3 && msgel && msgel.parentNode && msgel.parentNode.id != "ysts_system_messages")
 	{
 		let newmsgel = document.getElementById("ysts_system_messages");
 		let innerHTML = msgel.innerHTML;

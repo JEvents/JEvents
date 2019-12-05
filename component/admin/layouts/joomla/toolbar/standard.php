@@ -17,11 +17,17 @@ if (GSLMSIE10)
 
 JHtml::_('behavior.core');
 
-$doTask   = $displayData['doTask'];
+// Joomla 4 switched to task from doTask
+$doTask   = isset($displayData['doTask']) ? $displayData['doTask'] : false;
+$task     = isset($displayData['task'])   ? $displayData['task'] : false;
 $class    = $displayData['class'];
 $text     = $displayData['text'];
 $btnClass = $displayData['btnClass'];
 
+if (!$doTask && $task)
+{
+	$doTask = "Joomla.submitbutton('" . $task . "')";
+}
 $displayData['gslicon'] = str_replace("icon-", "", $class);
 
 $mapping = array(

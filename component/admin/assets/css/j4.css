@@ -1,0 +1,145 @@
+/** Joomla 4 **/
+header.header {
+  display: none;
+}
+body.com_jevents {
+  /* See if we can get fixed positioning working as sticky */
+  /* Full sized screen */
+}
+body.com_jevents .container-fluid {
+  padding: 0 0 0 0;
+}
+body.com_jevents #wrapper #content {
+  padding: 0;
+}
+body.com_jevents .gsl-navbar-nav a[target="_blank"]::before {
+  content: none;
+}
+body.com_jevents header.header {
+  display: none;
+}
+body.com_jevents .container-main::after {
+  /* For when scrolling right a long way! */
+  background-color: var(--globalbackground);
+}
+body.com_jevents #wrapper > .container-fluid {
+  /*transform: translateZ(0);*/
+}
+body.com_jevents #wrapper #sidebar-wrapper {
+  position: fixed;
+  height: 100%;
+}
+body.com_jevents #gslc.gsl-scope #left-col {
+  left: 3rem;
+  transition: all .3s ease;
+}
+body.com_jevents #gslc.gsl-scope #right-col #top-head {
+  left: calc(50px + 3rem);
+  transition: all .3s ease;
+}
+body.com_jevents #gslc.gsl-scope .gsl-content,
+body.com_jevents #gslc.gsl-scope #ysts_system_messages {
+  margin-left: 3rem;
+  transition: all .3s ease;
+}
+body.com_jevents #gslc.gsl-scope.joomla-menu-open #left-col {
+  left: 18rem;
+}
+body.com_jevents #gslc.gsl-scope.joomla-menu-open #right-col #top-head {
+  left: calc(50px + 18rem);
+}
+body.com_jevents #gslc.gsl-scope.joomla-menu-open .gsl-content {
+  margin-left: 18rem;
+}
+body.com_jevents #gslc.gsl-scope.no-joomla-menu #left-col {
+  left: 0;
+}
+body.com_jevents #gslc.gsl-scope.no-joomla-menu #right-col #top-head {
+  left: 50px;
+}
+body.com_jevents #gslc.gsl-scope.no-joomla-menu .gsl-content {
+  margin-left: 0;
+}
+body.com_categories {
+  /* See if we can get fixed positioning working as sticky */
+  /* Full sized screen */
+  /* Old Stuff and com_categories, com_fields */
+}
+body.com_categories .container-fluid {
+  padding: 0 0 0 0;
+}
+body.com_categories #wrapper #content {
+  padding: 0;
+}
+body.com_categories .gsl-navbar-nav a[target="_blank"]::before {
+  content: none;
+}
+body.com_categories header.header {
+  display: none;
+}
+body.com_categories .container-main::after {
+  /* For when scrolling right a long way! */
+  background-color: var(--globalbackground);
+}
+body.com_categories #wrapper > .container-fluid {
+  /*transform: translateZ(0);*/
+}
+body.com_categories #wrapper #sidebar-wrapper {
+  position: fixed;
+  height: 100%;
+}
+body.com_categories #gslc.gsl-scope #left-col {
+  /* left: 3rem; */
+  transition: all .3s ease;
+}
+body.com_categories #gslc.gsl-scope #right-col #top-head {
+  /* left: ~"calc(50px + 3rem)";*/
+  transition: all .3s ease;
+}
+body.com_categories #gslc.gsl-scope .gsl-content {
+  /*margin-left: 3rem;*/
+  transition: all .3s ease;
+}
+body.com_categories #gslc.gsl-scope.joomla-menu-open #left-col {
+  left: 18rem;
+}
+body.com_categories #gslc.gsl-scope.joomla-menu-open #right-col #top-head {
+  left: calc(50px + 18rem);
+}
+body.com_categories #gslc.gsl-scope.joomla-menu-open .gsl-content {
+  margin-left: 18rem;
+}
+body.com_categories #gslc.gsl-scope.no-joomla-menu #left-col {
+  left: 0;
+}
+body.com_categories #gslc.gsl-scope.no-joomla-menu #right-col #top-head {
+  /* left: 50px;*/
+}
+body.com_categories #gslc.gsl-scope.no-joomla-menu .gsl-content {
+  margin-left: 0;
+}
+body.com_categories h1.page-title {
+  font-size: 1.5em;
+  line-height: 50px;
+  color: #fff;
+  padding: 0 0 0 10px;
+  margin: 0;
+}
+body.com_categories h1.page-title span.fields,
+body.com_categories h1.page-title img {
+  display: none;
+}
+body.com_categories.view-categories {
+  /* Full sized screen */
+}
+body.com_categories.view-categories #gslc.gsl-scope #left-col {
+  left: 3rem;
+}
+body.com_categories.view-categories #gslc.gsl-scope #right-col #top-head {
+  left: calc(50px + 3rem);
+}
+body.com_categories.view-categories #gslc.gsl-scope .gsl-content {
+  margin-left: 3rem;
+}
+/** end Joomla 4**/
+/*# sourceMappingURL=j4.css.map */

@@ -12,6 +12,14 @@ defined('JPATH_BASE') or die;
 // dummy output which we are hijacking to place withing our scope!
 
 $msgList = $displayData['msgList'];
+$jversion = new JVersion;
+
+// Skip Chosen in Joomla 4.x+
+if ($jversion->isCompatible('4.0'))
+{
+	include (JPATH_SITE . "/layouts/joomla/system/message.php");
+	return;
+}
 
 ob_start();
 ?>

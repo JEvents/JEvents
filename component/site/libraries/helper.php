@@ -606,8 +606,13 @@ class JEVHelper
 
 		$cid = is_null($cid) ? array() : $cid;
 
-		for ($c = 0; $c < count($cid); $c++)
+		$arraykeys = array_keys($cid);
+		foreach ($arraykeys as $c)
 		{
+			if (!isset($cid[$c]))
+			{
+				$x = 1;
+			}
 			$cid[$c] = intval($cid[$c]);
 		}
 		if ($asString)
@@ -740,7 +745,7 @@ class JEVHelper
 			$done = array();
 		}
 
-		// new script is disabled if readonly is set so set it on an onload event instead		
+		// new script is disabled if readonly is set so set it on an onload event instead
 		if ((isset($attribs['readonly']) && $attribs['readonly'] == 'readonly')
 			|| (isset($attribs[' readonly']) && $attribs[' readonly'] == 'readonly'))
 		{
@@ -1322,20 +1327,20 @@ class JEVHelper
 	{
 		$datenow = JEVHelper::getNow();
 		$yearnow = $datenow->toFormat('%Y');
-		$firstpos = JString::substr($year, 0, 1);
+		$firstpos = StringHelper::substr($year, 0, 1);
 
 		if ($firstpos == "+")
 		{
-			$year = JString::substr($year, 1);
+			$year = StringHelper::substr($year, 1);
 			$year = $yearnow + $year;
 		}
 		else if ($firstpos == "-")
 		{
-			$year = JString::substr($year, 1);
+			$year = StringHelper::substr($year, 1);
 			$year = $yearnow - $year;
 		}
 		// If we do not get a 4 digit number and no sign we assume it's +$year
-		else if (JString::strlen($year) < 4)
+		else if (StringHelper::strlen($year) < 4)
 		{
 			$year = $yearnow + $year;
 		}

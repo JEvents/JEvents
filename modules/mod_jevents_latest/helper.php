@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
+use Joomla\String\StringHelper;
 
 class modJeventsLatestHelper
 {
@@ -41,7 +42,7 @@ class modJeventsLatestHelper
 	{
 
 		// If we have a specified over ride then use it here
-		if ($params && JString::strlen($params->get("layout", "")) > 0)
+		if ($params && StringHelper::strlen($params->get("layout", "")) > 0)
 		{
 			$speciallayout = strtolower($params->get("layout", ""));
 			// Build the template and base path for the layout

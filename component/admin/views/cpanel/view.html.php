@@ -17,6 +17,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\String\StringHelper;
 
 /**
  * HTML View class for the component
@@ -1242,7 +1243,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 			}
 		}
 
-		$manifestdata = JApplicationHelper::parseXMLInstallFile($manifest);
+		$manifestdata = JInstaller::parseXMLInstallFile($manifest);
 		if (!$manifestdata)
 			return false;
 		if (strpos($manifestdata["authorUrl"], "jevents") === false

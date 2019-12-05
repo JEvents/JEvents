@@ -1165,7 +1165,7 @@ class JEventsDataModel
 		$searchisValid = false;
 		$total         = 0;
 
-		if (empty($keyword) || StringHelper::strlen($keywordcheck) < 3 || $keyword == '%%' || $keywordcheck == '')
+		if (empty($keyword) || StringHelper::strlen($keywordcheck) < 2 || $keyword == '%%' || $keywordcheck == '')
 		{
 			$keyword            = JText::_('JEV_KEYWORD_NOT_VALID');
 			$num_events         = 0;

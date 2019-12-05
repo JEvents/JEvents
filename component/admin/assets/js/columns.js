@@ -24,12 +24,12 @@ function setupColumnChoices() {
             var uls = jQuery("#columnmatches");
             if (uls) {
                 uls.append("<div id='column" + id + "'>"
-                    + "<div style='width:200px;display:inline-block;'>" + text + "</div>"
+                    + "<div class='sortablehandle' style='width:200px;display:inline-block;'>" + text + "</div>"
                     + "<input type='text' value='" + text + "' style=margin-left:20px;' />"
                     + "</div>");
                 setupColumnLis();
             }
-            ;
+
             setupCustomColumnField("#jevcolumns");
         });
 

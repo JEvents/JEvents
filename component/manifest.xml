@@ -56,6 +56,7 @@
 	<administration>
 		<menu>COM_JEVENTS_MENU</menu>
 		<submenu>
+			<menu link="option=com_jevents&amp;view=cpanel" view="cpanel"  img="" alt="JEvents Dashboard">JEVENTS_DASHBOARD</menu>
 			<menu link="option=com_jevents&amp;task=icalevent.list" view="icalevent"  img="" alt="Manage Events">JEV_INSTAL_MANAGE</menu>
 			<menu link="option=com_jevents&amp;task=icalevent.edit" view="icalevent"  img="" alt="Add Event">JEV_ADD_EVENT</menu>
 			<menu link="option=com_categories&amp;extension=com_jevents"   img="" alt="Manage Categories">JEV_INSTAL_CATS</menu>

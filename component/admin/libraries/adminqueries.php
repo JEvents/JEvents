@@ -87,7 +87,7 @@ class JEventsAdminDBModel extends JEventsDBModel
 				$db->setQuery("SELECT catid FROM #__jevents_catmap WHERE evid=" . $rows[0]->ev_id . " ORDER BY ordering ASC");
 				$catids = $db->loadColumn();
 
-				// are there any catids not in list of accessible Categories 
+				// are there any catids not in list of accessible Categories
 				$inaccessiblecats = array_diff($catids, explode(",", $accessibleCategories));
 				if (count($inaccessiblecats))
 				{
@@ -176,7 +176,7 @@ class JEventsAdminDBModel extends JEventsDBModel
 				$db->setQuery("SELECT catid FROM #__jevents_catmap WHERE evid=" . $rows[0]->ev_id);
 				$catids = $db->loadColumn();
 
-				// are there any catids not in list of accessible Categories 
+				// are there any catids not in list of accessible Categories
 				$inaccessiblecats = array_diff($catids, explode(",", $accessibleCategories));
 				if (count($inaccessiblecats))
 				{
@@ -259,6 +259,132 @@ class JEventsAdminDBModel extends JEventsDBModel
 
 	// Used in Dashboard
 	function getNewEventCounts()
+	{
+		$db                   = Factory::getDbo();
+		$accessibleCategories = $this->accessibleCategoryList();
+		$user                 = Factory::getUser();
+
+		$lastweek             = new JEVDate('-7 days');
+		$lastweekSQL          = $lastweek->toSql();
+
+		$lastmonth             = new JEVDate('-1 month');
+		$lastmonthSQL         = $lastmonth->toSql();
+
+		$query  = "SELECT count(ev.ev_id) as count, ev.created > '$lastweekSQL' as week,  ev.created > '$lastmonthSQL' as month"
+			. "\n FROM #__jevents_vevent as ev"
+			. "\n WHERE ev.catid IN(" . $accessibleCategories . ")"
+			. "\n AND ev.access  IN ( " . JEVHelper::getAid($user) . ") "
+			. "\n AND ev.created > '$lastmonthSQL' "
+			. "\n AND ev.state = 1 "
+			. " \n GROUP BY month, week";
+
+		$db->setQuery($query);
+
+		$rows = $db->loadObjectList();
+
+		$data = array(0,0,0);
+		$total = 0;
+		foreach ($rows as $row)
+		{
+			if ($row->week)
+			{
+				$data[1] += (int) $row->count;
+			}
+			if ($row->month)
+			{
+				$data[2] += (int)  $row->count;
+			}
+			$total  += (int) $row->count;
+		}
+		$data[0] = $total;
+		return $data;
+
+	}
+
+	// Used in Dashboard
+	function getSingleSessionCounts()
+	{
+		$db                   = Factory::getDbo();
+		$accessibleCategories = $this->accessibleCategoryList();
+		$user                 = Factory::getUser();
+		$t_datenow            = JEVHelper::getNow();
+		$t_datenowSQL         = $t_datenow->toSql();
+
+		$query  = "SELECT count(rpt.rp_id) as count, rpt.endrepeat > '$t_datenowSQL' as future, rpt.endrepeat < '$t_datenowSQL' as past"
+			. "\n FROM #__jevents_vevent as ev"
+			. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
+			// . "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
+			. "\n WHERE ev.catid IN(" . $accessibleCategories . ")"
+			. "\n AND ev.access  IN ( " . JEVHelper::getAid($user) . ") "
+			. "\n AND ev.state = 1 "
+			. " \n GROUP BY future, past";
+
+		$db->setQuery($query);
+
+		$rows = $db->loadObjectList();
+
+		$data = array(0,0,0);
+		$total = 0;
+		foreach ($rows as $row)
+		{
+			if ($row->future)
+			{
+				$data[1] = (int) $row->count;
+			}
+			if ($row->past)
+			{
+				$data[2] = (int)  $row->count;
+			}
+			$total  += (int) $row->count;
+		}
+		$data[0] = $total;
+		return $data;
+
+	}
+
+	// Used in Dashboard
+	function getRepeatingSessionCounts()
+	{
+		$db                   = Factory::getDbo();
+		$accessibleCategories = $this->accessibleCategoryList();
+		$user                 = Factory::getUser();
+		$t_datenow            = JEVHelper::getNow();
+		$t_datenowSQL         = $t_datenow->toSql();
+
+		$query  = "SELECT count(rpt.rp_id) as count, rpt.endrepeat > '$t_datenowSQL' as future, rpt.endrepeat < '$t_datenowSQL' as past"
+			. "\n FROM #__jevents_vevent as ev"
+			. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
+			// . "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
+			. "\n WHERE ev.catid IN(" . $accessibleCategories . ")"
+			. "\n AND ev.access  IN ( " . JEVHelper::getAid($user) . ") "
+			. "\n AND ev.state = 1 "
+			. " \n GROUP BY future, past";
+
+		$db->setQuery($query);
+
+		$rows = $db->loadObjectList();
+
+		$data = array(0,0,0);
+		$total = 0;
+		foreach ($rows as $row)
+		{
+			if ($row->future)
+			{
+				$data[1] = (int) $row->count;
+			}
+			if ($row->past)
+			{
+				$data[2] = (int)  $row->count;
+			}
+			$total  += (int) $row->count;
+		}
+		$data[0] = $total;
+		return $data;
+
+	}
+
+	// Used in Dashboard
+	function getNewSessionCounts()
 	{
 		$db                   = Factory::getDbo();
 		$accessibleCategories = $this->accessibleCategoryList();

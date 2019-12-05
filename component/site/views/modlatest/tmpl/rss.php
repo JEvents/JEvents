@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\String\StringHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 

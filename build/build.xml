@@ -37,7 +37,7 @@
         <phingcall target="build-uikit" />
         <phingcall target="build-jevents" />
     </target>
-                
+
 
     <!-- ==================================================  -->
     <!-- Target: Build UIkit    -->
@@ -52,8 +52,13 @@
         </copy>
 
         <!-- delete dist files -->
-        <delete file="${uikitdir}/dist/css/uikit.gsl.css" failonerror="false" />
-        <delete file="${uikitdir}/dist/css/uikit.gsl.min.css" failonerror="false" />
+        <if>
+            <available file='${uikitdir}/dist/css/uikit.gsl.css' type='file' property="cssexits"/>
+            <then>
+                <delete file="${uikitdir}/dist/css/uikit.gsl.css" failonerror="false" />
+                <delete file="${uikitdir}/dist/css/uikit.gsl.min.css" failonerror="false" />
+            </then>
+        </if>
 
         <!-- execute yarn scripts there -->
         <!--
@@ -513,7 +518,7 @@
     <!-- ============================================  -->
 
     <target name="build" depends="prepare">
-        
+
         <echo msg="Creating Package..." />
         <copy todir="${builddir}/package">
             <fileset dir="../package">

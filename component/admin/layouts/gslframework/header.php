@@ -18,6 +18,14 @@ if (GSLMSIE10)
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Factory;
 
+// Skip Chosen in Joomla 4.x+
+$jversion = new JVersion;
+if ($jversion->isCompatible('4.0'))
+{
+	$document = JFactory::getDocument();
+	$document->addScriptDeclaration("j3 = false;");
+}
+
 // Load component specific data
 $componentpath = dirname(dirname(dirname(__FILE__)));
 include_once($componentpath . "/helpers/gslhelper.php");
