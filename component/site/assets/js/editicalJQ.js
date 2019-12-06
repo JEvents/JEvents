@@ -1062,8 +1062,7 @@ function checkConflict(checkurl, pressbutton, jsontoken, client, repeatid,  redi
 			jevjq('#jevoverlapwarning').css("display",'none');
 			if (doRedirect) submit2(pressbutton);
 			else hasConflicts = true;
-		}
-		if (json.error){
+		} else if (json.error){
 			try {
 				eval(json.error);
 			}
