@@ -10,6 +10,8 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\String\StringHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -28,7 +30,7 @@ class JEventsHTML
 		$day_name[0] = '<span class="sunday">' . $day_name[0] . '</span>';
 		$day_name[6] = '<span class="saturday">' . $day_name[6] . '</span>';
 
-		$daynamelist[] = HTMLHelper::_('select.option', '-1', '&nbsp;' . JText::_('JEV_BYDAYNUMBER') . '<br />');
+		$daynamelist[] = HTMLHelper::_('select.option', '-1', '&nbsp;' . Text::_('JEV_BYDAYNUMBER') . '<br />');
 
 		for ($a = 0; $a < 7; $a++)
 		{
@@ -157,17 +159,17 @@ class JEventsHTML
 		$viewlist = array();
 
 		if (in_array("byday", $iconstoshow))
-			$viewlist[] = HTMLHelper::_('select.option', 'day.listevents', JText::_('JEV_VIEWBYDAY'));
+			$viewlist[] = HTMLHelper::_('select.option', 'day.listevents', Text::_('JEV_VIEWBYDAY'));
 		if (in_array("byweek", $iconstoshow))
-			$viewlist[] = HTMLHelper::_('select.option', 'week.listevents', JText::_('JEV_VIEWBYWEEK'));
+			$viewlist[] = HTMLHelper::_('select.option', 'week.listevents', Text::_('JEV_VIEWBYWEEK'));
 		if (in_array("bymonth", $iconstoshow))
-			$viewlist[] = HTMLHelper::_('select.option', 'month.calendar', JText::_('JEV_VIEWBYMONTH'));
+			$viewlist[] = HTMLHelper::_('select.option', 'month.calendar', Text::_('JEV_VIEWBYMONTH'));
 		if (in_array("byyear", $iconstoshow))
-			$viewlist[] = HTMLHelper::_('select.option', 'year.listevents', JText::_('JEV_VIEWBYYEAR'));
+			$viewlist[] = HTMLHelper::_('select.option', 'year.listevents', Text::_('JEV_VIEWBYYEAR'));
 		if (in_array("bycat", $iconstoshow))
-			$viewlist[] = HTMLHelper::_('select.option', 'cat.listevents', JText::_('JEV_VIEWBYCAT'));
+			$viewlist[] = HTMLHelper::_('select.option', 'cat.listevents', Text::_('JEV_VIEWBYCAT'));
 		if (in_array("search", $iconstoshow))
-			$viewlist[] = HTMLHelper::_('select.option', 'search.form', JText::_('JEV_SEARCH_TITLE'));
+			$viewlist[] = HTMLHelper::_('select.option', 'search.form', Text::_('JEV_SEARCH_TITLE'));
 
 		$tosend = HTMLHelper::_('select.genericlist', $viewlist, 'task', $args, 'value', 'text', $viewtype);
 		echo $tosend;
@@ -225,7 +227,7 @@ class JEventsHTML
 		include_once(JPATH_SITE . "/libraries/cms/html/category.php");
 
 		ob_start();
-		$t_first_entry = ($require_sel) ? JText::_('JEV_EVENT_CHOOSE_CATEG') : JText::_('JEV_EVENT_ALLCAT');
+		$t_first_entry = ($require_sel) ? Text::_('JEV_EVENT_CHOOSE_CATEG') : Text::_('JEV_EVENT_ALLCAT');
 
 		//$options = HTMLHelper::_('category.options', $sectionname);
 
@@ -320,7 +322,7 @@ class JEventsHTML
 		$count = count($options);
 		for ($o = 0; $o < $count; $o++)
 		{
-			$options[$o]->text = strpos($options[$o]->text, "JEV_") === 0 ? JText::_($options[$o]->text) : $options[$o]->text;
+			$options[$o]->text = strpos($options[$o]->text, "JEV_") === 0 ? Text::_($options[$o]->text) : $options[$o]->text;
 		}
 
 		// Thanks to ssobada
@@ -451,14 +453,14 @@ class JEventsHTML
 		{
 			$size = count($options) > 6 ? 6 : count($options) + 1;
 			?>
-			<label class="sr-only" for="<?php echo $fieldname;?>"><?php echo JText::_('JEV_CATEGORY_SELECT_LBL'); ?></label>
+			<label class="sr-only" for="<?php echo $fieldname;?>"><?php echo Text::_('JEV_CATEGORY_SELECT_LBL'); ?></label>
 			<select name="<?php echo $fieldname; ?>[]"  id="<?php echo $fieldname; ?>" <?php echo $args; ?> multiple="multiple" size="<?php echo $size; ?>" style="width:300px;">
 			    <?php
 		    }
 		    else
 		    {
 			    ?>
-			    <label class="sr-only" for="<?php echo $fieldname;?>"><?php echo JText::_('JEV_CATEGORY_SELECT_LBL'); ?></label>
+			    <label class="sr-only" for="<?php echo $fieldname;?>"><?php echo Text::_('JEV_CATEGORY_SELECT_LBL'); ?></label>
 			    <select name="<?php echo $fieldname; ?>" <?php echo $args; ?>  id="<?php echo $fieldname; ?>" >
 				<option value=""><?php echo $t_first_entry; ?></option>
 				<?php
@@ -573,31 +575,31 @@ class JEventsHTML
 	    public static function buildWeeksCheck($reccurweeks, $args, $name = "reccurweeks", $direction = 0)
 	    {
 		    // language check
-		    if (JText::_('JEV_FIRST') !== "JEV_FIRST")
+		    if (Text::_('JEV_FIRST') !== "JEV_FIRST")
 		    {
 			    $week_name = array('',
-				JText::_('JEV_FIRST'),
-				JText::_('JEV_SECOND'),
-				JText::_('JEV_THIRD'),
-				JText::_('JEV_FOURTH'),
-				JText::_('JEV_FIFTH')
+				Text::_('JEV_FIRST'),
+				Text::_('JEV_SECOND'),
+				Text::_('JEV_THIRD'),
+				Text::_('JEV_FOURTH'),
+				Text::_('JEV_FIFTH')
 			    );
 			    $backwards_week_name = array('',
-				JText::_('JEV_LAST'),
-				JText::_('JEV_SECOND_TO_LAST'),
-				JText::_('JEV_THIRD_FROM_LAST'),
-				JText::_('JEV_FOURTH_FROM_LAST'),
-				JText::_('JEV_FIFTH_FROM_LAST')
+				Text::_('JEV_LAST'),
+				Text::_('JEV_SECOND_TO_LAST'),
+				Text::_('JEV_THIRD_FROM_LAST'),
+				Text::_('JEV_FOURTH_FROM_LAST'),
+				Text::_('JEV_FIFTH_FROM_LAST')
 			    );
 		    }
 		    else
 		    {
 			    $week_name = array('',
-				JText::_('JEV_REP_WEEK') . ' 1 ',
-				JText::_('JEV_REP_WEEK') . ' 2 ',
-				JText::_('JEV_REP_WEEK') . ' 3 ',
-				JText::_('JEV_REP_WEEK') . ' 4 ',
-				JText::_('JEV_REP_WEEK') . ' 5 '
+				Text::_('JEV_REP_WEEK') . ' 1 ',
+				Text::_('JEV_REP_WEEK') . ' 2 ',
+				Text::_('JEV_REP_WEEK') . ' 3 ',
+				Text::_('JEV_REP_WEEK') . ' 4 ',
+				Text::_('JEV_REP_WEEK') . ' 5 '
 			    );
 			    $backwards_week_name = $week_name;
 		    }
@@ -650,31 +652,31 @@ class JEventsHTML
 	    public static function buildWeeksCheckUikit($reccurweeks, $args, $name = "reccurweeks", $direction = 0)
 	    {
 		    // language check
-		    if (JText::_('JEV_FIRST') !== "JEV_FIRST")
+		    if (Text::_('JEV_FIRST') !== "JEV_FIRST")
 		    {
 			    $week_name = array('',
-				JText::_('JEV_FIRST'),
-				JText::_('JEV_SECOND'),
-				JText::_('JEV_THIRD'),
-				JText::_('JEV_FOURTH'),
-				JText::_('JEV_FIFTH')
+				Text::_('JEV_FIRST'),
+				Text::_('JEV_SECOND'),
+				Text::_('JEV_THIRD'),
+				Text::_('JEV_FOURTH'),
+				Text::_('JEV_FIFTH')
 			    );
 			    $backwards_week_name = array('',
-				JText::_('JEV_LAST'),
-				JText::_('JEV_SECOND_TO_LAST'),
-				JText::_('JEV_THIRD_FROM_LAST'),
-				JText::_('JEV_FOURTH_FROM_LAST'),
-				JText::_('JEV_FIFTH_FROM_LAST')
+				Text::_('JEV_LAST'),
+				Text::_('JEV_SECOND_TO_LAST'),
+				Text::_('JEV_THIRD_FROM_LAST'),
+				Text::_('JEV_FOURTH_FROM_LAST'),
+				Text::_('JEV_FIFTH_FROM_LAST')
 			    );
 		    }
 		    else
 		    {
 			    $week_name = array('',
-				JText::_('JEV_REP_WEEK') . ' 1 ',
-				JText::_('JEV_REP_WEEK') . ' 2 ',
-				JText::_('JEV_REP_WEEK') . ' 3 ',
-				JText::_('JEV_REP_WEEK') . ' 4 ',
-				JText::_('JEV_REP_WEEK') . ' 5 '
+				Text::_('JEV_REP_WEEK') . ' 1 ',
+				Text::_('JEV_REP_WEEK') . ' 2 ',
+				Text::_('JEV_REP_WEEK') . ' 3 ',
+				Text::_('JEV_REP_WEEK') . ' 4 ',
+				Text::_('JEV_REP_WEEK') . ' 5 '
 			    );
 			    $backwards_week_name = $week_name;
 		    }
@@ -760,12 +762,12 @@ class JEventsHTML
 					    if (isset($userdet->slug) && $userdet->slug && $agenda_viewmail == '1')
 					    {
 						    $contactlink = Route::_('index.php?option=com_contact&view=contact&id=' . $userdet->slug . '&catid=' . $userdet->catslug);
-						    $contactlink = '<a href="' . $contactlink . '" title="' . JText::_('JEV_EMAIL_TO_AUTHOR') . '" target="_blank" >' . $userdet->contactname . '</a>';
+						    $contactlink = '<a href="' . $contactlink . '" title="' . Text::_('JEV_EMAIL_TO_AUTHOR') . '" target="_blank" >' . $userdet->contactname . '</a>';
 					    }
 					    else if ($userdet->email && $agenda_viewmail == '1')
 					    {
 						    //$contactlink = '<a href="mailto:' . $userdet->email
-						    //. '" title="' . JText::_('JEV_EMAIL_TO_AUTHOR') . '">'
+						    //. '" title="' . Text::_('JEV_EMAIL_TO_AUTHOR') . '">'
 						    //. $userdet->username . '</a>';
 						    if ($params->get('contact_display_name', 0) == 1)
 						    {
@@ -796,7 +798,7 @@ class JEventsHTML
 		    {
 			    if (!isset($arr_evids[$evid]))
 			    {
-				    $contactlink = JText::_('JEV_ANONYME');
+				    $contactlink = Text::_('JEV_ANONYME');
 				    $anonplugin = PluginHelper::getPlugin("jevents", "jevanonuser");
 				    if ($anonplugin)
 				    {
@@ -908,9 +910,9 @@ class JEventsHTML
 					    // BAR COLOR GENERATION
 					    //$start_publish = JevDate::mktime (0, 0, 0, date("m"),date("d"),date("Y"));
 					    //$colorgenerate = intval(($start_publish/$event_id));
-					    //$bg1color = JString::substr($colorgenerate, 5, 1);
-					    //$bg2color = JString::substr($colorgenerate, 3, 1);
-					    //$bg3color = JString::substr($colorgenerate, 7, 1);
+					    //$bg1color = StringHelper::substr($colorgenerate, 5, 1);
+					    //$bg2color = StringHelper::substr($colorgenerate, 3, 1);
+					    //$bg3color = StringHelper::substr($colorgenerate, 7, 1);
 					    $bg1color = rand(0, 9);
 					    $bg2color = rand(0, 9);
 					    $bg3color = rand(0, 9);
@@ -973,7 +975,7 @@ class JEventsHTML
 		    // if date format is from langauge file then do this first
 		    if ($format_type == 3 && is_numeric($type))
 		    {
-			    return JEV_CommonFunctions::jev_strftime(JText::_("DATE_FORMAT_" . $type), $datestp);
+			    return JEV_CommonFunctions::jev_strftime(Text::_("DATE_FORMAT_" . $type), $datestp);
 		    }
 
 		    switch ($type)

@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
 function DefaultViewHelperShowNavTableBar($view)
@@ -61,10 +62,10 @@ function DefaultViewHelperShowNavTableBar($view)
 			$dates['next1'] = $next_year;
 			$dates['next2'] = $next_year;
 
-			$alts['prev2'] = JText::_('JEV_PREVIOUSYEAR');
-			$alts['prev1'] = JText::_('JEV_PREVIOUSYEAR');
-			$alts['next1'] = JText::_('JEV_NEXTYEAR');
-			$alts['next2'] = JText::_('JEV_NEXTYEAR');
+			$alts['prev2'] = Text::_('JEV_PREVIOUSYEAR');
+			$alts['prev1'] = Text::_('JEV_PREVIOUSYEAR');
+			$alts['next1'] = Text::_('JEV_NEXTYEAR');
+			$alts['next2'] = Text::_('JEV_NEXTYEAR');
 
 			// Show
 			if ($cfg->get('com_calUseIconic', 1) == 1 || $cfg->get('com_calUseIconic', 1) == 2) $view->viewNavTableBarIconic($today_date, $this_date, $dates, $alts, JEV_COM_COMPONENT, $task, $view->Itemid);
@@ -77,10 +78,10 @@ function DefaultViewHelperShowNavTableBar($view)
 			$dates['next1'] = $next_month;
 			$dates['next2'] = $next_year;
 
-			$alts['prev2'] = JText::_('JEV_PREVIOUSYEAR');
-			$alts['prev1'] = JText::_('JEV_PREVIOUSMONTH');
-			$alts['next1'] = JText::_('JEV_NEXTMONTH');
-			$alts['next2'] = JText::_('JEV_NEXTYEAR');
+			$alts['prev2'] = Text::_('JEV_PREVIOUSYEAR');
+			$alts['prev1'] = Text::_('JEV_PREVIOUSMONTH');
+			$alts['next1'] = Text::_('JEV_NEXTMONTH');
+			$alts['next2'] = Text::_('JEV_NEXTYEAR');
 
 			// Show
 			if ($cfg->get('com_calUseIconic', 1) == 1 || $cfg->get('com_calUseIconic', 1) == 2) $view->viewNavTableBarIconic($today_date, $this_date, $dates, $alts, JEV_COM_COMPONENT, $task, $view->Itemid);
@@ -93,10 +94,10 @@ function DefaultViewHelperShowNavTableBar($view)
 			$dates['next1'] = $next_week;
 			$dates['next2'] = $next_month;
 
-			$alts['prev2'] = JText::_('JEV_PREVIOUSMONTH');
-			$alts['prev1'] = JText::_('JEV_PREVIOUSWEEK');
-			$alts['next1'] = JText::_('JEV_NEXTWEEK');
-			$alts['next2'] = JText::_('JEV_NEXTMONTH');
+			$alts['prev2'] = Text::_('JEV_PREVIOUSMONTH');
+			$alts['prev1'] = Text::_('JEV_PREVIOUSWEEK');
+			$alts['next1'] = Text::_('JEV_NEXTWEEK');
+			$alts['next2'] = Text::_('JEV_NEXTMONTH');
 
 			// Show
 			if ($cfg->get('com_calUseIconic', 1) == 1 || $cfg->get('com_calUseIconic', 1) == 2) $view->viewNavTableBarIconic($today_date, $this_date, $dates, $alts, JEV_COM_COMPONENT, $task, $view->Itemid);
@@ -110,10 +111,10 @@ function DefaultViewHelperShowNavTableBar($view)
 			$dates['next1'] = $next_day;
 			$dates['next2'] = $next_month;
 
-			$alts['prev2'] = JText::_('JEV_PREVIOUSMONTH');
-			$alts['prev1'] = JText::_('JEV_PREVIOUSDAY');
-			$alts['next1'] = JText::_('JEV_NEXTDAY');
-			$alts['next2'] = JText::_('JEV_NEXTMONTH');
+			$alts['prev2'] = Text::_('JEV_PREVIOUSMONTH');
+			$alts['prev1'] = Text::_('JEV_PREVIOUSDAY');
+			$alts['next1'] = Text::_('JEV_NEXTDAY');
+			$alts['next2'] = Text::_('JEV_NEXTMONTH');
 
 			// Show
 			if ($cfg->get('com_calUseIconic', 1) == 1 || $cfg->get('com_calUseIconic', 1) == 2) $view->viewNavTableBarIconic($today_date, $this_date, $dates, $alts, JEV_COM_COMPONENT, $task, $view->Itemid);

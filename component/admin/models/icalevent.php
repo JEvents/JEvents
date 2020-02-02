@@ -6,12 +6,16 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.modellist');
 
 
+use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Language\Associations;
+use Joomla\CMS\Language\LanguageHelper;
+use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 
-class JEventsModelicalevent extends JModelList
+class JEventsModelicalevent extends ListModel
 {
 	public $queryModel;
 	private $total = 0;
@@ -28,7 +32,7 @@ class JEventsModelicalevent extends JModelList
 	{
 		if (empty($config['filter_fields']))
 		{
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 
 			$config['filter_fields'] = array(
 				'id', 'a.' . $db->quoteName('id'), 'a.id',
@@ -170,7 +174,7 @@ class JEventsModelicalevent extends JModelList
 			$searchwhere[] = "LOWER(detail.summary) LIKE '%$search%'";
 			$searchwhere[] = "LOWER(detail.location) LIKE '%$search%'";
 			jimport("joomla.filesystem.folder");
-			if (JFolder::exists(JPATH_ADMINISTRATOR . "/components/com_jevlocations") && ComponentHelper::getComponent("com_jevlocations", true)->enabled)
+			if (Folder::exists(JPATH_ADMINISTRATOR . "/components/com_jevlocations") && ComponentHelper::getComponent("com_jevlocations", true)->enabled)
 			{
 				$join[]        = "\n #__jev_locations as loc ON loc.loc_id=detail.location";
 				$searchwhere[] = "LOWER(loc.title) LIKE '%$search%'";
@@ -648,15 +652,15 @@ class JEventsModelicalevent extends JModelList
 	 * @return  void
 	 * @since    3.0
 	 */
-	protected function preprocessForm(JForm $form, $data, $group = 'content')
+	protected function preprocessForm(Form $form, $data, $group = 'content')
 	{
 
 		// Association content items
 		$app   = Factory::getApplication();
-		$assoc = false && JLanguageAssociations::isEnabled() && Factory::getApplication()->isClient('administrator');
+		$assoc = false && Associations::isEnabled() && Factory::getApplication()->isClient('administrator');
 		if ($assoc)
 		{
-			$languages = JLanguageHelper::getLanguages('lang_code');
+			$languages = LanguageHelper::getLanguages('lang_code');
 			$addform   = new SimpleXMLElement('<form />');
 			$fields    = $addform->addChild('fields');
 			$fields->addAttribute('name', 'associations');

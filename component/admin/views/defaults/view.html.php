@@ -11,6 +11,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\String\StringHelper;
@@ -36,10 +37,10 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 
 		$app    = Factory::getApplication();
 		$document = Factory::getDocument();
-		$document->setTitle(JText::_('JEV_LAYOUT_DEFAULTS'));
+		$document->setTitle(Text::_('JEV_LAYOUT_DEFAULTS'));
 
 		// Set toolbar items for the page
-		JToolbarHelper::title(JText::_('JEV_LAYOUT_DEFAULTS'), 'jevents');
+		JToolbarHelper::title(Text::_('JEV_LAYOUT_DEFAULTS'), 'jevents');
 		//JToolbarHelper::addNew('icalevent.edit');
 
 		HTMLHelper::_('behavior.tooltip');
@@ -60,10 +61,10 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 
 		$layouttype     = $app->getUserStateFromRequest("jevdefaults.filter_layout_type", 'filter_layout_type', "jevents");
 		$addonoptions   = array();
-		$addonoptions[] = HTMLHelper::_('select.option', '', JText::_('JEV_SELECT_LAYOUT_TYPE'));
-		$addonoptions[] = HTMLHelper::_('select.option', 'jevents', JText::_('COM_JEVENTS'));
-		$addonoptions[] = HTMLHelper::_('select.option', 'jevpeople', JText::_('COM_JEVPEOPLE'));
-		$addonoptions[] = HTMLHelper::_('select.option', 'jevlocations', JText::_('COM_JEVLOCATIONS'));
+		$addonoptions[] = HTMLHelper::_('select.option', '', Text::_('JEV_SELECT_LAYOUT_TYPE'));
+		$addonoptions[] = HTMLHelper::_('select.option', 'jevents', Text::_('COM_JEVENTS'));
+		$addonoptions[] = HTMLHelper::_('select.option', 'jevpeople', Text::_('COM_JEVPEOPLE'));
+		$addonoptions[] = HTMLHelper::_('select.option', 'jevlocations', Text::_('COM_JEVLOCATIONS'));
 
 		$addonoptions = HTMLHelper::_('select.options', $addonoptions, 'value', 'text', $layouttype);
 		$this->addonoptions = $addonoptions;
@@ -97,7 +98,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		JEVHelper::script('editdefaults.js', 'administrator/components/' . JEV_COM_COMPONENT . '/assets/js/');
 
 		$document = Factory::getDocument();
-		$document->setTitle(JText::_('JEV_LAYOUT_DEFAULT_EDIT'));
+		$document->setTitle(Text::_('JEV_LAYOUT_DEFAULT_EDIT'));
 
 		$params         = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		$requiredfields = $params->get("com_jeveditionrequiredfields", "");
@@ -107,7 +108,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		}
 
 		// Set toolbar items for the page
-		JToolbarHelper::title(JText::_('JEV_LAYOUT_DEFAULT_EDIT'), 'jevents');
+		JToolbarHelper::title(Text::_('JEV_LAYOUT_DEFAULT_EDIT'), 'jevents');
 
 		JToolbarHelper::apply("defaults.apply");
 		JToolbarHelper::save("defaults.save");
@@ -220,7 +221,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 						array('title' => $item->title),
 						true
 					);
-					$url          = $url;// ."', '". JText::sprintf("JEV_TRANSLATE_EVENT_TO" ,  addslashes($item->title),  array('jsSafe'=>true) ) . "'); ";
+					$url          = $url;// ."', '". Text::sprintf("JEV_TRANSLATE_EVENT_TO" ,  addslashes($item->title),  array('jsSafe'=>true) ) . "'); ";
 					$tooltipParts = array($img, addslashes($item->title));
 					$item->link   = HTMLHelper::_('tooltip', implode(' ', $tooltipParts), null, null, $text, $url, null, 'hasTooltip label label-association label-' . $item->sef . ($hasTranslation ? " hastranslation" : ""));
 					?>
@@ -242,7 +243,7 @@ function replaceLabelsCallback($matches)
 
 	if (count($matches) == 1)
 	{
-		return "{{" . JText::_(StringHelper::substr($matches[0], 2, StringHelper::strlen($matches[0]) - 3)) . ":";
+		return "{{" . Text::_(StringHelper::substr($matches[0], 2, StringHelper::strlen($matches[0]) - 3)) . ":";
 	}
 
 	return "";

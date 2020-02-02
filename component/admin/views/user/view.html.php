@@ -12,6 +12,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Access\Access;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -36,11 +38,11 @@ class AdminUserViewUser extends JEventsAbstractView
 		// this already includes administrator
 		$livesite = Uri::base();
 
-		$document->setTitle(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'));
+		$document->setTitle(Text::_('JEVENTS') . ' :: ' . Text::_('JEVENTS'));
 		$input = Factory::getApplication()->input;
 
 		// Set toolbar items for the page
-		JToolbarHelper::title(JText::_('USERS'), 'jevents');
+		JToolbarHelper::title(Text::_('USERS'), 'jevents');
 		JToolbarHelper::addNew("user.edit");
 		JToolbarHelper::editList("user.edit");
 		//JToolbarHelper::publish("user.publish");
@@ -75,10 +77,10 @@ class AdminUserViewUser extends JEventsAbstractView
 
 		$document = Factory::getDocument();
 		// this already includes administrator
-		$document->setTitle(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'));
+		$document->setTitle(Text::_('JEVENTS') . ' :: ' . Text::_('JEVENTS'));
 
 		// Set toolbar items for the page
-		JToolbarHelper::title(JText::_('JEV_EDIT_USER'), 'jevents');
+		JToolbarHelper::title(Text::_('JEV_EDIT_USER'), 'jevents');
 
 		JToolbarHelper::save("user.save");
 		JToolbarHelper::cancel("user.overview");
@@ -90,7 +92,7 @@ class AdminUserViewUser extends JEventsAbstractView
 		$db = Factory::getDbo();
 
 		$params        = ComponentHelper::getParams(JEV_COM_COMPONENT);
-		$rules         = JAccess::getAssetRules("com_jevents", true);
+		$rules         = Access::getAssetRules("com_jevents", true);
 		$data          = $rules->getData();
 		$creatorgroups = $data["core.create"]->getData();
 		foreach ($data["core.admin"]->getData() as $creatorgroup => $permission)
@@ -107,14 +109,14 @@ class AdminUserViewUser extends JEventsAbstractView
 		{
 			if ($permission == 1)
 			{
-				$users = array_merge(JAccess::getUsersByGroup($creatorgroup, true), $users);
+				$users = array_merge(Access::getUsersByGroup($creatorgroup, true), $users);
 			}
 		}
 		$sql = "SELECT * FROM #__users where id IN (" . implode(",", array_values($users)) . ") ORDER BY name asc";
 		$db->setQuery($sql);
 		$users = $db->loadObjectList();
 
-		$userOptions[] = HTMLHelper::_('select.option', '-1', JText::_('SELECT_USER'));
+		$userOptions[] = HTMLHelper::_('select.option', '-1', Text::_('SELECT_USER'));
 		foreach ($users as $user)
 		{
 			$userOptions[] = HTMLHelper::_('select.option', $user->id, $user->name . " ($user->username)");

@@ -12,6 +12,7 @@
 // ensure this file is being included by a parent file
 defined('_JEXEC') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -38,14 +39,14 @@ class jevEventlistFilter extends jevFilter
 		}
 
 		$filterList          = array();
-		$filterList["title"] = JText::_("JEV_SELECT_MATCHING_EVENT");
+		$filterList["title"] = Text::_("JEV_SELECT_MATCHING_EVENT");
 
 		$options = array();
 
 		// only if other filters are active to we offer a choice
 		if ($input->getInt("eventlist") == 1)
 		{
-			$options[] = HTMLHelper::_('select.option', "0", JText::_("JEV_SELECT_MATCHING_EVENT"), "value", "text");
+			$options[] = HTMLHelper::_('select.option', "0", Text::_("JEV_SELECT_MATCHING_EVENT"), "value", "text");
 
 			list($year, $month, $day) = JEVHelper::getYMD();
 			$tenyear = $year + 10;
@@ -63,7 +64,7 @@ class jevEventlistFilter extends jevFilter
 		}
 		else
 		{
-			$options[] = HTMLHelper::_('select.option', "0", JText::_("JEV_NO_MATCHING_EVENTS"), "value", "text");
+			$options[] = HTMLHelper::_('select.option', "0", Text::_("JEV_NO_MATCHING_EVENTS"), "value", "text");
 		}
 		$filterList["html"] = HTMLHelper::_('select.genericlist', $options, 'eventlist_fv', 'class="inputbox" size="1" onchange="document.location.replace(this.value);"', 'value', 'text', 0);
 		$filterList["html"] .= "<input type='hidden' name='eventlist' id='eventlistid' value='1'  />";

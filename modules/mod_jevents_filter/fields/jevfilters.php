@@ -12,6 +12,9 @@
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\String\StringHelper;
@@ -20,7 +23,7 @@ jimport('joomla.filesystem.folder');
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
-JFormHelper::loadFieldClass('text');
+FormHelper::loadFieldClass('text');
 
 include_once(JPATH_ADMINISTRATOR . "/components/com_jevents/jevents.defines.php");
 
@@ -58,16 +61,16 @@ class JFormFieldJevfilters extends JFormFieldText
 		$filterpath = $pluginsDir . "/filters";
 
 		$this->filterpath = array();
-		if (JFolder::exists($filterpath))
+		if (Folder::exists($filterpath))
 		{
 			$this->filterpath[] = $filterpath;
 		}
 
 		$this->filterpath[] = JPATH_SITE . "/components/com_jevents/libraries/filters";
 
-		if (JFolder::exists(JPATH_SITE . "/plugins/jevents"))
+		if (Folder::exists(JPATH_SITE . "/plugins/jevents"))
 		{
-			$others = JFolder::folders(JPATH_SITE . "/plugins/jevents", 'filters', true, true);
+			$others = Folder::folders(JPATH_SITE . "/plugins/jevents", 'filters', true, true);
 			if (is_array($others))
 			{
 				$this->filterpath = array_merge($this->filterpath, $others);
@@ -78,7 +81,7 @@ class JFormFieldJevfilters extends JFormFieldText
 		include_once(JPATH_SITE . "/components/com_jevents/libraries/filters.php");
 		foreach ($this->filterpath as $path)
 		{
-			foreach (JFolder::files($path, ".php") as $filtername)
+			foreach (Folder::files($path, ".php") as $filtername)
 			{
 				if (!array_key_exists($filtername, $filters))
 				{
@@ -105,7 +108,7 @@ class JFormFieldJevfilters extends JFormFieldText
 
 		$validvalues = array();
 		$input       = '<div style="clear:left"></div><table><tr valign="top">
-			<td><div style="font-weight:bold">' . JText::_("JEV_CLICK_TO_ADD_FILTER") . '</div>
+			<td><div style="font-weight:bold">' . Text::_("JEV_CLICK_TO_ADD_FILTER") . '</div>
 			<div id="filterchoices" style="width:150px;margin-top:10px;height:100px;border:solid 1px #ccc;overflow-y:auto" >';
 		foreach ($filters as $filter => $filterpath)
 		{
@@ -117,7 +120,7 @@ class JFormFieldJevfilters extends JFormFieldText
 		}
 		$validvalue = implode(",", $validvalues);
 		$input      .= '</div></td>
-		<td><div  style="font-weight:bold">' . JText::_("JEV_FILTER_CLICK_TO_REMOVE") . '</div>
+		<td><div  style="font-weight:bold">' . Text::_("JEV_FILTER_CLICK_TO_REMOVE") . '</div>
 			<div id="filtermatches" style="margin:10px 0px 0px 10px;">';
 		$invalues   = array();
 		foreach ($invalue as $filter)

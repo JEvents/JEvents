@@ -12,7 +12,7 @@ use \Joomla\CMS\Factory;
 
 $leftIconLinks = GslHelper::getLeftIconLinks();
 
-JFactory::getDocument()->addScriptDeclaration('ys_popover(".hasYsPopover");');
+Factory::getDocument()->addScriptDeclaration('ys_popover(".hasYsPopover");');
 
 ?>
 <aside id="left-col" class="gsl-padding-remove  gsl-background-secondary hide-label ">

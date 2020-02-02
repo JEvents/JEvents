@@ -1,6 +1,8 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\Utilities\ArrayHelper;
@@ -49,7 +51,7 @@ function DefaultPaginationForm($total, $limitstart, $limit, $keyword = "")
 			<?php
 			if ($task !== "crawler.listevents")
 			{
-				echo '<label class="sr-only" for="limit">' . JText::_("JEV_PAGINATION_LIMIT_LBL") . '</label>';
+				echo '<label class="sr-only" for="limit">' . Text::_("JEV_PAGINATION_LIMIT_LBL") . '</label>';
 				echo $pageNav->getListFooter();
 			}
 			else
@@ -71,7 +73,7 @@ function DefaultPaginationForm($total, $limitstart, $limit, $keyword = "")
 
 				$options = array();
 
-				echo JLayoutHelper::render($layoutId, array('list' => $list, 'options' => $options));
+				echo LayoutHelper::render($layoutId, array('list' => $list, 'options' => $options));
 
 			}
 			?>

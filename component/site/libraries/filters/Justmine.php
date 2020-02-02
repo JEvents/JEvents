@@ -12,6 +12,7 @@
 // ensure this file is being included by a parent file
 defined('_JEXEC') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -34,10 +35,10 @@ class jevJustmineFilter extends jevFilter
 
 		$this->filterType      = self::filterType;
 		$this->filterNullValue = "0";
-		$this->yesLabel        = JText::_($yesLabel);
-		$this->noLabel         = JText::_($noLabel);
-		$this->filterLabel     = JText::_("Show_Only_My_Events");
-		$this->filterLabelEscaped      = JText::_("Show_Only_My_Events", true);
+		$this->yesLabel        = Text::_($yesLabel);
+		$this->noLabel         = Text::_($noLabel);
+		$this->filterLabel     = Text::_("Show_Only_My_Events");
+		$this->filterLabelEscaped      = Text::_("Show_Only_My_Events", true);
 
 		// this is a special filter - we always want memory here since only used in frontend management
 

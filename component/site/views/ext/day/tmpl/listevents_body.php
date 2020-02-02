@@ -1,6 +1,9 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
+
 $cfg = JEVConfig::getInstance();
 
 $this->data = $data = $this->datamodel->getDayData($this->year, $this->month, $this->day);
@@ -21,7 +24,7 @@ $precedingDay = $this->datamodel->getPrecedingDay($this->year, $this->month, $th
 		<td class="tableh1" colspan="3">
 			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
-					<td><h2><?php echo JText::_('DAILY_VIEW'); ?></h2></td>
+					<td><h2><?php echo Text::_('DAILY_VIEW'); ?></h2></td>
 					<td class="today"
 					    align="right"><?php echo JEventsHTML::getDateFormat($this->year, $this->month, $this->day, 0); ?></td>
 				</tr>
@@ -32,8 +35,8 @@ $precedingDay = $this->datamodel->getPrecedingDay($this->year, $this->month, $th
 		<td class="previousmonth" align="center" height="22" nowrap="nowrap" valign="middle" width="33%">&nbsp;
 			<!-- BEGIN previous_month_link_row -->
 			<?php if ($precedingDay) {
-				echo "<a href='" . $precedingDay . "' title='" . JText::_("PRECEEDING_Day") . "' >" ?>
-				<?php echo JText::_("PRECEEDING_Day") . "</a>";
+				echo "<a href='" . $precedingDay . "' title='" . Text::_("PRECEEDING_Day") . "' >" ?>
+				<?php echo Text::_("PRECEEDING_Day") . "</a>";
 			} ?>
 
 
@@ -45,8 +48,8 @@ $precedingDay = $this->datamodel->getPrecedingDay($this->year, $this->month, $th
 		</td>
 		<td class="nextmonth" align="center" height="22" nowrap="nowrap" valign="middle" width="33%">
 			<?php if ($followingDay) {
-				echo "<a href='" . $followingDay . "' title='" . JText::_("FOLLOWING_Day") . "' >" ?>
-				<?php echo JText::_("FOLLOWING_Day") . "</a>"; ?>
+				echo "<a href='" . $followingDay . "' title='" . Text::_("FOLLOWING_Day") . "' >" ?>
+				<?php echo Text::_("FOLLOWING_Day") . "</a>"; ?>
 				<?php echo "</a>";
 			} ?>
 
@@ -57,7 +60,7 @@ $precedingDay = $this->datamodel->getPrecedingDay($this->year, $this->month, $th
 	if (count($data['hours']['timeless']['events']) > 0)
 	{
 		$hasevents  = true;
-		$start_time = JText::_('TIMELESS');
+		$start_time = Text::_('TIMELESS');
 
 		echo '<tr><td class="ev_td_right" colspan="3"><ul class="ev_ul">' . "\n";
 		foreach ($data['hours']['timeless']['events'] as $row)
@@ -94,7 +97,7 @@ $precedingDay = $this->datamodel->getPrecedingDay($this->year, $this->month, $th
 	{
 		echo '<tr><td class="ev_td_right" colspan="3"><ul class="ev_ul" style="list-style: none;">' . "\n";
 		echo "<li class='ev_td_li' style='border:0px;'>\n";
-		echo JText::_('JEV_NO_EVENTS');
+		echo Text::_('JEV_NO_EVENTS');
 		echo "</li>\n";
 		echo "</ul></td></tr>\n";
 	}

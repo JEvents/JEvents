@@ -10,6 +10,11 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+
+
 // get configuration object
 $cfg = JEVConfig::getInstance();
 if ($this->editCopy || $this->repeatId == 0)
@@ -22,14 +27,14 @@ else
 }
 
 // Disable event repeats for non-full editors if disable repeats is enabled
-$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 {
 	$repeatStyle = "style='display:none;' class='jeveditrepeats' ";
 }
 ?>
 <div style="clear:both;" class="jevdatetime">
-    <fieldset class="jev_sed"><legend><?php echo JText::_("Start_End_Duration"); ?></legend>
+    <fieldset class="jev_sed"><legend><?php echo Text::_("Start_End_Duration"); ?></legend>
 		<?php
 		if ($params->get("showtimezone", 0))
 		{
@@ -143,16 +148,16 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 
         <div id="jevmultiday" style="display:<?php echo $this->row->endDate() > $this->row->startDate() ? "block" : "none"; ?>">
 
-            <label style="font-weight:bold;" ><?php echo JText::_('JEV_EVENT_MULTIDAY'); ?></label><br/>
-            <div style="float:left;margin-right:20px!important;"><?php echo JText::_('JEV_EVENT_MULTIDAY_LONG') . "&nbsp;"; ?></div>
+            <label style="font-weight:bold;" ><?php echo Text::_('JEV_EVENT_MULTIDAY'); ?></label><br/>
+            <div style="float:left;margin-right:20px!important;"><?php echo Text::_('JEV_EVENT_MULTIDAY_LONG') . "&nbsp;"; ?></div>
             <div class="radio btn-group" style="float:left;">
                 <label for="yes"  class="radio btn">
                     <input type="radio" id="yes" name="multiday" value="1" <?php echo $this->row->multiday() ? 'checked="checked"' : ''; ?>  onclick="updateRepeatWarning();" />
-					<?php echo JText::_("JEV_YES"); ?>
+					<?php echo Text::_("JEV_YES"); ?>
                 </label>
                 <label for="no" class="radio btn">
                     <input type="radio" id="no" name="multiday" value="0" <?php echo $this->row->multiday() ? '' : 'checked="checked"'; ?>  onclick="updateRepeatWarning();" />
-					<?php echo JText::_("JEV_NO"); ?>
+					<?php echo Text::_("JEV_NO"); ?>
                 </label>
             </div>
         </div>
@@ -162,35 +167,35 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 <div <?php echo $repeatStyle; ?>>
     <!-- REPEAT FREQ -->
     <div style="clear:both;">
-        <fieldset class="radio btn-group" ><legend><?php echo JText::_('JEV_EVENT_REPEATTYPE'); ?></legend>
+        <fieldset class="radio btn-group" ><legend><?php echo Text::_('JEV_EVENT_REPEATTYPE'); ?></legend>
             <label for='NONE' class="btn radio">
                 <input type="radio" name="freq" id="NONE" value="none" <?php if ($this->row->freq() == "NONE") echo 'checked="checked"'; ?> onclick="toggleFreq('NONE');" />
-				<?php echo JText::_('NO_REPEAT'); ?>
+				<?php echo Text::_('NO_REPEAT'); ?>
             </label>
             <label for='DAILY' class="btn radio">
                 <input type="radio" name="freq" id="DAILY" value="DAILY" <?php if ($this->row->freq() == "DAILY") echo 'checked="checked"'; ?> onclick="toggleFreq('DAILY');" />
-				<?php echo JText::_('DAILY'); ?>
+				<?php echo Text::_('DAILY'); ?>
             </label>
             <label for='WEEKLY' class="btn radio">
                 <input type="radio" name="freq" id="WEEKLY" value="WEEKLY" <?php if ($this->row->freq() == "WEEKLY") echo 'checked="checked"'; ?> onclick="toggleFreq('WEEKLY');" />
-				<?php echo JText::_('WEEKLY'); ?>
+				<?php echo Text::_('WEEKLY'); ?>
             </label>
             <label for='MONTHLY' class="btn radio">
                 <input type="radio" name="freq" id="MONTHLY" value="MONTHLY" <?php if ($this->row->freq() == "MONTHLY") echo 'checked="checked"'; ?> onclick="toggleFreq('MONTHLY');" />
-				<?php echo JText::_('MONTHLY'); ?>
+				<?php echo Text::_('MONTHLY'); ?>
             </label>
             <label for='YEARLY' class="btn radio">
                 <input type="radio" name="freq" id="YEARLY" value="YEARLY" <?php if ($this->row->freq() == "YEARLY") echo 'checked="checked"'; ?> onclick="toggleFreq('YEARLY');" />
-				<?php echo JText::_('YEARLY'); ?>
+				<?php echo Text::_('YEARLY'); ?>
             </label>
 			<?php
-			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 			if ($params->get("dayselect", 0))
 			{
 				?>
                 <label for='IRREGULARBTN' class="btn radio">
                     <input type="radio" name="freq" id="IRREGULARBTN" value="IRREGULAR" onclick="toggleFreq('IRREGULAR');"  <?php if ($this->row->freq() == "IRREGULAR") echo 'checked="checked"'; ?>/>
-					<?php echo JText::_('IRREGULAR'); ?>
+					<?php echo Text::_('IRREGULAR'); ?>
                 </label>
 			<?php } ?>
         </fieldset>
@@ -198,20 +203,20 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
     <!-- END REPEAT FREQ-->
     <div id="interval_div">
         <div style="float:left">
-            <fieldset><legend><?php echo JText::_('REPEAT_INTERVAL') ?></legend>
+            <fieldset><legend><?php echo Text::_('REPEAT_INTERVAL') ?></legend>
                 <input class="inputbox" type="text" name="rinterval" id="rinterval" size="2" maxlength="2" value="<?php echo $this->row->interval(); ?>" onchange="checkInterval();" /><span id='interval_label' style="margin-left:1em"></span>
             </fieldset>
         </div>
         <div style="float:left;margin-left:20px!important"  id="cu_count" >
-            <fieldset><legend><input type="radio" name="countuntil" value="count" id="cuc" checked="checked" onclick="toggleCountUntil('cu_count');" /><?php echo JText::_('REPEAT_COUNT') ?></legend>
-                <input class="inputbox" type="text" name="count" id="count" size="3" maxlength="3" value="<?php echo $this->row->count(); ?>" onchange="checkInterval();" /><span id='count_label' style="margin-left:1em"><?php echo JText::_('REPEATS'); ?></span>
+            <fieldset><legend><input type="radio" name="countuntil" value="count" id="cuc" checked="checked" onclick="toggleCountUntil('cu_count');" /><?php echo Text::_('REPEAT_COUNT') ?></legend>
+                <input class="inputbox" type="text" name="count" id="count" size="3" maxlength="3" value="<?php echo $this->row->count(); ?>" onchange="checkInterval();" /><span id='count_label' style="margin-left:1em"><?php echo Text::_('REPEATS'); ?></span>
             </fieldset>
         </div>
         <div style="float:left;margin-left:20px!important;" id="cu_until" class="roundedgrey">
             <fieldset class="roundedgrey">
-                <legend  class="roundedgrey"><input type="radio" name="countuntil" value="until" id="cuu" onclick="toggleCountUntil('cu_until');" /><?php echo JText::_('REPEAT_UNTIL'); ?></legend>
+                <legend  class="roundedgrey"><input type="radio" name="countuntil" value="until" id="cuu" onclick="toggleCountUntil('cu_until');" /><?php echo Text::_('REPEAT_UNTIL'); ?></legend>
 				<?php
-				$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+				$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 				$minyear = JEVHelper::getMinYear();
 				$maxyear = JEVHelper::getMaxYear();
 				$inputdateformat = $params->get("com_editdateformat", "d.m.Y");
@@ -224,44 +229,44 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
     </div>
     <div style="clear:both;">
         <div   id="byyearday">
-            <fieldset><legend><input type="radio" name="whichby" id="jevbyd" value="byd"  onclick="toggleWhichBy('byyearday');" /><?php echo JText::_('BY_YEAR_DAY'); ?></legend>
+            <fieldset><legend><input type="radio" name="whichby" id="jevbyd" value="byd"  onclick="toggleWhichBy('byyearday');" /><?php echo Text::_('BY_YEAR_DAY'); ?></legend>
                 <div>
-					<?php echo JText::_('COMMA_SEPARATED_LIST'); ?>
+					<?php echo Text::_('COMMA_SEPARATED_LIST'); ?>
                     <input class="inputbox" type="text" name="byyearday" size="20" maxlength="100" value="<?php echo $this->row->byyearday(); ?>" onchange="checkInterval();" />
                 </div>
                 <div class="countback">
-					<?php echo JText::_('COUNT_BACK_YEAR'); ?>
+					<?php echo Text::_('COUNT_BACK_YEAR'); ?>
                     <input type="checkbox" name="byd_direction"  onclick="fixRepeatDates();" <?php echo $this->row->getByDirectionChecked("byyearday"); ?>/>
                 </div>
             </fieldset>
         </div>
         <div  id="bymonth">
-            <fieldset><legend><input type="radio" name="whichby"  id="jevbm" value="bm"  onclick="toggleWhichBy('bymonth');" /><?php echo JText::_('BY_MONTH'); ?></legend>
-				<?php echo JText::_('COMMA_SEPARATED_LIST'); ?>
+            <fieldset><legend><input type="radio" name="whichby"  id="jevbm" value="bm"  onclick="toggleWhichBy('bymonth');" /><?php echo Text::_('BY_MONTH'); ?></legend>
+				<?php echo Text::_('COMMA_SEPARATED_LIST'); ?>
                 <input class="inputbox" type="text" name="bymonth" size="30" maxlength="20" value="<?php echo $this->row->bymonth(); ?>" onchange="checkInterval();" />
             </fieldset>
         </div>
         <div id="byweekno">
-            <fieldset><legend><input type="radio" name="whichby"  id="jevbwn" value="bwn"  onclick="toggleWhichBy('byweekno');" /><?php echo JText::_('BY_WEEK_NO'); ?></legend>
-				<?php echo JText::_('COMMA_SEPARATED_LIST'); ?>
+            <fieldset><legend><input type="radio" name="whichby"  id="jevbwn" value="bwn"  onclick="toggleWhichBy('byweekno');" /><?php echo Text::_('BY_WEEK_NO'); ?></legend>
+				<?php echo Text::_('COMMA_SEPARATED_LIST'); ?>
                 <input class="inputbox" type="text" name="byweekno" size="20" maxlength="20" value="<?php echo $this->row->byweekno(); ?>" onchange="checkInterval();" />
                 <br/>Count back from year end<input type="checkbox" name="bwn_direction"  <?php echo $this->row->getByDirectionChecked("byweekno"); ?> />
             </fieldset>
         </div>
         <div   id="bymonthday">
-            <fieldset><legend><input type="radio" name="whichby"  id="jevbmd" value="bmd"  onclick="toggleWhichBy('bymonthday');" /><?php echo JText::_('BY_MONTH_DAY'); ?></legend>
+            <fieldset><legend><input type="radio" name="whichby"  id="jevbmd" value="bmd"  onclick="toggleWhichBy('bymonthday');" /><?php echo Text::_('BY_MONTH_DAY'); ?></legend>
                 <div>
-					<?php echo JText::_('COMMA_SEPARATED_LIST'); ?>
+					<?php echo Text::_('COMMA_SEPARATED_LIST'); ?>
                     <input class="inputbox" type="text" name="bymonthday" size="30" maxlength="20" value="<?php echo $this->row->bymonthday(); ?>" onchange="checkInterval();" />
                 </div>
                 <div class="countback">
-					<?php echo JText::_('COUNT_BACK'); ?><input type="checkbox" name="bmd_direction"  onclick="fixRepeatDates();"  <?php echo $this->row->getByDirectionChecked("bymonthday"); ?>/>
+					<?php echo Text::_('COUNT_BACK'); ?><input type="checkbox" name="bmd_direction"  onclick="fixRepeatDates();"  <?php echo $this->row->getByDirectionChecked("bymonthday"); ?>/>
                 </div>
             </fieldset>
         </div>
         <div id="byday">
             <fieldset >
-                <legend><input type="radio" name="whichby"  id="jevbd" value="bd"  onclick="toggleWhichBy('byday');" /><?php echo JText::_('BY_DAY'); ?></legend>
+                <legend><input type="radio" name="whichby"  id="jevbd" value="bd"  onclick="toggleWhichBy('byday');" /><?php echo Text::_('BY_DAY'); ?></legend>
                 <div class="checkbox <?php echo version_compare(JVERSION, '3.8.12', '<') ? "btn" : "jev-button"; ?>-group">
 					<?php
 					JEventsHTML::buildWeekDaysCheck($this->row->getByDay_days(), '', "weekdays");
@@ -269,24 +274,24 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
                 </div>
             </fieldset>
             <fieldset  id="weekofmonth">
-                <legend><?php echo JText::_('WHICH_WEEK'); ?></legend>
+                <legend><?php echo Text::_('WHICH_WEEK'); ?></legend>
                 <div class="checkbox <?php echo version_compare(JVERSION, '3.8.12', '<') ? "btn" : "jev-button"; ?>-group">
 					<?php
 					JEventsHTML::buildWeeksCheck($this->row->getByDay_weeks(), "", "weeknums", $this->row->getByDirection("byday"));
 					?>
                 </div>
                 <div class="countback">
-					<?php echo JText::_('COUNT_BACK'); ?>
+					<?php echo Text::_('COUNT_BACK'); ?>
                     <input type="checkbox" name="bd_direction" <?php echo $this->row->getByDirectionChecked("byday"); ?>  onclick="updateRepeatWarning();toggleWeeknumDirection();"/>
                 </div>
             </fieldset>
         </div>
         <div id="byirregular">
             <fieldset >
-                <legend><?php echo JText::_('JEV_SELECT_REPEAT_DATES'); ?></legend>
+                <legend><?php echo Text::_('JEV_SELECT_REPEAT_DATES'); ?></legend>
                 <div class="irregularDateSelector">
 					<?php
-					$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+					$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 					$minyear = JEVHelper::getMinYear();
 					$maxyear = JEVHelper::getMaxYear();
 					$inputdateformat = $params->get("com_editdateformat", "d.m.Y");
@@ -303,7 +308,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 
 					//"selectIrregularDate();updateRepeatWarning();"
 					/*
-					JFactory::getDocument()->addScriptDeclaration(
+					Factory::getDocument()->addScriptDeclaration(
 						'jQuery(document).on("ready", function () {
 						jQuery("#irregular").on("calupdate", function(evt) {
 							alert(evt);
@@ -327,7 +332,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 					}
 					?>
                 </select>
-                <strong><?php echo JText::_("JEV_IRREGULAR_REPEATS_CANNOT_BE_EXPORTED_AT_PRESENT"); ?></strong>
+                <strong><?php echo Text::_("JEV_IRREGULAR_REPEATS_CANNOT_BE_EXPORTED_AT_PRESENT"); ?></strong>
             </fieldset>
         </div>
         <div  class="jev_none" id="bysetpos">

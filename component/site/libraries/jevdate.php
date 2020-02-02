@@ -3,6 +3,7 @@
 // No direct access
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Date\Date;
 use Joomla\CMS\Component\ComponentHelper;
 
 // Class to fix Joomla 1.6 date class bugs
@@ -13,7 +14,7 @@ if (!defined("JEVDATE"))
 {
 	define("JEVDATE", 1);
 
-	class JevDate extends JDate
+	class JevDate extends Date
 	{
 
 		public $mytz;
@@ -107,7 +108,7 @@ if (!defined("JEVDATE"))
 		 * Returns a string formatted according to the given format. Month and weekday names and
 		 * other language dependent strings respect the current locale
 		 *
-		 * @deprecated    Deprecated since 1.6, use JDate::format() instead.
+		 * @deprecated    Deprecated since 1.6, use Date::format() instead.
 		 *
 		 * @param    string    The date format specification string (see {@link PHP_MANUAL#JevDate::strftime})
 		 * @param    boolean    True to return the date string in the local time zone, false to return it in GMT.
@@ -160,12 +161,12 @@ if (!defined("JEVDATE"))
 		}
 
 		/**
-		 * Return the {@link JDate} object
+		 * Return the {@link Date} object
 		 *
-		 * @param mixed $time     The initial time for the JDate object
+		 * @param mixed $time     The initial time for the Date object
 		 * @param mixed $tzOffset The timezone offset.
 		 *
-		 * @return JDate object
+		 * @return Date object
 		 * @since 1.5
 		 */
 		public static function getDate($time = 'now', $tzOffset = null)

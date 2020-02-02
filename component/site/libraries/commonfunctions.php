@@ -13,6 +13,8 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\User\User;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
@@ -355,7 +357,7 @@ class JEV_CommonFunctions
 		$config     = new JConfig();
 		$sitename   = $config->sitename;
 
-		$subject = JText::sprintf('JEV_NOTIFY_AUTHOR_SUBJECT', $sitename);
+		$subject = Text::sprintf('JEV_NOTIFY_AUTHOR_SUBJECT', $sitename);
 
 		$Itemid = JEVHelper::getItemid();
 		// reload the event to get the reptition ids
@@ -388,7 +390,7 @@ class JEV_CommonFunctions
 			$detaillink = '<a href="' . $root . Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.detail&rp_id=' . $evid . '&rp_id=' . $rp_id . '&Itemid=' . $Itemid . "&year=$year&month=$month&day=$day") . '">' . $event->title() . '</a>' . "\n";
 		}
 
-		$content = sprintf(JText::_('JEV_NOTIFY_AUTHOR_Message'), $detaillink, $sitename);
+		$content = sprintf(Text::_('JEV_NOTIFY_AUTHOR_Message'), $detaillink, $sitename);
 
 		$authorname  = "";
 		$authoremail = "";
@@ -456,16 +458,16 @@ class JEV_CommonFunctions
 		{
 			return; // no notifications
 		}
-		$messagetemplate = $params->get("notifymessage", JText::_('JEV_DEFAULT_NOTIFYMESSAGE'));
+		$messagetemplate = $params->get("notifymessage", Text::_('JEV_DEFAULT_NOTIFYMESSAGE'));
 
 		if (strpos($messagetemplate, "JEV_DEFAULT_NOTIFYMESSAGE") !== false || trim(strip_tags($messagetemplate)) == "")
 		{
-			$messagetemplate = sprintf(JText::_('JEV_EMAIL_EVENT_TITLE'), "{TITLE}") . "<br/><br/>\n";
+			$messagetemplate = sprintf(Text::_('JEV_EMAIL_EVENT_TITLE'), "{TITLE}") . "<br/><br/>\n";
 			$messagetemplate .= "{DESCRIPTION}<br/><br/>\n";
-			$messagetemplate .= sprintf(JText::_('JEV_MAIL_TO_ADMIN'), "{LIVESITE}", "{AUTHOR}") . "<br/>\n";
-			$messagetemplate .= sprintf(JText::_('JEV_EMAIL_VIEW_EVENT'), "{VIEWLINK}") . "<br/>\n";
-			$messagetemplate .= sprintf(JText::_('JEV_EMAIL_EDIT_EVENT'), "{EDITLINK}") . "<br/>\n";
-			$messagetemplate .= sprintf(JText::_('JEV_MANAGE_EVENTS'), "{MANAGEEVENTS}") . "<br/>";
+			$messagetemplate .= sprintf(Text::_('JEV_MAIL_TO_ADMIN'), "{LIVESITE}", "{AUTHOR}") . "<br/>\n";
+			$messagetemplate .= sprintf(Text::_('JEV_EMAIL_VIEW_EVENT'), "{VIEWLINK}") . "<br/>\n";
+			$messagetemplate .= sprintf(Text::_('JEV_EMAIL_EDIT_EVENT'), "{EDITLINK}") . "<br/>\n";
+			$messagetemplate .= sprintf(Text::_('JEV_MANAGE_EVENTS'), "{MANAGEEVENTS}") . "<br/>";
 		}
 
 		$uri       = Uri::getInstance(Uri::base());
@@ -497,7 +499,7 @@ class JEV_CommonFunctions
 		{
 			if ($params->get("com_notifyboth", 0) == 1)
 			{
-				$jevadminuser = new  JUser($params->get("jevadmin", 62));
+				$jevadminuser = new  User($params->get("jevadmin", 62));
 				if ($jevadminuser->email != $adminEmail)
 				{
 					$add_cc = $jevadminuser->email;
@@ -511,7 +513,7 @@ class JEV_CommonFunctions
 		// Just JEvents admin user
 		else if ($params->get("com_notifyboth", 0) == 2)
 		{
-			$jevadminuser = new  JUser($params->get("jevadmin", 62));
+			$jevadminuser = new  User($params->get("jevadmin", 62));
 			if ($jevadminuser->email != $adminEmail)
 			{
 				$recipient = $jevadminuser->email;

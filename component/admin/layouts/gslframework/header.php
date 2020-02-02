@@ -15,14 +15,18 @@ if (GSLMSIE10)
     return;
 }
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Version;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Session\Session;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Factory;
 
 // Skip Chosen in Joomla 4.x+
-$jversion = new JVersion;
+$jversion = new Version;
 if ($jversion->isCompatible('4.0'))
 {
-	$document = JFactory::getDocument();
+	$document = Factory::getDocument();
 	$document->addScriptDeclaration("j3 = false;");
 }
 
@@ -97,12 +101,12 @@ GslHelper::loadAssets();
                             }
                             ?>
                             <li class="hasYsPopover  ys_logout"
-                                data-yspoptitle = "<?php echo  JText::_('JLOGOUT', true); ?>"
-                                data-yspopcontent = "<?php echo JText::_('JLOGOUT', true); ?>"
+                                data-yspoptitle = "<?php echo  Text::_('JLOGOUT', true); ?>"
+                                data-yspopcontent = "<?php echo Text::_('JLOGOUT', true); ?>"
                             >
-                                <a href="<?php echo JUri::base() . 'index.php?option=com_login&amp;task=logout&amp;' . JSession::getFormToken() . '=1'; ?>"
+                                <a href="<?php echo Uri::base() . 'index.php?option=com_login&amp;task=logout&amp;' . Session::getFormToken() . '=1'; ?>"
                                    data-gsl-icon="icon:  sign-out"
-                                   title="<?php JText::_('JLOGOUT'); ?>"
+                                   title="<?php Text::_('JLOGOUT'); ?>"
                                    aria-expanded="false">
                                 </a>
                             </li>

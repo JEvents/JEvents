@@ -9,6 +9,9 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Layout\BaseLayout;
+use Joomla\CMS\Layout\FileLayout;
+use Joomla\CMS\Filesystem\Path;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 
@@ -19,7 +22,7 @@ use Joomla\CMS\Component\ComponentHelper;
  * @see    https://docs.joomla.org/Sharing_layouts_across_views_or_extensions_with_JLayout
  * @since  3.0
  */
-class JLayoutFile extends JLayoutBase
+class FileLayout extends BaseLayout
 {
 	/**
 	 * @var    string  Dot separated path to the layout file, relative to base path
@@ -424,7 +427,7 @@ class JLayoutFile extends JLayoutBase
 					$rawPath = str_replace('.', '/', $this->layoutId) . '.' . $suffix . '.php';
 					$this->addDebugMessage('<strong>Searching layout for:</strong> ' . $rawPath);
 
-					if ($this->fullPath = JPath::find($this->includePaths, $rawPath))
+					if ($this->fullPath = Path::find($this->includePaths, $rawPath))
 					{
 						$this->addDebugMessage('<strong>Found layout:</strong> ' . $this->fullPath);
 
@@ -437,7 +440,7 @@ class JLayoutFile extends JLayoutBase
 			$rawPath = str_replace('.', '/', $this->layoutId) . '.php';
 			$this->addDebugMessage('<strong>Searching layout for:</strong> ' . $rawPath);
 
-			$this->fullPath = JPath::find($this->includePaths, $rawPath);
+			$this->fullPath = Path::find($this->includePaths, $rawPath);
 
 			if ($this->fullPath)
 			{

@@ -15,6 +15,8 @@
 /** ensure this file is being included by a parent file */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
@@ -44,11 +46,11 @@ function plgSearchEventsSearchAreas()
 	$lang->load("plg_search_eventsearch", JPATH_ADMINISTRATOR);
 
 	return array(
-		'eventsearch' => JText::_('JEV_EVENTS_SEARCH')
+		'eventsearch' => Text::_('JEV_EVENTS_SEARCH')
 	);
 }
 
-class plgSearchEventsearch extends JPlugin
+class plgSearchEventsearch extends CMSPlugin
 {
 
 	/**
@@ -80,7 +82,7 @@ class plgSearchEventsearch extends JPlugin
 	{
 
 		return array(
-			'eventsearch' => JText::_('JEV_EVENTS_SEARCH')
+			'eventsearch' => Text::_('JEV_EVENTS_SEARCH')
 		);
 	}
 
@@ -274,7 +276,7 @@ class plgSearchEventsearch extends JPlugin
 				break;
 		}
 
-		$eventstitle = $db->escape(JText::_("JEV_EVENT_CALENDAR"));
+		$eventstitle = $db->escape(Text::_("JEV_EVENT_CALENDAR"));
 		// Now Search Icals
 		$display2 = array();
 		foreach ($search_ical_attributes as $search_ical_attribute)

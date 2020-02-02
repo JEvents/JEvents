@@ -7,6 +7,8 @@
 // no direct access
 defined('_JEXEC') or die(' Restricted Access ');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 
@@ -18,7 +20,7 @@ jimport('joomla.plugin.plugin');
  * @package        Joomla.Plugin
  * @subpakage      jevents.JEvents
  */
-class plgContentJEvents extends JPlugin
+class plgContentJEvents extends CMSPlugin
 {
 
 	public
@@ -77,8 +79,8 @@ class plgContentJEvents extends JPlugin
 
 			if ($result_count >= 1)
 			{
-				$app->enqueueMessage(JText::sprintf('JEV_CAT_MAN_DELETE_WITH_IDS', $result_count), 'Warning');
-				$app->enqueueMessage(JText::sprintf('JEV_CAT_DELETE_MSG_EVENTS_FIRST'), 'Warning');
+				$app->enqueueMessage(Text::sprintf('JEV_CAT_MAN_DELETE_WITH_IDS', $result_count), 'Warning');
+				$app->enqueueMessage(Text::sprintf('JEV_CAT_DELETE_MSG_EVENTS_FIRST'), 'Warning');
 
 				return false;
 			}
@@ -164,8 +166,8 @@ class plgContentJEvents extends JPlugin
 				//Quick way to query debug without launching netbeans.
 				//Factory::getApplication()->enqueueMessage($query, 'Error');
 
-				$app->enqueueMessage(JText::sprintf('JEV_CAT_MAN_DELETE_WITH_IDS', $result_count), 'Warning');
-				$app->enqueueMessage(JText::sprintf('JEV_CAT_DELETE_MSG_EVENTS_FIRST'), 'Warning');
+				$app->enqueueMessage(Text::sprintf('JEV_CAT_MAN_DELETE_WITH_IDS', $result_count), 'Warning');
+				$app->enqueueMessage(Text::sprintf('JEV_CAT_DELETE_MSG_EVENTS_FIRST'), 'Warning');
 			}
 		}
 

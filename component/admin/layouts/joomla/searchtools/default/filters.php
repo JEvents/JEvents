@@ -1,4 +1,8 @@
 <?php
+
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+
 /**
  * @package     Joomla.Site
  * @subpackage  Layout
@@ -20,9 +24,9 @@ $customfilters =  $data['view']->filters;
 		<?php if ($fieldName !== 'filter_search') : ?>
 			<?php $dataShowOn = ''; ?>
 			<?php if ($field->showon) : ?>
-				<?php JHtml::_('jquery.framework'); ?>
-				<?php JHtml::_('script', 'jui/cms.js', array('version' => 'auto', 'relative' => true)); ?>
-				<?php $dataShowOn = " data-showon='" . json_encode(JFormHelper::parseShowOnConditions($field->showon, $field->formControl, $field->group)) . "'"; ?>
+				<?php HTMLHelper::_('jquery.framework'); ?>
+				<?php HTMLHelper::_('script', 'jui/cms.js', array('version' => 'auto', 'relative' => true)); ?>
+				<?php $dataShowOn = " data-showon='" . json_encode(FormHelper::parseShowOnConditions($field->showon, $field->formControl, $field->group)) . "'"; ?>
 			<?php endif; ?>
 			<div class="js-stools-field-filter"<?php echo $dataShowOn; ?>>
 				<?php

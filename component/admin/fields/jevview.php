@@ -13,6 +13,7 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -61,7 +62,7 @@ class JFormFieldJevview extends JFormFieldList
 			}
 			else
 			{
-				array_unshift($views, HTMLHelper::_('select.option', 'global', JText::_('USE_GLOBAL')));
+				array_unshift($views, HTMLHelper::_('select.option', 'global', Text::_('USE_GLOBAL')));
 			}
 		}
 

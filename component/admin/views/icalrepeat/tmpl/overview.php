@@ -10,6 +10,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -52,11 +53,11 @@ $fullspan       = 12;
 				<div class="clearfix">
 					<div class="js-stools-container-bar">
 						<label for="search" class="element-invisible">
-							<?php echo JText::_('JEV_SEARCH'); ?>
+							<?php echo Text::_('JEV_SEARCH'); ?>
 						</label>
 						<div class="btn-wrapper input-append">
 							<input type="text" id="search" name="search" value="<?php echo $this->search; ?>"
-							       placeholder="<?php echo JText::_('JEV_SEARCH'); ?>" class="inputbox"
+							       placeholder="<?php echo Text::_('JEV_SEARCH'); ?>" class="inputbox"
 							       onChange="Joomla.submitform()" />
 							<button type="submit" class="btn hasTooltip" title="" aria-label="Search"
 							        data-original-title="Search">
@@ -66,7 +67,7 @@ $fullspan       = 12;
 						<div class="btn-wrapper">
 							<button type="button" class="btn hasTooltip js-stools-btn-clear" title=""
 							        data-original-title="Clear">
-								<?php echo JText::_('JCLEAR'); ?>
+								<?php echo Text::_('JCLEAR'); ?>
 							</button>
 						</div>
 					</div>
@@ -96,9 +97,9 @@ $fullspan       = 12;
 					<th width="20" nowrap="nowrap">
 						<?php echo HTMLHelper::_('grid.checkall'); ?>
 					</th>
-					<th class="title" width="60%" nowrap="nowrap"><?php echo JText::_('JEV_ICAL_SUMMARY'); ?></th>
+					<th class="title" width="60%" nowrap="nowrap"><?php echo Text::_('JEV_ICAL_SUMMARY'); ?></th>
 					<th width="40%"
-					    nowrap="nowrap"><?php echo JText::_('COM_JEVENTS_ICALREPEAT_REPEAT_DATE_TIME'); ?></th>
+					    nowrap="nowrap"><?php echo Text::_('COM_JEVENTS_ICALREPEAT_REPEAT_DATE_TIME'); ?></th>
 				</tr>
 
 				<?php
@@ -114,13 +115,13 @@ $fullspan       = 12;
 						</td>
 						<td width="30%">
 							<a href="index.php?option=com_jevents&task=icalrepeat.edit&cid[]=<?php echo $row->rp_id(); ?>" onclick="return listItemTask('cb<?php echo $i; ?>','icalrepeat.edit')"
-							   title="<?php echo JText::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->title(); ?></a>
+							   title="<?php echo Text::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->title(); ?></a>
 						</td>
 						<td width="40%">
 							<?php
 							$times = '<table style="border: 1px solid #666666; width:100%;">';
-							$times .= '<tr><td>' . JText::_('JEV_FROM') . ' : ' . ($row->alldayevent() ? StringHelper::substr($row->publish_up(), 0, 10) : StringHelper::substr($row->publish_up(), 0, 16)) . '</td></tr>';
-							$times .= '<tr><td>' . JText::_('JEV_TO') . ' : ' . (($row->noendtime() || $row->alldayevent()) ? StringHelper::substr($row->publish_down(), 0, 10) : StringHelper::substr($row->publish_down(), 0, 16)) . '</td></tr>';
+							$times .= '<tr><td>' . Text::_('JEV_FROM') . ' : ' . ($row->alldayevent() ? StringHelper::substr($row->publish_up(), 0, 10) : StringHelper::substr($row->publish_up(), 0, 16)) . '</td></tr>';
+							$times .= '<tr><td>' . Text::_('JEV_TO') . ' : ' . (($row->noendtime() || $row->alldayevent()) ? StringHelper::substr($row->publish_down(), 0, 10) : StringHelper::substr($row->publish_down(), 0, 16)) . '</td></tr>';
 							$times .= "</table>";
 							echo $times;
 							?>

@@ -167,7 +167,7 @@ class JEventsCategories extends Joomla\CMS\Categories\Categories
 				// Create the node
 				if (!isset($this->_nodes[$result->id]))
 				{
-					// Create the JCategoryNode and add to _nodes
+					// Create the CategoryNode and add to _nodes
 					$this->_nodes[$result->id] = new CategoryNode($result, $this);
 
 					// If this is not root and if the current node's parent is in the list or the current node parent is 0
@@ -193,7 +193,7 @@ class JEventsCategories extends Joomla\CMS\Categories\Categories
 				}
 				elseif ($result->id == $id || $childrenLoaded)
 				{
-					// Create the JCategoryNode
+					// Create the CategoryNode
 					$this->_nodes[$result->id] = new CategoryNode($result, $this);
 
 					if ($result->id != 'root' && (isset($this->_nodes[$result->parent_id]) || $result->parent_id))

@@ -11,6 +11,7 @@
 
 defined('_VALID_MOS') or defined('_JEXEC') or die('No Direct Access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\String\StringHelper;
@@ -129,14 +130,14 @@ class jevStartdateFilter extends jevFilter
 		}
 
 		$filterList          = array();
-		$filterList["title"] = JText::_('WITH_INSTANCES');
+		$filterList["title"] = Text::_('WITH_INSTANCES');
 
 		$filterList["html"] = "";
 
 		$options            = array();
-		$options[]          = HTMLHelper::_('select.option', '0', JText::_('WHEN'));
-		$options[]          = HTMLHelper::_('select.option', '1', JText::_('On_or_after'));
-		$options[]          = HTMLHelper::_('select.option', '-1', JText::_('BEFORE'));
+		$options[]          = HTMLHelper::_('select.option', '0', Text::_('WHEN'));
+		$options[]          = HTMLHelper::_('select.option', '1', Text::_('On_or_after'));
+		$options[]          = HTMLHelper::_('select.option', '-1', Text::_('BEFORE'));
 		$filterList["html"] .= HTMLHelper::_('select.genericlist', $options, $this->filterType . '_fvs0', 'onchange="form.submit()" class="inputbox" size="1" ', 'value', 'text', $this->filter_values[0]);
 
 		//$filterList["html"] .=  HTMLHelper::calendar($this->filter_values[1],$this->filterType.'_fvs1', $this->filterType.'_fvs1', '%Y-%m-%d',array('size'=>'12','maxlength'=>'10','onchange'=>'form.submit()'));
@@ -159,26 +160,26 @@ class jevStartdateFilter extends jevFilter
 					tweak:{x:0,y:-75},
 					offset:1,
 					range:{min:' . $minyear . ',max:' . $maxyear . '},
-					months:["' . JText::_("JEV_JANUARY") . '",
-					"' . JText::_("JEV_FEBRUARY") . '",
-					"' . JText::_("JEV_MARCH") . '",
-					"' . JText::_("JEV_APRIL") . '",
-					"' . JText::_("JEV_MAY") . '",
-					"' . JText::_("JEV_JUNE") . '",
-					"' . JText::_("JEV_JULY") . '",
-					"' . JText::_("JEV_AUGUST") . '",
-					"' . JText::_("JEV_SEPTEMBER") . '",
-					"' . JText::_("JEV_OCTOBER") . '",
-					"' . JText::_("JEV_NOVEMBER") . '",
-					"' . JText::_("JEV_DECEMBER") . '"
+					months:["' . Text::_("JEV_JANUARY") . '",
+					"' . Text::_("JEV_FEBRUARY") . '",
+					"' . Text::_("JEV_MARCH") . '",
+					"' . Text::_("JEV_APRIL") . '",
+					"' . Text::_("JEV_MAY") . '",
+					"' . Text::_("JEV_JUNE") . '",
+					"' . Text::_("JEV_JULY") . '",
+					"' . Text::_("JEV_AUGUST") . '",
+					"' . Text::_("JEV_SEPTEMBER") . '",
+					"' . Text::_("JEV_OCTOBER") . '",
+					"' . Text::_("JEV_NOVEMBER") . '",
+					"' . Text::_("JEV_DECEMBER") . '"
 					],
-					days :["' . JText::_("JEV_SUNDAY") . '",
-					"' . JText::_("JEV_MONDAY") . '",
-					"' . JText::_("JEV_TUESDAY") . '",
-					"' . JText::_("JEV_WEDNESDAY") . '",
-					"' . JText::_("JEV_THURSDAY") . '",
-					"' . JText::_("JEV_FRIDAY") . '",
-					"' . JText::_("JEV_SATURDAY") . '"
+					days :["' . Text::_("JEV_SUNDAY") . '",
+					"' . Text::_("JEV_MONDAY") . '",
+					"' . Text::_("JEV_TUESDAY") . '",
+					"' . Text::_("JEV_WEDNESDAY") . '",
+					"' . Text::_("JEV_THURSDAY") . '",
+					"' . Text::_("JEV_FRIDAY") . '",
+					"' . Text::_("JEV_SATURDAY") . '"
 					], 
 					onHideComplete : function () { $("' . $this->filterType . '_fvs1").form.submit()},					
 				});

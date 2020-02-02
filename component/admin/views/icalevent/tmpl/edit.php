@@ -10,6 +10,8 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Associations;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
@@ -34,7 +36,7 @@ $input  = $app->input;
 $params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 // get configuration object
 $cfg   = JEVConfig::getInstance();
-$assoc = false && JLanguageAssociations::isEnabled() && Factory::getApplication()->isClient('administrator');
+$assoc = false && Associations::isEnabled() && Factory::getApplication()->isClient('administrator');
 
 // Load Bootstrap
 JevHtmlBootstrap::framework();
@@ -74,7 +76,7 @@ else if ($params->get("bootstrapcss", 1) == 2)
 	JHtmlBootstrap::loadCss();
 }
 
-// use JRoute to preseve language selection
+// use Route to preseve language selection
 $action = Factory::getApplication()->isClient('administrator') ? "index.php" : Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=" . JEVHelper::getItemid());
 
 $user         = Factory::getUser();
@@ -98,7 +100,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 				if ($this->editCopy)
 				{
 					$repeatStyle = "";
-					echo "<h3>" . JText::_('YOU_ARE_EDITING_A_COPY_ON_AN_ICAL_EVENT') . "</h3>";
+					echo "<h3>" . Text::_('YOU_ARE_EDITING_A_COPY_ON_AN_ICAL_EVENT') . "</h3>";
 				}
 				else if ($this->repeatId == 0)
 				{
@@ -108,11 +110,11 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 					{
 						if ($this->row->_freq === "none")
 						{
-							echo JText::_('YOU_ARE_EDITING_AN_ICAL_EVENT_WITH_NO_REPEATS');
+							echo Text::_('YOU_ARE_EDITING_AN_ICAL_EVENT_WITH_NO_REPEATS');
 						}
 						else
 						{
-							echo JText::_('YOU_ARE_EDITING_AN_ICAL_EVENT');
+							echo Text::_('YOU_ARE_EDITING_AN_ICAL_EVENT');
 						}
 					}
 				}
@@ -120,7 +122,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 				{
 					$repeatStyle = "style='display:none;'";
 					?>
-					<h3><?php echo JText::_('YOU_ARE_EDITING_AN_ICAL_REPEAT'); ?></h3>
+					<h3><?php echo Text::_('YOU_ARE_EDITING_AN_ICAL_REPEAT'); ?></h3>
 					<input type="hidden" name="cid[]" value="<?php echo $this->rp_id; ?>"/>
 					<?php
 				}
@@ -132,15 +134,15 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 			{
 				?>
 				<div id='jevoverlapwarning'>
-					<div><?php echo JText::_("JEV_OVERLAPPING_EVENTS_WARNING"); ?></div>
+					<div><?php echo Text::_("JEV_OVERLAPPING_EVENTS_WARNING"); ?></div>
 					<?php
 					// event deletors get the right to override this
-					if (JEVHelper::isEventPublisher(true) && JText::_("JEV_OVERLAPPING_EVENTS_OVERRIDE") != "JEV_OVERLAPPING_EVENTS_OVERRIDE")
+					if (JEVHelper::isEventPublisher(true) && Text::_("JEV_OVERLAPPING_EVENTS_OVERRIDE") != "JEV_OVERLAPPING_EVENTS_OVERRIDE")
 					{
 						?>
 						<div>
 							<strong>
-								<label><?php echo JText::_("JEV_OVERLAPPING_EVENTS_OVERRIDE"); ?>
+								<label><?php echo Text::_("JEV_OVERLAPPING_EVENTS_OVERRIDE"); ?>
 									<!-- not checked by default !!! //-->
 									<input type="checkbox" name="overlapoverride" value="1"/>
 								</label>
@@ -161,13 +163,13 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 				if (isset($thisCal) && $thisCal->icaltype == 0)
 				{
 // note that icaltype = 0 for imported from URL, 1 for imported from file, 2 for created natively
-					echo JText::_("JEV_IMPORT_WARNING");
+					echo Text::_("JEV_IMPORT_WARNING");
 					$native = false;
 				}
 				else if (isset($thisCal) && $thisCal->icaltype == 1)
 				{
 // note that icaltype = 0 for imported from URL, 1 for imported from file, 2 for created natively
-					echo JText::_("JEV_IMPORT_WARNING2");
+					echo Text::_("JEV_IMPORT_WARNING2");
 					$native = false;
 				}
 			}
@@ -276,13 +278,13 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
                     }
                     // do field validation
                     if (form.catid && form.catid.value == 0 && form.catid.options && form.catid.options.length) {
-                        alert('<?php echo JText::_('JEV_SELECT_CATEGORY', true); ?>');
+                        alert('<?php echo Text::_('JEV_SELECT_CATEGORY', true); ?>');
                     }
                     else if (form.ics_id.value == "0") {
-                        alert("<?php echo html_entity_decode(JText::_('JEV_MISSING_ICAL_SELECTION', true)); ?>");
+                        alert("<?php echo html_entity_decode(Text::_('JEV_MISSING_ICAL_SELECTION', true)); ?>");
                     }
                     else if (form.valid_dates.value == "0") {
-                        alert("<?php echo JText::_("JEV_INVALID_DATES", true); ?>");
+                        alert("<?php echo Text::_("JEV_INVALID_DATES", true); ?>");
                     }
                     else {
 
@@ -343,12 +345,12 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 					?>
 					<ul class="nav nav-tabs" id="myEditTabs">
 						<li class="active"><a data-toggle="tab"
-						                      href="#common"><?php echo JText::_("JEV_TAB_COMMON"); ?></a></li>
+						                      href="#common"><?php echo Text::_("JEV_TAB_COMMON"); ?></a></li>
 						<?php
 						if (!$cfg->get('com_single_pane_edit', 0) && !$cfg->get('timebeforedescription', 0))
 						{
 							?>
-							<li><a data-toggle="tab" href="#calendar"><?php echo JText::_("JEV_TAB_CALENDAR"); ?></a>
+							<li><a data-toggle="tab" href="#calendar"><?php echo Text::_("JEV_TAB_CALENDAR"); ?></a>
 							</li>
 							<?php
 						}
@@ -362,9 +364,9 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 									{
 										continue;
 									}
-									if (strpos($extraTab['title'], " ") === false && JText::_($extraTab['title']) != $extraTab['title'])
+									if (strpos($extraTab['title'], " ") === false && Text::_($extraTab['title']) != $extraTab['title'])
 									{
-										$extraTab['title'] = JText::_($extraTab['title']);
+										$extraTab['title'] = Text::_($extraTab['title']);
 									}
 									?>
 									<li <?php JEventsHelper::showOnRel($this->form, 'catid'); ?>><a data-toggle="tab"
@@ -378,7 +380,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 						{
 							?>
 							<li><a data-toggle="tab"
-							       href="#associations"><?php echo JText::_('COM_JEVENTS_ITEM_ASSOCIATIONS_FIELDSET_LABEL', true); ?></a>
+							       href="#associations"><?php echo Text::_('COM_JEVENTS_ITEM_ASSOCIATIONS_FIELDSET_LABEL', true); ?></a>
 							</li>
 							<?php
 						}

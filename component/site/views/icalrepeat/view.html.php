@@ -12,6 +12,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Path;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
@@ -54,10 +57,10 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 		JEVHelper::script('view_detailJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 		JEVHelper::script('JevStdRequiredFieldsJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 
-		$document->setTitle(JText::_('EDIT_ICAL_REPEAT'));
+		$document->setTitle(Text::_('EDIT_ICAL_REPEAT'));
 
 		// Set toolbar items for the page
-		JToolbarHelper::title(JText::_('EDIT_ICAL_REPEAT'), 'jevents');
+		JToolbarHelper::title(Text::_('EDIT_ICAL_REPEAT'), 'jevents');
 
 		$bar = JToolBar::getInstance('toolbar');
 		if (JEVHelper::isEventEditor())
@@ -97,7 +100,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 		jimport('joomla.filesystem.file');
 
 		// Lets check if we have editted before! if not... rename the custom file.
-		if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
+		if (File::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
 		{
 			// It is definitely now created, lets load it!
 			JEVHelper::stylesheet('jevcustom.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
@@ -273,7 +276,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 
 		// load the template script
 		jimport('joomla.filesystem.path');
-		$helper = JPath::find($this->_path['helper'], $this->_createFileName('helper', array('name' => $file)));
+		$helper = Path::find($this->_path['helper'], $this->_createFileName('helper', array('name' => $file)));
 
 		if ($helper != false)
 		{

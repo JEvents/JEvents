@@ -10,6 +10,9 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -78,7 +81,7 @@ if (count($jevplugins))
 		}
 		?>
 		<legend>
-			<?php echo JText::_('JEV_EVENTS_CONFIG'); ?>
+			<?php echo Text::_('JEV_EVENTS_CONFIG'); ?>
 		</legend>
 
 		<ul class="config" id="myParamsTabs" gsl-tab>
@@ -116,7 +119,7 @@ if (count($jevplugins))
 					$class = " class=' $difficultySetClass'";
 				}
 				?>
-				<li <?php echo $class; ?>><a ="#<?php echo $name; ?>"><?php echo JText::_($label); ?></a></li>
+				<li <?php echo $class; ?>><a ="#<?php echo $name; ?>"><?php echo Text::_($label); ?></a></li>
 				<?php
 			}
 			/*
@@ -125,7 +128,7 @@ if (count($jevplugins))
 			  {
 			  ?>
 			  <li class="dropdown">
-			  <a data-toggle="dropdown"  class="dropdown-toggle"  href="#club_layouts"><?php echo JText::_("CLUB_LAYOUTS"); ?>  <b class="caret"></b></a>
+			  <a data-toggle="dropdown"  class="dropdown-toggle"  href="#club_layouts"><?php echo Text::_("CLUB_LAYOUTS"); ?>  <b class="caret"></b></a>
 			  <ul class="dropdown-menu">
 			  <?php
 			  foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
@@ -147,13 +150,13 @@ if (count($jevplugins))
 			if ($haslayouts)
 			{
 				?>
-				<li><a data-toggle="tab" href="#club_layouts"><?php echo JText::_("CLUB_LAYOUTS"); ?></a></li>
+				<li><a data-toggle="tab" href="#club_layouts"><?php echo Text::_("CLUB_LAYOUTS"); ?></a></li>
 				<?php
 			}
 			if ($hasPlugins)
 			{
 				?>
-				<li><a data-toggle="tab" href="#plugin_options"><?php echo JText::_("JEV_PLUGIN_OPTIONS"); ?></a></li>
+				<li><a data-toggle="tab" href="#plugin_options"><?php echo Text::_("JEV_PLUGIN_OPTIONS"); ?></a></li>
 				<?php
 			}
 			?>
@@ -183,7 +186,7 @@ if (count($jevplugins))
 
 			if (isset($fieldSet->description) && !empty($fieldSet->description))
 			{
-				$desc   = JText::_($fieldSet->description);
+				$desc   = Text::_($fieldSet->description);
 				$html[] = '<tr><td class="paramlist_description" colspan="2">' . $desc . '</td></tr>';
 			}
 
@@ -311,7 +314,7 @@ if (count($jevplugins))
 			//echo HTMLHelper::_('bootstrap.startPane', "myLayoutTabs", array('active' => $first));
 
 			// Now get layout specific parameters
-			//JForm::addFormPath(JPATH_COMPONENT ."/views/");
+			//Form::addFormPath(JPATH_COMPONENT ."/views/");
 			foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 			{
 
@@ -322,11 +325,11 @@ if (count($jevplugins))
 					$layoutform = Form::getInstance("com_jevent.config.layouts." . $viewfile, $config, array('control' => 'jform', 'load_data' => true), true, "/config");
 					$layoutform->bind($this->component->params);
 
-					if (JFile::exists(JPATH_ADMINISTRATOR . "/manifests/files/$viewfile.xml"))
+					if (File::exists(JPATH_ADMINISTRATOR . "/manifests/files/$viewfile.xml"))
 					{
 						$xml        = simplexml_load_file(JPATH_ADMINISTRATOR . "/manifests/files/$viewfile.xml");
 						$layoutname = (string) $xml->name;
-						$langfile   = 'files_' . str_replace('files_', '', strtolower(JFilterInput::getInstance()->clean((string) $layoutname, 'cmd')));
+						$langfile   = 'files_' . str_replace('files_', '', strtolower(InputFilter::getInstance()->clean((string) $layoutname, 'cmd')));
 						$lang       = Factory::getLanguage();
 						$lang->load($langfile, JPATH_SITE, null, false, true);
 					}
@@ -340,7 +343,7 @@ if (count($jevplugins))
 
 						if (isset($fieldSet->description) && !empty($fieldSet->description))
 						{
-							$desc   = JText::_($fieldSet->description);
+							$desc   = Text::_($fieldSet->description);
 							$html[] = '<div class="paramlist_description" colspan="2">' . $desc . '</div>';
 						}
 
@@ -452,7 +455,7 @@ SCRIPT;
 					// Now get plugin specific parameters
 					//Factory::getApplication()->setUserState('com_plugins.edit.plugin.data', array());
 					$pluginform = Form::getInstance("com_jevents.config.plugins." . $plugin->name, $config, array('control' => 'jform_plugin[' . $plugin->type . '][' . $plugin->name . ']', 'load_data' => true), true, "/extension/config/fields");
-					//$pluginform = JForm::getInstance('com_plugins.plugin', $config, array('control' => 'jform_plugin['.$plugin->name.']', 'load_data' => true), true, "/extension/config/fields");
+					//$pluginform = Form::getInstance('com_plugins.plugin', $config, array('control' => 'jform_plugin['.$plugin->name.']', 'load_data' => true), true, "/extension/config/fields");
 					$pluginparams = new JevRegistry($plugin->params);
 
 					// Load the whole XML config file to get the plugin name in plain english
@@ -469,17 +472,17 @@ SCRIPT;
 							$hasfields = true;
 						}
 					}
-					$safedesc = JText::_($xml->description, true);
-					$safename = JText::_($xml->name, true);
+					$safedesc = Text::_($xml->description, true);
+					$safename = Text::_($xml->name, true);
 
 					// offer drop down IFF has fields!
 					if ($hasfields)
 					{
-						$label = '<i class="icon-chevron-right"></i> ' . JText::_($xml->name);
+						$label = '<i class="icon-chevron-right"></i> ' . Text::_($xml->name);
 					}
 					else
 					{
-						$label = '<i class="icon-blank"></i> ' . JText::_($xml->name);
+						$label = '<i class="icon-blank"></i> ' . Text::_($xml->name);
 					}
 					if ($safedesc)
 					{
@@ -495,17 +498,17 @@ SCRIPT;
 					$label    .= '<fieldset class="btn-group radio"  style="float:right;">'
 						. '<input type="radio"  ' . $checked1 . '  value="1" name="jform_plugin[' . $plugin->type . '][' . $plugin->name . '][enabled]"  id="jform_plugin_' . $plugin->type . '_' . $plugin->name . '_params_enabled1" class="btn">'
 						. '<label for="jform_plugin_' . $plugin->type . '_' . $plugin->name . '_params_enabled1" class="btn">'
-						. JText::_('JENABLED')
+						. Text::_('JENABLED')
 						. '</label>'
 						. '<input type="radio" ' . $checked0 . ' value="0" name="jform_plugin[' . $plugin->type . '][' . $plugin->name . '][enabled]"  id="jform_plugin_' . $plugin->type . '_' . $plugin->name . '_params_enabled0" class="btn">'
 						. '<label for="jform_plugin_' . $plugin->type . '_' . $plugin->name . '_params_enabled0" class="btn">'
-						. JText::_('JDISABLED')
+						. Text::_('JDISABLED')
 						. '</label>'
 						. '</fieldset>';
 
 					if ($hasfields)
 					{
-						//echo HTMLHelper::_('bootstrap.addSlide', 'myPluginAccordion', JText::_($label), 'collapse' . ($i++));
+						//echo HTMLHelper::_('bootstrap.addSlide', 'myPluginAccordion', Text::_($label), 'collapse' . ($i++));
 
 						$fieldSets = $pluginform->getFieldsets();
 						$html      = array();
@@ -521,7 +524,7 @@ SCRIPT;
 
 							if (isset($fieldSet->description) && !empty($fieldSet->description))
 							{
-								$desc   = JText::_($fieldSet->description);
+								$desc   = Text::_($fieldSet->description);
 								$html[] = '<div class="paramlist_description" colspan="2">' . $desc . '</div>';
 							}
 

@@ -12,6 +12,8 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Factory;
 use Joomla\String\StringHelper;
 
@@ -31,7 +33,7 @@ class modJeventsLatestHelper
 		}
 		else
 		{
-			die (JText::_('JEV_LATEST_NEEDS_COMPONENT'));
+			die (Text::_('JEV_LATEST_NEEDS_COMPONENT'));
 		}
 
 		// load language constants
@@ -70,7 +72,7 @@ class modJeventsLatestHelper
 
 		jimport('joomla.filesystem.file');
 		// If the template has a layout override use it
-		if (JFile::exists($tPath))
+		if (File::exists($tPath))
 		{
 			require_once($tPath);
 			$viewclass = "Override" . ucfirst($theme) . "ModLatestView";
@@ -88,7 +90,7 @@ class modJeventsLatestHelper
 				}
 			}
 		}
-		if (JFile::exists($bPath))
+		if (File::exists($bPath))
 		{
 			require_once($bPath);
 			$viewclass = ucfirst($theme) . "ModLatestView";
@@ -97,7 +99,7 @@ class modJeventsLatestHelper
 		}
 		else
 		{
-			echo "<strong>" . JText::sprintf("JEV_PLEASE_REINSTALL_LAYOUT", $theme) . "</strong>";
+			echo "<strong>" . Text::sprintf("JEV_PLEASE_REINSTALL_LAYOUT", $theme) . "</strong>";
 			$bPath = JPATH_SITE . '/' . 'modules' . '/' . $module . '/' . 'tmpl' . '/' . 'default' . '/' . 'latest.php';
 			require_once($bPath);
 			$viewclass = "DefaultModLatestView";

@@ -12,6 +12,8 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Factory;
 use Joomla\String\StringHelper;
 
@@ -70,7 +72,7 @@ class modJeventsCalHelper
 
 		jimport('joomla.filesystem.file');
 		// If the template has a layout override use it
-		if (JFile::exists($tPath))
+		if (File::exists($tPath))
 		{
 			require_once($tPath);
 			$viewclass = "Override" . ucfirst($theme) . "ModCalView";
@@ -88,7 +90,7 @@ class modJeventsCalHelper
 				}
 			}
 		}
-		if (JFile::exists($bPath))
+		if (File::exists($bPath))
 		{
 			require_once($bPath);
 			$viewclass = ucfirst($theme) . "ModCalView";
@@ -97,7 +99,7 @@ class modJeventsCalHelper
 		}
 		else
 		{
-			echo "<strong>" . JText::sprintf("JEV_PLEASE_REINSTALL_LAYOUT", $theme) . "</strong>";
+			echo "<strong>" . Text::sprintf("JEV_PLEASE_REINSTALL_LAYOUT", $theme) . "</strong>";
 			$bPath = JPATH_SITE . '/' . 'modules' . '/' . $module . '/' . 'tmpl' . '/' . 'default' . '/' . 'calendar.php';
 			require_once($bPath);
 			$viewclass = "DefaultModCalView";

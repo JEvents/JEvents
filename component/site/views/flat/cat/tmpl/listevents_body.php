@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
 $cfg = JEVConfig::getInstance();
@@ -62,11 +63,11 @@ $Itemid = JEVHelper::getItemid();
 		{
 			if (count($this->catids) == 0 || $data ['catname'] == "")
 			{
-				echo JText::_('JEV_EVENT_CHOOSE_CATEG') . '';
+				echo Text::_('JEV_EVENT_CHOOSE_CATEG') . '';
 			}
 			else
 			{
-				echo JText::_('JEV_NO_EVENTFOR') . '&nbsp;<b>' . $data ['catname'] . '</b>';
+				echo Text::_('JEV_NO_EVENTFOR') . '&nbsp;<b>' . $data ['catname'] . '</b>';
 			}
 		}
 		?>

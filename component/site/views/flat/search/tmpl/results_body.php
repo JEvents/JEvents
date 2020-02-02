@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Component\ComponentHelper;
@@ -16,12 +17,12 @@ $Itemid = JEVHelper::getItemid();
 $searchisValid = true;
 
 $chdate = '';
-echo '<fieldset><legend class="ev_fieldset">' . JText::_('JEV_SEARCHRESULTS') . '&nbsp;:&nbsp;</legend><br />' . "\n";
+echo '<fieldset><legend class="ev_fieldset">' . Text::_('JEV_SEARCHRESULTS') . '&nbsp;:&nbsp;</legend><br />' . "\n";
 ?>
 	<div id='jev_maincal' class='jev_listview'>
 		<div class="jev_toprow jev_toprowcat">
 			<div class="jev_header jev_headercat">
-				<h2><?php echo JText::_("JEV_SEARCHRESULTS"); ?></h2>
+				<h2><?php echo Text::_("JEV_SEARCHRESULTS"); ?></h2>
 			</div>
 		</div>
 		<div class="jev_clear"></div>
@@ -64,7 +65,7 @@ echo '<fieldset><legend class="ev_fieldset">' . JText::_('JEV_SEARCHRESULTS') . 
 			echo '<div class="jev_listrow  jev_noresults">';
 			if ($searchisValid)
 			{
-				echo JText::_('JEV_NO_EVENTFOR') . '&nbsp;<b>' . $this->keyword . '</b>';
+				echo Text::_('JEV_NO_EVENTFOR') . '&nbsp;<b>' . $this->keyword . '</b>';
 			}
 			else
 			{
@@ -86,10 +87,10 @@ echo '<fieldset><legend class="ev_fieldset">' . JText::_('JEV_SEARCHRESULTS') . 
 			{
 				echo '<input type="hidden" name="tmpl" value="component" />';
 			} ?>
-			<label for="showpast"><?php echo JText::_("JEV_SHOW_PAST"); ?></label>
+			<label for="showpast"><?php echo Text::_("JEV_SHOW_PAST"); ?></label>
 			<input type="checkbox" id="showpast" name="showpast"
 			       value="1" <?php echo  $input->getInt('showpast', 0) ? 'checked="checked"' : '' ?> />
-			<input class="button" type="submit" name="push" value="<?php echo JText::_('JEV_SEARCH_TITLE'); ?>"/>
+			<input class="button" type="submit" name="push" value="<?php echo Text::_('JEV_SEARCH_TITLE'); ?>"/>
 			<br/>
 			<br/>
 		</form>

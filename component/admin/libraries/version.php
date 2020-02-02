@@ -12,7 +12,10 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-//class JEvents_Version extends JObject {
+use Joomla\CMS\Object\CMSObject;
+
+
+//class JEvents_Version extends CMSObject {
 class JEventsVersion
 {
 	/** @var string Product */

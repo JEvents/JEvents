@@ -1,4 +1,10 @@
 <?php
+
+use Joomla\Registry\Registry;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Factory;
+
 defined('JPATH_BASE') or die;
 
 jimport('joomla.html.html');
@@ -23,33 +29,33 @@ class JFormFieldJevimagename extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-	    $plugin = JPluginHelper::getPlugin('jevents', 'jevfiles');
+	    $plugin = PluginHelper::getPlugin('jevents', 'jevfiles');
 
 		$options = array();
 
 	    if (!empty($plugin))
         {
 
-	        $params = new JRegistry($plugin->params);
+	        $params = new Registry($plugin->params);
 	        if ($params->get('imnum', 0))
             {
-	            $options[] = JHTML::_('select.option', '0', JText::_('JEV_STRUCTURED_DATA_SELECT_IMAGE'));
+	            $options[] = JHTML::_('select.option', '0', Text::_('JEV_STRUCTURED_DATA_SELECT_IMAGE'));
 
-	            JFactory::getLanguage()->load('plg_jevents_jevfiles', JPATH_ADMINISTRATOR);
+	            Factory::getLanguage()->load('plg_jevents_jevfiles', JPATH_ADMINISTRATOR);
 
 	            for ($i=1; $i<=$params->get('imnum', 0); $i++)
                 {
-	                $options[] = JHTML::_('select.option', $i, JText::_('JEV_STANDARD_IMAGE_' . $i) );
+	                $options[] = JHTML::_('select.option', $i, Text::_('JEV_STANDARD_IMAGE_' . $i) );
                 }
             }
             else
             {
-	            $options[] = JHTML::_('select.option', '0', JText::_('JEV_STRUCTURED_DATA_OUTPUT_REQUIRES_IMAGES_ADDON_CONFIGURED_PROPERLY'));
+	            $options[] = JHTML::_('select.option', '0', Text::_('JEV_STRUCTURED_DATA_OUTPUT_REQUIRES_IMAGES_ADDON_CONFIGURED_PROPERLY'));
             }
         }
         else
         {
-	        $options[] = JHTML::_('select.option', '0', JText::_('JEV_STRUCTURED_DATA_OUTPUT_REQUIRES_IMAGES_ADDON'));
+	        $options[] = JHTML::_('select.option', '0', Text::_('JEV_STRUCTURED_DATA_OUTPUT_REQUIRES_IMAGES_ADDON'));
 
         }
 

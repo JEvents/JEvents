@@ -1,10 +1,14 @@
 <?php
+
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormField;
+
 defined('JPATH_BASE') or die;
 
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
-class JFormFieldJeveventlock extends JFormField
+class FormFieldJeveventlock extends FormField
 {
 
 	/**
@@ -47,12 +51,12 @@ class JFormFieldJeveventlock extends JFormField
 			?>
 			<div class="radio <?php echo $btngroup; ?>">
 				<label class="radio  <?php echo $btn; ?>" for="lockevent1">
-					<?php echo JText::_("JEV_YES"); ?>
+					<?php echo Text::_("JEV_YES"); ?>
 					<input type="radio" name="lockevent" id="lockevent1"
 					       value="1" <?php echo($this->value ? "checked='checked'" : "") ?> />
 				</label>
 				<label class="radio   <?php echo $btn; ?>" for="lockevent0">
-					<?php echo JText::_("JEV_NO"); ?>
+					<?php echo Text::_("JEV_NO"); ?>
 					<input type="radio" name="lockevent" id="lockevent0"
 					       value="0" <?php echo(!$this->value ? "checked='checked'" : ""); ?> />
 				</label>

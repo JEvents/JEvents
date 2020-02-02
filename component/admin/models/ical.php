@@ -6,12 +6,13 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.modellist');
 
 
+use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 
-class JeventsModelical extends JModelList
+class JeventsModelical extends ListModel
 {
 	public $queryModel;
 	private $total = 0;
@@ -28,7 +29,7 @@ class JeventsModelical extends JModelList
 	{
 		if (empty($config['filter_fields']))
 		{
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 
 			$config['filter_fields'] = array(
 				'id', 'a.' . $db->quoteName('id'), 'a.id',

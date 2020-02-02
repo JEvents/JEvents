@@ -13,6 +13,7 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormHelper;
 
@@ -42,7 +43,7 @@ class JFormFieldJevloadlang extends JFormFieldSpacer
 		$lang->load("mod_jevents_latest", JPATH_SITE);
 		$lang->load("mod_jevents_latest", JPATH_SITE, "en-GB");
 
-		if (JText::_("JEV_LATEST_OVERRIDE_LAYOUT") == "JEV_LATEST_OVERRIDE_LAYOUT")
+		if (Text::_("JEV_LATEST_OVERRIDE_LAYOUT") == "JEV_LATEST_OVERRIDE_LAYOUT")
 		{
 			$lang->load("mod_jevents_latest", JPATH_SITE, "en-GB");
 		}

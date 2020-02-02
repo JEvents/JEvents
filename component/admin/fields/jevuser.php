@@ -13,6 +13,8 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Access\Access;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Component\ComponentHelper;
@@ -63,12 +65,12 @@ class JFormFieldJEVuser extends JFormFieldList
 			&& Factory::getApplication()->input->getCmd("option") == "com_categories"
 			&& Factory::getApplication()->input->getInt("id") > 0)
 		{
-			$rules = JAccess::getAssetRules("com_jevents.category." . Factory::getApplication()->input->getInt("id"), true);
+			$rules = Access::getAssetRules("com_jevents.category." . Factory::getApplication()->input->getInt("id"), true);
 		}
 		else
 		{
-			//JAccess::preload(array("com_jevents"));
-			$rules = JAccess::getAssetRules("com_jevents", true);
+			//Access::preload(array("com_jevents"));
+			$rules = Access::getAssetRules("com_jevents", true);
 		}
 		$creatorgroups = $rules->getData();
 		if (strpos($this->name, "jevadmin") === 0)
@@ -111,7 +113,7 @@ class JFormFieldJEVuser extends JFormFieldList
 		{
 			if ($permission == 1)
 			{
-				$users = array_merge(JAccess::getUsersByGroup($creatorgroup, true), $users);
+				$users = array_merge(Access::getUsersByGroup($creatorgroup, true), $users);
 			}
 		}
 
@@ -122,7 +124,7 @@ class JFormFieldJEVuser extends JFormFieldList
 		$nulluser            = new stdClass();
 		$nulluser->value     = 0;
 		$nulluser->sendEmail = 0;
-		$nulluser->text      = JText::_("SELECT_ADMIN");
+		$nulluser->text      = Text::_("SELECT_ADMIN");
 		array_unshift($users, $nulluser);
 
 		return $users;

@@ -9,6 +9,9 @@
  * @link        http://www.jevents.net
  */
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Language\Text;
+
 $mainspan = 10;
 $fullspan = 12;
 ?>
@@ -27,10 +30,10 @@ $fullspan = 12;
 						<div id="cpanel">
 							<?php
 							$clubnews = $this->renderVersionsForClipboard();
-							$label    = JText::_("JEV_VERSION_INFORMATION_FOR_SUPPORT");
+							$label    = Text::_("JEV_VERSION_INFORMATION_FOR_SUPPORT");
 							?>
 							<div style="width: 100%;padding:0px;">
-								<strong><?php echo JText::_("JEV_VERSION_INFORMATION_FOR_SUPPORT_DESCRIPTION"); ?></strong>
+								<strong><?php echo Text::_("JEV_VERSION_INFORMATION_FOR_SUPPORT_DESCRIPTION"); ?></strong>
 								<br/>
 								<?php echo $clubnews; ?>
 							</div>

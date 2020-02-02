@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 
 // Note that using a $limit value of -1 the limit is ignored in the query
@@ -16,7 +17,7 @@ $cols = count($matches);
 
 if ($cols == 0) return;
 
-echo "<div id='cal_title'>" . JText::_('JEV_EVENTSFOR') . "</div>\n";
+echo "<div id='cal_title'>" . Text::_('JEV_EVENTSFOR') . "</div>\n";
 ?>
 	<table align="center" width="90%" cellspacing="0" cellpadding="0" class="ev_table">
 	<tr valign="top">

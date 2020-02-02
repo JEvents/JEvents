@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Session\Session;
 use Joomla\String\StringHelper;
@@ -199,7 +200,7 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
 		$guest = (int) $user->get('guest');
 
 		$link    = "index.php?option=" . JEV_COM_COMPONENT . "&task=$redirect_task";
-		$message = JText::_('ICS_ALL_FILES_IMPORTED');
+		$message = Text::_('ICS_ALL_FILES_IMPORTED');
 
 		if ($guest === 1)
 		{
@@ -263,7 +264,7 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
 		}
 
 		if (!($authorised || JEVHelper::isAdminUser($user))) {
-			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+			throw new Exception( Text::_('ALERTNOTAUTH'), 403);
 			return false;
 		}
 
@@ -338,7 +339,7 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
 				$ics->label     = $icsLabel;
 				// TODO update access and state
 				$ics->updateDetails();
-				$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=$redirect_task", JText::_('ICS_SAVED'));
+				$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=$redirect_task", Text::_('ICS_SAVED'));
 				$this->redirect();
 			}
 
@@ -367,9 +368,9 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
 		if ($catid == 0)
 		{
 			// Paranoia, should not be here, validation is done by java script
-			$app->enqueueMessage('Fatal Error - ' . JText::_('JEV_E_WARNCAT'), 'error');
+			$app->enqueueMessage('Fatal Error - ' . Text::_('JEV_E_WARNCAT'), 'error');
 
-			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=$redirect_task", JText::_('JEV_E_WARNCAT'));
+			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=$redirect_task", Text::_('JEV_E_WARNCAT'));
 			$this->redirect();
 
 			return;
@@ -385,7 +386,7 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
 			$file = $_FILES['upload'];
 			if ($file['size'] == 0)
 			{//|| !($file['type']=="text/calendar" || $file['type']=="application/octet-stream")){
-				$app->enqueueMessage(JText::_('JEV_EMPTY_FILE_UPLOAD'), 'warning');
+				$app->enqueueMessage(Text::_('JEV_EMPTY_FILE_UPLOAD'), 'warning');
 				$icsFile = false;
 			}
 			else
@@ -410,7 +411,7 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
             $icsFile->autorefresh = $input->getInt('autorefresh', 0);
 
             $icsFileid = $icsFile->store();
-			$message   = JText::_('ICS_FILE_IMPORTED');
+			$message   = Text::_('ICS_FILE_IMPORTED');
 		}
 		if ($input->getCmd("task") !== "icals.reloadall")
 		{
@@ -537,7 +538,7 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
 			$ics->autorefresh    = $autorefesh;
 			// TODO update access and state
 			$ics->updateDetails();
-			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=$redirect_task", JText::_('ICS_SAVED'));
+			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=$redirect_task", Text::_('ICS_SAVED'));
 			$this->redirect();
 		}
 	}
@@ -569,7 +570,7 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
 			$db->setQuery($sql);
 			$db->execute();
 		}
-		$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icals.list", JText::_('JEV_ADMIN_ICALSUPDATED'));
+		$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icals.list", Text::_('JEV_ADMIN_ICALSUPDATED'));
 		$this->redirect();
 	}
 
@@ -610,7 +611,7 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
 			$db->setQuery($sql);
 			$db->execute();
 		}
-		$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icals.list", JText::_('JEV_ADMIN_ICALSUPDATED'));
+		$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icals.list", Text::_('JEV_ADMIN_ICALSUPDATED'));
 		$this->redirect();
 	}
 
@@ -654,7 +655,7 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
 		$sql = "UPDATE #__jevents_icsfile SET isdefault=$newstate where ics_id='" . $id . "'";
 		$db->setQuery($sql);
 		$db->execute();
-		$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icals.list", JText::_('JEV_ADMIN_ICALSUPDATED'));
+		$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icals.list", Text::_('JEV_ADMIN_ICALSUPDATED'));
 		$this->redirect();
 	}
 
@@ -688,7 +689,7 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
 		if ($catid == 0)
 		{
 			// Paranoia, should not be here, validation is done by java script
-			$app->enqueueMessage('Fatal Error - ' . JText::_("JEV_E_WARNCAT"), 'error');
+			$app->enqueueMessage('Fatal Error - ' . Text::_("JEV_E_WARNCAT"), 'error');
 
 			// Set option variable.
 			$option = JEV_COM_COMPONENT;
@@ -704,7 +705,7 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
 		$existing = $db->loadObject();
 		if ($existing)
 		{
-			$app->enqueueMessage(JText::_('JEV_DUPLICATE_CALENDAR'), 'error');
+			$app->enqueueMessage(Text::_('JEV_DUPLICATE_CALENDAR'), 'error');
 
 			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icals.edit");
 			$this->redirect();
@@ -725,7 +726,7 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
 
 		$icsFile->store();
 
-		$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icals.list", JText::_('ICAL_FILE_CREATED'));
+		$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icals.list", Text::_('ICAL_FILE_CREATED'));
 		$this->redirect();
 	}
 
@@ -749,7 +750,7 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
 		$kids = $db->loadObjectList();
 		if (count($kids) > 0)
 		{
-			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icals.list", JText::_("DELETE_CREATES_ORPHAN_EVENTS"));
+			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icals.list", Text::_("DELETE_CREATES_ORPHAN_EVENTS"));
 			$this->redirect();
 
 			return;

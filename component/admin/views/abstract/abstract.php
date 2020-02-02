@@ -11,6 +11,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Filesystem\Path;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\String\StringHelper;
@@ -98,7 +101,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 		// check the template layout is valid for this task
 		jimport('joomla.filesystem.path');
 		$filetofind = $this->_createFileName('template', array('name' => $newlayout));
-		if (JPath::find($this->_path['template'], $filetofind))
+		if (Path::find($this->_path['template'], $filetofind))
 		{
 			$this->setLayout($newlayout);
 		}
@@ -109,7 +112,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 		{
 			$layout     = $this->getLayout();
 			$filetofind = $this->_createFileName('template', array('name' => $layout . "-msie"));
-			if (JPath::find($this->_path['template'], $filetofind))
+			if (Path::find($this->_path['template'], $filetofind))
 			{
 				$this->setLayout($layout . "-msie");
 			}
@@ -351,7 +354,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 			{
 				$search[]      = $strippedmatch;
 				$strippedmatch = StringHelper::substr($strippedmatch, 3, StringHelper::strlen($strippedmatch) - 5);
-				$replace[]     = JText::_($strippedmatch);
+				$replace[]     = Text::_($strippedmatch);
 				$blank[]       = "";
 				continue;
 			}
@@ -391,7 +394,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 				for ($tab = 0; $tab < $tabstartarray0Count; $tab++)
 				{
 					$paneid   = str_replace(" ", "_", htmlspecialchars($tabstartarray[1][$tab]));
-					$tablabel = ($paneid == JText::_($paneid)) ? $tabstartarray[1][$tab] : JText::_($paneid);
+					$tablabel = ($paneid == Text::_($paneid)) ? $tabstartarray[1][$tab] : Text::_($paneid);
 					if ($tab == 0)
 					{
 						$tabreplace .= '<li class="active" id="tab' . $paneid . '" ><a data-toggle="tab" href="#' . $paneid . '">' . $tablabel . '</a></li>';
@@ -596,7 +599,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 		if ($uEditor === 'codemirror')
 		{
 			$this->editor = \Joomla\CMS\Editor\Editor::getInstance('none');
-			Factory::getApplication()->enqueueMessage(JText::_("JEV_CODEMIRROR_NOT_COMPATIBLE_EDITOR", "WARNING"));
+			Factory::getApplication()->enqueueMessage(Text::_("JEV_CODEMIRROR_NOT_COMPATIBLE_EDITOR", "WARNING"));
 		} else {
 			$this->editor = \Joomla\CMS\Editor\Editor::getInstance($uEditor);
 		}
@@ -611,16 +614,16 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 		/*
 		 * Moved to special model
 		// Prepare the data
-		// Experiment in the use of JForm and template override for forms and fields
-		JForm::addFormPath(JPATH_COMPONENT_ADMINISTRATOR . "/models/forms/");
+		// Experiment in the use of Form and template override for forms and fields
+		Form::addFormPath(JPATH_COMPONENT_ADMINISTRATOR . "/models/forms/");
 		$template = Factory::getApplication()->getTemplate();
-		JForm::addFormPath(JPATH_THEMES."/$template/html/com_jevents/forms");
-		//JForm::addFieldPath(JPATH_THEMES."/$template/html/com_jevents/fields");
+		Form::addFormPath(JPATH_THEMES."/$template/html/com_jevents/forms");
+		//Form::addFieldPath(JPATH_THEMES."/$template/html/com_jevents/fields");
 
 		$xpath = false;
 		// leave form control blank since we want the fields as ev_id and not jform[ev_id]
-		$this->form = JForm::getInstance("jevents.edit.icalevent", 'icalevent', array('control' => '', 'load_data' => false), false, $xpath);
-		JForm::addFieldPath(JPATH_THEMES."/$template/html/com_jevents/fields");
+		$this->form = Form::getInstance("jevents.edit.icalevent", 'icalevent', array('control' => '', 'load_data' => false), false, $xpath);
+		Form::addFieldPath(JPATH_THEMES."/$template/html/com_jevents/fields");
 		*/
 
 		$rowdata = array();
@@ -755,7 +758,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 
 		$requiredTags['id']            = "title";
 		$requiredTags['default_value'] = "";
-		$requiredTags['alert_message'] = JText::_('JEV_ADD_REQUIRED_FIELD', true) . " " . JText::_("JEV_FIELD_TITLE", true);
+		$requiredTags['alert_message'] = Text::_('JEV_ADD_REQUIRED_FIELD', true) . " " . Text::_("JEV_FIELD_TITLE", true);
 		$this->requiredtags[]          = $requiredTags;
 
 		$fields = $this->form->getFieldSet();
@@ -778,7 +781,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 				{
 					$requiredTags['id']            = $key;
 					$requiredTags['default_value'] = $this->form->getFieldAttribute($key, "default");
-					$requiredTags['alert_message'] = JText::_('JEV_ADD_REQUIRED_FIELD', true) . " " . JText::_("JEV_FIELD_" . $fieldAttribute, true);
+					$requiredTags['alert_message'] = Text::_('JEV_ADD_REQUIRED_FIELD', true) . " " . Text::_("JEV_FIELD_" . $fieldAttribute, true);
 					$this->requiredtags[]          = $requiredTags;
 				}
 			}
@@ -801,9 +804,9 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 			$this->searchtags[]  = "{{" . $extraTab['title'] . "}}";
 			$this->replacetags[] = $extraTab['content'];
 			$this->blanktags[]   = "";
-			if (JText::_($extraTab['title']) !== $extraTab['title'])
+			if (Text::_($extraTab['title']) !== $extraTab['title'])
 			{
-				$this->searchtags[]  = "{{" . JText::_($extraTab['title']) . "}}";
+				$this->searchtags[]  = "{{" . Text::_($extraTab['title']) . "}}";
 				$this->replacetags[] = $extraTab['content'];
 				$this->blanktags[]   = "";
 			}
@@ -857,7 +860,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 				{
 					$requiredTags['default_value'] = $this->customfields[$key]["default_value"];
 					$requiredTags['id']            = $this->customfields[$key]["id_to_check"];
-					$requiredTags['alert_message'] = JText::_('JEV_ADD_REQUIRED_FIELD', true) . " " . JText::_($requiredTags['id']);
+					$requiredTags['alert_message'] = Text::_('JEV_ADD_REQUIRED_FIELD', true) . " " . Text::_($requiredTags['id']);
 				}
 				/*
 				else

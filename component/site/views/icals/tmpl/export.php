@@ -12,6 +12,7 @@
 
 defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
@@ -168,7 +169,7 @@ if (!empty($this->icalEvents))
 			$link = $a->viewDetailLink($a->yup(), $a->mup(), $a->dup(), true, $params->get('default_itemid', 0));
 			$uri  = Uri::getInstance(Uri::base());
 			$root = $uri->toString(array('scheme', 'host', 'port'));
-			$html .= $this->setDescription($a->content() . ' ' . JText::_('JEV_EVENT_IMPORTED_FROM') . $root . Route::_($link, true, -1)) . "\r\n";
+			$html .= $this->setDescription($a->content() . ' ' . Text::_('JEV_EVENT_IMPORTED_FROM') . $root . Route::_($link, true, -1)) . "\r\n";
 		}
 		else
 		{

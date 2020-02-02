@@ -1,4 +1,11 @@
 <?php
+
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Filter\OutputFilter;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
 /**
  * @package     Joomla.Site
  * @subpackage  Layout
@@ -14,10 +21,10 @@ if (!GSLMSIE10)
 	return;
 }
 
-JHtml::_('jquery.framework');
+HTMLHelper::_('jquery.framework');
 JHtmlBehavior::core();
 
-JFactory::getDocument()->addScriptDeclaration('
+Factory::getDocument()->addScriptDeclaration('
 	jQuery(document).ready(function($)
 	{
 		if (window.toggleSidebar)
@@ -35,7 +42,7 @@ JFactory::getDocument()->addScriptDeclaration('
 
 <div id="j-toggle-sidebar-wrapper">
 	<div id="j-toggle-button-wrapper" class="j-toggle-button-wrapper">
-		<?php echo JLayoutHelper::render('joomla.sidebars.toggle'); ?>
+		<?php echo LayoutHelper::render('joomla.sidebars.toggle'); ?>
 	</div>
 	<div id="sidebar" class="sidebar">
 		<div class="sidebar-nav">
@@ -51,7 +58,7 @@ JFactory::getDocument()->addScriptDeclaration('
 							<a class="nolink"><?php echo $item[0]; ?></a>
 						<?php else :
 							if ($item[1] !== '') : ?>
-								<a href="<?php echo JFilterOutput::ampReplace($item[1]); ?>"><?php echo $item[0]; ?></a>
+								<a href="<?php echo OutputFilter::ampReplace($item[1]); ?>"><?php echo $item[0]; ?></a>
 							<?php else : ?>
 								<?php echo $item[0]; ?>
 							<?php endif;
@@ -65,7 +72,7 @@ JFactory::getDocument()->addScriptDeclaration('
 			<?php endif; ?>
 			<?php if ($displayData->displayFilters) : ?>
 				<div class="filter-select hidden-phone">
-					<h4 class="page-header"><?php echo JText::_('JSEARCH_FILTER_LABEL'); ?></h4>
+					<h4 class="page-header"><?php echo Text::_('JSEARCH_FILTER_LABEL'); ?></h4>
 					<?php foreach ($displayData->filters as $filter) : ?>
 						<label for="<?php echo $filter['name']; ?>" class="element-invisible"><?php echo $filter['label']; ?></label>
 						<select name="<?php echo $filter['name']; ?>" id="<?php echo $filter['name']; ?>" class="span12 small" onchange="this.form.submit()">

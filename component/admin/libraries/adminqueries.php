@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -120,7 +121,7 @@ class JEventsAdminDBModel extends JEventsDBModel
 						if ($isedit && $app->isClient('site'))
 						{
 							$Itemid = $input->getInt("Itemid");
-							$app->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$Itemid", false), JText::_("JEV_SORRY_CANT_EDIT_FROM_THAT_MENU_ITEM"));
+							$app->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$Itemid", false), Text::_("JEV_SORRY_CANT_EDIT_FROM_THAT_MENU_ITEM"));
 						}
 
 						return null;

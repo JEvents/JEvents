@@ -12,6 +12,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Access\Access;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
@@ -28,16 +30,16 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 	{
 
 		$document = Factory::getDocument();
-		$document->setTitle(JText::_('ICALS'));
+		$document->setTitle(Text::_('ICALS'));
 
 		// Set toolbar items for the page
-		JToolbarHelper::title(JText::_('ICALS'), 'jevents');
+		JToolbarHelper::title(Text::_('ICALS'), 'jevents');
 
 		JToolbarHelper::publishList('icals.publish');
 		JToolbarHelper::unpublishList('icals.unpublish');
 		JToolbarHelper::addNew('icals.edit');
 		JToolbarHelper::editList('icals.edit');
-		JToolbarHelper::deleteList(JText::_("COM_JEVENTS_MANAGE_CALENDARS_OVERVIEW_DELETE_WARNING", true), 'icals.delete');
+		JToolbarHelper::deleteList(Text::_("COM_JEVENTS_MANAGE_CALENDARS_OVERVIEW_DELETE_WARNING", true), 'icals.delete');
 		JToolbarHelper::spacer();
 
 		$this->filterForm    = $this->get('FilterForm');
@@ -56,10 +58,10 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 		}
 
 		$document = Factory::getDocument();
-		$document->setTitle(JText::_('EDIT_ICS'));
+		$document->setTitle(Text::_('EDIT_ICS'));
 
 		// Set toolbar items for the page
-		JToolbarHelper::title(JText::_('EDIT_ICS'), 'jevents');
+		JToolbarHelper::title(Text::_('EDIT_ICS'), 'jevents');
 
 		//JToolbarHelper::save('icals.save');
 		$bar = JToolBar::getInstance('toolbar');
@@ -84,7 +86,7 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 		}
 		else
 		{
-			$rules         = JAccess::getAssetRules("com_jevents", true);
+			$rules         = Access::getAssetRules("com_jevents", true);
 			$creatorgroups = $rules->getData();
 			// need to merge the arrays because of stupid way Joomla checks super user permissions
 			//$creatorgroups = array_merge($creatorgroups["core.admin"]->getData(), $creatorgroups["core.create"]->getData());
@@ -106,7 +108,7 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 			{
 				if ($permission == 1)
 				{
-					$users = array_merge(JAccess::getUsersByGroup($creatorgroup, true), $users);
+					$users = array_merge(Access::getUsersByGroup($creatorgroup, true), $users);
 				}
 			}
 			$sql = "SELECT * FROM #__users where id IN (" . implode(",", array_values($users)) . ") ORDER BY name asc";

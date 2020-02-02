@@ -3,11 +3,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.model');
 
-class DefaultsModelDefault extends JModelLegacy
+class DefaultsModelDefault extends BaseDatabaseModel
 {
 	/**
 	 * id

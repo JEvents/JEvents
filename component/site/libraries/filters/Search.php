@@ -11,6 +11,7 @@
 
 defined('_VALID_MOS') or defined('_JEXEC') or die('No Direct Access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
 // searches event
@@ -22,7 +23,7 @@ class jevSearchFilter extends jevFilter
 	{
 
 		$this->filterType        = self::filterType;
-		$this->filterLabel       = JText::_('SEARCH_EVENT');
+		$this->filterLabel       = Text::_('SEARCH_EVENT');
 		$this->filterNullValue   = "";
 		$this->extrasearchfields = array();
 		$this->extrajoin         = "";
@@ -54,8 +55,7 @@ class jevSearchFilter extends jevFilter
 		/* Implementing this is more complicated becase of clash between onSearchEvents and onListIcalEvents triggers !
 		// create filter gets called before createjoin !!
 		PluginHelper::importPlugin('jevents');
-		$dispatcher = JEventDispatcher::getInstance();
-		$dispatcher->trigger('onSearchEvents', array(& $this->extrasearchfields, & $this->extrajoin, & $this->needsgroup));			
+		Factory::getApplication()->trigger('onSearchEvents', array(& $this->extrasearchfields, & $this->extrajoin, & $this->needsgroup));			
 		
 		$db = Factory::getDbo();
 		$keyword = $db->Quote( '%'.$db->escape( $this->filter_value, true ).'%', false );

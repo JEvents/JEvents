@@ -1,4 +1,7 @@
 <?php
+
+use Joomla\CMS\Language\Text;
+
 /**
  * JEvents Component for Joomla! 3.x
  *
@@ -12,13 +15,13 @@
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
 $editStrings = " // JEvents Language Srings\n";
-$editStrings .= "var handm = '" . JText::_("Hours_and_Minutes", true) . "';\n";
-$editStrings .= "var invalidtime = '" . JText::_("Invalid_Time", true) . "';\n";
-$editStrings .= "var invalidcorrected = '" . JText::_("INVALID_CORRECTED", true) . "';\n";
-$editStrings .= "var jevyears= '" . JText::_("years", true) . "';\n";
-$editStrings .= "var jevmonths= '" . JText::_("months", true) . "';\n";
-$editStrings .= "var jevweeks= '" . JText::_("weeks", true) . "';\n";
-$editStrings .= "var jevdays= '" . JText::_("days", true) . "';\n";
-$editStrings .= "var jevirregular= '" . JText::_("irregular", true) . "';\n";
+$editStrings .= "var handm = '" . Text::_("Hours_and_Minutes", true) . "';\n";
+$editStrings .= "var invalidtime = '" . Text::_("Invalid_Time", true) . "';\n";
+$editStrings .= "var invalidcorrected = '" . Text::_("INVALID_CORRECTED", true) . "';\n";
+$editStrings .= "var jevyears= '" . Text::_("years", true) . "';\n";
+$editStrings .= "var jevmonths= '" . Text::_("months", true) . "';\n";
+$editStrings .= "var jevweeks= '" . Text::_("weeks", true) . "';\n";
+$editStrings .= "var jevdays= '" . Text::_("days", true) . "';\n";
+$editStrings .= "var jevirregular= '" . Text::_("irregular", true) . "';\n";
 
 $editStrings .= " // end JEvents Language Srings\n";

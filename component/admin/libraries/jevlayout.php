@@ -14,6 +14,8 @@
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Factory;
 
 jimport('joomla.base.adapterinstance');
@@ -52,14 +54,14 @@ class JInstallerJevlayout extends JAdapterInstance
 
 		// Set the layout name
 		$name = (string) $this->manifest->name;
-		$name = JFilterInput::getInstance()->clean($name, 'string');
+		$name = InputFilter::getInstance()->clean($name, 'string');
 		$this->set('name', $name);
 
 		// Get the component description
 		$description = (string) $this->manifest->description;
 		if ($description)
 		{
-			$this->parent->set('message', JText::_($description));
+			$this->parent->set('message', Text::_($description));
 		}
 		else
 		{

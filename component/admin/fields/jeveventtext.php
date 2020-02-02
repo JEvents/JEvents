@@ -1,6 +1,7 @@
 <?php
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormHelper;
 
 FormHelper::loadFieldClass('text');
@@ -28,7 +29,7 @@ class JFormFieldJeveventtext extends JFormFieldText
 		$input = parent::getInput();
 		if (strpos($input, "placeholder") === false)
 		{
-			$placeholder = $this->element['placeholder'] ? ' placeholder="' . htmlspecialchars(JText::_($this->element['placeholder'])) . '"' : '';
+			$placeholder = $this->element['placeholder'] ? ' placeholder="' . htmlspecialchars(Text::_($this->element['placeholder'])) . '"' : '';
 			$input       = str_replace("/>", " $placeholder />", $input);
 		}
 

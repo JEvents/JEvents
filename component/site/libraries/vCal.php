@@ -16,11 +16,14 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Object\CMSObject;
+
+
 // borrow encoding stuff from bitfolge.vcard
 
 include_once(JPATH_ROOT . "/includes/vcard.class.php");
 
-class vEvent// extends JObject
+class vEvent// extends CMSObject
 {
 	var $properties;
 	var $reccurdays = array("SU", "MO", "TU", "WE", "TH", "FR", "SA");
@@ -234,7 +237,7 @@ class vEvent// extends JObject
 
 }
 
-class vCal //extends JObject
+class vCal //extends CMSObject
 {
 	var $properties;
 	var $filename;

@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Layout\FileLayout;
+use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -726,14 +728,14 @@ class JevLibHtmlBootstrap
 
 			// Attach tabs to document
 			Factory::getDocument()
-				->addScriptDeclaration(JLayoutHelper::render('libraries.cms.html.bootstrap.starttabsetscript', array('selector' => $selector)));
+				->addScriptDeclaration(LayoutHelper::render('libraries.cms.html.bootstrap.starttabsetscript', array('selector' => $selector)));
 
 			// Set static array
 			static::$loaded[__METHOD__][$sig]                = true;
 			static::$loaded[__METHOD__][$selector]['active'] = $opt['active'];
 		}
 
-		$html = JLayoutHelper::render('libraries.cms.html.bootstrap.starttabset', array('selector' => $selector));
+		$html = LayoutHelper::render('libraries.cms.html.bootstrap.starttabset', array('selector' => $selector));
 
 		return $html;
 	}
@@ -748,7 +750,7 @@ class JevLibHtmlBootstrap
 	public static function endTabSet()
 	{
 
-		$html = JLayoutHelper::render('libraries.cms.html.bootstrap.endtabset');
+		$html = LayoutHelper::render('libraries.cms.html.bootstrap.endtabset');
 
 		return $html;
 	}
@@ -770,8 +772,8 @@ class JevLibHtmlBootstrap
 		static $tabScriptLayout = null;
 		static $tabLayout = null;
 
-		$tabScriptLayout = is_null($tabScriptLayout) ? new JLayoutFile('libraries.cms.html.bootstrap.addtabscript') : $tabScriptLayout;
-		$tabLayout       = is_null($tabLayout) ? new JLayoutFile('libraries.cms.html.bootstrap.addtab') : $tabLayout;
+		$tabScriptLayout = is_null($tabScriptLayout) ? new FileLayout('libraries.cms.html.bootstrap.addtabscript') : $tabScriptLayout;
+		$tabLayout       = is_null($tabLayout) ? new FileLayout('libraries.cms.html.bootstrap.addtab') : $tabLayout;
 
 		$active = (static::$loaded['JHtmlBootstrap::startTabSet'][$selector]['active'] == $id) ? ' active' : '';
 
@@ -794,7 +796,7 @@ class JevLibHtmlBootstrap
 	public static function endTab()
 	{
 
-		$html = JLayoutHelper::render('libraries.cms.html.bootstrap.endtab');
+		$html = LayoutHelper::render('libraries.cms.html.bootstrap.endtab');
 
 		return $html;
 	}

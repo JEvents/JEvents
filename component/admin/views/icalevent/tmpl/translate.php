@@ -2,6 +2,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -22,7 +23,7 @@ Factory::getDocument()->addScriptDeclaration('
 	};
 ');
 
-echo JToolbar::getInstance('toolbar')->render('toolbar');
+echo Toolbar::getInstance('toolbar')->render('toolbar');
 ?>
 
 <form action="<?php echo Route::_('index.php?option=com_jevents&task=icalevent.savetranslation'); ?>" method="post"

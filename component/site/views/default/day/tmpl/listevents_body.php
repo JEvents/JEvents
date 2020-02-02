@@ -1,6 +1,9 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
+
 $cfg = JEVConfig::getInstance();
 
 $this->data = $data = $this->datamodel->getDayData($this->year, $this->month, $this->day);
@@ -10,7 +13,7 @@ $cfg       = JEVConfig::getInstance();
 $Itemid    = JEVHelper::getItemid();
 $hasevents = false;
 
-echo '<fieldset><legend class="ev_fieldset">' . JText::_('JEV_EVENTSFORTHE') . '</legend><br />' . "\n";
+echo '<fieldset><legend class="ev_fieldset">' . Text::_('JEV_EVENTSFORTHE') . '</legend><br />' . "\n";
 echo '<table align="center" width="90%" cellspacing="0" cellpadding="5" class="ev_table">' . "\n";
 ?>
 	<tr valign="top">
@@ -24,7 +27,7 @@ echo '<table align="center" width="90%" cellspacing="0" cellpadding="5" class="e
 // Timeless Events First
 if (count($data['hours']['timeless']['events']) > 0)
 {
-	$start_time = JText::_('TIMELESS');
+	$start_time = Text::_('TIMELESS');
 	$hasevents  = true;
 
 	echo '<tr><td class="ev_td_left">' . $start_time . '</td>' . "\n";
@@ -65,7 +68,7 @@ if (!$hasevents)
 {
 	echo '<tr><td class="ev_td_right" colspan="3"><ul class="ev_ul" >' . "\n";
 	echo "<li class='ev_td_li ev_td_li_noevents' >\n";
-	echo JText::_('JEV_NO_EVENTS');
+	echo Text::_('JEV_NO_EVENTS');
 	echo "</li>\n";
 	echo "</ul></td></tr>\n";
 }

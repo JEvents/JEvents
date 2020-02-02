@@ -2,6 +2,9 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
+
 function DefaultRepeatSummary($view, $event)
 {
 
@@ -34,8 +37,8 @@ function DefaultRepeatSummary($view, $event)
 		}
 		else
 		{
-			$sum .= JText::_('JEV_FROM') . '&nbsp;' . $event->start_date . '<br />'
-				. JText::_('JEV_TO') . '&nbsp;' . $event->stop_date . '<br/>';
+			$sum .= Text::_('JEV_FROM') . '&nbsp;' . $event->start_date . '<br />'
+				. Text::_('JEV_TO') . '&nbsp;' . $event->stop_date . '<br/>';
 		}
 	}
 	// if starttime and end time the same then show no times!
@@ -65,19 +68,19 @@ function DefaultRepeatSummary($view, $event)
 		if ($event->noendtime() && !($event->reccurtype() > 0))
 		{
 			$sum .= $event->start_date . ',&nbsp;' . $event->start_time . '<br/>'
-				. JText::_('JEV_TO') . '&nbsp;' . $event->stop_date . '<br/>';
+				. Text::_('JEV_TO') . '&nbsp;' . $event->stop_date . '<br/>';
 		}
 		else if ($event->start_time != $event->stop_time && !($event->reccurtype() > 0))
 		{
-			$sum .= JText::_('JEV_FROM') . '&nbsp;' . $event->start_date . '&nbsp;-&nbsp; '
+			$sum .= Text::_('JEV_FROM') . '&nbsp;' . $event->start_date . '&nbsp;-&nbsp; '
 				. $event->start_time . '<br />'
-				. JText::_('JEV_TO') . '&nbsp;' . $event->stop_date . '&nbsp;-&nbsp;'
+				. Text::_('JEV_TO') . '&nbsp;' . $event->stop_date . '&nbsp;-&nbsp;'
 				. $event->stop_time_midnightFix . '<br/>';
 		}
 		else
 		{
-			$sum .= JText::_('JEV_FROM') . '&nbsp;' . $event->start_date . '<br />'
-				. JText::_('JEV_TO') . '&nbsp;' . $event->stop_date . '<br/>';
+			$sum .= Text::_('JEV_FROM') . '&nbsp;' . $event->start_date . '<br />'
+				. Text::_('JEV_TO') . '&nbsp;' . $event->stop_date . '<br/>';
 		}
 	}
 	if ($event->_freq == "none")
@@ -87,7 +90,7 @@ function DefaultRepeatSummary($view, $event)
 
 	if ($event->_eventdetail_id != $event->_detail_id)
 	{
-		$sum .= "<div class='ev_repeatexception'>" . JText::_('JEV_REPEATEXCEPTION') . "</div>";
+		$sum .= "<div class='ev_repeatexception'>" . Text::_('JEV_REPEATEXCEPTION') . "</div>";
 	}
 
 	return $sum;

@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Layout\FileLayout;
+use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
@@ -444,7 +446,7 @@ class JevHtmlBootstrap
     };
 
 })(jQuery);";
-			JFactory::getDocument()->addScriptDeclaration($hide);
+			Factory::getDocument()->addScriptDeclaration($hide);
 		}
 
 		static::$loaded[__METHOD__][$selector] = true;
@@ -768,14 +770,14 @@ class JevHtmlBootstrap
 
 			// Attach tabs to document
 			Factory::getDocument()
-				->addScriptDeclaration(JLayoutHelper::render('libraries.cms.html.bootstrap.starttabsetscript', array('selector' => $selector)));
+				->addScriptDeclaration(LayoutHelper::render('libraries.cms.html.bootstrap.starttabsetscript', array('selector' => $selector)));
 
 			// Set static array
 			static::$loaded[__METHOD__][$sig]                = true;
 			static::$loaded[__METHOD__][$selector]['active'] = $opt['active'];
 		}
 
-		$html = JLayoutHelper::render('libraries.cms.html.bootstrap.starttabset', array('selector' => $selector));
+		$html = LayoutHelper::render('libraries.cms.html.bootstrap.starttabset', array('selector' => $selector));
 
 		return $html;
 	}
@@ -790,7 +792,7 @@ class JevHtmlBootstrap
 	public static function endTabSet()
 	{
 
-		$html = JLayoutHelper::render('libraries.cms.html.bootstrap.endtabset');
+		$html = LayoutHelper::render('libraries.cms.html.bootstrap.endtabset');
 
 		return $html;
 	}
@@ -812,8 +814,8 @@ class JevHtmlBootstrap
 		static $tabScriptLayout = null;
 		static $tabLayout = null;
 
-		$tabScriptLayout = is_null($tabScriptLayout) ? new JLayoutFile('libraries.cms.html.bootstrap.addtabscript') : $tabScriptLayout;
-		$tabLayout       = is_null($tabLayout) ? new JLayoutFile('libraries.cms.html.bootstrap.addtab') : $tabLayout;
+		$tabScriptLayout = is_null($tabScriptLayout) ? new FileLayout('libraries.cms.html.bootstrap.addtabscript') : $tabScriptLayout;
+		$tabLayout       = is_null($tabLayout) ? new FileLayout('libraries.cms.html.bootstrap.addtab') : $tabLayout;
 
 		$active = (static::$loaded['JHtmlBootstrap::startTabSet'][$selector]['active'] == $id) ? ' active' : '';
 
@@ -836,7 +838,7 @@ class JevHtmlBootstrap
 	public static function endTab()
 	{
 
-		$html = JLayoutHelper::render('libraries.cms.html.bootstrap.endtab');
+		$html = LayoutHelper::render('libraries.cms.html.bootstrap.endtab');
 
 		return $html;
 	}

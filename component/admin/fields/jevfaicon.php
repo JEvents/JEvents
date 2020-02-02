@@ -12,6 +12,8 @@
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
 
 jimport('joomla.html.html');
@@ -21,7 +23,7 @@ jimport('joomla.form.helper');
 // Font Awseome Icon
 // See https://github.com/FortAwesome/Font-Awesome/issues/996
 
-class JFormFieldJevfaicon extends JFormField
+class FormFieldJevfaicon extends FormField
 {
 
 	protected
@@ -33,7 +35,7 @@ class JFormFieldJevfaicon extends JFormField
 
 		if (version_compare(JVERSION, "3.0", "lt"))
 		{
-			return "<p style='float:left'>" . JText::_("JEV_JOOMLA_3_ONWARDS") . "</p>";
+			return "<p style='float:left'>" . Text::_("JEV_JOOMLA_3_ONWARDS") . "</p>";
 		}
 		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
 		JEVHelper::ConditionalFields($this->element, $this->form->getName());
@@ -547,7 +549,7 @@ class JFormFieldJevfaicon extends JFormField
 		if (!isset($options))
 		{
 			$options   = array();
-			$options[] = HTMLHelper::_('select.option', '', '- ' . JText::_('SELECT_FONTAWESOME_ICON') . ' -');
+			$options[] = HTMLHelper::_('select.option', '', '- ' . Text::_('SELECT_FONTAWESOME_ICON') . ' -');
 			foreach ($falist as $name => $faicon)
 			{
 				$options[] = HTMLHelper::_('select.option', $faicon, $faicon . " " . $name);

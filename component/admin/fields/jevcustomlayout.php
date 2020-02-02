@@ -12,6 +12,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Access\Access;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Form\FormHelper;
@@ -48,7 +50,7 @@ class JFormFieldJevcustomlayout extends JFormFieldList
 		$version = JEventsVersion::getInstance();
 		$release = $version->get("RELEASE", "1.0.0");
 		HTMLHelper::script("https://www.jevents.net/jevlayouts/LatestEvents.js?$release");
-		//JHtml::script("http://ubu.j33jq.com/jevlayouts/LatestEvents.js?$release");
+		//HTMLHelper::script("http://ubu.j33jq.com/jevlayouts/LatestEvents.js?$release");
 
 		$html =  "<script>jQuery(document).ready(function ($){loadJevPreview('$target', '$csstarget', '$ignorebrtarget', '$ttop', '$trow', '$tbot', '$inccss');});</script>";
 		$id = $this->id;
@@ -107,8 +109,8 @@ DROPDOWN;
 				// Get the current user object.
 				$user = Factory::getUser();
 
-				// TODO: Add a preload method to JAccess so that we can get all the asset rules in one query and cache them.
-				// eg JAccess::preload('core.create', 'com_content.category')
+				// TODO: Add a preload method to Access so that we can get all the asset rules in one query and cache them.
+				// eg Access::preload('core.create', 'com_content.category')
 				foreach ($options as $i => $option)
 				{
 					// Unset the option if the user isn't authorised for it.
@@ -122,7 +124,7 @@ DROPDOWN;
 		}
 		else
 		{
-			Factory::getApplication()->enqueueMessage('500 - ' . JText::_('JLIB_FORM_ERROR_FIELDS_CATEGORY_ERROR_EXTENSION_EMPTY'), 'warning');
+			Factory::getApplication()->enqueueMessage('500 - ' . Text::_('JLIB_FORM_ERROR_FIELDS_CATEGORY_ERROR_EXTENSION_EMPTY'), 'warning');
 		}
 
 		// if no value exists, try to load a selected filter category from the old category filters

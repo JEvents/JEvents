@@ -10,6 +10,8 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -31,7 +33,7 @@ $user = Factory::getUser();
 		<?php
 		// Search tools bar
 		// I need to create and initialise the filter form for this to work!
-		echo JLayoutHelper::render('joomla.searchtools.jevents', array('view' => $this));
+		echo LayoutHelper::render('joomla.searchtools.jevents', array('view' => $this));
 		?>
         <!-- End Filters -->
         <div class="clearfix"></div>
@@ -44,15 +46,15 @@ $user = Factory::getUser();
                         <th width="20" nowrap="nowrap">
                             <?php echo HTMLHelper::_('grid.checkall'); ?>
                         </th>
-                        <th class="title" width="30%" nowrap="nowrap"><?php echo JText::_('JEV_ICAL_SUMMARY'); ?></th>
-                        <th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_ICAL_TYPE'); ?></th>
-                        <th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_CATEGORY_NAME'); ?></th>
-                        <th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_ADMIN_REFRESH'); ?></th>
-                        <th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_PUBLISHED'); ?></th>
-                        <th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_EVENT_ANONREFRESH'); ?></th>
-                        <th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_EVENT_ISDEFAULT'); ?></th>
-                        <th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_ACCESS'); ?></th>
-                        <th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_ICAL_ID'); ?></th>
+                        <th class="title" width="30%" nowrap="nowrap"><?php echo Text::_('JEV_ICAL_SUMMARY'); ?></th>
+                        <th width="10%" nowrap="nowrap"><?php echo Text::_('JEV_ICAL_TYPE'); ?></th>
+                        <th width="10%" nowrap="nowrap"><?php echo Text::_('JEV_CATEGORY_NAME'); ?></th>
+                        <th width="10%" nowrap="nowrap"><?php echo Text::_('JEV_ADMIN_REFRESH'); ?></th>
+                        <th width="10%" nowrap="nowrap"><?php echo Text::_('JEV_PUBLISHED'); ?></th>
+                        <th width="10%" nowrap="nowrap"><?php echo Text::_('JEV_EVENT_ANONREFRESH'); ?></th>
+                        <th width="10%" nowrap="nowrap"><?php echo Text::_('JEV_EVENT_ISDEFAULT'); ?></th>
+                        <th width="10%" nowrap="nowrap"><?php echo Text::_('JEV_ACCESS'); ?></th>
+                        <th width="10%" nowrap="nowrap"><?php echo Text::_('JEV_ICAL_ID'); ?></th>
                     </tr>
 
                     <?php
@@ -70,13 +72,13 @@ $user = Factory::getUser();
                             </td>
                             <td>
                                 <a href="#edit" onclick="return listItemTask('cb<?php echo $i; ?>','icals.edit')"
-                                   title="<?php echo JText::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->label; ?></a>
+                                   title="<?php echo Text::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->label; ?></a>
                             </td>
                             <td align="center">
                                 <?php
                                 $types           = array("Remote", "Uploaded File", "Native");
                                 $typeTranslation = 'COM_JEVENTS_MANAGE_CALENDARS_OVERVIEW_' . str_replace(' ', '_', strtoupper($types[$row->icaltype]));
-                                echo JText::_($typeTranslation);
+                                echo Text::_($typeTranslation);
                                 ?>
                             </td>
                             <td align="center"><?php echo $row->category; ?></td>
@@ -120,7 +122,7 @@ $user = Factory::getUser();
                                         ?>
                                         <br/><a
                                             href="<?php echo Uri::root() . "index.php?option=" . JEV_COM_COMPONENT . "&icsid=" . $row->ics_id . "&task=icals.reload"; ?>"
-                                            title="<?php echo JText::_("JEV_AUTOREFRESH_LINK") ?>"><?php echo JText::_("JEV_AUTOREFRESH_LINK") ?></a>
+                                            title="<?php echo Text::_("JEV_AUTOREFRESH_LINK") ?>"><?php echo Text::_("JEV_AUTOREFRESH_LINK") ?></a>
                                         <?php
                                     }
                                 }

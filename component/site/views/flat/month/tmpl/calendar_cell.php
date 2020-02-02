@@ -11,6 +11,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\Path;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 use Joomla\String\StringHelper;
@@ -262,7 +264,7 @@ class EventCalendarCell_flat extends EventCalendarCell_default
 				jimport('joomla.filesystem.path');
 				$filetofind	= strtolower($file).".php";
 				$paths = $this->_view->get("_path");
-				if ( JPath::find($paths['template'], $filetofind)){
+				if ( Path::find($paths['template'], $filetofind)){
 					$tooltip = $this->_view->loadTemplate($tpl);
 				}
 			}
@@ -273,7 +275,7 @@ class EventCalendarCell_flat extends EventCalendarCell_default
 	protected function correctTooltipLanguage($tip)
 	{
 
-		return str_replace(JText::_("JEV_FIRST_DAY_OF_MULTIEVENT"), JText::_("JEV_MULTIDAY_EVENT"), $tip);
+		return str_replace(Text::_("JEV_FIRST_DAY_OF_MULTIEVENT"), Text::_("JEV_MULTIDAY_EVENT"), $tip);
 	}
 
 }

@@ -13,6 +13,7 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Form\FormHelper;
@@ -103,7 +104,7 @@ class JFormFieldJEVInfo extends JFormFieldSpacer
 				}
 				include($jeventHelpPopup);
 				$help        = $this->help($$varname, $part);
-				$parts[$key] = JText::_($valuepart) . $help;
+				$parts[$key] = Text::_($valuepart) . $help;
 			}
 			$value = implode(", ", $parts);
 		}
@@ -111,7 +112,7 @@ class JFormFieldJEVInfo extends JFormFieldSpacer
 		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
 		JEVHelper::ConditionalFields($this->element, $this->form->getName());
 
-		return "<strong style='color:#993300' id='" . $this->id . "' >" . JText::_($value) . "</strong>";
+		return "<strong style='color:#993300' id='" . $this->id . "' >" . Text::_($value) . "</strong>";
 
 	}
 
@@ -159,8 +160,8 @@ class JFormFieldJEVInfo extends JFormFieldSpacer
 		}
 
 		// RSH 10/11/10 - Added float:none for 1.6 compatiblity - The default template was floating images to the left
-		$str = '<img border="0" class="jev_help" alt="' . JText::_('JEV_HELP') . '"'
-			. ' title="' . JText::_('JEV_HELP') . '"'
+		$str = '<img border="0" class="jev_help" alt="' . Text::_('JEV_HELP') . '"'
+			. ' title="' . Text::_('JEV_HELP') . '"'
 			. ' src="' . $imgpath . '/help_ques_inact.gif"'
 			//. ' onmouseover="this.src="' . $imgpath . '/help_ques.gif'.'" '
 			//. ' onmouseout="this.src="' . $imgpath . '/help_ques_inact.gif'.'" '

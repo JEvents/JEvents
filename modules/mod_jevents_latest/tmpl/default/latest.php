@@ -6,6 +6,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
@@ -172,7 +174,7 @@ class DefaultModLatestView
 			JHtmlBootstrap::loadCss();
 		}
 
-		if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
+		if (File::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
 		{
 			$document = Factory::getDocument();
 			JEVHelper::stylesheet('jevcustom.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
@@ -194,7 +196,7 @@ class DefaultModLatestView
 		{
 			if ($modid > 0)
 			{
-				// Do not use JRoute since this creates .rss link which normal sef can't deal with
+				// Do not use Route since this creates .rss link which normal sef can't deal with
 				$this->rsslink = Uri::root() . 'index.php?option=' . JEV_COM_COMPONENT . '&amp;task=modlatest.rss&amp;format=feed&amp;lang=' . $this->langtag . '&amp;type=rss&amp;modid=' . $modid;
 			}
 			else
@@ -386,7 +388,7 @@ class DefaultModLatestView
 		{
 			$content     .= $this->modparams->get("modlatest_templatetop") || $this->modparams->get("modlatest_templatetop") ? $this->modparams->get("modlatest_templatetop") : '<table class="mod_events_latest_table jevbootstrap" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
 			$templaterow = $this->modparams->get("modlatest_templaterow") ? $this->modparams->get("modlatest_templaterow") : '<tr><td class="mod_events_latest_noevents">%s</td></tr>' . "\n";
-			$content     .= str_replace("%s", JText::_('JEV_NO_EVENTS'), $templaterow);
+			$content     .= str_replace("%s", Text::_('JEV_NO_EVENTS'), $templaterow);
 			$content     .= $this->modparams->get("modlatest_templatebottom") ? $this->modparams->get("modlatest_templatebottom") : "</table>\n";
 		}
 
@@ -403,9 +405,9 @@ class DefaultModLatestView
 		{
 			$rssimg       = Uri::root() . "media/system/images/livemarks.png";
 			$callink_HTML = '<div class="mod_events_latest_rsslink">'
-				. '<a href="' . $this->rsslink . '" title="' . JText::_("RSS_FEED") . '" target="_blank">'
-				. '<img src="' . $rssimg . '" alt="' . JText::_("RSS_FEED") . '" />'
-				. JText::_("SUBSCRIBE_TO_RSS_FEED")
+				. '<a href="' . $this->rsslink . '" title="' . Text::_("RSS_FEED") . '" target="_blank">'
+				. '<img src="' . $rssimg . '" alt="' . Text::_("RSS_FEED") . '" />'
+				. Text::_("SUBSCRIBE_TO_RSS_FEED")
 				. '</a>'
 				. '</div>';
 			$content      .= $callink_HTML;
@@ -1379,7 +1381,7 @@ SCRIPT;
 				{
 					break;
 				}
-				$fieldval  = (isset($dateParm) && $dateParm != '') ? $dateParm : JText::_("JEV_DURATION_FORMAT");
+				$fieldval  = (isset($dateParm) && $dateParm != '') ? $dateParm : Text::_("JEV_DURATION_FORMAT");
 				$shownsign = false;
 				// whole days!
 				if (stripos($fieldval, "%wd") !== false)
@@ -1466,11 +1468,11 @@ SCRIPT;
 					}
 					else if (!$eventEnded)
 					{
-						$fieldval = JText::_('JEV_EVENT_STARTED');
+						$fieldval = Text::_('JEV_EVENT_STARTED');
 					}
 					else
 					{
-						$fieldval = JText::_('JEV_EVENT_FINISHED');
+						$fieldval = Text::_('JEV_EVENT_FINISHED');
 					}
 				}
 				if (stripos($fieldval, "%d") !== false)
@@ -1754,7 +1756,7 @@ SCRIPT;
 			$task = "month.calendar";
 		}
 
-		return $this->_htmlLinkCloaking(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=" . $this->myItemid . "&task=" . $task . $this->catout, true), JText::_('JEV_CLICK_TOCOMPONENT'));
+		return $this->_htmlLinkCloaking(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=" . $this->myItemid . "&task=" . $task . $this->catout, true), Text::_('JEV_CLICK_TOCOMPONENT'));
 
 	}
 
@@ -1770,9 +1772,9 @@ SCRIPT;
 			$page    = (int) Factory::getApplication()->getUserState("jevents.moduleid" . $this->_modid . ".page", 0);
 			if ($page > 0 || $params->get("modlatest_Mode", 0) != 2)
 			{
-				$content .= '<a class="btn btn-default" href="#" onclick="fetchMoreLatestEvents(' . $this->_modid . ',-1);return false;">' . JText::_('JEV_PRIOR_EVENTS') . '</a>';
+				$content .= '<a class="btn btn-default" href="#" onclick="fetchMoreLatestEvents(' . $this->_modid . ',-1);return false;">' . Text::_('JEV_PRIOR_EVENTS') . '</a>';
 			}
-			$content .= '<a class="btn btn-default" href="#" onclick="fetchMoreLatestEvents(' . $this->_modid . ',1);return false;">' . JText::_('JEV_NEXT_EVENTS') . '</a>';
+			$content .= '<a class="btn btn-default" href="#" onclick="fetchMoreLatestEvents(' . $this->_modid . ',1);return false;">' . Text::_('JEV_NEXT_EVENTS') . '</a>';
 			$content .= '</div>';
 		}
 

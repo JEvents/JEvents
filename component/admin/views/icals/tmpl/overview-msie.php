@@ -10,9 +10,14 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
+
 JHTML::_('behavior.tooltip');
 
-$db = JFactory::getDbo();
+$db = Factory::getDbo();
 
 $this->pageNav = $this->pagination;
 $this->clist   = $this->filters['catid'];
@@ -23,7 +28,7 @@ JEventsHelper::addSubmenu();
 
 $this->sidebar = JHtmlSidebar::render();
 
-$user = JFactory::getUser();
+$user = Factory::getUser();
 
 // get configuration object
 $cfg = JEVConfig::getInstance();
@@ -53,7 +58,7 @@ $fullspan = 12;
                     &nbsp;
                 </td>
                 <td align="right"><?php echo $this->clist; ?> </td>
-                <td><?php echo JText::_('JEV_SEARCH'); ?>&nbsp;</td>
+                <td><?php echo Text::_('JEV_SEARCH'); ?>&nbsp;</td>
                 <td>
                     <input type="text" name="filter[search]" value="<?php echo $this->search; ?>" class="inputbox" onChange="document.adminForm.submit();" />
                 </td>
@@ -63,17 +68,17 @@ $fullspan = 12;
         <table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist  table table-striped">
             <tr>
                 <th width="20" nowrap="nowrap">
-					<?php echo JHtml::_('grid.checkall'); ?>
+					<?php echo HTMLHelper::_('grid.checkall'); ?>
                 </th>
-                <th class="title" width="30%" nowrap="nowrap"><?php echo JText::_('JEV_ICAL_SUMMARY'); ?></th>
-                <th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_ICAL_TYPE'); ?></th>
-                <th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_CATEGORY_NAME'); ?></th>
-                <th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_ADMIN_REFRESH'); ?></th>
-                <th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_PUBLISHED'); ?></th>
-                <th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_EVENT_ANONREFRESH'); ?></th>
-                <th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_EVENT_ISDEFAULT'); ?></th>
-                <th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_ACCESS'); ?></th>
-                <th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_ICAL_ID'); ?></th>
+                <th class="title" width="30%" nowrap="nowrap"><?php echo Text::_('JEV_ICAL_SUMMARY'); ?></th>
+                <th width="10%" nowrap="nowrap"><?php echo Text::_('JEV_ICAL_TYPE'); ?></th>
+                <th width="10%" nowrap="nowrap"><?php echo Text::_('JEV_CATEGORY_NAME'); ?></th>
+                <th width="10%" nowrap="nowrap"><?php echo Text::_('JEV_ADMIN_REFRESH'); ?></th>
+                <th width="10%" nowrap="nowrap"><?php echo Text::_('JEV_PUBLISHED'); ?></th>
+                <th width="10%" nowrap="nowrap"><?php echo Text::_('JEV_EVENT_ANONREFRESH'); ?></th>
+                <th width="10%" nowrap="nowrap"><?php echo Text::_('JEV_EVENT_ISDEFAULT'); ?></th>
+                <th width="10%" nowrap="nowrap"><?php echo Text::_('JEV_ACCESS'); ?></th>
+                <th width="10%" nowrap="nowrap"><?php echo Text::_('JEV_ICAL_ID'); ?></th>
             </tr>
 
 			<?php
@@ -89,13 +94,13 @@ $fullspan = 12;
                         <input type="checkbox" id="cb<?php echo $i; ?>" name="cid[]" value="<?php echo $row->ics_id; ?>" onclick="Joomla.isChecked(this.checked);" />
                     </td>
                     <td>
-                        <a href="#edit" onclick="return listItemTask('cb<?php echo $i; ?>','icals.edit')" title="<?php echo JText::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->label; ?></a>
+                        <a href="#edit" onclick="return listItemTask('cb<?php echo $i; ?>','icals.edit')" title="<?php echo Text::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->label; ?></a>
                     </td>
                     <td align="center">
 						<?php
 						$types = array("Remote", "Uploaded File", "Native");
 						$typeTranslation = 'COM_JEVENTS_MANAGE_CALENDARS_OVERVIEW_' . str_replace(' ','_',strtoupper($types[$row->icaltype]));
-						echo JText::_($typeTranslation);
+						echo Text::_($typeTranslation);
 						?>
                     </td>
                     <td align="center"><?php echo $row->category; ?></td>
@@ -134,7 +139,7 @@ $fullspan = 12;
 							if ($row->autorefresh)
 							{
 								?>
-                                <br/><a href="<?php echo JURI::root() . "index.php?option=" . JEV_COM_COMPONENT . "&icsid=" . $row->ics_id . "&task=icals.reload"; ?>" title="<?php echo JText::_("JEV_AUTOREFRESH_LINK") ?>"><?php echo JText::_("JEV_AUTOREFRESH_LINK") ?></a>
+                                <br/><a href="<?php echo JURI::root() . "index.php?option=" . JEV_COM_COMPONENT . "&icsid=" . $row->ics_id . "&task=icals.reload"; ?>" title="<?php echo Text::_("JEV_AUTOREFRESH_LINK") ?>"><?php echo Text::_("JEV_AUTOREFRESH_LINK") ?></a>
 								<?php
 							}
 						}
@@ -172,7 +177,7 @@ $fullspan = 12;
                 <th align="center" colspan="10"><?php echo $this->pageNav->getListFooter(); ?></th>
             </tr>
         </table>
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo HTMLHelper::_('form.token'); ?>
         <input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>" />
         <input type="hidden" name="task" value="icals.list" />
         <input type="hidden" name="boxchecked" value="0" />

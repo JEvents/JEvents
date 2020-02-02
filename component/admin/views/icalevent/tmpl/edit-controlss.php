@@ -14,6 +14,8 @@ if (defined("EDITING_JEVENT"))
 	return;
 define("EDITING_JEVENT", 1);
 
+use Joomla\CMS\Language\Associations;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
@@ -26,7 +28,7 @@ $input  = $app->input;
 $params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 // get configuration object
 $cfg   = JEVConfig::getInstance();
-$assoc = false && JLanguageAssociations::isEnabled() && $app->isClient('administrator');
+$assoc = false && Associations::isEnabled() && $app->isClient('administrator');
 
 // Load Bootstrap
 JevHtmlBootstrap::framework();
@@ -66,7 +68,7 @@ else if ($params->get("bootstrapcss", 1) == 2)
 	JHtmlBootstrap::loadCss();
 }
 
-// use JRoute to preseve language selection
+// use Route to preseve language selection
 $action = $app->isClient('administrator') ? "index.php" : Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=" . JEVHelper::getItemid());
 ?>
 	<div id="jevents" <?php
@@ -85,7 +87,7 @@ $action = $app->isClient('administrator') ? "index.php" : Route::_("index.php?op
 				if ($this->editCopy)
 				{
 					$repeatStyle = "";
-					echo "<h3>" . JText::_('YOU_ARE_EDITING_A_COPY_ON_AN_ICAL_EVENT') . "</h3>";
+					echo "<h3>" . Text::_('YOU_ARE_EDITING_A_COPY_ON_AN_ICAL_EVENT') . "</h3>";
 				}
 				else if ($this->repeatId == 0)
 				{
@@ -93,14 +95,14 @@ $action = $app->isClient('administrator') ? "index.php" : Route::_("index.php?op
 					// Don't show warning for new events
 					if ($this->ev_id > 0)
 					{
-						echo JText::_('YOU_ARE_EDITING_AN_ICAL_EVENT');
+						echo Text::_('YOU_ARE_EDITING_AN_ICAL_EVENT');
 					}
 				}
 				else
 				{
 					$repeatStyle = "style='display:none;'";
 					?>
-					<h3><?php echo JText::_('YOU_ARE_EDITING_AN_ICAL_REPEAT'); ?></h3>
+					<h3><?php echo Text::_('YOU_ARE_EDITING_AN_ICAL_REPEAT'); ?></h3>
 					<input type="hidden" name="cid[]" value="<?php echo $this->rp_id; ?>"/>
 					<?php
 				}
@@ -112,15 +114,15 @@ $action = $app->isClient('administrator') ? "index.php" : Route::_("index.php?op
 			{
 				?>
 				<div id='jevoverlapwarning'>
-					<div><?php echo JText::_("JEV_OVERLAPPING_EVENTS_WARNING"); ?></div>
+					<div><?php echo Text::_("JEV_OVERLAPPING_EVENTS_WARNING"); ?></div>
 					<?php
 					// event deletors get the right to override this
-					if (JEVHelper::isEventPublisher(true) && JText::_("JEV_OVERLAPPING_EVENTS_OVERRIDE") != "JEV_OVERLAPPING_EVENTS_OVERRIDE")
+					if (JEVHelper::isEventPublisher(true) && Text::_("JEV_OVERLAPPING_EVENTS_OVERRIDE") != "JEV_OVERLAPPING_EVENTS_OVERRIDE")
 					{
 						?>
 						<div>
 							<strong>
-								<label><?php echo JText::_("JEV_OVERLAPPING_EVENTS_OVERRIDE"); ?>
+								<label><?php echo Text::_("JEV_OVERLAPPING_EVENTS_OVERRIDE"); ?>
 									<!-- not checked by default !!! //-->
 									<input type="checkbox" name="overlapoverride" value="1"/>
 								</label>
@@ -141,13 +143,13 @@ $action = $app->isClient('administrator') ? "index.php" : Route::_("index.php?op
 				if (isset($thisCal) && $thisCal->icaltype == 0)
 				{
 					// Note that icaltype = 0 for imported from URL, 1 for imported from file, 2 for created natively
-					echo JText::_("JEV_IMPORT_WARNING");
+					echo Text::_("JEV_IMPORT_WARNING");
 					$native = false;
 				}
 				else if (isset($thisCal) && $thisCal->icaltype == 1)
 				{
 					// Note that icaltype = 0 for imported from URL, 1 for imported from file, 2 for created natively
-					echo JText::_("JEV_IMPORT_WARNING2");
+					echo Text::_("JEV_IMPORT_WARNING2");
 					$native = false;
 				}
 			}
@@ -246,13 +248,13 @@ $action = $app->isClient('administrator') ? "index.php" : Route::_("index.php?op
                     }
                     // do field validation
                     if (form.catid && form.catid.value == 0 && form.catid.options && form.catid.options.length) {
-                        alert('<?php echo JText::_('JEV_SELECT_CATEGORY', true); ?>');
+                        alert('<?php echo Text::_('JEV_SELECT_CATEGORY', true); ?>');
                     }
                     else if (form.ics_id.value == "0") {
-                        alert("<?php echo html_entity_decode(JText::_('JEV_MISSING_ICAL_SELECTION', true)); ?>");
+                        alert("<?php echo html_entity_decode(Text::_('JEV_MISSING_ICAL_SELECTION', true)); ?>");
                     }
                     else if (form.valid_dates.value == "0") {
-                        alert("<?php echo JText::_("JEV_INVALID_DATES", true); ?>");
+                        alert("<?php echo Text::_("JEV_INVALID_DATES", true); ?>");
                     }
                     else {
 
@@ -312,12 +314,12 @@ $action = $app->isClient('administrator') ? "index.php" : Route::_("index.php?op
 					?>
 					<ul class="nav nav-tabs" id="myEditTabs">
 						<li class="active"><a data-toggle="tab"
-						                      href="#common"><?php echo JText::_("JEV_TAB_COMMON"); ?></a></li>
+						                      href="#common"><?php echo Text::_("JEV_TAB_COMMON"); ?></a></li>
 						<?php
 						if (!$cfg->get('com_single_pane_edit', 0) && !$cfg->get('timebeforedescription', 0))
 						{
 							?>
-							<li><a data-toggle="tab" href="#calendar"><?php echo JText::_("JEV_TAB_CALENDAR"); ?></a>
+							<li><a data-toggle="tab" href="#calendar"><?php echo Text::_("JEV_TAB_CALENDAR"); ?></a>
 							</li>
 							<?php
 						}
@@ -339,7 +341,7 @@ $action = $app->isClient('administrator') ? "index.php" : Route::_("index.php?op
 						{
 							?>
 							<li><a data-toggle="tab"
-							       href="#associations"><?php echo JText::_('COM_JEVENTS_ITEM_ASSOCIATIONS_FIELDSET_LABEL', true); ?></a>
+							       href="#associations"><?php echo Text::_('COM_JEVENTS_ITEM_ASSOCIATIONS_FIELDSET_LABEL', true); ?></a>
 							</li>
 							<?php
 						}

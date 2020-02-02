@@ -11,6 +11,9 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modelform');
 
+use Joomla\CMS\MVC\Model\FormModel;
+use Joomla\CMS\Access\Rules;
+use Joomla\CMS\Filesystem\Path;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Table\Table;
@@ -20,7 +23,7 @@ use Joomla\CMS\Component\ComponentHelper;
  * @package        Joomla.Administrator
  * @subpackage     com_config
  */
-class AdminparamsModelComponent extends JModelForm
+class AdminparamsModelComponent extends FormModel
 {
 	/**
 	 * Method to get a form object.
@@ -28,7 +31,7 @@ class AdminparamsModelComponent extends JModelForm
 	 * @param    array   $data     Data for the form.
 	 * @param    boolean $loadData True if the form is to load its own data (default case), false if not.
 	 *
-	 * @return    mixed    A JForm object on success, false on failure
+	 * @return    mixed    A Form object on success, false on failure
 	 * @since    1.6
 	 */
 	public function getForm($data = array(), $loadData = true)
@@ -102,7 +105,7 @@ class AdminparamsModelComponent extends JModelForm
 		// Save the rules.
 		if (isset($data['params']) && isset($data['params']['rules']))
 		{
-			$rules = new JAccessRules($data['params']['rules']);
+			$rules = new Rules($data['params']['rules']);
 			$asset = Table::getInstance('asset');
 
 			if (!$asset->loadByName($data['option']))
@@ -186,8 +189,8 @@ class AdminparamsModelComponent extends JModelForm
 		// Set an alternative path for the configuration file.
 		if ($path = $input->getString('path'))
 		{
-			$path = JPath::clean(JPATH_SITE . '/' . $path);
-			JPath::check($path);
+			$path = Path::clean(JPATH_SITE . '/' . $path);
+			Path::check($path);
 			$this->setState('component.path', $path);
 		}
 	}

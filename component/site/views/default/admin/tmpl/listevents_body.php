@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
 $cfg = JEVConfig::getInstance();
@@ -16,7 +17,7 @@ $eventCellClass = "EventCalendarCell_" . $view;
 $num_events = count($data['rows']);
 $chdate     = '';
 
-echo '<fieldset><legend class="ev_fieldset">' . JText::_('JEV_ADMINPANEL') . '</legend>' . "\n";
+echo '<fieldset><legend class="ev_fieldset">' . Text::_('JEV_ADMINPANEL') . '</legend>' . "\n";
 
 $myItemid  = JEVHelper::getAdminItemid();
 $form_link = Route::_(
@@ -74,7 +75,7 @@ else
 {
 	echo '<tr>' . "\n";
 	echo '<td align="left" valign="top" class="ev_td_right">' . "\n";
-	echo JText::_('JEV_NO_EVENTS');
+	echo Text::_('JEV_NO_EVENTS');
 }
 echo '</tr></table><br />' . "\n";
 echo '</fieldset><br />' . "\n";

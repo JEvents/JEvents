@@ -12,6 +12,8 @@
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
 
@@ -20,7 +22,7 @@ jimport('joomla.form.formfield');
 
 include_once(JPATH_ADMINISTRATOR . "/components/com_jevents/jevents.defines.php");
 
-class JFormFieldJevextras extends JFormField
+class FormFieldJevextras extends FormField
 {
 
 	/**
@@ -139,13 +141,13 @@ class JFormFieldJevextras extends JFormField
 			$output      = '<label id="' . $control_name . $name . '-lbl" for="' . $control_name . $name . '"';
 			if ($description)
 			{
-				$output .= ' class="hasTip" title="' . JText::_($label) . '::' . JText::_($description) . '">';
+				$output .= ' class="hasTip" title="' . Text::_($label) . '::' . Text::_($description) . '">';
 			}
 			else
 			{
 				$output .= '>';
 			}
-			$output .= JText::_($label) . '</label>';
+			$output .= Text::_($label) . '</label>';
 
 			return $output;
 		}

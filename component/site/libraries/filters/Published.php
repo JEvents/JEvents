@@ -12,6 +12,7 @@
 // ensure this file is being included by a parent file
 defined('_JEXEC') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -43,11 +44,11 @@ class jevPublishedFilter extends jevFilter
 		}
 
 		$this->filterNullValue = $default_filter;
-		$this->allLabel        = JText::_('ALL');
-		$this->yesLabel        = JText::_($yesLabel);
-		$this->noLabel         = JText::_($noLabel);
-		$this->filterLabel     = JText::_("Show_Unpublished_Events");
-		$this->filterLabelEscaped     = JText::_("Show_Unpublished_Events", true);
+		$this->allLabel        = Text::_('ALL');
+		$this->yesLabel        = Text::_($yesLabel);
+		$this->noLabel         = Text::_($noLabel);
+		$this->filterLabel     = Text::_("Show_Unpublished_Events");
+		$this->filterLabelEscaped     = Text::_("Show_Unpublished_Events", true);
 
 		// this is a special filter - we always want memory here since only used in frontend management
 
@@ -69,7 +70,7 @@ class jevPublishedFilter extends jevFilter
 		if (!$this->filterField || $this->filter_value==0) return "ev.state=1";
 
 		// Always only show published events to non-logged in users
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		if ($user->get('id')==0){
 			return "ev.state=1";
 		}

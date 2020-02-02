@@ -9,13 +9,15 @@
  */
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Installer\InstallerHelper;
 use Joomla\CMS\Factory;
 
-class PlgInstallerJeventsinstaller extends JPlugin
+class PlgInstallerJeventsinstaller extends CMSPlugin
 {
 
 	/*
-	 * Download Package URL checking - called from JInstallerHelper::downloadPackage
+	 * Download Package URL checking - called from InstallerHelper::downloadPackage
 	 */
 	public function onInstallerBeforePackageDownload(&$url, &$headers)
 	{

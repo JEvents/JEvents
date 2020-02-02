@@ -13,6 +13,7 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Form\FormHelper;
@@ -30,7 +31,7 @@ FormHelper::loadFieldClass('radio');
  * @subpackage     com_banners
  * @since          1.6
  */
-class JFormFieldJEVBoolean extends JFormFieldRadio
+class FormFieldJEVBoolean extends FormFieldRadio
 {
 
 	/**
@@ -57,8 +58,8 @@ class JFormFieldJEVBoolean extends JFormFieldRadio
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
 		$options   = array();
-		$options[] = HTMLHelper::_('select.option', 0, JText::_("Jev_No"));
-		$options[] = HTMLHelper::_('select.option', 1, JText::_("jev_Yes"));
+		$options[] = HTMLHelper::_('select.option', 0, Text::_("Jev_No"));
+		$options[] = HTMLHelper::_('select.option', 1, Text::_("jev_Yes"));
 
 		return $options;
 
@@ -102,7 +103,7 @@ class JFormFieldJEVBoolean extends JFormFieldRadio
 
 
 	/**
-	 * Method to attach a JForm object to the field.
+	 * Method to attach a Form object to the field.
 	 *
 	 * @param   SimpleXMLElement $element   The SimpleXMLElement object representing the <field /> tag for the form field object.
 	 * @param   mixed            $value     The form field value to validate.

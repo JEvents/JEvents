@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -23,7 +24,7 @@ JLoader::import("jevuser", JPATH_COMPONENT_ADMINISTRATOR . "/tables/");
  * @package        Joom!Fish
  * @subpackage     User
  */
-class AdminUserModelUser extends JModelLegacy
+class AdminUserModelUser extends BaseDatabaseModel
 {
 	/**
 	 * @var string    name of the current model

@@ -10,6 +10,11 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filter\OutputFilter;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Feed\FeedFactory;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 
@@ -25,27 +30,27 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
             <div>
                 <span class="gsl-text-small">
                         <span gsl-icon="icon:calendar" class="gsl-margin-small-right gsl-text-primary"></span>
-                        <?php echo JText::_("COM_JEVENTS_TOTAL_EVENTS");?>
+                        <?php echo Text::_("COM_JEVENTS_TOTAL_EVENTS");?>
                 </span>
                 <h2 class="gsl-heading-primary gsl-margin-remove gsl-text-primary">
-                    <a href="<?php echo JRoute::_("index.php?option=com_jevents&task=icalevent.list")?>">
-	                    <?php echo JText::sprintf("COM_JEVENTS_FUTURE_EVENTS", $this->futureEvents);?>
+                    <a href="<?php echo Route::_("index.php?option=com_jevents&task=icalevent.list")?>">
+	                    <?php echo Text::sprintf("COM_JEVENTS_FUTURE_EVENTS", $this->futureEvents);?>
                     </a>
                 </h2>
-                <a href="<?php echo JRoute::_("index.php?option=com_jevents&task=icalevent.list")?>"
+                <a href="<?php echo Route::_("index.php?option=com_jevents&task=icalevent.list")?>"
                    class="gsl-text-small gsl-text-success gsl-display-block">
                     <span class="gsl-text-success" gsl-icon="icon: history"></span>
-	                <?php echo JText::sprintf("COM_JEVENTS_PAST_EVENTS", $this->pastEvents);?>
+	                <?php echo Text::sprintf("COM_JEVENTS_PAST_EVENTS", $this->pastEvents);?>
                 </a>
             </div>
             <div>
                 <span class="gsl-text-small">
                         <span gsl-icon="icon:calendar"
                               class="gsl-margin-small-right gsl-text-danger"></span>
-                        <?php echo JText::_("COM_JEVENTS_TOTAL_EVENTS_UNPUBLISHED");?>
+                        <?php echo Text::_("COM_JEVENTS_TOTAL_EVENTS_UNPUBLISHED");?>
                 </span>
                 <h2 class="gsl-heading-primary gsl-margin-remove gsl-text-primary">
-                    <a href="<?php echo JRoute::_("index.php?option=com_jevents&task=icalevent.list")?>">
+                    <a href="<?php echo Route::_("index.php?option=com_jevents&task=icalevent.list")?>">
 	                    <?php echo $this->unpublishedEvents;?>
                     </a>
                 </h2>
@@ -53,43 +58,43 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
             <div>
                 <span class="gsl-text-small">
                         <span gsl-icon="icon:plus-circle" class="gsl-margin-small-right gsl-text-primary"></span>
-                        <?php echo JText::_("COM_JEVENTS_NEW_EVENTS");?>
+                        <?php echo Text::_("COM_JEVENTS_NEW_EVENTS");?>
                 </span>
                 <h2 class="gsl-heading-primary gsl-margin-remove gsl-text-primary">
-                    <a href="<?php echo JRoute::_("index.php?option=com_jevents&task=icalevent.list")?>">
-	                    <?php echo JText::sprintf("COM_JEVENTS_NEW_EVENTS_THIS_Week", $this->newEvents);?>
+                    <a href="<?php echo Route::_("index.php?option=com_jevents&task=icalevent.list")?>">
+	                    <?php echo Text::sprintf("COM_JEVENTS_NEW_EVENTS_THIS_Week", $this->newEvents);?>
                     </a>
                 </h2>
-                <a href="<?php echo JRoute::_("index.php?option=com_jevents&task=icalevent.list")?>"
+                <a href="<?php echo Route::_("index.php?option=com_jevents&task=icalevent.list")?>"
                    class="gsl-text-small gsl-text-success gsl-display-block">
                     <span class="gsl-text-success" gsl-icon="icon: plus-circle"></span>
-		            <?php echo JText::sprintf("COM_JEVENTS_NEW_EVENTS_THIS_MONTH", $this->newThisMonth);?>
+		            <?php echo Text::sprintf("COM_JEVENTS_NEW_EVENTS_THIS_MONTH", $this->newThisMonth);?>
                 </a>
             </div>
             <div>
                 <span class="gsl-text-small">
                    <span gsl-icon="icon:users" class="gsl-margin-small-right gsl-text-primary"></span>
-                   <?php echo JText::_("COM_JEVENTS_UPCOMING_REGISTRATIONS");?>
+                   <?php echo Text::_("COM_JEVENTS_UPCOMING_REGISTRATIONS");?>
                 </span>
                 <?php if (PluginHelper::isEnabled("jevents", "jevrsvppro")) { ?>
                 <h2 class="gsl-heading-primary gsl-margin-remove  gsl-text-primary">
-                    <a href="<?php echo JRoute::_("index.php?option=com_rsvppro&task=sessions.list")?>">
-                        <?php echo JText::sprintf("COM_JEVENTS_UPCOMING_REGISTRATIONS_THIS_WEEK", $this->upcomingAttendees);?>
+                    <a href="<?php echo Route::_("index.php?option=com_rsvppro&task=sessions.list")?>">
+                        <?php echo Text::sprintf("COM_JEVENTS_UPCOMING_REGISTRATIONS_THIS_WEEK", $this->upcomingAttendees);?>
                     </a>
                 </h2>
-                    <a href="<?php echo JRoute::_("index.php?option=com_jevents&task=icalevent.list")?>"
+                    <a href="<?php echo Route::_("index.php?option=com_jevents&task=icalevent.list")?>"
                        class="gsl-text-small gsl-text-success gsl-display-block">
                         <span class="gsl-text-success" gsl-icon="icon: users"></span>
-		                <?php echo JText::sprintf("COM_JEVENTS_UPCOMING_REGISTRATIONS_THIS_MONTH", $this->upcomingAttendeesThisMonth);?>
+		                <?php echo Text::sprintf("COM_JEVENTS_UPCOMING_REGISTRATIONS_THIS_MONTH", $this->upcomingAttendeesThisMonth);?>
                     </a>
                 <?php }
                 else {
                     ?>
 	                <h2 class="gsl-heading-primary gsl-margin-remove  gsl-text-primary hasYsPopover"
-                        data-yspoptitle="<?php echo JText::_('COM_JEVENTS_REQUIRES_RSVPPRO'); ?>"
-                        data-yspopcontent="<?php echo JText::_("COM_JEVENTS_REQUIRES_RSVPPRO_DETAIL"); ?>"
+                        data-yspoptitle="<?php echo Text::_('COM_JEVENTS_REQUIRES_RSVPPRO'); ?>"
+                        data-yspopcontent="<?php echo Text::_("COM_JEVENTS_REQUIRES_RSVPPRO_DETAIL"); ?>"
                     ?>
-                        <?php echo JText::_("COM_JEVENTS_NOT_INSTALLED");?>
+                        <?php echo Text::_("COM_JEVENTS_NOT_INSTALLED");?>
                     </h2>
                     <?php
                 }
@@ -98,19 +103,19 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
         </div>
         <hr>
 		<?php
-		$params = JComponentHelper::getParams("com_jevents");
+		$params = ComponentHelper::getParams("com_jevents");
 		if ($params->get("shownews", 1))
 		{
 			// Get RSS parsed object
 			try
 			{
 				$rssurl = "https://www.jevents.net/blog?format=feed&type=rss";
-				$feed   = new JFeedFactory;
+				$feed   = new FeedFactory;
 				$rssDoc = $feed->getFeed($rssurl);
 			}
 			catch (Exception $e)
 			{
-				 // echo JText::_('MOD_FEED_ERR_FEED_NOT_RETRIEVED');
+				 // echo Text::_('MOD_FEED_ERR_FEED_NOT_RETRIEVED');
 			}
 
 			if (!empty($rssDoc) && is_object($rssDoc))
@@ -123,7 +128,7 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
                         <div class="gsl-grid gsl-grid-small">
                             <h4 class="gsl-width-auto">
                                 <span gsl-icon="icon:tv; ratio : 2" class="gsl-margin-small-right gsl-text-primary"></span>
-                                <?php echo JText::_("COM_JEVENTS_JEVENTS_NEWS");?>
+                                <?php echo Text::_("COM_JEVENTS_JEVENTS_NEWS");?>
                             </h4>
                         </div>
                     </div>
@@ -146,9 +151,9 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
                                     <div class="feed-item-description">
 										<?php
 										// Strip the images.
-										$text = JFilterOutput::stripImages($text);
+										$text = OutputFilter::stripImages($text);
 										$text = strip_tags($text);
-										$text = JHtml::_('string.truncate', $text, 200);
+										$text = HTMLHelper::_('string.truncate', $text, 200);
 										echo str_replace('&apos;', "'", $text);
 										?>
                                     </div>
@@ -175,7 +180,7 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
                 <div class="gsl-card gsl-card-default gsl-card-small gsl-card-hover">
                     <div class="gsl-card-header">
                         <div class="gsl-grid gsl-grid-small">
-                            <div class="gsl-width-auto"><h4><?php echo JText::_("COM_JEVENTS_TOTAL_EVENTS");?></h4></div>
+                            <div class="gsl-width-auto"><h4><?php echo Text::_("COM_JEVENTS_TOTAL_EVENTS");?></h4></div>
                         </div>
                     </div>
                     <div class="gsl-card-body">
@@ -191,7 +196,7 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
                 <div class="gsl-card gsl-card-default gsl-card-small gsl-card-hover">
                     <div class="gsl-card-header">
                         <div class="gsl-grid gsl-grid-small">
-                            <div class="gsl-width-auto"><h4><?php echo JText::_("COM_JEVENTS_NEW_EVENTS_CREATED_BY_DAY");?></h4></div>
+                            <div class="gsl-width-auto"><h4><?php echo Text::_("COM_JEVENTS_NEW_EVENTS_CREATED_BY_DAY");?></h4></div>
                         </div>
                     </div>
                     <div class="gsl-card-body">
@@ -207,7 +212,7 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
                 <div class="gsl-card gsl-card-default gsl-card-small gsl-card-hover">
                     <div class="gsl-card-header">
                         <div class="gsl-grid gsl-grid-small">
-                            <div class="gsl-width-auto"><h4><?php echo JText::_("COM_JEVENTS_UPCOMING_REGISTRATIONS_BY_EVENT");?></h4></div>
+                            <div class="gsl-width-auto"><h4><?php echo Text::_("COM_JEVENTS_UPCOMING_REGISTRATIONS_BY_EVENT");?></h4></div>
                         </div>
                     </div>
                     <div class="gsl-card-body">
@@ -223,7 +228,7 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
                 <div class="gsl-card gsl-card-default gsl-card-small gsl-card-hover">
                     <div class="gsl-card-header">
                         <div class="gsl-grid gsl-grid-small">
-                            <div class="gsl-width-auto"><h4><?php echo JText::_("COM_JEVENTS_UPCOMING_EVENTS_BY_WEEK");?></h4></div>
+                            <div class="gsl-width-auto"><h4><?php echo Text::_("COM_JEVENTS_UPCOMING_EVENTS_BY_WEEK");?></h4></div>
                         </div>
                     </div>
                     <div class="gsl-card-body">
@@ -274,13 +279,13 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		new Chart(document.getElementById('chart2'), {
 			type: 'bar',
 			data: {
-				labels: ["<?php echo JText::_("JEV_MONDAY");?>",
-					"<?php echo JText::_("JEV_TUESDAY");?>",
-					"<?php echo JText::_("JEV_WEDNESDAY");?>",
-					"<?php echo JText::_("JEV_THURSDAY");?>",
-					"<?php echo JText::_("JEV_FRIDAY");?>",
-					"<?php echo JText::_("JEV_SATURDAY");?>",
-					"<?php echo JText::_("JEV_SUNDAY");?>",
+				labels: ["<?php echo Text::_("JEV_MONDAY");?>",
+					"<?php echo Text::_("JEV_TUESDAY");?>",
+					"<?php echo Text::_("JEV_WEDNESDAY");?>",
+					"<?php echo Text::_("JEV_THURSDAY");?>",
+					"<?php echo Text::_("JEV_FRIDAY");?>",
+					"<?php echo Text::_("JEV_SATURDAY");?>",
+					"<?php echo Text::_("JEV_SUNDAY");?>",
 				],
 				datasets: [
 					{
@@ -381,7 +386,7 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
 					xAxes: [{
 						scaleLabel: {
 							display: true,
-							labelString: "<?php echo JText::_("COM_JEVENTS_COUNT_BY_WEEK_COMMENCING"); ?>"
+							labelString: "<?php echo Text::_("COM_JEVENTS_COUNT_BY_WEEK_COMMENCING"); ?>"
 						}
 					}],
 					yAxes: [{
@@ -397,7 +402,7 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
     </script>
 
-    <form action="<?php echo JRoute::_('index.php?option=com_jevents'); ?>" method="post" name="adminForm" id="adminForm">
+    <form action="<?php echo Route::_('index.php?option=com_jevents'); ?>" method="post" name="adminForm" id="adminForm">
         <input type="hidden" name="task" value=""/>
         <input type="hidden" name="redirecturl" value=""/>
         <input type="hidden" name="boxchecked" value="0"/>
@@ -405,7 +410,7 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
         <input type="hidden" name="baseurl" id="baseurl" value="<?php echo JURI::root(); ?>"/>
         <input type="hidden" name="listlayout" id="listlayout"  value=""/>
         <input type="hidden" id="ystscomponent" value="dashboard"/>
-		<?php echo JHtml::_('form.token', array('id' => "tokenid")); ?>
+		<?php echo HTMLHelper::_('form.token', array('id' => "tokenid")); ?>
     </form>
     <!-- /CONTENT -->
 </div>

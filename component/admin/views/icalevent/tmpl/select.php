@@ -10,6 +10,8 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\SiteRouter;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
@@ -42,13 +44,13 @@ $function = $input->getCmd('function', 'jSelectEvent');
 			<?php if (!$this->_largeDataSet)
 			{
 				?>
-				<td align="right" width="100%"><?php echo JText::_('JEV_HIDE_OLD_EVENTS'); ?> </td>
+				<td align="right" width="100%"><?php echo Text::_('JEV_HIDE_OLD_EVENTS'); ?> </td>
 				<td align="right"><?php echo $this->plist; ?></td>
 			<?php } ?>
 			<td align="right"><?php echo $this->clist; ?> </td>
 			<td align="right"><?php echo $this->icsList; ?> </td>
 			<td align="right"><?php echo $this->userlist; ?> </td>
-			<td><?php echo JText::_('JEV_SEARCH'); ?>&nbsp;</td>
+			<td><?php echo Text::_('JEV_SEARCH'); ?>&nbsp;</td>
 			<td>
 				<input type="text" name="search" value="<?php echo htmlspecialchars($this->search); ?>" class="inputbox" onChange="document.adminForm.submit();" />
 			</td>
@@ -56,7 +58,7 @@ $function = $input->getCmd('function', 'jSelectEvent');
 		<?php if (!$input->getInt("nomenu", null))
 		{ ?>
 			<tr>
-				<td colspan="2" align="right"><?php echo JText::_('JEV_TARGET_MENU'); ?> </td>
+				<td colspan="2" align="right"><?php echo Text::_('JEV_TARGET_MENU'); ?> </td>
 				<td colspan="3"><?php echo $this->menulist; ?> </td>
 			</tr>
 		<?php } ?>
@@ -67,16 +69,16 @@ $function = $input->getCmd('function', 'jSelectEvent');
 		<tr>
 			<th class="title" width="40%" nowrap="nowrap">
 				<?php echo HTMLHelper::_('grid.sort', 'JEV_ICAL_SUMMARY', 'title', $orderdir, $order, "icalevent.list"); ?>
-			<th width="10%" nowrap="nowrap"><?php echo JText::_('REPEATS'); ?></th>
-			<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_EVENT_CREATOR'); ?></th>
-			<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_PUBLISHED'); ?></th>
+			<th width="10%" nowrap="nowrap"><?php echo Text::_('REPEATS'); ?></th>
+			<th width="10%" nowrap="nowrap"><?php echo Text::_('JEV_EVENT_CREATOR'); ?></th>
+			<th width="10%" nowrap="nowrap"><?php echo Text::_('JEV_PUBLISHED'); ?></th>
 			<th width="20%" nowrap="nowrap">
 				<?php echo HTMLHelper::_('grid.sort', 'JEV_TIME_SHEET', 'starttime', $orderdir, $order, "icalevent.list"); ?>
 			</th>
 			<th width="20%" nowrap="nowrap">
 				<?php echo HTMLHelper::_('grid.sort', 'JEV_FIELD_CREATIONDATE', 'created', $orderdir, $order, "icalevent.list"); ?>
 			</th>
-			<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_ACCESS'); ?></th>
+			<th width="10%" nowrap="nowrap"><?php echo Text::_('JEV_ACCESS'); ?></th>
 		</tr>
 		</thead>
 
@@ -99,7 +101,7 @@ $function = $input->getCmd('function', 'jSelectEvent');
 			  require_once (JPATH_ROOT . '/' . 'includes' . '/' . 'router.php');
 			  require_once (JPATH_ROOT . '/' . 'includes' . '/' . 'application.php');
 			  // better will be check if SEF option is enable!
-			  $router = new JRouterSite(array('mode'=>JROUTER_MODE_SEF));
+			  $router = new SiteRouter(array('mode'=>JROUTER_MODE_SEF));
 
 			  $link = $router->build($link)->toString(array('path', 'query', 'fragment'));
 
@@ -116,7 +118,7 @@ $function = $input->getCmd('function', 'jSelectEvent');
 				<td>
 					<a href="#select"
 					   onclick="return window.parent.<?php echo $function; ?>('<?php echo $link; ?>','<?php echo addslashes(htmlspecialchars($repeat->title())); ?>' , (jQuery('#Itemid').length?jQuery('#Itemid').val():0) , <?php echo $repeat->ev_id(); ?>, <?php echo $repeat->rp_id(); ?>)"
-					   title="<?php echo JText::_('JEV_SELECT_EVENT'); ?>"><?php echo $row->title(); ?></a>
+					   title="<?php echo Text::_('JEV_SELECT_EVENT'); ?>"><?php echo $row->title(); ?></a>
 				</td>
 				<td align="center">
 					<?php
@@ -132,7 +134,7 @@ $function = $input->getCmd('function', 'jSelectEvent');
 						}
 						?>
 						<a href="<?php echo Route::_("index.php?option=com_jevents&tmpl=component&task=icalrepeat.select&evid=" . $row->ev_id() . "&function=" . $function . "&" . Session::getFormToken() . '=1&nomenu=' . $input->getInt("nomenu")); ?>"
-						   title="<?php echo JText::_("JEV_SELECT_REPEAT"); ?>">
+						   title="<?php echo Text::_("JEV_SELECT_REPEAT"); ?>">
 							<?php echo $img; ?>
 						</a>
 					<?php } ?>
@@ -143,7 +145,7 @@ $function = $input->getCmd('function', 'jSelectEvent');
 					$img = $row->state() ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
 					if ($img == "" || strpos($img, 'src=""') > 0)
 					{
-						$img = $row->state() ? JText::_("JEV_PUBLISHED") : JText::_("JEV_NOT_PUBLISHED");
+						$img = $row->state() ? Text::_("JEV_PUBLISHED") : Text::_("JEV_NOT_PUBLISHED");
 					}
 					?>
 					<?php echo $img; ?>
@@ -152,13 +154,13 @@ $function = $input->getCmd('function', 'jSelectEvent');
 					<?php
 					if ($this->_largeDataSet)
 					{
-						echo JText::_('JEV_FROM') . ' : ' . $row->publish_up();
+						echo Text::_('JEV_FROM') . ' : ' . $row->publish_up();
 					}
 					else
 					{
 						$times = '<table style="border: 1px solid #666666; width:100%;">';
-						$times .= '<tr><td>' . JText::_('JEV_FROM') . ' : ' . ($row->alldayevent() ? StringHelper::substr($row->publish_up(), 0, 10) : $row->publish_up()) . '</td></tr>';
-						$times .= '<tr><td>' . JText::_('JEV_TO') . ' : ' . (($row->noendtime() || $row->alldayevent()) ? StringHelper::substr($row->publish_down(), 0, 10) : $row->publish_down()) . '</td></tr>';
+						$times .= '<tr><td>' . Text::_('JEV_FROM') . ' : ' . ($row->alldayevent() ? StringHelper::substr($row->publish_up(), 0, 10) : $row->publish_up()) . '</td></tr>';
+						$times .= '<tr><td>' . Text::_('JEV_TO') . ' : ' . (($row->noendtime() || $row->alldayevent()) ? StringHelper::substr($row->publish_down(), 0, 10) : $row->publish_down()) . '</td></tr>';
 						$times .= "</table>";
 						echo $times;
 					}

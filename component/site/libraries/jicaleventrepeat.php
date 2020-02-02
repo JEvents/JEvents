@@ -11,6 +11,9 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\String\StringHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Component\ComponentHelper;
@@ -101,7 +104,7 @@ class jIcalEventRepeat extends jIcalEventDB
 
 	/*
 	  function dtstart($val=""){
-	  if (JString::strlen($val)==0) return $this->getUnixStartTime();
+	  if (StringHelper::strlen($val)==0) return $this->getUnixStartTime();
 	  else {
 	  $this->_dtstart=$val;
 	  $this->_unixstarttime=$val;
@@ -110,7 +113,7 @@ class jIcalEventRepeat extends jIcalEventDB
 	  }
 
 	  function dtend($val=""){
-	  if (JString::strlen($val)==0) return $this->getUnixEndTime();
+	  if (StringHelper::strlen($val)==0) return $this->getUnixEndTime();
 	  else {
 	  $this->_dtend=$val;
 	  $this->_unixendtime=$val;
@@ -281,7 +284,7 @@ class jIcalEventRepeat extends jIcalEventDB
 			$Itemid = $Itemid > 0 ? $Itemid : JEVHelper::getItemid($this);
 		}
 		// uid = event series unique id i.e. the actual event
-		$title = JApplicationHelper::stringURLSafe($this->title());
+		$title = ApplicationHelper::stringURLSafe($this->title());
 		if ($this->rp_id())
 		{
 			$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . $this->detailTask() . "&evid=" . $this->rp_id() . '&Itemid=' . $Itemid
@@ -357,7 +360,7 @@ class jIcalEventRepeat extends jIcalEventDB
 		$result = parent::repeatSummary();
 		if ($this->_eventdetail_id != $this->_detail_id)
 		{
-			$result .= "<div class='ev_repeatexception'>" . JText::_('JEV_REPEATEXCEPTION') . "</div>";
+			$result .= "<div class='ev_repeatexception'>" . Text::_('JEV_REPEATEXCEPTION') . "</div>";
 		}
 
 		//$result .= "<div style='font-weight:bold;color:black;background-color:yellow'>Repeat Summary needs more work still!</div>";
@@ -375,13 +378,13 @@ class jIcalEventRepeat extends jIcalEventDB
 			if ($this->prevRepeat())
 			{
 				$result .= "<div class='ev_prevrepeat'>";
-				$result .= "<a href='" . $this->prevRepeat() . "' title='" . JText::_('JEV_PREVIOUSREPEAT') . "' class='" . $cfg->get('com_navbarcolor') . "'>" . JText::_('JEV_PREVIOUSREPEAT') . "</a>";
+				$result .= "<a href='" . $this->prevRepeat() . "' title='" . Text::_('JEV_PREVIOUSREPEAT') . "' class='" . $cfg->get('com_navbarcolor') . "'>" . Text::_('JEV_PREVIOUSREPEAT') . "</a>";
 				$result .= "</div>";
 			}
 			if ($this->nextRepeat())
 			{
 				$result .= "<div class='ev_nextrepeat'>";
-				$result .= "<a href='" . $this->nextRepeat() . "' title='" . JText::_('JEV_NEXTREPEAT') . "' class='" . $cfg->get('com_navbarcolor') . "'>" . JText::_('JEV_NEXTREPEAT') . "</a>";
+				$result .= "<a href='" . $this->nextRepeat() . "' title='" . Text::_('JEV_NEXTREPEAT') . "' class='" . $cfg->get('com_navbarcolor') . "'>" . Text::_('JEV_NEXTREPEAT') . "</a>";
 				$result .= "</div>";
 			}
 		}
@@ -428,7 +431,7 @@ class jIcalEventRepeat extends jIcalEventDB
 		if (!is_null($prior))
 		{
 			$link              = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . $this->detailTask() . "&evid=" . $prior->rp_id . '&Itemid=' . $Itemid
-				. "&year=$prior->yup&month=$prior->mup&day=$prior->dup&uid=" . urlencode($this->uid()) . "&title=" . JApplicationHelper::stringURLSafe($prior->title) . $tmpl . $popc;
+				. "&year=$prior->yup&month=$prior->mup&day=$prior->dup&uid=" . urlencode($this->uid()) . "&title=" . ApplicationHelper::stringURLSafe($prior->title) . $tmpl . $popc;
 			$link              = Route::_($link);
 			$this->_prevRepeat = $link;
 		}
@@ -444,7 +447,7 @@ class jIcalEventRepeat extends jIcalEventDB
 		if (!is_null($post))
 		{
 			$link              = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . $this->detailTask() . "&evid=" . $post->rp_id . '&Itemid=' . $Itemid
-				. "&year=$post->yup&month=$post->mup&day=$post->dup&uid=" . urlencode($this->uid()) . "&title=" . JApplicationHelper::stringURLSafe($post->title) . $tmpl . $popc;
+				. "&year=$post->yup&month=$post->mup&day=$post->dup&uid=" . urlencode($this->uid()) . "&title=" . ApplicationHelper::stringURLSafe($post->title) . $tmpl . $popc;
 			$link              = Route::_($link);
 			$this->_nextRepeat = $link;
 		}
@@ -475,7 +478,7 @@ class jIcalEventRepeat extends jIcalEventDB
 		if ($this->prevRepeat())
 		{
 			$result .= "<div class='ev_prevrepeat'>";
-			$result .= "<a href='" . $this->prevRepeat() . "' title='" . JText::_('JEV_PREVIOUSREPEAT') . "' class='" . $cfg->get('com_navbarcolor') . "'>" . JText::_('JEV_PREVIOUSREPEAT') . "</a>";
+			$result .= "<a href='" . $this->prevRepeat() . "' title='" . Text::_('JEV_PREVIOUSREPEAT') . "' class='" . $cfg->get('com_navbarcolor') . "'>" . Text::_('JEV_PREVIOUSREPEAT') . "</a>";
 			$result .= "</div>";
 		}
 
@@ -491,7 +494,7 @@ class jIcalEventRepeat extends jIcalEventDB
 		if ($this->nextRepeat())
 		{
 			$result .= "<div class='ev_nextrepeat'>";
-			$result .= "<a href='" . $this->nextRepeat() . "' title='" . JText::_('JEV_NEXTREPEAT') . "' class='" . $cfg->get('com_navbarcolor') . "'>" . JText::_('JEV_NEXTREPEAT') . "</a>";
+			$result .= "<a href='" . $this->nextRepeat() . "' title='" . Text::_('JEV_NEXTREPEAT') . "' class='" . $cfg->get('com_navbarcolor') . "'>" . Text::_('JEV_NEXTREPEAT') . "</a>";
 			$result .= "</div>";
 		}
 
@@ -509,13 +512,13 @@ class jIcalEventRepeat extends jIcalEventDB
 			if ($this->prevEvent())
 			{
 				$result .= "<div class='ev_prevrepeat'>";
-				$result .= "<a href='" . $this->prevEvent() . "' title='" . JText::_('JEV_PREVIOUSEVENT') . "' class='" . $cfg->get('com_navbarcolor') . "'>" . JText::_('JEV_PREVIOUSEVENT') . "</a>";
+				$result .= "<a href='" . $this->prevEvent() . "' title='" . Text::_('JEV_PREVIOUSEVENT') . "' class='" . $cfg->get('com_navbarcolor') . "'>" . Text::_('JEV_PREVIOUSEVENT') . "</a>";
 				$result .= "</div>";
 			}
 			if ($this->nextEvent())
 			{
 				$result .= "<div class='ev_nextrepeat'>";
-				$result .= "<a href='" . $this->nextEvent() . "' title='" . JText::_('JEV_NEXTEVENT') . "' class='" . $cfg->get('com_navbarcolor') . "'>" . JText::_('JEV_NEXTEVENT') . "</a>";
+				$result .= "<a href='" . $this->nextEvent() . "' title='" . Text::_('JEV_NEXTEVENT') . "' class='" . $cfg->get('com_navbarcolor') . "'>" . Text::_('JEV_NEXTEVENT') . "</a>";
 				$result .= "</div>";
 			}
 		}
@@ -587,7 +590,7 @@ class jIcalEventRepeat extends jIcalEventDB
 		if (isset($prior) && !is_null($prior))
 		{
 			$link             = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . $this->detailTask() . "&evid=" . $prior->_rp_id . '&Itemid=' . $Itemid
-				. "&year=" . $prior->_yup . "&month=" . $prior->_mup . "&day=" . $prior->_dup . "&uid=" . urlencode($prior->_uid) . "&title=" . JApplicationHelper::stringURLSafe($prior->_title);
+				. "&year=" . $prior->_yup . "&month=" . $prior->_mup . "&day=" . $prior->_dup . "&uid=" . urlencode($prior->_uid) . "&title=" . ApplicationHelper::stringURLSafe($prior->_title);
 			$link             = Route::_($link);
 			$this->_prevEvent = $link;
 		}
@@ -629,7 +632,7 @@ class jIcalEventRepeat extends jIcalEventDB
 		if (!is_null($post))
 		{
 			$link             = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . $this->detailTask() . "&evid=" . $post->rp_id . '&Itemid=' . $Itemid
-				. "&year=$post->yup&month=$post->mup&day=$post->dup&uid=" . urlencode($this->uid()) . "&title=" . JApplicationHelper::stringURLSafe($post->title);
+				. "&year=$post->yup&month=$post->mup&day=$post->dup&uid=" . urlencode($this->uid()) . "&title=" . ApplicationHelper::stringURLSafe($post->title);
 			$link             = Route::_($link);
 			$this->_nextEvent = $link;
 		}

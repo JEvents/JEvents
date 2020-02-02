@@ -3,12 +3,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
 jimport('joomla.application.component.model');
 
-class DefaultsModelDefaults extends JModelLegacy
+class DefaultsModelDefaults extends BaseDatabaseModel
 {
 
 	/**
@@ -173,7 +175,7 @@ class DefaultsModelDefaults extends JModelLegacy
 		// if only published entries then allow option to look across all categories
 		if (Factory::getApplication()->getUserStateFromRequest("jevdefaults.filter_published", 'filter_published', "0,1") == 1)
 		{
-			array_unshift($options, HTMLHelper::_('select.option', '0', JText::_('JEV_ANY_CATEGORY')));
+			array_unshift($options, HTMLHelper::_('select.option', '0', Text::_('JEV_ANY_CATEGORY')));
 		}
 
 		return $options;
