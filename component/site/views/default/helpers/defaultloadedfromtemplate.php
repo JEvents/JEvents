@@ -62,12 +62,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 			if (!isset($templates[$template_name]['*'][0]))
 			{
-				try
-				{
+				if (method_exists($view, 'getViewName')) {
 					$viewname = $view->getViewName();
-				}
-				catch (Exception $e)
-				{
+				} else {
 					$viewname = "default";
 				}
 				$templatefile = JPATH_BASE . '/' . 'templates' . '/' . JFactory::getApplication()->getTemplate() . '/' . 'html' . '/' . JEV_COM_COMPONENT . "/$viewname/defaults/$template_name.html";
