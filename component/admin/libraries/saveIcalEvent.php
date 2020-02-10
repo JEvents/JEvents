@@ -133,7 +133,7 @@ class SaveIcalEvent {
 		$vevent->catid  = ArrayHelper::getValue( $array, "catid", 0);
 		$vevent->catids	= ArrayHelper::getValue( $array, "catid", 0);
 
-        if (is_array($vevent->catid)){
+		if (is_array($vevent->catid)){
 			  $vevent->catid = ArrayHelper::toInteger($vevent->catid);
 		}
 		// if catid is empty then use the catid of the ical calendar
