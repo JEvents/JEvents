@@ -130,8 +130,8 @@ class SaveIcalEvent {
 
 		$vevent = iCalEvent::iCalEventFromData($data);
 
-		$vevent->catid  = ArrayHelper::getValue( $array,  "catid",0);
-        $vevent->catids	= ArrayHelper::getValue( $array,  "catid",0);
+		$vevent->catid  = ArrayHelper::getValue( $array, "catid", 0);
+		$vevent->catids	= ArrayHelper::getValue( $array, "catid", 0);
 
         if (is_array($vevent->catid)){
 			  $vevent->catid = ArrayHelper::toInteger($vevent->catid);
