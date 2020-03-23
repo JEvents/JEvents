@@ -2758,30 +2758,26 @@ class JEVHelper
 		// HTMLHelper::stylesheet($path . $file);
 		//stylesheet($file, $attribs = array(), $relative = false, $path_only = false, $detect_browser = true, $detect_debug = true)
 		// no need to find browser specific versions
-		$includes = HTMLHelper::stylesheet($path . $file, array(), false, true, false);
-		if (!$includes)
-		{
-			return;
-		}
-		if (!is_array($includes))
-		{
-			$includes = array($includes);
-		}
-
-		$version = JEventsVersion::getInstance();
-		$release = $version->get("RELEASE", "1.0.0");
+		// $includes = HTMLHelper::stylesheet($path . $file, array(), false, true, false);
 
 		$document = Factory::getDocument();
-
 		// No need for CSS files in XML file
 		if ($document->getType() == 'feed')
 		{
 			return;
 		}
-		foreach ($includes as $include)
-		{
-			$document->addStyleSheetVersion($include, $release, 'text/css', null, array());
-		}
+
+		$version = JEventsVersion::getInstance();
+		$release = $version->get("RELEASE", "1.0.0");
+		$includes = HTMLHelper::stylesheet($path . $file,
+			array(
+				'relative'      => false,
+				'pathOnly'      => false,
+				'detectBrowser' => true,
+				'detectDebug'   => true,
+				'version'       => 'v=' . $release
+			)
+		);
 
 	}
 
@@ -2863,26 +2859,21 @@ class JEVHelper
 		//HTMLHelper::script($path . $file);
 		//public static function script($file, $framework = false, $relative = false, $path_only = false, $detect_browser = true, $detect_debug = true)
 		// no need to find browser specific versions
-		$includes = HTMLHelper::script($path . $file, $framework, $relative, true, $detect_browser, $detect_debug);
-		if (!$includes)
-		{
-			return;
-		}
-		if (!is_array($includes))
-		{
-			$includes = array($includes);
-		}
+		//$includes = HTMLHelper::script($path . $file, $framework, $relative, true, $detect_browser, $detect_debug);
 
 		$version = JEventsVersion::getInstance();
 		$release = $version->get("RELEASE", "1.0.0");
 
-		$document = Factory::getDocument();
-
-		foreach ($includes as $include)
-		{
-			$document->addScriptVersion($include, $release);
-		}
-
+		// New version that must be used for Joomla 4.0 but works in Joomla 3.9
+		$includes = HTMLHelper::script($path . $file,
+			array(
+				'relative'      => $relative,
+			    'pathOnly'      => $path_only,
+				'detectBrowser' => $detect_browser,
+				'detectDebug'   => $detect_debug,
+				'version'       => 'v=' . $release
+			)
+		);
 	}
 
 	static public

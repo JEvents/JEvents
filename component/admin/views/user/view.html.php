@@ -49,7 +49,7 @@ class AdminUserViewUser extends JEventsAbstractView
 		//JToolbarHelper::preferences(JEV_COM_COMPONENT, '580', '750');
 		JToolbarHelper::spacer();
 
-		
+
 
 		$search = Factory::getApplication()->getUserStateFromRequest("usersearch{" . JEV_COM_COMPONENT . "}", 'search', '');
 		$db     = Factory::getDbo();
@@ -64,7 +64,7 @@ class AdminUserViewUser extends JEventsAbstractView
 		$this->users        = $users;
 		$this->search       = $search;
 
-		HTMLHelper::_('behavior.tooltip');
+
 
 
 
@@ -137,7 +137,7 @@ class AdminUserViewUser extends JEventsAbstractView
 		$this->users    = $userlist;
 		$this->jevuser  = $jevuser;
 
-		HTMLHelper::_('behavior.tooltip');
+
 
 		$this->setLayout("edit");
 

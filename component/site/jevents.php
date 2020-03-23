@@ -59,7 +59,7 @@ JevHtmlBootstrap::framework();
 // jQnc not only fixes noConflict it creates the jQuery alias
 // we use in JEvents "jevqc" so we always need it
 JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
-if (ComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery", 1))
+if (version_compare(JVERSION, "4.0", "lt") && ComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery", 1))
 {
 	// This script should come after all the URL based scripts in Joomla
 	// so should be a safe place to know that noConflict has been set

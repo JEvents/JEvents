@@ -316,7 +316,14 @@ if (!empty($this->icalEvents))
 				// Do not use JevDate version since this sets timezone to config value!
 				// GOOGLE HAS A PROBLEM WITH 235959!!!
 				//$html .= ';UNTIL=' . strftime("%Y%m%dT235959Z", $a->_until);
-				$html .= ';UNTIL=' . strftime("%Y%m%dT000000Z", $a->_until + 86400);
+				if ($a->alldayevent())
+				{
+					$html .= ';UNTIL=' . strftime("%Y%m%dT000000Z", $a->_until );
+				}
+				else
+				{
+					$html .= ';UNTIL=' . strftime("%Y%m%dT000000Z", $a->_until + 86400);
+				}
 			}
 			else if ($a->_count != "")
 			{

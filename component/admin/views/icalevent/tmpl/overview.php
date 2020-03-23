@@ -102,6 +102,7 @@ $data['filters'] = $this->filters;
                     $k        = 0;
                     $nullDate = $db->getNullDate();
                     $itemId = $params->get('default_itemid', 0);
+                    $itemId = $itemId ? $itemId : $params->get('permatarget', 0);
 
                     for ($i = 0, $n = count($this->rows); $i < $n; $i++)
                     {
@@ -112,12 +113,15 @@ $data['filters'] = $this->filters;
                                 <?php echo HTMLHelper::_('grid.id', $i, $row->ev_id()); ?>
                             </td>
                             <td>
+                                <span gsl-lightbox >
                                 <a href="<?php  echo Uri::root() . $row->viewDetailLink($row->yup(), $row->mup(), $row->dup(), false, $itemId);?>"
-                                   id="modal_preview" title="Preview" class="modal"
-                                   rel="{size: {x: 1200, y: 900}, handler:'iframe'}">
-
+                                   id="modal_preview" title="Preview"
+                                   data-caption="Preview"
+                                   data-type="iframe"
+                                   >
                                     <span class="icon-out-2 small"></span>
                                 </a>
+                                </span>
                                 <a href="index.php?option=com_jevents&task=icalevent.edit&cid=<?php echo $row->ev_id(); ?>"
                                    onclick="return listItemTask('cb<?php echo $i; ?>','icalevent.edit')"
                                    title="<?php echo JText::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->title(); ?></a>
@@ -204,13 +208,3 @@ $data['filters'] = $this->filters;
         </div>
     </div>
 </form>
-<script>
-    /** Make the Preview Modal Responsive **/
-    jQuery(document).ready(function() {
-        var width = jQuery(window).width();
-        var height = jQuery(window).height();
-
-        //ID of container
-        jQuery('a#modal_preview').attr('rel','{handler: "iframe", size: {x: '+(width-(width*0.10))+', y: '+(height-(height*0.10))+'}}');
-    });
-</script>

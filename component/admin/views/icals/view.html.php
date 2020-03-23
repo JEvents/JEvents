@@ -138,7 +138,7 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 		$this->users = $userlist;
 
 
-		HTMLHelper::_('behavior.tooltip');
+
 
 		$this->setLayout("edit");
 

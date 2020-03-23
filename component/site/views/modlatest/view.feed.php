@@ -146,6 +146,9 @@ class ModlatestViewModlatest extends AdminICalRepeatViewICalRepeat
 		if ($document->getType() == 'feed')
 		{
 			$document->_styleSheets = array();
+			$document->_style       = array();
+			$document->_scripts     = array();
+			$document->_script      = array();
 		}
 
 		parent::displaytemplate($tpl);

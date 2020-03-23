@@ -44,7 +44,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 		JEventsHelper::addSubmenu();
 
-		HTMLHelper::_('behavior.tooltip');
+
 
 		if (GSLMSIE10)
 		{

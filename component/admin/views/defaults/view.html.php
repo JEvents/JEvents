@@ -42,7 +42,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		JToolbarHelper::title(JText::_('JEV_LAYOUT_DEFAULTS'), 'jevents');
 		//JToolbarHelper::addNew('icalevent.edit');
 
-		HTMLHelper::_('behavior.tooltip');
+
 
 		$db  = Factory::getDbo();
 		$uri = \Joomla\CMS\Uri\Uri::getInstance();
@@ -115,7 +115,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 
 
 
-		HTMLHelper::_('behavior.tooltip');
+
 
 		// Get data from the model
 		$item  = $this->get('Data');

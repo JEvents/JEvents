@@ -1132,6 +1132,9 @@ SCRIPT;
 		$compname   = JEV_COM_COMPONENT;
 		$app        = Factory::getApplication();
 
+		// RSVP Pro plugin may have reset publish_up/publish_down - these now need to be restored
+		$dayEvent->fixDtstart(true);
+
 		// get the title and start time
 		$startDate = JevDate::strtotime($dayEvent->publish_up());
 		if ($relDay > 0)
@@ -1197,13 +1200,13 @@ SCRIPT;
 							$jmatch->setTime(0, 0, 0);
 							$tempEndDate = $jmatch->getTimeStamp();
 
-							/*							
-							$jmatch = new JevDate($tempEndDate);												
+							/*
+							$jmatch = new JevDate($tempEndDate);
 							// IS THIS IN GMT OR LOCAL ????
 							$jmatch->setTime(24,0,0);
 							// if an all day event then we don't want to roll to the next day
 							$jmatch->sub(new DateInterval('P1D'));
-							
+
 							$tempEndDate = $jmatch;
 							 */
 						}
@@ -1613,7 +1616,7 @@ SCRIPT;
 
 												if (isset($fieldNameArrays[$classname]["values"]) && is_array($fieldNameArrays[$classname]["values"]))
 												{
-													// Special case where $fieldname has option value in it e.g. sizedimages 
+													// Special case where $fieldname has option value in it e.g. sizedimages
 													foreach ($fieldNameArrays[$classname]["values"] as $idx => $fieldname)
 													{
 														if (strpos($fieldname, ";") > 0)

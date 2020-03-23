@@ -18,7 +18,7 @@ use Joomla\String\StringHelper;
 global $task;
 $db   = Factory::getDbo();
 $user = Factory::getUser();
-HTMLHelper::_('behavior.tooltip');
+
 
 // Receive overridable options for Filters
 $data['options'] = !empty($data['options']) ? $data['options'] : array();
@@ -142,5 +142,5 @@ $fullspan       = 12;
 	</form>
 
 	<br/>
-<?php		
+<?php
 

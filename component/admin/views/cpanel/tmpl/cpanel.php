@@ -119,6 +119,7 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
 				?>
                 <div class="gsl-margin-small gsl-width-1-1 gsl-position-relative gsl-card gsl-card-default gsl-card-small gsl-card-hover"
                      style="padding:10px 55px 35px 55px;">
+                    <?php if ($params->get("shownews", 1)) { ?>
                     <div class="gsl-card-header">
                         <div class="gsl-grid gsl-grid-small">
                             <h4 class="gsl-width-auto">
@@ -127,6 +128,7 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
                             </h4>
                         </div>
                     </div>
+	                <?php } ?>
                     <div class="gsl-card-body" gsl-slider="autoplay:true; autoplay-interval:5000; pause-on-hover:true">
                         <ul class="ys_newsfeed gsl-slider-items gsl-child-width-1-1" style="width: calc(100% + 20px);">
 							<?php for ($i = 0, $max = min(count($feed), 3); $i < $max; $i++) { ?>

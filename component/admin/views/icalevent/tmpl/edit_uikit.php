@@ -175,9 +175,8 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 				<input type="hidden" name="old_evid" id="old_evid" value="<?php echo $this->old_ev_id; ?>"/>
 				<?php
 			}
-			?>
-			<script type="text/javascript">
-				<?php
+			ob_start();
+
 				if (!empty($this->requiredtags))
 				{
 					foreach ($this->requiredtags as $tag)
@@ -201,6 +200,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
                     var editorElement = jevjq('#jevcontent');
                     if (editorElement.length) {
 						<?php
+                            /*
 						$editorcontent = $this->editor->save('jevcontent');
 						echo $editorcontent . "\n";
 						// Tiny MCE has changed what onSave method does so we need to use onGetContent
@@ -225,6 +225,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
                         }
 						<?php
 						}
+                            */
 						?>
                     }
                     try {
@@ -252,8 +253,10 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 
                         if (editorElement.length) {
 							<?php
+                                /*
 							// in case editor is toggled off - needed for TinyMCE
 							echo $this->editor->save('jevcontent');
+                                */
 							?>
                         }
 						<?php
@@ -290,9 +293,21 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
                 }
 
                 //-->
-			</script>
+            <?php
+            $script = ob_get_clean();
+            if (version_compare(JVERSION,'4.0.0',">="))
+            {
+	            Factory::getDocument()->addScriptDeclaration($script);
+            }
+            else
+            {
+	            ?>
+                <script>
+		            <?php echo $script; ?>
+                </script>
+	            <?php
+            }
 
-			<?php
 			$this->searchtags[]  = "{{HIDDENINFO}}";
 			$output              = ob_get_clean();
 			$this->replacetags[] = $output;

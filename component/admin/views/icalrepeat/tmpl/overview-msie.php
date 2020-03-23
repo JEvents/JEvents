@@ -17,7 +17,7 @@ $this->sidebar = JHtmlSidebar::render();
 global   $task;
 $db	= JFactory::getDbo();
 $user = JFactory::getUser();
-JHTML::_('behavior.tooltip');
+
 
 use Joomla\String\StringHelper;
 
@@ -90,5 +90,5 @@ $fullspan = 12;
     </form>
 
     <br />
-<?php		
+<?php
 

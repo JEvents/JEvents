@@ -10,7 +10,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-JHTML::_('behavior.tooltip');
+
 
 $db = JFactory::getDbo();
 
@@ -32,7 +32,7 @@ $pathIMG = JURI::root() . 'administrator/images/';
 $pathJeventsIMG = JURI::root() . "administrator/components/" . JEV_COM_COMPONENT . "/assets/images/";
 
 global $task;
-JHTML::_('behavior.tooltip');
+
 
 // get configuration object
 $cfg = JEVConfig::getInstance();

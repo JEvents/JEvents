@@ -32,6 +32,7 @@ include_once($componentpath . "/helpers/gslhelper.php");
 
 GslHelper::loadAssets();
 
+$tmpl = Factory::getApplication()->input->getCmd('tmpl', '');
 ?>
 <div class="gsl-scope" id="gslc"> <!-- Open Custom UiKit Container -->
     <?php
@@ -39,106 +40,118 @@ GslHelper::loadAssets();
     ?>
     <div class="gsl-margin-remove" gsl-grid>
         <!-- LEFT BAR -->
-		<?php echo LayoutHelper::render('gslframework.leftbar', null,  dirname( __DIR__, 1) ); ?>
+		<?php
+       if (empty($tmpl))
+       {
+	       echo LayoutHelper::render('gslframework.leftbar', null, dirname(__DIR__, 1));
+       }
+        ?>
         <!-- /LEFT BAR -->
-        <div id="right-col" class="gsl-padding-remove gsl-width-expand@m ">
+        <div id="right-col" class="gsl-padding-remove gsl-width-expand@m <?php if (!empty($tmpl)) echo "noleftbar";?> ">
 
             <!--HEADER-->
             <header id="top-head">
+	            <?php
+	            if (empty($tmpl))
+	            {
+	            ?>
                 <nav class="gsl-navbar-container gsl-background-secondary ys-titlebar" gsl-navbar>
                     <div class="gsl-navbar-left gsl-background-secondary gsl-width-expand@m">
                         <?php
-                            echo Factory::getApplication()->JComponentTitle;
+                        echo Factory::getApplication()->JComponentTitle;
                         ?>
                     </div>
                     <div class="gsl-navbar-right  gsl-background-secondary ">
-                        <ul class="gsl-navbar-nav ">
-                            <?php
-                            if (GslHelper::isAdminUser())
-                            {
-                                ?>
-                                <li class="hasYsPopover ys_support"
-                                    data-yspoptitle="<?php echo GslHelper::translate('SUPPORT_FORUM'); ?>"
-                                    data-yspopcontent="<?php echo GslHelper::translate('SUPPORT_FORUM_TOOLTIP'); ?>"
-                                >
-                                    <a href="<?php echo GslHelper::supportLink();?>"
-                                       data-gsl-icon="icon: question"
-                                       title="<?php echo GslHelper::translate('SUPPORT_FORUM'); ?>"
-                                       class="gsl-icon"
-                                       target="_blank"
-                                       aria-expanded="false">
-                                    </a>
-                                </li>
-                                <li class="hasYsPopover  ys_docs"
-                                    data-yspoptitle="<?php echo GslHelper::translate('DOCUMENTATION'); ?>"
-                                    data-yspopcontent="<?php echo GslHelper::translate('DOCUMENTATION_TOOLTIP'); ?>"
-                                >
-                                    <a href="<?php echo GslHelper::documentationLink();?>"
-                                       data-gsl-icon="icon: file-text"
-                                       title="<?php echo GslHelper::translate('DOCUMENTATION'); ?>"
-                                       class="gsl-icon"
-                                       target="_blank"
-                                       aria-expanded="false">
-                                    </a>
-                                </li>
-
-                                <li class="hasYsPopover  ys_config"
-                                    data-yspoptitle = "<?php echo GslHelper::translate('CONFIG');?>"
-                                    data-yspopcontent = "<?php echo GslHelper::translate('CONFIG_TOOLTIP'); ?>"
+                            <ul class="gsl-navbar-nav ">
+				                <?php
+				                if (GslHelper::isAdminUser())
+				                {
+					                ?>
+                                    <li class="hasYsPopover ys_support"
+                                        data-yspoptitle="<?php echo GslHelper::translate('SUPPORT_FORUM'); ?>"
+                                        data-yspopcontent="<?php echo GslHelper::translate('SUPPORT_FORUM_TOOLTIP'); ?>"
                                     >
-                                    <a href="<?php echo GslHelper::configLink();?>"
-                                       data-gsl-icon="icon: settings"
-                                       title="<?php echo GslHelper::translate('CONFIG'); ?>"
-                                       class="gsl-icon"
+                                        <a href="<?php echo GslHelper::supportLink(); ?>"
+                                           data-gsl-icon="icon: question"
+                                           title="<?php echo GslHelper::translate('SUPPORT_FORUM'); ?>"
+                                           class="gsl-icon"
+                                           target="_blank"
+                                           aria-expanded="false">
+                                        </a>
+                                    </li>
+                                    <li class="hasYsPopover  ys_docs"
+                                        data-yspoptitle="<?php echo GslHelper::translate('DOCUMENTATION'); ?>"
+                                        data-yspopcontent="<?php echo GslHelper::translate('DOCUMENTATION_TOOLTIP'); ?>"
+                                    >
+                                        <a href="<?php echo GslHelper::documentationLink(); ?>"
+                                           data-gsl-icon="icon: file-text"
+                                           title="<?php echo GslHelper::translate('DOCUMENTATION'); ?>"
+                                           class="gsl-icon"
+                                           target="_blank"
+                                           aria-expanded="false">
+                                        </a>
+                                    </li>
+
+                                    <li class="hasYsPopover  ys_config"
+                                        data-yspoptitle="<?php echo GslHelper::translate('CONFIG'); ?>"
+                                        data-yspopcontent="<?php echo GslHelper::translate('CONFIG_TOOLTIP'); ?>"
+                                    >
+                                        <a href="<?php echo GslHelper::configLink(); ?>"
+                                           data-gsl-icon="icon: settings"
+                                           title="<?php echo GslHelper::translate('CONFIG'); ?>"
+                                           class="gsl-icon"
+                                           aria-expanded="false">
+                                        </a>
+                                    </li>
+					                <?php
+				                }
+				                ?>
+                                <li class="hasYsPopover  ys_logout"
+                                    data-yspoptitle="<?php echo JText::_('JLOGOUT', true); ?>"
+                                    data-yspopcontent="<?php echo JText::_('JLOGOUT', true); ?>"
+                                >
+                                    <a href="<?php echo JUri::base() . 'index.php?option=com_login&amp;task=logout&amp;' . JSession::getFormToken() . '=1'; ?>"
+                                       data-gsl-icon="icon:  sign-out"
+                                       title="<?php JText::_('JLOGOUT'); ?>"
                                        aria-expanded="false">
                                     </a>
                                 </li>
-	                            <?php
-                            }
-                            ?>
-                            <li class="hasYsPopover  ys_logout"
-                                data-yspoptitle = "<?php echo  JText::_('JLOGOUT', true); ?>"
-                                data-yspopcontent = "<?php echo JText::_('JLOGOUT', true); ?>"
-                            >
-                                <a href="<?php echo JUri::base() . 'index.php?option=com_login&amp;task=logout&amp;' . JSession::getFormToken() . '=1'; ?>"
-                                   data-gsl-icon="icon:  sign-out"
-                                   title="<?php JText::_('JLOGOUT'); ?>"
-                                   aria-expanded="false">
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                            </ul>
+                        </div>
                 </nav>
+		            <?php
+	            }
+	            ?>
                 <nav class="gsl-navbar-container ys-gsl-action-buttons" gsl-navbar>
                     <div class="gsl-navbar-left gsl-background-primary gsl-width-expand@m">
-	                    <?php
-	                    $bar = JToolBar::getInstance('toolbar2');
-	                    $toolbarButtons = $bar->getItems();
+                        <?php
+                        $bar            = JToolBar::getInstance('toolbar2');
+                        $toolbarButtons = $bar->getItems();
 
-	                    if (!count($toolbarButtons))
+                        if (!count($toolbarButtons))
                         {
-	                        $bar = JToolBar::getInstance('toolbar');
-	                        $toolbarButtons = $bar->getItems();
+                            $bar            = JToolBar::getInstance('toolbar');
+                            $toolbarButtons = $bar->getItems();
                         }
 
-	                    foreach ($toolbarButtons as $toolbarButton)
+                        foreach ($toolbarButtons as $toolbarButton)
                         {
-	                        if (is_array($toolbarButton))
-	                        {
-		                        $buttonoutput = $bar->renderButton($toolbarButton);
-	                        }
-	                        else
-	                        {
-		                        // Joomla 4 in com_fields etc.
-		                        $buttonoutput = $toolbarButton->render();
-	                        }
-	                        $buttonoutput = str_replace("btn ", "gsl-button gsl-button-primary ", $buttonoutput);
-	                        $buttonoutput = str_replace('class=""', "class='gsl-button gsl-button-primary' ", $buttonoutput);
-	                        $buttonoutput = str_replace(array("btn-small"), "", $buttonoutput);
-	                        echo $buttonoutput  ;
+                            if (is_array($toolbarButton))
+                            {
+                                $buttonoutput = $bar->renderButton($toolbarButton);
+                            }
+                            else
+                            {
+                                // Joomla 4 in com_fields etc.
+                                $buttonoutput = $toolbarButton->render();
+                            }
+                            $buttonoutput = str_replace("btn ", "gsl-button gsl-button-primary ", $buttonoutput);
+                            $buttonoutput = str_replace('class=""', "class='gsl-button gsl-button-primary' ", $buttonoutput);
+                            $buttonoutput = str_replace(array("btn-small"), "", $buttonoutput);
+                            echo $buttonoutput;
                         }
 
-	                    ?>
+                        ?>
                     </div>
 
                 </nav>

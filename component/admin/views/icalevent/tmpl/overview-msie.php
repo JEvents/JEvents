@@ -15,7 +15,7 @@ use Joomla\String\StringHelper;
 // we would use this to add custom data to the output here
 //JEVHelper::onDisplayCustomFieldsMultiRow($this->rows);
 
-JHTML::_('behavior.tooltip');
+
 
 $db = JFactory::getDbo();
 $user = JFactory::getUser();

@@ -48,6 +48,7 @@ class iCalEventDetail extends Joomla\CMS\Table\Table
 	var $multiday = null;
 	var $noendtime = null;
 	var $modified = null;
+	var $rawdata = "";
 
 	var $_customFields = null;
 

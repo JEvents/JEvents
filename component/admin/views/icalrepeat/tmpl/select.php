@@ -17,7 +17,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 global $task;
 $db   = Factory::getDbo();
 $user = Factory::getUser();
-HTMLHelper::_('behavior.tooltip');
+
 
 $input = Factory::getApplication()->input;
 
@@ -51,7 +51,7 @@ $function = $input->getCmd('function', 'jSelectEvent');
 		{
 			$row    = &$this->icalrows[$i];
 			$repeat = $row;
-			// dummy menu item 			
+			// dummy menu item
 			$link = $repeat->viewDetailLink($repeat->yup(), $repeat->mup(), $repeat->dup(), false, 1);
 			?>
 			<tr class="row<?php echo $k; ?>">

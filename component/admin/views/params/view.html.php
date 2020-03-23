@@ -47,7 +47,7 @@ class AdminParamsViewParams extends JEventsAbstractView
 
 		$model = $this->getModel();
 
-		HTMLHelper::_('behavior.tooltip');
+
 
 		jimport('joomla.form.form');
 
