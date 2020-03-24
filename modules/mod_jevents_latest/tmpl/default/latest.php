@@ -395,7 +395,7 @@ class DefaultModLatestView
 		}
 		else
 		{
-			$rows = $this->datamodel->queryModel->listLatestIcalEvents($periodStart, $periodEnd, $this->maxEvents, $this->repeatdisplayoptions, $this->multiday);
+			$rows = $this->datamodel->queryModel->listLatestIcalEvents($periodStart, $periodEnd, $this->maxEvents, $this->repeatdisplayoptions, $this->multiday, $this->modparams->get('include_subcats', 1));
 		}
 		JRequest::setVar('published_fv', $filter_value);
 		$reg->set("jev.modparams", false);
