@@ -15,9 +15,8 @@ JEventsHelper::addSubmenu();
 $this->sidebar = JHtmlSidebar::render();
 
 global   $task;
-$db	= Factory::getDbo();
-$user = Factory::getUser();
-JHTML::_('behavior.tooltip');
+$db	= JFactory::getDbo();
+$user = JFactory::getUser();
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -93,5 +92,5 @@ $fullspan = 12;
     </form>
 
     <br />
-<?php		
+<?php
 

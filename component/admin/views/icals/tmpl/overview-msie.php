@@ -14,9 +14,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
-
-JHTML::_('behavior.tooltip');
-
 $db = Factory::getDbo();
 
 $this->pageNav = $this->pagination;
@@ -37,7 +34,7 @@ $pathIMG = JURI::root() . 'administrator/images/';
 $pathJeventsIMG = JURI::root() . "administrator/components/" . JEV_COM_COMPONENT . "/assets/images/";
 
 global $task;
-JHTML::_('behavior.tooltip');
+
 
 // get configuration object
 $cfg = JEVConfig::getInstance();

@@ -1149,8 +1149,15 @@ class jIcalEventDB extends jEventCal
 		return $this->_creatorname;
 	}
 
-	function fixDtstart()
+	function fixDtstart($reset = false)
 	{
+		if ($reset && isset($this->_olddtstart)){
+			$this->dtstart($this->_olddtstart);
+			$this->dtend($this->_olddtend);
+			$this->_publish_up = $this->_oldpu;
+			$this->_publish_down =$this->_oldpd;
+			return;
+		}
 
 		// must only ever do this once!
 		if (isset($this->dtfixed) && $this->dtfixed) return;

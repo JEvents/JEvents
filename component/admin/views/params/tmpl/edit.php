@@ -18,10 +18,8 @@ use Joomla\CMS\Form\Form;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\String\StringHelper;
 
-//jimport('joomla.html.html.bootstrap');
 // We need to get the params first
 
-//HTMLHelper::_('formbehavior.chosen', '#adminForm select:not(.notchosen)');
 HTMLHelper::_('formbehavior.chosen', '#adminForm select.chosen');
 
 $version = JEventsVersion::getInstance();
@@ -70,9 +68,9 @@ if (count($jevplugins))
 				{
 					?>
 					<table class="settings_level">
-						<tr class=" difficulty1">
-							<td class="paramlist_key"><span class="editlinktip"><?php echo $field->label;?></span></td>
-							<td class="paramlist_value"><?php echo $field->input;?></td>
+						<tr class=" difficulty1 gsl-grid">
+							<td class="gsl-width-auto"><span class="editlinktip"><?php echo $field->label;?></span></td>
+							<td class="gsl-width-expand"><?php echo $field->input;?></td>
 						</tr>
 					</table>
 					<?php
@@ -83,8 +81,8 @@ if (count($jevplugins))
 		<legend>
 			<?php echo Text::_('JEV_EVENTS_CONFIG'); ?>
 		</legend>
-
-		<ul class="config" id="myParamsTabs" gsl-tab>
+<div class="gsl-grid  gsl-margin-remove-left">
+		<ul class="config gsl-tab-left gsl-margin-right gsl-width-auto gsl-list-divider" id="myParamsTabs" gsl-tab="connect: #ysts-config-tabs">
 			<?php
 			$fieldSets = $this->form->getFieldsets();
 			$first     = true;
@@ -162,8 +160,8 @@ if (count($jevplugins))
 			?>
 		</ul>
         <!-- Tabs themselves //-->
-        <ul class="gsl-switcher gsl-margin">
-
+		<div class=" gsl-margin-remove gsl-card-body gsl-card-default gsl-padding gsl-width-expand">
+	        <ul class="gsl-switcher" id="ysts-config-tabs">
             <?php
 
 		$fieldSets = $this->form->getFieldsets();
@@ -175,7 +173,6 @@ if (count($jevplugins))
 				continue;
 			}
 			$label = empty($fieldSet->label) ? $name : $fieldSet->label;
-			//echo HTMLHelper::_('bootstrap.addPanel', "myParamsTabs", $name);
             ?>
             <li>
                 <?php
@@ -276,12 +273,10 @@ if (count($jevplugins))
 			?>
             </li>
 			<?php
-			//echo HTMLHelper::_('bootstrap.endPanel');
 		}
 
 		if ($haslayouts)
 		{
-			//echo HTMLHelper::_('bootstrap.addPanel', "myParamsTabs", "club_layouts");
 			?>
             <li>
 			<ul class="nav nav-tabs" id="myLayoutTabs">
@@ -311,7 +306,6 @@ if (count($jevplugins))
 				?>
 			</ul>
 			<?php
-			//echo HTMLHelper::_('bootstrap.startPane', "myLayoutTabs", array('active' => $first));
 
 			// Now get layout specific parameters
 			//Form::addFormPath(JPATH_COMPONENT ."/views/");
@@ -407,44 +401,29 @@ $html[] = '</tr>';
 					}
 					if ($hasconfig)
 					{
-						//echo HTMLHelper::_('bootstrap.addPanel', 'myLayoutTabs', $viewfile);
 
 						echo implode("\n", $html);
 
-						//echo HTMLHelper::_('bootstrap.endPanel');
 					}
 				}
 			}
-			//echo HTMLHelper::_('bootstrap.endPane', 'myLayoutTabs');
 		}
 
 		if ($hasPlugins)
 		{
-			//echo HTMLHelper::_('bootstrap.addPanel', "myParamsTabs", "plugin_options");
             ?>
             <li>
+                <ul gsl-accordion class="gsl-list-divider">
             <?php
-			//echo HTMLHelper::_('bootstrap.startAccordion', 'myPluginAccordion', array('active' => 'collapsexx', 'parent' => 'plugin_options'));
-			$script = <<<SCRIPT
-jQuery(document).ready(function(){
-    jQuery('#myPluginAccordion').on('show', function (evt) {
-       jQuery(evt.target).closest('.accordion-group').find(".icon-chevron-right").removeClass("icon-chevron-right").addClass("icon-chevron-down");
-    });
-    jQuery('#myPluginAccordion').on('hidden', function (evt) {
-       jQuery(evt.target).closest('.accordion-group').find(".icon-chevron-down").removeClass("icon-chevron-down").addClass("icon-chevron-right");
-    });
-});
-SCRIPT;
-
-			//JevHtmlBootstrap::popover('#myPluginAccordion .icon-info', array("trigger" => "hover focus", "placement" => "top", "container" => "#plugin_options", "delay" => array("show" => 150, "hide" => 150)));
-			//Factory::getDocument()->addScriptDeclaration($script);
-
 			$i = 0;
 			foreach ($jevplugins as $plugin)
 			{
 				$config = JPATH_SITE . "/plugins/" . $plugin->type . "/" . $plugin->name . "/" . $plugin->name . ".xml";
 				if (file_exists($config))
 				{
+					?>
+					<li clas="gsl-card gsl-card-default gsl-card-hover">
+					<?php
 					// Load language file
 					$lang     = Factory::getLanguage();
 					$langfile = "plg_" . $plugin->type . "_" . $plugin->name . ".sys";
@@ -453,9 +432,7 @@ SCRIPT;
 					$lang->load($langfile, JPATH_ADMINISTRATOR, null, false, true);
 
 					// Now get plugin specific parameters
-					//Factory::getApplication()->setUserState('com_plugins.edit.plugin.data', array());
 					$pluginform = Form::getInstance("com_jevents.config.plugins." . $plugin->name, $config, array('control' => 'jform_plugin[' . $plugin->type . '][' . $plugin->name . ']', 'load_data' => true), true, "/extension/config/fields");
-					//$pluginform = Form::getInstance('com_plugins.plugin', $config, array('control' => 'jform_plugin['.$plugin->name.']', 'load_data' => true), true, "/extension/config/fields");
 					$pluginparams = new JevRegistry($plugin->params);
 
 					// Load the whole XML config file to get the plugin name in plain english
@@ -504,12 +481,12 @@ SCRIPT;
 						. '<label for="jform_plugin_' . $plugin->type . '_' . $plugin->name . '_params_enabled0" class="btn">'
 						. Text::_('JDISABLED')
 						. '</label>'
-						. '</fieldset>';
+						. '</div>'
+						. '</div>';
 
+					//$label = JText::_($xml->name);
 					if ($hasfields)
 					{
-						//echo HTMLHelper::_('bootstrap.addSlide', 'myPluginAccordion', Text::_($label), 'collapse' . ($i++));
-
 						$fieldSets = $pluginform->getFieldsets();
 						$html      = array();
 						$hasconfig = false;
@@ -562,61 +539,65 @@ SCRIPT;
 
 								$hasconfig = true;
 								$html[]    = $field->renderField();
-								/*
-								$class = $field->class;
-
-								if (StringHelper::strlen($class) > 0)
-								{
-										$class = " class='$class'";
-								}
-								$html[] = "<tr $class>";
-								if (!isset($field->label) || $field->label == "")
-								{
-										$html[] = '<td class="paramlist_key"><span class="editlinktip">' . $field->label . '</span></td>';
-										$html[] = '<td class="paramlist_value">' . $field->input . '</td>';
-								}
-								else
-								{
-										$html[] = '<td class="paramlist_value" colspan="2">' . $field->input . '</td>';
-								}
-
-								$html[] = '</tr>';
-								 *
-								 */
 							}
 							$html[] = '</div>';
-							echo implode("\n", $html);
 						}
-						//echo HTMLHelper::_('bootstrap.endSlide');
+
+						if ($safedesc)
+						{
+							$popclass = " hasYsPopover";
+							$labelinfo = '  data-yspoptitle="' . $safename . '" data-yspopcontent="' . $safedesc . '" ';
+							$labelinfo .= ' data-yspopoptions=\'{"mode" : "click, hover", "offset" : 20,"delayHide" : 200, "pos" : "top-left"}\' ';
+						}
+						else
+						{
+							$popclass = "";
+							$labelinfo = '';
+						}
+
+						?>
+                        <a class="gsl-accordion-title <?php echo $popclass;?>" href="#" <?php echo $labelinfo;?>  ><?php echo $label; ?></a>
+                        <div class="gsl-accordion-content">
+							<?php
+							echo implode("\n", $html);
+							?>
+                        </div>
+						<?php
 					}
 					else
 					{
+						if ($safedesc)
+						{
+							$popclass = " hasYsPopover";
+							$labelinfo = '  data-yspoptitle="' . $safename . '" data-yspopcontent="' . $safedesc . '"  ';
+							$labelinfo .= ' data-yspopoptions=\'{"mode" : "click, hover", "offset" : 20,"delayHide" : 200, "pos" : "top-left"}\' ';
+						}
+						else {
+							$popclass = "";
+							$labelinfo = '';
+						}
+
 						?>
-						<div class="accordion-group">
-							<div class="accordion-heading">
-								<strong>
-                                                    <span class="accordion-toggle">
-                                                    <?php echo $label; ?>
-                                                    </span>
-								</strong>
-							</div>
-						</div>
+					<a class="gsl-accordion-title <?php echo $popclass;?>" href="#" <?php echo $labelinfo;?> ><?php echo $label; ?></a>
+					<div class="gsl-accordion-content">
+						<?php echo JText::_("COM_JEVENTS_NO_CONFIG_OPTIONS");?>
+					</div>
 						<?php
 					}
-				}
-				else
-				{
-					//echo $plugin->name;
+					?>
+					</li>
+					<?php
 				}
 			}
-			//echo HTMLHelper::_('bootstrap.endAccordion');
 			?>
+                </ul>
             </li>
             <?php
-			//echo HTMLHelper::_('bootstrap.endPanel');
 		}
 		?>
         </ul>
+		</div>
+</div>
 	</fieldset>
 
 	<input type="hidden" name="id" value="<?php echo $this->component->id; ?>"/>

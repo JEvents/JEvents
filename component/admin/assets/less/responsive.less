@@ -6,7 +6,8 @@
     #left-col {
       bottom: 0;
     }
-    #right-col {
+
+    #right-col:not(.noleftbar) {
       /* equal to left-col width */
       margin-left: @leftColumn;
       width: ~"calc(100% - @{leftColumn})";

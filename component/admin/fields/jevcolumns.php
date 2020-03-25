@@ -43,11 +43,14 @@ class JFormFieldJevcolumns extends JFormFieldText
 		HTMLHelper::_('jquery.framework');
 		HTMLHelper::_('jquery.ui', array("core", "sortable"));
 		HTMLHelper::_('bootstrap.framework');
-		JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
+		JEVHelper::script("jQnc.js", "components/com_jevents/assets/js/");
 		// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
-		Factory::getDocument()->addScriptDeclaration("checkJQ();");
+		if (version_compare(JVERSION, "4.0", "lt") )
+		{
+			Factory::getDocument()->addScriptDeclaration("checkJQ();");
+		}
 
-		JEVHelper::script('administrator/components/com_jevents/assets/js/columns.js');
+		JEVHelper::script("columns.js", "administrator/components/com_jevents/assets/js/");
 
 		$user = Factory::getUser();
 

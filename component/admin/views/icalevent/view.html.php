@@ -71,7 +71,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		}
 
 		JToolbarHelper::spacer();
-		
+
 
 		$showUnpublishedICS = false;
 
@@ -344,6 +344,8 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 	{
 		Factory::getApplication()->input->set('hidemainmenu', true);
 
+		JToolbarHelper::title(JText::_('ICAL_EVENTS'), 'jevents');
+
 		JToolbarHelper::save('icalevent.savetranslation');
 		JToolbarHelper::cancel('icalevent.close');
 
@@ -365,9 +367,9 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 		JToolbarHelper::cancel('icalevent.list');
 
-		
 
-		HTMLHelper::_('behavior.tooltip');
+
+
 
 	}
 
@@ -453,7 +455,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			$creator = $this->row->created_by() > 0 ? $this->row->created_by() : (isset($jevuser) ? $jevuser->user_id : 0);
 			$userlist = HTMLHelper::_('select.genericlist', $userOptions, 'jev_creatorid', 'class="gsl-select" size="1" ', 'value', 'text', $creator);
 
-			$this->assignRef("users", $userlist);
+			$this->users = $userlist;
 		}
 
 	}

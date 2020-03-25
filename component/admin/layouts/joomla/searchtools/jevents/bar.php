@@ -32,35 +32,35 @@ $filters = $data['view']->filterForm->getGroup('filter');
 
 <?php if (!empty($filters['filter_search'])) : ?>
 	<?php if ($searchButton) : ?>
-		<label for="filter_search" class="gsl-hidden">
+        <label for="filter_search" class="gsl-hidden">
 			<?php if (isset($filters['filter_search']->label)) : ?>
 				<?php echo Text::_($filters['filter_search']->label); ?>
 			<?php else : ?>
 				<?php echo Text::_('JSEARCH_FILTER'); ?>
 			<?php endif; ?>
-		</label>
-			<?php
-            $search_input = $filters['filter_search']->input;
-			$tooltip = ' data-yspoptitle = "' . Text::_('JSEARCH_FILTER', true). '"'
-				. '  data-yspopcontent = "' . Text::_($filters['filter_search']->description, true) . '" ';
-			if ($filters['filter_search']->description) :
-				$search_input = str_replace('<input ', '<input class="hasYsPopover gsl-input" ' . $tooltip . ' ', $search_input);
-            endif;
-			echo trim($search_input);
-			?><button type="submit" class="gsl-button ys-tooltip"
-                    title="<?php echo HTMLHelper::_('tooltipText', 'JSEARCH_FILTER_SUBMIT'); ?>"
-                    aria-label="<?php echo Text::_('JSEARCH_FILTER_SUBMIT'); ?>">
-				<span gsl-icon="icon: search" aria-hidden="true"></span>
-			</button>
-        <?php if ($filterButton) : ?>
+        </label>
+		<?php
+		$search_input = $filters['filter_search']->input;
+		$tooltip = ' data-yspoptitle = "' . \JText::_('JSEARCH_FILTER', true). '"'
+			. '  data-yspopcontent = "' . \JText::_($filters['filter_search']->description, true) . '" ';
+		if ($filters['filter_search']->description) :
+			$search_input = str_replace('<input ', '<input class="hasYsPopover gsl-input" ' . $tooltip . ' ', $search_input);
+		endif;
+		echo trim($search_input);
+		?><button type="submit" class="gsl-button ys-tooltip"
+                  title="<?php echo JHtml::_('tooltipText', 'JSEARCH_FILTER_SUBMIT'); ?>"
+                  aria-label="<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?>">
+            <span gsl-icon="icon: search" aria-hidden="true"></span>
+        </button>
+		<?php if ($filterButton) : ?>
             <button type="button" class=" gsl-button ys-tooltip  js-stools-btn-filter"
-                        title="<?php echo HTMLHelper::_('tooltipText', 'JSEARCH_TOOLS_DESC'); ?>">
-					<?php echo Text::_('JSEARCH_TOOLS');?> <span gsl-icon="icon: triangle-down"></span>
-				</button>
+                    title="<?php echo JHtml::_('tooltipText', 'JSEARCH_FILTER'); ?>">
+				<?php echo JText::_('JSEARCH_FILTER');?> <span gsl-icon="icon: triangle-down"></span>
+            </button>
 		<?php endif; ?>
-			<button type="button" class="gsl-button ys-tooltip js-stools-btn-clear"
-                    title="<?php echo HTMLHelper::_('tooltipText', 'JSEARCH_FILTER_CLEAR'); ?>">
-				<?php echo Text::_('JSEARCH_FILTER_CLEAR');?>
-			</button>
+        <button type="button" class="gsl-button ys-tooltip js-stools-btn-clear"
+                title="<?php echo JHtml::_('tooltipText', 'JSEARCH_FILTER_CLEAR'); ?>">
+			<?php echo JText::_('JSEARCH_FILTER_CLEAR');?>
+        </button>
 	<?php endif; ?>
 <?php endif;
