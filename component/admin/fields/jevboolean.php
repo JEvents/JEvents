@@ -19,9 +19,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Component\ComponentHelper;
 
-jimport('joomla.html.html');
-jimport('joomla.form.formfield');
-jimport('joomla.form.helper');
 FormHelper::loadFieldClass('radio');
 
 /**
@@ -31,7 +28,7 @@ FormHelper::loadFieldClass('radio');
  * @subpackage     com_banners
  * @since          1.6
  */
-class FormFieldJEVBoolean extends FormFieldRadio
+class FormFieldJEVBoolean extends JFormFieldRadio
 {
 
 	/**
