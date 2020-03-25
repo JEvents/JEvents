@@ -124,13 +124,14 @@ class GslHelper
 
 	static public function getLeftIconLinks()
 	{
+		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
 		$app   = Factory::getApplication();
 		$input = $app->input;
 		$task  = $input->getCmd('jevtask', 'icalevent.list');
 		$option  = $input->getCmd('option', 'com_jevents');
 		if ($option == "com_jevents")
 		{
-			list($view, $layout) = explode(".", $task);
+			list($view, $layout) = array_pad(explode(".", $task), 2, "");
 		}
 		else
         {
