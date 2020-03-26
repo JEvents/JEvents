@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
-HTMLHelper::_('behavior.tooltip');
+
 
 $db   = Factory::getDbo();
 $user = Factory::getUser();

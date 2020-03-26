@@ -82,7 +82,7 @@ class JEventsHelper
 	 *
 	 * @since   3.5
 	 */
-	public function countItems(&$items, $extension)
+	public static function countItems(&$items, $extension)
 	{
 		$vName      = Factory::getApplication()->input->getCmd('view', 'categories');
 

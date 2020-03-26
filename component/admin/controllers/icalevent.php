@@ -797,6 +797,14 @@ SQL;
 		$input = Factory::getApplication()->input;
 		$array  = !$params->get('allowraw', 0) ? JEVHelper::arrayFiltered($input->getArray(array(), null, 'RAW')) : $input->getArray(array(), null, 'RAW');
 
+		if (!isset($array['extra_info']))
+        {
+	        $array['extra_info'] = "";
+        }
+		if (!isset($array['jevcontent']))
+		{
+			$array['jevcontent'] = "";
+		}
 		// Should we allow raw content through unfiltered
 		if ($params->get("allowraw", 0))
 		{

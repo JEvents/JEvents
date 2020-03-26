@@ -10,7 +10,10 @@ JevHtmlBootstrap::framework();
 
 JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
 // this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
-Factory::getDocument()->addScriptDeclaration("checkJQ();");
+if (version_compare(JVERSION, "4.0", "lt") && ComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery", 1))
+{
+	Factory::getDocument()->addScriptDeclaration("checkJQ();");
+}
 
 
 HTMLHelper::stylesheet("com_jevents/bootstrap.css", array(), true);

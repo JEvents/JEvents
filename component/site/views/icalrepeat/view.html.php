@@ -85,7 +85,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		HTMLHelper::_('behavior.tooltip');
+
 
 
 		$this->_adminStart();

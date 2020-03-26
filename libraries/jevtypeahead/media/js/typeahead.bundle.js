@@ -2192,6 +2192,11 @@
                 data = this.menu.getSelectableData($selectable);
                 val = this.input.getInputValue();
                 if (data && !_.isBlankString(val) && !this.input.hasOverflow()) {
+                    // GWE MOD to trap errors
+                    if (data.obj && (typeof data.obj === 'string') && !_.isBlankString(data.obj) && data.obj.indexOf('alert') == 0) {
+                        eval(data.obj);
+                        return;
+                    }
                     query = Input.normalizeQuery(val);
                     escapedQuery = _.escapeRegExChars(query);
                     frontMatchRegEx = new RegExp("^(?:" + escapedQuery + ")(.+$)", "i");

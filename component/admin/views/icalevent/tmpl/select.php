@@ -19,7 +19,7 @@ use Joomla\String\StringHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Session\Session;
 
-HTMLHelper::_('behavior.tooltip');
+
 
 $db     = Factory::getDbo();
 $user   = Factory::getUser();

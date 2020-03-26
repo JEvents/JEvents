@@ -40,7 +40,7 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 
 
 
-		HTMLHelper::_('behavior.tooltip');
+
 
 
 
@@ -81,7 +81,7 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$section = $params->get("section",0);
 
-		HTMLHelper::_('behavior.tooltip');
+
 
 		// load Joomla javascript classes
 		HTMLHelper::_('behavior.core');
