@@ -135,8 +135,8 @@ class JEventsModelicalevent extends JModelList
 		// sanitised later
 		$access = $this->getState("filter.access", '');
 
-		$limit      = intval($app->getUserStateFromRequest("viewlistlimit", 'limit', $app->getCfg('list_limit', 10)));
-		$limitstart = intval($app->getUserStateFromRequest("view{" . JEV_COM_COMPONENT . "}limitstart", 'limitstart', 0));
+		$limit = $this->getState('list.limit',  $app->getCfg('list_limit', 10));
+		$limitstart = $this->getState('list.start',  0);
 
 		// Club Plugin checks
 		$tags = 0;
