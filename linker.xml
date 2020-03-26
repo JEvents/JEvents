@@ -42,11 +42,11 @@
         <symlink target="${rootPath}/component/media/js" link="${p}/media/${component}/js" overwrite="true" />
         <symlink target="${rootPath}/component/media/css" link="${p}/media/${component}/css" overwrite="true" />
         <symlink target="${rootPath}/component/media/images" link="${p}/media/${component}/images" overwrite="true" />
-        <symlink target="${rootPath}/plugins/finder/jevents" link="${p}/plugins/finder/jevents" overwrite="true" />
-        <symlink target="${rootPath}/plugins/search/eventsearch" link="${p}/plugins/search/eventsearch" overwrite="true" />
-        <symlink target="${rootPath}/plugins/installer/jeventsinstaller" link="${p}/plugins/installer/jeventsinstaller" overwrite="true" />
+        <symlink target="${rootPath}/plugins/finder" link="${p}/plugins/finder/jevents" overwrite="true" />
+        <symlink target="${rootPath}/plugins/search/" link="${p}/plugins/search/eventsearch" overwrite="true" />
+        <symlink target="${rootPath}/plugins/installer" link="${p}/plugins/installer/jeventsinstaller" overwrite="true" />
         <symlink target="${rootPath}/plugins/jevents" link="${p}/plugins/content/jevents" overwrite="true" />
-        <symlink target="${rootPath}/plugins/system/gwejson" link="${p}/plugins/system/gwejson" overwrite="true" />
+        <symlink target="${rootPath}/plugins/gwejson" link="${p}/plugins/system/gwejson" overwrite="true" />
         <symlink target="${rootPath}/libraries/googl" link="${p}/libraries/googl" overwrite="true" />
         <symlink target="${rootPath}/libraries/jevmodal" link="${p}/libraries/jevents/jevmodal" overwrite="true" />
         <symlink target="${rootPath}/libraries/bootstrap" link="${p}/libraries/jevents/bootstrap" overwrite="true" />
