@@ -29,7 +29,7 @@ class GslHelper
 
 		HTMLHelper::stylesheet('media/com_jevents/css/uikit.gsl.css', array('version' => GslHelper::JEvents_Version(false), 'relative' => false));
 		HTMLHelper::stylesheet('administrator/components/com_jevents/assets/css/jevents.css', array('version' => GslHelper::JEvents_Version(false), 'relative' => false));
-		$jversion = new JVersion;
+		$jversion = new Version;
 		if ($jversion->isCompatible('4.0'))
 		{
 			HTMLHelper::stylesheet('administrator/components/com_jevents/assets/css/j4.css', array('version' => GslHelper::JEvents_Version(false), 'relative' => false));

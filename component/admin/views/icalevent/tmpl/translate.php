@@ -23,6 +23,7 @@ Factory::getDocument()->addScriptDeclaration('
 	};
 ');
 
+echo Toolbar::getInstance('toolbar')->render('toolbar');
 ?>
 
 <form action="<?php echo Route::_('index.php?option=com_jevents&task=icalevent.savetranslation'); ?>" method="post"
