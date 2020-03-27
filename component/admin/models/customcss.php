@@ -3,7 +3,7 @@
  * @package     JEvents
  * @subpackage  com_jjevents
  *
- * @copyright   Copyright (C) 2017 - 2017 GWE Systems Ltd. All rights reserved.
+ * @copyright   Copyright (C) 2017 - -JEVENTS_COPYRIGHT GWESystems Ltd. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 

@@ -4,7 +4,7 @@
  *
  * @version     $Id: jevuser.php 1957 2011-04-25 08:28:48Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2019 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-JEVENTS_COPYRIGHT GWESystems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -18,11 +18,11 @@ use Joomla\CMS\Form\FormHelper;
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 jimport('joomla.form.helper');
-FormHelper::loadFieldClass('usergroup');
+FormHelper::loadFieldClass('usergrouplist');
 
-class JFormFieldJEVusergroup extends JFormFieldUsergroup
+class JFormFieldJevusergroup extends JFormFieldUsergrouplist
 {
 
-	protected $type = 'JEVusergroup';
+	protected $type = 'Jevusergroup';
 
 }

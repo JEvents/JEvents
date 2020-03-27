@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * @copyright   Copyright (C) 2015 - 2015 GWE Systems Ltd. All rights reserved.
+ * @copyright   Copyright (C) 2015 - JEVENTS_COPYRIGHT GWE Systems Ltd. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 

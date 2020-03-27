@@ -3,7 +3,7 @@
  * @version    CVS: JEVENTS_VERSION
  * @package    com_yoursites
  * @author     Geraint Edwards <yoursites@gwesystems.com>
- * @copyright  2016-2019 GWE Systems Ltd
+ * @copyright  2016-JEVENTS_COPYRIGHT GWESystems Ltd
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -67,6 +67,25 @@ $tmpl = Factory::getApplication()->input->getCmd('tmpl', '');
                     </div>
                     <div class="gsl-navbar-right  gsl-background-secondary ">
                             <ul class="gsl-navbar-nav ">
+	                            <?php
+	                            $jversion = new JVersion;
+	                            if (true || $jversion->isCompatible('4.0'))
+	                            {
+		                            ?>
+                                    <li class="hasYsPopover ys_joomla"
+                                        data-yspoptitle="<?php echo JText::_('COM_JEVENTS_RETURN_TO_JOOMLA', true); ?>"
+                                        data-yspopcontent="<?php echo JText::_('COM_JEVENTS_RETURN_TO_JOOMLA_TOOLTIP', true); ?>"
+                                    >
+                                        <a href="<?php echo JURI::root() . 'index.php'; ?>"
+                                           data-gsl-icon="icon: joomla"
+                                           title="<?php JText::_('COM_YOURSITES_RETURN_TO_JOOMLA'); ?>"
+                                           class="gsl-icon"
+                                           aria-expanded="false">
+                                        </a>
+                                    </li>
+		                            <?php
+	                            }
+	                            ?>
 				                <?php
 				                if (GslHelper::isAdminUser())
 				                {

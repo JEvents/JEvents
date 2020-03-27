@@ -3,7 +3,7 @@
  * @version    CVS: JEVENTS_VERSION
  * @package    com_yoursites
  * @author     Geraint Edwards <yoursites@gwesystems.com>
- * @copyright  2016-2019 GWE Systems Ltd
+ * @copyright  2016-JEVENTS_COPYRIGHT GWESystems Ltd
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -382,6 +382,19 @@ class GslHelper
 			$iconLink->target         = "_blank";
 			$iconLinks[]              = $iconLink;
 		}
+
+		$iconLink                 = new stdClass();
+		$iconLink->class          = "";
+		$iconLink->active         = false;
+		$iconLink->link           = Route::_("index.php");
+		$iconLink->icon           = "joomla";
+		$iconLink->label          = Text::_('COM_JEVENTS_RETURN_TO_JOOMLA');
+		$iconLink->tooltip        = Text::_("COM_JEVENTS_RETURN_TO_JOOMLA_TOOLTIP");
+		$iconLink->tooltip_detail = "";
+		$iconLink->events         = [];
+		$iconLink->events['onmouseover'] = "let sbw = document.getElementById('sidebar-wrapper');if (sbw) {sbw.classList.remove('gsl-hide-sidebar');document.getElementById('gslc').classList.remove('gsl-hide-sidebar');}";
+		$iconLinks[]              = $iconLink;
+
 
 		return $iconLinks;
 

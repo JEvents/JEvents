@@ -4,7 +4,7 @@
  *
  * @version     $Id: edit16.php 2983 2011-11-10 14:02:23Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2019 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-JEVENTS_COPYRIGHT GWESystems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -82,7 +82,7 @@ if (count($jevplugins))
 			<?php echo Text::_('JEV_EVENTS_CONFIG'); ?>
 		</legend>
 <div class="gsl-grid  gsl-margin-remove-left">
-		<ul class="config gsl-tab-left gsl-margin-right gsl-width-auto gsl-list-divider" id="myParamsTabs" gsl-tab="connect: #ysts-config-tabs">
+		<ul class="config gsl-tab-left gsl-margin-right gsl-width-auto gsl-list-divider" id="myParamsTabs" gsl-tab="connect: #jvts-config-tabs">
 			<?php
 			$fieldSets = $this->form->getFieldsets();
 			$first     = true;
@@ -117,7 +117,7 @@ if (count($jevplugins))
 					$class = " class=' $difficultySetClass'";
 				}
 				?>
-				<li <?php echo $class; ?>><a ="#<?php echo $name; ?>"><?php echo Text::_($label); ?></a></li>
+				<li <?php echo $class; ?>><a href="#<?php echo $name; ?>"><?php echo Text::_($label); ?></a></li>
 				<?php
 			}
 			/*
@@ -161,7 +161,7 @@ if (count($jevplugins))
 		</ul>
         <!-- Tabs themselves //-->
 		<div class=" gsl-margin-remove gsl-card-body gsl-card-default gsl-padding gsl-width-expand">
-	        <ul class="gsl-switcher" id="ysts-config-tabs">
+	        <ul class="gsl-switcher" id="jvts-config-tabs">
             <?php
 
 		$fieldSets = $this->form->getFieldsets();
@@ -279,7 +279,7 @@ if (count($jevplugins))
 		{
 			?>
             <li>
-			<ul class="nav nav-tabs" id="myLayoutTabs">
+			<ul gsl-tab="connect: #jvts-theme-tabs" id="myLayoutTabs">
 				<?php
 				$first = false;
 				foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
@@ -305,13 +305,23 @@ if (count($jevplugins))
 				}
 				?>
 			</ul>
-			<?php
+            <!-- Tabs themselves //-->
+            <div class=" gsl-margin-remove gsl-card-body gsl-card-default gsl-padding gsl-width-expand">
+	            <ul class="gsl-switcher" id="jvts-theme-tabs">
+		            <?php
 
 			// Now get layout specific parameters
 			//Form::addFormPath(JPATH_COMPONENT ."/views/");
 			foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 			{
-
+				$config = JPATH_SITE . "/components/" . JEV_COM_COMPONENT . "/views/" . $viewfile . "/config.xml";
+				if (!file_exists($config))
+				{
+					continue;
+				}
+					?>
+		            <li>
+			            <?php
 				$config = JPATH_SITE . "/components/" . JEV_COM_COMPONENT . "/views/" . $viewfile . "/config.xml";
 				if (file_exists($config))
 				{
@@ -406,10 +416,18 @@ $html[] = '</tr>';
 
 					}
 				}
+				?>
+		            </li>
+		            <?php
 			}
+			?>
+	            </ul>
+            </div>
+            </li>
+	            <?php
 		}
 
-		if ($hasPlugins)
+		if ( $hasPlugins)
 		{
             ?>
             <li>
@@ -481,8 +499,7 @@ $html[] = '</tr>';
 						. '<label for="jform_plugin_' . $plugin->type . '_' . $plugin->name . '_params_enabled0" class="btn">'
 						. Text::_('JDISABLED')
 						. '</label>'
-						. '</div>'
-						. '</div>';
+						. '</fieldset>';
 
 					//$label = JText::_($xml->name);
 					if ($hasfields)

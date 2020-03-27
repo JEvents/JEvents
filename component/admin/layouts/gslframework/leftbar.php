@@ -3,7 +3,7 @@
  * @version    CVS: JEVENTS_VERSION
  * @package    com_yoursites
  * @author     Geraint Edwards <yoursites@gwesystems.com>
- * @copyright  2016-2019 GWE Systems Ltd
+ * @copyright  2016-JEVENTS_COPYRIGHT GWESystems Ltd
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('JPATH_BASE') or die;
@@ -44,9 +44,17 @@ Factory::getDocument()->addScriptDeclaration('ys_popover(".hasYsPopover");');
 		                    $tooltip .= "data-yspopcontent='$leftIconLink->tooltip_detail'";
 	                    }
                     }
+	                $events = "";
+	                if (isset($leftIconLink->events) && count($leftIconLink->events) > 0)
+                    {
+                        foreach ($leftIconLink->events as $trigger => $action)
+                        {
+                            $events .= " $trigger = \"$action\"";
+                        }
+                    }
 
 	                ?>
-                    <li class="<?php echo $leftIconLink->class . ($leftIconLink->active ? " gsl-active" : ""); ?>" <?php echo $tooltip;?>>
+                    <li class="<?php echo $leftIconLink->class . ($leftIconLink->active ? " gsl-active" : ""); ?>" <?php echo $tooltip;?> <?php echo $events;?>>
                         <a href="<?php echo $leftIconLink->link; ?>" target="<?php echo isset($leftIconLink->target) ? $leftIconLink->target : "_self"; ?>">
                             <span data-gsl-icon="icon: <?php echo $leftIconLink->icon; ?>" class="gsl-margin-small-right"></span>
                             <span class="nav-label"><?php echo $leftIconLink->label; ?></span>

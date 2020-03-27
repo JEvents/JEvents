@@ -5,7 +5,7 @@
  *
  * @version     $Id: dbmodel.php 3575 2012-05-01 14:06:28Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2019 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-JEVENTS_COPYRIGHT GWESystems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -3594,7 +3594,7 @@ class JEventsDBModel
 			  if (!$this->setMultiCategory($rows[0],$accessibleCategories)){
 			  return null;
 			  }
-			 * 
+			 *
 			 */
 
 			if (strtolower($jevtype) == "icaldb")
@@ -4025,7 +4025,7 @@ class JEventsDBModel
 
 		$extrawhere  = array();
 		$extrajoin   = array();
-		$extrafields = "";  // must have comma prefix		
+		$extrafields = "";  // must have comma prefix
 
 		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
 		$params   = ComponentHelper::getParams("com_jevents");
@@ -4436,7 +4436,7 @@ class JEventsDBModel
 		$extrawhere  = array();
 		$extrajoin   = array();
 		$extratables = array();
-		$extrafields = "";  // must have comma prefix		
+		$extrafields = "";  // must have comma prefix
 		$needsgroup  = false;
 
 		$filterarray = array("published");
@@ -4673,7 +4673,7 @@ class JEventsDBModel
 				return true;
 			}
 
-			// are there any catids not in list of accessible Categories 
+			// are there any catids not in list of accessible Categories
 			$inaccessiblecats = array_diff($catids, explode(",", $accessibleCategories));
 			if (count($inaccessiblecats))
 			{
