@@ -13,6 +13,7 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -20,7 +21,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 jimport('joomla.form.helper');
-JFormHelper::loadFieldClass('list');
+FormHelper::loadFieldClass('list');
 
 class JFormFieldJEVmenu extends JFormFieldList
 {
@@ -55,7 +56,7 @@ class JFormFieldJEVmenu extends JFormFieldList
 
 		// assemble menu items to the array
 		$options   = array();
-		$options[] = HTMLHelper::_('select.option', '', '- ' . JText::_('SELECT_ITEM') . ' -');
+		$options[] = HTMLHelper::_('select.option', '', '- ' . Text::_('SELECT_ITEM') . ' -');
 
 		// load the list of menu types
 		// TODO: move query to model

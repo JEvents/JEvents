@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
@@ -203,7 +204,7 @@ class SaveIcalEvent
 			$testevent = $queryModel->listEventsById(intval($rp_id), 1, "icaldb");
 			if (!JEVHelper::canEditEvent($testevent))
 			{
-				throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+				throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 				return false;
 			}
@@ -223,7 +224,7 @@ class SaveIcalEvent
 			{
 				throw new Exception($e->getMessage());
 				$success = false;
-				$app->enqueueMessage('101 - ' . JText::_('COULD_NOT_SAVE_EVENT_'), 'warning');
+				$app->enqueueMessage('101 - ' . Text::_('COULD_NOT_SAVE_EVENT_'), 'warning');
 			}
 		}
 		else
@@ -251,7 +252,7 @@ class SaveIcalEvent
 				{
 					throw new Exception($e->getMessage());
 					$success = false;
-					$app->enqueueMessage('101 - ' . JText::_('COULD_NOT_SAVE_REPETITIONS'), 'warning');
+					$app->enqueueMessage('101 - ' . Text::_('COULD_NOT_SAVE_REPETITIONS'), 'warning');
 				}
 			}
 		}
@@ -303,8 +304,8 @@ class SaveIcalEvent
 			$config     = new JConfig();
 			$sitename   = $config->sitename;
 
-			$subject_text = (!$newevent ? JText::_('JEV_MAIL_MODIFIED') : JText::_('JEV_MAIL_ADDED')) . ' ' . $sitename;
-			$subject      = ($vevent->state == '1') ? JText::_('COM_JEV_INFO') . $subject_text : JText::_('COM_JEV_APPROVAL') . $subject_text;
+			$subject_text = (!$newevent ? Text::_('JEV_MAIL_MODIFIED') : Text::_('JEV_MAIL_ADDED')) . ' ' . $sitename;
+			$subject      = ($vevent->state == '1') ? Text::_('COM_JEV_INFO') . $subject_text : Text::_('COM_JEV_APPROVAL') . $subject_text;
 
 
 			$Itemid = JEVHelper::getItemid();
@@ -320,8 +321,8 @@ class SaveIcalEvent
 			if ($testevent)
 			{
 				$rp_id      = $testevent->rp_id();
-				$modifylink = '<a href="' . $root . Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.edit&evid=' . $evid . '&rp_id=' . $rp_id . '&Itemid=' . $Itemid . "&year=$year&month=$month&day=$day") . '"><b>' . JText::_('JEV_MODIFY') . '</b></a>' . "\n";
-				$viewlink   = '<a href="' . $root . Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.detail&evid=' . $rp_id . '&Itemid=' . $Itemid . "&year=$year&month=$month&day=$day&login=1") . '"><b>' . JText::_('JEV_VIEW') . '</b></a>' . "\n";
+				$modifylink = '<a href="' . $root . Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.edit&evid=' . $evid . '&rp_id=' . $rp_id . '&Itemid=' . $Itemid . "&year=$year&month=$month&day=$day") . '"><b>' . Text::_('JEV_MODIFY') . '</b></a>' . "\n";
+				$viewlink   = '<a href="' . $root . Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.detail&evid=' . $rp_id . '&Itemid=' . $Itemid . "&year=$year&month=$month&day=$day&login=1") . '"><b>' . Text::_('JEV_VIEW') . '</b></a>' . "\n";
 				$title      = $testevent->title();
 				$content    = $testevent->content();
 				$catids     = $testevent->catids() ? $testevent->catids() : array();
@@ -350,8 +351,8 @@ class SaveIcalEvent
 			}
 			else
 			{
-				$modifylink = '<a href="' . $root . Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.edit&evid=' . $evid . '&Itemid=' . $Itemid . "&year=$year&month=$month&day=$day") . '"><b>' . JText::_('JEV_MODIFY') . '</b></a>' . "\n";
-				$viewlink   = '<a href="' . $root . Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.detail&evid=' . $evid . '&Itemid=' . $Itemid . "&year=$year&month=$month&day=$day&login=1") . '"><b>' . JText::_('JEV_VIEW') . '</b></a>' . "\n";
+				$modifylink = '<a href="' . $root . Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.edit&evid=' . $evid . '&Itemid=' . $Itemid . "&year=$year&month=$month&day=$day") . '"><b>' . Text::_('JEV_MODIFY') . '</b></a>' . "\n";
+				$viewlink   = '<a href="' . $root . Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.detail&evid=' . $evid . '&Itemid=' . $Itemid . "&year=$year&month=$month&day=$day&login=1") . '"><b>' . Text::_('JEV_VIEW') . '</b></a>' . "\n";
 				$title      = $data["SUMMARY"];
 				$content    = $data["DESCRIPTION"];
 				$subject    .= " PROBLEMS SAVING THIS EVENT";

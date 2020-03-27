@@ -12,6 +12,7 @@
 // no direct access
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
@@ -77,7 +78,7 @@ class JevExportHelper
 				$link                 = $row->viewDetailLink($row->yup(), $row->mup(), $row->dup(), true, $params->get('default_itemid', 0));
 				$uri                  = Uri::getInstance(Uri::base());
 				$root                 = $uri->toString(array('scheme', 'host', 'port'));
-				$urlString['details'] .= ' ' . JText::_('JEV_EVENT_IMPORTED_FROM') . $root . Route::_($link, true, -1);
+				$urlString['details'] .= ' ' . Text::_('JEV_EVENT_IMPORTED_FROM') . $root . Route::_($link, true, -1);
 			}
 		}
 		$urlString['details'] = urlencode($urlString['details']);

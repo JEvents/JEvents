@@ -1,6 +1,9 @@
 <?php
 defined('_JEXEC') or die ('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
+
 $cfg = JEVConfig::getInstance();
 
 $this->data = $data = $this->datamodel->getDayData($this->year, $this->month, $this->day);
@@ -17,18 +20,18 @@ $precedingDay = $this->datamodel->getPrecedingDay($this->year, $this->month, $th
 
 <div class="jev_toprow">
 	<!-- <div class="jev_header">
-		  <h2><?php echo JText::_('DAILY_VIEW'); ?></h2>
+		  <h2><?php echo Text::_('DAILY_VIEW'); ?></h2>
 		  <div class="today" ><?php echo JEventsHTML::getDateFormat($this->year, $this->month, $this->day, 0); ?></div>
 		</div> -->
 	<div class="jev_header2">
 		<div class="previousmonth">
-			<?php if ($precedingDay) echo "<a href='" . $precedingDay . "' title='" . JText::_("PRECEEDING_Day") . "' >" . JText::_("PRECEEDING_Day") . "</a>"; ?>
+			<?php if ($precedingDay) echo "<a href='" . $precedingDay . "' title='" . Text::_("PRECEEDING_Day") . "' >" . Text::_("PRECEEDING_Day") . "</a>"; ?>
 		</div>
 		<div class="currentmonth">
 			<?php echo JEventsHTML::getDateFormat($this->year, $this->month, $this->day, 0); ?>
 		</div>
 		<div class="nextmonth">
-			<?php if ($followingDay) echo "<a href='" . $followingDay . "' title='" . JText::_("FOLLOWING_Day") . "' >" . JText::_("FOLLOWING_Day") . "</a>"; ?>
+			<?php if ($followingDay) echo "<a href='" . $followingDay . "' title='" . Text::_("FOLLOWING_Day") . "' >" . Text::_("FOLLOWING_Day") . "</a>"; ?>
 		</div>
 
 	</div>
@@ -43,7 +46,7 @@ $precedingDay = $this->datamodel->getPrecedingDay($this->year, $this->month, $th
 		if (count($data ['hours'] ['timeless'] ['events']) > 0)
 		{
 			$hasevents  = true;
-			$start_time = JText::_('TIMELESS');
+			$start_time = Text::_('TIMELESS');
 
 			echo '<ul class="ev_ul">' . "\n";
 			foreach ($data ['hours'] ['timeless'] ['events'] as $row)
@@ -79,7 +82,7 @@ $precedingDay = $this->datamodel->getPrecedingDay($this->year, $this->month, $th
 		if (!$hasevents)
 		{
 			echo '<div class="list_no_e">' . "\n";
-			echo JText::_('JEV_NO_EVENTS_FOUND');
+			echo Text::_('JEV_NO_EVENTS_FOUND');
 			echo "</div>\n";
 		}
 

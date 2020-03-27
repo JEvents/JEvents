@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 
 include_once("csvLine.php");
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\String\StringHelper;
 
@@ -69,19 +70,19 @@ class CsvToiCal
 
 		if (!$this->detectHeadersValidity())
 		{
-			Factory::getApplication()->enqueueMessage(JText::_('JEV_NOT_A_VALID_CSV_UPLOADED'), 'warning');
+			Factory::getApplication()->enqueueMessage(Text::_('JEV_NOT_A_VALID_CSV_UPLOADED'), 'warning');
 
 			return false;
 		}
 
 		if (!$this->convertFile())
 		{
-			Factory::getApplication()->enqueueMessage(JText::_('JEV_IMPORT_CORRUPT_CANCELLED'), 'warning');
+			Factory::getApplication()->enqueueMessage(Text::_('JEV_IMPORT_CORRUPT_CANCELLED'), 'warning');
 
 			return false;
 		}
 
-		Factory::getApplication()->enqueueMessage(JText::_('JEV_IMPORT_CSV_CONVERTED'), 'notice');
+		Factory::getApplication()->enqueueMessage(Text::_('JEV_IMPORT_CSV_CONVERTED'), 'notice');
 
 	}
 

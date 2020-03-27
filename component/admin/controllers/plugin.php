@@ -11,13 +11,14 @@
  */
 defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\MVC\Controller\AdminController;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Layout\LayoutHelper;
 
 jimport('joomla.application.component.controlleradmin');
 
-class AdminPluginController extends JControllerAdmin
+class AdminPluginController extends AdminController
 {
 
 	/**

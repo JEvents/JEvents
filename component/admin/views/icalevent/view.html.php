@@ -11,6 +11,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Access\Access;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\Form;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -37,10 +40,10 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		$this->pageNav = $this->pagination = new \Joomla\CMS\Pagination\Pagination($total, $limitstart, $limit);
 
 		$document = Factory::getDocument();
-		$document->setTitle(JText::_('ICAL_EVENTS'));
+		$document->setTitle(Text::_('ICAL_EVENTS'));
 
 		// Set toolbar items for the page
-		JToolbarHelper::title(JText::_('ICAL_EVENTS'), 'jevents');
+		JToolbarHelper::title(Text::_('ICAL_EVENTS'), 'jevents');
 		JToolbarHelper::addNew('icalevent.edit');
 		JToolbarHelper::editList('icalevent.edit');
 		JToolbarHelper::publishList('icalevent.publish');
@@ -88,7 +91,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 		$db->setQuery($query);
 		$icsfiles   = array();
-		$icsfiles[] = array('value' => '', 'text' => JText::_('JEV_SELECT_ISCFILE'));
+		$icsfiles[] = array('value' => '', 'text' => Text::_('JEV_SELECT_ISCFILE'));
 		$dbicsfiles = $db->loadAssocList();
 
 		foreach ($dbicsfiles As $iscfile) {
@@ -125,7 +128,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		$users = $db->loadObjectList();
 
 		$userOptions = array(
-			HTMLHelper::_('select.option', '', JText::_('JEV_SELECT_CREATOR')),
+			HTMLHelper::_('select.option', '', Text::_('JEV_SELECT_CREATOR')),
 		);
 
 		foreach ($users as $user)
@@ -145,10 +148,10 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			// Load the tags filter
 			$tagFilterHtml  = jevFilterProcessing::getInstance(array('taglookup'))->getFilterHTML(true)[0]['html'];
 			// We have to use a dirty str_replace since Joomla! clear function requires value to be empty for a clear filters.
-			$earchBtn = '<button type="submit" class="btn hasTooltip" title="" aria-label="' . JText::_('JEV_SEARCH')  . '" data-original-title="' . JText::_('JEV_SEARCH')  . '">
+			$earchBtn = '<button type="submit" class="btn hasTooltip" title="" aria-label="' . Text::_('JEV_SEARCH')  . '" data-original-title="' . Text::_('JEV_SEARCH')  . '">
 							<span class="icon-search" aria-hidden="true"></span>
 						</button>';
-			$this->filters['tag'] = str_replace('<option value="0">Select Tag(s)</option>', '<option value="">' . JText::_("JEV_SELECT_TAG") . ' </option>', $tagFilterHtml) . $earchBtn ;
+			$this->filters['tag'] = str_replace('<option value="0">Select Tag(s)</option>', '<option value="">' . Text::_("JEV_SELECT_TAG") . ' </option>', $tagFilterHtml) . $earchBtn ;
 		}
 
 		$this->languages = $this->get('Languages');
@@ -162,20 +165,20 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 			JHtmlSidebar::setAction('index.php?option=com_jevents&task=icalevent.list');
 			JHtmlSidebar::addFilter(
-				JText::_('ALL_ICS_FILES'), 'filter[icsFile]', JHtml::_('select.options', $icsfiles, 'value', 'text', $icsFile)
+				Text::_('ALL_ICS_FILES'), 'filter[icsFile]', HTMLHelper::_('select.options', $icsfiles, 'value', 'text', $icsFile)
 			);
 
 			$options = array();
-			$options[] = JHTML::_('select.option', '3', JText::_('JOPTION_SELECT_PUBLISHED'));
-			$options[] = JHTML::_('select.option', '1', JText::_('PUBLISHED'));
-			$options[] = JHTML::_('select.option', '2', JText::_('UNPUBLISHED'));
-			$options[] = JHTML::_('select.option', '-1', JText::_('JTRASH'));
+			$options[] = JHTML::_('select.option', '3', Text::_('JOPTION_SELECT_PUBLISHED'));
+			$options[] = JHTML::_('select.option', '1', Text::_('PUBLISHED'));
+			$options[] = JHTML::_('select.option', '2', Text::_('UNPUBLISHED'));
+			$options[] = JHTML::_('select.option', '-1', Text::_('JTRASH'));
 			$state = (int) $this->getModel()->getState('filter.state', 3);
 			JHtmlSidebar::addFilter(
-				JText::_('ALL_EVENTS'), 'filter[state]', JHtml::_('select.options', $options, 'value', 'text', $state)
+				Text::_('ALL_EVENTS'), 'filter[state]', HTMLHelper::_('select.options', $options, 'value', 'text', $state)
 			);
 			JHtmlSidebar::addFilter(
-				JText::_('JEV_EVENT_CREATOR'), 'filter[created_by]', JHtml::_('select.options', $userOptions, 'value', 'text', $created_by)
+				Text::_('JEV_EVENT_CREATOR'), 'filter[created_by]', HTMLHelper::_('select.options', $userOptions, 'value', 'text', $created_by)
 			);
 
 			$this->sidebar = JHtmlSidebar::render();
@@ -213,19 +216,19 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 		if ($this->row->title() === '')
 		{
-			$document->setTitle(JText::_('CREATE_ICAL_EVENT'));
+			$document->setTitle(Text::_('CREATE_ICAL_EVENT'));
 			// Set toolbar items for the page
-			JToolbarHelper::title(JText::_('CREATE_ICAL_EVENT'), 'jevents');
+			JToolbarHelper::title(Text::_('CREATE_ICAL_EVENT'), 'jevents');
 
 			// Set default noendtime
 			$this->row->noendtime((int) $params->get('default_noendtime', '0'));
 		}
 		else
 		{
-			$document->setTitle(JText::_('EDIT_ICAL_EVENT'));
+			$document->setTitle(Text::_('EDIT_ICAL_EVENT'));
 
 			// Set toolbar items for the page
-			JToolbarHelper::title(JText::_('EDIT_ICAL_EVENT'), 'jevents');
+			JToolbarHelper::title(Text::_('EDIT_ICAL_EVENT'), 'jevents');
 		}
 
 		if ($this->id > 0)
@@ -235,19 +238,19 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 				if (JEVHelper::isEventEditor() || JEVHelper::canEditEvent($this->row))
 				{
-					$this->toolbarConfirmButton("icalevent.apply", JText::_("JEV_SAVE_COPY_WARNING"), 'apply', 'apply', 'JEV_SAVE', false);
+					$this->toolbarConfirmButton("icalevent.apply", Text::_("JEV_SAVE_COPY_WARNING"), 'apply', 'apply', 'JEV_SAVE', false);
 				}
-				$this->toolbarConfirmButton("icalevent.save", JText::_("JEV_SAVE_COPY_WARNING"), 'save', 'save', 'JEV_SAVE_CLOSE', false);
-				$this->toolbarConfirmButton("icalevent.savenew", JText::_("JEV_SAVE_COPY_WARNING"), 'save', 'save', 'JEV_SAVE_NEW', false);
+				$this->toolbarConfirmButton("icalevent.save", Text::_("JEV_SAVE_COPY_WARNING"), 'save', 'save', 'JEV_SAVE_CLOSE', false);
+				$this->toolbarConfirmButton("icalevent.savenew", Text::_("JEV_SAVE_COPY_WARNING"), 'save', 'save', 'JEV_SAVE_NEW', false);
 			}
 			else
 			{
 				if (JEVHelper::isEventEditor() || JEVHelper::canEditEvent($this->row))
 				{
-					$this->toolbarConfirmButton("icalevent.apply", JText::_("JEV_SAVE_ICALEVENT_WARNING"), 'apply', 'apply', 'JEV_SAVE', false);
+					$this->toolbarConfirmButton("icalevent.apply", Text::_("JEV_SAVE_ICALEVENT_WARNING"), 'apply', 'apply', 'JEV_SAVE', false);
 				}
-				$this->toolbarConfirmButton("icalevent.save", JText::_("JEV_SAVE_ICALEVENT_WARNING"), 'save', 'save', 'JEV_SAVE_CLOSE', false);
-				$this->toolbarConfirmButton("icalevent.savenew", JText::_("JEV_SAVE_COPY_WARNING"), 'save', 'save', 'JEV_SAVE_NEW', false);
+				$this->toolbarConfirmButton("icalevent.save", Text::_("JEV_SAVE_ICALEVENT_WARNING"), 'save', 'save', 'JEV_SAVE_CLOSE', false);
+				$this->toolbarConfirmButton("icalevent.savenew", Text::_("JEV_SAVE_COPY_WARNING"), 'save', 'save', 'JEV_SAVE_NEW', false);
 
 			}
 		}
@@ -264,8 +267,8 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			{
 				$this->toolbarButton("icalevent.apply", 'apply', 'apply', 'JEV_SAVE', false);
 			}
-			$this->toolbarConfirmButton("icalevent.save", JText::_("JEV_SAVE_ICALEVENT_WARNING"), 'save', 'save', 'JEV_SAVE_CLOSE', false);
-			$this->toolbarConfirmButton("icalevent.savenew", JText::_("JEV_SAVE_COPY_WARNING"), 'save', 'save', 'JEV_SAVE_NEW', false);
+			$this->toolbarConfirmButton("icalevent.save", Text::_("JEV_SAVE_ICALEVENT_WARNING"), 'save', 'save', 'JEV_SAVE_CLOSE', false);
+			$this->toolbarConfirmButton("icalevent.savenew", Text::_("JEV_SAVE_COPY_WARNING"), 'save', 'save', 'JEV_SAVE_NEW', false);
 		}
 
 
@@ -273,7 +276,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		JToolbarHelper::cancel('icalevent.cancel');
 		//JToolbarHelper::help( 'screen.icalevent.edit', true);
 
-		// TODO move this into JForm field type!
+		// TODO move this into Form field type!
 		$this->setCreatorLookup();
 
 		// load Joomla javascript classes
@@ -295,7 +298,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		if ($uEditor === 'codemirror')
 		{
 			$this->editor = \Joomla\CMS\Editor\Editor::getInstance('none');
-			$app->enqueueMessage(JText::_("JEV_CODEMIRROR_NOT_COMPATIBLE_EDITOR", "WARNING"));
+			$app->enqueueMessage(Text::_("JEV_CODEMIRROR_NOT_COMPATIBLE_EDITOR", "WARNING"));
 		} else {
 			$this->editor = \Joomla\CMS\Editor\Editor::getInstance($uEditor);
 		}
@@ -349,7 +352,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		$bar =  JToolBar::getInstance('toolbar');
 
 		// Add a standard button
-		$bar->appendButton('confirm', JText::_("JEV_DELETE_TRANSLATION_WARNING"),  'trash',  'JEV_DELETE', "icalevent.deletetranslation", false);
+		$bar->appendButton('confirm', Text::_("JEV_DELETE_TRANSLATION_WARNING"),  'trash',  'JEV_DELETE', "icalevent.deletetranslation", false);
 
 	}
 
@@ -357,10 +360,10 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 	{
 
 		$document = Factory::getDocument();
-		$document->setTitle(JText::_('CSV_IMPORT'));
+		$document->setTitle(Text::_('CSV_IMPORT'));
 
 		// Set toolbar items for the page
-		JToolbarHelper::title(JText::_('CSV_IMPORT'), 'jevents');
+		JToolbarHelper::title(Text::_('CSV_IMPORT'), 'jevents');
 
 		JToolbarHelper::cancel('icalevent.list');
 
@@ -376,7 +379,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		$jevuser = JEVHelper::getAuthorisedUser();
 		$user = Factory::getUser();
 
-		//$access = JAccess::check($user->id, "core.deleteall", "com_jevents");
+		//$access = Access::check($user->id, "core.deleteall", "com_jevents");
 		$access = $user->authorise('core.admin', 'com_jevents') || $user->authorise('core.deleteall', 'com_jevents');
 
 		$db = Factory::getDbo();
@@ -396,7 +399,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			}
 			else
 			{
-				$rules = JAccess::getAssetRules("com_jevents", true);
+				$rules = Access::getAssetRules("com_jevents", true);
 				$creatorgroups = $rules->getData();
 				// need to merge the arrays because of stupid way Joomla checks super user permissions
 				//$creatorgroups = array_merge($creatorgroups["core.admin"]->getData(), $creatorgroups["core.create"]->getData());
@@ -418,7 +421,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 				{
 					if ($permission == 1)
 					{
-						$users = array_merge(JAccess::getUsersByGroup($creatorgroup, true), $users);
+						$users = array_merge(Access::getUsersByGroup($creatorgroup, true), $users);
 					}
 				}
 				if (count($users)>200){
@@ -444,7 +447,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 				return null;
 			}
 
-			$userOptions[] = HTMLHelper::_('select.option', '-1', JText::_('SELECT_USER'));
+			$userOptions[] = HTMLHelper::_('select.option', '-1', Text::_('SELECT_USER'));
 			foreach ($users as $user)
 			{
 				$userOptions[] = HTMLHelper::_('select.option', $user->id, $user->name . " ( " . $user->username . " )");
@@ -499,7 +502,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 						array('title' => $item->title),
 						true
 					);
-					$url  = "javascript:jevEditTranslation('".$url ."', '". JText::sprintf("JEV_TRANSLATE_EVENT_TO" ,  addslashes($item->title),  array('jsSafe'=>true) ) . "'); ";
+					$url  = "javascript:jevEditTranslation('".$url ."', '". Text::sprintf("JEV_TRANSLATE_EVENT_TO" ,  addslashes($item->title),  array('jsSafe'=>true) ) . "'); ";
 					$tooltipParts = array( 	$img,  $item->title);
 					$item->link = HTMLHelper::_('tooltip', implode(' ', $tooltipParts), null, null, $text, $url, null, 'hasTooltip label label-association label-' . $item->sef .( in_array($item->lang_code, $translations)?" hastranslation":"" ));
 					?>

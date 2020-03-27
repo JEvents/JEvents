@@ -9,15 +9,17 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Layout\BaseLayout;
+use Joomla\CMS\Layout\LayoutInterface;
 use Joomla\Registry\Registry;
 
 /**
  * Base class for rendering a display layout
  *
- * @see    https://docs.joomla.org/Sharing_layouts_across_views_or_extensions_with_JLayout
+ * @see    https://docs.joomla.org/Sharing_layouts_across_views_or_extensions_with_LayoutInterface
  * @since  3.0
  */
-class JLayoutBase implements JLayout
+class BaseLayout implements LayoutInterface
 {
 	/**
 	 * Options object
@@ -59,7 +61,7 @@ class JLayoutBase implements JLayout
 	 *
 	 * @param   array|Registry $options Array / Registry object with the options to load
 	 *
-	 * @return  JLayoutBase  Instance of $this to allow chaining.
+	 * @return  BaseLayout  Instance of $this to allow chaining.
 	 *
 	 * @since   3.2
 	 */
@@ -87,7 +89,7 @@ class JLayoutBase implements JLayout
 	/**
 	 * Function to empty all the options
 	 *
-	 * @return  JLayoutBase  Instance of $this to allow chaining.
+	 * @return  BaseLayout  Instance of $this to allow chaining.
 	 *
 	 * @since   3.2
 	 */

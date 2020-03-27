@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -25,13 +26,13 @@ $action = Factory::getApplication()->isClient('administrator') ? "index.php" : U
 
                     // do field validation
                     if (form.upload.value == "" && form.uploadURL.value == "") {
-                        alert("<?php echo JText::_('JEV_MISSING_FILE_AND_URL_SELECTION', true); ?>");
+                        alert("<?php echo Text::_('JEV_MISSING_FILE_AND_URL_SELECTION', true); ?>");
                     }
                     else if (form.catid && form.catid.value == 0 && form.catid.options && form.catid.options.length) {
-                        alert('<?php echo JText::_('JEV_SELECT_CATEGORY', true); ?>');
+                        alert('<?php echo Text::_('JEV_SELECT_CATEGORY', true); ?>');
                     }
                     else if (form.icsid.value == "0") {
-                        alert("<?php echo JText::_('JEV_MISSING_ICAL_SELECTION', true); ?>");
+                        alert("<?php echo Text::_('JEV_MISSING_ICAL_SELECTION', true); ?>");
                     }
                     else {
                         submitform();
@@ -45,12 +46,12 @@ $action = Factory::getApplication()->isClient('administrator') ? "index.php" : U
 			      onsubmit="return submitbutton()" class="adminform">
 
 				<div>
-					<strong><?php echo JText::_("JEV_FROM_FILE"); ?></strong><br/>
+					<strong><?php echo Text::_("JEV_FROM_FILE"); ?></strong><br/>
 					<input class="inputbox" type="file" name="upload" id="upload" size="30"/>
 				</div>
 				<br/>
 				<div>
-					<strong><?php echo JText::_("JEV_FROM_URL"); ?></strong><br/>
+					<strong><?php echo Text::_("JEV_FROM_URL"); ?></strong><br/>
 					<input class="inputbox" type="text" name="uploadURL" id="uploadURL" size="30"/>
 				</div>
 
@@ -68,32 +69,32 @@ $action = Factory::getApplication()->isClient('administrator') ? "index.php" : U
                             document.ical['catid'].value = lookup[select.value];
                         }
 					</script>
-					<strong><?php echo JText::_("Select Ical (from raw icals)"); ?></strong><br/>
+					<strong><?php echo Text::_("Select Ical (from raw icals)"); ?></strong><br/>
 					<?php
 				}
 				if ($this->clist)
 				{
 					echo $this->clist . "<Br/>";
 				} ?>
-				<strong><?php echo JText::_('SELECT_CATEGORY'); ?></strong><br/>
+				<strong><?php echo Text::_('SELECT_CATEGORY'); ?></strong><br/>
 				<?php echo JEventsHTML::buildCategorySelect(0, '', $this->dataModel->accessibleCategoryList(), false, true, 0, 'catid', JEV_COM_COMPONENT, $this->excats); ?>
 				<br/>
 				<br/>
 				<div>
-					<strong><?php echo JText::_('JEV_IGNORE_EMBEDDED_CATEGORIES'); ?></strong>
+					<strong><?php echo Text::_('JEV_IGNORE_EMBEDDED_CATEGORIES'); ?></strong>
 					<label for="ignoreembedcat0" style="display:inline;">
 						<input id="ignoreembedcat0" type="radio" value="0" name="ignoreembedcat" checked="checked"/>
-						<?php echo JText::_('JEV_NO'); ?>
+						<?php echo Text::_('JEV_NO'); ?>
 					</label>
 					<label for="ignoreembedcat1" style="display:inline;">
 						<input id="ignoreembedcat1" type="radio" value="1" name="ignoreembedcat"/>
-						<?php echo JText::_('JEV_YES'); ?>
+						<?php echo Text::_('JEV_YES'); ?>
 					</label>
 				</div>
 				<br/>
 				<br/>
 
-				<input type="submit" name="submit" value="<?php echo JText::_('JEV_IMPORT', true) ?>"/>
+				<input type="submit" name="submit" value="<?php echo Text::_('JEV_IMPORT', true) ?>"/>
 
 				<input type="hidden" name="task" value="icals.importdata"/>
 				<input type="hidden" name="option" value="com_jevents"/>

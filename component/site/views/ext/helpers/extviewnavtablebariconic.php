@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
@@ -75,7 +76,7 @@ class ExtViewNavTableBarIconic
 										<td class="buttontext" align="center" nowrap="nowrap" valign="middle">
 											<a href="<?php echo $eventlinkadd; ?>" title="Add Event" class="buttontext">
 												<img src="<?php echo $viewimages; ?>/icon-addevent.gif" alt="Add Event" border="0"/><br/>
-										<?php echo JText::_('JEV_ADD_EVENT'); ?></a>
+										<?php echo Text::_('JEV_ADD_EVENT'); ?></a>
 										</td>
 							<?php } ?>
 								//-->
@@ -86,10 +87,10 @@ class ExtViewNavTableBarIconic
 								         height="25" width="10"/></td>
 								<td class="buttontext" align="center" nowrap="nowrap" valign="middle">
 									<a href="<?php echo Route::_('index.php?option=' . $option . $cat . '&task=year.listevents&' . $view_date->toDateURL() . '&Itemid=' . $Itemid); ?>"
-									   title="<?php echo JText::_('JEV_VIEWBYYEAR'); ?>" class="buttontext">
+									   title="<?php echo Text::_('JEV_VIEWBYYEAR'); ?>" class="buttontext">
 										<img src="<?php echo $viewimages; ?>/icon-flyer.gif" alt="Flat View"
 										     border="0"/><br/>
-										<?php echo JText::_('JEV_VIEWBYYEAR'); ?></a>
+										<?php echo Text::_('JEV_VIEWBYYEAR'); ?></a>
 								</td>
 							<?php } ?>
 							<?php if (in_array("bymonth", $this->iconstoshow))
@@ -98,10 +99,10 @@ class ExtViewNavTableBarIconic
 								         height="25" width="10"/></td>
 								<td class="buttontext" align="center" nowrap="nowrap" valign="middle">
 									<a href="<?php echo Route::_('index.php?option=' . $option . $cat . '&task=month.calendar&' . $view_date->toDateURL() . '&Itemid=' . $Itemid); ?>"
-									   title="<?php echo JText::_('JEV_VIEWBYMONTH'); ?>" class="buttontext">
+									   title="<?php echo Text::_('JEV_VIEWBYMONTH'); ?>" class="buttontext">
 										<img src="<?php echo $viewimages; ?>/icon-calendarview.gif"
-										     alt="<?php echo JText::_('MONTHLY_VIEW'); ?>" border="0"/><br/>
-										<?php echo JText::_('JEV_VIEWBYMONTH'); ?></a>
+										     alt="<?php echo Text::_('MONTHLY_VIEW'); ?>" border="0"/><br/>
+										<?php echo Text::_('JEV_VIEWBYMONTH'); ?></a>
 								</td>
 							<?php } ?>
 							<?php if (in_array("byweek", $this->iconstoshow))
@@ -110,10 +111,10 @@ class ExtViewNavTableBarIconic
 								         height="25" width="10"/></td>
 								<td class="buttontext" align="center" nowrap="nowrap" valign="middle">
 									<a href="<?php echo Route::_('index.php?option=' . $option . $cat . '&task=week.listevents&' . $view_date->toDateURL() . '&Itemid=' . $Itemid); ?>"
-									   title="<?php echo JText::_('JEV_VIEWBYWEEK'); ?>" class="buttontext">
+									   title="<?php echo Text::_('JEV_VIEWBYWEEK'); ?>" class="buttontext">
 										<img src="<?php echo $viewimages; ?>/icon-weekly.gif" alt="Weekly View"
 										     border="0"/><br/>
-										<?php echo JText::_('JEV_VIEWBYWEEK'); ?></a>
+										<?php echo Text::_('JEV_VIEWBYWEEK'); ?></a>
 								</td>
 							<?php } ?>
 							<?php if (in_array("byday", $this->iconstoshow))
@@ -122,10 +123,10 @@ class ExtViewNavTableBarIconic
 								         height="25" width="10"/></td>
 								<td class="buttontext" align="center" nowrap="nowrap" valign="middle">
 									<a href="<?php echo Route::_('index.php?option=' . $option . $cat . '&task=day.listevents&' . $today_date->toDateURL() . '&Itemid=' . $Itemid); ?>"
-									   title="<?php echo JText::_('JEV_VIEWTODAY'); ?>" class="buttontext">
+									   title="<?php echo Text::_('JEV_VIEWTODAY'); ?>" class="buttontext">
 										<img src="<?php echo $viewimages; ?>/icon-daily.gif" alt="Daily View"
 										     border="0"/><br/>
-										<?php echo JText::_('JEV_VIEWTODAY'); ?></a>
+										<?php echo Text::_('JEV_VIEWTODAY'); ?></a>
 								</td>
 							<?php } ?>
 
@@ -137,10 +138,10 @@ class ExtViewNavTableBarIconic
 								         height="25" width="10"/></td>
 								<td class="buttontext" align="center" nowrap="nowrap" valign="middle">
 									<a href="<?php echo Route::_('index.php?option=' . $option . $cat . '&task=cat.listevents&' . $view_date->toDateURL() . '&Itemid=' . $Itemid); ?>"
-									   title="<?php echo JText::_('JEV_VIEWBYCAT'); ?>" class="buttontext">
+									   title="<?php echo Text::_('JEV_VIEWBYCAT'); ?>" class="buttontext">
 										<img src="<?php echo $viewimages; ?>/icon-cats.gif" alt="Categories"
 										     border="0"/><br/>
-										<?php echo JText::_('JEV_VIEWBYCAT'); ?></a>
+										<?php echo Text::_('JEV_VIEWBYCAT'); ?></a>
 								</td>
 							<?php } ?>
 							<?php } ?>
@@ -150,10 +151,10 @@ class ExtViewNavTableBarIconic
 								         height="25" width="10"/></td>
 								<td class="buttontext" align="center" nowrap="nowrap" valign="middle">
 									<a href="<?php echo Route::_('index.php?option=' . $option . $cat . '&task=search.form&' . $view_date->toDateURL() . '&Itemid=' . $Itemid); ?>"
-									   title="<?php echo JText::_('JEV_SEARCH_TITLE'); ?>" class="buttontext">
+									   title="<?php echo Text::_('JEV_SEARCH_TITLE'); ?>" class="buttontext">
 										<img src="<?php echo $viewimages; ?>/icon-search.gif" alt="Search"
 										     border="0"/><br/>
-										<?php echo JText::_('JEV_SEARCH_TITLE'); ?></a>
+										<?php echo Text::_('JEV_SEARCH_TITLE'); ?></a>
 								</td>
 							<?php } ?>
 

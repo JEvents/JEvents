@@ -10,10 +10,13 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Layout\LayoutHelper;
+
+
 $version = JEventsVersion::getInstance();
 ?>
     <footer class="gsl-section gsl-section-small gsl-text-center">
-	    <?php echo JLayoutHelper::render('jevents.translationcredits'); ?>
+	    <?php echo LayoutHelper::render('jevents.translationcredits'); ?>
         <p class="gsl-text-small gsl-text-center"><a href="https://www.jevents.net"><?php echo $version->getLongVersion(); ?></a> : <span style="color:#999999; font-size:9px;"><?php echo $version->getShortCopyright(); ?></span></p>
     </footer>
 

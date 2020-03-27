@@ -14,6 +14,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Access\Rules;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Filesystem\Path;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
 
@@ -25,7 +30,7 @@ if (!defined("JEVADPARMOD"))
 {
 	define("JEVADPARMOD", 1);
 
-	class AdminParamsModelParams extends JModelAdmin
+	class AdminParamsModelParams extends AdminModel
 	{
 
 		/**
@@ -45,7 +50,7 @@ if (!defined("JEVADPARMOD"))
 				//if (!$table->loadByOption( $component ))
 				if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
 				{
-					Factory::getApplication()->enqueueMessage('500 - ' . JText::_('JEV_NOT_A_VALID_COM'), 'warning');
+					Factory::getApplication()->enqueueMessage('500 - ' . Text::_('JEV_NOT_A_VALID_COM'), 'warning');
 
 					return false;
 				}
@@ -53,8 +58,8 @@ if (!defined("JEVADPARMOD"))
 				// work out file path
 				if ($path = $input->getString('path'))
 				{
-					$path = JPath::clean(JPATH_SITE . '/' . $path);
-					JPath::check($path);
+					$path = Path::clean(JPATH_SITE . '/' . $path);
+					Path::check($path);
 				}
 				else
 				{
@@ -84,7 +89,7 @@ if (!defined("JEVADPARMOD"))
 		 * @param    array   $data     Data for the form.
 		 * @param    boolean $loadData True if the form is to load its own data (default case), false if not.
 		 *
-		 * @return    mixed    A JForm object on success, false on failure
+		 * @return    mixed    A Form object on success, false on failure
 		 * @since    1.6
 		 */
 		public function getForm($data = array(), $loadData = true)
@@ -118,7 +123,7 @@ if (!defined("JEVADPARMOD"))
 			if (isset($data['params']) && isset($data['params']['rules']))
 			{
 				jimport('joomla.access.rules');
-				$rules = new JAccessRules($data['params']['rules']);
+				$rules = new Rules($data['params']['rules']);
 				$asset = Table::getInstance('asset');
 
 				if (!$asset->loadByName($data['option']))
@@ -192,7 +197,7 @@ if (!defined("JEVADPARMOD"))
 			if (isset($data['params']) && isset($data['params']['rules']))
 			{
 				jimport('joomla.access.rules');
-				$rules = new JAccessRules($data['params']['rules']);
+				$rules = new Rules($data['params']['rules']);
 				$asset = Table::getInstance('asset');
 
 				if (!$asset->loadByName($data['option']))

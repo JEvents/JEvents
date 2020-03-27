@@ -12,6 +12,8 @@
 // ensure this file is being included by a parent file
 defined('_JEXEC') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Helper\ModuleHelper;
@@ -46,9 +48,9 @@ class jevFilterProcessing
 		settype($this->filterpath, 'array'); //force to array
 		$this->filterpath[] = dirname(__FILE__) . '/' . "filters";
 		jimport('joomla.filesystem.folder');
-		if (JFolder::exists(JPATH_SITE . "/plugins/jevents"))
+		if (Folder::exists(JPATH_SITE . "/plugins/jevents"))
 		{
-			$others = JFolder::folders(JPATH_SITE . "/plugins/jevents", 'filters', true, true);
+			$others = Folder::folders(JPATH_SITE . "/plugins/jevents", 'filters', true, true);
 			if (is_array($others))
 			{
 				$this->filterpath = array_merge($this->filterpath, $others);
@@ -103,7 +105,7 @@ class jevFilterProcessing
 				{
 					$filterFile = ucfirst($filtername) . '.php';
 
-					$filterFilePath = JPath::find($this->filterpath, $filterFile);
+					$filterFilePath = Path::find($this->filterpath, $filterFile);
 					if ($filterFilePath)
 					{
 						include_once($filterFilePath);
@@ -155,7 +157,7 @@ class jevFilterProcessing
 			{
 				$filterFile = ucfirst($filtername) . '.php';
 
-				$filterFilePath = JPath::find($this->filterpath, $filterFile);
+				$filterFilePath = Path::find($this->filterpath, $filterFile);
 
 				if ($filterFilePath)
 				{

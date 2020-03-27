@@ -10,6 +10,7 @@ JLoader::register('CategoryHelperAssociation', JPATH_ADMINISTRATOR . '/component
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Language\Associations;
 use Joomla\CMS\Factory;
 
 /**
@@ -46,7 +47,7 @@ abstract class JEventsHelperAssociation extends CategoryHelperAssociation
 		{
 			if ($id)
 			{
-				$associations = JLanguageAssociations::getAssociations('com_content', '#__content', 'com_content.item', $id);
+				$associations = Associations::getAssociations('com_content', '#__content', 'com_content.item', $id);
 
 				$return = array();
 

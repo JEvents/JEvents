@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Router\Router;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\String\StringHelper;
@@ -13,7 +14,7 @@ function DefaultViewEventCatRowNew($view, $row, $args = "")
 	// I choost not to use $row->fgcolor()
 	$fgcolor = "inherit";
 
-	$router         = JRouter::getInstance("site");
+	$router         = Router::getInstance("site");
 	$vars           = $router->getVars();
 	$vars["catids"] = $row->catid();
 

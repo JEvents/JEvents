@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Component\ComponentHelper;
@@ -16,7 +17,7 @@ echo $this->ExportScript();
 
 $accessiblecats = explode(",", $this->datamodel->accessibleCategoryList());
 
-echo "<h2 id='cal_title'>" . JText::_('JEV_ICAL_EXPORT') . "</h2>\n";
+echo "<h2 id='cal_title'>" . Text::_('JEV_ICAL_EXPORT') . "</h2>\n";
 
 if ($input->getString("submit", "") != "")
 {
@@ -69,12 +70,12 @@ if ($input->getString("submit", "") != "")
 		$privatelink = "";
 	}
 
-	echo "<h2 class='ical_generated'>" . JText::_("JEV_ICAL_GENERATED") . "</h2>";
+	echo "<h2 class='ical_generated'>" . Text::_("JEV_ICAL_GENERATED") . "</h2>";
 
-	echo "<h3 class='export_pub'>" . JText::_("JEV_PUBLIC_EVENTS") . "</h3>";
+	echo "<h3 class='export_pub'>" . Text::_("JEV_PUBLIC_EVENTS") . "</h3>";
 	if ($user->id != 0)
 	{
-		echo "<h3 class='export_priv'>" . JText::_("JEV_PUBLIC_AND_PRIVATE_EVENTS") . "</h3>";
+		echo "<h3 class='export_priv'>" . Text::_("JEV_PUBLIC_AND_PRIVATE_EVENTS") . "</h3>";
 	}
 
 	if ($cfg->get("show_webcal_url", 0) == 1)
@@ -101,7 +102,7 @@ if ($input->getString("submit", "") != "")
 if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download", 1) == 0 && $cfg->get("show_webcal_url", 0) == 0 && $cfg->get("show_webcal_google", 0) && $cfg->get("outlook2003icalexport", 0))
 {
 	//If non are enabled we don't want to have user thinking the script is buggy as nothing is produced. 
-	echo "<div style='margin:15px;font-weight:bold;'>" . JText::_("JEV_ICAL_ALL_DISABLED") . "</div>";
+	echo "<div style='margin:15px;font-weight:bold;'>" . Text::_("JEV_ICAL_ALL_DISABLED") . "</div>";
 }
 else
 {
@@ -114,7 +115,7 @@ else
 			?>
 			<div class='choosecat' style='float:left;width:300px;'>
 				<?php
-				echo "<h3>" . JText::_('JEV_EVENT_CHOOSE_CATEG') . "</h3>\n";
+				echo "<h3>" . Text::_('JEV_EVENT_CHOOSE_CATEG') . "</h3>\n";
 				// All categories
 				$cb      = "<input name=\"categories[]\" value=\"0\" type=\"checkbox\" onclick='clearIcalCategories(this);' ";
 				$checked = false;
@@ -128,7 +129,7 @@ else
 					$cb      = $cb . " CHECKED";
 					$checked = true;
 				}
-				echo $cb . " /><strong>" . JText::_("JEV_EVENT_ALLCAT") . "</strong><br/>\n";
+				echo $cb . " /><strong>" . Text::_("JEV_EVENT_ALLCAT") . "</strong><br/>\n";
 				?>
 				<div id='othercats' <?php echo $checked ? 'style="display:none;max-height:100px;overflow-y:auto;"' : ''; ?> >
 					<?php
@@ -154,7 +155,7 @@ else
 			</div>
 			<div class='chooseyear' style='float:left;width:300px;'>
 				<?php
-				echo "<h3>" . JText::_('JEV_SELECT_REP_YEAR') . "</h3>\n";
+				echo "<h3>" . Text::_('JEV_SELECT_REP_YEAR') . "</h3>\n";
 
 				// All years
 				$yt      = "<input name=\"years[]\" type=\"checkbox\" value=\"0\"  onclick='clearIcalYears(this);' ";
@@ -169,7 +170,7 @@ else
 					$yt      = $yt . " CHECKED";
 					$checked = true;
 				}
-				$yt = $yt . " /><strong>" . JText::_("JEV_EVENT_ALLYEARS") . "</strong><br/>\n";
+				$yt = $yt . " /><strong>" . Text::_("JEV_EVENT_ALLYEARS") . "</strong><br/>\n";
 				echo $yt;
 				?>
 				<div id='otheryears' <?php echo $checked ? 'style="display:none;max-height:100px;overflow-y:auto;"' : ''; ?> >
@@ -205,17 +206,17 @@ else
 			echo "<div class='icalformat' style='clear:left; padding-top:5px;'>";
 			if ($params->get("icalformatted", 1) == 1)
 			{
-				echo "<h3>" . JText::_('JEV_ICAL_FORMATTING') . "</h3>\n";
+				echo "<h3>" . Text::_('JEV_ICAL_FORMATTING') . "</h3>\n";
 				?>
 				<input name="icalformatted" type="checkbox"
 				       value="1" <?php echo $input->getInt("icalformatted", 0) ? "checked='checked'" : ""; ?> />
-				<label>        <?php echo JText::_("JEV_PRESERVE_HTML_FORMATTING"); ?>    </label>
+				<label>        <?php echo Text::_("JEV_PRESERVE_HTML_FORMATTING"); ?>    </label>
 			<?php }
 			echo "</div>";
 			?>
 
 			<input id="submit" class="ical_submit" type="submit" name="submit"
-			       value="<?php echo JText::_('JEV_GENERATE_ICALS'); ?>"/>
+			       value="<?php echo Text::_('JEV_GENERATE_ICALS'); ?>"/>
 		</form>
 	</div>
 <?php } ?>

@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
 $cfg    = JEVConfig::getInstance();
@@ -31,7 +32,7 @@ $precedingMonth = $this->datamodel->getPrecedingMonth($this->data);
 		<td class="tableh1" colspan="8">
 			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
-					<td><h2><?php echo JText::_('MONTHLY_VIEW'); ?></h2></td>
+					<td><h2><?php echo Text::_('MONTHLY_VIEW'); ?></h2></td>
 					<td class="today" align="right"><?php echo $this->data['fieldsetText']; ?></td>
 				</tr>
 			</table>
@@ -115,7 +116,7 @@ $precedingMonth = $this->datamodel->getPrecedingMonth($this->data);
 						<tr class="caldaydigits">
 							<td class="caldaydigits">&nbsp;
 								<strong><a href="<?php echo $currentDay["link"]; ?>"
-								           title="<?php echo JText::_('JEV_CLICK_TOSWITCH_DAY'); ?>"><?php echo $currentDay['d']; ?></a></strong>
+								           title="<?php echo Text::_('JEV_CLICK_TOSWITCH_DAY'); ?>"><?php echo $currentDay['d']; ?></a></strong>
 
 							</td>
 							<td>

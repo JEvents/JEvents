@@ -11,6 +11,9 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\LanguageHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Categories\Categories;
 use Joomla\CMS\Factory;
 use Joomla\String\StringHelper;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -393,7 +396,7 @@ class JEventsDBModel
 			if (!isset($allcats))
 			{
 				jimport("joomla.application.categories");
-				$allcats = JCategories::getInstance("jevents");
+				$allcats = Categories::getInstance("jevents");
 				// prepopulate the list internally
 				$allcats->get('root');
 			}
@@ -411,7 +414,7 @@ class JEventsDBModel
 				if ($this->cfg->get("include_subcats", 1))
 				{
 					$mmcatids = array();
-					$mmcats   = JCategories::getInstance("jevents");
+					$mmcats   = Categories::getInstance("jevents");
 					foreach ($this->datamodel->mmcatids as $mmcatid)
 					{
 						$mmcat      = $mmcats->get($mmcatid);
@@ -678,7 +681,7 @@ class JEventsDBModel
 		}
 		$icalcount = count($icalrows);
 		// Do we need to translate this data
-		$languages      = JLanguageHelper::getLanguages('lang_code');
+		$languages      = LanguageHelper::getLanguages('lang_code');
 		$translationids = array();
 		if (count($languages) > 1)
 		{
@@ -1179,7 +1182,7 @@ class JEventsDBModel
 		$extratables = "";  // must have comma prefix
 		$needsgroup  = false;
 
-		$reg =  JFactory::getConfig();
+		$reg =  Factory::getConfig();
 		$modparams = $reg->get("jev.modparams", false);
 
 		if ($modparams && $modparams->get('ignorecatfilter',0) == 2 )
@@ -4645,7 +4648,7 @@ class JEventsDBModel
 		$rows = $db->loadObjectList();
 		if (count($rows) > 0)
 		{
-			Factory::getApplication()->enqueueMessage(JText::_('THIS_EVENT_HAS_CHANGED_THIS_OCCURANCE_IS_NOW_THE_CLOSEST_TO_THE_DATE_YOU_SEARCHED_FOR'), 'notice');
+			Factory::getApplication()->enqueueMessage(Text::_('THIS_EVENT_HAS_CHANGED_THIS_OCCURANCE_IS_NOW_THE_CLOSEST_TO_THE_DATE_YOU_SEARCHED_FOR'), 'notice');
 
 			return $rows[0]->rp_id;
 		}

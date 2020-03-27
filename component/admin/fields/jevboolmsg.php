@@ -13,6 +13,7 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -53,8 +54,8 @@ class JFormFieldJEVBoolmsg extends JFormFieldRadio
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
 		$options   = array();
-		$options[] = HTMLHelper::_('select.option', 0, JText::_("Jev_No"));
-		$options[] = HTMLHelper::_('select.option', 1, JText::_("jev_Yes"));
+		$options[] = HTMLHelper::_('select.option', 0, Text::_("Jev_No"));
+		$options[] = HTMLHelper::_('select.option', 1, Text::_("jev_Yes"));
 
 		return $options;
 
@@ -74,6 +75,6 @@ class JFormFieldJEVBoolmsg extends JFormFieldRadio
 		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
 		JEVHelper::ConditionalFields($this->element, $this->form->getName());
 
-		return parent::getInput() . '<div id="jevcopymsg" ' . $style . '>' . JText::_("Before removing the copyright footer please read this important message at the <a href='https://www.jevents.net/hidecopyright?tmpl=component' title='get hide copyright code' class='modal' rel='{handler: \"iframe\", size: {x: 650, y: 450}}'>JEvents website</a>.") . '</div>';
+		return parent::getInput() . '<div id="jevcopymsg" ' . $style . '>' . Text::_("Before removing the copyright footer please read this important message at the <a href='https://www.jevents.net/hidecopyright?tmpl=component' title='get hide copyright code' class='modal' rel='{handler: \"iframe\", size: {x: 650, y: 450}}'>JEvents website</a>.") . '</div>';
 	}
 }

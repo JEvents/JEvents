@@ -1,12 +1,14 @@
 <?php
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Component\ComponentHelper;
 
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
-class JFormFieldJeveventtime extends JFormField
+class FormFieldJeveventtime extends FormField
 {
 
 	/**
@@ -91,13 +93,13 @@ class JFormFieldJeveventtime extends JFormField
 					<input type="radio" name="<?php echo $partname; ?>_ampm" id="<?php echo $partname; ?>AM"
 					       value="none" <?php echo $h <= 12 ? 'checked="checked"' : ''; ?>
 					       onclick="toggleAMPM('<?php echo $partname; ?>AM');" <?php echo $test ? "disabled='disabled'" : ""; ?> />
-					<?php echo JText::_('JEV_AM'); ?>
+					<?php echo Text::_('JEV_AM'); ?>
 				</label>
 				<label for="<?php echo $partname; ?>PM" class="radio <?php echo $btn; ?>">
 					<input type="radio" name="<?php echo $partname; ?>_ampm" id="<?php echo $partname; ?>PM"
 					       value="none" <?php echo $h > 12 ? 'checked="checked"' : ''; ?>
 					       onclick="toggleAMPM('<?php echo $partname; ?>PM');" <?php echo $test ? "disabled='disabled'" : ""; ?> />
-					<?php echo JText::_('JEV_PM'); ?>
+					<?php echo Text::_('JEV_PM'); ?>
 				</label>
 			</div>
 		</div>

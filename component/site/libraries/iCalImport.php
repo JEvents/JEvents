@@ -12,6 +12,8 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Factory;
 use Joomla\String\StringHelper;
 use Joomla\CMS\Component\ComponentHelper;
@@ -46,7 +48,7 @@ class iCalImport
 
 		@ini_set("max_execution_time", 600);
 
-		echo JText::sprintf("Importing events from ical file %s", $filename) . "<br/>";
+		echo Text::sprintf("Importing events from ical file %s", $filename) . "<br/>";
 		$cfg    = JEVConfig::getInstance();
 		$option = JEV_COM_COMPONENT;
 		// resultant data goes here
@@ -475,9 +477,9 @@ class iCalImport
 				//$value = preg_replace('@(https?:\/{1,3})?((?:(?:[\w.\-]+\.(?:[a-z]{2,13})|(?<=http:\/\/|https:\/\/)[\w.\-]+)\/)(?:[^\s()<>{}\[\]]+|\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\))+(?:\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\)|[^\s`!()\[\]{};:\'\".,<>?«»“”‘’])|(?:(?<!@)(?:\w+(?:[.\-]+\w+)*\.(?:[a-z]{2,13})|(?:(?:[0-9](?!\d)|[1-9][0-9](?!\d)|1[0-9]{2}(?!\d)|2[0-4][0-9](?!\d)|25[0-5](?!\d))[.]?){4})\b\/?(?!@)(?:[^\s()<>{}\[\]]+|\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\))*(?:\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\)|[^\s`!()\[\]{};:\'\".,<>?«»“”‘’])?))@gi', '<a href="$1$2">$1</a>', $value);
 
 				if  ($params->get("converturlstolinksonimport", 1) && is_string($value) && $key!="UID" && $key!="X-EXTRAINFO"){
-					if (JString::strpos(str_replace(" ","",JString::strtolower($value)),"<ahref=")===false && JString::strpos(str_replace(" ","",JString::strtolower($value)),"<img")===false && (JString::strpos(JString::strtolower($value),"http://")!==false || JString::strpos(JString::strtolower($value),"https://")!==false)){
-						// See http://stackoverflow.com/questions/8414675/preg-replace-for-url-and-download-links and http://regexr.com/3bup3 to test this
-                        $value = preg_replace('@(https?://([\w\-.]+)+(:\d+)?(/([\w/_\.%\-+~=]*(\?\S+)?)?)?)@u', '<a href="$1">$1</a>', $value);
+					if (StringHelper::strpos(str_replace(" ","",StringHelper::strtolower($value)),"<ahref=")===false && StringHelper::strpos(str_replace(" ","",StringHelper::strtolower($value)),"<img")===false && (StringHelper::strpos(StringHelper::strtolower($value),"http://")!==false || StringHelper::strpos(StringHelper::strtolower($value),"https://")!==false)){
+                                                // See http://stackoverflow.com/questions/8414675/preg-replace-for-url-and-download-links and http://regexr.com/3bup3 to test this
+                                                $value = preg_replace('@(https?://([\w-.]+)+(:\d+)?(/([\w/_\.%\-+~=]*(\?\S+)?)?)?)@u', '<a href="$1">$1</a>', $value);
 					}
 				}
 
@@ -878,7 +880,7 @@ class iCalImport
 		$wtzdata["Tasmania Standard Time"]                      = "Australia/Hobart";
 
 		// Lets check if a file for custom timezones exists
-		if (JFile::exists(JPATH_COMPONENT_SITE . '/libraries/ical_custom_timezones.php'))
+		if (File::exists(JPATH_COMPONENT_SITE . '/libraries/ical_custom_timezones.php'))
 		{
 			//Load the custom file once
 			include('ical_custom_timezones.php');

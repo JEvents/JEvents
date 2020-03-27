@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 
@@ -20,7 +21,7 @@ if (0 == $this->evid)
 
 if (is_null($this->data))
 {
-	$app->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$this->Itemid", false), JText::_("JEV_SORRY_UPDATED"));
+	$app->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$this->Itemid", false), Text::_("JEV_SORRY_UPDATED"));
 }
 
 if (array_key_exists('row', $this->data))
@@ -64,7 +65,7 @@ if (array_key_exists('row', $this->data))
 		<table width="100%" border="0" cellspacing="0" cellpadding="0">
 			<tr>
 				<td class="contentheading" align="left"
-				    valign="top"><?php echo JText::_('JEV_REP_NOEVENTSELECTED'); ?></td>
+				    valign="top"><?php echo Text::_('JEV_REP_NOEVENTSELECTED'); ?></td>
 			</tr>
 		</table>
 		<?php
@@ -72,7 +73,7 @@ if (array_key_exists('row', $this->data))
 	/*
 		if(!($mask & MASK_BACKTOLIST)) { ?>
 			<p align="center">
-				<a href="javascript:window.history.go(-1);" class="jev_back btn" title="<?php echo JText::_('JEV_BACK'); ?>"><?php echo JText::_('JEV_BACK'); ?></a>
+				<a href="javascript:window.history.go(-1);" class="jev_back btn" title="<?php echo Text::_('JEV_BACK'); ?>"><?php echo Text::_('JEV_BACK'); ?></a>
 			</p>
 			<?php
 		}

@@ -1,6 +1,9 @@
 <?php
 defined('_JEXEC') or die ('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
+
 $data = $this->data;
 
 $Itemid    = JEVHelper::getItemid();
@@ -54,7 +57,7 @@ $hasevents = false;
 		if (!$hasevents)
 		{
 			echo '<div class="list_no_e">' . "\n";
-			echo JText::_('JEV_NO_EVENTS_FOUND');
+			echo Text::_('JEV_NO_EVENTS_FOUND');
 			echo "</div>\n";
 		}
 		?>

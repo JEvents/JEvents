@@ -1,6 +1,8 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 
@@ -25,7 +27,7 @@ function FlatViewHelperFooter16($view)
 										self.close();
 										return false;
 									}"
-				   title="<?php echo JText::_('JEV_CLOSE'); ?>"><?php echo JText::_('JEV_CLOSE'); ?></a>
+				   title="<?php echo Text::_('JEV_CLOSE'); ?>"><?php echo Text::_('JEV_CLOSE'); ?></a>
 			</p></div>
 		<?php
 	}
@@ -45,7 +47,7 @@ function FlatViewHelperFooter16($view)
 	jimport('joomla.filesystem.file');
 
 	// Lets check if we have editted before! if not... rename the custom file.
-	if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
+	if (File::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
 	{
 		// It is definitely now created, lets load it!
 		JEVHelper::stylesheet('jevcustom.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');

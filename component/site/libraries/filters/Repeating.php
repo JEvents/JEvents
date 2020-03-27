@@ -12,6 +12,9 @@
 // ensure this file is being included by a parent file
 defined('_JEXEC') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Language\Text;
+
+
 class jevRepeatingFilter extends jevBooleanFilter
 {
 	const filterType = "repeating";
@@ -20,7 +23,7 @@ class jevRepeatingFilter extends jevBooleanFilter
 	{
 
 		$this->filterType  = self::filterType;
-		$this->filterLabel = JText::_("JEV_SHOW_REPEATING_EVENTS");
+		$this->filterLabel = Text::_("JEV_SHOW_REPEATING_EVENTS");
 		parent::__construct($tablename, $filterfield, true);
 	}
 

@@ -8,6 +8,10 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Date\Date;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 
@@ -137,7 +141,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 	 * Method to remove the link information for items that have been deleted.
 	 *
 	 * @param   string $context The context of the action being performed.
-	 * @param   JTable $table   A JTable object containing the record to be deleted
+	 * @param   Table $table   A Table object containing the record to be deleted
 	 *
 	 * @return  boolean  True on success.
 	 *
@@ -168,7 +172,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 	 * Method to determine if the access level of an item changed.
 	 *
 	 * @param   string  $context The context of the jevents passed to the plugin.
-	 * @param   JTable  $row     A JTable object
+	 * @param   Table  $row     A Table object
 	 * @param   boolean $isNew   If the jevents has just been created
 	 *
 	 * @return  boolean  True on success.
@@ -285,9 +289,8 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		$theevent = array($queryModel->listEventsById($item->rp_id));
 
 		if (isset($theevent[0]) && $theevent[0]) {
-			JPluginHelper::importPlugin('jevents');
-			$dispatcher = JEventDispatcher::getInstance();
-			$dispatcher->trigger('onJevFinderIndexing', array(&$theevent));
+			PluginHelper::importPlugin('jevents');
+			Factory::getApplication()->trigger('onJevFinderIndexing', array(&$theevent));
 		}
 
 		$theevent = count($theevent) === 1 ? $theevent[0] : $theevent;
@@ -297,7 +300,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		if ($this->params->get("future", -1) != -1 && $theevent)
 		{
 			$past                     = str_replace('-', '', $this->params->get("past", -1));
-			$date                     = new JDate($theevent->startDate() . " - $past days");
+			$date                     = new Date($theevent->startDate() . " - $past days");
 			$item->publish_start_date = $date->toSql();
 		}
 		else
@@ -307,7 +310,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		if ($this->params->get("past", -1) != -1  && $theevent)
 		{
 			$future                 = str_replace('+', '', $this->params->get("future", -1));
-			$date                   = new JDate($theevent->endDate() . " + $future days");
+			$date                   = new Date($theevent->endDate() . " + $future days");
 			$item->publish_end_date = $date->toSql();
 		}
 		else
@@ -318,14 +321,14 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		// If the timelimit plugin has values set let's overrride the previous values.
 		if (isset($theevent->timelimits) && !empty($theevent->timelimits)) {
 			// Must change to correct timezone - GMT in finder tables
-			$compparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$compparams = ComponentHelper::getParams(JEV_COM_COMPONENT);
 			$jtz = $compparams->get("icaltimezonelive", "");
 
 			if ($theevent->timelimits->startlimit !== '') {
 				//$date = new JevDate($theevent->timelimits->startlimit);
 				//$sql = $date->toMySQL(true);
 
-				$date = new JDate($theevent->timelimits->startlimit, (isset($theevent->_tzid) && !empty($theevent->_tzid)) ? $theevent->_tzid : $jtz);
+				$date = new Date($theevent->timelimits->startlimit, (isset($theevent->_tzid) && !empty($theevent->_tzid)) ? $theevent->_tzid : $jtz);
 				$gmtsql = $date->format('Y-m-d H:i:s');
 
 				$item->publish_start_date   = $gmtsql;
@@ -334,7 +337,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 				//$date = new JevDate($theevent->timelimits->endlimit, $jtz);
 				//$sql = $date->toMySQL();
 
-				$date = new JDate($theevent->timelimits->endlimit, (isset($theevent->_tzid) && !empty($theevent->_tzid)) ? $theevent->_tzid : $jtz);
+				$date = new Date($theevent->timelimits->endlimit, (isset($theevent->_tzid) && !empty($theevent->_tzid)) ? $theevent->_tzid : $jtz);
 				$gmtsql = $date->format('Y-m-d H:i:s');
 
 				$item->publish_end_date     = $gmtsql;
@@ -409,7 +412,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 	protected function getItem($id)
 	{
 
-		//JLog::add('FinderIndexerAdapter::getItem', JLog::INFO);
+		//Log::add('FinderIndexerAdapter::getItem', Log::INFO);
 
 		// Get the list query and add the extra WHERE clause.
 		$sql = $this->getListQuery($query = null, 'item');

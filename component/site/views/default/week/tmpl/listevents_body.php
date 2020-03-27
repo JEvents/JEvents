@@ -1,6 +1,9 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
+
 $cfg = JEVConfig::getInstance();
 
 $this->data = $data = $this->datamodel->getWeekData($this->year, $this->month, $this->day);
@@ -9,7 +12,7 @@ $option    = JEV_COM_COMPONENT;
 $Itemid    = JEVHelper::getItemid();
 $hasevents = false;
 
-echo '<fieldset><legend class="ev_fieldset">' . JText::_('JEV_EVENTSFOR') . '&nbsp;' . JText::_('JEV_WEEK')
+echo '<fieldset><legend class="ev_fieldset">' . Text::_('JEV_EVENTSFOR') . '&nbsp;' . Text::_('JEV_WEEK')
 	. ' : </legend><br />' . "\n";
 echo '<table align="center" width="90%" cellspacing="0" cellpadding="5" class="ev_table">' . "\n";
 ?>
@@ -24,7 +27,7 @@ echo '<table align="center" width="90%" cellspacing="0" cellpadding="5" class="e
 for ($d = 0; $d < 7; $d++)
 {
 
-	$day_link = '<a class="ev_link_weekday" href="' . $data['days'][$d]['link'] . '" title="' . JText::_('JEV_CLICK_TOSWITCH_DAY') . '">'
+	$day_link = '<a class="ev_link_weekday" href="' . $data['days'][$d]['link'] . '" title="' . Text::_('JEV_CLICK_TOSWITCH_DAY') . '">'
 		. JEV_CommonFunctions::jev_strftime("%A", JevDate::mktime(3, 0, 0, $data['days'][$d]['week_month'], $data['days'][$d]['week_day'], $data['days'][$d]['week_year'])) . "<br/>"
 		. JEventsHTML::getDateFormat($data['days'][$d]['week_year'], $data['days'][$d]['week_month'], $data['days'][$d]['week_day'], 2) . '</a>' . "\n";
 
@@ -54,7 +57,7 @@ for ($d = 0; $d < 7; $d++)
 	else
 	{
 		echo "<ul class='ev_ul'>\n";
-		echo "<li class='b0'>" . JText::_('JEV_NOEVENT_ON_THIS_DATE') . "</li>";
+		echo "<li class='b0'>" . Text::_('JEV_NOEVENT_ON_THIS_DATE') . "</li>";
 		echo "</ul>\n";
 	}
 	echo '</td></tr>' . "\n";
@@ -63,7 +66,7 @@ for ($d = 0; $d < 7; $d++)
 //{
 //       echo '<tr><td class="ev_td_right" colspan="3"><ul class="ev_ul">' . "\n";
 //       echo "<li class='ev_td_li b0'>\n";
-//        echo JText::_('JEV_NO_EVENTS');
+//        echo Text::_('JEV_NO_EVENTS');
 //        echo "</li>\n";
 //        echo "</ul></td></tr>\n";
 //}

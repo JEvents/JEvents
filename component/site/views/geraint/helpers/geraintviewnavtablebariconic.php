@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 
@@ -72,17 +73,17 @@ class GeraintViewNavTableBarIconic extends DefaultViewNavTableBarIconic
 						<td colspan="<?php echo $colspan; ?>"></td>
 					<?php } ?>
 					<?php if (in_array("byyear", $this->iconstoshow)) { ?>
-						<td><?php echo JText::_('JEV_VIEWBYYEAR'); ?></td><?php } ?>
+						<td><?php echo Text::_('JEV_VIEWBYYEAR'); ?></td><?php } ?>
 					<?php if (in_array("bymonth", $this->iconstoshow)) { ?>
-						<td><?php echo JText::_('JEV_VIEWBYMONTH'); ?></td><?php } ?>
+						<td><?php echo Text::_('JEV_VIEWBYMONTH'); ?></td><?php } ?>
 					<?php if (in_array("byweek", $this->iconstoshow)) { ?>
-						<td><?php echo JText::_('JEV_VIEWBYWEEK'); ?></td><?php } ?>
+						<td><?php echo Text::_('JEV_VIEWBYWEEK'); ?></td><?php } ?>
 					<?php if (in_array("byday", $this->iconstoshow)) { ?>
-						<td><?php echo JText::_('JEV_VIEWTODAY'); ?></td><?php } ?>
+						<td><?php echo Text::_('JEV_VIEWTODAY'); ?></td><?php } ?>
 					<?php if (in_array("search", $this->iconstoshow)) { ?>
-						<td><?php echo JText::_('JEV_SEARCH_TITLE'); ?></td><?php } ?>
+						<td><?php echo Text::_('JEV_SEARCH_TITLE'); ?></td><?php } ?>
 					<?php if (in_array("bymonth", $this->iconstoshow)) { ?>
-						<td><?php echo JText::_('JEV_JUMPTO'); ?></td><?php } ?>
+						<td><?php echo Text::_('JEV_JUMPTO'); ?></td><?php } ?>
 					<?php if ($cfg->get('com_calUseIconic', 1) != 2 && $task != "range.listevents") { ?>
 						<td colspan="<?php echo $colspan; ?>"></td>
 					<?php } ?>

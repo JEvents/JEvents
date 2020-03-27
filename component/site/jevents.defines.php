@@ -11,6 +11,9 @@
 
 defined('_JEXEC') or die('No Direct Access');
 
+use Joomla\CMS\Date\Date;
+
+
 if (!defined("JEV_COM_COMPONENT"))
 {
 	define("JEV_COM_COMPONENT", "com_jevents");
@@ -38,7 +41,7 @@ JLoader::register('JEVHelper', JEV_PATH . "libraries/helper.php");
 JLoader::register('JevModuleHelper', JEV_PATH . "libraries/jevmodulehelper.php");
 JLoader::register('JevHtmlBootstrap', JEV_PATH . "libraries/bootstrap.php");
 
-// TODO replace with JDate
+// TODO replace with Date
 JLoader::register('JEventDate', JEV_PATH . "libraries/jeventdate.php");
 JLoader::register('JevDate', JEV_PATH . "libraries/jevdate.php");
 JLoader::register('JEventsHTML', JEV_PATH . "libraries/jeventshtml.php");

@@ -1,12 +1,13 @@
 <?php
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Factory;
 
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
-class JFormFieldJeveventlocation extends JFormField
+class FormFieldJeveventlocation extends FormField
 {
 
 	/**

@@ -11,6 +11,7 @@
  */
 defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 
@@ -65,7 +66,7 @@ class CustomCssController extends Joomla\CMS\MVC\Controller\BaseController
 
 		// Set the layout
 		$this->view->setLayout('default');
-		$this->view->title = JText::_('JEV_CUSTOM_CSS');
+		$this->view->title = Text::_('JEV_CUSTOM_CSS');
 
 		$this->view->display();
 	}
@@ -82,7 +83,7 @@ class CustomCssController extends Joomla\CMS\MVC\Controller\BaseController
 	{
 
 		// Check for request forgeries.
-		\Joomla\CMS\Session\Session::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		\Joomla\CMS\Session\Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
 		$app          = Factory::getApplication();
 		$data         = $this->input->post->get('jform', array(), 'array');
@@ -94,7 +95,7 @@ class CustomCssController extends Joomla\CMS\MVC\Controller\BaseController
 		// Access check.
 		if (!$this->allowSave())
 		{
-			$app->enqueueMessage(JText::_('JLIB_APPLICATION_ERROR_SAVE_NOT_PERMITTED'), 'error');
+			$app->enqueueMessage(Text::_('JLIB_APPLICATION_ERROR_SAVE_NOT_PERMITTED'), 'error');
 
 			return false;
 		}
@@ -141,14 +142,14 @@ class CustomCssController extends Joomla\CMS\MVC\Controller\BaseController
 		if (!$model->save($data))
 		{
 			// Redirect back to the edit screen.
-			$this->setMessage(JText::sprintf('JERROR_SAVE_FAILED', $model->getError()), 'warning');
+			$this->setMessage(Text::sprintf('JERROR_SAVE_FAILED', $model->getError()), 'warning');
 			$url = 'index.php?option=com_jevents&view=customcss';
 			$this->setRedirect(Route::_($url, false));
 
 			return false;
 		}
 
-		$this->setMessage(JText::_('COM_JEVENTS_CUSTOM_CSS_FILE_SAVE_SUCCESS'));
+		$this->setMessage(Text::_('COM_JEVENTS_CUSTOM_CSS_FILE_SAVE_SUCCESS'));
 
 		// Redirect the user based on the chosen task.
 		if ($task === 'apply')

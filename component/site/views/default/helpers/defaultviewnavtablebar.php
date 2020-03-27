@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
@@ -33,7 +34,7 @@ class DefaultViewNavTableBar
 				<tr align="center">
 					<td align="right" class="h1 vtop">
 						<a href="<?php echo Route::_('index.php?option=' . JEV_COM_COMPONENT . $this->cat . '&task=day.listevents&' . $today_date->toDateURL() . '&Itemid=' . $this->Itemid); ?>"
-						   title="<?php echo JText::_('JEV_VIEWTODAY'); ?>"><?php echo JText::_('JEV_VIEWTODAY'); ?></a>
+						   title="<?php echo Text::_('JEV_VIEWTODAY'); ?>"><?php echo Text::_('JEV_VIEWTODAY'); ?></a>
 					</td>
 					<td align="center" class="h1 vbotom">
 						<form name="ViewSelect" action="<?php echo Uri::root() . "index.php"; ?>" method="get">
@@ -51,7 +52,7 @@ class DefaultViewNavTableBar
 								{ ?>
 									<option value="day.listevents" <?php if ($v == "day.listevents") {
 										echo "selected";
-									} ?>><?php echo JText::_('JEV_VIEWBYDAY'); ?></option>
+									} ?>><?php echo Text::_('JEV_VIEWBYDAY'); ?></option>
 									<?php
 								}
 								if (in_array("byweek", $iconstoshow))
@@ -59,7 +60,7 @@ class DefaultViewNavTableBar
 									?>
 									<option value="week.listevents"<?php if ($v == "week.listevents") {
 										echo "selected";
-									} ?>><?php echo JText::_('JEV_VIEWBYWEEK'); ?></option>
+									} ?>><?php echo Text::_('JEV_VIEWBYWEEK'); ?></option>
 									<?php
 								}
 								if (in_array("bymonth", $iconstoshow))
@@ -67,7 +68,7 @@ class DefaultViewNavTableBar
 									?>
 									<option value="month.calendar"<?php if ($v == "month.calendar") {
 										echo "selected";
-									} ?>><?php echo JText::_('JEV_VIEWBYMONTH'); ?></option>
+									} ?>><?php echo Text::_('JEV_VIEWBYMONTH'); ?></option>
 									<?php
 								}
 								if (in_array("byyear", $iconstoshow))
@@ -75,7 +76,7 @@ class DefaultViewNavTableBar
 									?>
 									<option value="year.listevents"<?php if ($v == "year.listevents") {
 										echo "selected";
-									} ?>><?php echo JText::_('JEV_VIEWBYYEAR'); ?></option>
+									} ?>><?php echo Text::_('JEV_VIEWBYYEAR'); ?></option>
 									<?php
 								}
 								if (in_array("search", $iconstoshow))
@@ -83,7 +84,7 @@ class DefaultViewNavTableBar
 									?>
 									<option value="search.form"<?php if ($v == "search.form") {
 										echo "selected";
-									} ?>><?php echo JText::_('JEV_SEARCH_TITLE'); ?></option>
+									} ?>><?php echo Text::_('JEV_SEARCH_TITLE'); ?></option>
 									<?php
 								}
 								if (in_array("bycat", $iconstoshow))
@@ -91,7 +92,7 @@ class DefaultViewNavTableBar
 									?>
 									<option value="cat.listevents"<?php if ($v == "cat.listevents") {
 										echo "selected";
-									} ?>><?php echo JText::_('JEV_VIEWBYCAT'); ?></option>
+									} ?>><?php echo Text::_('JEV_VIEWBYCAT'); ?></option>
 									<?php
 								}
 								?>
@@ -100,8 +101,8 @@ class DefaultViewNavTableBar
 					</td>
 					<td align="left" class="w100 vtop h1">
 						<a href="<?php echo Route::_('index.php?option=' . JEV_COM_COMPONENT . $this->cat . '&task=month.calendar&' . $today_date->toDateURL() . '&Itemid=' . $this->Itemid); ?>"
-						   title="<?php echo JText::_('JEV_VIEWTOCOME'); ?>">
-							<?php echo JText::_('JEV_VIEWTOCOME'); ?>
+						   title="<?php echo Text::_('JEV_VIEWTOCOME'); ?>">
+							<?php echo Text::_('JEV_VIEWTOCOME'); ?>
 						</a>
 					</td>
 				</tr>

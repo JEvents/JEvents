@@ -9,6 +9,7 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
 $item = $displayData['data'];
@@ -18,23 +19,23 @@ $display = $item->text;
 switch ((string) $item->text)
 {
 	// Check for "Start" item
-	case JText::_('JLIB_HTML_START') :
+	case Text::_('JLIB_HTML_START') :
 		$icon = "icon-backward";
 		break;
 
 	// Check for "Prev" item
-	case $item->text == JText::_('JPREV') :
-		$item->text = JText::_('JPREVIOUS');
+	case $item->text == Text::_('JPREV') :
+		$item->text = Text::_('JPREVIOUS');
 		$icon       = "icon-step-backward";
 		break;
 
 	// Check for "Next" item
-	case JText::_('JNEXT') :
+	case Text::_('JNEXT') :
 		$icon = "icon-step-forward";
 		break;
 
 	// Check for "End" item
-	case JText::_('JLIB_HTML_END') :
+	case Text::_('JLIB_HTML_END') :
 		$icon = "icon-forward";
 		break;
 

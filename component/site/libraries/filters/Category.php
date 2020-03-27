@@ -12,6 +12,7 @@
 // ensure this file is being included by a parent file
 defined('_JEXEC') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 
@@ -37,7 +38,7 @@ class jevCategoryFilter extends jevFilter
 			$this->datamodel->setupComponentCatids();
 		}
 
-		$this->filterLabel     = JText::_('CATEGORY');
+		$this->filterLabel     = Text::_('CATEGORY');
 		$this->filterNullValue = "0";
 		parent::__construct($tablename, "catid", true);
 
@@ -178,7 +179,7 @@ class jevCategoryFilter extends jevFilter
 		}
 
 		$filterList          = array();
-		$filterList["title"] = "<label class='evcategory_label' for='" . $this->filterType . "_fv'>" . JText::_("SELECT_CATEGORY") . "</label>";
+		$filterList["title"] = "<label class='evcategory_label' for='" . $this->filterType . "_fv'>" . Text::_("SELECT_CATEGORY") . "</label>";
 
 		if ($allowAutoSubmit)
 		{

@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
 $cfg    = JEVConfig::getInstance();
@@ -24,7 +25,7 @@ $precedingWeek = $this->datamodel->getPrecedingWeek($this->year, $this->month, $
 <div class="jev_toprow">
 	<div class="jev_header2">
 		<div class="previousmonth">
-			<?php if ($precedingWeek) echo "<a href='" . $precedingWeek . "' title='" . JText::_("PRECEEDING_Week") . "' >" . JText::_("PRECEEDING_Week") . "</a>"; ?>
+			<?php if ($precedingWeek) echo "<a href='" . $precedingWeek . "' title='" . Text::_("PRECEEDING_Week") . "' >" . Text::_("PRECEEDING_Week") . "</a>"; ?>
 		</div>
 		<div class="currentmonth">
 			<?php
@@ -53,7 +54,7 @@ $precedingWeek = $this->datamodel->getPrecedingWeek($this->year, $this->month, $
 			?>
 		</div>
 		<div class="nextmonth">
-			<?php if ($followingWeek) echo "<a href='" . $followingWeek . "' title='" . JText::_("FOLLOWING_Week") . "' >" . JText::_("FOLLOWING_Week") . "</a>"; ?>
+			<?php if ($followingWeek) echo "<a href='" . $followingWeek . "' title='" . Text::_("FOLLOWING_Week") . "' >" . Text::_("FOLLOWING_Week") . "</a>"; ?>
 		</div>
 
 	</div>
@@ -68,7 +69,7 @@ $precedingWeek = $this->datamodel->getPrecedingWeek($this->year, $this->month, $
 		if ($num_events == 0)
 			continue;
 
-		echo '<a class="ev_link_weekday" href="' . $data ['days'] [$d] ['link'] . '" title="' . JText::_('JEV_CLICK_TOSWITCH_DAY') . '">' . "\n";
+		echo '<a class="ev_link_weekday" href="' . $data ['days'] [$d] ['link'] . '" title="' . Text::_('JEV_CLICK_TOSWITCH_DAY') . '">' . "\n";
 		?>
 		<div class="jev_daysnames">
 			<?php echo JEventsHTML::getDateFormat($data ['days'] [$d] ['week_year'], $data ['days'] [$d] ['week_month'], $data ['days'] [$d] ['week_day'], 2); ?>
@@ -99,7 +100,7 @@ $precedingWeek = $this->datamodel->getPrecedingWeek($this->year, $this->month, $
 	if (!$hasevents)
 	{
 		echo '<div class="list_no_e">' . "\n";
-		echo JText::_('JEV_NO_EVENTS_FOUND');
+		echo Text::_('JEV_NO_EVENTS_FOUND');
 		echo "</div>\n";
 	}
 	?>

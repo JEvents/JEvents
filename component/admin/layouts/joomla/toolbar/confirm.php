@@ -1,4 +1,7 @@
 <?php
+
+use Joomla\CMS\HTML\HTMLHelper;
+
 /**
  * @package     Joomla.Site
  * @subpackage  Layout
@@ -15,7 +18,7 @@ if (GSLMSIE10)
 	return;
 }
 
-JHtml::_('behavior.core');
+HTMLHelper::_('behavior.core');
 
 $class      = $displayData['class'];
 $btnClass   = isset($displayData['btnClass']) ? $displayData['btnClass'] : "";

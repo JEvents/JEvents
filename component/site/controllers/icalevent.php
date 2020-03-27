@@ -11,6 +11,7 @@
 
 defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
@@ -58,7 +59,7 @@ class ICalEventController extends AdminIcaleventController
 			$link = $uri->toString();
 			$link = 'index.php?option=com_users&view=login&return=' . base64_encode($link);
 			$link = Route::_($link, false);
-			$this->setRedirect($link, JText::_('JEV_LOGIN_TO_VIEW_EVENT'));
+			$this->setRedirect($link, Text::_('JEV_LOGIN_TO_VIEW_EVENT'));
 			$this->redirect();
 
 			return;
@@ -153,15 +154,15 @@ class ICalEventController extends AdminIcaleventController
 		{
 			if ($user->id)
 			{
-				$this->setRedirect(Uri::root(), JText::_('JEV_NOTAUTH_CREATE_EVENT', 'error'));
+				$this->setRedirect(Uri::root(), Text::_('JEV_NOTAUTH_CREATE_EVENT', 'error'));
 				$this->redirect();
-				//throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+				//throw new Exception( Text::_('ALERTNOTAUTH'), 403);
 			}
 			else
 			{
 				$uri  = Uri::getInstance();
 				$link = $uri->toString();
-				$this->setRedirect(Route::_("index.php?option=com_users&view=login&return=" . base64_encode($link)), JText::_('JEV_NOTAUTH_CREATE_EVENT', 'error'));
+				$this->setRedirect(Route::_("index.php?option=com_users&view=login&return=" . base64_encode($link)), Text::_('JEV_NOTAUTH_CREATE_EVENT', 'error'));
 				$this->redirect();
 			}
 
@@ -184,7 +185,7 @@ class ICalEventController extends AdminIcaleventController
 		$is_event_editor = JEVHelper::isEventCreator() || JEVHelper::isEventEditor();
 		if (!$is_event_editor)
 		{
-			throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+			throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 			return false;
 		}
@@ -207,7 +208,7 @@ class ICalEventController extends AdminIcaleventController
 		$is_event_editor = JEVHelper::isEventCreator() || JEVHelper::isEventEditor();
 		if (!$is_event_editor)
 		{
-			throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+			throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 			return false;
 		}
@@ -221,7 +222,7 @@ class ICalEventController extends AdminIcaleventController
 		$is_event_editor = JEVHelper::isEventCreator() || JEVHelper::isEventEditor();
 		if (!$is_event_editor)
 		{
-			throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+			throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 			return false;
 		}

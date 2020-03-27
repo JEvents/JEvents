@@ -10,6 +10,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 
@@ -29,7 +30,7 @@ if (!empty($this->sidebar))
 		//Version Checking etc
 		?>
 		<div class="jev_version">
-			<?php echo JText::sprintf('JEV_CURRENT_VERSION', Joomla\String\StringHelper::substr($version->getShortVersion(), 1)); ?>
+			<?php echo Text::sprintf('JEV_CURRENT_VERSION', Joomla\String\StringHelper::substr($version->getShortVersion(), 1)); ?>
 		</div>
 	</div>
 	<?php
@@ -46,43 +47,43 @@ $fullspan = 12;
 				if (JEVHelper::isAdminUser())
 				{
 					$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=icals.list";
-					$this->_quickiconButtonWHover($link, "cpanel/CalendarsCool.png", "cpanel/CalendarsHot.png", JText::_('JEV_ADMIN_ICAL_SUBSCRIPTIONS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
+					$this->_quickiconButtonWHover($link, "cpanel/CalendarsCool.png", "cpanel/CalendarsHot.png", Text::_('JEV_ADMIN_ICAL_SUBSCRIPTIONS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 				}
 
 				$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=icalevent.list";
-				$this->_quickiconButtonWHover($link, "cpanel/EventsCool.png", "cpanel/EventsHot.png", JText::_('JEV_ADMIN_ICAL_EVENTS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
+				$this->_quickiconButtonWHover($link, "cpanel/EventsCool.png", "cpanel/EventsHot.png", Text::_('JEV_ADMIN_ICAL_EVENTS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 
 				$link = "index.php?option=com_categories&extension=" . JEV_COM_COMPONENT;
 
-				$this->_quickiconButtonWHover($link, "cpanel/CategoriesCool.png", "cpanel/CategoriesHot.png", JText::_('JEV_INSTAL_CATS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
+				$this->_quickiconButtonWHover($link, "cpanel/CategoriesCool.png", "cpanel/CategoriesHot.png", Text::_('JEV_INSTAL_CATS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 
 				if (JEVHelper::isAdminUser())
 				{
 					if ($params->get("authorisedonly", 0))
 					{
 						$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=user.list";
-						$this->_quickiconButtonWHover($link, "cpanel/AuthorisedCool.png", "cpanel/AuthorisedHot.png", JText::_('JEV_MANAGE_USERS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
+						$this->_quickiconButtonWHover($link, "cpanel/AuthorisedCool.png", "cpanel/AuthorisedHot.png", Text::_('JEV_MANAGE_USERS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 					}
 					// new version - Joomla 3.5 does its stuff using AJAX and assumes its ONLY called from com_config :(
 					$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=params.edit&view=component&component=com_jevents";
-					$this->_quickiconButtonWHover($link, "cpanel/ConfigCool.png", "cpanel/ConfigHot.png", JText::_('JEV_INSTAL_CONFIG'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
+					$this->_quickiconButtonWHover($link, "cpanel/ConfigCool.png", "cpanel/ConfigHot.png", Text::_('JEV_INSTAL_CONFIG'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 				}
 				if (JEVHelper::isAdminUser())
 				{
 					$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.list";
-					$this->_quickiconButtonWHover($link, "cpanel/LayoutsCool.png", "cpanel/LayoutsHot.png", JText::_('JEV_LAYOUT_DEFAULTS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
+					$this->_quickiconButtonWHover($link, "cpanel/LayoutsCool.png", "cpanel/LayoutsHot.png", Text::_('JEV_LAYOUT_DEFAULTS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 					// Custom CSS
 					$link = "index.php?option=" . JEV_COM_COMPONENT . "&view=customcss";
-					$this->_quickiconButtonWHover($link, "cpanel/CSSCool.png", "cpanel/CSSHot.png", JText::_('JEV_CUSTOM_CSS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
+					$this->_quickiconButtonWHover($link, "cpanel/CSSCool.png", "cpanel/CSSHot.png", Text::_('JEV_CUSTOM_CSS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 					// Support Info
 					$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.support";
-					$this->_quickiconButtonWHover($link, "cpanel/SupportCool.png", "cpanel/SupportHot.png", JText::_('SUPPORT_INFO'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
+					$this->_quickiconButtonWHover($link, "cpanel/SupportCool.png", "cpanel/SupportHot.png", Text::_('SUPPORT_INFO'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 					//Manage Addons
 					//$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.addons";
-					//$this->_quickiconButtonWHover($link, "cpanel/JEventsAddonsCool.png", "cpanel/JEventsAddonsHot.png", JText::_('JEV_MANAGE_ADDONS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/", '_blank');
+					//$this->_quickiconButtonWHover($link, "cpanel/JEventsAddonsCool.png", "cpanel/JEventsAddonsHot.png", Text::_('JEV_MANAGE_ADDONS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/", '_blank');
 					//Project News
 					$link = "https://www.jevents.net/news";
-					$this->_quickiconButtonWHover($link, "cpanel/NewsCool.png", "cpanel/NewsHot.png", JText::_('JEV_NEWS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/", '_blank');
+					$this->_quickiconButtonWHover($link, "cpanel/NewsCool.png", "cpanel/NewsHot.png", Text::_('JEV_NEWS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/", '_blank');
 				}
 				// Links to addons
 				// Managed Locations
@@ -93,7 +94,7 @@ $fullspan = 12;
 				{
 					$link = "index.php?option=com_jevlocations";
 					Factory::getLanguage()->load("com_jevlocations", JPATH_ADMINISTRATOR);
-					$this->_quickiconButtonWHover($link, "cpanel/LocationsCool.png", "cpanel/LocationsHot.png", JText::_('COM_JEVLOCATIONS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
+					$this->_quickiconButtonWHover($link, "cpanel/LocationsCool.png", "cpanel/LocationsHot.png", Text::_('COM_JEVLOCATIONS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 				}
 				// Managed People
 				$db = Factory::getDbo();
@@ -103,7 +104,7 @@ $fullspan = 12;
 				{
 					$link = "index.php?option=com_jevpeople";
 					Factory::getLanguage()->load("com_jevpeople", JPATH_ADMINISTRATOR);
-					$this->_quickiconButtonWHover($link, "cpanel/PeopleCool.png", "cpanel/PeopleHot.png", JText::_('COM_JEVPEOPLE'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
+					$this->_quickiconButtonWHover($link, "cpanel/PeopleCool.png", "cpanel/PeopleHot.png", Text::_('COM_JEVPEOPLE'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 				}
 				// RSVP Pro
 				$db = Factory::getDbo();
@@ -113,7 +114,7 @@ $fullspan = 12;
 				{
 					$link = "index.php?option=com_rsvppro";
 					Factory::getLanguage()->load("com_rsvppro", JPATH_ADMINISTRATOR);
-					$this->_quickiconButtonWHover($link, "cpanel/RSVPCool.png", "cpanel/RSVPHot.png", JText::_('COM_RSVPPRO'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
+					$this->_quickiconButtonWHover($link, "cpanel/RSVPCool.png", "cpanel/RSVPHot.png", Text::_('COM_RSVPPRO'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 				}
 				// Custom Fields
 				$db = Factory::getDbo();
@@ -127,7 +128,7 @@ $fullspan = 12;
 					{
 						$link = "index.php?option=com_jevents&task=plugin.jev_customfields.overview";
 						Factory::getLanguage()->load("plg_jevents_jevcustomfields", JPATH_ADMINISTRATOR);
-						$this->_quickiconButtonWHover($link, "cpanel/CustomFieldsCool.png", "cpanel/CustomFieldsHot.png", JText::_('JEV_CUSTOM_FIELDS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
+						$this->_quickiconButtonWHover($link, "cpanel/CustomFieldsCool.png", "cpanel/CustomFieldsHot.png", Text::_('JEV_CUSTOM_FIELDS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 					}
 				}
 
@@ -136,12 +137,12 @@ $fullspan = 12;
 			</div>
 		</div>
 		<?php
-		if (JText::_("JEV_TRANSLATION_CREDITS") != "JEV_TRANSLATION_CREDITS" && Factory::getLanguage()->getTag() != "en-GB")
+		if (Text::_("JEV_TRANSLATION_CREDITS") != "JEV_TRANSLATION_CREDITS" && Factory::getLanguage()->getTag() != "en-GB")
 		{
 			?>
 			<div class="span12 center">
-				<strong><?php echo JText::_("JEV_TRANSLATION_CREDITS"); ?>:</strong>
-				<i><?php echo JText::_("JEV_TRANSLATION_LANGUAGE"); ?></i> - <?php echo $this->getTranslatorLink(); ?>
+				<strong><?php echo Text::_("JEV_TRANSLATION_CREDITS"); ?>:</strong>
+				<i><?php echo Text::_("JEV_TRANSLATION_LANGUAGE"); ?></i> - <?php echo $this->getTranslatorLink(); ?>
 			</div>
 			<?php
 		}

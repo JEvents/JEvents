@@ -12,6 +12,9 @@
 // ensure this file is being included by a parent file
 defined('_JEXEC') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Router\Router;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 
@@ -49,7 +52,7 @@ class jevSavedfiltersFilter extends jevFilter
 		$activemodid  = (isset($activeModule) ? $activeModule->id : 0);
 
 		$filter          = array();
-		$filter["title"] = JText::_("JEV_SAVED_FILTERS");
+		$filter["title"] = Text::_("JEV_SAVED_FILTERS");
 		$db              = Factory::getDbo();
 		$db->setQuery("SELECT * FROM #__jevents_filtermap where userid = " . $db->quote(Factory::getUser()->id . " and modid=" . $activemodid));
 		$filters        = $db->loadObjectList();
@@ -62,11 +65,11 @@ class jevSavedfiltersFilter extends jevFilter
 				$base .= (strpos($base, "?") > 0 ? "&" : "?") . "jfilter=" . $fltr->fid;
 				// OR USE this
 				/*
-				$router = JRouter::getInstance("site");
+				$router = Router::getInstance("site");
 				$vars = $router->getVars();
 				$vars["jfilter"]=$fltr->fid;
 				$base = "index.php?".http_build_query($vars);
-				$base = JRoute::_($base);
+				$base = Route::_($base);
 				*/
 
 				$filter["html"] .= '<div class="saved_filter_buttons"><a href="' . $base . '" class="btn" >' . $fltr->name . ' </a>';

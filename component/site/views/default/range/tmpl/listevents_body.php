@@ -1,11 +1,14 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
+
 $data = $this->data;
 
 $Itemid = JEVHelper::getItemid();
 
-echo "<div id='cal_title'>" . JText::_('JEV_EVENTSFOR') . "</div>\n";
+echo "<div id='cal_title'>" . Text::_('JEV_EVENTSFOR') . "</div>\n";
 ?>
 	<table align="center" width="90%" cellspacing="0" cellpadding="5" class="ev_table">
 	<tr valign="top">
@@ -64,7 +67,7 @@ else
 	echo '<tr>';
 	echo '<td align="left" valign="top" class="ev_td_right">' . "\n";
 
-	echo JText::_('JEV_NO_EVENTS') . '</td>';
+	echo Text::_('JEV_NO_EVENTS') . '</td>';
 }
 
 echo '</tr></table><br />' . "\n";

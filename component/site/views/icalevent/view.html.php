@@ -11,12 +11,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Path;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\String\StringHelper;
 use Joomla\CMS\Component\ComponentHelper;
 
-if (JFile::exists(JPATH_ADMINISTRATOR . '/includes/toolbar.php')) {
+if (File::exists(JPATH_ADMINISTRATOR . '/includes/toolbar.php')) {
     require_once(JPATH_ADMINISTRATOR . '/includes/toolbar.php');
 }
 
@@ -35,7 +38,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 	function __construct($config = array())
 	{
 
-		if (JFile::exists(JPATH_ADMINISTRATOR . '/includes/toolbar.php')) {
+		if (File::exists(JPATH_ADMINISTRATOR . '/includes/toolbar.php')) {
 			require_once(JPATH_ADMINISTRATOR . '/includes/toolbar.php');
 		}
 		parent::__construct($config);
@@ -75,14 +78,14 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		if (strlen($this->row->title()) > 0)
 		{
 			// Set toolbar items for the page
-			JToolbarHelper::title(JText::_('EDIT_ICAL_EVENT'), 'jevents');
-			$document->setTitle(JText::_('EDIT_ICAL_EVENT'));
+			JToolbarHelper::title(Text::_('EDIT_ICAL_EVENT'), 'jevents');
+			$document->setTitle(Text::_('EDIT_ICAL_EVENT'));
 		}
 		else
 		{
 			// Set toolbar items for the page
-			JToolbarHelper::title(JText::_('CREATE_ICAL_EVENT'), 'jevents');
-			$document->setTitle(JText::_('CREATE_ICAL_EVENT'));
+			JToolbarHelper::title(Text::_('CREATE_ICAL_EVENT'), 'jevents');
+			$document->setTitle(Text::_('CREATE_ICAL_EVENT'));
 		}
 
 		$bar = JToolBar::getInstance('toolbar');
@@ -94,17 +97,17 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 
 				if (JEVHelper::isEventEditor() || JEVHelper::canEditEvent($this->row))
 				{
-					$this->toolbarConfirmButton("icalevent.apply", JText::_("JEV_SAVE_COPY_WARNING"), 'apply', 'apply', 'JEV_SAVE', false);
+					$this->toolbarConfirmButton("icalevent.apply", Text::_("JEV_SAVE_COPY_WARNING"), 'apply', 'apply', 'JEV_SAVE', false);
 				}
-				$this->toolbarConfirmButton("icalevent.save", JText::_("JEV_SAVE_COPY_WARNING"), 'save', 'save', 'JEV_SAVE_CLOSE', false);
+				$this->toolbarConfirmButton("icalevent.save", Text::_("JEV_SAVE_COPY_WARNING"), 'save', 'save', 'JEV_SAVE_CLOSE', false);
 			}
 			else
 			{
 				if (JEVHelper::isEventEditor() || JEVHelper::canEditEvent($this->row))
 				{
-					$this->toolbarConfirmButton("icalevent.apply", JText::_("JEV_SAVE_ICALEVENT_WARNING"), 'apply', 'apply', 'JEV_SAVE', false);
+					$this->toolbarConfirmButton("icalevent.apply", Text::_("JEV_SAVE_ICALEVENT_WARNING"), 'apply', 'apply', 'JEV_SAVE', false);
 				}
-				$this->toolbarConfirmButton("icalevent.save", JText::_("JEV_SAVE_ICALEVENT_WARNING"), 'save', 'save', 'JEV_SAVE_CLOSE', false);
+				$this->toolbarConfirmButton("icalevent.save", Text::_("JEV_SAVE_ICALEVENT_WARNING"), 'save', 'save', 'JEV_SAVE_CLOSE', false);
 			}
 		}
 		else
@@ -163,7 +166,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		jimport('joomla.filesystem.file');
 
 		// Lets check if we have editted before! if not... rename the custom file.
-		if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
+		if (File::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
 		{
 			// It is definitely now created, lets load it!
 			JEVHelper::stylesheet('jevcustom.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
@@ -291,7 +294,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 
 		// load the template script
 		jimport('joomla.filesystem.path');
-		$helper = JPath::find($this->_path['helper'], $this->_createFileName('helper', array('name' => $file)));
+		$helper = Path::find($this->_path['helper'], $this->_createFileName('helper', array('name' => $file)));
 
 		if ($helper != false)
 		{

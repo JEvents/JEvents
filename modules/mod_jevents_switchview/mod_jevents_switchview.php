@@ -12,6 +12,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
@@ -123,6 +124,6 @@ $target = Route::_("index.php?option=com_jevents&Itemid=" . $myItemid);
 	<?php
 	echo HTMLHelper::_('select.genericlist', $darray, 'jos_change_view', " class=\"button\" onchange=\"$onchange\"", 'value', 'text', $cur_view);
 	?>
-	<input class="button" type="submit" value="<?php echo JText::_('JEV_CMN_SELECT'); ?>"
+	<input class="button" type="submit" value="<?php echo Text::_('JEV_CMN_SELECT'); ?>"
 	       onclick="setJViewcookie(this.selectedIndex);"/>
 </form>

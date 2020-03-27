@@ -15,12 +15,15 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controlleradmin');
 
+use Joomla\CMS\MVC\Controller\AdminController;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Cache\Cache;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Component\ComponentHelper;
 
-class AdminParamsController extends JControllerAdmin
+class AdminParamsController extends AdminController
 {
 
 	/**
@@ -62,7 +65,7 @@ class AdminParamsController extends JControllerAdmin
 		if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
 		{
 
-			$app->enqueueMessage(JText::_('JEV_NOT_A_VALID_COM'), 'error');
+			$app->enqueueMessage(Text::_('JEV_NOT_A_VALID_COM'), 'error');
 
 			return false;
 		}
@@ -72,7 +75,7 @@ class AdminParamsController extends JControllerAdmin
 		$jevcomponents = $db->loadObjectList();
 		if (count($jevcomponents) > 1)
 		{
-			$duplicateExtensionWarning = JText::_('JEV_DUPLICATE_EXTENSION_WARNING');
+			$duplicateExtensionWarning = Text::_('JEV_DUPLICATE_EXTENSION_WARNING');
 			if ($duplicateExtensionWarning == 'JEV_DUPLICATE_EXTENSION_WARNING')
 			{
 				$duplicateExtensionWarning = 'We have duplicate entries in the extensions table.  These are being cleaned up.  <br/><br/><strong>Please check your configuration settings and save them</strong>';
@@ -141,7 +144,7 @@ class AdminParamsController extends JControllerAdmin
 		//if (!$table->loadByOption( $component ))
 		if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
 		{
-			$app->enqueueMessage(JText::_('JEV_NOT_A_VALID_COM'), 'warning');
+			$app->enqueueMessage(Text::_('JEV_NOT_A_VALID_COM'), 'warning');
 
 			return false;
 		}
@@ -254,7 +257,7 @@ class AdminParamsController extends JControllerAdmin
 				$table = Table::getInstance('extension');
 				if (!$table->load(array("element" => $plugin, "type" => "plugin", "folder" => $folder)))
 				{
-					Factory::getApplication()->enqueueMessage(JText::sprintf('JEV_NOT_A_VALID_PLUGIN', $plugin), 'warning');
+					Factory::getApplication()->enqueueMessage(Text::sprintf('JEV_NOT_A_VALID_PLUGIN', $plugin), 'warning');
 					continue;
 				}
 				$table->bind($pluginparams);
@@ -281,11 +284,11 @@ class AdminParamsController extends JControllerAdmin
 		switch ($this->getTask())
 		{
 			case 'apply':
-				$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=params.edit', JText::_('CONFIG_SAVED'));
+				$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=params.edit', Text::_('CONFIG_SAVED'));
 				$this->redirect();
 				break;
 			default:
-				$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=cpanel.cpanel", JText::_('CONFIG_SAVED'));
+				$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=cpanel.cpanel", Text::_('CONFIG_SAVED'));
 				$this->redirect();
 				break;
 		}
@@ -311,7 +314,7 @@ class AdminParamsController extends JControllerAdmin
 			'defaultgroup' => ($group) ? $group : (isset($this->option) ? $this->option : $app->input->get('option')),
 			'cachebase'    => ($client_id) ? JPATH_ADMINISTRATOR . '/cache' : $conf->get('cache_path', JPATH_SITE . '/cache'));
 
-		$cache = JCache::getInstance('callback', $options);
+		$cache = Cache::getInstance('callback', $options);
 		$cache->clean();
 
 		// Trigger the onContentCleanCache event.

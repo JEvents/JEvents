@@ -12,6 +12,8 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -178,7 +180,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 
 		if (!JEVHelper::isEventCreator())
 		{
-			throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+			throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 			return false;
 		}
@@ -212,7 +214,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 
 		if (!JEVHelper::canEditEvent($row))
 		{
-			throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+			throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 			return false;
 		}
@@ -276,7 +278,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 
 		if ($app->isClient('administrator'))
 		{
-			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $rpt->eventid, "" . JText::_("JEV_ICAL_RPT_DETAILS_SAVED") . "");
+			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $rpt->eventid, "" . Text::_("JEV_ICAL_RPT_DETAILS_SAVED") . "");
 			$this->redirect();
 		}
 		else
@@ -305,7 +307,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 			if ($params->get("editpopup", 0) || $popupdetail)
 			{
 				$link = Route::_('index.php?option=' . JEV_COM_COMPONENT . "&task=icalrepeat.detail&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day$popupdetail", false);
-				$msg  = JText::_("JEV_ICAL_RPT_UPDATED", true);
+				$msg  = Text::_("JEV_ICAL_RPT_UPDATED", true);
 				if ($popupdetail != "")
 				{
 					// redirect to event detail page within popup window
@@ -326,7 +328,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 					exit();
 				}
 			}
-			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=icalrepeat.detail&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day", "" . JText::_("JEV_ICAL_RPT_UPDATED") . "");
+			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=icalrepeat.detail&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day", "" . Text::_("JEV_ICAL_RPT_UPDATED") . "");
 			$this->redirect();
 		}
 
@@ -337,12 +339,12 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 	function addRepeat() {
 		if (!JEVHelper::isEventCreator())
 		{
-			throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+			throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 			return false;
 		}
 
-		$app    = JFactory::getApplication();
+		$app    = Factory::getApplication();
 		$input  = $app->input;
 		$evid   = $input->getInt('evid', 0);
 
@@ -398,11 +400,11 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
             $repeatToInsert->startrepeat    = JevDate::strftime('%Y-%m-%d %H:%M:%S', $start);
             $repeatToInsert->endrepeat      = JevDate::strftime('%Y-%m-%d %H:%M:%S', $end);
 
-            $insertResult = JFactory::getDbo()->insertObject('#__jevents_repetition', $repeatToInsert);
+            $insertResult = Factory::getDbo()->insertObject('#__jevents_repetition', $repeatToInsert);
 
             if ($app->isClient('administrator'))
             {
-                $this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $evid, "" . JText::_("JEVENTS_REPEAT_ADDED") . "", "success");
+                $this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $evid, "" . Text::_("JEVENTS_REPEAT_ADDED") . "", "success");
                 $this->redirect();
             }
         }
@@ -410,7 +412,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
         {
 	        if ($app->isClient('administrator'))
 	        {
-		        $this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $evid, "" . JText::_("JEVENT_REPEAT_RRULE_ERROR") . "", "success");
+		        $this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $evid, "" . Text::_("JEVENT_REPEAT_RRULE_ERROR") . "", "success");
 		        $this->redirect();
 	        }
         }
@@ -423,14 +425,14 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 
 		if (!JEVHelper::isEventCreator())
 		{
-			throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+			throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 			return false;
 		}
 
 		$app    = Factory::getApplication();
 		$input  = $app->input;
-        $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+        $params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
 		// clean out the cache
 		$cache = Factory::getCache('com_jevents');
@@ -452,7 +454,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 		$event = $this->queryModel->listEventsById((int) $rp_id, 1, "icaldb");
 		if (!JEVHelper::canEditEvent($event))
 		{
-			throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+			throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 			return false;
 		}
@@ -475,7 +477,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 			$data["X-EXTRAINFO"] = $input->getRaw("extra_info", "");
 			$data["DESCRIPTION"] = $input->getRaw('jevcontent', '');
 
-			$filter = JFilterInput::getInstance(array(), array(), 1, 1);
+			$filter = InputFilter::getInstance(array(), array(), 1, 1);
 			$data["X-EXTRAINFO"] = $filter->clean($data["X-EXTRAINFO"] , 'html');
 			$data["DESCRIPTION"] = $filter->clean($data["DESCRIPTION"] , 'html');
 		}
@@ -639,7 +641,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 
 			if (!$store)
 			{
-				throw new RuntimeException(JText::_('JEV_COULD_NOT_SAVE_REPEAT_SAME_START_END'), 101);
+				throw new RuntimeException(Text::_('JEV_COULD_NOT_SAVE_REPEAT_SAME_START_END'), 101);
 			}
 
 		}
@@ -648,14 +650,14 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 
 			if ($app->isClient('administrator'))
 			{
-				$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $rpt->eventid, "" . JText::_("JEV_COULD_NOT_SAVE_REPEAT_SAME_START_END") . "", "error");
+				$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $rpt->eventid, "" . Text::_("JEV_COULD_NOT_SAVE_REPEAT_SAME_START_END") . "", "error");
 				$this->redirect();
 			}
 			else
 			{
 				list($year, $month, $day) = JEVHelper::getYMD();
 				$rettask = $input->getString("rettask", "day.listevents");
-				$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day", "" . JText::_("JEV_COULD_NOT_SAVE_REPEAT_SAME_START_END") . "", "error");
+				$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day", "" . Text::_("JEV_COULD_NOT_SAVE_REPEAT_SAME_START_END") . "", "error");
 				$this->redirect();
 			}
 		}
@@ -694,7 +696,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 		$msg = "";
 		$rpt = $this->doSave($msg);
 
-		$msg = JText::_("Event_Saved", true);
+		$msg = Text::_("Event_Saved", true);
 		if (Factory::getApplication()->isClient('administrator'))
 		{
 			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=icalrepeat.edit&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid(), $msg);
@@ -818,7 +820,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 
 		// assemble menu items to the array
 		$options   = array();
-		$options[] = HTMLHelper::_('select.option', '', '- ' . JText::_('SELECT_ITEM') . ' -');
+		$options[] = HTMLHelper::_('select.option', '', '- ' . Text::_('SELECT_ITEM') . ' -');
 
 		// load the list of menu types
 		// TODO: move query to model
@@ -899,12 +901,12 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 	{
 
 		// Experimentaal code disabled for count (start the time being
-		throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+		throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 		return false;
 
 		if (!JEVHelper::isEventCreator())
 		{
-			throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+			throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 			return false;
 		}
@@ -994,14 +996,14 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 
 		if (Factory::getApplication()->isClient('administrator'))
 		{
-			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $rpt->eventid, "" . JText::_("JEV_ICAL_RPT_UPDATED") . "");
+			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $rpt->eventid, "" . Text::_("JEV_ICAL_RPT_UPDATED") . "");
 			$this->redirect();
 		}
 		else
 		{
 			list($year, $month, $day) = JEVHelper::getYMD();
 			$rettask = $input->getString("rettask", "day.listevents");
-			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day", "" . JText::_("JEV_ICAL_RPT_UPDATED") . "");
+			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day", "" . Text::_("JEV_ICAL_RPT_UPDATED") . "");
 			$this->redirect();
 		}
 
@@ -1026,7 +1028,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 			$event = $this->queryModel->listEventsById(intval($id), 1, "icaldb");
 			if (!JEVHelper::canDeleteEvent($event))
 			{
-				throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+				throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 				return false;
 			}
@@ -1037,7 +1039,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 			$repeatdata = $db->loadObject();
 			if (is_null($repeatdata))
 			{
-				throw new Exception(JText::_('NO_SUCH_EVENT'), 4777);
+				throw new Exception(Text::_('NO_SUCH_EVENT'), 4777);
 
 				return;
 			}
@@ -1167,7 +1169,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 
 		if (!JEVHelper::isEventCreator())
 		{
-			throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+			throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 			return false;
 		}
@@ -1191,7 +1193,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 			$event = $this->queryModel->listEventsById(intval($id), 1, "icaldb");
 			if (!JEVHelper::canDeleteEvent($event))
 			{
-				throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+				throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 				return false;
 			}
@@ -1244,14 +1246,14 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 
 		if ($app->isClient('administrator'))
 		{
-			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icalrepeat.list&cid[]=" . $data->eventid, JText::_("JEV_ICAL_REPEAT_DELETED"));
+			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icalrepeat.list&cid[]=" . $data->eventid, Text::_("JEV_ICAL_REPEAT_DELETED"));
 			$this->redirect();
 		}
 		else
 		{
 			$Itemid = $input->getInt("Itemid");
 			list($year, $month, $day) = JEVHelper::getYMD();
-			$this->setRedirect(Route::_('index.php?option=' . JEV_COM_COMPONENT . "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid", false), JText::_("JEV_ICAL_REPEAT_DELETED"));
+			$this->setRedirect(Route::_('index.php?option=' . JEV_COM_COMPONENT . "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid", false), Text::_("JEV_ICAL_REPEAT_DELETED"));
 			$this->redirect();
 		}
 
@@ -1269,7 +1271,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 
 		if (!JEVHelper::isEventCreator())
 		{
-			throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+			throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 			return false;
 		}
@@ -1278,14 +1280,14 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 
 		if ($app->isClient('administrator'))
 		{
-			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icalrepeat.list&cid[]=" . $this->rrule->data["eventid"], JText::_("JEV_ICAL_REPEATS_DELETED"));
+			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icalrepeat.list&cid[]=" . $this->rrule->data["eventid"], Text::_("JEV_ICAL_REPEATS_DELETED"));
 			$this->redirect();
 		}
 		else
 		{
 			$Itemid = $input->getInt("Itemid");
 			list($year, $month, $day) = JEVHelper::getYMD();
-			$this->setRedirect(Route::_('index.php?option=' . JEV_COM_COMPONENT . "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid"), JText::_("JEV_ICAL_REPEATS_DELETED"));
+			$this->setRedirect(Route::_('index.php?option=' . JEV_COM_COMPONENT . "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid"), Text::_("JEV_ICAL_REPEATS_DELETED"));
 			$this->redirect();
 		}
 

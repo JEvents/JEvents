@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controllerform');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Session\Session;
 use Joomla\String\StringHelper;
@@ -48,7 +49,7 @@ class ImportController extends Joomla\CMS\MVC\Controller\FormController
 	public function import() {
 
 		$document   = Factory::getDocument();
-		$document->setTitle(JText::_('COM_JEVENTS_IMPORT_TITLE'));
+		$document->setTitle(Text::_('COM_JEVENTS_IMPORT_TITLE'));
 
 		$this->view = $this->getView("import", "html");
 		// Set the layout

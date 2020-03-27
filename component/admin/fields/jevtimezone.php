@@ -12,6 +12,8 @@
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
@@ -20,7 +22,7 @@ jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 jimport('joomla.form.helper');
 
-class JFormFieldJevtimezone extends JFormField
+class FormFieldJevtimezone extends FormField
 {
 
 	protected $type = 'Jevtimezone';
@@ -46,7 +48,7 @@ class JFormFieldJevtimezone extends JFormField
 			if (!isset($options))
 			{
 				$options   = array();
-				$options[] = HTMLHelper::_('select.option', '', '- ' . JText::_('SELECT_TIMEZONE') . ' -');
+				$options[] = HTMLHelper::_('select.option', '', '- ' . Text::_('SELECT_TIMEZONE') . ' -');
 				foreach ($zones as $zone)
 				{
 					if (strpos($zone, "/") === false && strpos($zone, "UTC") === false)
@@ -59,7 +61,7 @@ class JFormFieldJevtimezone extends JFormField
 					}
 					$zonevalue      = $zone;
 					$translatezone  = str_replace("/", "_", $zone);
-					$translatedzone = JText::_($translatezone);
+					$translatedzone = Text::_($translatezone);
 					if ($translatezone != $translatedzone)
 					{
 						$zone = $translatedzone;

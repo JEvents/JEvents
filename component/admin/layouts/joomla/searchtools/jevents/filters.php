@@ -1,4 +1,8 @@
 <?php
+
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+
 /**
  * @package     Joomla.Site
  * @subpackage  Layout
@@ -23,9 +27,9 @@ if ($filters)
             $dataShowOn = '';
             if ($field->showon)
             {
-                JHtml::_('jquery.framework');
-                JHtml::_('script', 'jui/cms.js', array('version' => 'auto', 'relative' => true));
-                $dataShowOn = " data-showon='" . json_encode(JFormHelper::parseShowOnConditions($field->showon, $field->formControl, $field->group)) . "'";
+                HTMLHelper::_('jquery.framework');
+                HTMLHelper::_('script', 'jui/cms.js', array('version' => 'auto', 'relative' => true));
+                $dataShowOn = " data-showon='" . json_encode(FormHelper::parseShowOnConditions($field->showon, $field->formControl, $field->group)) . "'";
             }
 ?><div class="js-stools-field-filter"<?php echo $dataShowOn; ?>><?php
 	        $customFilterName = str_replace('filter_', '', $fieldName);

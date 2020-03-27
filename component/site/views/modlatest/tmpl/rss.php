@@ -12,6 +12,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Document\Feed\FeedImage;
+use Joomla\CMS\Document\Feed\FeedItem;
+use Joomla\CMS\Filter\OutputFilter;
 use Joomla\String\StringHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
@@ -24,7 +28,7 @@ $doc->setBase($this->info['base']);
 $doc->setTitle($this->info['title']);
 $doc->setDescription($this->info['description']);
 
-$docimage              = new JFeedImage();
+$docimage              = new FeedImage();
 $docimage->description = $this->info['description'];
 $docimage->title       = $this->info['title'];
 $docimage->url         = $this->info['image_url'];
@@ -41,7 +45,7 @@ foreach ($this->eventsByRelDay as $relDay => $ebrd)
 
 		// url link to article
 		$startDate = $row->publish_up();
-		//$eventDate = JevDate::mktime(JString::substr($startDate,11,2),JString::substr($startDate,14,2), JString::substr($startDate,17,2),$this->jeventCalObject->now_m,$this->jeventCalObject->now_d + $relDay,$this->jeventCalObject->now_Y);
+		//$eventDate = JevDate::mktime(StringHelper::substr($startDate,11,2),StringHelper::substr($startDate,14,2), StringHelper::substr($startDate,17,2),$this->jeventCalObject->now_m,$this->jeventCalObject->now_d + $relDay,$this->jeventCalObject->now_Y);
 		$eventDate = JevDate::strtotime($startDate);
 		$datenow   = JEVHelper::getNow();
 		if ($relDay > 0)
@@ -69,7 +73,7 @@ foreach ($this->eventsByRelDay as $relDay => $ebrd)
 		{
 			if ($this->info['text_length'])
 			{
-				$item_description = JFilterOutput::cleanText($item_description);
+				$item_description = OutputFilter::cleanText($item_description);
 				// limits description text to x words
 				$item_description_array = explode(' ', $item_description);
 				$count                  = count($item_description_array);
@@ -116,19 +120,19 @@ foreach ($this->eventsByRelDay as $relDay => $ebrd)
 		*/
 
 		// load individual item creator class
-		$item = new JFeedItem();
+		$item = new FeedItem();
 		// item info
 
 		$temptime    = new JevDate($eventDate);
 		if ($row->alldayevent())
 		{
 			$temptime    = new JevDate($eventDate);
-			$item->title = $temptime->toFormat(JText::_('JEV_RSS_DATE')) . " : " . $item_title;
+			$item->title = $temptime->toFormat(Text::_('JEV_RSS_DATE')) . " : " . $item_title;
 		}
 		else
 		{
 			$temptime    = new JevDate($eventDate);
-			$item->title = $temptime->toFormat(JText::_('JEV_RSS_DATETIME')) . " : " . $item_title;
+			$item->title = $temptime->toFormat(Text::_('JEV_RSS_DATETIME')) . " : " . $item_title;
 		}
 		$item->link        = $item_link;
 		$item->description = $item_description;

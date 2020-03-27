@@ -1,5 +1,6 @@
 <?php defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
@@ -30,7 +31,7 @@ $fullspan = 12;
                     if (count($this->languages) > 1)
                     { ?>
                                             <select name="filter_language" class="gsl-select" onchange="this.form.submit()">
-                                                <option value=""><?php echo JText::_('JOPTION_SELECT_LANGUAGE'); ?></option>
+                                                <option value=""><?php echo Text::_('JOPTION_SELECT_LANGUAGE'); ?></option>
                                             <?php echo HTMLHelper::_('select.options', HTMLHelper::_('contentlanguage.existing', true, true), 'value', 'text', $this->language); ?>
                                             </select>
                                             <?php
@@ -41,7 +42,7 @@ $fullspan = 12;
                         <?php if ($this->catids)
                     { ?>
                         <select name="filter_catid" class="gsl-select" onchange="this.form.submit()">
-                            <option value=""><?php echo JText::_('JOPTION_SELECT_CATEGORY'); ?></option>
+                            <option value=""><?php echo Text::_('JOPTION_SELECT_CATEGORY'); ?></option>
                             <?php echo $this->catids; ?>
                         </select>
                     </div>
@@ -53,7 +54,7 @@ $fullspan = 12;
                     </div>
                     <div class="js-stools-field-filter">
                         <select name="filter_published" class="gsl-select" onchange="this.form.submit()">
-                            <option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED'); ?></option>
+                            <option value=""><?php echo Text::_('JOPTION_SELECT_PUBLISHED'); ?></option>
                             <?php echo HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions', array("trash" => 0, "archived" => 0, "all" => 0)), 'value', 'text', $this->filter_published, true); ?>
                         </select>
                     </div>
@@ -70,28 +71,28 @@ $fullspan = 12;
                             <?php echo HTMLHelper::_('grid.checkall'); ?>
                         </th>
                         <th class="title">
-                            <?php echo JText::_('TITLE'); ?>
+                            <?php echo Text::_('TITLE'); ?>
                         </th>
                         <th class="title">
-                            <?php echo JText::_('NAME'); ?>
+                            <?php echo Text::_('NAME'); ?>
                         </th>
                         <?php
                         if (count($this->languages) > 1)
                         { ?>
                             <th class="center">
-                                <?php echo JText::_('JGRID_HEADING_LANGUAGE'); ?>
+                                <?php echo Text::_('JGRID_HEADING_LANGUAGE'); ?>
                             </th>
                             <?php
                         }
                         if ($this->catids)
                         { ?>
                             <th class="center">
-                                <?php echo JText::_('JCATEGORY'); ?>
+                                <?php echo Text::_('JCATEGORY'); ?>
                             </th>
                         <?php } ?>
-                        <th width="10%" nowrap="nowrap" class="center"><?php echo JText::_('JEV_PUBLISHED'); ?></th>
+                        <th width="10%" nowrap="nowrap" class="center"><?php echo Text::_('JEV_PUBLISHED'); ?></th>
                         <th width="5">
-                            <?php echo JText::_('ID'); ?>
+                            <?php echo Text::_('ID'); ?>
                         </th>
                     </tr>
                     <?php
@@ -114,9 +115,9 @@ $fullspan = 12;
                             </td>
                             <td>
                                         <span class="editlinktip hasTip"
-                                              title="<?php echo JText::_('JEV_Edit_Layout'); ?>::<?php echo $this->escape(JText::_($row->title)); ?>">
+                                              title="<?php echo Text::_('JEV_Edit_Layout'); ?>::<?php echo $this->escape(Text::_($row->title)); ?>">
                                             <a href="<?php echo $link; ?>">
-                                        <?php echo $this->escape(JText::_($row->title)); ?></a>
+                                        <?php echo $this->escape(Text::_($row->title)); ?></a>
                                         </span>
                             </td>
                             <td>
@@ -130,9 +131,9 @@ $fullspan = 12;
                                     <?php echo $this->translationLinks($row);
                                     /*
                                     if ($row->language == '*'):
-                                         echo JText::alt('JALL', 'language');
+                                         echo Text::alt('JALL', 'language');
                                     else:
-                                        echo $row->language_title ? $this->escape($row->language_title) : JText::_('JUNDEFINED');
+                                        echo $row->language_title ? $this->escape($row->language_title) : Text::_('JUNDEFINED');
                                     endif;
                                      */
                                     ?>
@@ -142,9 +143,9 @@ $fullspan = 12;
                             { ?>
                                 <td class="center">
                                     <?php if ($row->catid == '0'): ?>
-                                        <?php echo JText::alt('JALL', 'language'); ?>
+                                        <?php echo Text::alt('JALL', 'language'); ?>
                                     <?php else: ?>
-                                        <?php echo $row->category_title ? $this->escape($row->category_title) : JText::_('JUNDEFINED'); ?>
+                                        <?php echo $row->category_title ? $this->escape($row->category_title) : Text::_('JUNDEFINED'); ?>
                                     <?php endif; ?>
                                 </td>
                             <?php } ?>

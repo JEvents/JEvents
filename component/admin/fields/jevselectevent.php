@@ -13,6 +13,8 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Session\Session;
 
@@ -20,7 +22,7 @@ jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 jimport('joomla.form.helper');
 
-class JFormFieldJEVselectEvent extends JFormField
+class FormFieldJEVselectEvent extends FormField
 {
 
 	protected $type = 'JEVselectevent';
@@ -89,12 +91,12 @@ class JFormFieldJEVselectEvent extends JFormField
 		catch (RuntimeException $e)
 		{
 			throw new Exception($e->getMessage());
-			Factory::getApplication()->enqueueMessage('500 - ' . JText::_('JLIB_FORM_ERROR_FIELDS_CATEGORY_ERROR_EXTENSION_EMPTY'), 'errpr');
+			Factory::getApplication()->enqueueMessage('500 - ' . Text::_('JLIB_FORM_ERROR_FIELDS_CATEGORY_ERROR_EXTENSION_EMPTY'), 'errpr');
 		}
 
 		if (empty($title))
 		{
-			$title = JText::_('COM_JEVENTS_FIELD_SELECT_EVENT_LABEL');
+			$title = Text::_('COM_JEVENTS_FIELD_SELECT_EVENT_LABEL');
 		}
 		$title = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
 
@@ -102,10 +104,10 @@ class JFormFieldJEVselectEvent extends JFormField
 		$html[] = '<div class="fltlft input-append" >';
 		$html[] = '  <input type="text" id="selectedeventtitle" value="' . $title . '" disabled="disabled" size="50" />';
 
-		$link = "javascript:jevModalPopup('selectEvent', '" . $link . "', '" . JText::_("COM_JEVENTS_CHANGE_EVENT_BUTTON", array('jsSafe' => true)) . "'); ";
+		$link = "javascript:jevModalPopup('selectEvent', '" . $link . "', '" . Text::_("COM_JEVENTS_CHANGE_EVENT_BUTTON", array('jsSafe' => true)) . "'); ";
 
 		// The user select button.
-		$html[] = '	<a class="selectmodal btn btn-primary" title="' . JText::_('COM_JEVENTS_CHANGE_EVENT') . '"  href="' . $link . '" ><span class="icon-list icon-white"></span>' . JText::_('COM_JEVENTS_CHANGE_EVENT_BUTTON') . '</a>';
+		$html[] = '	<a class="selectmodal btn btn-primary" title="' . Text::_('COM_JEVENTS_CHANGE_EVENT') . '"  href="' . $link . '" ><span class="icon-list icon-white"></span>' . Text::_('COM_JEVENTS_CHANGE_EVENT_BUTTON') . '</a>';
 		$html[] = '</div>';
 
 		// The active event id field.

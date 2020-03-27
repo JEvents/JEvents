@@ -9,6 +9,7 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -51,8 +52,8 @@ abstract class JevHtmlFormbehavior
 		$afterTypeDelay = $options->get('afterTypeDelay', '500');
 		$minTermLength  = $options->get('minTermLength', '3');
 
-		JText::script('JGLOBAL_KEEP_TYPING');
-		JText::script('JGLOBAL_LOOKING_FOR');
+		Text::script('JGLOBAL_KEEP_TYPING');
+		Text::script('JGLOBAL_LOOKING_FOR');
 
 		// Ajax URL is mandatory
 		if (!empty($url))
@@ -133,9 +134,9 @@ abstract class JevHtmlFormbehavior
 		// Default settings
 		$options['disable_search_threshold']  = isset($options['disable_search_threshold']) ? $options['disable_search_threshold'] : 10;
 		$options['allow_single_deselect']     = isset($options['allow_single_deselect']) ? $options['allow_single_deselect'] : true;
-		$options['placeholder_text_multiple'] = isset($options['placeholder_text_multiple']) ? $options['placeholder_text_multiple'] : JText::_('JGLOBAL_SELECT_SOME_OPTIONS');
-		$options['placeholder_text_single']   = isset($options['placeholder_text_single']) ? $options['placeholder_text_single'] : JText::_('JGLOBAL_SELECT_AN_OPTION');
-		$options['no_results_text']           = isset($options['no_results_text']) ? $options['no_results_text'] : JText::_('JGLOBAL_SELECT_NO_RESULTS_MATCH');
+		$options['placeholder_text_multiple'] = isset($options['placeholder_text_multiple']) ? $options['placeholder_text_multiple'] : Text::_('JGLOBAL_SELECT_SOME_OPTIONS');
+		$options['placeholder_text_single']   = isset($options['placeholder_text_single']) ? $options['placeholder_text_single'] : Text::_('JGLOBAL_SELECT_AN_OPTION');
+		$options['no_results_text']           = isset($options['no_results_text']) ? $options['no_results_text'] : Text::_('JGLOBAL_SELECT_NO_RESULTS_MATCH');
 
 		// Options array to json options string
 		$options_str = json_encode($options, ($debug && defined('JSON_PRETTY_PRINT') ? JSON_PRETTY_PRINT : false));

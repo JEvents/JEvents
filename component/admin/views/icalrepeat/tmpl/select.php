@@ -10,6 +10,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -32,15 +33,15 @@ $function = $input->getCmd('function', 'jSelectEvent');
 	<?php if (!$input->getInt("nomenu")) { ?>
 		<table cellpadding="4" cellspacing="0" class="filters">
 			<tr>
-				<td align="right"><?php echo JText::_('JEV_TARGET_MENU'); ?> </td>
+				<td align="right"><?php echo Text::_('JEV_TARGET_MENU'); ?> </td>
 				<td><?php echo $this->menulist; ?> </td>
 			</tr>
 		</table>
 	<?php } ?>
 	<table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist   table table-striped">
 		<tr>
-			<th class="title" width="60%" nowrap="nowrap"><?php echo JText::_('JEV_ICAL_SUMMARY'); ?></th>
-			<th width="40%" nowrap="nowrap"><?php echo JText::_('COM_JEVENTS_ICALREPEAT_REPEAT_DATE_TIME'); ?></th>
+			<th class="title" width="60%" nowrap="nowrap"><?php echo Text::_('JEV_ICAL_SUMMARY'); ?></th>
+			<th width="40%" nowrap="nowrap"><?php echo Text::_('COM_JEVENTS_ICALREPEAT_REPEAT_DATE_TIME'); ?></th>
 		</tr>
 
 		<?php
@@ -58,7 +59,7 @@ $function = $input->getCmd('function', 'jSelectEvent');
 				<td width="30%">
 					<a href="#select"
 					   onclick="return window.parent.<?php echo $function; ?>('<?php echo $link; ?>','<?php echo addslashes(htmlspecialchars($repeat->title())); ?>' , (jQuery('#Itemid').length?jQuery('#Itemid').val():0) , <?php echo $repeat->ev_id(); ?>, <?php echo $repeat->rp_id(); ?>)"
-					   title="<?php echo JText::_('JEV_SELECT_Repeat'); ?>"><?php echo $row->title(); ?></a></td>
+					   title="<?php echo Text::_('JEV_SELECT_Repeat'); ?>"><?php echo $row->title(); ?></a></td>
 				<td width="40%">
 					<?php
 					$times = '<table style="border: 1px solid #666666; width:100%;">';

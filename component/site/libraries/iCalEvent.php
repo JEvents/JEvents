@@ -12,6 +12,8 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Access\Access;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\String\StringHelper;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -268,7 +270,7 @@ else $this->_detail = false;
 		$access = false;
 		if ($user->get('id') > 0)
 		{
-			//$access = JAccess::check($user->id, "core.deleteall","com_jevents");
+			//$access = Access::check($user->id, "core.deleteall","com_jevents");
 			$access = $user->authorise('core.deleteall', 'com_jevents');
 		}
 
@@ -294,7 +296,7 @@ else $this->_detail = false;
 
 		} catch (Exception $e) {
 
-			$app->enqueueMessage(JText::_("PROBLEMS_STORING_EVENT_DETAIL"), 'error');
+			$app->enqueueMessage(Text::_("PROBLEMS_STORING_EVENT_DETAIL"), 'error');
 			echo $e. "<br/>";
 			return false;
 		}
@@ -317,7 +319,7 @@ else $this->_detail = false;
 
 		} catch (Exception $e) {
 
-			$app->enqueueMessage(JText::_("PROBLEMS_STORING_EVENT"), 'error');
+			$app->enqueueMessage(Text::_("PROBLEMS_STORING_EVENT"), 'error');
 			echo $e . "<br/>";
 			return false;
 		}

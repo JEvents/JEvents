@@ -6,6 +6,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\String\StringHelper;
@@ -115,7 +116,7 @@ class GeraintModLegendView extends DefaultModLegendView
 			$availableCatsIds .= (StringHelper::strlen($availableCatsIds) > 0 ? $separator : "") . $row->id;
 		}
 
-		$allcats               = new catLegend("0", JText::_('JEV_LEGEND_ALL_CATEGORIES'), "#d3d3d3", JText::_('JEV_LEGEND_ALL_CATEGORIES_DESC'));
+		$allcats               = new catLegend("0", Text::_('JEV_LEGEND_ALL_CATEGORIES'), "#d3d3d3", Text::_('JEV_LEGEND_ALL_CATEGORIES_DESC'));
 		$allcats->activeBranch = true;
 
 		array_push($allrows, $allcats);

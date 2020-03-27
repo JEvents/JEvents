@@ -11,6 +11,7 @@
  */
 defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Response\JsonResponse;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 
@@ -124,7 +125,7 @@ class GetjsonController extends Joomla\CMS\MVC\Controller\BaseController
 		{
 			if (!$modid <= 0)
 			{
-				return new JResponseJson(array());
+				return new JsonResponse(array());
 			}
 		}
 		$params = new JevRegistry(isset($modules[0]->params) ? $modules[0]->params : null);
@@ -162,7 +163,7 @@ class GetjsonController extends Joomla\CMS\MVC\Controller\BaseController
 			}
 		}
 
-		$result = new JResponseJson($events);
+		$result = new JsonResponse($events);
 
 		echo $result;
 

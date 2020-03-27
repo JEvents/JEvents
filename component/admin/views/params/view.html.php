@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -30,16 +31,16 @@ class AdminParamsViewParams extends JEventsAbstractView
 		if ($uEditor === 'codemirror')
 		{
 			$this->editor = \Joomla\CMS\Editor\Editor::getInstance('none');
-			Factory::getApplication()->enqueueMessage(JText::_("JEV_CODEMIRROR_NOT_COMPATIBLE_EDITOR", "WARNING"));
+			Factory::getApplication()->enqueueMessage(Text::_("JEV_CODEMIRROR_NOT_COMPATIBLE_EDITOR", "WARNING"));
 		} else {
 			$this->editor = \Joomla\CMS\Editor\Editor::getInstance($uEditor);
 		}
 
 		$document = Factory::getDocument();
-		$document->setTitle(JText::_('COM_JEVENTS_CONFIGURATION'));
+		$document->setTitle(Text::_('COM_JEVENTS_CONFIGURATION'));
 
 		// Set toolbar items for the page
-		JToolbarHelper::title(JText::_('COM_JEVENTS_CONFIGURATION'), 'jevents');
+		JToolbarHelper::title(Text::_('COM_JEVENTS_CONFIGURATION'), 'jevents');
 
 		JToolbarHelper::apply('params.apply');
 		JToolbarHelper::save('params.save');
@@ -78,10 +79,10 @@ class AdminParamsViewParams extends JEventsAbstractView
 		JEVHelper::stylesheet('eventsadmin.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
 
 		$document = Factory::getDocument();
-		$document->setTitle(JText::_('DB_SETUP'));
+		$document->setTitle(Text::_('DB_SETUP'));
 
 		// Set toolbar items for the page
-		JToolbarHelper::title(JText::_('DB_SETUP'), 'jevents');
+		JToolbarHelper::title(Text::_('DB_SETUP'), 'jevents');
 		JToolbarHelper::cancel('cpanel.cpanel');
 
 	}

@@ -11,6 +11,7 @@
 
 defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
@@ -61,7 +62,7 @@ class ICalRepeatController extends AdminIcalrepeatController
 			$comuser = version_compare(JVERSION, '1.6.0', '>=') ? "com_users" : "com_user";
 			$link    = 'index.php?option=' . $comuser . '&view=login&return=' . base64_encode($link);
 			$link    = Route::_($link, false);
-			$this->setRedirect($link, JText::_('JEV_LOGIN_TO_VIEW_EVENT'));
+			$this->setRedirect($link, Text::_('JEV_LOGIN_TO_VIEW_EVENT'));
 			$this->redirect();
 
 			return;
@@ -182,13 +183,13 @@ class ICalRepeatController extends AdminIcalrepeatController
 			$user = Factory::getUser();
 			if ($user->id)
 			{
-				$this->setRedirect(Uri::root(), JText::_('JEV_NOTAUTH_CREATE_EVENT', 'error'));
+				$this->setRedirect(Uri::root(), Text::_('JEV_NOTAUTH_CREATE_EVENT', 'error'));
 				$this->redirect();
-				//throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+				//throw new Exception( Text::_('ALERTNOTAUTH'), 403);
 			}
 			else
 			{
-				$this->setRedirect(Route::_("index.php?option=com_users&view=login"), JText::_('JEV_NOTAUTH_CREATE_EVENT', 'error'));
+				$this->setRedirect(Route::_("index.php?option=com_users&view=login"), Text::_('JEV_NOTAUTH_CREATE_EVENT', 'error'));
 				$this->redirect();
 			}
 
@@ -207,7 +208,7 @@ class ICalRepeatController extends AdminIcalrepeatController
 		$is_event_editor = JEVHelper::isEventCreator();
 		if (!$is_event_editor)
 		{
-			throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+			throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 			return false;
 		}
@@ -221,7 +222,7 @@ class ICalRepeatController extends AdminIcalrepeatController
 		$is_event_editor = JEVHelper::isEventCreator();
 		if (!$is_event_editor)
 		{
-			throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+			throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 			return false;
 		}
@@ -234,7 +235,7 @@ class ICalRepeatController extends AdminIcalrepeatController
 		$is_event_editor = JEVHelper::isEventCreator();
 		if (!$is_event_editor)
 		{
-			throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+			throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 			return false;
 		}
@@ -247,7 +248,7 @@ class ICalRepeatController extends AdminIcalrepeatController
 		$is_event_editor = JEVHelper::isEventDeletor();
 		if (!$is_event_editor)
 		{
-			throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+			throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 			return false;
 		}
@@ -267,7 +268,7 @@ class ICalRepeatController extends AdminIcalrepeatController
 		$is_event_editor = JEVHelper::isEventPublisher();
 		if (!$is_event_editor)
 		{
-			throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+			throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 			return false;
 		}

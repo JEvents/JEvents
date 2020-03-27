@@ -9,13 +9,15 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Layout\LayoutInterface;
+
 /**
  * Interface to handle display layout
  *
- * @see    https://docs.joomla.org/Sharing_layouts_across_views_or_extensions_with_JLayout
+ * @see    https://docs.joomla.org/Sharing_layouts_across_views_or_extensions_with_LayoutInterface
  * @since  3.0
  */
-interface JLayout
+interface LayoutInterface
 {
 	/**
 	 * Method to escape output.

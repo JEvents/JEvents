@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
@@ -48,9 +49,9 @@ class AlternativeViewNavTableBarIconic
 							<div id="ev_icon_monthly<?php echo ($task == "month.calendar") ? "_active" : "" ?>"
 							     class="nav_bar_cal"><a
 										href="<?php echo Route::_('index.php?option=' . $option . $cat . '&task=month.calendar&' . $today_date->toDateURL() . '&Itemid=' . $Itemid); ?>"
-										title="<?php echo JText::_('JEV_VIEWBYMONTH'); ?>">
+										title="<?php echo Text::_('JEV_VIEWBYMONTH'); ?>">
 									<img src="<?php echo $transparentGif; ?>"
-									     alt="<?php echo JText::_('JEV_VIEWBYMONTH'); ?>"/></a>
+									     alt="<?php echo Text::_('JEV_VIEWBYMONTH'); ?>"/></a>
 							</div>
 						</td>
 					<?php } ?>
@@ -59,9 +60,9 @@ class AlternativeViewNavTableBarIconic
 							<div id="ev_icon_weekly<?php echo $task == "week.listevents" ? "_active" : "" ?>"
 							     class="nav_bar_cal"><a
 										href="<?php echo Route::_('index.php?option=' . $option . $cat . '&task=week.listevents&' . $today_date->toDateURL() . '&Itemid=' . $Itemid); ?>"
-										title="<?php echo JText::_('JEV_VIEWBYWEEK'); ?>">
+										title="<?php echo Text::_('JEV_VIEWBYWEEK'); ?>">
 									<img src="<?php echo $transparentGif; ?>"
-									     alt="<?php echo JText::_('JEV_VIEWBYWEEK'); ?>"/></a>
+									     alt="<?php echo Text::_('JEV_VIEWBYWEEK'); ?>"/></a>
 							</div>
 						</td>
 					<?php } ?>
@@ -70,9 +71,9 @@ class AlternativeViewNavTableBarIconic
 							<div id="ev_icon_daily<?php echo $task == "day.listevents" ? "_active" : "" ?>"
 							     class="nav_bar_cal"><a
 										href="<?php echo Route::_('index.php?option=' . $option . $cat . '&task=day.listevents&' . $today_date->toDateURL() . '&Itemid=' . $Itemid); ?>"
-										title="<?php echo JText::_('JEV_VIEWTODAY'); ?>"><img
+										title="<?php echo Text::_('JEV_VIEWTODAY'); ?>"><img
 											src="<?php echo $transparentGif; ?>"
-											alt="<?php echo JText::_('JEV_VIEWBYDAY'); ?>"/></a>
+											alt="<?php echo Text::_('JEV_VIEWBYDAY'); ?>"/></a>
 							</div>
 						</td>
 					<?php } ?>

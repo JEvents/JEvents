@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\String\StringHelper;
@@ -710,7 +711,7 @@ class jIcalEventDB extends jEventCal
 		$cfg = JEVConfig::getInstance();
 
 		// i.e. 1 = follow english word order by default
-		$grammar = intval(JText::_('JEV_REPEAT_GRAMMAR'));
+		$grammar = intval(Text::_('JEV_REPEAT_GRAMMAR'));
 
 		if (!isset($this->start_date))
 		{
@@ -738,8 +739,8 @@ class jIcalEventDB extends jEventCal
 			}
 			else
 			{
-				$sum .= JText::_('JEV_FROM') . '&nbsp;' . $this->start_date . '<br />'
-					. JText::_('JEV_TO') . '&nbsp;' . $this->stop_date . '<br/>';
+				$sum .= Text::_('JEV_FROM') . '&nbsp;' . $this->start_date . '<br />'
+					. Text::_('JEV_TO') . '&nbsp;' . $this->stop_date . '<br/>';
 			}
 		}
 		// if starttime and end time the same then show no times!
@@ -769,19 +770,19 @@ class jIcalEventDB extends jEventCal
 			if ($this->noendtime() && !($this->reccurtype() > 0))
 			{
 				$sum .= $this->start_date . '&nbsp;' . $this->start_time . '<br/>'
-					. JText::_('JEV_TO') . '&nbsp;' . $this->stop_date . '<br/>';
+					. Text::_('JEV_TO') . '&nbsp;' . $this->stop_date . '<br/>';
 			}
 			else if ($this->start_time != $this->stop_time && !($this->reccurtype() > 0))
 			{
-				$sum .= JText::_('JEV_FROM') . '&nbsp;' . $this->start_date . '&nbsp;-&nbsp; '
+				$sum .= Text::_('JEV_FROM') . '&nbsp;' . $this->start_date . '&nbsp;-&nbsp; '
 					. $this->start_time . '<br />'
-					. JText::_('JEV_TO') . '&nbsp;' . $this->stop_date . '&nbsp;-&nbsp;'
+					. Text::_('JEV_TO') . '&nbsp;' . $this->stop_date . '&nbsp;-&nbsp;'
 					. $this->stop_time_midnightFix . '<br/>';
 			}
 			else
 			{
-				$sum .= JText::_('JEV_FROM') . '&nbsp;' . $this->start_date . '<br />'
-					. JText::_('JEV_TO') . '&nbsp;' . $this->stop_date . '<br/>';
+				$sum .= Text::_('JEV_FROM') . '&nbsp;' . $this->start_date . '<br />'
+					. Text::_('JEV_TO') . '&nbsp;' . $this->stop_date . '<br/>';
 			}
 		}
 		if ($this->_freq == "none")
@@ -798,16 +799,16 @@ class jIcalEventDB extends jEventCal
 				switch ($this->_freq)
 				{
 					case 'DAILY':
-						$reccur = JText::_('JEV_ALLDAYS');
+						$reccur = Text::_('JEV_ALLDAYS');
 						break;
 					case 'WEEKLY':
-						$reccur = JText::_('JEV_EACHWEEK');
+						$reccur = Text::_('JEV_EACHWEEK');
 						break;
 					case 'MONTHLY':
-						$reccur = JText::_('JEV_EACHMONTH');
+						$reccur = Text::_('JEV_EACHMONTH');
 						break;
 					case 'YEARLY':
-						$reccur = JText::_('JEV_EACHYEAR');
+						$reccur = Text::_('JEV_EACHYEAR');
 						break;
 				}
 			}
@@ -816,16 +817,16 @@ class jIcalEventDB extends jEventCal
 				switch ($this->_freq)
 				{
 					case 'DAILY':
-						$reccur = JText::_('JEV_EVERY_N_DAYS');
+						$reccur = Text::_('JEV_EVERY_N_DAYS');
 						break;
 					case 'WEEKLY':
-						$reccur = JText::_('JEV_EVERY_N_WEEKS');
+						$reccur = Text::_('JEV_EVERY_N_WEEKS');
 						break;
 					case 'MONTHLY':
-						$reccur = JText::_('JEV_EVERY_N_MONTHS');
+						$reccur = Text::_('JEV_EVERY_N_MONTHS');
 						break;
 					case 'YEARLY':
-						$reccur = JText::_('JEV_EVERY_N_YEARS');
+						$reccur = Text::_('JEV_EVERY_N_YEARS');
 						break;
 				}
 				$reccur = sprintf($reccur, $this->_interval);
@@ -833,11 +834,11 @@ class jIcalEventDB extends jEventCal
 			if ($this->_count == 99999)
 			{
 				list ($y, $m, $d) = explode(":", JevDate::strftime("%Y:%m:%d", $this->until()));
-				$extra = JText::_('JEV_UNTIL') . "&nbsp;" . JEventsHTML::getDateFormat($y, $m, $d, 1);
+				$extra = Text::_('JEV_UNTIL') . "&nbsp;" . JEventsHTML::getDateFormat($y, $m, $d, 1);
 			}
 			else
 			{
-				$extra = sprintf(JText::_('JEV_COUNTREPEATS'), $this->_count);
+				$extra = sprintf(Text::_('JEV_COUNTREPEATS'), $this->_count);
 			}
 			$sum .= $reccur . "&nbsp;" . $extra;
 		}
@@ -971,7 +972,7 @@ class jIcalEventDB extends jEventCal
 
 		$t_datenow = JEVHelper::getNow();
 		$now = $t_datenow->toMysql();
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = "SELECT ev.*, rpt.*, rr.*, det.* "
 			. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
 			. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
@@ -1208,7 +1209,7 @@ class jIcalEventDB extends jEventCal
 							$this->dtstart($repeat->getUnixStartTime());
 							$this->dtend($repeat->getUnixEndTime());
 
-							Factory::getApplication()->enqueueMessage(JText::_('JEV_PLEASE_CHECK_START_AND_END_TIMES_FOR_THIS_EVENT'));
+							Factory::getApplication()->enqueueMessage(Text::_('JEV_PLEASE_CHECK_START_AND_END_TIMES_FOR_THIS_EVENT'));
 						}
 						else
 						{
@@ -1233,7 +1234,7 @@ class jIcalEventDB extends jEventCal
 							{
 								// In this scenario we have no idea what the time should be unfortunately
 
-								Factory::getApplication()->enqueueMessage(JText::_('JEV_PLEASE_CHECK_START_AND_END_TIMES_FOR_THIS_EVENT'));
+								Factory::getApplication()->enqueueMessage(Text::_('JEV_PLEASE_CHECK_START_AND_END_TIMES_FOR_THIS_EVENT'));
 
 								// switch timezone back
 								date_default_timezone_set($timezone);

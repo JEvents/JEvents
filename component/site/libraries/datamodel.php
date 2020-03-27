@@ -13,6 +13,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
@@ -998,7 +999,7 @@ class JEventsDataModel
 					$link    = 'index.php?option=' . $comuser . '&view=login&return=' . base64_encode($link);
 					$link    = Route::_($link);
 
-					$app->redirect($link, JText::_('JEV_LOGIN_TO_VIEWEVENT'));
+					$app->redirect($link, Text::_('JEV_LOGIN_TO_VIEWEVENT'));
 
 					return null;
 				}
@@ -1069,7 +1070,7 @@ class JEventsDataModel
 		$catname = "";
 		if (count($catids) > 1)
 		{
-			$catname = JText::_('JEV_EVENT_CHOOSE_CATEG');
+			$catname = Text::_('JEV_EVENT_CHOOSE_CATEG');
 		}
 		// should not use the category data since it coujld be a sub category
 		if (false && $num_events > 0)
@@ -1082,7 +1083,7 @@ class JEventsDataModel
 				{
 					if ($row->getCategoryName() != $catname)
 					{
-						$catname = JText::_('JEV_EVENT_CHOOSE_CATEG');
+						$catname = Text::_('JEV_EVENT_CHOOSE_CATEG');
 						break;
 					}
 				}
@@ -1095,7 +1096,7 @@ class JEventsDataModel
 		}
 		else if (count($catids) == 0)
 		{
-			$catname = JText::_('JEV_EVENT_CHOOSE_CATEG');
+			$catname = Text::_('JEV_EVENT_CHOOSE_CATEG');
 		}
 		else if ((count($catids) == 1 && $catids[0] != 0) || (count($this->catids) == 1 && $this->catids[0] != 0))
 		{
@@ -1116,7 +1117,7 @@ class JEventsDataModel
 			}
 			else
 			{
-				$catname = JText::_('JEV_EVENT_ALLCAT');
+				$catname = Text::_('JEV_EVENT_ALLCAT');
 			}
 		}
 		$data['catname'] = $catname;
@@ -1167,7 +1168,7 @@ class JEventsDataModel
 
 		if (empty($keyword) || StringHelper::strlen($keywordcheck) < 2 || $keyword == '%%' || $keywordcheck == '')
 		{
-			$keyword            = JText::_('JEV_KEYWORD_NOT_VALID');
+			$keyword            = Text::_('JEV_KEYWORD_NOT_VALID');
 			$num_events         = 0;
 			$rows               = array();
 			$data['total']      = 0;

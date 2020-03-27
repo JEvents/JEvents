@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Filesystem\Path;
 use Joomla\CMS\Factory;
 
 // Option masks
@@ -111,7 +112,7 @@ class JEventsDefaultView extends JEventsAbstractView
 
 		// load the template script
 		jimport('joomla.filesystem.path');
-		$helper = JPath::find($this->_path['helper'], $this->_createFileName('helper', array('name' => $file)));
+		$helper = Path::find($this->_path['helper'], $this->_createFileName('helper', array('name' => $file)));
 
 		if ($helper != false)
 		{

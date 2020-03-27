@@ -11,6 +11,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
@@ -27,10 +28,10 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 	{
 
 		$document = Factory::getDocument();
-		$document->setTitle(JText::_('ICAL_EVENT_REPEATS'));
+		$document->setTitle(Text::_('ICAL_EVENT_REPEATS'));
 
 		// Set toolbar items for the page
-		JToolbarHelper::title(JText::_('ICAL_EVENT_REPEATS'), 'jevents');
+		JToolbarHelper::title(Text::_('ICAL_EVENT_REPEATS'), 'jevents');
 
 		JToolbarHelper::addNew('icalrepeat.addRepeat', 'Add repeat');
 		JToolbarHelper::editList('icalrepeat.edit');
@@ -63,10 +64,10 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 		JEVHelper::script('view_detailJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 		JEVHelper::script('JevStdRequiredFieldsJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 
-		$document->setTitle(JText::_('EDIT_ICAL_REPEAT'));
+		$document->setTitle(Text::_('EDIT_ICAL_REPEAT'));
 
 		// Set toolbar items for the page
-		JToolbarHelper::title(JText::_('EDIT_ICAL_REPEAT'), 'jevents');
+		JToolbarHelper::title(Text::_('EDIT_ICAL_REPEAT'), 'jevents');
 
 		JToolbarHelper::apply('icalrepeat.apply', "JEV_SAVE");
 		JToolbarHelper::apply('icalrepeat.save', "JEV_SAVE_CLOSE");
@@ -100,7 +101,7 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 		JLoader::register('JevModal', JPATH_LIBRARIES . "/jevents/jevmodal/jevmodal.php");
 		JevModal::modal("icalrepeat_dialogJQ");
 
-		$buttontext = JText::_('JEV_SAVE');
+		$buttontext = Text::_('JEV_SAVE');
 		$buttonhtml = '<button onclick="javascript:return jQuery(\'#icalrepeat_dialogJQ\').modal(\'show\');" class="btn btn-small btn-success">
 		<span class="icon-apply" title="' . $buttontext . '"></span>' . $buttontext . '</button>';
 		$toolbar->appendButton('Custom', $buttonhtml, "apply");
@@ -114,11 +115,11 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="myModalLabel"><?php echo JText::_("JEV_SAVE"); ?></h4>
+						<h4 class="modal-title" id="myModalLabel"><?php echo Text::_("JEV_SAVE"); ?></h4>
 					</div>
 					<div class="modal-body">
 						<?php
-						$buttontext = JText::_('JEV_SAVE_THIS');
+						$buttontext = Text::_('JEV_SAVE_THIS');
 						$buttontask = "icalrepeat.save";
 						?>
 						<div class="icalrepeat-saveoptions">
@@ -132,14 +133,14 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 
 							<?php
 							/*
-							  $buttontext = JText::_( 'JEV_SAVE_FUTURE' );
+							  $buttontext = Text::_( 'JEV_SAVE_FUTURE' );
 							  $buttontask = "icalrepeat.savefuture";
 							  <div><a href="#" onclick="javascript:return submitbutton('<?php echo $buttontask;?>')" class="toolbar"><span class="icon-32-save" style='margin:0px' title="<?php echo strip_tags($buttontext);?>"></span><?php echo $buttontext;?></a></div>
 							 */
 							?>
 
 							<?php
-							$buttontext = JText::_('JEV_SAVE_ALL');
+							$buttontext = Text::_('JEV_SAVE_ALL');
 							$buttontask = "icalevent.save";
 							?>
 							<div>
@@ -154,7 +155,7 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default"
-						        data-dismiss="modal"><?php echo JText::_("JEV_CLOSE"); ?></button>
+						        data-dismiss="modal"><?php echo Text::_("JEV_CLOSE"); ?></button>
 					</div>
 
 				</div>

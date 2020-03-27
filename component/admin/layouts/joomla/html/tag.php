@@ -9,6 +9,9 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Registry\Registry;
 
 /**
@@ -28,19 +31,19 @@ $chosenAjaxSettings = new Registry(
 	array(
 		'selector'      => $selector,
 		'type'          => 'GET',
-		'url'           => JUri::root() . 'index.php?option=com_tags&task=tags.searchAjax',
+		'url'           => Uri::root() . 'index.php?option=com_tags&task=tags.searchAjax',
 		'dataType'      => 'json',
 		'jsonTermKey'   => 'like',
 		'minTermLength' => $minTermLength
 	)
 );
 
-JHtml::_('formbehavior.ajaxchosen', $chosenAjaxSettings);
+HTMLHelper::_('formbehavior.ajaxchosen', $chosenAjaxSettings);
 
 // Allow custom values?
 if ($allowCustom)
 {
-	JFactory::getDocument()->addScriptDeclaration(
+	Factory::getDocument()->addScriptDeclaration(
 		"
 		jQuery(document).ready(function ($) {
 			var customTagPrefix = '#new#';
