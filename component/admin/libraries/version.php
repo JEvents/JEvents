@@ -12,13 +12,13 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-//class JEvents_Version extends JObject {
+//class JEventsVersion extends JObject {
 class JEventsVersion
 {
 	/** @var string Product */
 	var $PRODUCT = 'JEvents';
 	/** @var string Release Level */
-	var $RELEASE 	= '3.5.0dev';
+	var $RELEASE 	= '99.99.99';
 	/** @var int Sub Release - backwards compatability only for club addons */
 	var $DEV_LEVEL = '0';
 	/** @var string Patch Level  - backwards compatability only for club addons */
@@ -41,6 +41,10 @@ class JEventsVersion
 		if ($instance == null)
 		{
 			$instance = new JEventsVersion();
+
+			include_once(JPATH_COMPONENT_ADMINISTRATOR . "/helpers/gslhelper.php");
+
+			$instance->RELEASE = GslHelper::JEvents_Version(false);
 		}
 
 		return $instance;

@@ -9,7 +9,11 @@
 
 defined('JPATH_BASE') or die;
 
-JHtml::_('formbehavior.chosen', '.js-stools-field-filter select:not(#filter_tag)', null, array('inherit_select_classes'=>true));
+$jversion = new JVersion;
+if (!$jversion->isCompatible('4.0'))
+{
+	JHtml::_('formbehavior.chosen', '.js-stools-field-filter select:not(#filter_tag)', null, array('inherit_select_classes' => true));
+}
 
 $data = $displayData;
 

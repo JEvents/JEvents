@@ -9,7 +9,11 @@
 
 defined('JPATH_BASE') or die;
 
-JHtml::_('formbehavior.chosen', '.js-stools-field-filter select:not(#filter_tag)', null, array('inherit_select_classes'=>true));
+$jversion = new JVersion;
+if (!$jversion->isCompatible('4.0'))
+{
+	JHtml::_('formbehavior.chosen', '.js-stools-field-filter select:not(#filter_tag)', null, array('inherit_select_classes' => true));
+}
 
 $data = $displayData;
 
@@ -74,6 +78,7 @@ $customOptions = array(
 
 // Merge custom options in the options array.
 $data['options'] = array_merge($customOptions, $data['options']);
+$data['hideActiveFilters'] =  $hideActiveFilters;
 
 // Add class to hide the active filters if needed.
 $filtersActiveClass = $hideActiveFilters ? '' : ' js-stools-container-filters-visible';
@@ -90,7 +95,9 @@ JHtml::_('searchtools.form', $data['options']['formSelector'], $data['options'])
 		</div>
 		<?php endif; ?>
 		<div class="ysts-filterbar gsl-width-expand ">
-			<?php echo $this->sublayout('bar', $data); ?>
+			<?php
+            echo $this->sublayout('bar', $data);
+            ?>
 		</div>
 		<div class=" gsl-visible@m " gsl-grid>
 			<?php echo $this->sublayout('list', $data); ?>

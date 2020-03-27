@@ -32,6 +32,9 @@ body.com_jevents #wrapper #sidebar-wrapper {
   position: fixed;
   height: 100%;
 }
+body.com_jevents #gslc.gsl-scope {
+  /* Search filters display toggle */
+}
 body.com_jevents #gslc.gsl-scope #left-col {
   left: 3rem;
   transition: all 0.3s ease;
@@ -44,6 +47,12 @@ body.com_jevents #gslc.gsl-scope .gsl-content,
 body.com_jevents #gslc.gsl-scope #ysts_system_messages {
   margin-left: 3rem;
   transition: all 0.3s ease;
+}
+body.com_jevents #gslc.gsl-scope .js-stools .js-stools-container-filters {
+  display: none;
+}
+body.com_jevents #gslc.gsl-scope .js-stools .js-stools-container-filters.js-stools-container-filters-visible {
+  display: flex;
 }
 body.com_jevents #gslc.gsl-scope.joomla-menu-open #left-col {
   left: 18rem;
