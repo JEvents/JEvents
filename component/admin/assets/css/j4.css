@@ -93,6 +93,9 @@ body.com_jevents #gslc.gsl-scope.gsl-hide-sidebar .gsl-content,
 body.com_jevents #gslc.gsl-scope.gsl-hide-sidebar #ysts_system_messages {
   margin-left: 0;
 }
+body.com_jevents #gslc.gsl-scope:not(.gsl-hide-sidebar) .left-nav span.nav-label {
+  display: none;
+}
 body.com_jevents #gslc.gsl-scope.no-joomla-menu #left-col {
   left: 0;
 }
