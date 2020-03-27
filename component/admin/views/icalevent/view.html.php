@@ -71,7 +71,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		}
 
 		JToolbarHelper::spacer();
-		
+
 
 		$showUnpublishedICS = false;
 
@@ -118,9 +118,9 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		}
 		$this->filters['catid'] = $clist;
 
-		$options[] = HTMLHelper::_('select.option', '1', Text::_('JEV_HIDE_PAST_EVENTS_NO'));
-		$options[] = HTMLHelper::_('select.option', '0', Text::_('JEV_HIDE_PAST_EVENTS_YES'));
-		$plist     = HTMLHelper::_('select.genericlist', $options, 'filter[showpast]', 'class="gsl-select" size="1" onchange="document.adminForm.submit();"', 'value', 'text', $showpast);
+		$options[] = HTMLHelper::_('select.option', '1', JText::_('JEV_HIDE_PAST_EVENTS_NO'));
+		$options[] = HTMLHelper::_('select.option', '0', JText::_('JEV_HIDE_PAST_EVENTS_YES'));
+		$plist     = HTMLHelper::_('select.genericlist', $options, 'filter[showpast]', 'class="gsl-select"  onchange="document.adminForm.submit();"', 'value', 'text', $showpast);
 		$this->filters['showpast'] = $plist;
 
 		$sql = "SELECT distinct u.id, u.name, u.username FROM #__jevents_vevent as jev LEFT JOIN #__users as u on u.id=jev.created_by ORDER BY u.name ";
@@ -344,6 +344,8 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 	{
 		Factory::getApplication()->input->set('hidemainmenu', true);
 
+		JToolbarHelper::title(JText::_('ICAL_EVENTS'), 'jevents');
+
 		JToolbarHelper::save('icalevent.savetranslation');
 		JToolbarHelper::cancel('icalevent.close');
 
@@ -365,9 +367,9 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 		JToolbarHelper::cancel('icalevent.list');
 
-		
 
-		HTMLHelper::_('behavior.tooltip');
+
+
 
 	}
 
@@ -453,7 +455,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			$creator = $this->row->created_by() > 0 ? $this->row->created_by() : (isset($jevuser) ? $jevuser->user_id : 0);
 			$userlist = HTMLHelper::_('select.genericlist', $userOptions, 'jev_creatorid', 'class="gsl-select" size="1" ', 'value', 'text', $creator);
 
-			$this->assignRef("users", $userlist);
+			$this->users = $userlist;
 		}
 
 	}

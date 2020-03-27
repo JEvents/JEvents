@@ -47,7 +47,7 @@ class importViewimport extends JEventsAbstractView
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$section = $params->get("section",0);
 
-		HTMLHelper::_('behavior.tooltip');
+
 
 
 
@@ -139,7 +139,7 @@ class importViewimport extends JEventsAbstractView
 		$this->users = $userlist;
 
 
-		HTMLHelper::_('behavior.tooltip');
+
 
 		$this->setLayout("default");
 

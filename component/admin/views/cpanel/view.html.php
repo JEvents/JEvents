@@ -52,7 +52,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 		JEventsHelper::addSubmenu();
 
-		HTMLHelper::_('behavior.tooltip');
+
 
 		if (GSLMSIE10)
 		{
@@ -453,7 +453,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 		//$clubcode = base64_encode($clubcode);
 		$clubcode = $clubcode . "-" . base64_encode($sitedomain);
 
-		$version = new JEventsVersion();
+		$version = JEventsVersion::getInstance();
 		$version = $version->get('RELEASE');
 		$version = str_replace(" ", "", $version);
 		//$domain = "http://ubu.j33jq.com";
@@ -559,7 +559,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 	private function cleanupUpdateUrls()
 	{
 
-		$version = new JEventsVersion();
+		$version = JEventsVersion::getInstance();
 		$version = $version->get('RELEASE');
 		$version = str_replace(" ", "", $version);
 

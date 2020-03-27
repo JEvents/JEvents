@@ -16,25 +16,25 @@ class JFormFieldJevimagename extends JFormFieldList
 	/**
 	 * The form field type.
 	 *
-	 * @var		string
-	 * @since	1.6
+	 * @var        string
+	 * @since    1.6
 	 */
 	protected $type = 'Jevimagename';
 
 	/**
 	 * Method to get the field options.
 	 *
-	 * @return	array	The field option objects.
-	 * @since	1.6
+	 * @return    array    The field option objects.
+	 * @since    1.6
 	 */
 	protected function getOptions()
 	{
-	    $plugin = PluginHelper::getPlugin('jevents', 'jevfiles');
+		$plugin = JPluginHelper::getPlugin('jevents', 'jevfiles');
 
 		$options = array();
 
-	    if (!empty($plugin))
-        {
+		if (!empty($plugin))
+		{
 
 	        $params = new Registry($plugin->params);
 	        if ($params->get('imnum', 0))
@@ -57,10 +57,20 @@ class JFormFieldJevimagename extends JFormFieldList
         {
 	        $options[] = JHTML::_('select.option', '0', Text::_('JEV_STRUCTURED_DATA_OUTPUT_REQUIRES_IMAGES_ADDON'));
 
-        }
+		}
 
 
-        return $options;
+		return $options;
 
+	}
+
+	protected
+	function getInput()
+	{
+
+		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
+		JEVHelper::ConditionalFields($this->element, $this->form->getName());
+
+		return parent::getInput();
 	}
 }

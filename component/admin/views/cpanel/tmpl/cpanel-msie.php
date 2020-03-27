@@ -116,7 +116,7 @@ $fullspan = 12;
 					Factory::getLanguage()->load("com_rsvppro", JPATH_ADMINISTRATOR);
 					$this->_quickiconButtonWHover($link, "cpanel/RSVPCool.png", "cpanel/RSVPHot.png", Text::_('COM_RSVPPRO'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 				}
-				// Custom Fields				
+				// Custom Fields
 				$db = Factory::getDbo();
 				$db->setQuery("SELECT * FROM #__extensions WHERE element = 'jevcustomfields' AND type='plugin' AND folder='jevents' ");
 				$extension = $db->loadObject();
@@ -124,7 +124,7 @@ $fullspan = 12;
 				if ($extension && $extension->enabled && JEVHelper::isAdminUser())
 				{
 					$manifestCache = json_decode($extension->manifest_cache);
-					if (version_compare($manifestCache->version, "3.5.0dev", "ge"))
+					if (version_compare($manifestCache->version, "3.5.0", "ge"))
 					{
 						$link = "index.php?option=com_jevents&task=plugin.jev_customfields.overview";
 						Factory::getLanguage()->load("plg_jevents_jevcustomfields", JPATH_ADMINISTRATOR);

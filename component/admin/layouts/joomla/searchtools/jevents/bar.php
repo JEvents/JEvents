@@ -32,7 +32,7 @@ $filters = $data['view']->filterForm->getGroup('filter');
 
 <?php if (!empty($filters['filter_search'])) : ?>
 	<?php if ($searchButton) : ?>
-		<label for="filter_search" class="gsl-hidden">
+        <label for="filter_search" class="gsl-hidden">
 			<?php if (isset($filters['filter_search']->label)) : ?>
 				<?php echo Text::_($filters['filter_search']->label); ?>
 			<?php else : ?>
