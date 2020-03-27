@@ -1681,9 +1681,9 @@ SQL;
 		}
 		$userlist = HTMLHelper::_('select.genericlist', $userOptions, 'created_by', 'class="inputbox" size="1"  onchange="document.adminForm.submit();"', 'value', 'text', $created_by);
 
-		$options[] = HTMLHelper::_('select.option', '0', Text::_('JEV_NO'));
-		$options[] = HTMLHelper::_('select.option', '1', Text::_('JEV_YES'));
-		$plist     = HTMLHelper::_('select.genericlist', $options, 'showpast', 'class="inputbox" size="1" onchange="document.adminForm.submit();"', 'value', 'text', $showpast);
+		$options[] = HTMLHelper::_('select.option', '0', JText::_('JEV_NO'));
+		$options[] = HTMLHelper::_('select.option', '1', JText::_('JEV_YES'));
+		$plist     = HTMLHelper::_('select.genericlist', $options, 'showpast', 'class="gsl-select"  onchange="document.adminForm.submit();"', 'value', 'text', $showpast);
 
 		$menulist = $this->targetMenu(0, "Itemid");
 

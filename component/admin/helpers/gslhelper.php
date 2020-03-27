@@ -1,6 +1,6 @@
 <?php
 /**
- * @version    CVS: 3.5.0dev
+ * @version    CVS: JEVENTS_VERSION
  * @package    com_yoursites
  * @author     Geraint Edwards <yoursites@gwesystems.com>
  * @copyright  2016-2019 GWE Systems Ltd
@@ -27,22 +27,22 @@ class GslHelper
 		// set container scope for code
 		$document->addScriptDeclaration("gslUIkit.container = '.gsl-scope';");
 
-		HTMLHelper::stylesheet('media/com_jevents/css/uikit.gsl.css', array('version' => '3.5.0dev', 'relative' => false));
-		HTMLHelper::stylesheet('administrator/components/com_jevents/assets/css/jevents.css', array('version' => '3.5.0dev', 'relative' => false));
+		HTMLHelper::stylesheet('media/com_jevents/css/uikit.gsl.css', array('version' => GslHelper::JEvents_Version(false), 'relative' => false));
+		HTMLHelper::stylesheet('administrator/components/com_jevents/assets/css/jevents.css', array('version' => GslHelper::JEvents_Version(false), 'relative' => false));
 		$jversion = new Version;
 		if ($jversion->isCompatible('4.0'))
 		{
-			HTMLHelper::stylesheet('administrator/components/com_jevents/assets/css/j4.css', array('version' => '3.5.0dev', 'relative' => false));
+			HTMLHelper::stylesheet('administrator/components/com_jevents/assets/css/j4.css', array('version' => GslHelper::JEvents_Version(false), 'relative' => false));
 		}
 		else
 		{
-			HTMLHelper::stylesheet('administrator/components/com_jevents/assets/css/j3.css', array('version' => '3.5.0dev1', 'relative' => false));
+			HTMLHelper::stylesheet('administrator/components/com_jevents/assets/css/j3.css', array('version' => GslHelper::JEvents_Version(false), 'relative' => false));
 		}
 
-		HTMLHelper::script('media/com_jevents/js/uikit.js', array('version' => '3.5.0dev', 'relative' => false));
-		HTMLHelper::script('media/com_jevents/js/uikit-icons.js', array('version' => '3.5.0dev', 'relative' => false));
-		HTMLHelper::script('administrator/components/com_jevents/assets/js/gslframework.js', array('version' => '3.5.0dev', 'relative' => false));
-		HTMLHelper::script('administrator/components/com_jevents/assets/js/jevents.js', array('version' => '3.5.0dev', 'relative' => false));
+		HTMLHelper::script('media/com_jevents/js/uikit.js', array('version' => GslHelper::JEvents_Version(false), 'relative' => false));
+		HTMLHelper::script('media/com_jevents/js/uikit-icons.js', array('version' => GslHelper::JEvents_Version(false), 'relative' => false));
+		HTMLHelper::script('administrator/components/com_jevents/assets/js/gslframework.js', array('version' => GslHelper::JEvents_Version(false), 'relative' => false));
+		HTMLHelper::script('administrator/components/com_jevents/assets/js/jevents.js', array('version' => GslHelper::JEvents_Version(false), 'relative' => false));
 	}
 
 	public static function renderModal()
@@ -392,4 +392,32 @@ class GslHelper
 		return;
 	}
 
+	static public function JEvents_Version($outputinput = true)
+	{
+		static $packageversionset = false;
+		static $packageversion = 'JEVENTS_VERSION';
+
+		if (!$packageversionset)
+		{
+			$packageversionset = true;
+			// When installed directly from github the manifest cache is not kept up to date also YOURSITES_VERSION needs to be replaced
+			if ($packageversion == ('JEVENTS_' . 'VERSION') && file_exists(dirname(dirname(dirname(__DIR__))) . "/package/pkg_jevents.xml"))
+			{
+				$pkgcontents = file_get_contents(dirname(dirname(dirname(__DIR__))) . "/package/pkg_jevents.xml");
+				$matches     = array();
+				preg_match('#<version>(.*)<\/version>#', $pkgcontents, $matches);
+				if (count($matches) == 2)
+				{
+					$packageversion = $matches[1];
+				}
+			}
+		}
+		if ($outputinput)
+		{
+			?>
+            <input type="hidden" id="jevents_version" value="<?php echo $packageversion; ?>"/>
+			<?php
+		}
+		return $packageversion;
+	}
 }

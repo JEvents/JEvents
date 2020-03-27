@@ -118,9 +118,9 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		}
 		$this->filters['catid'] = $clist;
 
-		$options[] = HTMLHelper::_('select.option', '1', Text::_('JEV_HIDE_PAST_EVENTS_NO'));
-		$options[] = HTMLHelper::_('select.option', '0', Text::_('JEV_HIDE_PAST_EVENTS_YES'));
-		$plist     = HTMLHelper::_('select.genericlist', $options, 'filter[showpast]', 'class="gsl-select" size="1" onchange="document.adminForm.submit();"', 'value', 'text', $showpast);
+		$options[] = HTMLHelper::_('select.option', '1', JText::_('JEV_HIDE_PAST_EVENTS_NO'));
+		$options[] = HTMLHelper::_('select.option', '0', JText::_('JEV_HIDE_PAST_EVENTS_YES'));
+		$plist     = HTMLHelper::_('select.genericlist', $options, 'filter[showpast]', 'class="gsl-select"  onchange="document.adminForm.submit();"', 'value', 'text', $showpast);
 		$this->filters['showpast'] = $plist;
 
 		$sql = "SELECT distinct u.id, u.name, u.username FROM #__jevents_vevent as jev LEFT JOIN #__users as u on u.id=jev.created_by ORDER BY u.name ";

@@ -53,6 +53,18 @@ body.@{mycomponent} {
       margin-left: 3rem;
       transition: all .3s ease;
     }
+
+    /* Search filters display toggle */
+    .js-stools {
+      .js-stools-container-filters {
+        display: none;
+      }
+
+      .js-stools-container-filters.js-stools-container-filters-visible {
+        display: flex;
+      }
+    }
+
   }
 
   #gslc.gsl-scope.joomla-menu-open {
@@ -82,6 +94,7 @@ body.@{mycomponent} {
       margin-left: 0;
     }
   }
+
 }
 
 body.com_categories {

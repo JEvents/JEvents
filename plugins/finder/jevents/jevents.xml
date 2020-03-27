@@ -3,12 +3,12 @@
     <name>PLG_FINDER_JEVENTS</name>
     <name>JEvents - Smart Search Plugin</name>
     <author>GWE Systems Ltd</author>
-    <creationDate>March 2019</creationDate>
+    <creationDate>JEVENTS_DATE</creationDate>
     <copyright>(C) 2010-2019 GWE Systems Ltd. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <authorEmail></authorEmail>
     <authorUrl>www.gwesystems.com</authorUrl>
-    <version>3.5.0dev</version>
+    <version>JEVENTS_VERSION</version>
     <description>PLG_FINDER_JEVENTS_XML_DESCRIPTION</description>
     <files>
         <file plugin="jevents">jevents.php</file>
@@ -20,7 +20,7 @@
     </languages>
     <config>
         <fields name="params">
-		
+
             <fieldset name="basic" addfieldpath="/administrator/components/com_jevents/fields">
                 <field
                     name="target_itemid"
@@ -28,28 +28,28 @@
                     default=""
                     label="PLG_FINDER_TARGET_MENU"
                     description="PLG_FINDER_TARGET_MENU_TIP" />
-                                
-                <field 
-                    name="past" 
-                    type="text" 
-                    default="-1" 
-                    label="PLG_FINDER_QUERY_PAST_DAYS_LABEL" 
-                    description="PLG_FINDER_QUERY_PAST_DAYS_DESC" 
+
+                <field
+                    name="past"
+                    type="text"
+                    default="-1"
+                    label="PLG_FINDER_QUERY_PAST_DAYS_LABEL"
+                    description="PLG_FINDER_QUERY_PAST_DAYS_DESC"
                 />
-				
-                <field 
-                    name="future" 
-                    type="text" 
-                    default="-1" 
-                    label="PLG_FINDER_QUERY_FUTURE_DAYS_LABEL" 
-                    description="PLG_FINDER_QUERY_FUTURE_DAYS_DESC" 
+
+                <field
+                    name="future"
+                    type="text"
+                    default="-1"
+                    label="PLG_FINDER_QUERY_FUTURE_DAYS_LABEL"
+                    description="PLG_FINDER_QUERY_FUTURE_DAYS_DESC"
                 />
-				
-                                
-            </fieldset>		
-                        
-                        
+
+
+            </fieldset>
+
+
         </fields>
-    </config>	
-	
+    </config>
+
 </extension>
