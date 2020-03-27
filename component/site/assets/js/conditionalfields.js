@@ -86,7 +86,22 @@ var jevConditional = {
         }
 
         // If condition is valid then show the row
-        if (conditionsarray.indexOf(condition.val()) >= 0) {
+        conditionmet = false;
+        if (conditionsarray.length == 1 && conditionsarray[0].indexOf('!') == 0)
+        {
+            notconditionsarray = [conditionsarray[0].substr(1)];
+            if (notconditionsarray.indexOf(condition.val()) < 0) {
+                if (hiddencontrol.prop("tagName") == "TR") {
+                    hiddencontrol.css("display", "table-row");
+                } else if (hiddencontrol.prop("tagName") == "SPAN") {
+                    hiddencontrol.css("display", "inline");
+                } else {
+                    hiddencontrol.css("display", "block");
+                }
+                conditionmet = true;
+            }
+        }
+        else if (conditionsarray.indexOf(condition.val()) >= 0) {
             if (hiddencontrol.prop("tagName") == "TR") {
                 hiddencontrol.css("display", "table-row");
             }
@@ -96,9 +111,11 @@ var jevConditional = {
             else {
                 hiddencontrol.css("display", "block");
             }
+            conditionmet = true;
         }
+
         // else hide the row and revert the value to its default
-        else {
+        if (!conditionmet) {
             // Is the dependent field is a select list, or radio list
             if (eventsno.find('option').length) {
                 var defaultarray = fielddefaultarray;
@@ -116,6 +133,7 @@ var jevConditional = {
             }
             hiddencontrol.css("display", "none");
         }
+
         try {
             jQuery(eventsno).trigger("liszt:updated");
         }

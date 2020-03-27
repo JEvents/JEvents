@@ -167,7 +167,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 				<a href="<?php echo $link; ?>" <?php echo $target; ?>  <?php echo $onclick; ?>
 				   title="<?php echo $alttext; ?>">
 					<?php
-					//echo HTMLHelper::_('image.administrator', $image, $path, NULL, NULL, $text ); 
+					//echo HTMLHelper::_('image.administrator', $image, $path, NULL, NULL, $text );
 					if (strpos($path, '/') === 0)
 					{
 						$path = StringHelper::substr($path, 1);
@@ -237,7 +237,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 	function tip($tip = '', $label = '')
 	{
 
-		HTMLHelper::_('behavior.tooltip');
+
 		if (!$tip)
 		{
 			$str = $label;
@@ -358,7 +358,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 				$blank[]       = "";
 				continue;
 			}
-			// Built in fields	
+			// Built in fields
 			// can implement special handlers here!
 			/*
 			  switch ($strippedmatch) {
@@ -493,7 +493,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 		  }
 		  }
 		  }
-		 * 
+		 *
 		 */
 		$searchCount = count($search);
 		for ($s = 0; $s < $searchCount; $s++)

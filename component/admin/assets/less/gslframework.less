@@ -721,7 +721,11 @@ body, body.@{mycomponent}
       }
     }
   }
-
+  #right-col.noleftbar {
+    #top-head {
+      left: 0;
+    }
+  }
   .sticky {
     position:sticky;
     z-index:99;
@@ -735,6 +739,11 @@ body, body.@{mycomponent}
       width:auto;
     }
 
+  /* Make sure lighbox is at the very top! */
+   .gsl-lightbox
+   {
+     z-index: 9999;
+   }
 }
 
 /* action toolbar styling */

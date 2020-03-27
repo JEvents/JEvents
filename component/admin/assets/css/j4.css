@@ -18,6 +18,9 @@ body.com_jevents .gsl-navbar-nav a[target="_blank"]::before {
 body.com_jevents header.header {
   display: none;
 }
+body.com_jevents button.navbar-toggler.toggler-toolbar {
+  display: none;
+}
 body.com_jevents .container-main::after {
   /* For when scrolling right a long way! */
   background-color: var(--globalbackground);
@@ -31,21 +34,21 @@ body.com_jevents #wrapper #sidebar-wrapper {
 }
 body.com_jevents #gslc.gsl-scope #left-col {
   left: 3rem;
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
-body.com_jevents #gslc.gsl-scope #right-col #top-head {
+body.com_jevents #gslc.gsl-scope #right-col:not(.noleftbar) #top-head {
   left: calc(50px + 3rem);
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
 body.com_jevents #gslc.gsl-scope .gsl-content,
 body.com_jevents #gslc.gsl-scope #ysts_system_messages {
   margin-left: 3rem;
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
 body.com_jevents #gslc.gsl-scope.joomla-menu-open #left-col {
   left: 18rem;
 }
-body.com_jevents #gslc.gsl-scope.joomla-menu-open #right-col #top-head {
+body.com_jevents #gslc.gsl-scope.joomla-menu-open #right-col:not(.noleftbar) #top-head {
   left: calc(50px + 18rem);
 }
 body.com_jevents #gslc.gsl-scope.joomla-menu-open .gsl-content {
@@ -54,7 +57,7 @@ body.com_jevents #gslc.gsl-scope.joomla-menu-open .gsl-content {
 body.com_jevents #gslc.gsl-scope.no-joomla-menu #left-col {
   left: 0;
 }
-body.com_jevents #gslc.gsl-scope.no-joomla-menu #right-col #top-head {
+body.com_jevents #gslc.gsl-scope.no-joomla-menu #right-col:not(.noleftbar) #top-head {
   left: 50px;
 }
 body.com_jevents #gslc.gsl-scope.no-joomla-menu .gsl-content {
@@ -90,15 +93,15 @@ body.com_categories #wrapper #sidebar-wrapper {
 }
 body.com_categories #gslc.gsl-scope #left-col {
   /* left: 3rem; */
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
 body.com_categories #gslc.gsl-scope #right-col #top-head {
   /* left: ~"calc(50px + 3rem)";*/
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
 body.com_categories #gslc.gsl-scope .gsl-content {
   /*margin-left: 3rem;*/
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
 body.com_categories #gslc.gsl-scope.joomla-menu-open #left-col {
   left: 18rem;
