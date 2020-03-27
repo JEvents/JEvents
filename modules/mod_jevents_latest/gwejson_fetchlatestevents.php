@@ -7,7 +7,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
 
 /**
- * @copyright	Copyright (C) 2015-2019 GWE Systems Ltd. All rights reserved.
+ * @copyright	Copyright (C) 2015-JEVENTS_COPYRIGHT GWESystems Ltd. All rights reserved.
  * @license		By negotiation with author via http://www.gwesystems.com
  */
 

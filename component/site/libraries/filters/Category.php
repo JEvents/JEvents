@@ -4,7 +4,7 @@
  *
  * @version     $Id: Category.php 3542 2012-04-20 08:17:05Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2019 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-JEVENTS_COPYRIGHT GWESystems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -106,24 +106,24 @@ class jevCategoryFilter extends jevFilter
 
 		/*
 		$sectionname = JEV_COM_COMPONENT;
-		
+
 		$db = Factory::getDbo();
 		$q_published = Factory::getApplication()->isClient('administrator') ? "\n WHERE c.published >= 0" : "\n WHERE c.published = 1";
-		$where = ' AND (c.id =' . $this->filter_value .' OR p.id =' . $this->filter_value .' OR gp.id =' . $this->filter_value .' OR ggp.id =' . $this->filter_value .')';		
+		$where = ' AND (c.id =' . $this->filter_value .' OR p.id =' . $this->filter_value .' OR gp.id =' . $this->filter_value .' OR ggp.id =' . $this->filter_value .')';
 		$query = "SELECT c.id"
 			. "\n FROM #__categories AS c"
-			. ' LEFT JOIN #__categories AS p ON p.id=c.parent_id' 
-			. ' LEFT JOIN #__categories AS gp ON gp.id=p.parent_id ' 
-			. ' LEFT JOIN #__categories AS ggp ON ggp.id=gp.parent_id ' 
+			. ' LEFT JOIN #__categories AS p ON p.id=c.parent_id'
+			. ' LEFT JOIN #__categories AS gp ON gp.id=p.parent_id '
+			. ' LEFT JOIN #__categories AS ggp ON ggp.id=gp.parent_id '
 			. $q_published
 			. "\n AND c.section = '".$sectionname."'"
 			. "\n " . $where;
 			;
-			
+
 			$db->setQuery($query);
 			$catlist = $db->loadColumn();
 			array_unshift($catlist,-1);
-		
+
 		$filter = " ev.catid IN (".implode(",",$catlist).")";
 		*/
 		$filter = " ev.catid IN (" . $this->accessibleCategories . ")";
@@ -151,7 +151,7 @@ class jevCategoryFilter extends jevFilter
 			$filter .= "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$filter .=  "\n LEFT JOIN #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 		}
-		return $filter;	
+		return $filter;
 	}
 	*/
 

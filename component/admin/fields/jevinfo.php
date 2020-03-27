@@ -5,7 +5,7 @@
  *
  * @version     $Id: jevinfo.php 1331 2010-10-19 12:35:49Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2019 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-JEVENTS_COPYRIGHT GWESystems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -20,9 +20,6 @@ use Joomla\CMS\Form\FormHelper;
 use Joomla\String\StringHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 
-jimport('joomla.html.html');
-jimport('joomla.form.formfield');
-jimport('joomla.form.helper');
 FormHelper::loadFieldClass('spacer');
 
 // Must load admin language files

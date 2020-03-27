@@ -3,7 +3,7 @@
 	<name>plg_installer_jeventsinstaller</name>
 	<author>GWE Systems Ltd</author>
 	<creationDate>JEVENTS_DATE</creationDate>
-	<copyright>(C) 2016 GWE Systems Ltd. All rights reserved.</copyright>
+	<copyright>(C) 2016-JEVENTS_COPYRIGHT GWESystems Ltd. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>via website</authorEmail>
 	<authorUrl>www.gwesystems.com</authorUrl>

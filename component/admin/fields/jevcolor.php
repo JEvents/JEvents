@@ -8,11 +8,14 @@
 defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormHelper;
 
-include_once(JPATH_SITE . "/libraries/joomla/form/fields/color.php");
+FormHelper::loadFieldClass('color');
+
+//include_once(JPATH_SITE . "/libraries/joomla/form/fields/color.php");
 // J4 => include_once(JPATH_SITE . "/libraries/src/Form/Field/ColorField.php");
 
-class JFormFieldJevcolor extends JFormFieldColor
+class FormFieldJevcolor extends FormFieldColor
 {
 	protected function getLabel()
 	{
@@ -64,3 +67,5 @@ class JFormFieldJevcolor extends JFormFieldColor
 	}
 
 }
+
+class_alias("FormFieldJevcolor", "JFormFieldJevcolor");

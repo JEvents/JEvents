@@ -5,7 +5,7 @@
 	<description>Bootstrap Modal Library for JEvents</description>
 	<author>GWE Systems Ltd</author>
 	<creationDate>JEVENTS_DATE</creationDate>
-	<copyright>(C) 2015-2019 GWE Systems Ltd. All rights reserved.</copyright>
+	<copyright>(C) 2015-JEVENTS_COPYRIGHT GWESystems Ltd. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>via website</authorEmail>
 	<packager>JEvents</packager>

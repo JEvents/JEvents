@@ -3,7 +3,7 @@
 	<name>MOD_JEV_CUSTOM_MODULE_TITLE</name>
 	<creationDate>JEVENTS_DATE</creationDate>
 	<author>GWE Systems Ltd</author>
-	<copyright>(C) 2013-2019 GWE Systems Ltd</copyright>
+	<copyright>(C) 2013-JEVENTS_COPYRIGHT GWESystems Ltd</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail></authorEmail>
 	<authorUrl>http://www.jevents.net</authorUrl>

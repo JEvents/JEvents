@@ -5,7 +5,7 @@
  *
  * @version     $Id: jevboolean.php 1331 2010-10-19 12:35:49Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2019 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-JEVENTS_COPYRIGHT GWESystems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -19,9 +19,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Component\ComponentHelper;
 
-jimport('joomla.html.html');
-jimport('joomla.form.formfield');
-jimport('joomla.form.helper');
 FormHelper::loadFieldClass('radio');
 
 /**
@@ -31,7 +28,7 @@ FormHelper::loadFieldClass('radio');
  * @subpackage     com_banners
  * @since          1.6
  */
-class FormFieldJEVBoolean extends FormFieldRadio
+class FormFieldJevBoolean extends JFormFieldRadio
 {
 
 	/**
@@ -122,3 +119,5 @@ class FormFieldJEVBoolean extends FormFieldRadio
 	}
 	 */
 }
+
+class_alias("FormFieldJEVBoolean", "JFormFieldJEVBoolean");

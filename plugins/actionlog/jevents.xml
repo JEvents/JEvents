@@ -3,7 +3,7 @@
 	<name>JEvents - Action Log</name>
 	<author>GWE Systems Ltd</author>
 	<creationDate>JEVENTS_DATE</creationDate>
-	<copyright>(C) 2010-2019 GWE Systems Ltd. All rights reserved.</copyright>
+	<copyright>(C) 2010-JEVENTS_COPYRIGHT GWESystems Ltd. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>tony@jevents.net</authorEmail>
 	<authorUrl>www.gwesystems.com</authorUrl>

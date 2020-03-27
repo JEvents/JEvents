@@ -1,6 +1,6 @@
 <?php
 /**
- * copyright (C) 2008-2019 GWE Systems Ltd - All rights reserved
+ * copyright (C) 2008-JEVENTS_COPYRIGHT GWESystems Ltd - All rights reserved
  */
 
 // Check to ensure this file is included in Joomla!
