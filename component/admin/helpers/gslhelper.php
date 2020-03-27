@@ -11,6 +11,8 @@ defined('JPATH_BASE') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Language\Text;
 
 class GslHelper
 {
@@ -375,6 +377,17 @@ class GslHelper
 			$iconLink->target         = "_blank";
 			$iconLinks[]              = $iconLink;
 		}
+
+		$iconLink                 = new stdClass();
+		$iconLink->class          = "";
+		$iconLink->active         = false;
+		$iconLink->link           = Route::_("index.php");
+		$iconLink->icon           = "joomla";
+		$iconLink->label          = Text::_('COM_JEVENTS_RETURN_TO_JOOMLA');
+		$iconLink->tooltip        = Text::_("COM_JEVENTS_RETURN_TO_JOOMLA_TOOLTIP");
+		$iconLink->tooltip_detail = "";
+		$iconLinks[]              = $iconLink;
+
 
 		return $iconLinks;
 
