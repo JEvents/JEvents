@@ -53,7 +53,7 @@ $filters = $data['view']->filterForm->getGroup('filter');
             <span gsl-icon="icon: search" aria-hidden="true"></span>
         </button>
 		<?php if ($filterButton) : ?>
-            <button type="button" class=" gsl-button ys-tooltip  js-stools-btn-filter"
+            <button type="button" class=" gsl-button <?php echo $data['hideActiveFilters'] ? "gsl-button-default" : "gsl-button-primary";?> ys-tooltip  js-stools-btn-filter "
                     title="<?php echo JHtml::_('tooltipText', 'JSEARCH_FILTER'); ?>">
 				<?php echo JText::_('JSEARCH_FILTER');?> <span gsl-icon="icon: triangle-down"></span>
             </button>

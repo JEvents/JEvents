@@ -38,6 +38,23 @@
         <phingcall target="build-jevents" />
     </target>
 
+    <!-- ============================================  -->
+    <!-- Target: sedreplace                            -->
+    <!-- ============================================  -->
+    <target name="sedreplace" description="Replace version and date values in files !! ">
+        <xmlproperty file="../package/pkg_jevents.xml" />
+        <exec command="find ${builddir}/${sedfolder}/ -type f \( -iname '*.php' -o -iname '*.js' -o -iname '*.xml'  -o -iname '*.css' \) -exec sed -i 's/JEVENTS_VERSION/${extension.version}/' '{}' +;" />
+        <exec command="find ${builddir}/${sedfolder}/ -type f \( -iname '*.php' -o -iname '*.js' -o -iname '*.xml'  -o -iname '*.css' \) -exec sed -i 's/JEVENTS_DATE/${extension.creationDate}/' '{}' +;" />
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: compileless                           -->
+    <!-- ============================================  -->
+    <target name="compileless" description="Compile Less files !! ">
+        <exec passthru="true" command="lessc --verbose ${rootdir}/component/admin/assets/less/j3.less      ${rootdir}/component/admin/assets/css/j3.css" />
+        <exec passthru="true" command="lessc --verbose ${rootdir}/component/admin/assets/less/j4.less      ${rootdir}/component/admin/assets/css/j4.css" />
+        <exec passthru="true" command="lessc --verbose ${rootdir}/component/admin/assets/less/rsvppro.less ${rootdir}/component/admin/assets/css/rsvppro.css" />
+    </target>
 
     <!-- ==================================================  -->
     <!-- Target: Build UIkit    -->
