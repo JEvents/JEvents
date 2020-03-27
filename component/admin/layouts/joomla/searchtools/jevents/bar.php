@@ -9,6 +9,8 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Registry\Registry;
 
 $data = $displayData;
@@ -32,9 +34,9 @@ $filters = $data['view']->filterForm->getGroup('filter');
 	<?php if ($searchButton) : ?>
         <label for="filter_search" class="gsl-hidden">
 			<?php if (isset($filters['filter_search']->label)) : ?>
-				<?php echo JText::_($filters['filter_search']->label); ?>
+				<?php echo Text::_($filters['filter_search']->label); ?>
 			<?php else : ?>
-				<?php echo JText::_('JSEARCH_FILTER'); ?>
+				<?php echo Text::_('JSEARCH_FILTER'); ?>
 			<?php endif; ?>
         </label>
 		<?php

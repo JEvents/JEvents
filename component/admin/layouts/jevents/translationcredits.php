@@ -10,14 +10,15 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
-if (JText::_("JEV_TRANSLATION_CREDITS") != "xJEV_TRANSLATION_CREDITS" && Factory::getLanguage()->getTag() != "xen-GB")
+if (Text::_("JEV_TRANSLATION_CREDITS") != "xJEV_TRANSLATION_CREDITS" && Factory::getLanguage()->getTag() != "xen-GB")
 {
 	?>
     <div class="gsl-width-expand gsl-text-center">
-        <strong><?php echo JText::_("JEV_TRANSLATION_CREDITS"); ?>:</strong>
-        <i><?php echo JText::_("JEV_TRANSLATION_LANGUAGE"); ?></i> - <?php echo JText::_("JEV_TRANSLATION_AUTHOR"); ?>
+        <strong><?php echo Text::_("JEV_TRANSLATION_CREDITS"); ?>:</strong>
+        <i><?php echo Text::_("JEV_TRANSLATION_LANGUAGE"); ?></i> - <?php echo Text::_("JEV_TRANSLATION_AUTHOR"); ?>
     </div>
 	<?php
 }

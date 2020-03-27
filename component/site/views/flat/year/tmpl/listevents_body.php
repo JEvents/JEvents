@@ -1,6 +1,9 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
+
 $cfg = JEVConfig::getInstance();
 
 // Note that using a $limit value of -1 the limit is ignored in the query
@@ -17,7 +20,7 @@ $precedingYear = $this->getPrecedingYear($this->year, $this->month, $this->day);
 			<div class="previousmonth">
 				<?php if ($precedingYear)
 				{
-					echo "<a href='" . $precedingYear . "' title='" . JText::_("PRECEEDING_Year") . "' >" . JText::_("PRECEEDING_Year") . "</a>";
+					echo "<a href='" . $precedingYear . "' title='" . Text::_("PRECEEDING_Year") . "' >" . Text::_("PRECEEDING_Year") . "</a>";
 				}
 				?>
 			</div>
@@ -27,7 +30,7 @@ $precedingYear = $this->getPrecedingYear($this->year, $this->month, $this->day);
 			<div class="nextmonth">
 				<?php if ($followingYear)
 				{
-					echo "<a href='" . $followingYear . "' title='" . JText::_("FOLLOWING_Year") . "' >" . JText::_("FOLLOWING_Year") . "</a>";
+					echo "<a href='" . $followingYear . "' title='" . Text::_("FOLLOWING_Year") . "' >" . Text::_("FOLLOWING_Year") . "</a>";
 				}
 				?>
 			</div>
@@ -72,7 +75,7 @@ if ($num_events > 0)
 if (!$hasevents)
 {
 	echo '<div class="list_no_e">' . "\n";
-	echo JText::_('JEV_NO_EVENTS_FOUND');
+	echo Text::_('JEV_NO_EVENTS_FOUND');
 	echo "</div>\n";
 }
 ?>

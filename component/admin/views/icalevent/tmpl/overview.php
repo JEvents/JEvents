@@ -10,6 +10,8 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\String\StringHelper;
@@ -64,7 +66,7 @@ $data['filters'] = $this->filters;
 		<?php
             // Search tools bar
             // I need to create and initialise the filter form for this to work!
-            echo JLayoutHelper::render('joomla.searchtools.jevents', array('view' => $this));
+            echo LayoutHelper::render('joomla.searchtools.jevents', array('view' => $this));
 		?>
 
 		<!-- End Filters -->
@@ -80,12 +82,12 @@ $data['filters'] = $this->filters;
                         <th class="title"  nowrap="nowrap">
                             <?php echo HTMLHelper::_('grid.sort', 'JEV_ICAL_SUMMARY', 'title', $orderdir, $order, "icalevent.list"); ?>
                         </th>
-                        <th  nowrap="nowrap" class="center"><?php echo JText::_('ICAL_EVENT_REPEATS'); ?></th>
-                        <th  nowrap="nowrap" class="center"><?php echo JText::_('JEV_EVENT_CREATOR'); ?></th>
+                        <th  nowrap="nowrap" class="center"><?php echo Text::_('ICAL_EVENT_REPEATS'); ?></th>
+                        <th  nowrap="nowrap" class="center"><?php echo Text::_('JEV_EVENT_CREATOR'); ?></th>
                         <?php if (count($this->languages) > 1) { ?>
-                            <th  nowrap="nowrap" class="center"><?php echo JText::_('JEV_EVENT_TRANSLATION'); ?></th>
+                            <th  nowrap="nowrap" class="center"><?php echo Text::_('JEV_EVENT_TRANSLATION'); ?></th>
                         <?php } ?>
-                        <th  nowrap="nowrap" class="center"><?php echo JText::_('JSTATUS'); ?></th>
+                        <th  nowrap="nowrap" class="center"><?php echo Text::_('JSTATUS'); ?></th>
                         <th  nowrap="nowrap">
                             <?php echo HTMLHelper::_('grid.sort', 'JEV_TIME_SHEET', 'starttime', $orderdir, $order, "icalevent.list"); ?>
                         </th>
@@ -95,7 +97,7 @@ $data['filters'] = $this->filters;
                         <th  nowrap="nowrap">
                             <?php echo HTMLHelper::_('grid.sort', 'JEV_MODIFIED', 'modified', $orderdir, $order, "icalevent.list"); ?>
                         </th>
-                        <th  nowrap="nowrap"><?php echo JText::_('JEV_ACCESS'); ?></th>
+                        <th  nowrap="nowrap"><?php echo Text::_('JEV_ACCESS'); ?></th>
                     </tr>
 
                     <?php
@@ -124,7 +126,7 @@ $data['filters'] = $this->filters;
                                 </span>
                                 <a href="index.php?option=com_jevents&task=icalevent.edit&cid=<?php echo $row->ev_id(); ?>"
                                    onclick="return listItemTask('cb<?php echo $i; ?>','icalevent.edit')"
-                                   title="<?php echo JText::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->title(); ?></a>
+                                   title="<?php echo Text::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->title(); ?></a>
                             </td>
                             <td class="center">
                                 <?php
@@ -168,17 +170,17 @@ $data['filters'] = $this->filters;
                                 <?php
                                 if ($this->_largeDataSet)
                                 {
-                                    echo JText::_('JEV_FROM') . ' : ' . $row->publish_up();
+                                    echo Text::_('JEV_FROM') . ' : ' . $row->publish_up();
                                 }
                                 else
                                 {
                                     $firstRepeat = $row->getFirstRepeat();
 
                                     $times = '<table style="border: 1px solid #666666; width:100%;">';
-                                    $times .= '<tr><td>' . JText::_('JEV_FROM') . ' : ' . ($row->alldayevent() ? StringHelper::substr($row->publish_up(), 0, 10) : StringHelper::substr($row->publish_up(),0,16)) . '</td></tr>';
-                                    $times .= '<tr><td>' . JText::_('JEV_TO') . ' : ' . (($row->noendtime() || $row->alldayevent()) ? StringHelper::substr($row->publish_down(), 0, 10) : StringHelper::substr($row->publish_down(),0,16)) . '</td></tr>';
+                                    $times .= '<tr><td>' . Text::_('JEV_FROM') . ' : ' . ($row->alldayevent() ? StringHelper::substr($row->publish_up(), 0, 10) : StringHelper::substr($row->publish_up(),0,16)) . '</td></tr>';
+                                    $times .= '<tr><td>' . Text::_('JEV_TO') . ' : ' . (($row->noendtime() || $row->alldayevent()) ? StringHelper::substr($row->publish_down(), 0, 10) : StringHelper::substr($row->publish_down(),0,16)) . '</td></tr>';
                                     if ($row->hasrepetition() && $firstRepeat->publish_up() !== $row->publish_up()) {
-                                        $times .= '<tr><td>' . JText::_('JEV_NEXT_REPEAT') . ' : ' . ($row->alldayevent() ? JString::substr($row->publish_up(), 0, 10) : JString::substr($row->publish_up(),0,16)) . '</td></tr>';
+                                        $times .= '<tr><td>' . Text::_('JEV_NEXT_REPEAT') . ' : ' . ($row->alldayevent() ? StringHelper::substr($row->publish_up(), 0, 10) : StringHelper::substr($row->publish_up(),0,16)) . '</td></tr>';
                                     }
                                     $times .="</table>";
                                     echo $times;
@@ -194,7 +196,7 @@ $data['filters'] = $this->filters;
                     }
 
                     if (count($this->rows) === 0) {
-                        echo '<tr class="row0"><td colspan="9">' . JText::_("JEV_NO_EVENTS_FOUND") . '</td></tr>';
+                        echo '<tr class="row0"><td colspan="9">' . Text::_("JEV_NO_EVENTS_FOUND") . '</td></tr>';
                     } ?>
                 </table>
                 <?php echo $this->pagination->getListFooter(); ?>

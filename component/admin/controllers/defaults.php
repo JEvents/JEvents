@@ -11,6 +11,7 @@
 
 defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 
@@ -128,14 +129,14 @@ class AdminDefaultsController extends Joomla\CMS\MVC\Controller\FormController
 		 * Edit Page config must wait for plugins to be updated!
 				if (!isset($defaults['icalevent.edit_page'])){
 					$db->setQuery("INSERT INTO  #__jev_defaults set name='icalevent.edit_page',
-								title=".$db->Quote(JText::_("JEV_EVENT_EDIT_PAGE")).",
+								title=".$db->Quote(Text::_("JEV_EVENT_EDIT_PAGE")).",
 								subject='',
 								value='',
 								state=0");
 					$db->execute();
 				}
 				else {
-					$db->setQuery("UPDATE #__jev_defaults set title=".$db->Quote(JText::_("JEV_EVENT_EDIT_PAGE"))." WHERE name='icalevent.edit_page'");
+					$db->setQuery("UPDATE #__jev_defaults set title=".$db->Quote(Text::_("JEV_EVENT_EDIT_PAGE"))." WHERE name='icalevent.edit_page'");
 					$db->execute();
 				}
 		*/
@@ -581,7 +582,7 @@ function edit($key = null, $urlVar = null)
 
 		if (str_replace(" ", "", $defaultvalue) == str_replace(" ", "", $value->value) || $value->value == "")
 		{
-			Factory::getApplication()->enqueueMessage(JText::_("JEV_LAYOUT_IS_DEFAULT_NOT_PUBLISHED", "WARNING"));
+			Factory::getApplication()->enqueueMessage(Text::_("JEV_LAYOUT_IS_DEFAULT_NOT_PUBLISHED", "WARNING"));
 			$this->setRedirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.overview", false));
 			$this->redirect();
 
@@ -616,12 +617,12 @@ function edit($key = null, $urlVar = null)
 				{
 					if ($input->getCmd("task") == "defaults.apply")
 					{
-						$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.edit&id=$id", JText::_("JEV_TEMPLATE_SAVED"));
+						$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.edit&id=$id", Text::_("JEV_TEMPLATE_SAVED"));
 						$this->redirect();
 
 						return;
 					}
-					$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.overview", JText::_("JEV_TEMPLATE_SAVED"));
+					$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.overview", Text::_("JEV_TEMPLATE_SAVED"));
 					$this->redirect();
 
 					return;

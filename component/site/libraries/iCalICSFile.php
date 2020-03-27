@@ -12,6 +12,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\String\StringHelper;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -337,7 +338,7 @@ RAWTEXT;
 								if (!$cat->store())
 								{
 									//var_dump($cat->getErrors());
-									die(JText::plural('COM_JEVENTS_MANAGE_CALENDARS_ICAL_IMPORT_FAILED_TO_CREATE_CAT', $ct));
+									die(Text::plural('COM_JEVENTS_MANAGE_CALENDARS_ICAL_IMPORT_FAILED_TO_CREATE_CAT', $ct));
 								}
 							}
 						}
@@ -581,7 +582,7 @@ RAWTEXT;
 				$ex_count = count($existingevents);
 				if ($guest !== 1)
 				{
-					Factory::getApplication()->enqueueMessage(JText::plural('COM_JEVENTS_MANAGE_CALENDARS_ICAL_IMPORT_DELETED_EVENTS', $ex_count));
+					Factory::getApplication()->enqueueMessage(Text::plural('COM_JEVENTS_MANAGE_CALENDARS_ICAL_IMPORT_DELETED_EVENTS', $ex_count));
 				}
 			}
 		}
@@ -589,7 +590,7 @@ RAWTEXT;
 		unset($this->_icalInfo->vevents);
 		if ($guest !== 1 && $this->icaltype != 2)
 		{
-			Factory::getApplication()->enqueueMessage(JText::plural('COM_JEVENTS_MANAGE_CALENDARS_ICAL_IMPORT_N_EVENTS_PROCESSED', $count));
+			Factory::getApplication()->enqueueMessage(Text::plural('COM_JEVENTS_MANAGE_CALENDARS_ICAL_IMPORT_N_EVENTS_PROCESSED', $count));
 		}
 	}
 

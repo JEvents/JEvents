@@ -2,13 +2,14 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
-class JFormFieldJeveventpriorities extends JFormField
+class FormFieldJeveventpriorities extends FormField
 {
 	/**
 	 * The form field type.

@@ -11,6 +11,9 @@
 
 defined('JPATH_BASE') or die('No Direct Access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Version;
+use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -20,15 +23,15 @@ $input = Factory::getApplication()->input;
 
 if (version_compare(phpversion(), '5.0.0', '<') === true)
 {
-	echo '<div style="font:12px/1.35em arial, helvetica, sans-serif;"><div style="margin:0 0 25px 0; border-bottom:1px solid #ccc;"><h3 style="margin:0; font-size:1.7em; font-weight:normal; text-transform:none; text-align:left; color:#2f2f2f;">' . JText::_("JEV_INVALID_PHP1") . '</h3></div>' . JText::_("JEV_INVALID_PHP2") . '</div>';
+	echo '<div style="font:12px/1.35em arial, helvetica, sans-serif;"><div style="margin:0 0 25px 0; border-bottom:1px solid #ccc;"><h3 style="margin:0; font-size:1.7em; font-weight:normal; text-transform:none; text-align:left; color:#2f2f2f;">' . Text::_("JEV_INVALID_PHP1") . '</h3></div>' . Text::_("JEV_INVALID_PHP2") . '</div>';
 
 	return;
 }
 // remove metadata.xml if its there.
 jimport('joomla.filesystem.file');
-if (JFile::exists(JPATH_COMPONENT_SITE . '/' . "metadata.xml"))
+if (File::exists(JPATH_COMPONENT_SITE . '/' . "metadata.xml"))
 {
-	JFile::delete(JPATH_COMPONENT_SITE . '/' . "metadata.xml");
+	File::delete(JPATH_COMPONENT_SITE . '/' . "metadata.xml");
 }
 
 //error_reporting(E_ALL);
@@ -36,7 +39,7 @@ if (JFile::exists(JPATH_COMPONENT_SITE . '/' . "metadata.xml"))
 jimport('joomla.filesystem.path');
 
 // Get Joomla version.
-$version = new JVersion();
+$version = new Version();
 $jver    = explode('.', $version->getShortVersion());
 
 //version_compare(JVERSION,'1.5.0',">=")

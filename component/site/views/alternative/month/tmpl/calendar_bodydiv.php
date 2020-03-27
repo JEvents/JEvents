@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
 $cfg = JEVConfig::getInstance();
@@ -89,7 +90,7 @@ $precedingMonth = $this->datamodel->getPrecedingMonth($this->data);
 							<span>
 								<?php $this->_datecellAddEvent($this->year, $this->month, $currentDay["d"]); ?>
 								<a class="cal_daylink" href="<?php echo $currentDay["link"]; ?>"
-								   title="<?php echo JText::_('JEV_CLICK_TOSWITCH_DAY'); ?>"><?php echo $currentDay['d']; ?></a>
+								   title="<?php echo Text::_('JEV_CLICK_TOSWITCH_DAY'); ?>"><?php echo $currentDay['d']; ?></a>
 								<?php
 								if (count($currentDay["events"]) > 0)
 								{

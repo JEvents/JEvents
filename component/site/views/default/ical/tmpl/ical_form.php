@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Component\ComponentHelper;
@@ -71,7 +72,7 @@ $input  = $app->input;
 
 $accessiblecats = explode(",", $this->datamodel->accessibleCategoryList());
 
-echo "<h2 id='cal_title'>" . JText::_('JEV_ICAL_EXPORT') . "</h2>\n";
+echo "<h2 id='cal_title'>" . Text::_('JEV_ICAL_EXPORT') . "</h2>\n";
 
 if ($input->getString("submit", "") != "")
 {
@@ -119,19 +120,19 @@ if ($input->getString("submit", "") != "")
 		$privatelink = $link . "&pk=" . md5($icalkey . $cats . $years . $user->password . $user->username . $user->id) . "&i=" . $user->id;
 	}
 
-	echo "<p><a href='$publiclink'>" . JText::_('JEV_REP_ICAL_PUBLIC') . "</a></p>";
+	echo "<p><a href='$publiclink'>" . Text::_('JEV_REP_ICAL_PUBLIC') . "</a></p>";
 	if ($user->id != 0)
 	{
-		echo "<p><a href='$privatelink'>" . JText::_('JEV_REP_ICAL_PRIVATE') . "</a></p>";
+		echo "<p><a href='$privatelink'>" . Text::_('JEV_REP_ICAL_PRIVATE') . "</a></p>";
 	}
 
 	if ($cfg->get("outlook2003icalexport", 0))
 	{
-		echo "<p>" . JText::_('Outlook 2003 specific links') . "</p>";
-		echo "<p><a href='$publiclink&outlook2003=1'>" . JText::_('JEV_REP_ICAL_PUBLIC') . "</a></p>";
+		echo "<p>" . Text::_('Outlook 2003 specific links') . "</p>";
+		echo "<p><a href='$publiclink&outlook2003=1'>" . Text::_('JEV_REP_ICAL_PUBLIC') . "</a></p>";
 		if ($user->id != 0)
 		{
-			echo "<p><a href='$privatelink&outlook2003='>" . JText::_('JEV_REP_ICAL_PRIVATE') . "</a></p>";
+			echo "<p><a href='$privatelink&outlook2003='>" . Text::_('JEV_REP_ICAL_PRIVATE') . "</a></p>";
 		}
 	}
 }
@@ -144,7 +145,7 @@ if ($input->getString("submit", "") != "")
 	?>
 	<div class='choosecat' style='float:left;width:300px;'>
 		<?php
-		echo "<h3>" . JText::_('JEV_EVENT_CHOOSE_CATEG') . "</h3>\n";
+		echo "<h3>" . Text::_('JEV_EVENT_CHOOSE_CATEG') . "</h3>\n";
 		// All categories
 		$cb      = "<input name=\"categories[]\" value=\"0\" type=\"checkbox\" onclick='clearIcalCategories(this);' ";
 		$checked = false;
@@ -158,7 +159,7 @@ if ($input->getString("submit", "") != "")
 			$cb      = $cb . " CHECKED";
 			$checked = true;
 		}
-		echo $cb . "><strong>" . JText::_("JEV_EVENT_ALLCAT") . "</strong><br/>\n";
+		echo $cb . "><strong>" . Text::_("JEV_EVENT_ALLCAT") . "</strong><br/>\n";
 		?>
 		<div id='othercats' <?php echo $checked ? '' : ''; ?> >
 			<?php
@@ -184,7 +185,7 @@ if ($input->getString("submit", "") != "")
 	</div>
 	<div class='chooseyear'>
 		<?php
-		echo "<h3>" . JText::_('JEV_SELECT_REP_YEAR') . "</h3>\n";
+		echo "<h3>" . Text::_('JEV_SELECT_REP_YEAR') . "</h3>\n";
 
 		// All years
 		$yt      = "<input name=\"years[]\" type=\"checkbox\" value=\"0\"  onclick='clearIcalYears(this);' ";
@@ -199,7 +200,7 @@ if ($input->getString("submit", "") != "")
 			$yt      = $yt . " CHECKED";
 			$checked = true;
 		}
-		$yt = $yt . "><strong>" . JText::_("JEV_EVENT_ALLYEARS") . "</strong><br/>\n";
+		$yt = $yt . "><strong>" . Text::_("JEV_EVENT_ALLYEARS") . "</strong><br/>\n";
 		echo $yt;
 		?>
 		<div id='otheryears' <?php echo $checked ? '' : ''; ?> >
@@ -232,15 +233,15 @@ if ($input->getString("submit", "") != "")
 	</div>
 	<?php
 	echo "<div class='icalformat' style='clear:left; padding-top:5px;'>";
-	echo "<h3>" . JText::_('JEV_ICAL_FORMATTING') . "</h3>\n";
+	echo "<h3>" . Text::_('JEV_ICAL_FORMATTING') . "</h3>\n";
 	?>
 	<label><input name="icalformatted" type="checkbox"
-	              value="1" <?php echo $input->getInt("icalformatted", 0) ? "checked='checked'" : ""; ?>/><?php echo JText::_("JEV_PRESERVE_HTML_FORMATTING"); ?>
+	              value="1" <?php echo $input->getInt("icalformatted", 0) ? "checked='checked'" : ""; ?>/><?php echo Text::_("JEV_PRESERVE_HTML_FORMATTING"); ?>
 	</label>
 	<br/>
 	<br/>
 	</div>
 
-	<input type="submit" name="submit" value="<?php echo JText::_('JEV_SELECT'); ?>"/>
+	<input type="submit" name="submit" value="<?php echo Text::_('JEV_SELECT'); ?>"/>
 </form>
 

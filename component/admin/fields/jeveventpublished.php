@@ -1,13 +1,15 @@
 <?php
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
-class JFormFieldJeveventpublished extends JFormField
+class FormFieldJeveventpublished extends FormField
 {
 
 	/**
@@ -39,9 +41,9 @@ class JFormFieldJeveventpublished extends JFormField
 				$this->value = 1;
 			}
 			$poptions   = array();
-			$poptions[] = HTMLHelper::_('select.option', 0, JText::_("JUNPUBLISHED"));
-			$poptions[] = HTMLHelper::_('select.option', 1, JText::_("JPUBLISHED"));
-			$poptions[] = HTMLHelper::_('select.option', -1, JText::_("JTRASHED"));
+			$poptions[] = HTMLHelper::_('select.option', 0, Text::_("JUNPUBLISHED"));
+			$poptions[] = HTMLHelper::_('select.option', 1, Text::_("JPUBLISHED"));
+			$poptions[] = HTMLHelper::_('select.option', -1, Text::_("JTRASHED"));
 
 			return HTMLHelper::_('select.genericlist', $poptions, 'state', 'class="inputbox chzn-color-state" size="1"', 'value', 'text', $this->value);
 

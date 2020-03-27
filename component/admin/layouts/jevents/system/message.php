@@ -1,4 +1,7 @@
 <?php
+
+use Joomla\CMS\Language\Text;
+
 /**
  * @package     Joomla.Site
  * @subpackage  Layout
@@ -21,7 +24,7 @@ $msgList = $displayData['msgList'];
 					<a class="close" data-dismiss="alert">×</a>
 
 					<?php if (!empty($msgs)) : ?>
-						<h4 class="alert-heading"><?php echo JText::_($type); ?></h4>
+						<h4 class="alert-heading"><?php echo Text::_($type); ?></h4>
 						<div>
 							<?php foreach ($msgs as $msg) : ?>
 								<div class="alert-message"><?php echo $msg; ?></div>

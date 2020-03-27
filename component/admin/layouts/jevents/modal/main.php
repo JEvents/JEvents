@@ -9,6 +9,8 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
 
 
@@ -16,7 +18,7 @@ extract($displayData);
 
 if (false && $selector == "progressModal")
 {
-	JFactory::getDocument()->addScriptDeclaration("useProgressModal = true;");
+	Factory::getDocument()->addScriptDeclaration("useProgressModal = true;");
 
 	?>
     <div id="<?php echo $selector; ?>" gsl-modal="container:#gslc; bg-close:false" class="gsl-modal-container">
@@ -68,7 +70,7 @@ ob_start();
 
 <?php
 $modalHtml = json_encode(ob_get_clean());
-JFactory::getDocument()->addScriptDeclaration(
+Factory::getDocument()->addScriptDeclaration(
         " $selector = $modalHtml;"
 );
 
@@ -125,7 +127,7 @@ $script[] = "       $('body').addClass('modal-open');";
 
 if (isset($params['url']))
 {
-	$iframeHtml = JLayoutHelper::render('joomla.modal.iframe', $displayData);
+	$iframeHtml = LayoutHelper::render('joomla.modal.iframe', $displayData);
 
 	// Script for destroying and reloading the iframe
 	$script[] = "       var modalBody = $(this).find('.modal-body');";
@@ -187,23 +189,23 @@ $script[] = "       $('.modalTooltip').tooltip('destroy');";
 $script[] = "   });";
 $script[] = "});";
 
-JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
+Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
 ?>
 <div id="<?php echo $selector; ?>" <?php echo ArrayHelper::toString($modalAttributes); ?> gsl-modal>
 	<?php
 	// Header
 	if (!isset($params['closeButton']) || isset($params['title']) || $params['closeButton'])
 	{
-		echo JLayoutHelper::render('joomla.modal.header', $displayData);
+		echo LayoutHelper::render('joomla.modal.header', $displayData);
 	}
 
 	// Body
-	echo JLayoutHelper::render('joomla.modal.body', $displayData);
+	echo LayoutHelper::render('joomla.modal.body', $displayData);
 
 	// Footer
 	if (isset($params['footer']))
 	{
-		echo JLayoutHelper::render('joomla.modal.footer', $displayData);
+		echo LayoutHelper::render('joomla.modal.footer', $displayData);
 	}
 	?>
 </div>

@@ -9,6 +9,8 @@
  */
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Factory;
 
 /*
@@ -25,7 +27,7 @@ use Joomla\CMS\Factory;
  *
  * @since  2.5
  */
-class PlgSystemGwejson extends JPlugin
+class PlgSystemGwejson extends CMSPlugin
 {
 
 	public function __construct(&$subject, $config)
@@ -118,11 +120,11 @@ class PlgSystemGwejson extends JPlugin
 		jimport('joomla.filesystem.file');
 		// Check for a custom version of the file first!
 		$custom_file = str_replace("gwejson_", "gwejson_custom_", $file);
-		if (JFile::exists($path . $custom_file . ".php"))
+		if (File::exists($path . $custom_file . ".php"))
 		{
 			$file = $custom_file;
 		}
-		if (!JFile::exists($path . $file . ".php"))
+		if (!File::exists($path . $file . ".php"))
 		{
 			PlgSystemGwejson::throwerror("Opps we could not find the file: " . $path . $file . ".php");
 

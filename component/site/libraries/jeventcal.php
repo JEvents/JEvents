@@ -11,6 +11,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
@@ -478,14 +480,14 @@ class jEventCal
 			$res = array();
 			foreach ($data as $cat)
 			{
-				$res[] = strpos($cat->name, "JEV_") === 0 ? JText::_($cat->name) : $cat->name;
+				$res[] = strpos($cat->name, "JEV_") === 0 ? Text::_($cat->name) : $cat->name;
 			}
 
 			return implode(", ", $res);
 		}
 		if ($data)
 		{
-			return strpos($data->name, "JEV_") === 0 ? JText::_($data->name) : $data->name;
+			return strpos($data->name, "JEV_") === 0 ? Text::_($data->name) : $data->name;
 		}
 
 		return "";
@@ -639,7 +641,7 @@ class jEventCal
 					$params = json_decode($cat->params);
 					if (isset($params->image) && $params->image != "")
 					{
-						$alt_text = ($params->image_alt == '') ? JText::_('JEV_CAT_ALT_DEFAULT_TEXT', true) : $params->image_alt;
+						$alt_text = ($params->image_alt == '') ? Text::_('JEV_CAT_ALT_DEFAULT_TEXT', true) : $params->image_alt;
 						$output   .= "<img src = '" . Uri::root() . $params->image . "' class='catimage'  alt='" . $alt_text . "' />";
 					}
 				}
@@ -656,7 +658,7 @@ class jEventCal
 			$params = json_decode($data->params);
 			if (isset($params->image) && $params->image != "")
 			{
-				$alt_text = ($params->image_alt == '') ? JText::_('JEV_CAT_ALT_DEFAULT_TEXT', true) : $params->image_alt;
+				$alt_text = ($params->image_alt == '') ? Text::_('JEV_CAT_ALT_DEFAULT_TEXT', true) : $params->image_alt;
 
 				return "<img src = '" . Uri::root() . $params->image . "' class='catimage'  alt='" . $alt_text . "' />";
 			}
@@ -1143,7 +1145,7 @@ class jEventCal
 		$input  = Factory::getApplication()->input;
 
 		$Itemid = $Itemid > 0 ? $Itemid : JEVHelper::getItemid($this);
-		$title  = JApplicationHelper::stringURLSafe($this->title());
+		$title  = ApplicationHelper::stringURLSafe($this->title());
 		$link   = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . $this->detailTask() . "&evid=" . $this->id() . '&Itemid=' . $Itemid
 			. "&year=$year&month=$month&day=$day";
 		if ($input->getCmd("tmpl", "") == "component" &&
@@ -1220,7 +1222,7 @@ class jEventCal
 		$cfg = JEVConfig::getInstance();
 
 		// i.e. 1 = follow english word order by default
-		$grammar = intval(JText::_('JEV_REPEAT_GRAMMAR'));
+		$grammar = intval(Text::_('JEV_REPEAT_GRAMMAR'));
 
 
 		// if starttime and end time the same then show no times!
@@ -1241,15 +1243,15 @@ class jEventCal
 			// recurring events should have time related to recurrance not range of dates
 			if ($this->start_time != $this->stop_time && !($this->reccurtype() > 0))
 			{
-				echo JText::_('JEV_FROM') . '&nbsp;' . $this->start_date . '&nbsp;-&nbsp; '
+				echo Text::_('JEV_FROM') . '&nbsp;' . $this->start_date . '&nbsp;-&nbsp; '
 					. $this->start_time . '<br />'
-					. JText::_('JEV_TO') . '&nbsp;' . $this->stop_date . '&nbsp;-&nbsp;'
+					. Text::_('JEV_TO') . '&nbsp;' . $this->stop_date . '&nbsp;-&nbsp;'
 					. $this->stop_time_midnightFix . '<br/>';
 			}
 			else
 			{
-				echo JText::_('JEV_FROM') . '&nbsp;' . $this->start_date . '<br />'
-					. JText::_('JEV_TO') . '&nbsp;' . $this->stop_date . '<br/>';
+				echo Text::_('JEV_FROM') . '&nbsp;' . $this->start_date . '<br />'
+					. Text::_('JEV_TO') . '&nbsp;' . $this->stop_date . '<br/>';
 			}
 		}
 
@@ -1258,19 +1260,19 @@ class jEventCal
 			switch ($this->reccurtype())
 			{
 				case '1':
-					$reccur = JText::_('JEV_REP_WEEK');
+					$reccur = Text::_('JEV_REP_WEEK');
 					break;
 				case '2':
-					$reccur = JText::_('JEV_REP_WEEK');
+					$reccur = Text::_('JEV_REP_WEEK');
 					break;
 				case '3':
-					$reccur = JText::_('JEV_REP_MONTH');
+					$reccur = Text::_('JEV_REP_MONTH');
 					break;
 				case '4':
-					$reccur = JText::_('JEV_REP_MONTH');
+					$reccur = Text::_('JEV_REP_MONTH');
 					break;
 				case '5':
-					$reccur = JText::_('JEV_REP_YEAR');
+					$reccur = Text::_('JEV_REP_YEAR');
 					break;
 			}
 
@@ -1292,11 +1294,11 @@ class jEventCal
 				if ($this->reccurtype() == 1)
 				{
 					$dayname = JEventsHTML::getDayName($reccurday);
-					echo $dayname . '&nbsp;' . JText::_('JEV_EACHOF') . '&nbsp;' . $reccur;
+					echo $dayname . '&nbsp;' . Text::_('JEV_EACHOF') . '&nbsp;' . $reccur;
 				}
 				else if ($this->reccurtype() == 2)
 				{
-					$each = JText::_('JEV_EACH') . '&nbsp;';
+					$each = Text::_('JEV_EACH') . '&nbsp;';
 					if ($grammar == 1)
 					{
 						$each = strtolower($each);
@@ -1320,20 +1322,20 @@ class jEventCal
 							$daystring .= JEventsHTML::getDayName($days[$d]);
 							$daystring .= ($d == 0 ? "," : "") . "&nbsp;";
 						}
-						$weekstring = $this->reccurweeks() == 'pair' ? JText::_('JEV_REP_WEEKPAIR') : ($this->reccurweeks() == 'impair' ? JText::_('JEV_REP_WEEKIMPAIR') : "");
+						$weekstring = $this->reccurweeks() == 'pair' ? Text::_('JEV_REP_WEEKPAIR') : ($this->reccurweeks() == 'impair' ? Text::_('JEV_REP_WEEKIMPAIR') : "");
 						if ($weekstring == "")
 						{
 							switch ($grammar)
 							{
 								case 1:
-									$weekstring = "- " . JText::_('JEV_REP_WEEK') . " ";
+									$weekstring = "- " . Text::_('JEV_REP_WEEK') . " ";
 									$weekstring .= str_replace("|", ", ", $this->reccurweeks()) . " ";
-									$weekstring .= strtolower(JText::_('JEV_EACHMONTH'));
+									$weekstring .= strtolower(Text::_('JEV_EACHMONTH'));
 									break;
 								default:
 									$weekstring = str_replace("|", ", ", $this->reccurweeks()) . " ";
 									$weekstring .= $reccur;
-									$weekstring .= JText::_('JEV_EACHMONTH');
+									$weekstring .= Text::_('JEV_EACHMONTH');
 									break;
 							}
 						}
@@ -1351,20 +1353,20 @@ class jEventCal
 				}
 				else
 				{
-					echo JText::_('JEV_EACH') . '&nbsp;' . $reccur;
+					echo Text::_('JEV_EACH') . '&nbsp;' . $reccur;
 				}
 
 			}
 			else
 			{
-				echo JText::_('JEV_EACH') . '&nbsp;' . $reccur;
+				echo Text::_('JEV_EACH') . '&nbsp;' . $reccur;
 			}
 		}
 		else
 		{
 			if ($this->start_date != $this->stop_date)
 			{
-				echo JText::_('JEV_ALLDAYS');
+				echo Text::_('JEV_ALLDAYS');
 			}
 		}
 

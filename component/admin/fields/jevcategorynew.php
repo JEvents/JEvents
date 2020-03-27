@@ -12,6 +12,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Access\Access;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -76,8 +78,8 @@ class JFormFieldJevcategorynew extends JFormFieldList
 				// Get the current user object.
 				$user = Factory::getUser();
 
-				// TODO: Add a preload method to JAccess so that we can get all the asset rules in one query and cache them.
-				// eg JAccess::preload('core.create', 'com_content.category')
+				// TODO: Add a preload method to Access so that we can get all the asset rules in one query and cache them.
+				// eg Access::preload('core.create', 'com_content.category')
 				foreach ($options as $i => $option)
 				{
 					// Unset the option if the user isn't authorised for it.
@@ -91,7 +93,7 @@ class JFormFieldJevcategorynew extends JFormFieldList
 		}
 		else
 		{
-			Factory::getApplication()->enqueueMessage('500 - ' . JText::_('JLIB_FORM_ERROR_FIELDS_CATEGORY_ERROR_EXTENSION_EMPTY'), 'warning');
+			Factory::getApplication()->enqueueMessage('500 - ' . Text::_('JLIB_FORM_ERROR_FIELDS_CATEGORY_ERROR_EXTENSION_EMPTY'), 'warning');
 		}
 
 		// if no value exists, try to load a selected filter category from the old category filters

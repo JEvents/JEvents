@@ -1,4 +1,8 @@
 <?php
+
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Version;
+
 /**
  * @package     Joomla.Site
  * @subpackage  Layout
@@ -12,7 +16,7 @@ defined('JPATH_BASE') or die;
 // dummy output which we are hijacking to place withing our scope!
 
 $msgList = $displayData['msgList'];
-$jversion = new JVersion;
+$jversion = new Version;
 
 // Skip Chosen in Joomla 4.x+
 if ($jversion->isCompatible('4.0'))
@@ -32,7 +36,7 @@ ob_start();
 					<a class="close" data-dismiss="alert">×</a>
 
 					<?php if (!empty($msgs)) : ?>
-						<h4 class="alert-heading"><?php echo JText::_($type); ?></h4>
+						<h4 class="alert-heading"><?php echo Text::_($type); ?></h4>
 						<div>
 							<?php foreach ($msgs as $msg) : ?>
 								<div class="alert-message"><?php echo $msg; ?></div>

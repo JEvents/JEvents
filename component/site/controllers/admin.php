@@ -11,6 +11,7 @@
 
 defined('JPATH_BASE') or die('No Direct Access.');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Component\ComponentHelper;
@@ -49,7 +50,7 @@ class AdminController extends Joomla\CMS\MVC\Controller\BaseController
 		if (!$is_event_editor)
 		{
 			$returnlink = Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=day.listevents&Itemid=' . $Itemid, false);
-			$this->setRedirect($returnlink, html_entity_decode(JText::_('JEV_NOPERMISSION')));
+			$this->setRedirect($returnlink, html_entity_decode(Text::_('JEV_NOPERMISSION')));
 			$this->redirect();
 
 			return;

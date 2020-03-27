@@ -9,9 +9,12 @@
  * @link        http://www.jevents.net
  */
 defined('_JEXEC') or die('Restricted access'); ?>
+
+use Joomla\CMS\Language\Text;
+
 <div id="jevents">
 	<form action="index.php" method="post" name="adminForm" id="adminForm">
-		<h3><?php echo JText::_('DATABASE_NOW_SETUP'); ?></h3>
+		<h3><?php echo Text::_('DATABASE_NOW_SETUP'); ?></h3>
 		<input type="submit" value="<?php echo "continue"; ?>"/>
 		<input type="hidden" name="boxchecked" value="0"/>
 		<input type="hidden" name="task" value="cpanel.cpanel"/>

@@ -13,6 +13,8 @@
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\ToolbarButton;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\String\StringHelper;
@@ -20,7 +22,7 @@ use Joomla\String\StringHelper;
 jimport('joomla.html.toolbar.button');
 jimport('cms.toolbar.button');
 
-class JButtonJev extends JToolbarButton
+class JButtonJev extends ToolbarButton
 {
 	/**
 	 * Button type
@@ -33,7 +35,7 @@ class JButtonJev extends JToolbarButton
 	function fetchButton($type = 'Jev', $icon = '', $text = '', $task = '', $list = '')
 	{
 
-		$i18n_text = JText::_($text);
+		$i18n_text = Text::_($text);
 		$class     = $this->fetchIconClass($icon);
 		$doTask    = $this->_getCommand($text, $task, $list);
 
@@ -62,8 +64,8 @@ class JButtonJev extends JToolbarButton
 	function _getCommand($name, $task, $list)
 	{
 
-		$todo    = StringHelper::strtolower(JText::_($name));
-		$message = JText::sprintf('Please make a selection from the list to', $todo);
+		$todo    = StringHelper::strtolower(Text::_($name));
+		$message = Text::sprintf('Please make a selection from the list to', $todo);
 		$message = addslashes($message);
 
 		$submitbutton = "Joomla.submitbutton";
@@ -94,7 +96,7 @@ class JButtonJev extends JToolbarButton
 	}
 }
 
-class JButtonJevlink extends JToolbarButton
+class JButtonJevlink extends ToolbarButton
 {
 	/**
 	 * Button type
@@ -108,7 +110,7 @@ class JButtonJevlink extends JToolbarButton
 	function fetchButton($type = 'Jevlink', $icon = '', $text = '', $task = '', $list = '')
 	{
 
-		$i18n_text = JText::_($text);
+		$i18n_text = Text::_($text);
 		$class     = $this->fetchIconClass($icon);
 		$doTask    = $this->_getCommand($text, $task, $list);
 
@@ -170,8 +172,8 @@ class JButtonJevconfirm extends JtoolbarButton
 	function fetchButton($type = 'Confirm', $msg = '', $name = '', $text = '', $task = '', $list = true, $hideMenu = false, $jstestvar = false)
 	{
 
-		$text   = JText::_($text);
-		$msg    = JText::_($msg, true);
+		$text   = Text::_($text);
+		$msg    = Text::_($msg, true);
 		$class  = $this->fetchIconClass($name);
 		$doTask = $this->_getCommand($msg, $name, $task, $list, $hideMenu, $jstestvar);
 
@@ -197,8 +199,8 @@ class JButtonJevconfirm extends JtoolbarButton
 	function _getCommand($msg, $name, $task, $list, $hide, $jstestvar = false)
 	{
 
-		$todo         = StringHelper::strtolower(JText::_($name));
-		$message      = JText::sprintf('Please make a selection from the list to %s', $todo);
+		$todo         = StringHelper::strtolower(Text::_($name));
+		$message      = Text::sprintf('Please make a selection from the list to %s', $todo);
 		$message      = addslashes($message);
 		$submitbutton = "Joomla.submitbutton";
 

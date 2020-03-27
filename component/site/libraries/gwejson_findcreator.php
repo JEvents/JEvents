@@ -4,6 +4,8 @@
  * @license		By negoriation with author via http://www.gwesystems.com
 */
 
+use Joomla\CMS\Access\Access;
+use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Component\ComponentHelper;
@@ -34,7 +36,7 @@ function ProcessJsonRequest(&$requestObject, $returnData)
 	// If user is jevents can deleteall or has backend access then allow them to specify the creator
 	$jevuser = JEVHelper::getAuthorisedUser();
 	$user    = Factory::getUser();
-	//$access = JAccess::check($user->id, "core.deleteall", "com_jevents");
+	//$access = Access::check($user->id, "core.deleteall", "com_jevents");
 	$access = $user->authorise('core.admin', 'com_jevents') || $user->authorise('core.deleteall', 'com_jevents');
 
 	$db = Factory::getDbo();
@@ -58,7 +60,7 @@ function ProcessJsonRequest(&$requestObject, $returnData)
 
 	$db = Factory::getDbo();
 
-	$title = JFilterInput::getInstance()->clean($requestObject->typeahead, "string");
+	$title = InputFilter::getInstance()->clean($requestObject->typeahead, "string");
 	$text  = $db->Quote('%' . $db->escape($title, true) . '%', false);
 
 	// Remove any dodgy characters from fields
@@ -89,7 +91,7 @@ function ProcessJsonRequest(&$requestObject, $returnData)
 	}
 	else
 	{
-		$rules         = JAccess::getAssetRules("com_jevents", true);
+		$rules         = Access::getAssetRules("com_jevents", true);
 		$creatorgroups = $rules->getData();
 		// need to merge the arrays because of stupid way Joomla checks super user permissions
 		//$creatorgroups = array_merge($creatorgroups["core.admin"]->getData(), $creatorgroups["core.create"]->getData());
@@ -111,7 +113,7 @@ function ProcessJsonRequest(&$requestObject, $returnData)
 		{
 			if ($permission == 1)
 			{
-				$userids = array_merge(JAccess::getUsersByGroup($creatorgroup, true), $userids);
+				$userids = array_merge(Access::getUsersByGroup($creatorgroup, true), $userids);
 			}
 		}
 		$sql = "SELECT * FROM #__users "

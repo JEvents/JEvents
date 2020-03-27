@@ -13,6 +13,7 @@ defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
 jimport('joomla.application.component.controller');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
@@ -122,11 +123,11 @@ class AdminUserController extends Joomla\CMS\MVC\Controller\BaseController
 
 		if ($model->store($cid, $post))
 		{
-			$msg = JText::_('USER_SAVED');
+			$msg = Text::_('USER_SAVED');
 		}
 		else
 		{
-			$msg = JText::_('ERROR_SAVING_USER');
+			$msg = Text::_('ERROR_SAVING_USER');
 		}
 
 		$link = Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=user.list', false);
@@ -162,11 +163,11 @@ class AdminUserController extends Joomla\CMS\MVC\Controller\BaseController
 		if ($countdeleted = count($users))
 		{
 			$set        = Factory::getApplication()->triggerEvent('onAfterRemoveUser', array($users));
-			$msg = JText::_('USERS_DELETED');
+			$msg = Text::_('USERS_DELETED');
 		}
 		else
 		{
-			$msg = JText::_('NOT_ALL_USERS_DELETED');
+			$msg = Text::_('NOT_ALL_USERS_DELETED');
 		}
 
 		$link = Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=user.list', false);
@@ -178,7 +179,7 @@ class AdminUserController extends Joomla\CMS\MVC\Controller\BaseController
 	function publishUser()
 	{
 
-		$this->changeState("published", 1, JText::_('USER_ENABLED'));
+		$this->changeState("published", 1, Text::_('USER_ENABLED'));
 	}
 
 	private function changeState($field, $newstate, $successMessage)
@@ -206,7 +207,7 @@ class AdminUserController extends Joomla\CMS\MVC\Controller\BaseController
 		}
 		else
 		{
-			$msg = JText::_('ERROR_UPDATING_USER');
+			$msg = Text::_('ERROR_UPDATING_USER');
 		}
 
 		$link = Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=user.list', false);
@@ -217,97 +218,97 @@ class AdminUserController extends Joomla\CMS\MVC\Controller\BaseController
 	function unpublishUser()
 	{
 
-		$this->changeState("published", 0, JText::_('USER_DISABLED'));
+		$this->changeState("published", 0, Text::_('USER_DISABLED'));
 	}
 
 	function cancreate()
 	{
 
-		$this->changeState("cancreate", 1, JText::_('USER_CAN_CREATE_EVENTS'));
+		$this->changeState("cancreate", 1, Text::_('USER_CAN_CREATE_EVENTS'));
 	}
 
 	function cannotcreate()
 	{
 
-		$this->changeState("cancreate", 0, JText::_('USER_CANNOT_CREATE_EVENTS'));
+		$this->changeState("cancreate", 0, Text::_('USER_CANNOT_CREATE_EVENTS'));
 	}
 
 	function canedit()
 	{
 
-		$this->changeState("canedit", 1, JText::_('USER_CAN_EDIT_EVENTS'));
+		$this->changeState("canedit", 1, Text::_('USER_CAN_EDIT_EVENTS'));
 	}
 
 	function cannotedit()
 	{
 
-		$this->changeState("canedit", 0, JText::_('USER_CANNOT_EDIT_EVENTS'));
+		$this->changeState("canedit", 0, Text::_('USER_CANNOT_EDIT_EVENTS'));
 	}
 
 	function candeleteown()
 	{
 
-		$this->changeState("candeleteown", 1, JText::_('USER_CAN_DELETE_OWN'));
+		$this->changeState("candeleteown", 1, Text::_('USER_CAN_DELETE_OWN'));
 	}
 
 	function cannotdeleteown()
 	{
 
-		$this->changeState("candeleteown", 0, JText::_('USER_CANNOT_DELETE_OWN'));
+		$this->changeState("candeleteown", 0, Text::_('USER_CANNOT_DELETE_OWN'));
 	}
 
 	function candeleteall()
 	{
 
-		$this->changeState("candeleteall", 1, JText::_('USER_CAN_DELETE_ALL'));
+		$this->changeState("candeleteall", 1, Text::_('USER_CAN_DELETE_ALL'));
 	}
 
 	function cannotdeleteall()
 	{
 
-		$this->changeState("candeleteall", 0, JText::_('USER_CANNOT_DELETE_ALL'));
+		$this->changeState("candeleteall", 0, Text::_('USER_CANNOT_DELETE_ALL'));
 	}
 
 	function canpublishown()
 	{
 
-		$this->changeState("canpublishown", 1, JText::_('USER_CAN_PUBLISH_OWN'));
+		$this->changeState("canpublishown", 1, Text::_('USER_CAN_PUBLISH_OWN'));
 	}
 
 	function cannotpublishown()
 	{
 
-		$this->changeState("canpublishown", 0, JText::_('USER_CANNOT_PUBLISH_OWN'));
+		$this->changeState("canpublishown", 0, Text::_('USER_CANNOT_PUBLISH_OWN'));
 	}
 
 	function canpublishall()
 	{
 
-		$this->changeState("canpublishall", 1, JText::_('USER_CAN_PUBLISH_ALL'));
+		$this->changeState("canpublishall", 1, Text::_('USER_CAN_PUBLISH_ALL'));
 	}
 
 	function cannotpublishall()
 	{
 
-		$this->changeState("canpublishall", 0, JText::_('USER_CANNOT_PUBLISH_ALL'));
+		$this->changeState("canpublishall", 0, Text::_('USER_CANNOT_PUBLISH_ALL'));
 	}
 
 	function canuploadimages()
 	{
 
-		$this->changeState("canuploadimages", 1, JText::_('USER_CAN_UPLOAD_IMAGES'));
+		$this->changeState("canuploadimages", 1, Text::_('USER_CAN_UPLOAD_IMAGES'));
 	}
 
 	function cannotuploadimages()
 	{
 
-		$this->changeState("canuploadimages", 0, JText::_('USER_CANNOT_UPLOAD_IMAGES'));
+		$this->changeState("canuploadimages", 0, Text::_('USER_CANNOT_UPLOAD_IMAGES'));
 	}
 
 	function canuploadmovies()
 	{
 
-		$this->changeState("canuploadmovies", 1, JText::_('USER_CAN_UPLOAD_FILES'));
+		$this->changeState("canuploadmovies", 1, Text::_('USER_CAN_UPLOAD_FILES'));
 	}
 
 	// These apply to extra attributes - user specific or global
@@ -315,31 +316,31 @@ class AdminUserController extends Joomla\CMS\MVC\Controller\BaseController
 	function cannotuploadmovies()
 	{
 
-		$this->changeState("canuploadmovies", 0, JText::_('USER_CANNOT_UPLOAD_FILES'));
+		$this->changeState("canuploadmovies", 0, Text::_('USER_CANNOT_UPLOAD_FILES'));
 	}
 
 	function cancreateown()
 	{
 
-		$this->changeState("cancreateown", 1, JText::_('USER_CAN_CREATE_OWN_EXTRAS'));
+		$this->changeState("cancreateown", 1, Text::_('USER_CAN_CREATE_OWN_EXTRAS'));
 	}
 
 	function cannotcreateown()
 	{
 
-		$this->changeState("cancreateown", 0, JText::_('USER_CANNOT_CREATE_OWN_EXTRAS'));
+		$this->changeState("cancreateown", 0, Text::_('USER_CANNOT_CREATE_OWN_EXTRAS'));
 	}
 
 	function cancreateglobal()
 	{
 
-		$this->changeState("cancreateglobal", 1, JText::_('USER_CAN_CREATE_GLOBAL_EXTRAS'));
+		$this->changeState("cancreateglobal", 1, Text::_('USER_CAN_CREATE_GLOBAL_EXTRAS'));
 	}
 
 	function cannotcreateglobal()
 	{
 
-		$this->changeState("cancreateglobal", 0, JText::_('USER_CANNOT_CREATE_GLOBAL_EXTRAS'));
+		$this->changeState("cancreateglobal", 0, Text::_('USER_CANNOT_CREATE_GLOBAL_EXTRAS'));
 	}
 
 }

@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
@@ -61,17 +62,17 @@ class DefaultViewNavTableBarIconic
 						<td colspan="2"></td>
 					<?php } ?>
 					<?php if (in_array("byyear", $this->iconstoshow)) { ?>
-						<td><?php echo JText::_('JEV_VIEWBYYEAR'); ?></td><?php } ?>
+						<td><?php echo Text::_('JEV_VIEWBYYEAR'); ?></td><?php } ?>
 					<?php if (in_array("bymonth", $this->iconstoshow)) { ?>
-						<td><?php echo JText::_('JEV_VIEWBYMONTH'); ?></td><?php } ?>
+						<td><?php echo Text::_('JEV_VIEWBYMONTH'); ?></td><?php } ?>
 					<?php if (in_array("byweek", $this->iconstoshow)) { ?>
-						<td><?php echo JText::_('JEV_VIEWBYWEEK'); ?></td><?php } ?>
+						<td><?php echo Text::_('JEV_VIEWBYWEEK'); ?></td><?php } ?>
 					<?php if (in_array("byday", $this->iconstoshow)) { ?>
-						<td><?php echo JText::_('JEV_VIEWTODAY'); ?></td><?php } ?>
+						<td><?php echo Text::_('JEV_VIEWTODAY'); ?></td><?php } ?>
 					<?php if (in_array("search", $this->iconstoshow)) { ?>
-						<td><?php echo JText::_('JEV_SEARCH_TITLE'); ?></td><?php } ?>
+						<td><?php echo Text::_('JEV_SEARCH_TITLE'); ?></td><?php } ?>
 					<?php if (in_array("bymonth", $this->iconstoshow)) { ?>
-						<td><?php echo JText::_('JEV_JUMPTO'); ?></td><?php } ?>
+						<td><?php echo Text::_('JEV_JUMPTO'); ?></td><?php } ?>
 					<?php if ($cfg->get('com_calUseIconic', 1) != 2 && $task != "range.listevents") { ?>
 						<td colspan="2"></td>
 					<?php } ?>
@@ -131,9 +132,9 @@ class DefaultViewNavTableBarIconic
 		<td class="iconic_td" align="center" valign="middle">
 			<div id="ev_icon_yearly" class="nav_bar_cal"><a
 						href="<?php echo Route::_('index.php?option=' . JEV_COM_COMPONENT . $this->cat . '&task=year.listevents&' . $today_date->toDateURL() . '&Itemid=' . $this->Itemid); ?>"
-						title="<?php echo JText::_('JEV_VIEWBYYEAR'); ?>">
+						title="<?php echo Text::_('JEV_VIEWBYYEAR'); ?>">
 					<img src="<?php echo $this->transparentGif; ?>"
-					     alt="<?php echo JText::_('JEV_VIEWBYYEAR'); ?>"/></a>
+					     alt="<?php echo Text::_('JEV_VIEWBYYEAR'); ?>"/></a>
 			</div>
 		</td>
 		<?php
@@ -146,9 +147,9 @@ class DefaultViewNavTableBarIconic
 		<td class="iconic_td" align="center" valign="middle">
 			<div id="ev_icon_monthly" class="nav_bar_cal"><a
 						href="<?php echo Route::_('index.php?option=' . JEV_COM_COMPONENT . $this->cat . '&task=month.calendar&' . $today_date->toDateURL() . '&Itemid=' . $this->Itemid); ?>"
-						title="<?php echo JText::_('JEV_VIEWBYMONTH'); ?>">
+						title="<?php echo Text::_('JEV_VIEWBYMONTH'); ?>">
 					<img src="<?php echo $this->transparentGif; ?>"
-					     alt="<?php echo JText::_('JEV_VIEWBYMONTH'); ?>"/></a>
+					     alt="<?php echo Text::_('JEV_VIEWBYMONTH'); ?>"/></a>
 			</div>
 		</td>
 		<?php
@@ -161,9 +162,9 @@ class DefaultViewNavTableBarIconic
 		<td class="iconic_td" align="center" valign="middle">
 			<div id="ev_icon_weekly" class="nav_bar_cal"><a
 						href="<?php echo Route::_('index.php?option=' . JEV_COM_COMPONENT . $this->cat . '&task=week.listevents&' . $today_date->toDateURL() . '&Itemid=' . $this->Itemid); ?>"
-						title="<?php echo JText::_('JEV_VIEWBYWEEK'); ?>">
+						title="<?php echo Text::_('JEV_VIEWBYWEEK'); ?>">
 					<img src="<?php echo $this->transparentGif; ?>"
-					     alt="<?php echo JText::_('JEV_VIEWBYWEEK'); ?>"/></a>
+					     alt="<?php echo Text::_('JEV_VIEWBYWEEK'); ?>"/></a>
 			</div>
 		</td>
 		<?php
@@ -176,8 +177,8 @@ class DefaultViewNavTableBarIconic
 		<td class="iconic_td" align="center" valign="middle">
 			<div id="ev_icon_daily" class="nav_bar_cal"><a
 						href="<?php echo Route::_('index.php?option=' . JEV_COM_COMPONENT . $this->cat . '&task=day.listevents&' . $today_date->toDateURL() . '&Itemid=' . $this->Itemid); ?>"
-						title="<?php echo JText::_('JEV_VIEWTODAY'); ?>"><img src="<?php echo $this->transparentGif; ?>"
-			                                                                  alt="<?php echo JText::_('JEV_VIEWBYDAY'); ?>"/></a>
+						title="<?php echo Text::_('JEV_VIEWTODAY'); ?>"><img src="<?php echo $this->transparentGif; ?>"
+			                                                                  alt="<?php echo Text::_('JEV_VIEWBYDAY'); ?>"/></a>
 			</div>
 		</td>
 		<?php
@@ -190,9 +191,9 @@ class DefaultViewNavTableBarIconic
 		<td class="iconic_td" align="center" valign="middle">
 			<div id="ev_icon_search" class="nav_bar_cal"><a
 						href="<?php echo Route::_('index.php?option=' . JEV_COM_COMPONENT . $this->cat . '&task=search.form&' . $today_date->toDateURL() . '&Itemid=' . $this->Itemid); ?>"
-						title="<?php echo JText::_('JEV_SEARCH_TITLE'); ?>"><img
+						title="<?php echo Text::_('JEV_SEARCH_TITLE'); ?>"><img
 							src="<?php echo $this->transparentGif; ?>"
-							alt="<?php echo JText::_('JEV_SEARCH_TITLE'); ?>"/></a>
+							alt="<?php echo Text::_('JEV_SEARCH_TITLE'); ?>"/></a>
 			</div>
 		</td>
 		<?php
@@ -205,8 +206,8 @@ class DefaultViewNavTableBarIconic
 		<td class="iconic_td" align="center" valign="middle">
 			<div id="ev_icon_jumpto" class="nav_bar_cal"><a href="#"
 			                                                onclick="if (jevjq('#jumpto').hasClass('jev_none')) {jevjq('#jumpto').removeClass('jev_none');} else {jevjq('#jumpto').addClass('jev_none')}return false;"
-			                                                title="<?php echo JText::_('JEV_JUMPTO'); ?>"><img
-							src="<?php echo $this->transparentGif; ?>" alt="<?php echo JText::_('JEV_JUMPTO'); ?>"/></a>
+			                                                title="<?php echo Text::_('JEV_JUMPTO'); ?>"><img
+							src="<?php echo $this->transparentGif; ?>" alt="<?php echo Text::_('JEV_JUMPTO'); ?>"/></a>
 			</div>
 		</td>
 		<?php
@@ -256,7 +257,7 @@ class DefaultViewNavTableBarIconic
 						JEventsHTML::buildMonthSelect($this_date->getMonth(1), 'class="fs10px"');
 						/*Year Select*/
 						JEventsHTML::buildYearSelect($this_date->getYear(1), 'class="fs10px"'); ?>
-						<button onclick="submit(this.form)"><?php echo JText::_('JEV_JUMPTO'); ?></button>
+						<button onclick="submit(this.form)"><?php echo Text::_('JEV_JUMPTO'); ?></button>
 						<input type="hidden" name="Itemid" value="<?php echo $this->Itemid; ?>"/>
 					</form>
 				</div>

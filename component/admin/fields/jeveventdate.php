@@ -2,13 +2,14 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
-class JFormFieldJeveventdate extends JFormField
+class FormFieldJeveventdate extends FormField
 {
 
 	/**

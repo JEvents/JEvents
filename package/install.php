@@ -14,6 +14,8 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Factory;
 
 jimport('joomla.filesystem.folder');
@@ -29,7 +31,7 @@ class Pkg_JeventsInstallerScript
 
 		if (version_compare(PHP_VERSION, JEVENTS_MINIMUM_PHP, '<'))
 		{
-			Jerror::raiseWarning(null, JText::sprintf("COM_JEVENTS_PHP_VERSION_WARNING", PHP_VERSION));
+			Jerror::raiseWarning(null, Text::sprintf("COM_JEVENTS_PHP_VERSION_WARNING", PHP_VERSION));
 		}
 
 		// Joomla! broke the update call, so we have to create a workaround check.
@@ -151,12 +153,12 @@ class Pkg_JeventsInstallerScript
 		// End of CSS Styling
 		if ($this->hasJEventsInst == 1)
 		{
-			$inst_text = JText::_('JEV_INST_VERSION_UPRG');
+			$inst_text = Text::_('JEV_INST_VERSION_UPRG');
 			$logo      = "JeventsTransparent3.png";
 		}
 		else
 		{
-			$inst_text = JText::_('JEV_INST_VERSION');
+			$inst_text = Text::_('JEV_INST_VERSION');
 			$logo      = "JeventsTransparent.png";
 		}
 
@@ -239,12 +241,12 @@ class Pkg_JeventsInstallerScript
 			$file2 = JPATH_SITE . '/components/com_jevents/views/flatplus/helpers/flatpluseventmanagementdialog.php';
 			$file3 = JPATH_SITE . '/components/com_jevents/views/flatplus/helpers/flatplusicaldialog.php';
 
-			if (JFile::exists($file1)) JFile::delete($file1);
-			if (JFile::exists($file2)) JFile::delete($file2);
-			if (JFile::exists($file3)) JFile::delete($file3);
+			if (File::exists($file1)) File::delete($file1);
+			if (File::exists($file2)) File::delete($file2);
+			if (File::exists($file3)) File::delete($file3);
 
 			$file4 = JPATH_SITE . '/components/com_jevents/libraries/checkconflict.php';
-			if (JFile::exists($file4)) JFile::delete($file4);
+			if (File::exists($file4)) File::delete($file4);
 
 			// Lets make sure our Core plugin is enabled..
 			$db    = Factory::getDbo();
@@ -263,7 +265,7 @@ class Pkg_JeventsInstallerScript
 		// Joomla updater special case
 		if ($app->input->getCmd("option") == "com_installer" && $app->input->getCmd("view") == "update")
 		{
-			$app->enqueueMessage("<div class='jev_logo'><img src='https://www.jevents.net/logo/JeventsTransparent3.png' /></div>" . JText::_('JEV_INST_VERSION_UPRG') . " :: ADD_VERSION", 'message');
+			$app->enqueueMessage("<div class='jev_logo'><img src='https://www.jevents.net/logo/JeventsTransparent3.png' /></div>" . Text::_('JEV_INST_VERSION_UPRG') . " :: ADD_VERSION", 'message');
 		}
 
 	}
@@ -283,8 +285,8 @@ class Pkg_JeventsInstallerScript
 	public function uninstall($parent)
 	{
 
-		$uninstall_text  = JText::_('JEV_SORRY_THAT_YOU_UNINSTALL');
-		$uninstall_text2 = JText::_('JEV_PLEASE_LET_US_KNOW_WHY');
+		$uninstall_text  = Text::_('JEV_SORRY_THAT_YOU_UNINSTALL');
+		$uninstall_text2 = Text::_('JEV_PLEASE_LET_US_KNOW_WHY');
 		if ($uninstall_text == 'JEV_SORRY_THAT_YOU_UNINSTALL')
 		{
 			$uninstall_text  = "We are sorry that you have uninstalled JEvents";

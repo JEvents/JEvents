@@ -1,4 +1,9 @@
 <?php
+
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Factory;
+
 defined('JPATH_BASE') or die;
 
 jimport('joomla.html.html');
@@ -23,14 +28,14 @@ class JFormFieldJevpeople extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-	    $plugin = JPluginHelper::getPlugin('jevents', 'jevpeople');
+	    $plugin = PluginHelper::getPlugin('jevents', 'jevpeople');
 
 		$options = array();
 
 	    if (!empty($plugin))
         {
 
-        	$db = JFactory::getDbo();
+        	$db = Factory::getDbo();
         	$query = $db->getQuery(true);
 	        $query->select("*")
 		        ->from("#__jev_peopletypes");
@@ -39,23 +44,23 @@ class JFormFieldJevpeople extends JFormFieldList
             if (!empty($types))
             {
 
-	            $options[] = JHTML::_('select.option', '0', JText::_('JEV_SELECT_PERSON_TYPE_AS_PERFORMER'));
+	            $options[] = JHTML::_('select.option', '0', Text::_('JEV_SELECT_PERSON_TYPE_AS_PERFORMER'));
 
-	            JFactory::getLanguage()->load('plg_jevents_jevfiles', JPATH_ADMINISTRATOR);
+	            Factory::getLanguage()->load('plg_jevents_jevfiles', JPATH_ADMINISTRATOR);
 
 	            foreach($types as $type)
                 {
-	                $options[] = JHTML::_('select.option', $type->type_id, JText::_($type->title) );
+	                $options[] = JHTML::_('select.option', $type->type_id, Text::_($type->title) );
                 }
             }
             else
             {
-	            $options[] = JHTML::_('select.option', '0', JText::_('JEV_STRUCTURED_DATA_OUTPUT_REQUIRES_PEOPLE_TYPES_SET_UP'));
+	            $options[] = JHTML::_('select.option', '0', Text::_('JEV_STRUCTURED_DATA_OUTPUT_REQUIRES_PEOPLE_TYPES_SET_UP'));
             }
         }
         else
         {
-	        $options[] = JHTML::_('select.option', '0', JText::_('JEV_STRUCTURED_DATA_OUTPUT_REQUIRES_IMAGES_ADDON'));
+	        $options[] = JHTML::_('select.option', '0', Text::_('JEV_STRUCTURED_DATA_OUTPUT_REQUIRES_IMAGES_ADDON'));
 
         }
 

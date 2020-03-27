@@ -1,4 +1,7 @@
 <?php
+
+use Joomla\CMS\Language\Text;
+
 /**
  * @package     Joomla.Site
  * @subpackage  Layout
@@ -22,7 +25,7 @@ if ($displayData['id'] == "toolbar" || $displayData['id'] == "toolbar2")
 {
     return;
 	?>
-<div class="btn-toolbar" role="toolbar" aria-label="<?php echo JText::_('JTOOLBAR'); ?>"
+<div class="btn-toolbar" role="toolbar" aria-label="<?php echo Text::_('JTOOLBAR'); ?>"
      id="<?php echo $displayData['id']; ?>">
 	<?php
 }
@@ -30,6 +33,6 @@ else
 {
 	?>
     <div class="nav-collapse collapse">
-    <div class="nav" aria-label="<?php echo JText::_('JTOOLBAR'); ?>"  id="<?php echo $displayData['id']; ?>">
+    <div class="nav" aria-label="<?php echo Text::_('JTOOLBAR'); ?>"  id="<?php echo $displayData['id']; ?>">
 <?php
 }

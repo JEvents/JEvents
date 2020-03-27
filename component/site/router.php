@@ -11,6 +11,11 @@
  */
 defined('_JEXEC') or die('No Direct Access');
 
+use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\CMS\Language\Language;
+use Joomla\CMS\Language\LanguageHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Document\FeedDocument;
 use Joomla\CMS\Factory;
 use Joomla\String\StringHelper;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -169,7 +174,7 @@ function JEventsBuildRoute(&$query)
 									$segments[] = $menuitem->query["evid"];
 									if (!isset($query['title']))
 									{
-										//$query['title'] = StringHelper::substr(JApplicationHelper::stringURLSafe($query['title']), 0, 150);
+										//$query['title'] = StringHelper::substr(ApplicationHelper::stringURLSafe($query['title']), 0, 150);
 									}
 								}
 								else
@@ -185,7 +190,7 @@ function JEventsBuildRoute(&$query)
 						/*
 						  // Can we drop the use of uid?
 						  if(isset($query['title'])) {
-						  $segments[] = JApplicationHelper::stringURLSafe($query['title']);
+						  $segments[] = ApplicationHelper::stringURLSafe($query['title']);
 						  unset($query['title']);
 						  }
 						  else {
@@ -218,7 +223,7 @@ function JEventsBuildRoute(&$query)
 						}
 						if (isset($query['title']))
 						{
-							$segments[] = StringHelper::substr(JApplicationHelper::stringURLSafe($query['title']), 0, 150);
+							$segments[] = StringHelper::substr(ApplicationHelper::stringURLSafe($query['title']), 0, 150);
 							unset($query['title']);
 						}
 						else
@@ -264,7 +269,7 @@ function JEventsBuildRoute(&$query)
 						$segments[] = $menuitem->query["evid"];
 						if (!isset($query['title']))
 						{
-							//$query['title'] = StringHelper::substr(JApplicationHelper::stringURLSafe($query['title']), 0, 150);
+							//$query['title'] = StringHelper::substr(ApplicationHelper::stringURLSafe($query['title']), 0, 150);
 						}
 					}
 					else
@@ -525,7 +530,7 @@ function JEventsParseRoute($segments)
 				break;
 			case "modlatest.rss":
 				// URI = /task/feedtype/modid
-				// force JDocumentFeed
+				// force FeedDocument
 				$vars['format'] = 'feed';
 				//feed type
 				if ($count > 1)
@@ -785,7 +790,7 @@ function JEventsBuildRouteNew(&$query, $task)
 						}
 						if (isset($query['title']))
 						{
-							$segments[] = StringHelper::substr(JApplicationHelper::stringURLSafe($query['title']), 0, 150);
+							$segments[] = StringHelper::substr(ApplicationHelper::stringURLSafe($query['title']), 0, 150);
 							unset($query['title']);
 						}
 						else
@@ -1022,7 +1027,7 @@ function JEventsParseRouteNew(&$segments, $task)
 			break;
 		case "modlatest.rss":
 			// URI = /task/feedtype/modid
-			// force JDocumentFeed
+			// force FeedDocument
 			$vars['format'] = 'feed';
 			//feed type
 			if ($count > 1)
@@ -1107,19 +1112,19 @@ function translatetask($task, $query = false)
 		return $task;
 	// if not translated then just drop the . and use _ instead
 	$task      = str_replace(".", "_", $task);
-	$transtask = JText::_("JEV_SEF_" . $task);
+	$transtask = Text::_("JEV_SEF_" . $task);
 
 	// does it need a translated task in another language
 	$lang = Factory::getLanguage();
 	if ($query && isset($query["lang"]) && $lang->get("tag") != $query["lang"])
 	{
-		$sefs      = JLanguageHelper::getLanguages('sef');
+		$sefs      = LanguageHelper::getLanguages('sef');
 		$lang_code = $query["lang"];
 		if (array_key_exists($query["lang"], $sefs))
 		{
 			$lang_code = $sefs[$query["lang"]]->lang_code;
 		}
-		$newlang = JLanguage::getInstance($lang_code);
+		$newlang = Language::getInstance($lang_code);
 		$newlang->load("com_jevents", JPATH_SITE);
 		$transtask = $newlang->_("JEV_SEF_" . $task);
 	}

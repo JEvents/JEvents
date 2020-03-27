@@ -11,6 +11,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
@@ -48,14 +49,14 @@ $fullspan = 12;
 
 			<table cellpadding="4" cellspacing="0" border="0">
 				<tr>
-					<td><?php echo JText::_('JEV_SEARCH'); ?>&nbsp;</td>
+					<td><?php echo Text::_('JEV_SEARCH'); ?>&nbsp;</td>
 					<td>
 						<input type="text" name="search" id="jevsearch" value="<?php echo htmlspecialchars($this->search); ?>"
 						       class="inputbox" onChange="document.adminForm.submit();"/>
 					</td>
 					<td>
-						<button onclick="this.form.submit();"><?php echo JText::_('GO'); ?></button>
-						<button onclick="document.getElementById('jevsearch').value='';this.form.submit();"><?php echo JText::_('RESET'); ?></button>
+						<button onclick="this.form.submit();"><?php echo Text::_('GO'); ?></button>
+						<button onclick="document.getElementById('jevsearch').value='';this.form.submit();"><?php echo Text::_('RESET'); ?></button>
 					</td>
 				</tr>
 			</table>
@@ -67,35 +68,35 @@ $fullspan = 12;
 						<?php echo HTMLHelper::_('grid.checkall'); ?>
 					</th>
 					<th class="title" width="20%" align="left"
-					    nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', JText::_('NAME'), 'jname', $orderdir, $order, "user.list"); ?></th>
+					    nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', Text::_('NAME'), 'jname', $orderdir, $order, "user.list"); ?></th>
 					<th width="20%" align="left"
-					    nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', JText::_('USERNAME'), 'username', $orderdir, $order, "user.list"); ?></th>
+					    nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', Text::_('USERNAME'), 'username', $orderdir, $order, "user.list"); ?></th>
 					<th align="center"
-					    nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', JText::_('ENABLED'), 'published', $orderdir, $order, "user.list"); ?></th>
+					    nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', Text::_('ENABLED'), 'published', $orderdir, $order, "user.list"); ?></th>
 					<th align="center"
-					    nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', JText::_('CREATE'), 'cancreate', $orderdir, $order, "user.list"); ?></th>
+					    nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', Text::_('CREATE'), 'cancreate', $orderdir, $order, "user.list"); ?></th>
 					<th align="center"
-					    nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', JText::_('MAX_EVENTS'), 'eventslimit', $orderdir, $order, "user.list"); ?></th>
+					    nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', Text::_('MAX_EVENTS'), 'eventslimit', $orderdir, $order, "user.list"); ?></th>
 					<th align="center"
-					    nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', JText::_('PUBLISH_OWN'), 'canpublishown', $orderdir, $order, "user.list"); ?></th>
+					    nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', Text::_('PUBLISH_OWN'), 'canpublishown', $orderdir, $order, "user.list"); ?></th>
 					<th align="center"
-					    nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', JText::_('DELETE_OWN'), 'candeleteown', $orderdir, $order, "user.list"); ?></th>
+					    nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', Text::_('DELETE_OWN'), 'candeleteown', $orderdir, $order, "user.list"); ?></th>
 					<th align="center"
-					    nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', JText::_('EDIT_ALL'), 'canedit', $orderdir, $order, "user.list"); ?></th>
+					    nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', Text::_('EDIT_ALL'), 'canedit', $orderdir, $order, "user.list"); ?></th>
 					<th align="center"
-					    nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', JText::_('PUBLISH_ALL'), 'canpublishall', $orderdir, $order, "user.list"); ?></th>
+					    nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', Text::_('PUBLISH_ALL'), 'canpublishall', $orderdir, $order, "user.list"); ?></th>
 					<th align="center"
-					    nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', JText::_('DELETE_ALL'), 'candeleteall', $orderdir, $order, "user.list"); ?></th>
+					    nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', Text::_('DELETE_ALL'), 'candeleteall', $orderdir, $order, "user.list"); ?></th>
 					<th align="center"
-					    nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', JText::_('UPLOAD_IMAGES'), 'canuploadimages', $orderdir, $order, "user.list"); ?></th>
+					    nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', Text::_('UPLOAD_IMAGES'), 'canuploadimages', $orderdir, $order, "user.list"); ?></th>
 					<th align="center"
-					    nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', JText::_('UPLOAD_FILES'), 'canuploadmovies', $orderdir, $order, "user.list"); ?></th>
+					    nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', Text::_('UPLOAD_FILES'), 'canuploadmovies', $orderdir, $order, "user.list"); ?></th>
 					<th align="center"
-					    nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', JText::_('CREATE_OWN_EXTRAS'), 'cancreateown', $orderdir, $order, "user.list"); ?></th>
+					    nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', Text::_('CREATE_OWN_EXTRAS'), 'cancreateown', $orderdir, $order, "user.list"); ?></th>
 					<th align="center"
-					    nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', JText::_('CREATE_GLOBAL_EXTRAS'), 'cancreateglobal', $orderdir, $order, "user.list"); ?></th>
+					    nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', Text::_('CREATE_GLOBAL_EXTRAS'), 'cancreateglobal', $orderdir, $order, "user.list"); ?></th>
 					<th align="center"
-					    nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', JText::_('MAX_EXTRAS'), 'extraslimit', $orderdir, $order, "user.list"); ?></th>
+					    nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', Text::_('MAX_EXTRAS'), 'extraslimit', $orderdir, $order, "user.list"); ?></th>
 				</tr>
 				</thead>
 				<tfoot>

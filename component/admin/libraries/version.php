@@ -12,7 +12,6 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-//class JEventsVersion extends JObject {
 class JEventsVersion
 {
 	/** @var string Product */

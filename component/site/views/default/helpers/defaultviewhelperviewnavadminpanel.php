@@ -10,6 +10,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
@@ -56,8 +57,8 @@ function DefaultViewHelperViewNavAdminPanel($view)
 				JHtmlBootstrap::loadCss();
 			}
 			// Load event adding language string
-			JText::script('JEV_ADD_EVENT');
-			JText::script('JEV_IMPORT_ICALEVENT');
+			Text::script('JEV_ADD_EVENT');
+			Text::script('JEV_IMPORT_ICALEVENT');
 			?>
 			<div class="ev_adminpanel">
 				<div align="left" class="nav_bar_cell">
@@ -75,8 +76,8 @@ function DefaultViewHelperViewNavAdminPanel($view)
 					}
 					$eventlinkadd = $popup ? "javascript:jevEditPopup('" . $editLink . "');" : $editLink;
 					?>
-					<a href="<?php echo $eventlinkadd; ?>" title="<?php echo JText::_('JEV_ADDEVENT'); ?>">
-						<b><?php echo JText::_('JEV_ADDEVENT'); ?></b>
+					<a href="<?php echo $eventlinkadd; ?>" title="<?php echo Text::_('JEV_ADDEVENT'); ?>">
+						<b><?php echo Text::_('JEV_ADDEVENT'); ?></b>
 					</a>
 					<?php
 					// offer frontend import ?
@@ -89,8 +90,8 @@ function DefaultViewHelperViewNavAdminPanel($view)
 						$eventimport = "javascript:jevImportPopup('" . $importLink . "');";
 						?>
 						<br/><a href="<?php echo $eventimport; ?>"
-						        title="<?php echo JText::_('JEV_IMPORT_ICALEVENT', true); ?>">
-						<b><?php echo JText::_('JEV_IMPORT_ICALEVENT'); ?></b>
+						        title="<?php echo Text::_('JEV_IMPORT_ICALEVENT', true); ?>">
+						<b><?php echo Text::_('JEV_IMPORT_ICALEVENT'); ?></b>
 					</a>
 						<?php
 					}
@@ -135,8 +136,8 @@ function DefaultViewHelperViewNavAdminPanel($view)
 							  $eventmylinks = Route::_( 'index.php?option=' . JEV_COM_COMPONENT . '&task=admin.listevents'
 							  . '&year=' . $view->year . '&month=' . $view->month . '&day=' . $view->day
 							  . '&Itemid=' . $view->Itemid ); ?>
-							  <a href="<?php echo $eventmylinks; ?>" title="<?php echo JText::_('JEV_MYEVENTS'); ?>">
-							  <b><?php echo JText::_('JEV_MYEVENTS'); ?></b>
+							  <a href="<?php echo $eventmylinks; ?>" title="<?php echo Text::_('JEV_MYEVENTS'); ?>">
+							  <b><?php echo Text::_('JEV_MYEVENTS'); ?></b>
 							  </a>
 							  <?php
 							 */

@@ -1,4 +1,8 @@
 <?php
+
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\Field\EditorField;
+
 /**
  * JEvents Locations Component for Joomla 1.5.x
  *
@@ -24,12 +28,12 @@ else if (file_exists(JPATH_SITE . "/libraries/joomla/form/fields/editor.php"))
 }
 jimport('joomla.html.editor');
 
-class JFormFieldJevhtml extends JFormFieldEditor
+class JFormFieldJevhtml extends EditorField
 {
 	protected function getInput()
 	{
 
-		$this->value = str_replace('<br />', "\n", JText::_($this->value));
+		$this->value = str_replace('<br />', "\n", Text::_($this->value));
 
 		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
 		JEVHelper::ConditionalFields($this->element, $this->form->getName());

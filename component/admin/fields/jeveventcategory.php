@@ -1,11 +1,15 @@
 <?php
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormField;
+
+
 defined('JPATH_BASE') or die;
 
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
-class JFormFieldJeveventcategory extends JFormField
+class FormFieldJeveventcategory extends FormField
 {
 	/**
 	 * The form field type.
@@ -30,7 +34,7 @@ class JFormFieldJeveventcategory extends JFormField
 			{
 				$this->form->jevdata[$this->name]["excats"] = false;
 			}
-			$selectSomeCategories = JText::_("JEV_SELECT_SOME_CATEGORIES", true);
+			$selectSomeCategories = Text::_("JEV_SELECT_SOME_CATEGORIES", true);
 			$input                = JEventsHTML::buildCategorySelect($this->value, 'data-placeholder="' . $selectSomeCategories . '" ', $this->form->jevdata[$this->name]["dataModel"]->accessibleCategoryList(),
 				$this->form->jevdata[$this->name]["with_unpublished_cat"], true, 0, 'catid', JEV_COM_COMPONENT, $this->form->jevdata[$this->name]["excats"], "ordering", true);
 		}

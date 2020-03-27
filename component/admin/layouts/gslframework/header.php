@@ -15,14 +15,18 @@ if (GSLMSIE10)
     return;
 }
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Version;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Session\Session;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Factory;
 
 // Skip Chosen in Joomla 4.x+
-$jversion = new JVersion;
+$jversion = new Version;
 if ($jversion->isCompatible('4.0'))
 {
-	$document = JFactory::getDocument();
+	$document = Factory::getDocument();
 	$document->addScriptDeclaration("j3 = false;");
 }
 
@@ -135,7 +139,7 @@ $tmpl = Factory::getApplication()->input->getCmd('tmpl', '');
                                        aria-expanded="false">
                                     </a>
                                 </li>
-                            </ul>
+                           </ul>
                         </div>
                 </nav>
 		            <?php

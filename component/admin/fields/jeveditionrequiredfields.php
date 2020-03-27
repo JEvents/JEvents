@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -41,16 +42,16 @@ class JFormFieldJeveditionrequiredfields extends JFormFieldList
 		$jevplugins = PluginHelper::getPlugin("jevents");
 		//we dinamically get the size of the select box
 		$size = 5;
-		//$options['CATEGORY'] = JText::_("JEV_FIELD_CATEGORY",true);
+		//$options['CATEGORY'] = Text::_("JEV_FIELD_CATEGORY",true);
 		// title is always required
-		//$options['TITLE'] = JText::_("JEV_FIELD_TITLE",true);
-		$options['DESCRIPTION'] = JText::_("JEV_FIELD_DESCRIPTION", true);
-		$options['LOCN']        = JText::_("JEV_FIELD_LOCATION", true);
-		$options['CONTACT']     = JText::_("JEV_FIELD_CONTACT", true);
-		$options['EXTRA']       = JText::_("JEV_FIELD_EXTRAINFO", true);
+		//$options['TITLE'] = Text::_("JEV_FIELD_TITLE",true);
+		$options['DESCRIPTION'] = Text::_("JEV_FIELD_DESCRIPTION", true);
+		$options['LOCN']        = Text::_("JEV_FIELD_LOCATION", true);
+		$options['CONTACT']     = Text::_("JEV_FIELD_CONTACT", true);
+		$options['EXTRA']       = Text::_("JEV_FIELD_EXTRAINFO", true);
 		$group                  = array();
-		$group['value']         = JText::_("JEV_CORE_DATA", true);
-		$group['text']          = JText::_("JEV_CORE_DATA", true);
+		$group['value']         = Text::_("JEV_CORE_DATA", true);
+		$group['text']          = Text::_("JEV_CORE_DATA", true);
 
 		$group['items'] = $options;
 		$optionsGroup[] = $group;

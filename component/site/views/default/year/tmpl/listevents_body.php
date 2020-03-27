@@ -1,13 +1,16 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
+
 $cfg = JEVConfig::getInstance();
 
 // Note that using a $limit value of -1 the limit is ignored in the query
 $this->data = $data = $this->datamodel->getYearData($this->year, $this->limit, $this->limitstart);
 
-echo "<div id='cal_title'>" . JText::_('JEV_EVENTSFOR') . "</div>\n";
-//echo '<fieldset id="ev_fieldset"><legend class="ev_fieldset">' . JText::_('JEV_ARCHIVE') . '</legend><br />' . "\n";
+echo "<div id='cal_title'>" . Text::_('JEV_EVENTSFOR') . "</div>\n";
+//echo '<fieldset id="ev_fieldset"><legend class="ev_fieldset">' . Text::_('JEV_ARCHIVE') . '</legend><br />' . "\n";
 ?>
 	<table align="center" width="90%" cellspacing="0" cellpadding="0" class="ev_table">
 	<tr valign="top">
@@ -21,7 +24,7 @@ echo "<div id='cal_title'>" . JText::_('JEV_EVENTSFOR') . "</div>\n";
 if ($data["total"] <= 0 && $cfg->get('year_show_noev_found', 0))
 {
 
-	echo '<tr><td colspan="2" class="no_events_found">' . JText::_('JEV_NO_EVENTS_FOUND') . '</td></tr>';
+	echo '<tr><td colspan="2" class="no_events_found">' . Text::_('JEV_NO_EVENTS_FOUND') . '</td></tr>';
 
 }
 else
@@ -54,7 +57,7 @@ else
                         echo "<ul class='ev_ul'>\n";
                         echo "<li>\n";
                         echo "<br />";
-                        //echo JText::_('JEV_NO_EVENTS_FOUND');
+                        //echo Text::_('JEV_NO_EVENTS_FOUND');
                         echo "</li>\n";
                         echo "</ul></td></tr>\n";
                 }

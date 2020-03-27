@@ -2,6 +2,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -41,29 +43,29 @@ function DefaultEventManagementDialog($view, $row, $mask, $bootstrap = false)
 		}
 
 		$hasrepeat    = false;
-		$editImg      = HTMLHelper::image('com_jevents/icons-32/edit.png', JText::_("EDIT_EVENT"), null, true);
+		$editImg      = HTMLHelper::image('com_jevents/icons-32/edit.png', Text::_("EDIT_EVENT"), null, true);
 		$editLink     = $row->editLink();
 		$editLink     = $popup ? "javascript:jevEditPopupNoHeader('" . $editLink . "');" : $editLink;
-		$editCopyImg  = HTMLHelper::image('com_jevents/icons-32/copy.png', JText::_("COPY_AND_EDIT_EVENT"), null, true);
+		$editCopyImg  = HTMLHelper::image('com_jevents/icons-32/copy.png', Text::_("COPY_AND_EDIT_EVENT"), null, true);
 		$editCopyLink = $row->editCopyLink();
 		$editCopyLink = $popup ? "javascript:jevEditPopupNoHeader('" . $editCopyLink . "');" : $editCopyLink;
-		$deleteImg    = HTMLHelper::image('com_jevents/icons-32/discard.png', JText::_("DELETE_EVENT"), null, true);
+		$deleteImg    = HTMLHelper::image('com_jevents/icons-32/discard.png', Text::_("DELETE_EVENT"), null, true);
 		$deleteLink   = $row->deleteLink();
 		if ($row->until() != $row->dtstart() || $row->count() > 1 || $row->freq() == "IRREGULAR")
 		{
 
 			$hasrepeat = true;
 
-			$editRepeatImg    = HTMLHelper::image('com_jevents/icons-32/edit.png', JText::_("EDIT_REPEAT"), null, true);
+			$editRepeatImg    = HTMLHelper::image('com_jevents/icons-32/edit.png', Text::_("EDIT_REPEAT"), null, true);
 			$editRepeatLink   = $row->editRepeatLink();
 			$editRepeatLink   = $popup ? "javascript:jevEditPopupNoHeader('" . $editRepeatLink . "');" : $editRepeatLink;
-			$deleteRepeatImg  = HTMLHelper::image('com_jevents/icons-32/discard.png', JText::_("DELETE_THIS_REPEAT"), null, true);
+			$deleteRepeatImg  = HTMLHelper::image('com_jevents/icons-32/discard.png', Text::_("DELETE_THIS_REPEAT"), null, true);
 			$deleteRepeatLink = $row->deleteRepeatLink();
 			//$deleteRepeatLink = $row->deleteRepeatLink(false);
-			//$deleteRepeatLink = JRoute::_($deleteRepeatLink."&rettask=month.calendar", true);
-			$deleteFutureImg  = HTMLHelper::image('com_jevents/icons-32/discards.png', JText::_("JEV_DELETE_FUTURE_REPEATS"), null, true);
+			//$deleteRepeatLink = Route::_($deleteRepeatLink."&rettask=month.calendar", true);
+			$deleteFutureImg  = HTMLHelper::image('com_jevents/icons-32/discards.png', Text::_("JEV_DELETE_FUTURE_REPEATS"), null, true);
 			$deleteFutureLink = $row->deleteFutureLink();
-			$deleteImg        = HTMLHelper::image('com_jevents/icons-32/discards.png', JText::_("DELETE_ALL_REPEATS"), null, true);
+			$deleteImg        = HTMLHelper::image('com_jevents/icons-32/discards.png', Text::_("DELETE_ALL_REPEATS"), null, true);
 		}
 		else
 		{
@@ -91,15 +93,15 @@ function DefaultEventManagementDialog($view, $row, $mask, $bootstrap = false)
 		{
 			if ($row->published() > 0)
 			{
-				$publishImg  = HTMLHelper::image('com_jevents/icons-32/cancel.png', JText::_("UNPUBLISH_EVENT"), null, true);
+				$publishImg  = HTMLHelper::image('com_jevents/icons-32/cancel.png', Text::_("UNPUBLISH_EVENT"), null, true);
 				$publishLink = $row->unpublishLink();
-				$publishText = JText::_('UNPUBLISH_EVENT');
+				$publishText = Text::_('UNPUBLISH_EVENT');
 			}
 			else
 			{
-				$publishImg  = HTMLHelper::image('com_jevents/icons-32/accept.png', JText::_("PUBLISH_EVENT"), null, true);
+				$publishImg  = HTMLHelper::image('com_jevents/icons-32/accept.png', Text::_("PUBLISH_EVENT"), null, true);
 				$publishLink = $row->publishLink();
-				$publishText = JText::_('PUBLISH_EVENT');
+				$publishText = Text::_('PUBLISH_EVENT');
 			}
 		}
 
@@ -115,7 +117,7 @@ function DefaultEventManagementDialog($view, $row, $mask, $bootstrap = false)
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="myModalLabel"><?php echo JText::_("JEV_MANAGE_EVENT"); ?></h4>
+						<h4 class="modal-title" id="myModalLabel"><?php echo Text::_("JEV_MANAGE_EVENT"); ?></h4>
 					</div>
 					<div class="modal-body">
 						<?php
@@ -133,7 +135,7 @@ function DefaultEventManagementDialog($view, $row, $mask, $bootstrap = false)
 						{
 							?>
 							<a href="<?php echo $editRepeatLink; ?>" id="edit_reccur"
-							   title="edit event"><?php echo $editRepeatImg; ?><?php echo JText::_('EDIT_REPEAT'); ?></a>
+							   title="edit event"><?php echo $editRepeatImg; ?><?php echo Text::_('EDIT_REPEAT'); ?></a>
 							<br/>
 							<?php
 						}
@@ -141,9 +143,9 @@ function DefaultEventManagementDialog($view, $row, $mask, $bootstrap = false)
 						{
 							?>
 							<a href="<?php echo $editLink; ?>" id="edit_event"
-							   title="edit event"><?php echo $editImg; ?><?php echo JText::_('EDIT_EVENT'); ?></a><br/>
+							   title="edit event"><?php echo $editImg; ?><?php echo Text::_('EDIT_EVENT'); ?></a><br/>
 							<a href="<?php echo $editCopyLink; ?>" id="edit_eventcopy"
-							   title="edit event"><?php echo $editCopyImg; ?><?php echo JText::_('COPY_AND_EDIT_EVENT'); ?></a>
+							   title="edit event"><?php echo $editCopyImg; ?><?php echo Text::_('COPY_AND_EDIT_EVENT'); ?></a>
 							<br/>
 							<?php
 						}
@@ -151,9 +153,9 @@ function DefaultEventManagementDialog($view, $row, $mask, $bootstrap = false)
 						{
 							?>
 							<a href="<?php echo $deleteRepeatLink; ?>"
-							   onclick="return confirm('<?php echo JText::_('ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_RECURRENCE', true); ?>')"
+							   onclick="return confirm('<?php echo Text::_('ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_RECURRENCE', true); ?>')"
 							   id="delete_repeat"
-							   title="delete repeat"><?php echo $deleteRepeatImg; ?><?php echo JText::_('DELETE_THIS_REPEAT'); ?></a>
+							   title="delete repeat"><?php echo $deleteRepeatImg; ?><?php echo Text::_('DELETE_THIS_REPEAT'); ?></a>
 							<br/>
 							<?php
 						}
@@ -161,9 +163,9 @@ function DefaultEventManagementDialog($view, $row, $mask, $bootstrap = false)
 						{
 							?>
 							<a href="<?php echo $deleteLink; ?>"
-							   onclick="return confirm('<?php echo JText::_($hasrepeat ? 'ARE_YOU_SURE_YOU_WISH_TO_DELETE_THIS_EVENT_AND_ALL_ITS_REPEAT' : 'ARE_YOU_SURE_YOU_WISH_TO_DELETE_THIS_EVENT', true); ?>')"
+							   onclick="return confirm('<?php echo Text::_($hasrepeat ? 'ARE_YOU_SURE_YOU_WISH_TO_DELETE_THIS_EVENT_AND_ALL_ITS_REPEAT' : 'ARE_YOU_SURE_YOU_WISH_TO_DELETE_THIS_EVENT', true); ?>')"
 							   id="delete_event"
-							   title="delete event"><?php echo $deleteImg; ?><?php echo JText::_($hasrepeat ? "DELETE_ALL_REPEATS" : "DELETE_EVENT"); ?></a>
+							   title="delete event"><?php echo $deleteImg; ?><?php echo Text::_($hasrepeat ? "DELETE_ALL_REPEATS" : "DELETE_EVENT"); ?></a>
 							<br/>
 							<?php
 						}
@@ -171,9 +173,9 @@ function DefaultEventManagementDialog($view, $row, $mask, $bootstrap = false)
 						{
 							?>
 							<a href="<?php echo $deleteFutureLink; ?>"
-							   onclick="return confirm('<?php echo JText::_('ARE_YOU_SURE_YOU_WITH_TO_DELETE_THIS_EVENT_AND_ALL_FUTURE_REPEATS', true) ?>')"
+							   onclick="return confirm('<?php echo Text::_('ARE_YOU_SURE_YOU_WITH_TO_DELETE_THIS_EVENT_AND_ALL_FUTURE_REPEATS', true) ?>')"
 							   id="delete_eventfuture"
-							   title="delete event"><?php echo $deleteFutureImg; ?><?php echo JText::_('JEV_DELETE_FUTURE_REPEATS'); ?></a>
+							   title="delete event"><?php echo $deleteFutureImg; ?><?php echo Text::_('JEV_DELETE_FUTURE_REPEATS'); ?></a>
 							<br/>
 							<?php
 
@@ -182,7 +184,7 @@ function DefaultEventManagementDialog($view, $row, $mask, $bootstrap = false)
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default"
-						        data-dismiss="modal"><?php echo JText::_("JEV_CLOSE"); ?></button>
+						        data-dismiss="modal"><?php echo Text::_("JEV_CLOSE"); ?></button>
 					</div>
 				</div>
 			</div>

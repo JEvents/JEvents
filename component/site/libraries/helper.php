@@ -11,6 +11,13 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Access\Access;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Cache\Cache;
+use Joomla\CMS\User\User;
+use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\String\StringHelper;
@@ -199,29 +206,29 @@ class JEVHelper
 		{
 
 			case 1:
-				return JText::_('JEV_JANUARY');
+				return Text::_('JEV_JANUARY');
 			case 2:
-				return JText::_('JEV_FEBRUARY');
+				return Text::_('JEV_FEBRUARY');
 			case 3:
-				return JText::_('JEV_MARCH');
+				return Text::_('JEV_MARCH');
 			case 4:
-				return JText::_('JEV_APRIL');
+				return Text::_('JEV_APRIL');
 			case 5:
-				return JText::_('JEV_MAY');
+				return Text::_('JEV_MAY');
 			case 6:
-				return JText::_('JEV_JUNE');
+				return Text::_('JEV_JUNE');
 			case 7:
-				return JText::_('JEV_JULY');
+				return Text::_('JEV_JULY');
 			case 8:
-				return JText::_('JEV_AUGUST');
+				return Text::_('JEV_AUGUST');
 			case 9:
-				return JText::_('JEV_SEPTEMBER');
+				return Text::_('JEV_SEPTEMBER');
 			case 10:
-				return JText::_('JEV_OCTOBER');
+				return Text::_('JEV_OCTOBER');
 			case 11:
-				return JText::_('JEV_NOVEMBER');
+				return Text::_('JEV_NOVEMBER');
 			case 12:
-				return JText::_('JEV_DECEMBER');
+				return Text::_('JEV_DECEMBER');
 		}
 
 	}
@@ -245,29 +252,29 @@ class JEVHelper
 
 			// Use Joomla translation
 			case 1:
-				return JText::_('JANUARY_SHORT');
+				return Text::_('JANUARY_SHORT');
 			case 2:
-				return JText::_('FEBRUARY_SHORT');
+				return Text::_('FEBRUARY_SHORT');
 			case 3:
-				return JText::_('MARCH_SHORT');
+				return Text::_('MARCH_SHORT');
 			case 4:
-				return JText::_('APRIL_SHORT');
+				return Text::_('APRIL_SHORT');
 			case 5:
-				return JText::_('MAY_SHORT');
+				return Text::_('MAY_SHORT');
 			case 6:
-				return JText::_('JUNE_SHORT');
+				return Text::_('JUNE_SHORT');
 			case 7:
-				return JText::_('JULY_SHORT');
+				return Text::_('JULY_SHORT');
 			case 8:
-				return JText::_('AUGUST_SHORT');
+				return Text::_('AUGUST_SHORT');
 			case 9:
-				return JText::_('SEPTEMBER_SHORT');
+				return Text::_('SEPTEMBER_SHORT');
 			case 10:
-				return JText::_('OCTOBER_SHORT');
+				return Text::_('OCTOBER_SHORT');
 			case 11:
-				return JText::_('NOVEMBER_SHORT');
+				return Text::_('NOVEMBER_SHORT');
 			case 12:
-				return JText::_('DECEMBER_SHORT');
+				return Text::_('DECEMBER_SHORT');
 		}
 
 	}
@@ -292,13 +299,13 @@ class JEVHelper
 		{
 			$days = array();
 
-			$days[0] = JText::_('JEV_SUNDAY');
-			$days[1] = JText::_('JEV_MONDAY');
-			$days[2] = JText::_('JEV_TUESDAY');
-			$days[3] = JText::_('JEV_WEDNESDAY');
-			$days[4] = JText::_('JEV_THURSDAY');
-			$days[5] = JText::_('JEV_FRIDAY');
-			$days[6] = JText::_('JEV_SATURDAY');
+			$days[0] = Text::_('JEV_SUNDAY');
+			$days[1] = Text::_('JEV_MONDAY');
+			$days[2] = Text::_('JEV_TUESDAY');
+			$days[3] = Text::_('JEV_WEDNESDAY');
+			$days[4] = Text::_('JEV_THURSDAY');
+			$days[5] = Text::_('JEV_FRIDAY');
+			$days[6] = Text::_('JEV_SATURDAY');
 		}
 
 		if ($array == 1)
@@ -332,13 +339,13 @@ class JEVHelper
 		{
 			$days = array();
 
-			$days[0] = JText::_('JEV_SUN');
-			$days[1] = JText::_('JEV_MON');
-			$days[2] = JText::_('JEV_TUE');
-			$days[3] = JText::_('JEV_WED');
-			$days[4] = JText::_('JEV_THU');
-			$days[5] = JText::_('JEV_FRI');
-			$days[6] = JText::_('JEV_SAT');
+			$days[0] = Text::_('JEV_SUN');
+			$days[1] = Text::_('JEV_MON');
+			$days[2] = Text::_('JEV_TUE');
+			$days[3] = Text::_('JEV_WED');
+			$days[4] = Text::_('JEV_THU');
+			$days[5] = Text::_('JEV_FRI');
+			$days[6] = Text::_('JEV_SAT');
 		}
 
 		if ($array == 1)
@@ -372,11 +379,11 @@ class JEVHelper
 			{
 				$time = JevDate::mktime($h, $m);
 
-				return JEV_CommonFunctions::jev_strftime(JText::_("JEV_TIME_FORMAT"), $time);
+				return JEV_CommonFunctions::jev_strftime(Text::_("JEV_TIME_FORMAT"), $time);
 			}
 			else
 			{
-				return JEV_CommonFunctions::jev_strftime(JText::_("JEV_TIME_FORMAT"), $date);
+				return JEV_CommonFunctions::jev_strftime(Text::_("JEV_TIME_FORMAT"), $date);
 			}
 		}
 
@@ -422,13 +429,13 @@ class JEVHelper
 		if ($days === null)
 		{
 			$days    = array();
-			$days[0] = JText::_('JEV_SUNDAY_CHR');
-			$days[1] = JText::_('JEV_MONDAY_CHR');
-			$days[2] = JText::_('JEV_TUESDAY_CHR');
-			$days[3] = JText::_('JEV_WEDNESDAY_CHR');
-			$days[4] = JText::_('JEV_THURSDAY_CHR');
-			$days[5] = JText::_('JEV_FRIDAY_CHR');
-			$days[6] = JText::_('JEV_SATURDAY_CHR');
+			$days[0] = Text::_('JEV_SUNDAY_CHR');
+			$days[1] = Text::_('JEV_MONDAY_CHR');
+			$days[2] = Text::_('JEV_TUESDAY_CHR');
+			$days[3] = Text::_('JEV_WEDNESDAY_CHR');
+			$days[4] = Text::_('JEV_THURSDAY_CHR');
+			$days[5] = Text::_('JEV_FRIDAY_CHR');
+			$days[6] = Text::_('JEV_SATURDAY_CHR');
 		}
 
 		if ($array == 1)
@@ -897,7 +904,7 @@ class JEVHelper
 					->addScriptDeclaration(
 						'jQuery(document).ready(function($) {
 					if (!jQuery("#' . $fieldid . '").length) {
-						alert("' . JText::sprintf("JEV_MISSING_CALENDAR_FIELD_IN_PAGE", true) . '\n\n" + "' . $fieldid . '"  );
+						alert("' . Text::sprintf("JEV_MISSING_CALENDAR_FIELD_IN_PAGE", true) . '\n\n" + "' . $fieldid . '"  );
 						return;
 					}
 			Calendar.setup({
@@ -1069,7 +1076,7 @@ class JEVHelper
 			if (JEVHelper::isAdminUser($user) && Factory::getApplication()->isClient('administrator'))
 			{
 				// Make sure admin users can see public events
-				$levels = array_merge($levels, JAccess::getAuthorisedViewLevels(0));
+				$levels = array_merge($levels, Access::getAuthorisedViewLevels(0));
 			}
 		}
 
@@ -1102,7 +1109,7 @@ class JEVHelper
 		{
 			$user = Factory::getUser();
 		}
-		//$access = JAccess::check($user->id, "core.admin","com_jevents");
+		//$access = Access::check($user->id, "core.admin","com_jevents");
 		// Add a second check incase the getuser failed.
 		if (!$user)
 		{
@@ -1364,7 +1371,7 @@ class JEVHelper
 		if (!isset($datenow))
 		{
 			include_once(JPATH_SITE . "/components/com_jevents/jevents.defines.php");
-			$compparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$compparams = ComponentHelper::getParams(JEV_COM_COMPONENT);
 			$tz = $compparams->get("icaltimezonelive", "");
 			// Now in the set timezone!
 			$datenow = JevDate::getDate("+0 seconds");
@@ -1452,8 +1459,8 @@ class JEVHelper
 				}
 				else if ($juser->id > 0 && JEVHelper::isAdminUser($juser))
 				{
-					JError::raiseWarning("403", JText::_("JEV_AUTHORISED_USER_MODE_ENABLED_BUT_NO_ENTRY_FOR_SUPER_USER"));
-					Factory::getApplication()->enqueueMessage(JText::_("JEV_AUTHORISED_USER_MODE_ENABLED_BUT_NO_ENTRY_FOR_SUPER_USER"), 'warning');
+					JError::raiseWarning("403", Text::_("JEV_AUTHORISED_USER_MODE_ENABLED_BUT_NO_ENTRY_FOR_SUPER_USER"));
+					Factory::getApplication()->enqueueMessage(Text::_("JEV_AUTHORISED_USER_MODE_ENABLED_BUT_NO_ENTRY_FOR_SUPER_USER"), 'warning');
 
 				}
 			}
@@ -2684,13 +2691,13 @@ class JEVHelper
 	 *
 	 * JEvents version that doesn't throw error message when user doesn't exist
 	 *
-	 * Returns the global {@link JUser} object, only creating it if it doesn't already exist.
+	 * Returns the global {@link User} object, only creating it if it doesn't already exist.
 	 *
 	 * @param   integer $id The user to load - Can be an integer or string - If string, it is converted to ID automatically.
 	 *
-	 * @return  JUser object
+	 * @return  User object
 	 *
-	 * @see     JUser
+	 * @see     User
 	 * @since   11.1
 	 */
 	public static
@@ -2700,7 +2707,7 @@ class JEVHelper
 		if (is_null($id) || $id == 0)
 		{
 			// CB sometimes messes up with the session data when logging out - so this is a safe workaround!
-			return JUser::getInstance();
+			return User::getInstance();
 		}
 		else
 		{
@@ -2795,7 +2802,7 @@ class JEVHelper
 			$user = Factory::getUser();
 		}
 
-		return max(JAccess::getGroupsByUser($user->id));  // RSH trying to get a gid for J!1.6
+		return max(Access::getGroupsByUser($user->id));  // RSH trying to get a gid for J!1.6
 
 	}
 
@@ -2834,7 +2841,7 @@ class JEVHelper
 	{
 
 		//Check for JEvents Custom CSS file
-		if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
+		if (File::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
 		{
 			JEVHelper::stylesheet('jevcustom.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
 		}
@@ -2897,7 +2904,7 @@ class JEVHelper
 		if (!isset($base))
 		{
 			// NB this method is no use if you delete the public access level - it assumes that 1 always exists!!!
-			//$levels = JAccess::getAuthorisedViewLevels(0);
+			//$levels = Access::getAuthorisedViewLevels(0);
 			$levels = array();
 			if (count($levels) > 0)
 			{
@@ -2999,7 +3006,7 @@ SCRIPT;
 		{
 			$Itemid   =Factory::getApplication()->input->getInt('Itemid', 0);
 			$rssmodid = $cfg->get('com_rss_modid', 0);
-			// do not use JRoute since this creates .rss link which normal sef can't deal with
+			// do not use Route since this creates .rss link which normal sef can't deal with
 			$rssLink = 'index.php?option=' . JEV_COM_COMPONENT . '&amp;task=modlatest.rss&amp;format=feed&amp;type=rss&amp;Itemid=' . $Itemid . '&amp;modid=' . $rssmodid;
 			$rssLink = Uri::root() . $rssLink;
 
@@ -3011,7 +3018,7 @@ SCRIPT;
 
 			$rssLink = 'index.php?option=' . JEV_COM_COMPONENT . '&amp;task=modlatest.rss&amp;format=feed&amp;type=atom&amp;Itemid=' . $Itemid . '&amp;modid=' . $rssmodid;
 			$rssLink = Uri::root() . $rssLink;
-			//$rssLink = JRoute::_($rssLink);
+			//$rssLink = Route::_($rssLink);
 			if (method_exists(Factory::getDocument(), "addHeadLink"))
 			{
 				$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
@@ -3234,7 +3241,7 @@ SCRIPT;
 				}
 
 				// If we have session data then need to block page caching too!!
-				// JCache::getInstance('page', $options); doesn't give an instance its always a NEW copy
+				// Cache::getInstance('page', $options); doesn't give an instance its always a NEW copy
 				$cache_plg  = PluginHelper::getPlugin('system', 'cache');
 
 				$observers  = @$app->get("_observers");
@@ -3258,7 +3265,7 @@ SCRIPT;
 			if ($input->getCmd("em") || $input->getCmd("em2"))
 			{
 				// If we have RSVP PRo data then need to block page caching too!!
-				// JCache::getInstance('page', $options); doesn't give an instance its always a NEW copy
+				// Cache::getInstance('page', $options); doesn't give an instance its always a NEW copy
 				$cache_plg  = PluginHelper::getPlugin('system', 'cache');
 				$observers  = @$app->get("_observers");
 				if ($observers && is_array($observers))
@@ -3289,7 +3296,7 @@ SCRIPT;
 
 			foreach ($safeurlparams as $key => $value)
 			{
-				// Add your safe url parameters with variable type as value {@see JFilterInput::clean()}.
+				// Add your safe url parameters with variable type as value {@see InputFilter::clean()}.
 				$registeredurlparams->$key = $value;
 			}
 
@@ -3308,7 +3315,7 @@ SCRIPT;
 		{
 			$status = "CANCELLED";
 		}
-		if (JFile::exists(JPATH_SITE . "/plugins/jevents/jevnotify/"))
+		if (File::exists(JPATH_SITE . "/plugins/jevents/jevnotify/"))
 		{
 			//If using JEvents notify plugin we need to load it for the processing of data.
 			JLoader::register('JEVNotifyHelper', JPATH_SITE . "/plugins/jevents/jevnotify/helper.php");
@@ -4283,10 +4290,10 @@ SCRIPT;
 
 		if (version_compare(JVERSION, '3.7.1', '>='))
 		{
-			$filter = JFilterInput::getInstance(null, null, 1, 1);
+			$filter = InputFilter::getInstance(null, null, 1, 1);
 
 			//Joomla! no longer provides HTML allowed in input so we need to fetch raw
-			//Then filter on through with JFilterInput to HTML
+			//Then filter on through with InputFilter to HTML
 
 			foreach ($array as $key => $row)
 			{

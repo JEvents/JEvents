@@ -12,6 +12,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Version;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Installer\Installer;
+use Joomla\CMS\Feed\FeedFactory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -37,10 +45,10 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		jimport('joomla.html.pane');
 
 		$document = Factory::getDocument();
-		$document->setTitle(JText::_('JEVENTS_DASHBOARD'));
+		$document->setTitle(Text::_('JEVENTS_DASHBOARD'));
 
 		// Set toolbar items for the page
-		JToolbarHelper::title(JText::_('JEVENTS_DASHBOARD'), 'jevents');
+		JToolbarHelper::title(Text::_('JEVENTS_DASHBOARD'), 'jevents');
 
 		JEventsHelper::addSubmenu();
 
@@ -152,7 +160,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 		if (count($installed))
 		{
-			Factory::getApplication()->enqueueMessage(JText::_("JEV_SET_UPDATER_CODE") . "<br/><br/>" . JText::_("JEV_JOOMLA_UPDATE_CLUBCODE_INFO"), "warning");
+			Factory::getApplication()->enqueueMessage(Text::_("JEV_SET_UPDATER_CODE") . "<br/><br/>" . Text::_("JEV_JOOMLA_UPDATE_CLUBCODE_INFO"), "warning");
 
 			return;
 		}
@@ -439,7 +447,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 
 		$params   = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		$clubcode = $params->get("clubcode", "");
-		$filter   = new JFilterInput();
+		$filter   = new InputFilter();
 		$clubcode = $filter->clean($clubcode, "CMD");
 		//$clubcode = $filter->clean($clubcode, "BASE64")."-".$sitedomain;
 		//$clubcode = base64_encode($clubcode);
@@ -451,7 +459,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 		//$domain = "http://ubu.j33jq.com";
 		$domain = "https://www.jevents.net";
 
-		//$extension  = JTable::getInstance("Extension");
+		//$extension  = Table::getInstance("Extension");
 		//$extension->load($pkgupdate->extension_id);
 
 		// Save DB queries!
@@ -626,25 +634,25 @@ and exn.element='$pkg' and exn.folder='$folder'
 
 		try
 		{
-			$feed   = new JFeedFactory;
+			$feed   = new FeedFactory;
 			$rssDoc = $feed->getFeed('https://www.jevents.net/jevnews?format=feed&type=rss');
 		}
 		catch (InvalidArgumentException $e)
 		{
-			return JText::_('MOD_FEED_ERR_FEED_NOT_RETRIEVED');
+			return Text::_('MOD_FEED_ERR_FEED_NOT_RETRIEVED');
 		}
 		catch (RunTimeException $e)
 		{
-			return JText::_('MOD_FEED_ERR_FEED_NOT_RETRIEVED');
+			return Text::_('MOD_FEED_ERR_FEED_NOT_RETRIEVED');
 		}
 		catch (LogicException $e)
 		{
-			return JText::_('MOD_FEED_ERR_FEED_NOT_RETRIEVED');
+			return Text::_('MOD_FEED_ERR_FEED_NOT_RETRIEVED');
 		}
 
 		if (empty($rssDoc))
 		{
-			return JText::_('MOD_FEED_ERR_FEED_NOT_RETRIEVED');
+			return Text::_('MOD_FEED_ERR_FEED_NOT_RETRIEVED');
 		}
 		else
 		{
@@ -653,13 +661,13 @@ and exn.element='$pkg' and exn.folder='$folder'
 			$link  = $rssDoc->uri;
 
 			$output = '<table class="adminlist   table table-striped">';
-			$output .= '<tr><th><a href="' . $link . '" target="_blank">' . JText::_($title) . '</th></tr>';
+			$output .= '<tr><th><a href="' . $link . '" target="_blank">' . Text::_($title) . '</th></tr>';
 
 			$items    = $rssDoc;
 			$numItems = 3;
 			if ($numItems == 0)
 			{
-				$output .= '<tr><th>' . JText::_('JEV_No_news') . '</th></tr>';
+				$output .= '<tr><th>' . Text::_('JEV_No_news') . '</th></tr>';
 			}
 			else
 			{
@@ -734,7 +742,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 
 		if ($rssDoc == false)
 		{
-			$output = JText::_('Error: Feed not retrieved');
+			$output = Text::_('Error: Feed not retrieved');
 		}
 		else
 		{
@@ -743,13 +751,13 @@ and exn.element='$pkg' and exn.folder='$folder'
 			$link  = $rssDoc->get_link();
 
 			$output = '<table class="adminlist   table table-striped">';
-			$output .= '<tr><th><a href="' . $link . '" target="_blank">' . JText::_($title) . '</th></tr>';
+			$output .= '<tr><th><a href="' . $link . '" target="_blank">' . Text::_($title) . '</th></tr>';
 
 			$items    = array_slice($rssDoc->get_items(), 0, 3);
 			$numItems = count($items);
 			if ($numItems == 0)
 			{
-				$output .= '<tr><th>' . JText::_('JEV_No_news') . '</th></tr>';
+				$output .= '<tr><th>' . Text::_('JEV_No_news') . '</th></tr>';
 			}
 			else
 			{
@@ -824,10 +832,10 @@ and exn.element='$pkg' and exn.folder='$folder'
 					if (strpos($item->get_title(), "layout_") === 0)
 					{
 						$layout = str_replace("layout_", "", $item->get_title());
-						if (JFolder::exists(JEV_PATH . "views/$layout"))
+						if (Folder::exists(JEV_PATH . "views/$layout"))
 						{
 // club layouts
-							$xmlfiles1 = JFolder::files(JEV_PATH . "views/$layout", "manifest\.xml", true, true);
+							$xmlfiles1 = Folder::files(JEV_PATH . "views/$layout", "manifest\.xml", true, true);
 							if ($xmlfiles1 && count($xmlfiles1) > 0)
 							{
 								foreach ($xmlfiles1 as $manifest)
@@ -845,10 +853,10 @@ and exn.element='$pkg' and exn.folder='$folder'
 							}
 						}
 						// package version
-						if (JFolder::exists(JPATH_ADMINISTRATOR . "/manifests/files"))
+						if (Folder::exists(JPATH_ADMINISTRATOR . "/manifests/files"))
 						{
 // club layouts
-							$xmlfiles1 = JFolder::files(JPATH_ADMINISTRATOR . "/manifests/files", "$layout\.xml", true, true);
+							$xmlfiles1 = Folder::files(JPATH_ADMINISTRATOR . "/manifests/files", "$layout\.xml", true, true);
 							if (!$xmlfiles1)
 								continue;
 							foreach ($xmlfiles1 as $manifest)
@@ -869,10 +877,10 @@ and exn.element='$pkg' and exn.folder='$folder'
 					{
 						$module = str_replace("module_", "", $item->get_title());
 // modules
-						if (JFolder::exists(JPATH_SITE . "/modules/$module"))
+						if (Folder::exists(JPATH_SITE . "/modules/$module"))
 						{
 
-							$xmlfiles1 = JFolder::files(JPATH_SITE . "/modules/$module", "\.xml", true, true);
+							$xmlfiles1 = Folder::files(JPATH_SITE . "/modules/$module", "\.xml", true, true);
 							if (!$xmlfiles1)
 								continue;
 							foreach ($xmlfiles1 as $manifest)
@@ -896,10 +904,10 @@ and exn.element='$pkg' and exn.folder='$folder'
 						if (count($plugin) < 2)
 							continue;
 // plugins
-						if ((JFolder::exists(JPATH_SITE . "/plugins/" . $plugin[0] . "/" . $plugin[1])))
+						if ((Folder::exists(JPATH_SITE . "/plugins/" . $plugin[0] . "/" . $plugin[1])))
 						{
 // plugins
-							$xmlfiles1 = JFolder::files(JPATH_SITE . "/plugins/" . $plugin[0] . "/" . $plugin[1], "\.xml", true, true);
+							$xmlfiles1 = Folder::files(JPATH_SITE . "/plugins/" . $plugin[0] . "/" . $plugin[1], "\.xml", true, true);
 
 							foreach ($xmlfiles1 as $manifest)
 							{
@@ -919,11 +927,11 @@ and exn.element='$pkg' and exn.folder='$folder'
 					{
 						$component = str_replace("component_", "", $item->get_title());
 
-						if (JFolder::exists(JPATH_ADMINISTRATOR . "/components/" . $component))
+						if (Folder::exists(JPATH_ADMINISTRATOR . "/components/" . $component))
 						{
 
 // modules
-							$xmlfiles1 = JFolder::files(JPATH_ADMINISTRATOR . "/components/" . $component, "\.xml", true, true);
+							$xmlfiles1 = Folder::files(JPATH_ADMINISTRATOR . "/components/" . $component, "\.xml", true, true);
 							if (!$xmlfiles1)
 								continue;
 							foreach ($xmlfiles1 as $manifest)
@@ -965,11 +973,11 @@ and exn.element='$pkg' and exn.folder='$folder'
 				if (count($rows) > 0)
 				{
 					$output = '<table class="versionstatuslist"><tr>';
-					$output .= '<th>' . JText::_("JEV_APPNAME") . '</th>';
-					$output .= '<th>' . JText::_("JEV_APPCODE") . '</th>';
-					$output .= '<th>' . JText::_("JEV_CURRENTVERSION") . '</th>';
-					$output .= '<th>' . JText::_("JEV_LATESTVERSION") . '</th>';
-					$output .= '<th>' . JText::_("JEV_CRITICALVERSION") . '</th>';
+					$output .= '<th>' . Text::_("JEV_APPNAME") . '</th>';
+					$output .= '<th>' . Text::_("JEV_APPCODE") . '</th>';
+					$output .= '<th>' . Text::_("JEV_CURRENTVERSION") . '</th>';
+					$output .= '<th>' . Text::_("JEV_LATESTVERSION") . '</th>';
+					$output .= '<th>' . Text::_("JEV_CRITICALVERSION") . '</th>';
 					$output .= '</tr>';
 					$k      = 0;
 					foreach ($rows as $row)
@@ -1008,7 +1016,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 		$apps = array();
 
 		// Club layouts
-		$xmlfiles1 = JFolder::files(JEV_PATH . "views", "manifest\.xml", true, true);
+		$xmlfiles1 = Folder::files(JEV_PATH . "views", "manifest\.xml", true, true);
 		foreach ($xmlfiles1 as $manifest)
 		{
 			if (!$manifestdata = $this->getValidManifestFile($manifest))
@@ -1020,7 +1028,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 			$apps["layout_" . basename(dirname($manifest))] = $app;
 		}
 
-		$xmlfiles1 = JFolder::files(JPATH_MANIFESTS . "/files", "\.xml", true, true);
+		$xmlfiles1 = Folder::files(JPATH_MANIFESTS . "/files", "\.xml", true, true);
 		foreach ($xmlfiles1 as $manifest)
 		{
 			if (!$manifestdata = $this->getValidManifestFile($manifest))
@@ -1033,9 +1041,9 @@ and exn.element='$pkg' and exn.folder='$folder'
 		}
 
 // plugins
-		if (JFolder::exists(JPATH_SITE . "/plugins"))
+		if (Folder::exists(JPATH_SITE . "/plugins"))
 		{
-			$xmlfiles2 = JFolder::files(JPATH_SITE . "/plugins", "\.xml", true, true);
+			$xmlfiles2 = Folder::files(JPATH_SITE . "/plugins", "\.xml", true, true);
 		}
 		else
 		{
@@ -1058,7 +1066,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 		}
 
 // components (including JEvents
-		$xmlfiles3 = JFolder::files(JPATH_ADMINISTRATOR . "/components", "manifest\.xml", true, true);
+		$xmlfiles3 = Folder::files(JPATH_ADMINISTRATOR . "/components", "manifest\.xml", true, true);
 		foreach ($xmlfiles3 as $manifest)
 		{
 			if (!$manifestdata = $this->getValidManifestFile($manifest))
@@ -1073,9 +1081,9 @@ and exn.element='$pkg' and exn.folder='$folder'
 
 
 // modules
-		if (JFolder::exists(JPATH_SITE . "/modules"))
+		if (Folder::exists(JPATH_SITE . "/modules"))
 		{
-			$xmlfiles4 = JFolder::files(JPATH_SITE . "/modules", "\.xml", true, true);
+			$xmlfiles4 = Folder::files(JPATH_SITE . "/modules", "\.xml", true, true);
 		}
 		else
 		{
@@ -1101,9 +1109,9 @@ and exn.element='$pkg' and exn.folder='$folder'
 		  {
 		  $output .='"' . $appname . '"=> 0,' . "\n";
 		  }
-		  $output = JString::substr($output, 0, JString::strlen($output) - 2) . ");\n\n";
+		  $output = StringHelper::substr($output, 0, StringHelper::strlen($output) - 2) . ");\n\n";
 		 */
-		$criticaldata = JFile::read('http://ubu.jev20j16.com/importantversions.txt');
+		$criticaldata = File::read('http://ubu.jev20j16.com/importantversions.txt');
 		$criticaldata = explode("\n", $criticaldata);
 		$criticals    = array();
 		foreach ($criticaldata as $critical)
@@ -1243,7 +1251,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 			}
 		}
 
-		$manifestdata = JInstaller::parseXMLInstallFile($manifest);
+		$manifestdata = Installer::parseXMLInstallFile($manifest);
 		if (!$manifestdata)
 			return false;
 		if (strpos($manifestdata["authorUrl"], "jevents") === false
@@ -1282,24 +1290,24 @@ and exn.element='$pkg' and exn.folder='$folder'
 		// Joomla
 		$app              = new stdClass();
 		$app->name        = "Joomla";
-		$version          = new JVersion();
+		$version          = new Version();
 		$app->version     = $version->getShortVersion();
 		$apps[$app->name] = $app;
 
 		// TODO :  Can we do this from the database???
 		// components (including JEvents)
 		$xmlfiles3 = array_merge(
-			JFolder::files(JPATH_ADMINISTRATOR . "/components", "manifest\.xml", true, true),
-			JFolder::files(JPATH_ADMINISTRATOR . "/components", "sh404sef\.xml", true, true),
-			JFolder::files(JPATH_ADMINISTRATOR . "/components", "virtuemart\.xml", true, true),
-			JFolder::files(JPATH_ADMINISTRATOR . "/components", "jce\.xml", true, true),
-			JFolder::files(JPATH_ADMINISTRATOR . "/components", "comprofiler\.xml", true, true),
-			JFolder::files(JPATH_ADMINISTRATOR . "/components", "community\.xml", true, true),
-			JFolder::files(JPATH_ADMINISTRATOR . "/components", "jmailalerts\.xml", true, true),
-			JFolder::files(JPATH_ADMINISTRATOR . "/components", "hikashop\.xml", true, true),
-			JFolder::files(JPATH_ADMINISTRATOR . "/components", "hikashop_j3\.xml", true, true),
-			JFolder::files(JPATH_ADMINISTRATOR . "/components", "jev_latestevents\.xml", true, true),
-			JFolder::files(JPATH_ADMINISTRATOR . "/components", "acymailing\.xml", true, true));
+			Folder::files(JPATH_ADMINISTRATOR . "/components", "manifest\.xml", true, true),
+			Folder::files(JPATH_ADMINISTRATOR . "/components", "sh404sef\.xml", true, true),
+			Folder::files(JPATH_ADMINISTRATOR . "/components", "virtuemart\.xml", true, true),
+			Folder::files(JPATH_ADMINISTRATOR . "/components", "jce\.xml", true, true),
+			Folder::files(JPATH_ADMINISTRATOR . "/components", "comprofiler\.xml", true, true),
+			Folder::files(JPATH_ADMINISTRATOR . "/components", "community\.xml", true, true),
+			Folder::files(JPATH_ADMINISTRATOR . "/components", "jmailalerts\.xml", true, true),
+			Folder::files(JPATH_ADMINISTRATOR . "/components", "hikashop\.xml", true, true),
+			Folder::files(JPATH_ADMINISTRATOR . "/components", "hikashop_j3\.xml", true, true),
+			Folder::files(JPATH_ADMINISTRATOR . "/components", "jev_latestevents\.xml", true, true),
+			Folder::files(JPATH_ADMINISTRATOR . "/components", "acymailing\.xml", true, true));
 		foreach ($xmlfiles3 as $manifest)
 		{
 			if (!$manifestdata = $this->getValidManifestFile($manifest))
@@ -1329,9 +1337,9 @@ and exn.element='$pkg' and exn.folder='$folder'
 		}
 
 // modules
-		if (JFolder::exists(JPATH_SITE . "/modules"))
+		if (Folder::exists(JPATH_SITE . "/modules"))
 		{
-			$xmlfiles4 = JFolder::files(JPATH_SITE . "/modules", "\.xml", true, true);
+			$xmlfiles4 = Folder::files(JPATH_SITE . "/modules", "\.xml", true, true);
 		}
 		else
 		{
@@ -1354,7 +1362,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 		}
 
 // club layouts
-		$xmlfiles1 = JFolder::files(JEV_PATH . "views", "manifest\.xml", true, true);
+		$xmlfiles1 = Folder::files(JEV_PATH . "views", "manifest\.xml", true, true);
 		foreach ($xmlfiles1 as $manifest)
 		{
 			if (realpath($manifest) != $manifest)
@@ -1368,7 +1376,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 			$apps["layout_" . basename(dirname($manifest))] = $app;
 		}
 
-		$xmlfiles1 = JFolder::files(JPATH_ADMINISTRATOR . "/manifests/files", "\.xml", true, true);
+		$xmlfiles1 = Folder::files(JPATH_ADMINISTRATOR . "/manifests/files", "\.xml", true, true);
 		foreach ($xmlfiles1 as $manifest)
 		{
 			if (realpath($manifest) != $manifest)
@@ -1383,9 +1391,9 @@ and exn.element='$pkg' and exn.folder='$folder'
 		}
 
 // plugins
-		if (JFolder::exists(JPATH_SITE . "/plugins"))
+		if (Folder::exists(JPATH_SITE . "/plugins"))
 		{
-			$xmlfiles2 = JFolder::files(JPATH_SITE . "/plugins", "\.xml", true, true);
+			$xmlfiles2 = Folder::files(JPATH_SITE . "/plugins", "\.xml", true, true);
 		}
 		else
 		{
@@ -1449,8 +1457,8 @@ and exn.element='$pkg' and exn.folder='$folder'
 	function getTranslatorLink()
 	{
 
-		$translatorUrl = JText::_("JEV_TRANSLATION_AUTHOR");
-		//$translatorUrl = JText::_("JEV_TRANSLATION_AUTHOR_URL");
+		$translatorUrl = Text::_("JEV_TRANSLATION_AUTHOR");
+		//$translatorUrl = Text::_("JEV_TRANSLATION_AUTHOR_URL");
 		//$translatorUrl = "<a href=\"$translatorUrl\">$translatorName</a>";
 
 		return $translatorUrl;
@@ -1463,9 +1471,9 @@ and exn.element='$pkg' and exn.folder='$folder'
 		jimport('joomla.html.pane');
 
 		$document = Factory::getDocument();
-		$document->setTitle(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'));
+		$document->setTitle(Text::_('JEVENTS') . ' :: ' . Text::_('JEVENTS'));
 
-		JToolbarHelper::title(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'), 'jevents');
+		JToolbarHelper::title(Text::_('JEVENTS') . ' :: ' . Text::_('JEVENTS'), 'jevents');
 
 
 
@@ -1474,7 +1482,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 		if (ini_get("max_input_vars") > 0 && ini_get("max_input_vars") <= 1000)
 		{
 
-			Factory::getApplication()->enqueueMessage('234 - ' . JText::sprintf("MAX_INPUT_VARS_LOW_WARNING", ini_get("max_input_vars")), 'warning');
+			Factory::getApplication()->enqueueMessage('234 - ' . Text::sprintf("MAX_INPUT_VARS_LOW_WARNING", ini_get("max_input_vars")), 'warning');
 
 		}
 

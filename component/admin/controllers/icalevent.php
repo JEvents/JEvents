@@ -10,6 +10,8 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -110,7 +112,7 @@ class AdminIcaleventController extends Joomla\CMS\MVC\Controller\AdminController
 		$is_event_editor = JEVHelper::isEventCreator();
 		if (!$is_event_editor)
 		{
-			throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+			throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 			return false;
 		}
@@ -158,7 +160,7 @@ class AdminIcaleventController extends Joomla\CMS\MVC\Controller\AdminController
 		// we check if user can edit specific event in about 30 lines time
 		if (!JEVHelper::isEventCreator() && !JEVHelper::isEventEditor())
 		{
-			throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+			throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 			return false;
 		}
@@ -178,7 +180,7 @@ class AdminIcaleventController extends Joomla\CMS\MVC\Controller\AdminController
 				if (!$vevent)
 				{
 					$Itemid = $input->getInt("Itemid");
-					$app->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$Itemid", false), JText::_("JEV_SORRY_UPDATED"));
+					$app->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$Itemid", false), Text::_("JEV_SORRY_UPDATED"));
 				}
 
 				$row = new jIcalEventDB($vevent);
@@ -197,7 +199,7 @@ class AdminIcaleventController extends Joomla\CMS\MVC\Controller\AdminController
 
 			if (!JEVHelper::canEditEvent($row))
 			{
-				throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+				throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 				return false;
 			}
@@ -261,7 +263,7 @@ class AdminIcaleventController extends Joomla\CMS\MVC\Controller\AdminController
 VALUES (
 	'JEvents Event',
 	'com_jevents.event',
-	'{"special":{"dbtable":"#__jevent_vevent","key":"ev_id","type":"Event","prefix":"JEventsTable","config":"array()"},"common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"JTable","config":"array()"}}',
+	'{"special":{"dbtable":"#__jevent_vevent","key":"ev_id","type":"Event","prefix":"JEventsTable","config":"array()"},"common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"Table","config":"array()"}}',
 	'',
 	'{
 	"common": {
@@ -354,7 +356,7 @@ SQL;
 		if (count($nativeCals) > 1)
 		{
 			$icalList   = array();
-			$icalList[] = HTMLHelper::_('select.option', '0', JText::_('JEV_EVENT_CHOOSE_ICAL'), 'ics_id', 'label');
+			$icalList[] = HTMLHelper::_('select.option', '0', Text::_('JEV_EVENT_CHOOSE_ICAL'), 'ics_id', 'label');
 			$icalList   = array_merge($icalList, $nativeCals);
 
 			$row_icsid = $row->icsid();
@@ -373,7 +375,7 @@ SQL;
 			if (count($nativeCals) == 0 || !is_array($nativeCals))
 			{
 
-				$app->enqueueMessage('870 -' . JText::_('INVALID_CALENDAR_STRUCTURE'), 'warning');
+				$app->enqueueMessage('870 -' . Text::_('INVALID_CALENDAR_STRUCTURE'), 'warning');
 
 			}
 
@@ -440,7 +442,7 @@ SQL;
 		$is_event_editor = JEVHelper::isEventCreator();
 		if (!$is_event_editor)
 		{
-			throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+			throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 			return false;
 		}
@@ -466,14 +468,14 @@ SQL;
 			if (!$vevent)
 			{
 				$Itemid = $input->getInt("Itemid");
-				$app->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$Itemid", false), JText::_("JEV_SORRY_UPDATED"));
+				$app->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$Itemid", false), Text::_("JEV_SORRY_UPDATED"));
 			}
 
 			$row = new jIcalEventDB($vevent);
 
 			if (!JEVHelper::canEditEvent($row))
 			{
-				throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+				throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 				return false;
 			}
@@ -511,7 +513,7 @@ SQL;
 
 		if (!JEVHelper::isEventCreator())
 		{
-			throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+			throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 			return false;
 		}
@@ -527,14 +529,14 @@ SQL;
 			if (!$vevent)
 			{
 				$Itemid = $input->getInt("Itemid");
-				$app->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$Itemid", false), JText::_("JEV_SORRY_UPDATED"));
+				$app->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$Itemid", false), Text::_("JEV_SORRY_UPDATED"));
 			}
 
 			$row = new jIcalEventDB($vevent);
 
 			if (!JEVHelper::canEditEvent($row))
 			{
-				throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+				throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 				return false;
 			}
@@ -581,7 +583,7 @@ SQL;
 
 		if (!JEVHelper::isEventCreator())
 		{
-			throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+			throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 			return false;
 		}
@@ -597,14 +599,14 @@ SQL;
 			if (!$vevent)
 			{
 				$Itemid = $input->getInt("Itemid");
-				$app->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$Itemid", false), JText::_("JEV_SORRY_UPDATED"));
+				$app->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$Itemid", false), Text::_("JEV_SORRY_UPDATED"));
 			}
 
 			$row = new jIcalEventDB($vevent);
 
 			if (!JEVHelper::canEditEvent($row))
 			{
-				throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+				throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 				return false;
 			}
@@ -782,7 +784,7 @@ SQL;
 
 		if (!JEVHelper::isEventCreator() && !JEVHelper::isEventEditor())
 		{
-			throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+			throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 			return false;
 		}
@@ -834,7 +836,7 @@ SQL;
 
 		if (!JEVHelper::canCreateEvent($eventobj) && !JEVHelper::isEventEditor())
 		{
-			throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+			throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 			return false;
 		}
@@ -847,7 +849,7 @@ SQL;
 			$event = $this->queryModel->getEventById(intval($array["evid"]), 1, "icaldb");
 			if (!$event || !JEVHelper::canEditEvent($event))
 			{
-				throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+				throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 				return false;
 			}
@@ -865,11 +867,11 @@ SQL;
 			$row = new jIcalEventRepeat($event);
 			if (!JEVHelper::canPublishEvent($row) && !$event->state)
 			{
-				$msg = JText::_("EVENT_SAVED_UNDER_REVIEW", true);
+				$msg = Text::_("EVENT_SAVED_UNDER_REVIEW", true);
 			}
 			else
 			{
-				$msg = JText::_("Event_Saved", true);
+				$msg = Text::_("Event_Saved", true);
 			}
 			if ($clearout)
 			{
@@ -891,7 +893,7 @@ SQL;
 		}
 		else
 		{
-			$msg = JText::_("Event Not Saved", true);
+			$msg = Text::_("Event Not Saved", true);
 			$row = null;
 		}
 
@@ -975,7 +977,7 @@ SQL;
 		$rp_id     = $testevent->rp_id();
 		if (!$rp_id)
 		{
-			$app->enqueueMessage(JText::_("JEV_CANNOT_DISPLAY_SAVED_EVENT_ON_THIS_MENU_ITEM", "WARNING"));
+			$app->enqueueMessage(Text::_("JEV_CANNOT_DISPLAY_SAVED_EVENT_ON_THIS_MENU_ITEM", "WARNING"));
 
 			return;
 		}
@@ -1017,7 +1019,7 @@ SQL;
 
 		if (!$app->isClient('administrator'))
 		{
-			throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+			throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 			return false;
 		}
@@ -1044,7 +1046,7 @@ SQL;
 		if (count($nativeCals) > 0)
 		{
 			$icalList   = array();
-			$icalList[] = HTMLHelper::_('select.option', '0', JText::_('JEV_EVENT_CHOOSE_ICAL'), 'ics_id', 'label');
+			$icalList[] = HTMLHelper::_('select.option', '0', Text::_('JEV_EVENT_CHOOSE_ICAL'), 'ics_id', 'label');
 			$icalList   = array_merge($icalList, $nativeCals);
 			$callist    = HTMLHelper::_('select.genericlist', $icalList, 'ics_id', " onchange='preselectCategory(this);'", 'ics_id', 'label', 0);
 			$this->view->callist = $callist;
@@ -1052,7 +1054,7 @@ SQL;
 		else
 		{
 
-			$app->enqueueMessage('870 -' . JText::_('INVALID_CALENDAR_STRUCTURE'), 'warning');
+			$app->enqueueMessage('870 -' . Text::_('INVALID_CALENDAR_STRUCTURE'), 'warning');
 
 		}
 
@@ -1120,7 +1122,7 @@ SQL;
 				{
 					if (!JEVHelper::canPublishOwnEvents($id))
 					{
-						throw new Exception(JText::_('ALERTNOTAUTH') . " 1", 403);
+						throw new Exception(Text::_('ALERTNOTAUTH') . " 1", 403);
 
 						return false;
 					}
@@ -1130,7 +1132,7 @@ SQL;
 		}
 		if (!$is_event_editor)
 		{
-			throw new Exception(JText::_('ALERTNOTAUTH') . " 2", 403);
+			throw new Exception(Text::_('ALERTNOTAUTH') . " 2", 403);
 
 			return false;
 		}
@@ -1144,13 +1146,13 @@ SQL;
 			if (is_null($event))
 			{
 				/*echo $db->getQuery()."<br/>";return;*/
-				throw new Exception(JText::_('ALERTNOTAUTH') . " 3", 403);
+				throw new Exception(Text::_('ALERTNOTAUTH') . " 3", 403);
 
 				return false;
 			}
 			else if (!JEVHelper::canPublishEvent($event))
 			{
-				throw new Exception(JText::_('ALERTNOTAUTH') . " 4", 403);
+				throw new Exception(Text::_('ALERTNOTAUTH') . " 4", 403);
 
 				return false;
 			}
@@ -1179,7 +1181,7 @@ SQL;
 
 		if ($app->isClient('administrator'))
 		{
-			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.list', JText::_('JEV_EVENT_PUBLISH_STATE_SAVED'));
+			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.list', Text::_('JEV_EVENT_PUBLISH_STATE_SAVED'));
 			$this->redirect();
 		}
 		else
@@ -1189,7 +1191,7 @@ SQL;
 			$rettask = $input->getString("rettask", "day.listevents");
 			// Don't return to the event detail since we may be filtering on published state!
 			//$this->setRedirect( Route::_('index.php?option=' . JEV_COM_COMPONENT. "&task=icalrepeat.detail&evid=$id&year=$year&month=$month&day=$day&Itemid=$Itemid",false),"IcalEvent  : New published state Saved");
-			$this->setRedirect(Route::_('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&year=$year&month=$month&day=$day&Itemid=$Itemid&published_fv=$pub_filter", false), JText::_('JEV_EVENT_PUBLISH_STATE_SAVED'));
+			$this->setRedirect(Route::_('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&year=$year&month=$month&day=$day&Itemid=$Itemid&published_fv=$pub_filter", false), Text::_('JEV_EVENT_PUBLISH_STATE_SAVED'));
 			$this->redirect();
 		}
 
@@ -1233,7 +1235,7 @@ SQL;
 			if (is_null($event) || !JEVHelper::canDeleteEvent($event))
 			{
 
-				$app->enqueueMessage('870 -' . JText::_('JEV_NO_DELETE_ROW'), 'warning');
+				$app->enqueueMessage('870 -' . Text::_('JEV_NO_DELETE_ROW'), 'warning');
 
 				unset($cid[$key]);
 			}
@@ -1268,7 +1270,7 @@ SQL;
 
 			// Don't return to the event detail since we may be filtering on published state!
 			//$this->setRedirect( Route::_('index.php?option=' . JEV_COM_COMPONENT. "&task=icalrepeat.detail&evid=$id&year=$year&month=$month&day=$day&Itemid=$Itemid",false),"IcalEvent  : New published state Saved");
-			$this->setRedirect(Route::_('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&year=$year&month=$month&day=$day&Itemid=$Itemid", false), JText::_('JEV_EVENT_DELETE_STATE_SAVED'));
+			$this->setRedirect(Route::_('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&year=$year&month=$month&day=$day&Itemid=$Itemid", false), Text::_('JEV_EVENT_DELETE_STATE_SAVED'));
 			$this->redirect();
 		}
 
@@ -1284,7 +1286,7 @@ SQL;
 		/*
 		  // This is covered by canDeleteEvent below
 		  if (!JEVHelper::isEventDeletor()){
-		  throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+		  throw new Exception( Text::_('ALERTNOTAUTH'), 403);
 		 return false;
 		  }
 		 */
@@ -1311,7 +1313,7 @@ SQL;
 
 			if (is_null($event) || !JEVHelper::canDeleteEvent($event))
 			{
-				$app->enqueueMessage('534 -' . JText::_('JEV_NO_DELETE_ROW'), 'warning');
+				$app->enqueueMessage('534 -' . Text::_('JEV_NO_DELETE_ROW'), 'warning');
 
 				unset($cid[$key]);
 			} else {
@@ -1651,7 +1653,7 @@ SQL;
 		// get list of ics Files
 		$icsfiles = array();
 		//$icsfiles[] = HTMLHelper::_('select.option', '0', "Choose ICS FILE" );
-		$icsfiles[] = HTMLHelper::_('select.option', '-1', JText::_('ALL_ICS_FILES'));
+		$icsfiles[] = HTMLHelper::_('select.option', '-1', Text::_('ALL_ICS_FILES'));
 
 		$query = "SELECT ics.ics_id as value, ics.label as text FROM #__jevents_icsfile as ics ";
 		if (!$showUnpublishedICS)
@@ -1672,7 +1674,7 @@ SQL;
 		$db->setQuery($sql);
 		$users         = $db->loadObjectList();
 		$userOptions   = array();
-		$userOptions[] = HTMLHelper::_('select.option', "0", JText::_("JEV_EVENT_CREATOR"));
+		$userOptions[] = HTMLHelper::_('select.option', "0", Text::_("JEV_EVENT_CREATOR"));
 		foreach ($users as $user)
 		{
 			$userOptions[] = HTMLHelper::_('select.option', $user->id, $user->name . " ($user->username)");
@@ -1713,7 +1715,7 @@ SQL;
 
 		// assemble menu items to the array
 		$options   = array();
-		$options[] = HTMLHelper::_('select.option', '', '- ' . JText::_('SELECT_ITEM') . ' -');
+		$options[] = HTMLHelper::_('select.option', '', '- ' . Text::_('SELECT_ITEM') . ' -');
 
 		// load the list of menu types
 		// TODO: move query to model

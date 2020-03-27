@@ -11,6 +11,7 @@
 
 defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 
@@ -59,7 +60,7 @@ class ListController extends Joomla\CMS\MVC\Controller\BaseController
 		$cfg   = JEVConfig::getInstance();
 		$theme = JEV_CommonFunctions::getJEventsViewName();
 
-		if (!JFolder::exists($this->_basePath . '/' . "views" . '/' . $theme . "/list"))
+		if (!Folder::exists($this->_basePath . '/' . "views" . '/' . $theme . "/list"))
 		{
 			$theme = "default";
 		}

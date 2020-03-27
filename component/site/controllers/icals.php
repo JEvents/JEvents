@@ -12,6 +12,8 @@ defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
 include_once(JEV_ADMINPATH . "/controllers/icals.php");
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\User\User;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
@@ -42,7 +44,7 @@ class ICalsController extends AdminIcalsController
 			$allICS = $db->loadObjectList();
 			if (count($allICS) == 0)
 			{
-				throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+				throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 				return false;
 			}
@@ -67,7 +69,7 @@ class ICalsController extends AdminIcalsController
 		$cfg = JEVConfig::getInstance();
 		if ($cfg->get("disableicalexport", 0))
 		{
-			throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+			throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 			return false;
 		}
@@ -143,17 +145,17 @@ class ICalsController extends AdminIcalsController
 		{
 			if (!$userid)
 			{
-				throw new Exception(JText::_('JEV_ERROR'), 403);
+				throw new Exception(Text::_('JEV_ERROR'), 403);
 
 				return false;
 			}
 			$privatecalendar = true;
-			$puser           = JUser::getInstance($userid);
+			$puser           = User::getInstance($userid);
 			$key             = md5($icalkey . $cats . $years . $puser->password . $puser->username . $puser->id);
 
 			if ($key != $pk)
 			{
-				throw new Exception(JText::_('JEV_ERROR'), 403);
+				throw new Exception(Text::_('JEV_ERROR'), 403);
 
 				return false;
 			}
@@ -169,7 +171,7 @@ class ICalsController extends AdminIcalsController
 		{
 			if ($params->get("disableicalexport", 0))
 			{
-				throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+				throw new Exception(Text::_('ALERTNOTAUTH'), 403);
 
 				return false;
 			}
@@ -177,14 +179,14 @@ class ICalsController extends AdminIcalsController
 			$key = md5($icalkey . $cats . $years);
 			if ($key != $k)
 			{
-				throw new Exception(JText::_('JEV_ERROR'), 403);
+				throw new Exception(Text::_('JEV_ERROR'), 403);
 
 				return false;
 			}
 		}
 		else
 		{
-			throw new Exception(JText::_('JEV_ERROR'), 403);
+			throw new Exception(Text::_('JEV_ERROR'), 403);
 
 			return false;
 		}
@@ -264,14 +266,14 @@ class ICalsController extends AdminIcalsController
 					$icalEvents[$row->ev_id()] = $row;
 
 					// Parse Content Plugins for Description
-                    			$row->_description = JHtml::_('content.prepare', $row->_content);
+                    			$row->_description = HTMLHelper::_('content.prepare', $row->_content);
 				}
 			}
 			unset($rows);
 		}
 
 		if ($userid)
-			$user = JUser::getInstance($userid);
+			$user = User::getInstance($userid);
 
 		// get the view
 		$this->view = $this->getView("icals", "html");
@@ -318,10 +320,9 @@ class ICalsController extends AdminIcalsController
 
 			$input->set("tmpl", "component");
 
-			//$dispatcher = JEventDispatcher::getInstance();
 			// just incase we don't have jevents plugins registered yet
 			//PluginHelper::importPlugin("jevents");
-			//$dispatcher->trigger('onExportRow', array(&$row));
+			//Factory::getApplication()->trigger('onExportRow', array(&$row));
 			$icalEvents              = array();
 			$icalEvents[$a->ev_id()] = $a;
 
@@ -358,12 +359,12 @@ class ICalsController extends AdminIcalsController
 			$user = Factory::getUser();
 			if ($user->id)
 			{
-				$this->setRedirect(Uri::root(), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->setRedirect(Uri::root(), Text::_('JEV_NOTAUTH_CREATE_EVENT'));
 				$this->redirect();
 			}
 			else
 			{
-				$this->setRedirect(Route::_("index.php?option=com_users&view=login"), JText::_('JEV_NOTAUTH_CREATE_EVENT', 'error'));
+				$this->setRedirect(Route::_("index.php?option=com_users&view=login"), Text::_('JEV_NOTAUTH_CREATE_EVENT', 'error'));
 				$this->redirect();
 			}
 
@@ -425,7 +426,7 @@ class ICalsController extends AdminIcalsController
 		if (count($nativeCals) > 1)
 		{
 			$icalList   = array();
-			$icalList[] = HTMLHelper::_('select.option', '0', JText::_('JEV_EVENT_CHOOSE_ICAL'), 'ics_id', 'label');
+			$icalList[] = HTMLHelper::_('select.option', '0', Text::_('JEV_EVENT_CHOOSE_ICAL'), 'ics_id', 'label');
 			$icalList   = array_merge($icalList, $nativeCals);
 			$clist      = HTMLHelper::_('select.genericlist', $icalList, 'icsid', " onchange='preselectCategory(this);'", 'ics_id', 'label', 0);
 			$this->view->clistChoice    = true;
@@ -436,7 +437,7 @@ class ICalsController extends AdminIcalsController
 			if (count($nativeCals) == 0 || !is_array($nativeCals))
 			{
 
-				Factory::getApplication()->enqueueMessage(JText::_('INVALID_CALENDAR_STRUCTURE'), 'warning');
+				Factory::getApplication()->enqueueMessage(Text::_('INVALID_CALENDAR_STRUCTURE'), 'warning');
 
 			}
 
@@ -493,12 +494,12 @@ class ICalsController extends AdminIcalsController
 			$user = Factory::getUser();
 			if ($user->id)
 			{
-				$this->setRedirect(Uri::root(), JText::_('JEV_NOTAUTH_CREATE_EVENT', 'error'));
+				$this->setRedirect(Uri::root(), Text::_('JEV_NOTAUTH_CREATE_EVENT', 'error'));
 				$this->redirect();
 			}
 			else
 			{
-				$this->setRedirect(Route::_("index.php?option=com_users&view=login"), JText::_('JEV_NOTAUTH_CREATE_EVENT', 'error'));
+				$this->setRedirect(Route::_("index.php?option=com_users&view=login"), Text::_('JEV_NOTAUTH_CREATE_EVENT', 'error'));
 				$this->redirect();
 			}
 
@@ -527,9 +528,9 @@ class ICalsController extends AdminIcalsController
 			// Paranoia, should not be here, validation is done by java script
 			// Just load the ical event list on redirect for now.
 			$redirect_task = "icalevent.list";
-			$app->enqueueMessage(JTExt::_('JEV_FATAL_ERROR') . JText::_('JEV_E_WARNCAT'), 'error');
+			$app->enqueueMessage(JTExt::_('JEV_FATAL_ERROR') . Text::_('JEV_E_WARNCAT'), 'error');
 
-			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=$redirect_task", JText::_('JEV_E_WARNCAT'));
+			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=$redirect_task", Text::_('JEV_E_WARNCAT'));
 			$this->redirect();
 
 			return;
@@ -545,7 +546,7 @@ class ICalsController extends AdminIcalsController
 			$file = $_FILES['upload'];
 			if ($file['size'] == 0)
 			{//|| !($file['type']=="text/calendar" || $file['type']=="application/octet-stream")){
-				$app->enqueueMessage(JText::_('JEV_EMPTY_FILE_UPLOAD'), 'warning');
+				$app->enqueueMessage(Text::_('JEV_EMPTY_FILE_UPLOAD'), 'warning');
 				$icsFile = false;
 			}
 			else
@@ -565,7 +566,7 @@ class ICalsController extends AdminIcalsController
 		ob_end_clean();
 		?>
 		<script type="text/javascript">
-            window.alert("<?php echo JText::sprintf("JEV_EVENTS_IMPORTED", $count); ?>");
+            window.alert("<?php echo Text::sprintf("JEV_EVENTS_IMPORTED", $count); ?>");
             try {
                 window.parent.jQuery('#myImportModal').modal('hide');
             }

@@ -11,6 +11,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\User\User;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -132,7 +134,7 @@ class JEventsCategory extends Joomla\CMS\Table\Category
 			PluginHelper::importPlugin("jevents");
 			$set = Factory::getApplication()->triggerEvent('afterSaveCategory', array($this));
 			/*
-				$table = JTable::getInstance('Category', 'JTable', array('dbo' => JFactory::getDbo()));
+				$table = Table::getInstance('Category', 'Table', array('dbo' => Factory::getDbo()));
 				if (!$table->rebuild())
 				{
 					throw new Exception( $table->getError(), 500);
@@ -150,13 +152,13 @@ class JEventsCategory extends Joomla\CMS\Table\Category
 		{
 			if ($this->_catextra->admin > 0)
 			{
-				$catuser = new JUser();
+				$catuser = new User();
 				$catuser->load($this->_catextra->admin);
 			}
 		}
 		else if (isset($this->admin) && $this->admin > 0)
 		{
-			$catuser = new JUser();
+			$catuser = new User();
 			$catuser->load($this->admin);
 		}
 
@@ -168,7 +170,7 @@ class JEventsCategory extends Joomla\CMS\Table\Category
 		else
 		{
 			$params    = ComponentHelper::getParams(JEV_COM_COMPONENT);
-			$adminuser = new  JUser($params->get("jevadmin", 62));
+			$adminuser = new  User($params->get("jevadmin", 62));
 
 			return $adminuser;
 		}

@@ -5,6 +5,11 @@ defined('_JEXEC') or die;
 
 JLoader::register('JevRegistry', JPATH_SITE . "/components/com_jevents/libraries/registry.php");
 
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Version;
+use Joomla\CMS\Object\CMSObject;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Form\FormHelper;
@@ -22,7 +27,7 @@ class JEventsHelper
 
 	public static function validateSection($context, $form = null)
 	{
-		$vName      = JFactory::getApplication()->input->getCmd('view', 'categories');
+		$vName      = Factory::getApplication()->input->getCmd('view', 'categories');
 
 		if ($context == "categories" && Factory::getApplication()->input->get('view') == "category"  && Factory::getApplication()->input->get('layout') == "edit")
 		{
@@ -39,12 +44,12 @@ class JEventsHelper
 			}
 			if (!GSLMSIE10)
 			{
-				$jversion = new JVersion;
+				$jversion = new Version;
 				if ($jversion->isCompatible('4.0'))
 				{
 					// disable com_categories styling until we can get the toolbar buttons working!
 					//return 'site';
-					$app = JFactory::getApplication();
+					$app = Factory::getApplication();
 					$component = $app->bootComponent('com_categories');
 					$dispatcher = $component->getDispatcher($app);
 					$controller = $dispatcher->getController('display', 'Administrator', array('option' => 'com_categories'));
@@ -57,7 +62,7 @@ class JEventsHelper
 				}
 				else
 				{
-					$controller = JControllerLegacy::getInstance("Categories");
+					$controller = BaseController::getInstance("Categories");
 					$view       = $controller->getView('category', 'html');
 
 					$view->addTemplatePath(JPATH_ADMINISTRATOR . "/components/com_jevents/views/com_categories/category/tmpl/");
@@ -79,7 +84,7 @@ class JEventsHelper
 	 */
 	public static function countItems(&$items, $extension)
 	{
-		$vName      = JFactory::getApplication()->input->getCmd('view', 'categories');
+		$vName      = Factory::getApplication()->input->getCmd('view', 'categories');
 
 		if (Factory::getApplication()->input->get('view') == "categories")
 		{
@@ -96,12 +101,12 @@ class JEventsHelper
 			}
 			if (!GSLMSIE10)
 			{
-				$jversion = new JVersion;
+				$jversion = new Version;
 				if ($jversion->isCompatible('4.0'))
 				{
 					// disable com_categories styling until we can get the toolbar buttons working!
 					//return 'site';
-					$app = JFactory::getApplication();
+					$app = Factory::getApplication();
 					$component = $app->bootComponent('com_categories');
 					$dispatcher = $component->getDispatcher($app);
 					$controller = $dispatcher->getController('display', 'Administrator', array('option' => 'com_categories'));
@@ -114,7 +119,7 @@ class JEventsHelper
 				}
 				else
 				{
-					$controller = JControllerLegacy::getInstance("Categories");
+					$controller = BaseController::getInstance("Categories");
 					$view       = $controller->getView('category', 'html');
 
 					$view->addTemplatePath(JPATH_ADMINISTRATOR . "/components/com_jevents/views/com_categories/category/tmpl/");
@@ -156,12 +161,12 @@ class JEventsHelper
 		{
 			if (!GSLMSIE10)
 			{
-				$jversion = new JVersion;
+				$jversion = new Version;
 				if ($jversion->isCompatible('4.0'))
 				{
 					// disable com_fields styling until we can get the toolbar buttons working!
 					//return 'site';
-					$app = JFactory::getApplication();
+					$app = Factory::getApplication();
 					$dispatcher = $app->bootComponent('com_categories')->getDispatcher($app);
 					$controller = $dispatcher->getController('display', 'Administrator', array('option' => 'com_categories'));
 
@@ -170,7 +175,7 @@ class JEventsHelper
 				}
 				else
 				{
-					$controller = JControllerLegacy::getInstance("Categories");
+					$controller = BaseController::getInstance("Categories");
 					$view       = $controller->getView("categories", 'html', 'categoriesView');
 
 					$view->addTemplatePath(JPATH_ADMINISTRATOR . "/components/com_jevents/views/com_categories/categories/tmpl/");
@@ -212,21 +217,21 @@ STYLE;
 		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
 
 		JHtmlSidebar::addEntry(
-			JText::_('CONTROL_PANEL'), 'index.php?option=com_jevents', $vName == 'cpanel.cpanel'
+			Text::_('CONTROL_PANEL'), 'index.php?option=com_jevents', $vName == 'cpanel.cpanel'
 		);
 
 		JHtmlSidebar::addEntry(
-			JText::_('JEV_ADMIN_ICAL_EVENTS'), 'index.php?option=com_jevents&task=icalevent.list', $vName == 'icalevent.list'
+			Text::_('JEV_ADMIN_ICAL_EVENTS'), 'index.php?option=com_jevents&task=icalevent.list', $vName == 'icalevent.list'
 		);
 
 		if (JEVHelper::isAdminUser())
 		{
 			JHtmlSidebar::addEntry(
-				JText::_('JEV_ADMIN_ICAL_SUBSCRIPTIONS'), 'index.php?option=com_jevents&task=icals.list', $vName == 'icals.list'
+				Text::_('JEV_ADMIN_ICAL_SUBSCRIPTIONS'), 'index.php?option=com_jevents&task=icals.list', $vName == 'icals.list'
 			);
 		}
 		JHtmlSidebar::addEntry(
-			JText::_('JEV_INSTAL_CATS'), "index.php?option=com_categories&view=categories&extension=com_jevents", $vName == 'categories'
+			Text::_('JEV_INSTAL_CATS'), "index.php?option=com_categories&view=categories&extension=com_jevents", $vName == 'categories'
 		);
 		if (JEVHelper::isAdminUser())
 		{
@@ -234,22 +239,22 @@ STYLE;
 			if ($params->get("authorisedonly", 0))
 			{
 				JHtmlSidebar::addEntry(
-					JText::_('JEV_MANAGE_USERS'), 'index.php?option=com_jevents&task=user.list', $vName == 'user.list'
+					Text::_('JEV_MANAGE_USERS'), 'index.php?option=com_jevents&task=user.list', $vName == 'user.list'
 				);
 			}
 			JHtmlSidebar::addEntry(
-				JText::_('JEV_INSTAL_CONFIG'), 'index.php?option=com_jevents&task=params.edit', $vName == 'params.edit'
+				Text::_('JEV_INSTAL_CONFIG'), 'index.php?option=com_jevents&task=params.edit', $vName == 'params.edit'
 			);
 			JHtmlSidebar::addEntry(
-				JText::_('JEV_LAYOUT_DEFAULTS'), 'index.php?option=com_jevents&task=defaults.list', in_array($vName, array('defaults.list', 'defaults.overview'))
+				Text::_('JEV_LAYOUT_DEFAULTS'), 'index.php?option=com_jevents&task=defaults.list', in_array($vName, array('defaults.list', 'defaults.overview'))
 			);
 
 			//Support & CSS Customs should only be for Admins really.
 			JHtmlSidebar::addEntry(
-				JText::_('SUPPORT_INFO'), 'index.php?option=com_jevents&task=cpanel.support', $vName == 'cpanel.support'
+				Text::_('SUPPORT_INFO'), 'index.php?option=com_jevents&task=cpanel.support', $vName == 'cpanel.support'
 			);
 			JHtmlSidebar::addEntry(
-				JText::_('JEV_CUSTOM_CSS'), 'index.php?option=com_jevents&view=customcss', $vName == 'customcss'
+				Text::_('JEV_CUSTOM_CSS'), 'index.php?option=com_jevents&view=customcss', $vName == 'customcss'
 			);
 
 			// Links to addons
@@ -262,7 +267,7 @@ STYLE;
 				$link = "index.php?option=com_jevlocations";
 				Factory::getLanguage()->load("com_jevlocations", JPATH_ADMINISTRATOR);
 				JHtmlSidebar::addEntry(
-					JText::_('COM_JEVLOCATIONS'), $link, $vName == 'cpanel.managed_locations'
+					Text::_('COM_JEVLOCATIONS'), $link, $vName == 'cpanel.managed_locations'
 				);
 			}
 
@@ -275,7 +280,7 @@ STYLE;
 				$link = "index.php?option=com_jevpeople";
 				Factory::getLanguage()->load("com_jevpeople", JPATH_ADMINISTRATOR);
 				JHtmlSidebar::addEntry(
-					JText::_('COM_JEVPEOPLE'), $link, $vName == 'cpanel.managed_people'
+					Text::_('COM_JEVPEOPLE'), $link, $vName == 'cpanel.managed_people'
 				);
 
 			}
@@ -288,7 +293,7 @@ STYLE;
 				$link = "index.php?option=com_rsvppro";
 				Factory::getLanguage()->load("com_rsvppro", JPATH_ADMINISTRATOR);
 				JHtmlSidebar::addEntry(
-					JText::_('COM_RSVPPRO'), $link, $vName == 'cpanel.rsvppro'
+					Text::_('COM_RSVPPRO'), $link, $vName == 'cpanel.rsvppro'
 				);
 
 			}
@@ -305,7 +310,7 @@ STYLE;
 					$link = "index.php?option=com_jevents&task=plugin.jev_customfields.overview";
 					Factory::getLanguage()->load("plg_jevents_jevcustomfields", JPATH_ADMINISTRATOR);
 					JHtmlSidebar::addEntry(
-						JText::_('JEV_CUSTOM_FIELDS'), $link, $vName == 'plugin.jev_customfields.overview'
+						Text::_('JEV_CUSTOM_FIELDS'), $link, $vName == 'plugin.jev_customfields.overview'
 					);
 				}
 			}
@@ -321,7 +326,7 @@ STYLE;
 	 * @param    int        The category ID.
 	 * @param    int        The article ID.
 	 *
-	 * @return    JObject
+	 * @return    CMSObject
 	 */
 	public function getActions($categoryId = 0, $articleId = 0)
 	{
@@ -379,8 +384,8 @@ STYLE;
 		$rel = "";
 		if ($field && $field->showon)
 		{
-			JHtml::_('jquery.framework');
-			JHtml::_('script', 'jui/cms.js', array('version' => 'auto', 'relative' => true));
+			HTMLHelper::_('jquery.framework');
+			HTMLHelper::_('script', 'jui/cms.js', array('version' => 'auto', 'relative' => true));
 
 			$rel           = ' data-showon=\'' .
 				json_encode(FormHelper::parseShowOnConditions($field->showon, $field->formControl, $field->group)) . '\'';

@@ -1,6 +1,9 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
+
 $cfg	 = JEVConfig::getInstance();
 
 if ($cfg->get("tooltiptype",'joomla')=='overlib'){
@@ -69,11 +72,11 @@ $precedingMonth = $this->datamodel->getPrecedingMonth($this->data);
 						?>
                     <td <?php echo $cellclass;?>>
                      <?php   $this->_datecellAddEvent($this->year, $this->month, $currentDay["d"]);?>
-                    	<a class="cal_daylink" href="<?php echo $currentDay["link"]; ?>" title="<?php echo JText::_('JEV_CLICK_TOSWITCH_DAY'); ?>">
+                    	<a class="cal_daylink" href="<?php echo $currentDay["link"]; ?>" title="<?php echo Text::_('JEV_CLICK_TOSWITCH_DAY'); ?>">
 			    <span class="calview"><?php echo $currentDay['d']; ?></span>
 			    <span class="listview">				
 				<?php 
-					$format = JText::_("DATE_FORMAT_0");
+					$format = Text::_("DATE_FORMAT_0");
 					if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') {
 						$format = str_replace("%d", "%e",$format);
 					}

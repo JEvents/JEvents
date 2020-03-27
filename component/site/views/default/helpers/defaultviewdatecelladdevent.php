@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 
@@ -21,18 +22,18 @@ function DefaultViewDatecellAddEvent($view, $year, $month, $day)
 		{
 			$eventlinkadd = "javascript:jevEditPopup('" . $editLink . "')";
 			?>
-			<a href="<?php echo $eventlinkadd; ?>" title="<?php echo JText::_('JEV_ADDEVENT'); ?>" class="addjevent"
+			<a href="<?php echo $eventlinkadd; ?>" title="<?php echo Text::_('JEV_ADDEVENT'); ?>" class="addjevent"
 			   id="add<?php echo $year . $month . $day; ?>"> <!-- data-toggle="modal" data-target="#myEditModal"> //-->
-				<img src="<?php echo $transparentGif; ?>" alt="<?php echo JText::_('JEV_ADDEVENT'); ?>"/>
+				<img src="<?php echo $transparentGif; ?>" alt="<?php echo Text::_('JEV_ADDEVENT'); ?>"/>
 			</a>
 			<?php
 		}
 		else
 		{
 			?>
-			<a href="<?php echo $eventlinkadd; ?>" title="<?php echo JText::_('JEV_ADDEVENT'); ?>" class="addjevent"
+			<a href="<?php echo $eventlinkadd; ?>" title="<?php echo Text::_('JEV_ADDEVENT'); ?>" class="addjevent"
 			   id="add<?php echo $year . $month . $day; ?>">
-				<img src="<?php echo $transparentGif; ?>" alt="<?php echo JText::_('JEV_ADDEVENT'); ?>"/>
+				<img src="<?php echo $transparentGif; ?>" alt="<?php echo Text::_('JEV_ADDEVENT'); ?>"/>
 			</a>
 			<?php
 		}
@@ -42,7 +43,7 @@ function DefaultViewDatecellAddEvent($view, $year, $month, $day)
 		{
 			$modalDefined = true;
 			//JevHtmlBootstrap::modal("myEditModal");
-			JText::script('JEV_ADD_EVENT');
+			Text::script('JEV_ADD_EVENT');
 		}
 
 	}

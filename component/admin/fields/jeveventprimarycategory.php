@@ -2,12 +2,14 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
 
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
-class JFormFieldJeveventprimarycategory extends JFormField
+class FormFieldJeveventprimarycategory extends FormField
 {
 	/**
 	 * The form field type.
@@ -36,7 +38,7 @@ class JFormFieldJeveventprimarycategory extends JFormField
 			}
 			$primarycatid     = $this->value;
 			$options          = array();
-			$options[]        = HTMLHelper::_('select.option', '0', JText::_("JEV_SELECT_PRIMARY_CATEGORY"));
+			$options[]        = HTMLHelper::_('select.option', '0', Text::_("JEV_SELECT_PRIMARY_CATEGORY"));
 			$allcategories    = HTMLHelper::_('category.categories', "com_jevents");
 			$sortedcategories = array();
 			foreach ($allcategories as $cat)

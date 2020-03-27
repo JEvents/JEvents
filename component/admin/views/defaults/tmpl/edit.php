@@ -10,6 +10,9 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\Registry\Registry;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Editor\Editor;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -18,12 +21,12 @@ jimport('joomla.filesystem.file');
 
 if ($this->item->name == "month.calendar_cell" || $this->item->name == "month.calendar_tip" || $this->item->name == "icalevent.edit_page"  || $this->item->name == "icalevent.list_block3")
 {
-	$editor = JEditor::getInstance("none");
+	$editor = Editor::getInstance("none");
 }
 else
 {
 	$editor = Factory::getConfig()->get('editor');
-	$editor = JEditor::getInstance($editor);
+	$editor = Editor::getInstance($editor);
 }
 
 if (strpos($this->item->name, "com_") === 0)
@@ -88,25 +91,25 @@ $this->item->params = json_encode($templateparams);
 		<div class="gsl-container gsl-container-expand">
 			<div class="gsl-grid gsl-grid small">
 				<div class="form-group gsl-width-1-4@m">
-					<label for="title"><?php echo JText::_('TITLE'); ?>:</label>
+					<label for="title"><?php echo Text::_('TITLE'); ?>:</label>
 					<input readonly class="inputbox form-control" type="text" id="title" size="50"
 					       maxlength="100"
-					       value="<?php echo htmlspecialchars(JText::_($this->item->title), ENT_QUOTES, 'UTF-8'); ?>"/>
+					       value="<?php echo htmlspecialchars(Text::_($this->item->title), ENT_QUOTES, 'UTF-8'); ?>"/>
 				</div>
 				<div class="form-group gsl-width-1-4@m">
-					<label for="language"><?php echo JText::_('JFIELD_LANGUAGE_LABEL'); ?>:</label>
+					<label for="language"><?php echo Text::_('JFIELD_LANGUAGE_LABEL'); ?>:</label>
 					<input readonly class="inputbox form-control" type="text" id="language" size="50"
 					       maxlength="100"
-					       value="<?php echo $this->item->language == "*" ? JText::alt('JALL', 'language') : $this->item->language; ?>"/>
+					       value="<?php echo $this->item->language == "*" ? Text::alt('JALL', 'language') : $this->item->language; ?>"/>
 				</div>
 				<div class="form-group gsl-width-1-4@m">
-					<label for="category"><?php echo JText::_('JCATEGORY'); ?>:</label>
+					<label for="category"><?php echo Text::_('JCATEGORY'); ?>:</label>
 					<input readonly class="inputbox form-control" type="text" id="language" size="50"
 					       maxlength="100"
-					       value="<?php echo $this->item->catid == "0" ? JText::alt('JALL', 'language') : $this->item->category_title; ?>"/>
+					       value="<?php echo $this->item->catid == "0" ? Text::alt('JALL', 'language') : $this->item->category_title; ?>"/>
 				</div>
 				<div class="form-group gsl-width-1-4@m">
-					<label for="name"><?php echo JText::_('NAME'); ?></label>
+					<label for="name"><?php echo Text::_('NAME'); ?></label>
 					<input readonly class="inputbox form-control" type="text" id="name" size="50"
 					       maxlength="100"
 					       value="<?php echo htmlspecialchars($this->item->name, ENT_QUOTES, 'UTF-8'); ?>"/>
@@ -114,12 +117,12 @@ $this->item->params = json_encode($templateparams);
 			</div>
 			<div class="gsl-grid gsl-grid small">
 				<div class="form-group jevpublished gsl-width-1-4@m">
-					<label for="published"><?php echo JText::_("JSTATUS"); ?></label>
+					<label for="published"><?php echo Text::_("JSTATUS"); ?></label>
 					<?php
 					$poptions   = array();
-					$poptions[] = HTMLHelper::_('select.option', 0, JText::_("JUNPUBLISHED"));
-					$poptions[] = HTMLHelper::_('select.option', 1, JText::_("JPUBLISHED"));
-					$poptions[] = HTMLHelper::_('select.option', -1, JText::_("JTRASHED"));
+					$poptions[] = HTMLHelper::_('select.option', 0, Text::_("JUNPUBLISHED"));
+					$poptions[] = HTMLHelper::_('select.option', 1, Text::_("JPUBLISHED"));
+					$poptions[] = HTMLHelper::_('select.option', -1, Text::_("JTRASHED"));
 					echo HTMLHelper::_('select.genericlist', $poptions, 'state', 'class="inputbox form-control chzn-color-state"', 'value', 'text', $this->item->state);
 					?>
 				</div>
@@ -135,7 +138,7 @@ $this->item->params = json_encode($templateparams);
 			<div class="gsl-grid gsl-grid small">
 				<div class="form-group gsl-width-expand@m">
 					<br>
-					<label for="value"> <?php echo JText::_('JEV_LAYOUT'); ?></label>
+					<label for="value"> <?php echo Text::_('JEV_LAYOUT'); ?></label>
 				</div>
 			</div>
 			<div class="gsl-grid gsl-grid small">
@@ -156,7 +159,7 @@ $this->item->params = json_encode($templateparams);
 			<div class="gsl-container gsl-container-expand">
 
 				<div class="gsl-grid gsl-grid small">
-					<h3><?php echo JText::_("JEV_DEFAULTS_CUSTOM_MODULES"); ?></h3>
+					<h3><?php echo Text::_("JEV_DEFAULTS_CUSTOM_MODULES"); ?></h3>
 				</div>
 				<?php
 				$params  = new JevRegistry($this->item->params);
@@ -172,7 +175,7 @@ $this->item->params = json_encode($templateparams);
 				$modvals = array_values($modvals);
 
 				$count     = 0;
-				$conf      = JFactory::getConfig();
+				$conf      = Factory::getConfig();
 				$modeditor = $editor;
 
 				foreach ($modids as $modid)
@@ -185,7 +188,7 @@ $this->item->params = json_encode($templateparams);
 					?>
 					<div class="gsl-grid gsl-grid small">
 						<div class="form-group gsl-width-1-4@m">
-							<label for="title"><?php echo JText::_('JEV_DEFAULTS_MODULE_ID'); ?>:</label>
+							<label for="title"><?php echo Text::_('JEV_DEFAULTS_MODULE_ID'); ?>:</label>
 							<input class="inputbox form-control" type="text" id="modid<?php echo $count; ?>" size="50"
 							       maxlength="100" name="params[modid][]" value="<?php echo $modid ?>"/>
 						</div>
@@ -195,7 +198,7 @@ $this->item->params = json_encode($templateparams);
 					</div>
 					<div class="gsl-grid gsl-grid small">
 						<div class="form-group gsl-width-expand@m">
-							<label for="title"><?php echo JText::_('JEV_DEFAULTS_MODULE_OUTPUT'); ?>:</label>
+							<label for="title"><?php echo Text::_('JEV_DEFAULTS_MODULE_OUTPUT'); ?>:</label>
 							<?php echo $modeditor->display('params[modval][' . $count . "]", htmlspecialchars($modvals[$count], ENT_QUOTES, 'UTF-8'), 700, 450, '70', '15', false, 'modval' . $count); ?>
 						</div>
 					</div>
@@ -210,7 +213,7 @@ $this->item->params = json_encode($templateparams);
 				?>
 				<div class="gsl-grid gsl-grid small">
 					<div class="form-group gsl-width-1-4@m">
-						<label for="title"><?php echo JText::_('JEV_DEFAULTS_MODULE_ID'); ?>:</label>
+						<label for="title"><?php echo Text::_('JEV_DEFAULTS_MODULE_ID'); ?>:</label>
 						<input class="inputbox form-control" type="text" id="modid<?php echo $count; ?>" size="50"
 						       maxlength="100" name="params[modid][]"/>
 					</div>
@@ -220,7 +223,7 @@ $this->item->params = json_encode($templateparams);
 				</div>
 				<div class="gsl-grid gsl-grid small">
 					<div class="form-group gsl-width-expand@m">
-						<label for="title"><?php echo JText::_('JEV_DEFAULTS_MODULE_OUTPUT'); ?>:</label>
+						<label for="title"><?php echo Text::_('JEV_DEFAULTS_MODULE_OUTPUT'); ?>:</label>
 						<?php echo $modeditor->display('params[modval][' . $count . "]", htmlspecialchars("", ENT_QUOTES, 'UTF-8'), 700, 450, '70', '15', false, 'modval' . $count); ?>
 					</div>
 				</div>
@@ -233,7 +236,7 @@ $this->item->params = json_encode($templateparams);
 		}
 
 		// Custom CSS and Javascript
-		$params = new JRegistry($this->item->params);
+		$params = new Registry($this->item->params);
 		$customcss = $params->get("customcss", '');
 		$customjs = $params->get("customjs", '');
 
@@ -241,7 +244,7 @@ $this->item->params = json_encode($templateparams);
         <div class="gsl-container gsl-container-expand">
             <div class="gsl-grid gsl-grid small">
                 <div class="form-group gsl-width-expand@m">
-                <h3><?php echo JText::_("JEV_DEFAULTS_CUSTOM_CSS");?></h3>
+                <h3><?php echo Text::_("JEV_DEFAULTS_CUSTOM_CSS");?></h3>
                     <textarea id="customcss" name="params[customcss]"  class="gsl-width-expand@m  gsl-height-medium">
                         <?php echo htmlspecialchars($customcss, ENT_QUOTES, 'UTF-8');?>
                     </textarea>
@@ -249,7 +252,7 @@ $this->item->params = json_encode($templateparams);
             </div>
             <div class="gsl-grid gsl-grid small">
                 <div class="form-group gsl-width-expand@m">
-                <h3><?php echo JText::_("JEV_DEFAULTS_CUSTOM_JS");?></h3>
+                <h3><?php echo Text::_("JEV_DEFAULTS_CUSTOM_JS");?></h3>
                     <textarea id="customjs" name="params[customjs]" class="gsl-width-expand@m gsl-height-medium">
                         <?php echo htmlspecialchars($customjs, ENT_QUOTES, 'UTF-8');?>
                     </textarea>

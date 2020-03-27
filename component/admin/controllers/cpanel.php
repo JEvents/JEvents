@@ -13,6 +13,10 @@ defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
 jimport('joomla.application.component.controlleradmin');
 
+use Joomla\CMS\MVC\Controller\AdminController;
+use Joomla\CMS\Language\Language;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Table\Table;
@@ -20,7 +24,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
 
-class AdminCpanelController extends JControllerAdmin
+class AdminCpanelController extends AdminController
 {
 
 	/**
@@ -48,7 +52,7 @@ class AdminCpanelController extends JControllerAdmin
 		$rsvpproplugin = PluginHelper::isEnabled("jevents", "jevrsvppro");
 		if ($rsvpproplugin && $rsvpplugin)
 		{
-			$app->enqueueMessage(JText::_("JEV_INSTALLED_RSVP_AND_RSVPPRO_INCOMPATIBLE"), "ERROR");
+			$app->enqueueMessage(Text::_("JEV_INSTALLED_RSVP_AND_RSVPPRO_INCOMPATIBLE"), "ERROR");
 		}
 
 		// Add one category by default if none exist already
@@ -60,7 +64,7 @@ class AdminCpanelController extends JControllerAdmin
 		{
 			JLoader::register('JEventsCategory', JEV_ADMINPATH . "/libraries/categoryClass.php");
 			$cat = new JEventsCategory($db);
-			$cat->bind(array("title" => JText::_('DEFAULT'), "published" => 1, "color" => "#CCCCFF", "access" => 1));
+			$cat->bind(array("title" => Text::_('DEFAULT'), "published" => 1, "color" => "#CCCCFF", "access" => 1));
 			$cat->store();
 			$catid = $cat->id;
 		}
@@ -94,7 +98,7 @@ class AdminCpanelController extends JControllerAdmin
 
 		if ($jevadmin == -1)
 		{
-			$this->setRedirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&task=params.edit", false), JText::_('PLEASE_CHECK_CONFIGURATION_AND_SAVE'));
+			$this->setRedirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&task=params.edit", false), Text::_('PLEASE_CHECK_CONFIGURATION_AND_SAVE'));
 			$this->redirect();
 		}
 
@@ -106,10 +110,10 @@ class AdminCpanelController extends JControllerAdmin
 			$jevlayout_file = 'jevlayout.php';
 
 			jimport('joomla.filesystem.file');
-			if (!JFile::exists(JPATH_SITE . "/libraries/joomla/installer/adapters/jevlayout.php") ||
+			if (!File::exists(JPATH_SITE . "/libraries/joomla/installer/adapters/jevlayout.php") ||
 				md5_file(JEV_ADMINLIBS . $jevlayout_file) != md5_file(JPATH_SITE . "/libraries/joomla/installer/adapters/jevlayout.php"))
 			{
-				JFile::copy(JEV_ADMINLIBS . $jevlayout_file, JPATH_SITE . "/libraries/joomla/installer/adapters/jevlayout.php");
+				File::copy(JEV_ADMINLIBS . $jevlayout_file, JPATH_SITE . "/libraries/joomla/installer/adapters/jevlayout.php");
 			}
 		}
 
@@ -136,7 +140,7 @@ class AdminCpanelController extends JControllerAdmin
 		$nativeCals      = $this->dataModel->queryModel->getNativeIcalendars();
 		if (is_null($nativeCals) || count($nativeCals) == 0)
 		{
-			JError::raiseWarning("100", JText::_('CALENDARS_NOT_SETUP_PROPERLY'));
+			JError::raiseWarning("100", Text::_('CALENDARS_NOT_SETUP_PROPERLY'));
 		}
 
 		/*
@@ -151,7 +155,7 @@ class AdminCpanelController extends JControllerAdmin
 
 		// Set the layout
 		$this->view->setLayout('cpanel');
-		$this->view->title = JText::_('CONTROL_PANEL');
+		$this->view->title = Text::_('CONTROL_PANEL');
 
 		$this->view->display();
 
@@ -600,7 +604,7 @@ WHERE cat.id is null
 			}
 		}
 
-		$params         = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params         = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		$multicategory  = $params->get("multicategory",0);
 		if ($multicategory) {
 
@@ -690,7 +694,7 @@ WHERE ics.ics_id is null
 
 		if ($hasOrphans)
 		{
-			Factory::getApplication()->enqueueMessage(JText::_("JEV_ORPHAN_EVENTS_DETECTED_AND_PLACED_IN_SPECIAL_ORPHAN_EVENT_CATEGORY_OR_CALENDAR"));
+			Factory::getApplication()->enqueueMessage(Text::_("JEV_ORPHAN_EVENTS_DETECTED_AND_PLACED_IN_SPECIAL_ORPHAN_EVENT_CATEGORY_OR_CALENDAR"));
 		}
 
 
@@ -751,7 +755,7 @@ WHERE ics.ics_id is null
 
 		// Set the layout
 		$this->view->setLayout('support');
-		$this->view->title = JText::_('CONTROL_PANEL');
+		$this->view->title = Text::_('CONTROL_PANEL');
 
 		$this->view->display();
 	}
@@ -1049,7 +1053,7 @@ WHERE ics.ics_id is null
 	private function checkLanguagePackages()
 	{
 
-		$languages = JLanguage::getKnownLanguages();
+		$languages = Language::getKnownLanguages();
 
 		foreach ($languages as $language)
 		{
@@ -1076,13 +1080,13 @@ WHERE ics.ics_id is null
 
 				if ($oldPackage)
 				{
-					if (JText::_("JEV_UPDATE_LANGUAGE_PACKAGE") == "JEV_UPDATE_LANGUAGE_PACKAGE")
+					if (Text::_("JEV_UPDATE_LANGUAGE_PACKAGE") == "JEV_UPDATE_LANGUAGE_PACKAGE")
 					{
-						$updateLanguagePackMessage = JText::sprintf('Your JEvents language package for %s is not the latest official release from JEvents. Please go to <a href="http://www.jevents.net/translations">JEvents site</a> and get the latest version to enable live update system for JEvents languages.', $language['name']);
+						$updateLanguagePackMessage = Text::sprintf('Your JEvents language package for %s is not the latest official release from JEvents. Please go to <a href="http://www.jevents.net/translations">JEvents site</a> and get the latest version to enable live update system for JEvents languages.', $language['name']);
 					}
 					else
 					{
-						$updateLanguagePackMessage = JText::sprintf('JEV_UPDATE_LANGUAGE_PACKAGE', $language['name']);
+						$updateLanguagePackMessage = Text::sprintf('JEV_UPDATE_LANGUAGE_PACKAGE', $language['name']);
 					}
 					JError::raiseNotice("100", $updateLanguagePackMessage);
 				}

@@ -1,6 +1,8 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\String\StringHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
@@ -62,7 +64,7 @@ function FlatViewHelperHeader16($view)
 				}
 				break;
 			default:
-				$t_headline = JText::_('JEV_EVENT_CALENDAR');
+				$t_headline = Text::_('JEV_EVENT_CALENDAR');
 				break;
 		}
 		if ($t_headline != "")
@@ -100,7 +102,7 @@ function FlatViewHelperHeader16($view)
 						<li class="print-icon">
 							<a href="javascript:void(0);" rel="nofollow"
 							   onclick="window.print(); return false;"
-							   title="<?php echo JText::_('JEV_CMN_PRINT'); ?>">
+							   title="<?php echo Text::_('JEV_CMN_PRINT'); ?>">
 								<span class="icon-print"> </span>
 							</a>
 						</li> <?php
@@ -110,7 +112,7 @@ function FlatViewHelperHeader16($view)
 						<li class="print-icon">
 							<a href="javascript:void(0);" rel="nofollow"
 							   onclick="window.open('<?php echo $print_link; ?>', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=600,height=600,directories=no,location=no');"
-							   title="<?php echo JText::_('JEV_CMN_PRINT'); ?>">
+							   title="<?php echo Text::_('JEV_CMN_PRINT'); ?>">
 								<span class="icon-print"> </span>
 							</a>
 						</li> <?php
@@ -131,7 +133,7 @@ function FlatViewHelperHeader16($view)
 						. $view->datamodel->getItemidLink()
 						. $view->datamodel->getCatidsOutLink();
 					$link = Route::_($link);
-					//if (strpos($link,"/")===0) $link = JString::substr($link,1);
+					//if (strpos($link,"/")===0) $link = StringHelper::substr($link,1);
 					$uri  = Uri::getInstance(Uri::base());
 					$root = $uri->toString(array('scheme', 'host', 'port'));
 
@@ -143,7 +145,7 @@ function FlatViewHelperHeader16($view)
 					<li class="email-icon">
 						<a href="javascript:void(0);" rel="nofollow"
 						   onclick="window.open('<?php echo $url; ?>','emailwin','width=400,height=350,menubar=yes,resizable=yes'); return false;"
-						   title="<?php echo JText::_('EMAIL'); ?>">
+						   title="<?php echo Text::_('EMAIL'); ?>">
 							<span class="icon-envelope"> </span>
 						</a>
 					</li>

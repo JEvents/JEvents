@@ -1,4 +1,10 @@
 <?php
+
+use Joomla\Registry\Registry;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Factory;
+
 defined('JPATH_BASE') or die;
 
 jimport('joomla.html.html');

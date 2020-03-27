@@ -11,61 +11,65 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Editor\Editor;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
 
 // Disable for now
 
 ?>
-<label><?php echo JText::_("JEV_PLUGIN_INSTRUCTIONS",true);?></label>
+<label><?php echo Text::_("JEV_PLUGIN_INSTRUCTIONS",true);?></label>
 <select id="jevdefaults" onchange="defaultsEditorPlugin.insert('value','jevdefaults' )" ></select>
 
 <script type="text/javascript">
-defaultsEditorPlugin.node('#jevdefaults',"<?php echo JText::_("JEV_PLUGIN_SELECT",true);?>","");
+defaultsEditorPlugin.node('#jevdefaults',"<?php echo Text::_("JEV_PLUGIN_SELECT",true);?>","");
 // built in group
-var optgroup = defaultsEditorPlugin.optgroup('#jevdefaults' , "<?php echo JText::_("JEV_CORE_DATA",true);?>");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_TAB_START",true);?>", "TABSTART#name");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_END_TABS",true);?>", "TABSEND");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_MESSAGE",true);?>", "MESSAGE");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_TITLE",true);?>", "TITLE");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_TITLE_LABEL",true);?>", "TITLE_LBL");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CREATOR",true);?>", "CREATOR");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CREATOR_LABEL",true);?>", "CREATOR_LBL");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CATEGORY",true);?>", "CATEGORY");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CATEGORY_LABEL",true);?>", "CATEGORY_LBL");
-//defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_PRIMARY_CATEGORY",true);?>", "PRIMARYCATEGORY");
-//defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_PRIMARY_CATEGORY_LABEL",true);?>", "PRIMARYCATEGORY_LBL");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ICAL",true);?>", "ICAL");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ICAL_LABEL",true);?>", "ICAL_LBL");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ACCESS",true);?>", "ACCESS");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ACCESS_LABEL",true);?>", "ACCESS_LBL");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_STATE",true);?>", "STATE");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_STATE_LABEL",true);?>", "STATE_LBL");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_DESCRIPTION",true);?>", "DESCRIPTION");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_DESCRIPTION_LABEL",true);?>", "DESCRIPTION_LBL");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_LOCATION",true);?>", "LOCN");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_LOCATION_LABEL",true);?>", "LOCN_LBL");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_GEOLON",true);?>", "GEOLON");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_GEOLON_LABEL",true);?>", "GEOLON_LBL");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_GEOLAT",true);?>", "GEOLAT");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_GEOLAT_LABEL",true);?>", "GEOLAT_LBL");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CONTACT",true);?>", "CONTACT");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CONTACT_LABEL",true);?>", "CONTACT_LBL");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_EXTRAINFO",true);?>", "EXTRAINFO");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_EXTRAINFO_LABEL",true);?>", "EXTRAINFO_LBL");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CUSTOMFIELDS",true);?>", "CUSTOMFIELDS");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CALTAB",true);?>", "CALTAB");
+var optgroup = defaultsEditorPlugin.optgroup('#jevdefaults' , "<?php echo Text::_("JEV_CORE_DATA",true);?>");
+defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_TAB_START",true);?>", "TABSTART#name");
+defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_END_TABS",true);?>", "TABSEND");
+defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_MESSAGE",true);?>", "MESSAGE");
+defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_TITLE",true);?>", "TITLE");
+defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_TITLE_LABEL",true);?>", "TITLE_LBL");
+defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_CREATOR",true);?>", "CREATOR");
+defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_CREATOR_LABEL",true);?>", "CREATOR_LBL");
+defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_CATEGORY",true);?>", "CATEGORY");
+defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_CATEGORY_LABEL",true);?>", "CATEGORY_LBL");
+//defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_PRIMARY_CATEGORY",true);?>", "PRIMARYCATEGORY");
+//defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_PRIMARY_CATEGORY_LABEL",true);?>", "PRIMARYCATEGORY_LBL");
+defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_ICAL",true);?>", "ICAL");
+defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_ICAL_LABEL",true);?>", "ICAL_LBL");
+defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_ACCESS",true);?>", "ACCESS");
+defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_ACCESS_LABEL",true);?>", "ACCESS_LBL");
+defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_STATE",true);?>", "STATE");
+defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_STATE_LABEL",true);?>", "STATE_LBL");
+defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_DESCRIPTION",true);?>", "DESCRIPTION");
+defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_DESCRIPTION_LABEL",true);?>", "DESCRIPTION_LBL");
+defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_LOCATION",true);?>", "LOCN");
+defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_LOCATION_LABEL",true);?>", "LOCN_LBL");
+defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_GEOLON",true);?>", "GEOLON");
+defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_GEOLON_LABEL",true);?>", "GEOLON_LBL");
+defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_GEOLAT",true);?>", "GEOLAT");
+defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_GEOLAT_LABEL",true);?>", "GEOLAT_LBL");
+defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_CONTACT",true);?>", "CONTACT");
+defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_CONTACT_LABEL",true);?>", "CONTACT_LBL");
+defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_EXTRAINFO",true);?>", "EXTRAINFO");
+defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_EXTRAINFO_LABEL",true);?>", "EXTRAINFO_LBL");
+defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_CUSTOMFIELDS",true);?>", "CUSTOMFIELDS");
+defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_CALTAB",true);?>", "CALTAB");
 <?php
-$jevparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
+$jevparams = ComponentHelper::getParams(JEV_COM_COMPONENT);
 if ($jevparams->get("showpriority", 0)){
 	?>
-	defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_EVENT_PRIORITY",true);?>", "PRIORITY");
-	defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_EVENT_PRIORITY_LABEL",true);?>", "PRIORITY_LBL");
+	defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_EVENT_PRIORITY",true);?>", "PRIORITY");
+	defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_EVENT_PRIORITY_LABEL",true);?>", "PRIORITY_LBL");
 	<?php
 }
 if ($jevparams->get("showtimezone", 0)){
 	?>
-	defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_EVENT_TIMEZONE",true);?>", "TZID");
-	defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_EVENT_TIMEZONE_LABEL",true);?>", "TZID_LBL");
+	defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_EVENT_TIMEZONE",true);?>", "TZID");
+	defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_EVENT_TIMEZONE_LABEL",true);?>", "TZID_LBL");
 	<?php
 }
 ?>
@@ -76,7 +80,7 @@ Joomla.submitbutton = function (pressbutton){
     {
         <?php
 
-	    $editor =  JEditor::getInstance('none');
+	    $editor =  Editor::getInstance('none');
 
 	    ?>
                     
@@ -92,7 +96,7 @@ Joomla.submitbutton = function (pressbutton){
         var defaultsLayout = <?php echo $editor->getContent('value'); ?>;
         if(defaultsLayout == '')
         {
-                if( !confirm ('<?php echo JText::_("JEV_LAYOUT_DEFAULTS_EMPTY_ALERT",true);?>'))
+                if( !confirm ('<?php echo Text::_("JEV_LAYOUT_DEFAULTS_EMPTY_ALERT",true);?>'))
                 {                                      
                     return;
                 }
@@ -126,7 +130,7 @@ Joomla.submitbutton = function (pressbutton){
                     }
                 });
                     if (missingFields.length >0){
-			var message = '<?php echo JText::_("JEV_LAYOUT_MISSING_FIELD",true);?>'+'\n';
+			var message = '<?php echo Text::_("JEV_LAYOUT_MISSING_FIELD",true);?>'+'\n';
 			// native array!
 			missingFields.each (function (msg, index){
 				message +=  msg +'\n';
@@ -156,7 +160,7 @@ foreach ($jevplugins as $jevplugin){
 		}
 		$classname = "plgJevents".ucfirst($jevplugin->name);
 		if (is_callable(array($classname,"fieldNameArray"))){
-			$lang = JFactory::getLanguage();
+			$lang = Factory::getLanguage();
 			$lang->load("plg_jevents_".$jevplugin->name,JPATH_ADMINISTRATOR);
 			$fieldNameArray = call_user_func(array($classname,"fieldNameArray"), "edit");
 			if (!isset($fieldNameArray['labels'])) continue;

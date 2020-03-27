@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Language\Text;
 use Joomla\String\StringHelper;
 
 class JevParameter extends JevRegistry
@@ -42,7 +43,7 @@ class JevParameter extends JevRegistry
 		if ($description = $this->_xml[$group]->attributes('description'))
 		{
 			// add the params description to the display
-			$desc   = JText::_($description);
+			$desc   = Text::_($description);
 			$html[] = '<tr><td class="paramlist_description" colspan="2">' . $desc . '</td></tr>';
 		}
 
@@ -80,7 +81,7 @@ class JevParameter extends JevRegistry
 
 		if (count($params) < 1)
 		{
-			$html[] = "<tr><td colspan=\"2\"><i>" . JText::_('THERE_ARE_NO_PARAMETERS_FOR_THIS_ITEM') . "</i></td></tr>";
+			$html[] = "<tr><td colspan=\"2\"><i>" . Text::_('THERE_ARE_NO_PARAMETERS_FOR_THIS_ITEM') . "</i></td></tr>";
 		}
 
 		$html[] = '</table>';

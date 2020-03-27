@@ -6,6 +6,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 
@@ -118,7 +119,7 @@ class GeraintModLatestView extends DefaultModLatestView
 		{
 			$content     .= $this->modparams->get("modlatest_templatetop") ? $this->modparams->get("modlatest_templatetop") : '<table class="mod_events_latest_table jevbootstrap" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
 			$templaterow = $this->modparams->get("modlatest_templaterow") ? $this->modparams->get("modlatest_templaterow") : '<tr><td class="mod_events_latest_noevents">%s</td></tr>' . "\n";
-			$content     .= str_replace("%s", JText::_('JEV_NO_EVENTS'), $templaterow);
+			$content     .= str_replace("%s", Text::_('JEV_NO_EVENTS'), $templaterow);
 			$content     .= $this->modparams->get("modlatest_templatebottom") ? $this->modparams->get("modlatest_templatebottom") : "</table>\n";
 		}
 
@@ -133,9 +134,9 @@ class GeraintModLatestView extends DefaultModLatestView
 		{
 			$rssimg       = Uri::root() . "media/system/images/livemarks.png";
 			$callink_HTML = '<div class="mod_events_latest_rsslink">'
-				. '<a href="' . $this->rsslink . '" title="' . JText::_("RSS_FEED") . '" target="_blank">'
-				. '<img src="' . $rssimg . '" alt="' . JText::_("RSS_FEED") . '" />'
-				. JText::_("SUBSCRIBE_TO_RSS_FEED")
+				. '<a href="' . $this->rsslink . '" title="' . Text::_("RSS_FEED") . '" target="_blank">'
+				. '<img src="' . $rssimg . '" alt="' . Text::_("RSS_FEED") . '" />'
+				. Text::_("SUBSCRIBE_TO_RSS_FEED")
 				. '</a>'
 				. '</div>';
 			$content      .= $callink_HTML;

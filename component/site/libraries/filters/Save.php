@@ -12,6 +12,7 @@
 // ensure this file is being included by a parent file
 defined('_JEXEC') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
 class jevSaveFilter extends jevFilter
@@ -50,12 +51,12 @@ class jevSaveFilter extends jevFilter
 
 		$value           = Factory::getApplication()->input->getString("filtername", "");
 		$value           = htmlspecialchars($value);
-		$filter["title"] = JText::_("JEV_SAVE_FILTER");
-		$filter["html"]  = '<input type="text" name="filtername" id="filtername" value="' . $value . '" placeholder="' . JText::_("JEV_SAVE_FILTER_AS") . '" />';
+		$filter["title"] = Text::_("JEV_SAVE_FILTER");
+		$filter["html"]  = '<input type="text" name="filtername" id="filtername" value="' . $value . '" placeholder="' . Text::_("JEV_SAVE_FILTER_AS") . '" />';
 		$filter["html"]  .= '<input type="hidden" name="modid" id="modid" value="' . $activemodid . '"  />';
 
 		/*
-$filter["html"] = "<textarea name='filtername' id='filtername' rows='1' placeholder='".JText::_("JEV_SAVE_FILTER_AS")."' >"
+$filter["html"] = "<textarea name='filtername' id='filtername' rows='1' placeholder='".Text::_("JEV_SAVE_FILTER_AS")."' >"
 				. $value 
 				. "</textarea>";
 		*/

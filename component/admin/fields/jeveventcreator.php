@@ -2,6 +2,9 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Access\Access;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -10,7 +13,7 @@ use Joomla\CMS\Component\ComponentHelper;
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
-class JFormFieldJeveventcreator extends JFormField
+class FormFieldJeveventcreator extends FormField
 {
 
 	/**
@@ -42,7 +45,7 @@ class JFormFieldJeveventcreator extends JFormField
 		// If user is jevents can deleteall or has backend access then allow them to specify the creator
 		$jevuser = JEVHelper::getAuthorisedUser();
 		$user    = Factory::getUser();
-		//$access = JAccess::check($user->id, "core.deleteall", "com_jevents");
+		//$access = Access::check($user->id, "core.deleteall", "com_jevents");
 		$access = $user->authorise('core.admin', 'com_jevents') || $user->authorise('core.deleteall', 'com_jevents');
 
 		$db = Factory::getDbo();
@@ -72,7 +75,7 @@ class JFormFieldJeveventcreator extends JFormField
 			}
 			else
 			{
-				$rules         = JAccess::getAssetRules("com_jevents", true);
+				$rules         = Access::getAssetRules("com_jevents", true);
 				$creatorgroups = $rules->getData();
 				// need to merge the arrays because of stupid way Joomla checks super user permissions
 				//$creatorgroups = array_merge($creatorgroups["core.admin"]->getData(), $creatorgroups["core.create"]->getData());
@@ -94,7 +97,7 @@ class JFormFieldJeveventcreator extends JFormField
 				{
 					if ($permission == 1)
 					{
-						$userids = array_merge(JAccess::getUsersByGroup($creatorgroup, true), $userids);
+						$userids = array_merge(Access::getUsersByGroup($creatorgroup, true), $userids);
 					}
 				}
 				$sql = "SELECT count(id) FROM #__users where id IN (" . implode(",", array_values($userids)) . ") and block=0 ORDER BY name asc";
@@ -153,7 +156,7 @@ class JFormFieldJeveventcreator extends JFormField
 				return "";
 			}
 
-			$userOptions[] = HTMLHelper::_('select.option', '-1', JText::_('SELECT_USER'));
+			$userOptions[] = HTMLHelper::_('select.option', '-1', Text::_('SELECT_USER'));
 			foreach ($users as $user)
 			{
 				if ($user->id == 0)

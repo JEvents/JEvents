@@ -12,6 +12,9 @@
 // ensure this file is being included by a parent file
 defined('_JEXEC') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Language\Text;
+
+
 class jevResetFilter extends jevFilter
 {
 	function __construct($contentElement)
@@ -37,7 +40,7 @@ class jevResetFilter extends jevFilter
 	{
 
 		$reset["title"] = "";
-		$reset["html"]  = "<input type='hidden' name='filter_reset' id='filter_reset' value='0' /><input type='button' value='" . JText::_('RESET') . "' onclick='jQuery(\"input[name=filter_reset]\").each(function(idx,el){el.value=1;});form.submit()' />";
+		$reset["html"]  = "<input type='hidden' name='filter_reset' id='filter_reset' value='0' /><input type='button' value='" . Text::_('RESET') . "' onclick='jQuery(\"input[name=filter_reset]\").each(function(idx,el){el.value=1;});form.submit()' />";
 
 		return $reset;
 

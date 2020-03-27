@@ -140,7 +140,7 @@ class ModlatestViewModlatest extends AdminICalRepeatViewICalRepeat
 		$this->set("modparams", $params);
 		$this->set("jeventCalObject", $jeventCalObject);
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 
 		// No need for CSS files in XML file
 		if ($document->getType() == 'feed')

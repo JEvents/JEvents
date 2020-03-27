@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\String\StringHelper;
 
@@ -92,12 +93,12 @@ STYLE;
 					?>
 					<tr>
 						<td><input class="modfilter_button" type="button" onclick="JeventsFilters.reset(this.form)"
-						           value="<?php echo JText::_('RESET'); ?>"/>
+						           value="<?php echo Text::_('RESET'); ?>"/>
 							<?php if ($params->get("showlabels", 1)) { ?>
 						</td>
 						<td>
 							<?php } ?>
-							<input class="modfilter_button" type="submit" value="<?php echo JText::_('ok'); ?>"
+							<input class="modfilter_button" type="submit" value="<?php echo Text::_('ok'); ?>"
 							       name="jevents_filter_submit"/></td>
 					</tr>
 				</table>
@@ -140,7 +141,7 @@ STYLE;
 						{
 							?>
 							<td><input class="modfilter_button" type="button" onclick="JeventsFilters.reset(this.form)"
-							           value="<?php echo JText::_('RESET'); ?>"/></td>
+							           value="<?php echo Text::_('RESET'); ?>"/></td>
 						<?php } ?>
 					</tr>
 					<tr>
@@ -163,9 +164,9 @@ STYLE;
 						{
 							?>
 							<td><input class="modfilter_button" type="button" onclick="JeventsFilters.reset(this.form)"
-							           value="<?php echo JText::_('RESET'); ?>"/></td>
+							           value="<?php echo Text::_('RESET'); ?>"/></td>
 						<?php } ?>
-						<td><input class="modfilter_button" type="submit" value="<?php echo JText::_('ok'); ?>"
+						<td><input class="modfilter_button" type="submit" value="<?php echo Text::_('ok'); ?>"
 						           name="jevents_filter_submit"/></td>
 					</tr>
 				</table>
@@ -215,12 +216,12 @@ STYLE;
 					<li>
 						<div class="jevfilterinput">
 							<input class="modfilter_button" type="button" onclick="JeventsFilters.reset(this.form)"
-							       value="<?php echo JText::_('RESET'); ?>"/>
+							       value="<?php echo Text::_('RESET'); ?>"/>
 							<?php if ($params->get("showlabels", 1)) { ?>
 						</div>
 						<div class="jevfilterinput">
 							<?php } ?>
-							<input class="modfilter_button" type="submit" value="<?php echo JText::_('ok'); ?>"
+							<input class="modfilter_button" type="submit" value="<?php echo Text::_('ok'); ?>"
 							       name="jevents_filter_submit"/>
 						</div>
 					</li>

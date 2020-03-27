@@ -1,12 +1,13 @@
 <?php
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Component\ComponentHelper;
 
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
-class JFormFieldJeveventcalendar extends JFormField
+class FormFieldJeveventcalendar extends FormField
 {
 
 	/**

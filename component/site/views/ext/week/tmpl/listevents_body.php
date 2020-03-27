@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
 $cfg    = JEVConfig::getInstance();
@@ -26,7 +27,7 @@ $precedingWeek = $this->datamodel->getPrecedingWeek($this->year, $this->month, $
 		<td class="tableh1" colspan="3">
 			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
-					<td><h2><?php echo JText::_('WEEKLY_VIEW'); ?></h2></td>
+					<td><h2><?php echo Text::_('WEEKLY_VIEW'); ?></h2></td>
 					<td class="today" align="right"><?php echo $data['startdate'] . ' - ' . $data['enddate']; ?></td>
 				</tr>
 			</table>
@@ -36,8 +37,8 @@ $precedingWeek = $this->datamodel->getPrecedingWeek($this->year, $this->month, $
 		<td class="previousmonth" align="center" height="22" nowrap="nowrap" valign="middle" width="33%">&nbsp;
 			<!-- BEGIN previous_month_link_row -->
 			<?php if ($precedingWeek) {
-				echo "<a href='" . $precedingWeek . "' title='" . JText::_("PRECEEDING_Week") . "' >" ?>
-				<?php echo JText::_("PRECEEDING_Week") . "</a>";
+				echo "<a href='" . $precedingWeek . "' title='" . Text::_("PRECEEDING_Week") . "' >" ?>
+				<?php echo Text::_("PRECEEDING_Week") . "</a>";
 			} ?>
 
 
@@ -49,8 +50,8 @@ $precedingWeek = $this->datamodel->getPrecedingWeek($this->year, $this->month, $
 		</td>
 		<td class="nextmonth" align="center" height="22" nowrap="nowrap" valign="middle" width="33%">
 			<?php if ($followingWeek) {
-				echo "<a href='" . $followingWeek . "' title='" . JText::_("FOLLOWING_Week") . "' >" ?>
-				<?php echo JText::_("FOLLOWING_Week") . "</a>";
+				echo "<a href='" . $followingWeek . "' title='" . Text::_("FOLLOWING_Week") . "' >" ?>
+				<?php echo Text::_("FOLLOWING_Week") . "</a>";
 			} ?>
 		</td>
 	</tr>
@@ -62,7 +63,7 @@ $precedingWeek = $this->datamodel->getPrecedingWeek($this->year, $this->month, $
 		$num_events = count($data['days'][$d]['rows']);
 		if ($num_events == 0) continue;
 		$hasevents = true;
-		$day_link  = '<a class="ev_link_weekday" href="' . $data['days'][$d]['link'] . '" title="' . JText::_('JEV_CLICK_TOSWITCH_DAY') . '">'
+		$day_link  = '<a class="ev_link_weekday" href="' . $data['days'][$d]['link'] . '" title="' . Text::_('JEV_CLICK_TOSWITCH_DAY') . '">'
 			. JEventsHTML::getDateFormat($data['days'][$d]['week_year'], $data['days'][$d]['week_month'], $data['days'][$d]['week_day'], 2) . '</a>' . "\n";
 
 		echo '<tr class="tableh2"><td class="tableh2" colspan="3">' . $day_link . '</td></tr>';
@@ -91,7 +92,7 @@ $precedingWeek = $this->datamodel->getPrecedingWeek($this->year, $this->month, $
 	{
 		echo '<tr><td class="ev_td_right" colspan="3"><ul class="ev_ul" style="list-style: none;">' . "\n";
 		echo "<li class='ev_td_li' style='border:0px;'>\n";
-		echo JText::_('JEV_NO_EVENTS');
+		echo Text::_('JEV_NO_EVENTS');
 		echo "</li>\n";
 		echo "</ul></td></tr>\n";
 	}

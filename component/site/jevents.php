@@ -11,6 +11,9 @@
  */
 defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Environment\Browser;
+use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -46,7 +49,7 @@ require_once JPATH_COMPONENT . '/jevents.defines.php';
 
 $isMobile = false;
 jimport("joomla.environment.browser");
-$browser = JBrowser::getInstance();
+$browser = Browser::getInstance();
 
 $registry = JevRegistry::getInstance("jevents");
 
@@ -149,7 +152,7 @@ if ($isMobile || strpos($app->getTemplate(), 'mobile_') === 0 || (class_exists("
 	if (!$params->get("disablesmartphone"))
 	{
 		$input->set("jevsmartphone", 1);
-		if (JFolder::exists(JEV_VIEWS . "/smartphone"))
+		if (Folder::exists(JEV_VIEWS . "/smartphone"))
 		{
 			$input->set("jEV", "smartphone");
 		}
@@ -213,7 +216,7 @@ if (strpos($cmd, '.') != false)
 	}
 	else
 	{
-		$app->enqueueMessage('404 - ' . JText::sprintf("JLIB_APPLICATION_ERROR_INVALID_CONTROLLER_CLASS", $controllerName), 'error');
+		$app->enqueueMessage('404 - ' . Text::sprintf("JLIB_APPLICATION_ERROR_INVALID_CONTROLLER_CLASS", $controllerName), 'error');
 
 		//$app->enqueueMessage('Invalid Controller - ' . $controllerName);
 		$cmd = "month.calendar";
@@ -238,7 +241,7 @@ if (in_array($cmd, array("year.listevents", "month.calendar", "week.listevents",
 	"search.results", "admin.listevents", "jevent.edit", "icalevent.edit", "icalevent.publish", "icalevent.unpublish",
 	"icalevent.editcopy", "icalrepeat.edit", "jevent.delete", "icalevent.delete", "icalrepeat.delete", "icalrepeat.deletefuture")))
 {
-	$browser = JBrowser::getInstance();
+	$browser = Browser::getInstance();
 	if ($params->get("redirectrobots", 0) && ($browser->isRobot() || strpos($browser->getAgentString(), "bingbot") !== false))
 	{
 		// redirect  to crawler menu item
@@ -332,11 +335,11 @@ if (empty($title))
 }
 elseif ($app->getCfg('sitename_pagetitles', 0) == 1)
 {
-	$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+	$title = Text::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
 }
 elseif ($app->getCfg('sitename_pagetitles', 0) == 2)
 {
-	$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+	$title = Text::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
 }
 if ($input->getCmd("format") != "feed")
 {

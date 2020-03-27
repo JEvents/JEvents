@@ -4,6 +4,9 @@
  * @license		By negotiation with author via http://www.gwesystems.com
 */
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Session\Session;
@@ -13,7 +16,7 @@ function ProcessJsonRequest(&$requestObject, $returnData)
 {
 
 	//$file4 = JPATH_SITE . '/components/com_jevents/libraries/checkconflict.php';
-	//if (JFile::exists($file4)) JFile::delete($file4);
+	//if (File::exists($file4)) File::delete($file4);
 
 	$app    = Factory::getApplication();
 	$input  = $app->input;
@@ -133,8 +136,8 @@ function ProcessJsonRequest(&$requestObject, $returnData)
 
 			list($y, $m, $d, $h, $m, $d) = sscanf($olp->startrepeat, "%d-%d-%d %d:%d:%d");
 
-			$tstring                  = JText::_("JEV_OVERLAP_MESSAGE");
-			$overlap->conflictMessage = sprintf($tstring, $olp->summary, JEV_CommonFunctions::jev_strftime(JText::_("DATE_FORMAT_4"), JevDate::strtotime($olp->startrepeat)), JEV_CommonFunctions::jev_strftime(JText::_("DATE_FORMAT_4"), JevDate::strtotime($olp->endrepeat)), $olp->conflictCause);
+			$tstring                  = Text::_("JEV_OVERLAP_MESSAGE");
+			$overlap->conflictMessage = sprintf($tstring, $olp->summary, JEV_CommonFunctions::jev_strftime(Text::_("DATE_FORMAT_4"), JevDate::strtotime($olp->startrepeat)), JEV_CommonFunctions::jev_strftime(Text::_("DATE_FORMAT_4"), JevDate::strtotime($olp->endrepeat)), $olp->conflictCause);
 			$overlap->conflictMessage = addslashes($overlap->conflictMessage);
 			$overlap->url             = Uri::root() . "index.php?option=com_jevents&task=icalrepeat.detail&evid=" . $olp->rp_id . "&year=$y&month=$m&day=$d";
 			$overlap->url             = str_replace("components/com_jevents/libraries/", "", $overlap->url);
@@ -159,7 +162,7 @@ function simulateSaveEvent($requestObject)
 
 	if (!JEVHelper::isEventCreator())
 	{
-		PlgSystemGwejson::throwerror(JText::_('ALERTNOTAUTH'));
+		PlgSystemGwejson::throwerror(Text::_('ALERTNOTAUTH'));
 	}
 
 	// Convert formdata to array
@@ -171,7 +174,7 @@ function simulateSaveEvent($requestObject)
 	}
 
 	// If the allow HTML flag is set, apply a safe HTML filter to the variable
-	$safeHtmlFilter = JFilterInput::getInstance(null, null, 1, 1);
+	$safeHtmlFilter = InputFilter::getInstance(null, null, 1, 1);
 	$array          = $safeHtmlFilter->clean($formdata, null);
 
 
@@ -186,7 +189,7 @@ function simulateSaveEvent($requestObject)
 		$event = $queryModel->getEventById(intval($array["evid"]), 1, "icaldb");
 		if (!JEVHelper::canEditEvent($event))
 		{
-			PlgSystemGwejson::throwerror(JText::_('ALERTNOTAUTH'));
+			PlgSystemGwejson::throwerror(Text::_('ALERTNOTAUTH'));
 		}
 	}
 	$row = false;
@@ -208,7 +211,7 @@ function simulateSaveEvent($requestObject)
 	}
 	else
 	{
-		PlgSystemGwejson::throwerror(JText::_('EVENT_NOT_SAVED'));
+		PlgSystemGwejson::throwerror(Text::_('EVENT_NOT_SAVED'));
 	}
 
 
@@ -223,7 +226,7 @@ function simulateSaveRepeat($requestObject)
 
 	if (!JEVHelper::isEventCreator())
 	{
-		PlgSystemGwejson::throwerror(JText::_('ALERTNOTAUTH'));
+		PlgSystemGwejson::throwerror(Text::_('ALERTNOTAUTH'));
 	}
 
 	// Convert formdata to array
@@ -234,12 +237,12 @@ function simulateSaveRepeat($requestObject)
 		$formdata[$k] = $v;
 	}
 
-	$safeHtmlFilter = JFilterInput::getInstance(null, null, 1, 1);
+	$safeHtmlFilter = InputFilter::getInstance(null, null, 1, 1);
 	$array          = $safeHtmlFilter->clean($formdata, null);
 
 	if (!array_key_exists("rp_id", $array) || intval($array["rp_id"]) <= 0)
 	{
-		PlgSystemGwejson::throwerror(JText::_("Not a repeat", true));
+		PlgSystemGwejson::throwerror(Text::_("Not a repeat", true));
 	}
 
 	$rp_id = intval($array["rp_id"]);
@@ -251,7 +254,7 @@ function simulateSaveRepeat($requestObject)
 	$event = $queryModel->listEventsById(intval($rp_id), 1, "icaldb");
 	if (!JEVHelper::canEditEvent($event))
 	{
-		PlgSystemGwejson::throwerror(JText::_('ALERTNOTAUTH'));
+		PlgSystemGwejson::throwerror(Text::_('ALERTNOTAUTH'));
 	}
 
 	$db  = Factory::getDbo();
@@ -381,7 +384,7 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 			{
 				foreach ($conflicts as &$conflict)
 				{
-					$conflict->conflictCause = JText::_("JEV_GENERAL_OVERLAP");
+					$conflict->conflictCause = Text::_("JEV_GENERAL_OVERLAP");
 				}
 				unset($conflict);
 				$overlaps = array_merge($overlaps, $conflicts);
@@ -470,7 +473,7 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 							}
 						}
 						$cat                     = count($catname) > 0 ? implode(", ", $catname) : $testevent->getCategoryName();
-						$conflict->conflictCause = JText::sprintf("JEV_CATEGORY_CLASH", $cat);
+						$conflict->conflictCause = Text::sprintf("JEV_CATEGORY_CLASH", $cat);
 					}
 					unset($conflict);
 					$overlaps = array_merge($overlaps, $conflicts);
@@ -499,7 +502,7 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 				{
 					foreach ($conflicts as &$conflict)
 					{
-						$conflict->conflictCause = JText::sprintf("JEV_CALENDAR_CLASH", $calinfo->label);
+						$conflict->conflictCause = Text::sprintf("JEV_CALENDAR_CLASH", $calinfo->label);
 					}
 					unset($conflict);
 					$overlaps = array_merge($overlaps, $conflicts);
@@ -536,7 +539,7 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject)
 		{
 			foreach ($conflicts as &$conflict)
 			{
-				$conflict->conflictCause = JText::_("JEV_GENERAL_OVERLAP");
+				$conflict->conflictCause = Text::_("JEV_GENERAL_OVERLAP");
 			}
 			unset($conflict);
 			$overlaps = array_merge($overlaps, $conflicts);
@@ -623,7 +626,7 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject)
 					}
 					//TODO $testevent is not set? We need to look at actually setting it as it is pointless at present.
 					$cat                     = count($catname) > 0 ? implode(", ", $catname) : '';
-					$conflict->conflictCause = JText::sprintf("JEV_CATEGORY_CLASH", $cat);
+					$conflict->conflictCause = Text::sprintf("JEV_CATEGORY_CLASH", $cat);
 				}
 				unset($conflict);
 				$overlaps = array_merge($overlaps, $conflicts);
