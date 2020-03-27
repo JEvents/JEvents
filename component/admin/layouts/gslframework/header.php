@@ -120,7 +120,7 @@ $tmpl = Factory::getApplication()->input->getCmd('tmpl', '');
                                        aria-expanded="false">
                                     </a>
                                 </li>
-                            </ul>
+                           </ul>
                         </div>
                 </nav>
 		            <?php
