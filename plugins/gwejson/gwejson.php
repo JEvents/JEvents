@@ -4,7 +4,7 @@
  * @package     GWE Systems
  * @subpackage  System.Gwejson
  *
- * @copyright   Copyright (C)  2015 GWE Systems Ltd. All rights reserved.
+ * @copyright   Copyright (C)  2015 - JEVENTS_COPYRIGHT GWE Systems Ltd. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 defined('JPATH_BASE') or die;

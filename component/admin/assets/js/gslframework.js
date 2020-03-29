@@ -2,7 +2,7 @@
  * @version    CVS: JEVENTS_VERSION
  * @package    com_yoursites
  * @author     Geraint Edwards
- * @copyright  2017-2019 GWE Systems Ltd
+ * @copyright  2017--JEVENTS_COPYRIGHT GWESystems Ltd
  * @license    GNU General Public License version 3 or later; see LICENSE.txt
  */
 
@@ -213,6 +213,20 @@ document.addEventListener('DOMContentLoaded', function () {
 		{
 			document.getElementById('gslc').classList.add('no-joomla-menu');
 		}
+
+		// Hide the sidebar
+		document.getElementById('sidebar-wrapper').classList.add('gsl-hide-sidebar');
+		document.getElementById('gslc').classList.add('gsl-hide-sidebar');
+		/*
+		document.getElementById('sidebar-wrapper').addEventListener('mouseout', () => {
+			document.getElementById('sidebar-wrapper').classList.add('gsl-hide-sidebar');
+			document.getElementById('gslc').classList.add('gsl-hide-sidebar');
+		});
+		 */
+		document.querySelector('#right-col > .gsl-content').addEventListener('mouseover', () => {
+			document.getElementById('sidebar-wrapper').classList.add('gsl-hide-sidebar');
+			document.getElementById('gslc').classList.add('gsl-hide-sidebar');
+		});
 	}
 	else {
 		// Clean up ISIS stuff etc.

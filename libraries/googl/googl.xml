@@ -7,7 +7,7 @@
 	</description>
 	<author>Sebastian Wyder package by Carlos Camara</author>
 	<creationDate>JEVENTS_DATE</creationDate>
-	<copyright>(C) 2010-2019 GWE Systems Ltd. All rights reserved.</copyright>
+	<copyright>(C) 2010-JEVENTS_COPYRIGHT GWESystems Ltd. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>carcam@jevents.net</authorEmail>
 	<packager>JEvents</packager>

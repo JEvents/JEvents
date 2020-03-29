@@ -3,7 +3,7 @@
 	<name>PLG_SYSTEM_GWEJSON</name>
 	<author>GWE Systems Ltd</author>
 	<creationDate>JEVENTS_DATE</creationDate>
-	<copyright>(C) 2015-2019 GWE Systems Ltd. All rights reserved.</copyright>
+	<copyright>(C) 2015-JEVENTS_COPYRIGHT GWESystems Ltd. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see	LICENSE.txt</license>
 	<authorEmail>via website</authorEmail>
 	<authorUrl>www.gwesystems.com</authorUrl>

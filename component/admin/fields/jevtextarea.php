@@ -8,12 +8,14 @@
 defined('_JEXEC') or die();
 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormHelper;
 
+FormHelper::loadFieldClass('textarea');
 
-include_once(JPATH_SITE . "/libraries/joomla/form/fields/textarea.php");
+//include_once(JPATH_SITE . "/libraries/joomla/form/fields/textarea.php");
 //J4 = include_once(JPATH_SITE . "/libraries/src/Form/Field/TextareaField.php");
 
-class JFormFieldJevtextarea extends JFormFieldTextarea
+class FormFieldJevtextarea extends JFormFieldTextarea
 {
 	protected function getInput()
 	{
@@ -27,3 +29,4 @@ class JFormFieldJevtextarea extends JFormFieldTextarea
 	}
 
 }
+class_alias("FormFieldJevtextarea", "JFormFieldJevtextarea");
