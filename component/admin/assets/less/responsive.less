@@ -209,6 +209,19 @@
       }
 
     }
+
+    /*
+   * Params editing fixes
+   * Divider override UIkit default - default in 3.3.7 leaves top list item squashed - narrow screen mode
+   */
+    .gsl-list-divider > li{
+      margin-top: 10px;
+      border-left: 1px solid #e5e5e5;
+      border-top-width: 0;
+    }
+    #myParamsTabs > li {
+      padding: 0 10px;
+    }
   }
 
   /* Not within #gslc.gsl-scope - its too tight and js can't change the widths! */

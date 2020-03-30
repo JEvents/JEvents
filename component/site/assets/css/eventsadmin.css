@@ -414,9 +414,8 @@ table.versionstatuslist a {
     border-bottom-left-radius: 5px;
     border-color: #DDDDDD;
     border-style: solid;
-    border-top-left-radius: 5px;
-    border-width: 1px 0 1px 1px;
-    margin-right: -1px;
+    border-top-radius: 5px;
+    border-width: 1px;
 }
 
 #myParamsTabsContent table.paramlist {

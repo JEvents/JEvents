@@ -41,8 +41,8 @@ class JEventsVersion
 		{
 			$instance = new JEventsVersion();
 
+			// Load gslhelper from currently active component - can't force JEvents version otherwise
 			include_once(JPATH_COMPONENT_ADMINISTRATOR . "/helpers/gslhelper.php");
-
 			$instance->RELEASE = GslHelper::JEvents_Version(false);
 		}
 

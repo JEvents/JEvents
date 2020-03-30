@@ -52,9 +52,9 @@
     <!-- Target: JEvents Generic Folder    -->
     <!-- ==================================================  -->
     <target name="build-generic" description="Build Generic JEvents Folder ">
-        <echo msg="Building RSVP Pro ${pluginname} Plugin..."/>
-        <copy todir="${builddir}/${pluginfolder}">
-            <fileset dir="../${pluginfolder}">
+        <echo msg="Building Gemeric Folder ${genericname}..."/>
+        <copy todir="${builddir}/${genericfolder}">
+            <fileset dir="../${genericfolder}">
                 <include name="**"></include>
                 <exclude name="**/.svn/**"></exclude>
                 <excludesfile name="excludedfiles.build"></excludesfile>
@@ -62,10 +62,10 @@
         </copy>
 
         <phingcall target="sedreplace">
-            <property name="name" value="${pluginfolder}" />
+            <property name="name" value="${genericfolder}" />
         </phingcall>
 
-        <fileset dir="${builddir}/${pluginfolder}" id="pluginZip">
+        <fileset dir="${builddir}/${genericfolder}" id="pluginZip">
             <include name="**"/>
             <excludesfile name="excludedfiles.build"></excludesfile>
         </fileset>
@@ -171,8 +171,8 @@
         <echo msg="Building JEvents ..." />
 
         <phingcall target="build-generic">
-            <property name="pluginname" value="Core JEvents Component" />
-            <property name="pluginfolder" value="component" />
+            <property name="genericname" value="Core JEvents Component" />
+            <property name="genericfolder" value="component" />
             <property name="zipfile" value="com_jevents.zip" />
         </phingcall>
 
@@ -187,38 +187,38 @@
     <target name="build-plugins" description="Build Plugins">
         <echo msg="Building JEvents Plugins..."/>
         <phingcall target="build-generic">
-            <property name="pluginname" value="ActionLogs Plugin" />
-            <property name="pluginfolder" value="plugins/actionlog" />
+            <property name="genericname" value="ActionLogs Plugin" />
+            <property name="genericfolder" value="plugins/actionlog" />
             <property name="zipfile" value="actionlog_jevents.zip" />
         </phingcall>
 
         <phingcall target="build-generic">
-            <property name="pluginname" value="Finder Plugin" />
-            <property name="pluginfolder" value="plugins/finder" />
+            <property name="genericname" value="Finder Plugin" />
+            <property name="genericfolder" value="plugins/finder" />
             <property name="zipfile" value="finder.zip" />
         </phingcall>
 
         <phingcall target="build-generic">
-            <property name="pluginname" value="GWE JSON Plugin" />
-            <property name="pluginfolder" value="plugins/gwejson" />
+            <property name="genericname" value="GWE JSON Plugin" />
+            <property name="genericfolder" value="plugins/gwejson" />
             <property name="zipfile" value="gwejson.zip" />
         </phingcall>
 
         <phingcall target="build-generic">
-            <property name="pluginname" value="Installer Plugin" />
-            <property name="pluginfolder" value="plugins/installer" />
+            <property name="genericname" value="Installer Plugin" />
+            <property name="genericfolder" value="plugins/installer" />
             <property name="zipfile" value="installer.zip" />
         </phingcall>
 
         <phingcall target="build-generic">
-            <property name="pluginname" value="JEvents Plugin" />
-            <property name="pluginfolder" value="plugins/jevents" />
+            <property name="genericname" value="JEvents Plugin" />
+            <property name="genericfolder" value="plugins/jevents" />
             <property name="zipfile" value="jevents.zip" />
         </phingcall>
 
         <phingcall target="build-generic">
-            <property name="pluginname" value="Search Plugin" />
-            <property name="pluginfolder" value="plugins/search" />
+            <property name="genericname" value="Search Plugin" />
+            <property name="genericfolder" value="plugins/search" />
             <property name="zipfile" value="search.zip" />
         </phingcall>
     </target>
@@ -229,20 +229,20 @@
     <target name="build-libraries" description="Build Libraries">
         <echo msg="Building JEvents Libraries ..."/>
         <phingcall target="build-generic">
-            <property name="pluginname" value="Googl Library" />
-            <property name="pluginfolder" value="libraries/googl" />
+            <property name="genericname" value="Googl Library" />
+            <property name="genericfolder" value="libraries/googl" />
             <property name="zipfile" value="googl.zip" />
         </phingcall>
 
         <phingcall target="build-generic">
-            <property name="pluginname" value="JEVModal Library" />
-            <property name="pluginfolder" value="libraries/jevmodal" />
+            <property name="genericname" value="JEVModal Library" />
+            <property name="genericfolder" value="libraries/jevmodal" />
             <property name="zipfile" value="jevmodal.zip" />
         </phingcall>
 
         <phingcall target="build-generic">
-            <property name="pluginname" value="JEV Typeahead Library" />
-            <property name="pluginfolder" value="libraries/jevtypeahead" />
+            <property name="genericname" value="JEV Typeahead Library" />
+            <property name="genericfolder" value="libraries/jevtypeahead" />
             <property name="zipfile" value="jevtypeahead.zip" />
         </phingcall>
     </target>
@@ -253,33 +253,33 @@
     <target name="build-modules" description="Build Modules">
         <echo msg="Building JEvents Modules ..."/>
         <phingcall target="build-generic">
-            <property name="pluginname" value="JEvents Calendar Module" />
-            <property name="pluginfolder" value="modules/mod_jevents_cal" />
+            <property name="genericname" value="JEvents Calendar Module" />
+            <property name="genericfolder" value="modules/mod_jevents_cal" />
             <property name="zipfile" value="mod_jevents_cal.zip" />
         </phingcall>
         <phingcall target="build-generic">
-            <property name="pluginname" value="JEvents custom Module" />
-            <property name="pluginfolder" value="modules/mod_jevents_custom" />
+            <property name="genericname" value="JEvents custom Module" />
+            <property name="genericfolder" value="modules/mod_jevents_custom" />
             <property name="zipfile" value="mod_jevents_custom.zip" />
         </phingcall>
         <phingcall target="build-generic">
-            <property name="pluginname" value="JEvents Filter Module" />
-            <property name="pluginfolder" value="modules/mod_jevents_filter" />
+            <property name="genericname" value="JEvents Filter Module" />
+            <property name="genericfolder" value="modules/mod_jevents_filter" />
             <property name="zipfile" value="mod_jevents_filter.zip" />
         </phingcall>
         <phingcall target="build-generic">
-            <property name="pluginname" value="JEvents Latest Module" />
-            <property name="pluginfolder" value="modules/mod_jevents_latest" />
+            <property name="genericname" value="JEvents Latest Module" />
+            <property name="genericfolder" value="modules/mod_jevents_latest" />
             <property name="zipfile" value="mod_jevents_latest.zip" />
         </phingcall>
         <phingcall target="build-generic">
-            <property name="pluginname" value="JEvents Legend Module" />
-            <property name="pluginfolder" value="modules/mod_jevents_legend" />
+            <property name="genericname" value="JEvents Legend Module" />
+            <property name="genericfolder" value="modules/mod_jevents_legend" />
             <property name="zipfile" value="mod_jevents_legend.zip" />
         </phingcall>
         <phingcall target="build-generic">
-            <property name="pluginname" value="JEvents Switchview Module" />
-            <property name="pluginfolder" value="modules/mod_jevents_switchview" />
+            <property name="genericname" value="JEvents Switchview Module" />
+            <property name="genericfolder" value="modules/mod_jevents_switchview" />
             <property name="zipfile" value="mod_jevents_switchview.zip" />
         </phingcall>
     </target>
