@@ -226,6 +226,24 @@ document.addEventListener('DOMContentLoaded', function () {
 		document.querySelector('#right-col > .gsl-content').addEventListener('mouseover', () => {
 			document.getElementById('sidebar-wrapper').classList.add('gsl-hide-sidebar');
 			document.getElementById('gslc').classList.add('gsl-hide-sidebar');
+
+			let wrapper = document.getElementById('menu-collapse');
+			if (wrapper && document.getElementById('menu-collapse-icon').classList.contains('fa-toggle-on'))
+			{
+				wrapper.click();
+			}
+		});
+		document.querySelector('#gslc .returntojoomla').addEventListener('mouseover', () => {
+			let sbw = document.getElementById('sidebar-wrapper');
+			if (sbw) {
+				sbw.classList.remove('gsl-hide-sidebar');
+			}
+			document.getElementById('gslc').classList.remove('gsl-hide-sidebar');
+			let wrapper = document.getElementById('menu-collapse');
+			if (wrapper && document.getElementById('menu-collapse-icon').classList.contains('fa-toggle-off'))
+			{
+				wrapper.click();
+			}
 		});
 	}
 	else {

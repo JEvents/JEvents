@@ -157,3 +157,5 @@ class FormFieldJevextras extends FormField
 	}
 
 }
+
+class_alias("FormFieldJevextras", "JFormFieldJevextras");

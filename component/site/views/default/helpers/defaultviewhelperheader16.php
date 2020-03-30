@@ -68,7 +68,7 @@ function DefaultViewHelperHeader16($view)
 		if ($t_headline != "")
 		{
 			?>
-			<h2 class="contentheading"><?php echo $t_headline; ?></h2>
+			<h2 class="contentheading gsl-h2"><?php echo $t_headline; ?></h2>
 			<?php
 		}
 		$task = $input->getString('jevtask', '');

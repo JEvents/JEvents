@@ -77,3 +77,4 @@ class FormFieldJeveventprimarycategory extends FormField
 	}
 
 }
+class_alias("FormFieldJeveventprimarycategory", "JFormFieldJeveventprimarycategory");

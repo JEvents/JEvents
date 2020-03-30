@@ -68,3 +68,4 @@ class FormFieldJeveventpublished extends FormField
 	}
 
 }
+class_alias("FormFieldJeveventpublished", "JFormFieldJeveventpublished");

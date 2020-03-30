@@ -20,7 +20,7 @@ Array.prototype.associate = function (keys) {
   return result;
 };
 // from Mootools
-// 
+//
 // my version
 Date.prototype.clearTime =  function(){
 	this.setHours(0);
@@ -34,7 +34,7 @@ var eventEditDateFormat = "Y-m-d";
 //Date.defineParser(eventEditDateFormat.replace("d","%d").replace("m","%m").replace("Y","%Y"));
 
 Date.prototype.jeventsParseDate = function (from ){
-				
+
 		var keys = {
 			d: /[0-2]?[0-9]|3[01]/,
 			H: /[01]?[0-9]|2[0-3]/,
@@ -50,7 +50,7 @@ Date.prototype.jeventsParseDate = function (from ){
 
 		keys.m = keys.I;
 		keys.S = keys.M;
-		
+
 		var parsed = [];
 		var re = eventEditDateFormat;
 		re = re.replace(/\((?!\?)/g, '(?:') // make all groups non-capturing
@@ -63,7 +63,7 @@ Date.prototype.jeventsParseDate = function (from ){
 				return '(' + p.source + ')';
 			}
 		);
-		
+
 		re = new RegExp('^' + re + '$', 'i');
 		var handler = function(bits){
 			bits = bits.slice(1).associate(parsed);
@@ -79,9 +79,9 @@ Date.prototype.jeventsParseDate = function (from ){
 
 			return date;
 		}
-		
+
 		var bits = re.exec(from);
-		return (bits) ? (parsed = handler(bits)) : false;		
+		return (bits) ? (parsed = handler(bits)) : false;
 
 	}
 
@@ -391,7 +391,7 @@ function reformatStartEndDates() {
 	startDate = new Date();
 	startDate = startDate.dateFromYMD(start_date.value);
 	start_date2.value = startDate.getFullYear()+"-"+(startDate.getMonth()+1)+"-"+startDate.getDate();
-	
+
 	end_date = document.getElementById("publish_down");
 	end_date2 = document.getElementById("publish_down2");
 	endDate = new Date();
@@ -409,11 +409,11 @@ function checkUntil(){
 
 	start_date = document.getElementById("publish_up");
 	startDate = new Date();
-	startDate = startDate.dateFromYMD(start_date.value);	
+	startDate = startDate.dateFromYMD(start_date.value);
 
 	until_date = document.getElementById("until");
 	untilDate = new Date();
-	untilDate = untilDate.dateFromYMD(until_date.value);	
+	untilDate = untilDate.dateFromYMD(until_date.value);
 
 	if (untilDate<startDate){
 		until_date.value = start_date.value;
@@ -432,7 +432,7 @@ function setEndDateWhenNotRepeating(elem){
 
 	defaultStartDate = new Date();
     defaultStartDate = startDate.dateFromYMD(start_date.defaultValue);
-	
+
 	endDate = new Date();
 	endDate = endDate.dateFromYMD(end_date.value);
 
@@ -746,7 +746,7 @@ function toggleWhichBy(wb)
 function toggleFreq(freq , setup)
 {
 	var currentFreq = jevjq("input[name=freq]:checked").val().toUpperCase();
-	
+
 	var myDiv = document.getElementById('interval_div');
 	var byyearday = document.getElementById('byyearday');
 	var byweekno = document.getElementById('byweekno');
@@ -855,7 +855,7 @@ function toggleFreq(freq , setup)
 				byday.style.display="none";
 				byirregular.style.display="block";
 				document.getElementById('interval_div').style.display = "none";
-				
+
 				weekofmonth.style.display="none";
 			}
 			break;
@@ -866,7 +866,7 @@ function toggleFreq(freq , setup)
 		if (document.adminForm.updaterepeats){
 			document.adminForm.updaterepeats.value = 1;
 		}
-		
+
 	}
 }
 
@@ -875,8 +875,8 @@ function fixRepeatDates(checkYearDay){
 	starttimeparts = start_time.value.split(":");
 	start_date = document.getElementById("publish_up");
 	startDate = new Date();
-	startDate = startDate.dateFromYMD(start_date.value);	
-	
+	startDate = startDate.dateFromYMD(start_date.value);
+
 	// special case where we first press yearly repeat - should check for 28 Feb
 	if (checkYearDay && (document.adminForm.evid.value==0 || document.adminForm.updaterepeats.value==1)) {
 		yearStart = new Date(startDate.getFullYear(),0,0,0,0,0,0);
@@ -964,8 +964,8 @@ function toggleWeekNums(newstate){
 function resetYMD(){
 	start_date = document.getElementById("publish_up");
 	startDate = new Date();
-	startDate = startDate.dateFromYMD(start_date.value);	
-	
+	startDate = startDate.dateFromYMD(start_date.value);
+
 	document.adminForm.year.value = startDate.getFullYear();
 	document.adminForm.month.value = startDate.getMonth()+1;
 	document.adminForm.day.value = startDate.getDate();
@@ -1039,7 +1039,7 @@ function checkConflict(checkurl, pressbutton, jsontoken, client, repeatid,  redi
 	requestObject.formdata = jevjq(document.adminForm).formToJson();
 
 	var doRedirect = (typeof redirect =='undefined') ?  1 : redirect;
-	
+
 	requestObject.redirect = doRedirect;
 	var hasConflicts = false;
 
@@ -1108,7 +1108,7 @@ jevjq(document).on('ready', function() {
 			jevjq("#adminForm").attr("autocomplete",'off');
 		}
 	}
-	catch(e){	
+	catch(e){
 	}
 
 	if (jevjq('#view12Hour')){
@@ -1126,13 +1126,13 @@ jevjq(document).on('ready', function() {
 	jevjq('#cu_until').on('mousedown', function(){enableRepeatUntil();});
 	jevjq('#cu_count').on('click', function(){enableRepeatCount();});
 	jevjq('#cu_count').on('mousedown', function(){enableRepeatCount();});
-        
+
         // setup rounded grey response
         jevjq('#byyearday, #bymonth, #byweekno, #bymonthday, #byday, #byirregular, #bysetpos').on('click', function() {
             jevjq('#'+this.id).find('legend input[name="whichby"]').attr('checked', true);
             toggleWhichBy(this.id);
         });
-                    
+
 });
 
 function enableRepeatUntil() {
@@ -1205,14 +1205,15 @@ function selectIrregularDate() {
 jevjq(document).on('ready', function() {
 	var catids = jQuery('.jevcategory select[name="catid[]"]');
 	if(catids.length){
-        var chosenCatids = jQuery('.jevcategory #catid_chzn .chzn-choices');
-        if(chosenCatids.length) {
-            chosenCatids.sortable({
-                update: function( event, ui ) {
-                    reorderCategorySelections();
-				}
-			});
-        }
+		var sortable = document.querySelector('.jevcategory #catid_chzn .chzn-choices');
+		if (sortable.length)
+		{
+			sortable.setAttribute('data-sortable',
+				Sortable.create(sortable, {
+					onEnd: reorderCategorySelections,
+				})
+			);
+		}
 	}
     catids.on('change', reorderCategorySelections);
 });

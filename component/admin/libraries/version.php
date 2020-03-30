@@ -12,6 +12,8 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+JLoader::register('JEventsHelper', JPATH_ADMINISTRATOR . "/components/com_jevents/helpers/jevents.php");
+
 class JEventsVersion
 {
 	/** @var string Product */
@@ -41,9 +43,7 @@ class JEventsVersion
 		{
 			$instance = new JEventsVersion();
 
-			// Load gslhelper from currently active component - can't force JEvents version otherwise
-			include_once(JPATH_COMPONENT_ADMINISTRATOR . "/helpers/gslhelper.php");
-			$instance->RELEASE = GslHelper::JEvents_Version(false);
+			$instance->RELEASE = JEventsHelper::JEvents_Version(false);
 		}
 
 		return $instance;

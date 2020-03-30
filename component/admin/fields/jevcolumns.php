@@ -41,7 +41,7 @@ class JFormFieldJevcolumns extends JFormFieldText
 
 		// Mkae sure jQuery is loaded
 		HTMLHelper::_('jquery.framework');
-		HTMLHelper::_('jquery.ui', array("core", "sortable"));
+		HTMLHelper::script('media/com_jevents/js/Sortable.js', array('version' => JeventsHelper::JEvents_Version(false), 'relative' => false));
 		HTMLHelper::_('bootstrap.framework');
 		JEVHelper::script("jQnc.js", "components/com_jevents/assets/js/");
 		// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
@@ -201,7 +201,7 @@ class JFormFieldJevcolumns extends JFormFieldText
 		$input .= '<textarea style="display:block;margin-top:10px;"  name="' . $this->name . '"  id="jevcolumns">' . $invalues . '</textarea>';
 		$input .= '<div style="clear:left"></div>';
 
-		$input .= '<script type="text/javascript">setupColumnChoices(true);setupColumnLis(true);</script>';
+		$input .= '<script type="text/javascript">document.addEventListener("DOMContentLoaded", () => {setupColumnChoices(true);setupColumnLis(true);})</script>';
 
 		return $input;
 

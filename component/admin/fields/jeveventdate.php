@@ -51,7 +51,7 @@ class FormFieldJeveventdate extends FormField
 			// Fix for timezone specified repeating events breaks backwards compatability so we must do special case handling here
 			if ($event->_modified < "2017-08-26 00:00:00")
 			{
-				//USE OFFSETS FOR unix time stamps!!                       
+				//USE OFFSETS FOR unix time stamps!!
 				$event->dtstart($testdate->format("U") - $offset2 + $offset1);
 				$event->_publish_up    = $testdate->format('Y-m-d H:i:s');
 				$event->_unixstartdate = $event->dtstart();
@@ -69,7 +69,7 @@ class FormFieldJeveventdate extends FormField
 			}
 			else
 			{
-				//USE OFFSETS FOR unix time stamps!!                       
+				//USE OFFSETS FOR unix time stamps!!
 				$event->dtstart($testdate->format("U") - $offset1 + $offset2);
 				$event->_publish_up    = $testdate->format('Y-m-d H:i:s');
 				$event->_unixstartdate = $event->dtstart();
@@ -114,3 +114,5 @@ class FormFieldJeveventdate extends FormField
 	}
 
 }
+
+class_alias("FormFieldJeveventdate", "JFormFieldJeveventdate");

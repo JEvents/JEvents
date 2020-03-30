@@ -57,3 +57,5 @@ class FormFieldJeveventaccess extends FormField
 	}
 
 }
+
+class_alias("FormFieldJeveventaccess", "JFormFieldJeveventaccess");

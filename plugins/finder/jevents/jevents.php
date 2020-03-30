@@ -290,7 +290,8 @@ class plgFinderJEvents extends FinderIndexerAdapter
 
 		if (isset($theevent[0]) && $theevent[0]) {
 			PluginHelper::importPlugin('jevents');
-			Factory::getApplication()->trigger('onJevFinderIndexing', array(&$theevent));
+			$dispatcher = JEventDispatcher::getInstance();
+			$dispatcher->trigger('onJevFinderIndexing', array(&$theevent));
 		}
 
 		$theevent = count($theevent) === 1 ? $theevent[0] : $theevent;
@@ -332,7 +333,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 				$gmtsql = $date->format('Y-m-d H:i:s');
 
 				$item->publish_start_date   = $gmtsql;
-			} 
+			}
 			if ($theevent->timelimits->endlimit) {
 				//$date = new JevDate($theevent->timelimits->endlimit, $jtz);
 				//$sql = $date->toMySQL();

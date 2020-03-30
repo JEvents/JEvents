@@ -27,50 +27,6 @@ class JevHtmlJquery
 	 */
 	protected static $loaded = array();
 
-	/**
-	 * Method to load the jQuery UI JavaScript framework into the document head
-	 *
-	 * If debugging mode is on an uncompressed version of jQuery UI is included for easier debugging.
-	 *
-	 * @param   array $components The jQuery UI components to load [optional]
-	 * @param   mixed $debug      Is debugging mode on? [optional]
-	 *
-	 * @return  void
-	 *
-	 * @since   3.0
-	 */
-	public static function ui(array $components = array('core'), $debug = null)
-	{
-
-		// Set an array containing the supported jQuery UI components handled by this method
-		$supported = array('core', 'sortable');
-
-		// Include jQuery
-		static::framework();
-
-		// If no debugging value is set, use the configuration setting
-		if ($debug === null)
-		{
-			$config = Factory::getConfig();
-			$debug  = (boolean) $config->get('debug');
-		}
-
-		// Load each of the requested components
-		foreach ($components as $component)
-		{
-			// Only attempt to load the component if it's supported in core and hasn't already been loaded
-			if (in_array($component, $supported) && empty(static::$loaded[__METHOD__][$component]))
-			{
-				if (!HTMLHelper::_('script', 'jui/jquery.ui.' . $component . '.min.js', false, true, false, false, $debug))
-				{
-					HTMLHelper::_('script', 'libraries/jevents/bootstrap/js/jquery.ui.' . $component . '.min.js', false, false, false, false, $debug);
-				}
-				static::$loaded[__METHOD__][$component] = true;
-			}
-		}
-
-		return;
-	}
 
 	/**
 	 * Method to load the jQuery JavaScript framework into the document head

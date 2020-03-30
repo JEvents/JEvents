@@ -104,3 +104,4 @@ class FormFieldJeveventcalendar extends FormField
 	}
 
 }
+class_alias("FormFieldJeveventcalendar", "JFormFieldJeveventcalendar");

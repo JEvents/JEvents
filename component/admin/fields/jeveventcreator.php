@@ -174,3 +174,5 @@ class FormFieldJeveventcreator extends FormField
 	}
 
 }
+
+class_alias("FormFieldJeveventcreator", "JFormFieldJeveventcreator");

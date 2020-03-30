@@ -30,7 +30,7 @@ FormHelper::loadFieldClass('radio');
  * @subpackage     com_banners
  * @since          1.6
  */
-class JFormFieldJEVBoolmsg extends JFormFieldRadio
+class JFormFieldJevBoolmsg extends JFormFieldRadio
 {
 	/**
 	 * The form field type.s
@@ -38,7 +38,7 @@ class JFormFieldJEVBoolmsg extends JFormFieldRadio
 	 * @var        string
 	 * @since    1.6
 	 */
-	protected $type = 'JEVBoolmsg';
+	protected $type = 'JevBoolmsg';
 
 	/**
 	 * Method to get the field options.

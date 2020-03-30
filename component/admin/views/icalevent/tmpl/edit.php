@@ -30,7 +30,6 @@ if (defined("EDITING_JEVENT"))
 	return;
 define("EDITING_JEVENT", 1);
 
-HTMLHelper::_('jquery.ui', array('core', 'sortable'));
 
 $input  = $app->input;
 $params = ComponentHelper::getParams(JEV_COM_COMPONENT);
@@ -48,7 +47,7 @@ if ($params->get("bootstrapchosen", 1))
 	HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
 	// Use this as a basis for setting the primary category
 	/*
-	HTMLHelper::_('jquery.ui', array("core","sortable"));
+
 	$script = <<< SCRIPT
 window.setTimeout(function() {
 	jQuery("#catid").chosen().change(

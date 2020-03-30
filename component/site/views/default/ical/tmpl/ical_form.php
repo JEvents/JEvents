@@ -72,7 +72,7 @@ $input  = $app->input;
 
 $accessiblecats = explode(",", $this->datamodel->accessibleCategoryList());
 
-echo "<h2 id='cal_title'>" . Text::_('JEV_ICAL_EXPORT') . "</h2>\n";
+echo "<h2 id='cal_title' class='gsl-h2'>" . Text::_('JEV_ICAL_EXPORT') . "</h2>\n";
 
 if ($input->getString("submit", "") != "")
 {
