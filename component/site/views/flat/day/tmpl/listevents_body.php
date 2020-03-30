@@ -20,7 +20,7 @@ $precedingDay = $this->datamodel->getPrecedingDay($this->year, $this->month, $th
 
 <div class="jev_toprow">
 	<!-- <div class="jev_header">
-		  <h2><?php echo Text::_('DAILY_VIEW'); ?></h2>
+		  <h2 class="gsl-h2"><?php echo Text::_('DAILY_VIEW'); ?></h2>
 		  <div class="today" ><?php echo JEventsHTML::getDateFormat($this->year, $this->month, $this->day, 0); ?></div>
 		</div> -->
 	<div class="jev_header2">

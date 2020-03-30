@@ -696,7 +696,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
                             // Needed to deal with early execution of initTemplate in backend
                         $extraTab['content'] = str_replace('btn-group', 'btn-group-ysts', $extraTab['content']);
 
-                        echo "<h2>Do controls and control-label replacements too</h2>";
+                        echo "<h2 class='gsl-h2'>Do controls and control-label replacements too</h2>";
 
 						echo $extraTab['content'];
 						echo "</div>";
