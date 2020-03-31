@@ -40,7 +40,6 @@ if ($params->get("bootstrapchosen", 1))
 	HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
 	// Use this as a basis for setting the primary category
 	/*
-	HTMLHelper::_('jquery.ui', array("core","sortable"));
 	$script = <<< SCRIPT
 window.setTimeout(function() {
 	jQuery("#catid").chosen().change(

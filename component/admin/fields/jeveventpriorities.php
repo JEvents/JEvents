@@ -64,3 +64,4 @@ class FormFieldJeveventpriorities extends FormField
 	}
 
 }
+class_alias("FormFieldJeveventpriorities", "JFormFieldJeveventpriorities");

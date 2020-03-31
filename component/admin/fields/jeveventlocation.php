@@ -47,3 +47,4 @@ class FormFieldJeveventlocation extends FormField
 	}
 
 }
+class_alias("FormFieldJeveventlocation", "JFormFieldJeveventlocation");

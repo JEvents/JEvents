@@ -70,3 +70,4 @@ class FormFieldJeveventlock extends FormField
 	}
 
 }
+class_alias("FormFieldJeveventlock", "JFormFieldJeveventlock");

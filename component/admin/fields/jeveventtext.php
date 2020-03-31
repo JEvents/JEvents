@@ -6,7 +6,7 @@ use Joomla\CMS\Form\FormHelper;
 
 FormHelper::loadFieldClass('text');
 
-class JFormFieldJeveventtext extends JFormFieldText
+class FormFieldJeveventtext extends JFormFieldText
 {
 
 	/**
@@ -41,3 +41,4 @@ class JFormFieldJeveventtext extends JFormFieldText
 	}
 
 }
+class_alias("FormFieldJeveventtext", "JFormFieldJeveventtext");

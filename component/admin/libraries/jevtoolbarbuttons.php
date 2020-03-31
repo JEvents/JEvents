@@ -108,6 +108,8 @@ class ToolbarButtonJev extends ToolbarButton
 	}
 }
 
+class_alias("ToolbarButtonJev", "JToolbarButtonJev");
+
 class ToolbarButtonJevlink extends ToolbarButton
 {
 	/**
@@ -183,6 +185,7 @@ class ToolbarButtonJevlink extends ToolbarButton
 	}
 }
 
+class_alias("ToolbarButtonJevlink", "JToolbarButtonJevlink");
 
 class ToolbarButtonJevconfirm extends ToolbarButton
 {
@@ -309,3 +312,5 @@ class ToolbarButtonJevconfirm extends ToolbarButton
 		return $this->_parent->getName() . '-' . $name;
 	}
 }
+
+class_alias("ToolbarButtonJevconfirm", "JToolbarButtonJevconfirm");

@@ -17,7 +17,7 @@ echo $this->ExportScript();
 
 $accessiblecats = explode(",", $this->datamodel->accessibleCategoryList());
 
-echo "<h2 id='cal_title'>" . Text::_('JEV_ICAL_EXPORT') . "</h2>\n";
+echo "<h2 id='cal_title' class='gsl-h2'>" . Text::_('JEV_ICAL_EXPORT') . "</h2>\n";
 
 if ($input->getString("submit", "") != "")
 {
@@ -70,7 +70,7 @@ if ($input->getString("submit", "") != "")
 		$privatelink = "";
 	}
 
-	echo "<h2 class='ical_generated'>" . Text::_("JEV_ICAL_GENERATED") . "</h2>";
+	echo "<h2 class='ical_generated gsl-h2'>" . Text::_("JEV_ICAL_GENERATED") . "</h2>";
 
 	echo "<h3 class='export_pub'>" . Text::_("JEV_PUBLIC_EVENTS") . "</h3>";
 	if ($user->id != 0)
@@ -101,7 +101,7 @@ if ($input->getString("submit", "") != "")
 }
 if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download", 1) == 0 && $cfg->get("show_webcal_url", 0) == 0 && $cfg->get("show_webcal_google", 0) && $cfg->get("outlook2003icalexport", 0))
 {
-	//If non are enabled we don't want to have user thinking the script is buggy as nothing is produced. 
+	//If non are enabled we don't want to have user thinking the script is buggy as nothing is produced.
 	echo "<div style='margin:15px;font-weight:bold;'>" . Text::_("JEV_ICAL_ALL_DISABLED") . "</div>";
 }
 else

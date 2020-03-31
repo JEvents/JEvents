@@ -35,10 +35,10 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 		// Set toolbar items for the page
 		JToolbarHelper::title(Text::_('ICALS'), 'jevents');
 
-		JToolbarHelper::publishList('icals.publish');
-		JToolbarHelper::unpublishList('icals.unpublish');
 		JToolbarHelper::addNew('icals.edit');
 		JToolbarHelper::editList('icals.edit');
+		JToolbarHelper::publishList('icals.publish');
+		JToolbarHelper::unpublishList('icals.unpublish');
 		JToolbarHelper::deleteList(Text::_("COM_JEVENTS_MANAGE_CALENDARS_OVERVIEW_DELETE_WARNING", true), 'icals.delete');
 		JToolbarHelper::spacer();
 

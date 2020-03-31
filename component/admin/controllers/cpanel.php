@@ -1046,7 +1046,7 @@ WHERE ics.ics_id is null
 		if ($fixtables)
 		{
 			echo "<hr/><br/><strong><a href='" . Uri::root() . "/administrator/index.php?option=com_jevents&task=cpanel.fixcollations&ft=1" . "'>Click here to fix these tables</a></strong>
-				<h2>MAKE SURE YOU DATABASE IS BACKED UP BEFORE YOU DO THIS</h2>";
+				<h2 class='gsl-h2'>MAKE SURE YOU DATABASE IS BACKED UP BEFORE YOU DO THIS</h2>";
 		}
 	}
 

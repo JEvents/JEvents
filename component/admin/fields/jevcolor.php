@@ -15,7 +15,7 @@ FormHelper::loadFieldClass('color');
 //include_once(JPATH_SITE . "/libraries/joomla/form/fields/color.php");
 // J4 => include_once(JPATH_SITE . "/libraries/src/Form/Field/ColorField.php");
 
-class FormFieldJevcolor extends FormFieldColor
+class FormFieldJevcolor extends JFormFieldColor
 {
 	protected function getLabel()
 	{

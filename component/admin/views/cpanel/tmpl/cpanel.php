@@ -32,7 +32,7 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
                         <span gsl-icon="icon:calendar" class="gsl-margin-small-right gsl-text-primary"></span>
                         <?php echo Text::_("COM_JEVENTS_TOTAL_EVENTS");?>
                 </span>
-                <h2 class="gsl-heading-primary gsl-margin-remove gsl-text-primary">
+                <h2 class="gsl-heading-primary gsl-margin-remove gsl-text-primary gsl-h2">
                     <a href="<?php echo Route::_("index.php?option=com_jevents&task=icalevent.list")?>">
 	                    <?php echo Text::sprintf("COM_JEVENTS_FUTURE_EVENTS", $this->futureEvents);?>
                     </a>
@@ -49,7 +49,7 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
                               class="gsl-margin-small-right gsl-text-danger"></span>
                         <?php echo Text::_("COM_JEVENTS_TOTAL_EVENTS_UNPUBLISHED");?>
                 </span>
-                <h2 class="gsl-heading-primary gsl-margin-remove gsl-text-primary">
+                <h2 class="gsl-heading-primary gsl-margin-remove gsl-text-primary gsl-h2">
                     <a href="<?php echo Route::_("index.php?option=com_jevents&task=icalevent.list")?>">
 	                    <?php echo $this->unpublishedEvents;?>
                     </a>
@@ -60,7 +60,7 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
                         <span gsl-icon="icon:plus-circle" class="gsl-margin-small-right gsl-text-primary"></span>
                         <?php echo Text::_("COM_JEVENTS_NEW_EVENTS");?>
                 </span>
-                <h2 class="gsl-heading-primary gsl-margin-remove gsl-text-primary">
+                <h2 class="gsl-heading-primary gsl-margin-remove gsl-text-primary gsl-h2">
                     <a href="<?php echo Route::_("index.php?option=com_jevents&task=icalevent.list")?>">
 	                    <?php echo Text::sprintf("COM_JEVENTS_NEW_EVENTS_THIS_Week", $this->newEvents);?>
                     </a>
@@ -77,7 +77,7 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
                    <?php echo Text::_("COM_JEVENTS_UPCOMING_REGISTRATIONS");?>
                 </span>
                 <?php if (PluginHelper::isEnabled("jevents", "jevrsvppro")) { ?>
-                <h2 class="gsl-heading-primary gsl-margin-remove  gsl-text-primary">
+                <h2 class="gsl-heading-primary gsl-margin-remove  gsl-text-primary gsl-h2">
                     <a href="<?php echo Route::_("index.php?option=com_rsvppro&task=sessions.list")?>">
                         <?php echo Text::sprintf("COM_JEVENTS_UPCOMING_REGISTRATIONS_THIS_WEEK", $this->upcomingAttendees);?>
                     </a>
@@ -90,7 +90,7 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
                 <?php }
                 else {
                     ?>
-	                <h2 class="gsl-heading-primary gsl-margin-remove  gsl-text-primary hasYsPopover"
+	                <h2 class="gsl-heading-primary gsl-margin-remove  gsl-text-primary hasYsPopover gsl-h2"
                         data-yspoptitle="<?php echo Text::_('COM_JEVENTS_REQUIRES_RSVPPRO'); ?>"
                         data-yspopcontent="<?php echo Text::_("COM_JEVENTS_REQUIRES_RSVPPRO_DETAIL"); ?>"
                     ?>

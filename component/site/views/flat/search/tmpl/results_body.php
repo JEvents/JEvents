@@ -22,7 +22,7 @@ echo '<fieldset><legend class="ev_fieldset">' . Text::_('JEV_SEARCHRESULTS') . '
 	<div id='jev_maincal' class='jev_listview'>
 		<div class="jev_toprow jev_toprowcat">
 			<div class="jev_header jev_headercat">
-				<h2><?php echo Text::_("JEV_SEARCHRESULTS"); ?></h2>
+				<h2 class="gsl-h2"><?php echo Text::_("JEV_SEARCHRESULTS"); ?></h2>
 			</div>
 		</div>
 		<div class="jev_clear"></div>

@@ -50,7 +50,7 @@ class JFormFieldJevfilters extends JFormFieldText
 
 		// Mkae sure jQuery is loaded
 		HTMLHelper::_('jquery.framework');
-		HTMLHelper::_('jquery.ui', array("core", "sortable"));
+		HTMLHelper::script('media/com_jevents/js/Sortable.js', array('version' => JeventsHelper::JEvents_Version(false), 'relative' => false));
 
 		jimport('joomla.filesystem.folder');
 

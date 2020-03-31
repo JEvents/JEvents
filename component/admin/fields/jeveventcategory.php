@@ -60,3 +60,5 @@ class FormFieldJeveventcategory extends FormField
 	}
 
 }
+
+class_alias("FormFieldJeveventcategory", "JFormFieldJeveventcategory");

@@ -27,19 +27,20 @@ var colsbeingsorted = false;
 
 function setupFilterLis() {
 
-    jQuery("#filtermatches").sortable({
-        start: function (event, ui) {
+
+    var sortable = document.querySelector('#filtermatches');
+
+    sortable.setAttribute('data-sortable', Sortable.create(sortable, {
+        onStart: function (event, ui) {
             colsbeingsorted = true;
         },
-        stop: function (event, ui) {
+        onEnd: function (event, ui) {
             setTimeout(function () {
                 colsbeingsorted = false;
+                setupCustomFilterField();
             }, 200);
         },
-        update: function (event, ui) {
-            setupCustomFilterField();
-        }
-    });
+    }));
 
     var lis = jQuery("#filtermatches div");
     lis.each(function (i, item) {

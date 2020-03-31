@@ -32,6 +32,12 @@ body, body.@{mycomponent}
   .left-nav.gsl-list > li:nth-child(n+2) {
       margin-top:0;
   }
+  /*
+ * Divider override UIkit default - default in 3.3.7 leaves top list item squashed - especially in narrow screen mode
+ */
+  .gsl-list-divider > li{
+    padding-top: 10px;
+  }
 
   .gsl-button.gsl-button-small {
     line-height: 25px;

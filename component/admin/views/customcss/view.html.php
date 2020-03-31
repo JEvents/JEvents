@@ -14,6 +14,7 @@ defined('_JEXEC') or die();
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
@@ -59,7 +60,7 @@ class CustomcssViewCustomcss extends JEventsAbstractView
 		$this->source = $this->get('Customcss');
 		$this->type   = 'file';
 
-		
+
 
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 

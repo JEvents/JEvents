@@ -165,7 +165,7 @@ class Pkg_JeventsInstallerScript
 		// TODO Replace ADD_VERSION
 		echo "<div class='jev_install'>
 				<div class='jev_logo'><a href='index.php?option=com_jevents' ><img src='https://www.jevents.net/logo/$logo' /></a></div>
-				<div class='version'><h2>" . $inst_text . ": ADD_VERSION </h2></div>
+				<div class='version'><h2 class='gsl-h2'>" . $inst_text . ": ADD_VERSION </h2></div>
 				<div class='installed'>
 					<ul>
 						<li><a href='index.php?option=com_jevents' >JEvents Core Component</a></li>
@@ -294,7 +294,7 @@ class Pkg_JeventsInstallerScript
 		}
 		echo "<div class='jev_install'>
 				<div class='jev_logo'><img src='https://www.jevents.net/logo/JeventsTransparent2.png' /></div>
-				<div class='version'><h2>" . $uninstall_text . "</h2></div>
+				<div class='version'><h2 class='gsl-h2'>" . $uninstall_text . "</h2></div>
 				<div class='installed'>
 					<h4>" . $uninstall_text2 . "</h4>
                                         <br/><br/><br/>

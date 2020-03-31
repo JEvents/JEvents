@@ -392,4 +392,34 @@ STYLE;
 		}
 		echo $rel;
 	}
+
+	static public function JEvents_Version($outputinput = true)
+	{
+		static $packageversionset = false;
+		static $packageversion = 'JEVENTS_VERSION';
+
+		if (!$packageversionset)
+		{
+			$packageversionset = true;
+			// When installed directly from github the manifest cache is not kept up to date also YOURSITES_VERSION needs to be replaced
+			if ($packageversion == ('JEVENTS_' . 'VERSION') && file_exists(dirname(dirname(dirname(__DIR__))) . "/package/pkg_jevents.xml"))
+			{
+				$pkgcontents = file_get_contents(dirname(dirname(dirname(__DIR__))) . "/package/pkg_jevents.xml");
+				$matches     = array();
+				preg_match('#<version>(.*)<\/version>#', $pkgcontents, $matches);
+				if (count($matches) == 2)
+				{
+					$packageversion = $matches[1];
+				}
+			}
+		}
+		if ($outputinput)
+		{
+			?>
+			<input type="hidden" id="jevents_version" value="<?php echo $packageversion; ?>"/>
+			<?php
+		}
+		return $packageversion;
+	}
+
 }

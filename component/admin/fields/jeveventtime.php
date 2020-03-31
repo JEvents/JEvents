@@ -41,7 +41,7 @@ class FormFieldJeveventtime extends FormField
 			$testdate->setTimezone(new DateTimeZone($event->tzid));
 			$offset2 = $testdate->getOffset();
 
-			//USE OFFSETS FOR unix time stamps!!                       
+			//USE OFFSETS FOR unix time stamps!!
 			$event->dtstart($testdate->format("U") - $offset2 + $offset1);
 			$event->_publish_up    = $testdate->format('Y-m-d H:i:s');
 			$event->_unixstartdate = $event->dtstart();
@@ -114,3 +114,5 @@ class FormFieldJeveventtime extends FormField
 	}
 
 }
+
+class_alias("FormFieldJeveventtime", "JFormFieldJeveventtime");

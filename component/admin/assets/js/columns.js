@@ -40,21 +40,21 @@ var colsbeingsorted = false;
 
 function setupColumnLis() {
 
-    jQuery("#columnmatches").sortable({
-        start: function (event, ui) {
+    var sortable = document.querySelector('#columnmatches');
+
+    sortable.setAttribute('data-sortable', Sortable.create(sortable, {
+        onStart: function (event, ui) {
             colsbeingsorted = true;
         },
-        stop: function (event, ui) {
+        onEnd: function (event, ui) {
             setTimeout(function () {
                 colsbeingsorted = false;
+                setupCustomColumnField("#jevcolumns");
             }, 200);
         },
-        update: function (event, ui) {
-            setupCustomColumnField("#jevcolumns");
-        },
-        cancel: '#columnmatches_heading',
+        filter: '#columnmatches_heading',
         handle: '.sortablehandle'
-    });
+    }));
 
     var lis = jQuery("#columnmatches > div");
 

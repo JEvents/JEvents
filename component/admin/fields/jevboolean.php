@@ -38,7 +38,7 @@ class FormFieldJevBoolean extends JFormFieldRadio
 	 * @since    1.6
 	 */
 	protected
-		$type = 'JEVBoolean';
+		$type = 'JevBoolean';
 
 	/**
 	 * Method to get the field options.
@@ -120,4 +120,4 @@ class FormFieldJevBoolean extends JFormFieldRadio
 	 */
 }
 
-class_alias("FormFieldJEVBoolean", "JFormFieldJEVBoolean");
+class_alias("FormFieldJevBoolean", "JFormFieldJevBoolean");

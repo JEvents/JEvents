@@ -328,7 +328,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			if (!isset($pluginscalled[$event->rp_id()]))
 			{
 				PluginHelper::importPlugin("jevents");
-				$customresults                  = Factory::getApplication()->trigger('onDisplayCustomFields', array(&$event));
+				$dispatcher = JEventDispatcher::getInstance();
+				$customresults                  = $dispatcher)->trigger('onDisplayCustomFields', array(&$event));
 				$pluginscalled[$event->rp_id()] = $event;
 			}
 			else

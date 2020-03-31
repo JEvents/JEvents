@@ -18,7 +18,7 @@
         <delete dir="${p}/administrator/components/${component}/" includeemptydirs="true" verbose="true" failonerror="false" />
         <delete dir="${p}/components/${component}/" includeemptydirs="true" verbose="true" failonerror="false" />
         <delete dir="${p}/plugins/finder/jevents/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/plugins/system/gwejson/" includeemptydirs="true" verbose="true" failonerror="false" /> 
+        <delete dir="${p}/plugins/system/gwejson/" includeemptydirs="true" verbose="true" failonerror="false" />
         <delete dir="${p}/plugins/search/eventsearch/" includeemptydirs="true" verbose="true" failonerror="false" />
         <delete dir="${p}/plugins/installer/jeventsinstaller/" includeemptydirs="true" verbose="true" failonerror="false" />
         <delete dir="${p}/plugins/content/jevents/" includeemptydirs="true" verbose="true" failonerror="false" />
@@ -27,7 +27,7 @@
         <delete dir="${p}/media/${component}/images/" includeemptydirs="true" verbose="true" failonerror="false" />
         <delete dir="${p}/libraries/googl/" includeemptydirs="true" verbose="true" failonerror="false" />
         <delete dir="${p}/libraries/jevents/jevmodal/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/libraries/jevents/bootstrap/" includeemptydirs="true" verbose="true" failonerror="false" />
+        <delete dir="${p}/libraries/jevents/jevbootstrap/" includeemptydirs="true" verbose="true" failonerror="false" />
         <delete dir="${p}/libraries/jevents/jevtypeahead/" includeemptydirs="true" verbose="true" failonerror="false" />
         <delete dir="${p}/modules/mod_jevents_cal/" includeemptydirs="true" verbose="true" failonerror="false" />
         <delete dir="${p}/modules/mod_jevents_custom/" includeemptydirs="true" verbose="true" failonerror="false" />

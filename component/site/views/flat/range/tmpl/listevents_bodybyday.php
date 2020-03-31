@@ -11,7 +11,7 @@ $Itemid = JEVHelper::getItemid();
 <div id='jev_maincal' class='jev_listview jev_<?php echo $this->colourscheme; ?>'>
 	<div class="jev_toprow">
 		<div class="jev_header">
-			<h2><?php echo Text::_("JEV_DATE_RANGE_VIEW"); ?></h2>
+			<h2 class="gsl-h2"><?php echo Text::_("JEV_DATE_RANGE_VIEW"); ?></h2>
 			<div class="today">
 				<?php echo $this->dateFormattedDateRange(); ?>
 			</div>
