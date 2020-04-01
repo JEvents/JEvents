@@ -74,11 +74,11 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 			if (!isset($templates[$template_name]['*'][0]))
 			{
-				try
+				if (method_exists($view, 'getViewName'))
 				{
 					$viewname = $view->getViewName();
 				}
-				catch (Exception $e)
+				else
 				{
 					$viewname = "default";
 				}
@@ -329,7 +329,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			{
 				PluginHelper::importPlugin("jevents");
 				$dispatcher = JEventDispatcher::getInstance();
-				$customresults                  = $dispatcher)->trigger('onDisplayCustomFields', array(&$event));
+				$customresults                  = $dispatcher->trigger('onDisplayCustomFields', array(&$event));
 				$pluginscalled[$event->rp_id()] = $event;
 			}
 			else
