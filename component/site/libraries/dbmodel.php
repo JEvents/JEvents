@@ -33,7 +33,7 @@ class JEventsDBModel
                 $this->subquery = $params->get("subquery",0);
 	}
 
-	function accessibleCategoryList($aid = null, $catids = null, $catidList = null, $allLanguages = false, $checkAccess = true)
+	function accessibleCategoryList($aid = null, $catids = null, $catidList = null, $allLanguages = false, $checkAccess = true, $includeSubs = 1)
 	{
 		if (is_null($aid))
 		{
@@ -87,7 +87,7 @@ class JEventsDBModel
 				JEVHelper::forceIntegerArray($this->datamodel->mmcatids, false);
 
 				// Take account of inclusion of subcategories here!
-				if ($this->cfg->get("include_subcats", 1))
+				if ($includeSubs && $this->cfg->get("include_subcats", 1))
 				{
 					$mmcatids = array();
 					$mmcats = JCategories::getInstance("jevents");
@@ -892,7 +892,7 @@ class JEventsDBModel
 
 	/* Special version for Latest events module */
 
-	function listLatestIcalEvents($startdate, $enddate, $limit = 10, $repeatdisplayoptions = 0, $multidayTreatment = 0)
+	function listLatestIcalEvents($startdate, $enddate, $limit = 10, $repeatdisplayoptions = 0, $multidayTreatment = 0, $includeSubs = 1)
 	{
 		//list($usec, $sec) = explode(" ", microtime());
 		//$starttime = (float) $usec + (float) $sec;
@@ -995,7 +995,7 @@ class JEventsDBModel
 		}
 		$rptwhere = ( count($rptwhere) ? ' AND ' . implode(' AND ', $rptwhere) : '' );
 
-		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList(JEVHelper::getAid($user)) . ")";
+		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList(JEVHelper::getAid($user), null, null, false, true, $includeSubs) . ")";
 		$params = JComponentHelper::getParams("com_jevents");
 		if ($params->get("multicategory", 0))
 		{
