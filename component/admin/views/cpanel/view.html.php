@@ -1111,7 +1111,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 		  }
 		  $output = StringHelper::substr($output, 0, StringHelper::strlen($output) - 2) . ");\n\n";
 		 */
-		$criticaldata = File::read('http://ubu.jev20j16.com/importantversions.txt');
+		$criticaldata = file_get_contents('http://ubu.jev20j16.com/importantversions.txt');
 		$criticaldata = explode("\n", $criticaldata);
 		$criticals    = array();
 		foreach ($criticaldata as $critical)

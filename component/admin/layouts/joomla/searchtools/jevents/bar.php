@@ -54,8 +54,8 @@ $filters = $data['view']->filterForm->getGroup('filter');
 			</button>
         <?php if ($filterButton) : ?>
             <button type="button" class=" gsl-button ys-tooltip  js-stools-btn-filter"
-                        title="<?php echo HTMLHelper::_('tooltipText', 'JSEARCH_TOOLS_DESC'); ?>">
-					<?php echo Text::_('JSEARCH_TOOLS');?> <span gsl-icon="icon: triangle-down"></span>
+                        title="<?php echo HTMLHelper::_('tooltipText', 'JSEARCH_FILTER'); ?>">
+					<?php echo Text::_('JSEARCH_FILTER');?> <span gsl-icon="icon: triangle-down"></span>
 				</button>
 		<?php endif; ?>
 			<button type="button" class="gsl-button ys-tooltip js-stools-btn-clear"
