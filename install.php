@@ -3,8 +3,8 @@
 /**
  * JEvents Component for Joomla 2.5.x
  *
- * @version     3.4.50
- * @releasedate March 2019
+ * @version     3.4.51
+ * @releasedate April 2020
  * @package     JEvents
  * @copyright   Copyright (C) 2008-2019 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
@@ -66,10 +66,10 @@ class Pkg_JeventsInstallerScript
 	public function uninstall($parent)
 	{
                 $uninstall_text = JText::_('JEV_SORRY_THAT_YOU_UNINSTALL');
-                $uninstall_text2 = JText::_('JEV_PLEASE_LET_US_KNOW_WHY'); 
+                $uninstall_text2 = JText::_('JEV_PLEASE_LET_US_KNOW_WHY');
                 if ($uninstall_text ==  'JEV_SORRY_THAT_YOU_UNINSTALL'){
                     $uninstall_text = "We are sorry that you have uninstalled JEvents";
-                    $uninstall_text2 = "Please let us know why at our <a href='https://www.jevents.net/forum'>support forum</a>  so we can improve our product offering for future users."; 
+                    $uninstall_text2 = "Please let us know why at our <a href='https://www.jevents.net/forum'>support forum</a>  so we can improve our product offering for future users.";
                 }
 		echo "<div class='jev_install'>
 				<div class='jev_logo'><img src='https://www.jevents.net/logo/JeventsTransparent2.png' /></div>
@@ -78,7 +78,7 @@ class Pkg_JeventsInstallerScript
 					<h4>".$uninstall_text2."</h4>
                                         <br/><br/><br/>
 				</div>";
-            
+
 		return true;
 	}
 
@@ -91,7 +91,7 @@ class Pkg_JeventsInstallerScript
             return;
             //return $this->postflightHandler($type, $parent);
         }
-        
+
         /*
 	 * enable the plugins
 	 */
@@ -117,13 +117,13 @@ class Pkg_JeventsInstallerScript
 		</style>
 		<?php
 		// End of CSS Styling
-		if ($this->hasJEventsInst == 1) { 
-                    $inst_text = JText::_('JEV_INST_VERSION_UPRG'); 
+		if ($this->hasJEventsInst == 1) {
+                    $inst_text = JText::_('JEV_INST_VERSION_UPRG');
                     $logo = "JeventsTransparent3.png";
-                } 
-                else {  
+                }
+                else {
                     $inst_text = JText::_('JEV_INST_VERSION');
-                    $logo = "JeventsTransparent.png";                    
+                    $logo = "JeventsTransparent.png";
                 }
 
 		echo "<div class='jev_install'>
@@ -194,7 +194,7 @@ class Pkg_JeventsInstallerScript
 			$query = "UPDATE #__extensions SET enabled=1 WHERE folder='installer' and type='plugin' and element='jeventsinstaller'";
 			$db->setQuery($query);
 			$db->execute();
-                        
+
 		}
 		else {
 			jimport( 'joomla.filesystem.file' );
