@@ -4,7 +4,17 @@
 
     <property name="rootdir" value="../" override="true" />
     <property name="builddir" value="./build" override="true" />
-    <property name="uikitdir" value="../../bitbucket/uikit" override="true" />
+    <property name="uikitdir" value="../../uikit" override="true" />
+    <if>
+        <not>
+            <available file='${uikitdir}/package.json' type='file' property="nouikit"/>
+        </not>
+        <then>
+            <property name="uikitdir" value="../../bitbucket/uikit" override="true" />
+        </then>
+    </if>
+
+    <echo msg="uikit directory set to ${uikitdir}" />
 
     <!-- Load path properties -->
     <!--
