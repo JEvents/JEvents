@@ -10,18 +10,18 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\String\StringHelper;
+
 $this->pageNav = $this->pagination;
 JEventsHelper::addSubmenu();
 $this->sidebar = JHtmlSidebar::render();
 
 global   $task;
-$db	= JFactory::getDbo();
-$user = JFactory::getUser();
-
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\String\StringHelper;
+$db	= Factory::getDbo();
+$user = Factory::getUser();
 
 $pathIMG = JURI::Root() . 'administrator/images/';
 $pathJeventsIMG = JURI::Root() . "administrator/components/".JEV_COM_COMPONENT."/images/";

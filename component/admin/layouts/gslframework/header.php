@@ -126,21 +126,21 @@ $tmpl = Factory::getApplication()->input->getCmd('tmpl', '');
                                            aria-expanded="false">
                                         </a>
                                     </li>
-					                <?php
-				                }
-				                ?>
-                                <li class="hasYsPopover  ys_logout"
-                                    data-yspoptitle="<?php echo JText::_('JLOGOUT', true); ?>"
-                                    data-yspopcontent="<?php echo JText::_('JLOGOUT', true); ?>"
-                                >
-                                    <a href="<?php echo JUri::base() . 'index.php?option=com_login&amp;task=logout&amp;' . JSession::getFormToken() . '=1'; ?>"
-                                       data-gsl-icon="icon:  sign-out"
-                                       title="<?php JText::_('JLOGOUT'); ?>"
-                                       aria-expanded="false">
-                                    </a>
-                                </li>
-                           </ul>
-                        </div>
+	                            <?php
+                            }
+                            ?>
+                            <li class="hasYsPopover  ys_logout"
+                                data-yspoptitle = "<?php echo  Text::_('JLOGOUT', true); ?>"
+                                data-yspopcontent = "<?php echo Text::_('JLOGOUT', true); ?>"
+                            >
+                                <a href="<?php echo Uri::base() . 'index.php?option=com_login&amp;task=logout&amp;' . Session::getFormToken() . '=1'; ?>"
+                                   data-gsl-icon="icon:  sign-out"
+                                   title="<?php Text::_('JLOGOUT'); ?>"
+                                   aria-expanded="false">
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </nav>
 		            <?php
 	            }
