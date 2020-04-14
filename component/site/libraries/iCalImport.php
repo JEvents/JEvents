@@ -481,8 +481,8 @@ class iCalImport
 
 				if  ($params->get("converturlstolinksonimport", 1) && is_string($value) && $key!="UID" && $key!="X-EXTRAINFO"){
 					if (StringHelper::strpos(str_replace(" ","",StringHelper::strtolower($value)),"<ahref=")===false && StringHelper::strpos(str_replace(" ","",StringHelper::strtolower($value)),"<img")===false && (StringHelper::strpos(StringHelper::strtolower($value),"http://")!==false || StringHelper::strpos(StringHelper::strtolower($value),"https://")!==false)){
-                                                // See http://stackoverflow.com/questions/8414675/preg-replace-for-url-and-download-links and http://regexr.com/3bup3 to test this
-                                                $value = preg_replace('@(https?://([\w-.]+)+(:\d+)?(/([\w/_\.%\-+~=]*(\?\S+)?)?)?)@u', '<a href="$1">$1</a>', $value);
+                            // See http://stackoverflow.com/questions/8414675/preg-replace-for-url-and-download-links and http://regexr.com/3bup3 to test this
+                            $value = preg_replace('@(https?://([\w\-.]+)+(:\d+)?(/([\w/_\.%\-+~=]*(\?\S+)?)?)?)@u', '<a href="$1">$1</a>', $value);
 					}
 				}
 

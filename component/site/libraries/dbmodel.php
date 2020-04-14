@@ -342,7 +342,7 @@ class JEventsDBModel
 	 * Fetch recently created events
 	 */
 	// Allow the passing of filters directly into this function for use in 3rd party extensions etc.
-	function accessibleCategoryList($aid = null, $catids = null, $catidList = null, $allLanguages = false, $checkAccess = true)
+	function accessibleCategoryList($aid = null, $catids = null, $catidList = null, $allLanguages = false, $checkAccess = true, $includeSubs = 1)
 	{
 
 		if (is_null($aid))
@@ -411,7 +411,7 @@ class JEventsDBModel
 				JEVHelper::forceIntegerArray($this->datamodel->mmcatids, false);
 
 				// Take account of inclusion of subcategories here!
-				if ($this->cfg->get("include_subcats", 1))
+				if ($includeSubs && $this->cfg->get("include_subcats", 1))
 				{
 					$mmcatids = array();
 					$mmcats   = Categories::getInstance("jevents");
@@ -1138,7 +1138,7 @@ class JEventsDBModel
 
 	}
 
-	function listLatestIcalEvents($startdate, $enddate, $limit = 10, $repeatdisplayoptions = 0, $multidayTreatment = 0)
+	function listLatestIcalEvents($startdate, $enddate, $limit = 10, $repeatdisplayoptions = 0, $multidayTreatment = 0, $includeSubs = 1)
 	{
 		//list($usec, $sec) = explode(" ", microtime());
 		//$starttime = (float) $usec + (float) $sec;
@@ -1245,7 +1245,7 @@ class JEventsDBModel
 		}
 		$rptwhere = (count($rptwhere) ? ' AND ' . implode(' AND ', $rptwhere) : '');
 
-		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList(JEVHelper::getAid($user)) . ")";
+		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList(JEVHelper::getAid($user), null, null, false, true, $includeSubs) . ")";
 		$params   = ComponentHelper::getParams("com_jevents");
 		$cathaving = "";
 		if ($params->get("multicategory", 0))
