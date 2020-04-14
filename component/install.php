@@ -1,11 +1,15 @@
 <?php
 
 /**
- * copyright (C) 2012-2018 GWE Systems Ltd - All rights reserved
+ * copyright (C) 2012-JEVENTS_COPYRIGHT GWESystems Ltd - All rights reserved
  * @license GNU/GPLv3 www.gnu.org/licenses/gpl-3.0.html
  * */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Component\ComponentHelper;
 
 class com_jeventsInstallerScript
 {
@@ -13,114 +17,48 @@ class com_jeventsInstallerScript
 	//
 	// Joomla installer functions
 	//
-	
+
 	function install($parent)
 	{
+
 		if (version_compare(PHP_VERSION, '5.3.10', '<'))
 		{
-			JFactory::getApplication()->enqueueMessage('Your webhost needs to use PHP 5.3.10 or higher to run this version of JEvents.  Please see http://php.net/eol.php', 'error');
+			Factory::getApplication()->enqueueMessage('Your webhost needs to use PHP 5.3.10 or higher to run this version of JEvents.  Please see http://php.net/eol.php', 'error');
+
 			return false;
 		}
 
 		$this->createTables();
 
 		$this->updateTables();
-		
-		return true;
-
-	}
-
-	public function postflight($action, $adapter)
-	{
-		$table =  JTable::getInstance('extension');
-		$component = "com_jevents";
-
-		if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
-		{
-			JFactory::getApplication()->enqueueMessage('Not a valid component', 'error');
-			return false;
-		}
-
-		$params = JComponentHelper::getParams("com_jevents");
-
-		$checkClashes = $params->get("checkclashes", 0);
-
-		if($params->get("noclashes", 0))
-		{
-			$params->set("checkconflicts","2");
-		}
-		else if($params->get("checkclashes", 0))
-		{
-			$params->set("checkconflicts","1");
-		}
-		
-		$paramsArray = $params->toArray();
-		unset($paramsArray['checkclashes']);
-		unset($paramsArray['noclashes']);
-		$post['params'] = $paramsArray;
-		$post['option'] = $component;
-
-		$table->bind($post);
-
-		// pre-save checks
-		if (!$table->check())
-		{
-			JFactory::getApplication()->enqueueMessage($table->getError(), 'error');
-			return false;
-		}
-
-		// save the changes
-		if (!$table->store())
-		{
-			JFactory::getApplication()->enqueueMessage($table->getError(), 'error');
-			return false;
-		}
-
-		return true;
-	}
-
-	function uninstall($parent)
-	{
-		// No nothing for now
-
-	}
-
-	function update($parent)
-	{
-		if (version_compare(PHP_VERSION, '5.3.10', '<'))
-		{
-			JFactory::getApplication()->enqueueMessage('Your webhost needs to use PHP 5.3.10 or higher to run this version of JEvents.  Please see http://php.net/eol.php', 'error');
-			return false;
-		}
-
-		$this->createTables();
-		
-		$this->updateTables();
 
 		return true;
 
 	}
-	
-	private function createTables() {
 
-		$db = JFactory::getDbo();
-		$db->setDebug(0);
-		if (version_compare(JVERSION, "3.3", 'ge')){
-			$charset = ($db->hasUTFSupport()) ?  ' DEFAULT CHARACTER SET `utf8`' : '';
-			$rowcharset = ($db->hasUTFSupport()) ?  'CHARACTER SET utf8' : '';
+	private function createTables()
+	{
+
+		$db = Factory::getDbo();
+
+		if (version_compare(JVERSION, "3.3", 'ge'))
+		{
+			$charset    = ($db->hasUTFSupport()) ? ' DEFAULT CHARACTER SET `utf8`' : '';
+			$rowcharset = ($db->hasUTFSupport()) ? 'CHARACTER SET utf8' : '';
 		}
-		else {
-			$charset = ($db->hasUTF()) ?  ' DEFAULT CHARACTER SET `utf8`' : '';
-			$rowcharset = ($db->hasUTF()) ?  'CHARACTER SET utf8' : '';
+		else
+		{
+			$charset    = ($db->hasUTF()) ? ' DEFAULT CHARACTER SET `utf8`' : '';
+			$rowcharset = ($db->hasUTF()) ? 'CHARACTER SET utf8' : '';
 		}
 
- 		/**
+		/**
 		 * create table if it doesn't exit
-		 * 
-		 * For now : 
-		 * 
+		 *
+		 * For now :
+		 *
 		 * I'm ignoring attach,comment, resources, transp, attendee, related to, rdate, request-status
-		 * 
+		 *
 		 * Separate tables for rrule and exrule
 		 */
 		$sql = <<<SQL
@@ -154,17 +92,21 @@ CREATE TABLE IF NOT EXISTS #__jevents_vevent(
 ) $charset;
 SQL;
 		$db->setQuery($sql);
-		$db->execute();
-		echo $db->getErrorMsg();
+
+		try {
+			$db->execute();
+		} catch (Exception $e) {
+			echo $e;
+		}
 
 
 		/**
 		 * create table if it doesn't exit
-		 * 
-		 * For now : 
-		 * 
+		 *
+		 * For now :
+		 *
 		 * I'm ignoring attach,comment, resources, transp, attendee, related to, rdate, request-status
-		 * 
+		 *
 		 * Separate tables for rrule and exrule
 		 */
 		$sql = <<<SQL
@@ -207,8 +149,11 @@ CREATE TABLE IF NOT EXISTS #__jevents_vevdetail(
 ) $charset;
 SQL;
 		$db->setQuery($sql);
-		$db->execute();
-		echo $db->getErrorMsg();
+		try {
+			$db->execute();
+		} catch (Exception $e) {
+			echo $e;
+		}
 
 		$sql = <<<SQL
 CREATE TABLE IF NOT EXISTS #__jevents_rrule (
@@ -235,8 +180,11 @@ CREATE TABLE IF NOT EXISTS #__jevents_rrule (
 ) $charset;
 SQL;
 		$db->setQuery($sql);
-		$db->execute();
-		echo $db->getErrorMsg();
+		try {
+			$db->execute();
+		} catch (Exception $e) {
+			echo $e;
+		}
 
 
 		$sql = <<<SQL
@@ -259,8 +207,11 @@ CREATE TABLE IF NOT EXISTS #__jevents_repetition (
 ) $charset;
 SQL;
 		$db->setQuery($sql);
-		$db->execute();
-		echo $db->getErrorMsg();
+		try {
+			$db->execute();
+		} catch (Exception $e) {
+			echo $e;
+		}
 
 		// exception_type 0=delete, 1=other exception
 		$sql = <<<SQL
@@ -279,19 +230,22 @@ CREATE TABLE IF NOT EXISTS #__jevents_exception (
 ) $charset;
 SQL;
 		$db->setQuery($sql);
-		$db->execute();
-		echo $db->getErrorMsg();
+		try {
+			$db->execute();
+		} catch (Exception $e) {
+			echo $e;
+		}
 
 		/**
 		 * create table if it doesn't exit
-		 * 
-		 * For now : 
-		 * 
+		 *
+		 * For now :
+		 *
 		 * I'm ignoring attach,comment, resources, transp, attendee, related to, rdate, request-status
-		 * 
+		 *
 		 * note that icaltype = 0 for imported from URL, 1 for imported from file, 2 for created natively
 		 * Separate tables for rrule and exrule
-		 * 
+		 *
 		 */
 		$sql = <<<SQL
 CREATE TABLE IF NOT EXISTS #__jevents_icsfile(
@@ -320,8 +274,11 @@ CREATE TABLE IF NOT EXISTS #__jevents_icsfile(
 ) $charset;
 SQL;
 		$db->setQuery($sql);
-		$db->execute();
-		echo $db->getErrorMsg();
+		try {
+			$db->execute();
+		} catch (Exception $e) {
+			echo $e;
+		}
 
 		// 1. Make sure users table exists
 		$sql = <<<SQL
@@ -357,9 +314,10 @@ CREATE TABLE IF NOT EXISTS #__jev_users (
 ) $charset;
 SQL;
 		$db->setQuery($sql);
-		if (!$db->execute())
-		{
-			echo $db->getErrorMsg();
+		try {
+			$db->execute();
+		} catch (Exception $e) {
+			echo $e;
 		}
 
 		$sql = <<<SQL
@@ -380,8 +338,11 @@ CREATE TABLE IF NOT EXISTS #__jev_defaults (
 ) $charset;
 SQL;
 		$db->setQuery($sql);
-		$db->execute();
-		echo $db->getErrorMsg();
+		try {
+			$db->execute();
+		} catch (Exception $e) {
+			echo $e;
+		}
 
 
 		// Multi-category Mapping table
@@ -394,8 +355,11 @@ CREATE TABLE IF NOT EXISTS #__jevents_catmap(
 ) $charset;
 SQL;
 		$db->setQuery($sql);
-		$db->execute();
-		echo $db->getErrorMsg();
+		try {
+			$db->execute();
+		} catch (Exception $e) {
+			echo $e;
+		}
 
 		// Filter module mapping table
 		// Maps filter values to URL keys
@@ -413,8 +377,11 @@ CREATE TABLE IF NOT EXISTS #__jevents_filtermap (
 ) $charset;
 SQL;
 		$db->setQuery($sql);
-		$db->execute();
-		echo $db->getErrorMsg();
+		try {
+			$db->execute();
+		} catch (Exception $e) {
+			echo $e;
+		}
 
 		/**
 		 * create table if it doesn't exit
@@ -443,23 +410,28 @@ CREATE TABLE IF NOT EXISTS #__jevents_translation (
 ) $charset;
 SQL;
 		$db->setQuery($sql);
-		$db->execute();
-		echo $db->getErrorMsg();
+		try {
+			$db->execute();
+		} catch (Exception $e) {
+			echo $e;
+		}
 
 	}
-		
-	private function updateTables() {
 
-		$db = JFactory::getDbo();
-		$db->setDebug(0);
+	private function updateTables()
+	{
 
-		if (version_compare(JVERSION, "3.3", 'ge')){
-			$charset = ($db->hasUTFSupport()) ?  ' DEFAULT CHARACTER SET `utf8`' : '';
-			$rowcharset = ($db->hasUTFSupport()) ?  'CHARACTER SET utf8' : '';
+		$db = Factory::getDbo();
+
+		if (version_compare(JVERSION, "3.3", 'ge'))
+		{
+			$charset    = ($db->hasUTFSupport()) ? ' DEFAULT CHARACTER SET `utf8`' : '';
+			$rowcharset = ($db->hasUTFSupport()) ? 'CHARACTER SET utf8' : '';
 		}
-		else {
-			$charset = ($db->hasUTF()) ?  ' DEFAULT CHARACTER SET `utf8`' : '';
-			$rowcharset = ($db->hasUTF()) ?  'CHARACTER SET utf8' : '';
+		else
+		{
+			$charset    = ($db->hasUTF()) ? ' DEFAULT CHARACTER SET `utf8`' : '';
+			$rowcharset = ($db->hasUTF()) ? 'CHARACTER SET utf8' : '';
 		}
 
 		$sql = "SHOW COLUMNS FROM #__jevents_vevent";
@@ -479,7 +451,7 @@ SQL;
 			$db->setQuery($sql);
 			@$db->execute();
 		}
-                
+
 		if (!array_key_exists("author_notified", $cols))
 		{
 			$sql = "alter table #__jevents_vevent add column author_notified tinyint(3) NOT NULL default 0";
@@ -500,7 +472,7 @@ SQL;
 			$db->setQuery($sql);
 			@$db->execute();
 		}
-                
+
 		$sql = "SHOW INDEX FROM #__jevents_vevent";
 		$db->setQuery($sql);
 		$icols = @$db->loadObjectList("Key_name");
@@ -512,8 +484,10 @@ SQL;
 			@$db->execute();
 		}
 
-		foreach ($icols as $index => $key) {
-			if (strpos($index, "uid")===0){
+		foreach ($icols as $index => $key)
+		{
+			if (strpos($index, "uid") === 0)
+			{
 				$sql = "alter table #__jevents_vevent drop index $index";
 				$db->setQuery($sql);
 				@$db->execute();
@@ -522,21 +496,21 @@ SQL;
 
 		if (!array_key_exists("evaccess", $icols))
 		{
-                    // What is curtent value of sql_mode
-                    $db->setQuery("SELECT @@sql_mode");
-                    $sql_mode = @$db->loadResult();
-                    
-                    $db->setQuery("SET SESSION sql_mode=(SELECT REPLACE(@@sql_mode,'NO_ZERO_DATE',''))");
-                    @$db->execute();
-                    $sql = "ALTER TABLE #__jevents_vevent ADD INDEX evaccess (access)";
-                    $db->setQuery($sql);
-                    @$db->execute();
-                    
-                    // Return to old value
-                    $db->setQuery("SET SESSION sql_mode=(".$db->quote($sql_mode).")");
-                    @$db->execute();                    
+			// What is curtent value of sql_mode
+			$db->setQuery("SELECT @@sql_mode");
+			$sql_mode = @$db->loadResult();
+
+			$db->setQuery("SET SESSION sql_mode=(SELECT REPLACE(@@sql_mode,'NO_ZERO_DATE',''))");
+			@$db->execute();
+			$sql = "ALTER TABLE #__jevents_vevent ADD INDEX evaccess (access)";
+			$db->setQuery($sql);
+			@$db->execute();
+
+			// Return to old value
+			$db->setQuery("SET SESSION sql_mode=(" . $db->quote($sql_mode) . ")");
+			@$db->execute();
 		}
-                                
+
 		$sql = "SHOW COLUMNS FROM #__jevents_vevdetail";
 		$db->setQuery($sql);
 		$cols = @$db->loadObjectList("Field");
@@ -591,14 +565,14 @@ SQL;
 			$sql = "ALTER TABLE #__jevents_vevdetail ADD INDEX loc_id (loc_id)";
 			$db->setQuery($sql);
 			@$db->execute();
-			
+
 			// move across all the data
 			$sql = "UPDATE #__jevents_vevdetail SET loc_id = CAST(location AS UNSIGNED) where location REGEXP '^-?[0-9]+$'";
 			$db->setQuery($sql);
 			@$db->execute();
-			
+
 		}
-				
+
 		$sql = "SHOW INDEX FROM #__jevents_vevdetail";
 		$db->setQuery($sql);
 		$cols = @$db->loadObjectList("Key_name");
@@ -650,24 +624,24 @@ SQL;
 		{
 			$sql = "ALTER TABLE #__jevents_filtermap ADD COLUMN andor tinyint(3) NOT NULL default 0";
 			$db->setQuery($sql);
-			@$db->execute();                        
+			@$db->execute();
 		}
-                
+
 		if (!array_key_exists("modid", $cols))
 		{
 			$sql = "ALTER TABLE #__jevents_filtermap ADD COLUMN modid int(12) NOT NULL default 0";
 			$db->setQuery($sql);
-			@$db->execute();                        
+			@$db->execute();
 		}
-                
+
 		if (!array_key_exists("name", $cols))
 		{
 			$sql = "ALTER TABLE #__jevents_filtermap ADD COLUMN name varchar(255) $rowcharset NOT NULL default '' ";
 			$db->setQuery($sql);
-			@$db->execute();                        
+			@$db->execute();
 		}
 
-                $sql = "SHOW INDEX FROM #__jevents_repetition";
+		$sql = "SHOW INDEX FROM #__jevents_repetition";
 		$db->setQuery($sql);
 		$cols = @$db->loadObjectList("Key_name");
 
@@ -823,7 +797,7 @@ SQL;
 			$db->setQuery($sql);
 			@$db->execute();
 		}
-			
+
 		if (array_key_exists("name", $cols) && $cols["name"]->Key == 'PRI')
 		{
 			$sql = "ALTER TABLE #__jev_defaults DROP PRIMARY KEY";
@@ -851,7 +825,7 @@ SQL;
 			$db->setQuery($sql);
 			@$db->execute();
 		}
-		
+
 		if (!array_key_exists("catid", $cols))
 		{
 			$sql = "ALTER TABLE #__jev_defaults ADD catid  int( 11 ) NOT NULL default '0'";
@@ -887,8 +861,9 @@ SQL;
 		$db->setQuery($sql);
 		$db->execute();
 		*/
-		
-		if (!$count){
+
+		if (!$count)
+		{
 			$sql = "REPLACE INTO #__jevents_catmap (evid, catid) SELECT ev_id, catid from #__jevents_vevent WHERE catid in (SELECT id from #__categories where extension='com_jevents')";
 			$db->setQuery($sql);
 			$db->execute();
@@ -904,6 +879,85 @@ SQL;
 			$db->setQuery($sql);
 			@$db->execute();
 		}
+
+	}
+
+	public function postflight($action, $adapter)
+	{
+
+		$app        = Factory::getApplication();
+
+		$table     = Table::getInstance('extension');
+		$component = "com_jevents";
+
+		if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
+		{
+			$app->enqueueMessage('Not a valid component', 'error');
+
+			return false;
+		}
+
+		$params = ComponentHelper::getParams("com_jevents");
+
+		$checkClashes = $params->get("checkclashes", 0);
+
+		if ($params->get("noclashes", 0))
+		{
+			$params->set("checkconflicts", "2");
+		}
+		else if ($params->get("checkclashes", 0))
+		{
+			$params->set("checkconflicts", "1");
+		}
+
+		$paramsArray = $params->toArray();
+		unset($paramsArray['checkclashes']);
+		unset($paramsArray['noclashes']);
+		$post['params'] = $paramsArray;
+		$post['option'] = $component;
+
+		$table->bind($post);
+
+		// pre-save checks
+		if (!$table->check())
+		{
+			$app->enqueueMessage($table->getError(), 'error');
+
+			return false;
+		}
+
+		// save the changes
+		if (!$table->store())
+		{
+			$app->enqueueMessage($table->getError(), 'error');
+
+			return false;
+		}
+
+		return true;
+	}
+
+	function uninstall($parent)
+	{
+		// No nothing for now
+
+	}
+
+	function update($parent)
+	{
+
+		if (version_compare(PHP_VERSION, '5.3.10', '<'))
+		{
+			Factory::getApplication()->enqueueMessage('Your webhost needs to use PHP 5.3.10 or higher to run this version of JEvents.  Please see http://php.net/eol.php', 'error');
+
+			return false;
+		}
+
+		$this->createTables();
+
+		$this->updateTables();
+
+		return true;
 
 	}
 

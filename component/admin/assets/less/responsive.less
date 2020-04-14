@@ -1,0 +1,289 @@
+@import "vars.less";
+
+@media screen and (min-width: 960px) {
+  #gslc.gsl-scope {
+
+    #left-col {
+      bottom: 0;
+    }
+
+    #right-col:not(.noleftbar) {
+      /* equal to left-col width */
+      margin-left: @leftColumn;
+      width: ~"calc(100% - @{leftColumn})";
+
+    }
+  }
+
+  /* Not within #gslc.gsl-scope - its too tight and js can't change the widths! */
+  .gsl-scope {
+    #offcanvas-left-panel .gsl-offcanvas-bar {
+      width: 50%;
+    }
+
+    .gsl-offcanvas .gsl-offcanvas-bar {
+      right: -50%;
+    }
+
+    #offcanvas-right-panel .gsl-offcanvas-bar {
+      width: 60%;
+    }
+
+    .gsl-offcanvas-flip .gsl-offcanvas-bar {
+      right: -60%;
+    }
+  }
+
+}
+
+
+@media (max-width: 1600px) {
+  #gslc.gsl-scope {
+    .gsl-content {
+      // Event List View
+      .createdseconds {
+        display: none;
+      }
+    }
+  }
+}
+
+@media (max-width: 1250px) {
+  #gslc.gsl-scope {
+    .gsl-content {
+      /* filters */
+
+      .gsl-grid {
+        .js-stools-field-list {
+          padding-left: 15px;
+        }
+
+        .gsl-button, input {
+          padding: 0 15px;
+          line-height: 28px;
+          font-size: 0.875rem;
+          height: 28px;
+        }
+
+        .gsl-select {
+          padding: 0 10px 0 0;
+          line-height: 28px;
+          height: 28px;
+          font-size: 0.875rem;
+
+          &:not([multiple]):not([size]) {
+            /* background-image:none;*/
+          }
+        }
+      }
+
+      .js-stools-container-filters {
+        margin: 10px 0 0 0;
+
+        .js-stools-field-filter {
+          padding-left: 5px;
+          margin-top: 5px;
+        }
+      }
+
+    }
+  }
+
+  /* Hide VM and CB Menu items */
+  nav.navbar #vm-menu.nav, nav.navbar #menu.nav:not(:first-child) {
+    display: none;
+  }
+
+}
+
+@media (max-width: 960px) {
+
+  #gslc.gsl-scope {
+
+
+    .gsl-button {
+      padding: 0 15px;
+      line-height: 28px;
+      font-size: 0.875rem;
+    }
+
+    #left-col {
+      position: fixed;
+      width: 100%;
+      overflow: visible;
+
+      .left-logo {
+        position: absolute;
+        top: 0;
+        margin-left: -50px;
+        width: 40px;
+        padding: 0 0 0 5px;
+      }
+
+      .left-nav-wrap {
+        // move to make space for logo
+        margin-top: 0;
+        margin-left: 50px;
+
+        position: static;
+        float: left;
+        top: 0;
+        width: ~"calc(100% - @{leftColumn})";
+
+        > .gsl-navbar {
+          width: 100%;
+          height: 50px;
+        }
+
+        .left-nav {
+          height: 50px;
+          padding: 0px;
+          overflow: hidden;
+
+          span.nav-label {
+            display: none;
+          }
+
+          > li {
+            display: inline-block;
+            line-height: 25px;
+            height: 35px;
+
+            > a {
+              padding-top:5px;
+              /*
+              height: 20px;
+              line-height: 20px;
+               */
+            }
+
+          }
+
+          .gsl-navbar-dropdown {
+
+            margin-top: 45px;
+            margin-left: -45px;
+
+            li {
+              padding-left: 10px !important;
+
+              height: 30px;
+
+              button {
+                font-size: 0.875rem;
+              }
+            }
+          }
+        }
+
+      }
+    }
+
+    #right-col {
+      margin-top: 0;
+
+      h1.ysts-page-title {
+        margin-left: @leftColumn;
+      }
+
+      .ys-titlebar {
+        z-index: 100;
+      }
+
+      #top-head {
+        left: 0;
+
+        .ys-gsl-action-buttons {
+          /* position:fixed;*/
+          /* So that they are above the search filter */
+          z-index: 100;
+        }
+
+        .gsl-navbar-right {
+          display: none;
+        }
+      }
+
+      #ysts_system_messages {
+        margin-top: 105px
+      }
+
+    }
+
+    /*
+   * Params editing fixes
+   * Divider override UIkit default - default in 3.3.7 leaves top list item squashed - narrow screen mode
+   */
+    .gsl-list-divider > li{
+      margin-top: 10px;
+      border-left: 1px solid #e5e5e5;
+      border-top-width: 0;
+    }
+    #myParamsTabs > li {
+      padding: 0 10px;
+    }
+  }
+
+  /* Not within #gslc.gsl-scope - its too tight and js can't change the widths! */
+  .gsl-scope {
+    #offcanvas-left-panel .gsl-offcanvas-bar {
+      width: 90%;
+    }
+
+    .gsl-offcanvas .gsl-offcanvas-bar {
+      right: -90%;
+    }
+
+    #offcanvas-right-panel .gsl-offcanvas-bar {
+      width: 95%;
+    }
+
+    .gsl-offcanvas-flip .gsl-offcanvas-bar {
+      right: -95%;
+    }
+  }
+
+
+}
+
+@media (max-width: 768px) {
+  body.@{mycomponent}{
+    /*padding:0;*/
+  }
+
+  #gslc.gsl-scope {
+    #left-col {
+      position: relative;
+      top: 0 !important;
+    }
+  }
+
+  #gslc.gsl-scope {
+    #right-col {
+      #top-head {
+
+        position: static;
+        /*
+        This allows the heading to stay fixed when scrolling sideways
+        position:fixed;
+        left:0;
+         */
+
+        .ys-titlebar {
+          display: none;
+        }
+
+        .ys-gsl-action-buttons {
+          left: 0;
+          z-index: 99;
+        }
+      }
+
+      #ysts_system_messages {
+        margin-top: 0;
+      }
+    }
+  }
+
+
+}

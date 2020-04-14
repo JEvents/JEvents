@@ -1,13 +1,16 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
+
 $cfg	 = JEVConfig::getInstance();
 
 if ($cfg->get("tooltiptype",'joomla')=='overlib'){
 	JEVHelper::loadOverlib();
 }
 
-$view =  $this->getViewName();
+$view = $this->getViewName();
 echo $this->loadTemplate('cell' );
 $eventCellClass = "EventCalendarCell_".$view;
 
@@ -51,7 +54,7 @@ echo "<div id='cal_title'>".$this->data['fieldsetText']."</div>\n";
 						?>
                     <td <?php echo $cellclass;?>>
                      <?php   $this->_datecellAddEvent($this->year, $this->month, $currentDay["d"]);?>
-                    	<a class="cal_daylink" href="<?php echo $currentDay["link"]; ?>" title="<?php echo JText::_('JEV_CLICK_TOSWITCH_DAY'); ?>"><?php echo $currentDay['d']; ?></a>
+                    	<a class="cal_daylink" href="<?php echo $currentDay["link"]; ?>" title="<?php echo Text::_('JEV_CLICK_TOSWITCH_DAY'); ?>"><?php echo $currentDay['d']; ?></a>
                         <?php
 
                         if (count($currentDay["events"])>0){

@@ -4,7 +4,7 @@
  *
  * @version     $Id: jevview.php 3493 2012-04-08 09:41:27Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-JEVENTS_COPYRIGHT GWESystems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -13,55 +13,70 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 jimport('joomla.form.helper');
-JFormHelper::loadFieldClass('list');
+FormHelper::loadFieldClass('list');
 
 class JFormFieldJevview extends JFormFieldList
 {
 
 	protected $type = 'jevview';
 
-	protected
-			function getInput()
-	{
-		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
-		JEVHelper::ConditionalFields($this->element, $this->form->getName());
-		return parent::getInput();
-	}
-
 	public function getOptions()
 	{
-		$jinput = JFactory::getApplication()->input;
+
+		$input = Factory::getApplication()->input;
 
 		// Must load admin language files
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
 		$views = array();
-		include_once(JPATH_ADMINISTRATOR."/components/com_jevents/jevents.defines.php");
+		include_once(JPATH_ADMINISTRATOR . "/components/com_jevents/jevents.defines.php");
 
-		$exceptions_values = (string)$this->element['except'] ? (string) $this->element['except'] : "";
-		$exceptions = array();
-		$exceptions = explode(',', $exceptions_values);
+		$exceptions_values = (string) $this->element['except'] ? (string) $this->element['except'] : "";
+		$exceptions        = array();
+		$exceptions        = explode(',', $exceptions_values);
 
-		foreach (JEV_CommonFunctions::getJEventsViewList((string)$this->element["viewtype"]) as $viewfile) {
-			if (in_array($viewfile, $exceptions)) {
+		foreach (JEV_CommonFunctions::getJEventsViewList((string) $this->element["viewtype"]) as $viewfile)
+		{
+			if (in_array($viewfile, $exceptions))
+			{
 				continue;
 			}
-			$views[] = JHTML::_('select.option', $viewfile, $viewfile);
+			$views[] = HTMLHelper::_('select.option', $viewfile, $viewfile);
 		}
-		sort( $views );
-		if ($this->menu !='hide'){
-                    $task = $jinput->get('task');
-                    if ($task == "params.edit") {
-                        unset($views['global']);
-                    } else {
-			array_unshift($views , JHTML::_('select.option', 'global', JText::_( 'USE_GLOBAL' )));
-                    }                        
-                }
+		sort($views);
+		if ($this->menu != 'hide')
+		{
+			$task = $input->get('task');
+			if ($task == "params.edit")
+			{
+				unset($views['global']);
+			}
+			else
+			{
+				array_unshift($views, HTMLHelper::_('select.option', 'global', Text::_('USE_GLOBAL')));
+			}
+		}
+
 		return $views;
-		
+
+	}
+
+	protected
+	function getInput()
+	{
+
+		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
+		JEVHelper::ConditionalFields($this->element, $this->form->getName());
+
+		return parent::getInput();
 	}
 }

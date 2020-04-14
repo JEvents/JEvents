@@ -4,153 +4,415 @@
  *
  * @version     $Id: cpanel.php 3119 2011-12-20 14:34:33Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2018 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-JEVENTS_COPYRIGHT GWESystems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\String\StringHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filter\OutputFilter;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Feed\FeedFactory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Plugin\PluginHelper;
 
-$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-$version = JEventsVersion::getInstance();
+$params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
-JEVHelper::stylesheet('jev_cp.css', 'administrator/components/' . JEV_COM_COMPONENT . '/assets/css/');
-
-if (!empty($this->sidebar))
-{
-	?>
-	<div id="j-sidebar-container" class="span2">
-
-		<?php echo $this->sidebar; ?>
-
-		<?php
-		//Version Checking etc
-		?>
-		<div class="jev_version">
-			<?php echo JText::sprintf('JEV_CURRENT_VERSION', JString::substr($version->getShortVersion(), 1)); ?>
-		</div>
-	</div>
-<?php
-}
-$mainspan = 10;
-$fullspan = 12;
 ?>
 
-<div id="jevents" class="span12">
-    <form action="index.php" method="post" name="adminForm" id="adminForm">
-        <div id="j-main-container" class="span<?php echo (!empty($this->sidebar)) ? $mainspan : $fullspan; ?>  ">
-            <div id="cpanel" class="well well-small clearfix ">
-				<?php
-				if (JEVHelper::isAdminUser())
-				{
-					$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=icals.list";
-					$this->_quickiconButtonWHover($link, "cpanel/CalendarsCool.png", "cpanel/CalendarsHot.png", JText::_('JEV_ADMIN_ICAL_SUBSCRIPTIONS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
-				}
-
-				$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=icalevent.list";
-				$this->_quickiconButtonWHover($link, "cpanel/EventsCool.png", "cpanel/EventsHot.png", JText::_('JEV_ADMIN_ICAL_EVENTS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
-
-				$link = "index.php?option=com_categories&extension=" . JEV_COM_COMPONENT;
-
-				$this->_quickiconButtonWHover($link, "cpanel/CategoriesCool.png", "cpanel/CategoriesHot.png", JText::_('JEV_INSTAL_CATS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
-
-				if (JEVHelper::isAdminUser())
-				{
-                                    if ($params->get("authorisedonly", 0)) {
-					$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=user.list";
-					$this->_quickiconButtonWHover($link, "cpanel/AuthorisedCool.png", "cpanel/AuthorisedHot.png", JText::_('JEV_MANAGE_USERS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
-                                    }
-					// new version - Joomla 3.5 does its stuff using AJAX and assumes its ONLY called from com_config :(
-					$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=params.edit&view=component&component=com_jevents";
-					$this->_quickiconButtonWHover($link, "cpanel/ConfigCool.png", "cpanel/ConfigHot.png", JText::_('JEV_INSTAL_CONFIG'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
-				}
-				if (JEVHelper::isAdminUser())
-				{
-					$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.list";
-					$this->_quickiconButtonWHover($link, "cpanel/LayoutsCool.png", "cpanel/LayoutsHot.png", JText::_('JEV_LAYOUT_DEFAULTS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
-					// Custom CSS
-					$link = "index.php?option=" . JEV_COM_COMPONENT . "&view=customcss";
-					$this->_quickiconButtonWHover($link, "cpanel/CSSCool.png", "cpanel/CSSHot.png", JText::_('JEV_CUSTOM_CSS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
-					// Support Info
-					$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.support";
-					$this->_quickiconButtonWHover($link, "cpanel/SupportCool.png", "cpanel/SupportHot.png", JText::_('SUPPORT_INFO'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
-					//Manage Addons
-					//$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.addons";
-					//$this->_quickiconButtonWHover($link, "cpanel/JEventsAddonsCool.png", "cpanel/JEventsAddonsHot.png", JText::_('JEV_MANAGE_ADDONS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/", '_blank');
-					//Project News
-					$link = "https://www.jevents.net/news";
-					$this->_quickiconButtonWHover($link, "cpanel/NewsCool.png", "cpanel/NewsHot.png", JText::_('JEV_NEWS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/", '_blank');
-				}
-				// Links to addons
-				// Managed Locations
-				$db = JFactory::getDbo ();
-				$db->setQuery ( "SELECT enabled FROM #__extensions WHERE element = 'com_jevlocations' AND type='component' " );
-				$is_enabled = $db->loadResult ();
-				if ($is_enabled) {
-					$link = "index.php?option=com_jevlocations";
-					JFactory::getLanguage()->load("com_jevlocations", JPATH_ADMINISTRATOR);
-					$this->_quickiconButtonWHover($link, "cpanel/LocationsCool.png", "cpanel/LocationsHot.png", JText::_('COM_JEVLOCATIONS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
-				}
-				// Managed People
-				$db = JFactory::getDbo ();
-				$db->setQuery ( "SELECT enabled FROM #__extensions WHERE element = 'com_jevpeople' AND type='component' " );
-				$is_enabled = $db->loadResult ();
-				if ($is_enabled) {
-					$link = "index.php?option=com_jevpeople";
-					JFactory::getLanguage()->load("com_jevpeople", JPATH_ADMINISTRATOR);
-					$this->_quickiconButtonWHover($link, "cpanel/PeopleCool.png", "cpanel/PeopleHot.png", JText::_('COM_JEVPEOPLE'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
-				}
-				// RSVP Pro
-				$db = JFactory::getDbo ();
-				$db->setQuery ( "SELECT enabled FROM #__extensions WHERE element = 'com_rsvppro' AND type='component' " );
-				$is_enabled = $db->loadResult ();
-				if ($is_enabled) {
-					$link = "index.php?option=com_rsvppro";
-					JFactory::getLanguage()->load("com_rsvppro", JPATH_ADMINISTRATOR);
-					$this->_quickiconButtonWHover($link, "cpanel/RSVPCool.png", "cpanel/RSVPHot.png", JText::_('COM_RSVPPRO'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
-				}
-				// Custom Fields				
-				$db = JFactory::getDbo ();
-				$db->setQuery ( "SELECT * FROM #__extensions WHERE element = 'jevcustomfields' AND type='plugin' AND folder='jevents' " );
-				$extension = $db->loadObject();
-				// Stop if user is not authorised to manage JEvents
-				if ($extension && $extension->enabled && JEVHelper::isAdminUser()) {
-					$manifestCache = json_decode($extension->manifest_cache);
-					if (version_compare($manifestCache->version, "3.5.0RC", "ge") )
-					{
-						$link = "index.php?option=com_jevents&task=plugin.jev_customfields.overview";
-						JFactory::getLanguage()->load("plg_jevents_jevcustomfields", JPATH_ADMINISTRATOR);
-						$this->_quickiconButtonWHover($link, "cpanel/CustomFieldsCool.png", "cpanel/CustomFieldsHot.png", JText::_('JEV_CUSTOM_FIELDS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
-					}
-				}
-
-				?>
-                <div class="clear"></div>
+<div id="jevents" >
+    <!-- CONTENT -->
+    <div class="gsl-container gsl-container-expand">
+        <div class="gsl-grid gsl-grid-divider gsl-grid-medium gsl-child-width-1-2 gsl-child-width-1-3@m gsl-child-width-1-4@l"
+             gsl-grid>
+            <div>
+                <span class="gsl-text-small">
+                        <span gsl-icon="icon:calendar" class="gsl-margin-small-right gsl-text-primary"></span>
+                        <?php echo Text::_("COM_JEVENTS_TOTAL_EVENTS");?>
+                </span>
+                <h2 class="gsl-heading-primary gsl-margin-remove gsl-text-primary gsl-h2">
+                    <a href="<?php echo Route::_("index.php?option=com_jevents&task=icalevent.list")?>">
+	                    <?php echo Text::sprintf("COM_JEVENTS_FUTURE_EVENTS", $this->futureEvents);?>
+                    </a>
+                </h2>
+                <a href="<?php echo Route::_("index.php?option=com_jevents&task=icalevent.list")?>"
+                   class="gsl-text-small gsl-text-success gsl-display-block">
+                    <span class="gsl-text-success" gsl-icon="icon: history"></span>
+	                <?php echo Text::sprintf("COM_JEVENTS_PAST_EVENTS", $this->pastEvents);?>
+                </a>
+            </div>
+            <div>
+                <span class="gsl-text-small">
+                        <span gsl-icon="icon:calendar"
+                              class="gsl-margin-small-right gsl-text-danger"></span>
+                        <?php echo Text::_("COM_JEVENTS_TOTAL_EVENTS_UNPUBLISHED");?>
+                </span>
+                <h2 class="gsl-heading-primary gsl-margin-remove gsl-text-primary gsl-h2">
+                    <a href="<?php echo Route::_("index.php?option=com_jevents&task=icalevent.list")?>">
+	                    <?php echo $this->unpublishedEvents;?>
+                    </a>
+                </h2>
+            </div>
+            <div>
+                <span class="gsl-text-small">
+                        <span gsl-icon="icon:plus-circle" class="gsl-margin-small-right gsl-text-primary"></span>
+                        <?php echo Text::_("COM_JEVENTS_NEW_EVENTS");?>
+                </span>
+                <h2 class="gsl-heading-primary gsl-margin-remove gsl-text-primary gsl-h2">
+                    <a href="<?php echo Route::_("index.php?option=com_jevents&task=icalevent.list")?>">
+	                    <?php echo Text::sprintf("COM_JEVENTS_NEW_EVENTS_THIS_Week", $this->newEvents);?>
+                    </a>
+                </h2>
+                <a href="<?php echo Route::_("index.php?option=com_jevents&task=icalevent.list")?>"
+                   class="gsl-text-small gsl-text-success gsl-display-block">
+                    <span class="gsl-text-success" gsl-icon="icon: plus-circle"></span>
+		            <?php echo Text::sprintf("COM_JEVENTS_NEW_EVENTS_THIS_MONTH", $this->newThisMonth);?>
+                </a>
+            </div>
+            <div>
+                <span class="gsl-text-small">
+                   <span gsl-icon="icon:users" class="gsl-margin-small-right gsl-text-primary"></span>
+                   <?php echo Text::_("COM_JEVENTS_UPCOMING_REGISTRATIONS");?>
+                </span>
+                <?php if (PluginHelper::isEnabled("jevents", "jevrsvppro")) { ?>
+                <h2 class="gsl-heading-primary gsl-margin-remove  gsl-text-primary gsl-h2">
+                    <a href="<?php echo Route::_("index.php?option=com_rsvppro&task=sessions.list")?>">
+                        <?php echo Text::sprintf("COM_JEVENTS_UPCOMING_REGISTRATIONS_THIS_WEEK", $this->upcomingAttendees);?>
+                    </a>
+                </h2>
+                    <a href="<?php echo Route::_("index.php?option=com_jevents&task=icalevent.list")?>"
+                       class="gsl-text-small gsl-text-success gsl-display-block">
+                        <span class="gsl-text-success" gsl-icon="icon: users"></span>
+		                <?php echo Text::sprintf("COM_JEVENTS_UPCOMING_REGISTRATIONS_THIS_MONTH", $this->upcomingAttendeesThisMonth);?>
+                    </a>
+                <?php }
+                else {
+                    ?>
+	                <h2 class="gsl-heading-primary gsl-margin-remove  gsl-text-primary hasYsPopover gsl-h2"
+                        data-yspoptitle="<?php echo Text::_('COM_JEVENTS_REQUIRES_RSVPPRO'); ?>"
+                        data-yspopcontent="<?php echo Text::_("COM_JEVENTS_REQUIRES_RSVPPRO_DETAIL"); ?>"
+                    ?>
+                        <?php echo Text::_("COM_JEVENTS_NOT_INSTALLED");?>
+                    </h2>
+                    <?php
+                }
+                ?>
             </div>
         </div>
+        <hr>
 		<?php
-		if (JText::_("JEV_TRANSLATION_CREDITS") != "JEV_TRANSLATION_CREDITS" && JFactory::getLanguage()->getTag() != "en-GB")
+		$params = ComponentHelper::getParams("com_jevents");
+		if ($params->get("shownews", 1))
 		{
-			?>
-			<div class="span12 center">
-				<strong><?php echo JText::_("JEV_TRANSLATION_CREDITS"); ?>:</strong>
-				<i><?php echo JText::_("JEV_TRANSLATION_LANGUAGE"); ?></i> - <?php echo $this->getTranslatorLink(); ?>
-			</div>
-			<?php
+			// Get RSS parsed object
+			try
+			{
+				$rssurl = "https://www.jevents.net/blog?format=feed&type=rss";
+				$feed   = new FeedFactory;
+				$rssDoc = $feed->getFeed($rssurl);
+			}
+			catch (Exception $e)
+			{
+				 // echo Text::_('MOD_FEED_ERR_FEED_NOT_RETRIEVED');
+			}
+
+			if (!empty($rssDoc) && is_object($rssDoc))
+			{
+				$feed = $rssDoc;
+				?>
+                <div class="gsl-margin-small gsl-width-1-1 gsl-position-relative gsl-card gsl-card-default gsl-card-small gsl-card-hover"
+                     style="padding:10px 55px 35px 55px;">
+                    <?php if ($params->get("shownews", 1)) { ?>
+                    <div class="gsl-card-header">
+                        <div class="gsl-grid gsl-grid-small">
+                            <h4 class="gsl-width-auto">
+                                <span gsl-icon="icon:tv; ratio : 2" class="gsl-margin-small-right gsl-text-primary"></span>
+                                <?php echo Text::_("COM_JEVENTS_JEVENTS_NEWS");?>
+                            </h4>
+                        </div>
+                    </div>
+	                <?php } ?>
+                    <div class="gsl-card-body" gsl-slider="autoplay:true; autoplay-interval:5000; pause-on-hover:true">
+                        <ul class="ys_newsfeed gsl-slider-items gsl-child-width-1-1" style="width: calc(100% + 20px);">
+							<?php for ($i = 0, $max = min(count($feed), 3); $i < $max; $i++) { ?>
+								<?php
+								$uri  = $feed[$i]->uri || !$feed[$i]->isPermaLink ? trim($feed[$i]->uri) : trim($feed[$i]->guid);
+								$uri  = !$uri || stripos($uri, 'http') !== 0 ? $rssurl : $uri;
+								$text = $feed[$i]->content !== '' ? trim($feed[$i]->content) : '';
+								?>
+                                <li style="padding:0 20px 0 10px">
+									<?php if (!empty($uri)) : ?>
+                                        <span class="feed-link">
+						<a href="<?php echo htmlspecialchars($uri, ENT_COMPAT, 'UTF-8'); ?>" target="_blank">
+						<?php echo trim($feed[$i]->title); ?></a></span>
+									<?php else : ?>
+                                        <span class="feed-link"><?php echo trim($feed[$i]->title); ?></span>
+									<?php endif; ?>
+                                    <div class="feed-item-description">
+										<?php
+										// Strip the images.
+										$text = OutputFilter::stripImages($text);
+										$text = strip_tags($text);
+										$text = HTMLHelper::_('string.truncate', $text, 200);
+										echo str_replace('&apos;', "'", $text);
+										?>
+                                    </div>
+                                </li>
+							<?php } ?>
+                        </ul>
+
+                        <a class="gsl-position-center-left gsl-position-small gsl-hidden-hover" href="#"
+                           gsl-slidenav-previous gsl-slider-item="previous"></a>
+                        <a class="gsl-position-center-right gsl-position-small gsl-hidden-hover" href="#" gsl-slidenav-next
+                           gsl-slider-item="next"></a>
+
+                        <ul class="gsl-slider-nav gsl-dotnav gsl-position-bottom-center gsl-padding-small"></ul>
+                    </div>
+                </div>
+				<?php
+			}
 		}
 		?>
-        <div class="span12 center">
-            <a href="<?php
-			   echo $version->getUrl();
-			   ?>" target="_blank" style="font-size:xx-small;"
-               title="Events Website"><?php echo $version->getLongVersion(); ?></a>
-            &nbsp;
-            <span style="color:#999999; font-size:9px;"><?php echo $version->getShortCopyright(); ?></span>
-        </div>
+        <div class="gsl-grid gsl-grid-medium" gsl-grid>
 
-        <input type="hidden" name="task" value="cpanel"/>
-        <input type="hidden" name="act" value=""/>
-        <input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>
+            <!-- panel -->
+            <div class="gsl-width-1-2@l">
+                <div class="gsl-card gsl-card-default gsl-card-small gsl-card-hover">
+                    <div class="gsl-card-header">
+                        <div class="gsl-grid gsl-grid-small">
+                            <div class="gsl-width-auto"><h4><?php echo Text::_("COM_JEVENTS_TOTAL_EVENTS");?></h4></div>
+                        </div>
+                    </div>
+                    <div class="gsl-card-body">
+                        <div class="chart-container">
+                            <canvas id="chart1"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /panel -->
+            <!-- panel -->
+            <div class="gsl-width-1-1 gsl-width-1-2@l">
+                <div class="gsl-card gsl-card-default gsl-card-small gsl-card-hover">
+                    <div class="gsl-card-header">
+                        <div class="gsl-grid gsl-grid-small">
+                            <div class="gsl-width-auto"><h4><?php echo Text::_("COM_JEVENTS_NEW_EVENTS_CREATED_BY_DAY");?></h4></div>
+                        </div>
+                    </div>
+                    <div class="gsl-card-body">
+                        <div class="chart-container">
+                            <canvas id="chart2"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /panel -->
+            <!-- panel -->
+            <div class="gsl-width-1-2@s gsl-width-1-2@l">
+                <div class="gsl-card gsl-card-default gsl-card-small gsl-card-hover">
+                    <div class="gsl-card-header">
+                        <div class="gsl-grid gsl-grid-small">
+                            <div class="gsl-width-auto"><h4><?php echo Text::_("COM_JEVENTS_UPCOMING_REGISTRATIONS_BY_EVENT");?></h4></div>
+                        </div>
+                    </div>
+                    <div class="gsl-card-body">
+                        <div class="chart-container">
+                            <canvas id="chart3"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /panel -->
+            <!-- panel -->
+            <div class="gsl-width-1-2@s gsl-width-1-2@l">
+                <div class="gsl-card gsl-card-default gsl-card-small gsl-card-hover">
+                    <div class="gsl-card-header">
+                        <div class="gsl-grid gsl-grid-small">
+                            <div class="gsl-width-auto"><h4><?php echo Text::_("COM_JEVENTS_UPCOMING_EVENTS_BY_WEEK");?></h4></div>
+                        </div>
+                    </div>
+                    <div class="gsl-card-body">
+                        <div class="chart-container">
+                            <canvas id="chart4"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /panel -->
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
+    <script type="text/javascript">
+		// Chart 1
+		// ========================================================================
+		new Chart(document.getElementById('chart1'), {
+			type: 'pie',
+			data: {
+				labels: ['<?php echo  implode("', '", $this->eventsByCat); ?>'],
+				datasets: [
+					{
+						backgroundColor: ['<?php echo  implode("', '", $this->eventsByCatColours); ?>'],
+						data: [<?php echo  implode(", ", $this->eventsByCatCounts); ?>],
+					},
+				],
+			},
+			options: {
+				responsiveAnimationDuration: 500,
+				legend: {
+					display: true,
+                    position: 'right'
+				},
+				animation: {
+					duration: 2000
+				},
+				title: {
+					display: false,
+				},
+			}
+		});
+
+
+		// Chart 2
+		// ========================================================================
+		new Chart(document.getElementById('chart2'), {
+			type: 'bar',
+			data: {
+				labels: ["<?php echo Text::_("JEV_MONDAY");?>",
+					"<?php echo Text::_("JEV_TUESDAY");?>",
+					"<?php echo Text::_("JEV_WEDNESDAY");?>",
+					"<?php echo Text::_("JEV_THURSDAY");?>",
+					"<?php echo Text::_("JEV_FRIDAY");?>",
+					"<?php echo Text::_("JEV_SATURDAY");?>",
+					"<?php echo Text::_("JEV_SUNDAY");?>",
+				],
+				datasets: [
+					{
+						backgroundColor: "#39f",
+						data: [<?php echo implode(', ',$this->eventCountsByDay);?> ],
+					},
+				],
+			},
+			options: {
+				maintainAspectRatio: false,
+				responsiveAnimationDuration: 500,
+				legend: {
+					display: false
+				},
+				animation: {
+					duration: 2000
+				},
+				title: {
+					display: false,
+				},
+			}
+		});
+
+		// Chart 3
+		// ========================================================================
+		<?php if (PluginHelper::isEnabled("jevents", "jevrsvppro")) { ?>
+		new Chart(document.getElementById('chart3'), {
+			type: 'bar',
+			data: {
+				labels: ['<?php echo  implode("', '", $this->attendeeCountsByEvent['title']); ?>'],
+				datasets: [
+					{
+						backgroundColor: "#39f",
+						data: [<?php echo  implode(", ", $this->attendeeCountsByEvent['count']); ?>],
+					},
+				],
+                startrepeat: ['<?php echo  implode("', '", $this->attendeeCountsByEvent['start']); ?>'],
+			},
+			options: {
+				maintainAspectRatio: false,
+				responsiveAnimationDuration: 500,
+				legend: {
+					display: false
+				},
+				animation: {
+					duration: 2000
+				},
+				title: {
+					display: false,
+				},
+				scales: {
+					yAxes: [{
+						display: true,
+						ticks: {
+							suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+							precision: 0
+						}
+					}]
+				},
+				tooltips: {
+					enabled: true,
+					mode: 'single',
+					callbacks: {
+						label: function(tooltipItems, data) {
+							return tooltipItems.yLabel + ' @ ' + data.startrepeat[tooltipItems.datasetIndex] ;
+						}
+					}
+				},
+			}
+		});
+		<?php } ?>
+		// Chart 4
+		// ========================================================================
+		new Chart(document.getElementById('chart4'), {
+			type: 'bar',
+			data: {
+				labels: ['<?php echo  implode("', '", $this->eventCountByWeekLabels); ?>'],
+				datasets: [
+					{
+						backgroundColor: "#39f",
+						data: [<?php echo  implode(", ", $this->eventCountByWeek); ?>],
+					},
+				],
+			},
+			options: {
+				maintainAspectRatio: false,
+				responsiveAnimationDuration: 500,
+				legend: {
+					display: false
+				},
+				animation: {
+					duration: 2000
+				},
+				title: {
+					display: false,
+				},
+				scales: {
+					xAxes: [{
+						scaleLabel: {
+							display: true,
+							labelString: "<?php echo Text::_("COM_JEVENTS_COUNT_BY_WEEK_COMMENCING"); ?>"
+						}
+					}],
+					yAxes: [{
+						display: true,
+						ticks: {
+							suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+							precision: 0
+						}
+					}]
+				}
+			}
+		});
+
+    </script>
+
+    <form action="<?php echo Route::_('index.php?option=com_jevents'); ?>" method="post" name="adminForm" id="adminForm">
+        <input type="hidden" name="task" value=""/>
+        <input type="hidden" name="redirecturl" value=""/>
+        <input type="hidden" name="boxchecked" value="0"/>
+        <input type="hidden" name="form_submitted" value="1"/>
+        <input type="hidden" name="baseurl" id="baseurl" value="<?php echo JURI::root(); ?>"/>
+        <input type="hidden" name="listlayout" id="listlayout"  value=""/>
+        <input type="hidden" id="ystscomponent" value="dashboard"/>
+		<?php echo HTMLHelper::_('form.token', array('id' => "tokenid")); ?>
     </form>
+    <!-- /CONTENT -->
 </div>

@@ -5,71 +5,94 @@
  *
  * @version     $Id: jevents.php 3551 2012-04-20 09:41:37Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-JEVENTS_COPYRIGHT GWESystems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
 defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Environment\Browser;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
+
+$app    = Factory::getApplication();
+$input  = $app->input;
+
 jimport('joomla.filesystem.path');
 
 // For development performance testing only
-/*
-  $db	= JFactory::getDbo();
-  $db->setQuery("SET SESSION query_cache_type = OFF");
-  $db->execute();
+/**
+ * $db = Factory::getDbo();
+ * $db->setQuery("SET SESSION query_cache_type = OFF");
+ * $db->execute();
+ *
+ * $cfg = JEVConfig::getInstance();
+ * $cfg->set('jev_debug', 1);
+ **/
 
-  $cfg = JEVConfig::getInstance();
-  $cfg->set('jev_debug', 1);
- */
+if (isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], "MSIE") !== false || strpos($_SERVER['HTTP_USER_AGENT'], "Internet Explorer") !== false))
+{
+	define ("GSLMSIE10" , 1);
+}
+else
+{
+	define ("GSLMSIE10" , 0);
+}
 
-include_once(JPATH_COMPONENT . '/' . "jevents.defines.php");
+require_once JPATH_COMPONENT . '/jevents.defines.php';
 
 $isMobile = false;
 jimport("joomla.environment.browser");
-$browser = JBrowser::getInstance();
+$browser = Browser::getInstance();
 
-$registry = JRegistry::getInstance("jevents");
-// In Joomla 1.6 JComponentHelper::getParams(JEV_COM_COMPONENT) is a clone so the menu params do not propagate so we force this here!
+$registry = JevRegistry::getInstance("jevents");
 
 // Load Joomla Core scripts for sites that don't load MooTools;
-JHtml::_('behavior.core', true);
+HTMLHelper::_('behavior.core', true);
 
 // This loads jQuery too!
 JevHtmlBootstrap::framework();
 
-// jQnc not only fixes noConflict it creates the jQuery alias we use in JEvents "jevqc" so we always need it
-	JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
-if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){
-	// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
-	JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
+// jQnc not only fixes noConflict it creates the jQuery alias
+// we use in JEvents "jevqc" so we always need it
+JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
+if (version_compare(JVERSION, "4.0", "lt") && ComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery", 1))
+{
+	// This script should come after all the URL based scripts in Joomla
+	// so should be a safe place to know that noConflict has been set
+	Factory::getDocument()->addScriptDeclaration("checkJQ();");
 }
 
-if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapcss", 1)==1)
+if (ComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapcss", 1) == 1)
 {
 	// This version of bootstrap has maximum compatibility with JEvents due to enhanced namespacing
-	JHTML::stylesheet("com_jevents/bootstrap.css", array(), true);
+	HTMLHelper::stylesheet("com_jevents/bootstrap.css", array(), true);
 	// Responsive version of bootstrap with maximum compatibility with JEvents due to enhanced namespacing
-	JHTML::stylesheet("com_jevents/bootstrap-responsive.css", array(), true);
+	HTMLHelper::stylesheet("com_jevents/bootstrap-responsive.css", array(), true);
 }
-else if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapcss", 1)==2)
+else if (ComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapcss", 1) == 2)
 {
 	JHtmlBootstrap::loadCss();
 }
 
-
-$newparams = JFactory::getApplication('site')->getParams();
+$newparams = Factory::getApplication('site')->getParams();
 // Because the application sets a default page title,
 // we need to get it from the menu item itself
 // WP TODO sort out menus!
-$menu = JFactory::getApplication()->getMenu()->getActive();
+$menu = $app->getMenu()->getActive();
 if ($menu)
 {
 	$newparams->def('page_heading', $newparams->get('page_title', $menu->title));
 }
 else
 {
-	$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+	$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 	$newparams->def('page_heading', $params->get('page_title'));
 }
 
@@ -77,7 +100,7 @@ else
 $com_calViewName = $newparams->get('com_calViewName', "");
 if ($com_calViewName == "global" || $com_calViewName == "")
 {
-	$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+	$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 	$newparams->set('com_calViewName', $params->get('com_calViewName'));
 }
 
@@ -85,7 +108,7 @@ if ($com_calViewName == "global" || $com_calViewName == "")
 $com_showrepeats = $newparams->get('com_showrepeats', "");
 if ($com_showrepeats === "-1" || $com_showrepeats === "")
 {
-	$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+	$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 	$newparams->set('com_showrepeats', $params->get('com_showrepeats'));
 }
 
@@ -93,7 +116,7 @@ if ($com_showrepeats === "-1" || $com_showrepeats === "")
 $com_startday = $newparams->get('com_starday', "");
 if ($com_startday === "-1" || $com_startday === "")
 {
-	$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+	$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 	$newparams->set('com_starday', $params->get('com_starday'));
 }
 
@@ -103,8 +126,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 	$newparams->set('com_cache', 0);
 }
 
-$component =  JComponentHelper::getComponent(JEV_COM_COMPONENT);
-$component->params =  $newparams;
+$component         = ComponentHelper::getComponent(JEV_COM_COMPONENT);
+$component->params = $newparams;
 
 JEVHelper::setupWordpress();
 
@@ -122,22 +145,22 @@ if (!$isMobile && isset($_SERVER['HTTP_USER_AGENT']))
 	}
 }
 
-$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
-if ($isMobile || strpos(JFactory::getApplication()->getTemplate(), 'mobile_') === 0 || (class_exists("T3Common") && class_exists("T3Parameter") && T3Common::mobile_device_detect()) || JRequest::getVar("jEV", "") == "smartphone")
+if ($isMobile || strpos($app->getTemplate(), 'mobile_') === 0 || (class_exists("T3Common") && class_exists("T3Parameter") && T3Common::mobile_device_detect()) || $input->get("jEV", "") == "smartphone")
 {
 	if (!$params->get("disablesmartphone"))
 	{
-		JRequest::setVar("jevsmartphone", 1);
-		if (JFolder::exists(JEV_VIEWS . "/smartphone"))
+		$input->set("jevsmartphone", 1);
+		if (Folder::exists(JEV_VIEWS . "/smartphone"))
 		{
-                    JRequest::setVar("jEV", "smartphone");
+			$input->set("jEV", "smartphone");
 		}
 		$params->set('iconicwidth', "scalable");
 		$params->set('extpluswidth', "scalable");
 		$params->set('ruthinwidth', "scalable");
 	}
-        $params->set("isSmartphone",1);
+	$params->set("isSmartphone", 1);
 }
 
 // See http://www.php.net/manual/en/timezones.php
@@ -150,19 +173,19 @@ if ($tz != "" && is_callable("date_default_timezone_set"))
 }
 
 // Must also load backend language files
-$lang = JFactory::getLanguage();
+$lang = Factory::getLanguage();
 $lang->load(JEV_COM_COMPONENT, JPATH_ADMINISTRATOR);
 
 // Load Site specific language overrides
-$lang->load(JEV_COM_COMPONENT, JPATH_THEMES . '/' . JFactory::getApplication()->getTemplate());
+$lang->load(JEV_COM_COMPONENT, JPATH_THEMES . '/' . $app->getTemplate());
 
 // Split task into command and task
-$cmd = JRequest::getCmd('task', false);
+$cmd = $input->getCmd('task', false);
 
 if (!$cmd || !is_string($cmd) || strpos($cmd, '.') == false)
 {
-	$view = JRequest::getCmd('view', false);
-	$layout = JRequest::getCmd('layout', "show");
+	$view   = $input->getCmd('view', false);
+	$layout = $input->getCmd('layout', "show");
 	if ($view && $layout)
 	{
 		$cmd = $view . '.' . $layout;
@@ -176,11 +199,12 @@ if (strpos($cmd, '.') != false)
 	// We have a defined controller/task pair -- lets split them out
 	list($controllerName, $task) = explode('.', $cmd);
 
-        // check view input is compatible - can be a problem on some form submissions
-        if (JRequest::getCmd("view","")!="" &&  JRequest::getCmd("view","")!=$controllerName){
-            JRequest::setVar("view",$controllerName);
-        }
-        
+	// check view input is compatible - can be a problem on some form submissions
+	if ($input->getCmd("view", "") != "" && $input->getCmd("view", "") != $controllerName)
+	{
+		$input->set("view", $controllerName);
+	}
+
 	// Define the controller name and path
 	$controllerName = strtolower($controllerName);
 	$controllerPath = JPATH_COMPONENT . '/' . 'controllers' . '/' . $controllerName . '.php';
@@ -192,9 +216,9 @@ if (strpos($cmd, '.') != false)
 	}
 	else
 	{
-		JFactory::getApplication()->enqueueMessage('404 - '.  JText::sprintf("JLIB_APPLICATION_ERROR_INVALID_CONTROLLER_CLASS", $controllerName), 'error');
+		$app->enqueueMessage('404 - ' . Text::sprintf("JLIB_APPLICATION_ERROR_INVALID_CONTROLLER_CLASS", $controllerName), 'error');
 
-		//JFactory::getApplication()->enqueueMessage('Invalid Controller - ' . $controllerName);
+		//$app->enqueueMessage('Invalid Controller - ' . $controllerName);
 		$cmd = "month.calendar";
 		list($controllerName, $task) = explode('.', $cmd);
 		$controllerPath = JPATH_COMPONENT . '/' . 'controllers' . '/' . $controllerName . '.php';
@@ -205,24 +229,24 @@ else
 {
 	// Base controller, just set the task
 	$controllerName = null;
-	$task = $cmd;
+	$task           = $cmd;
 }
 
 // Make the task available later
-JRequest::setVar("jevtask", $cmd);
-JRequest::setVar("jevcmd", $cmd);
+$input->set("jevtask", $cmd);
+$input->set("jevcmd", $cmd);
 
 // Are all Jevents pages apart from crawler, rss and details pages to be redirected for search engines?
 if (in_array($cmd, array("year.listevents", "month.calendar", "week.listevents", "day.listevents", "cat.listevents", "search.form",
-			"search.results", "admin.listevents", "jevent.edit", "icalevent.edit", "icalevent.publish", "icalevent.unpublish",
-			"icalevent.editcopy", "icalrepeat.edit", "jevent.delete", "icalevent.delete", "icalrepeat.delete", "icalrepeat.deletefuture")))
+	"search.results", "admin.listevents", "jevent.edit", "icalevent.edit", "icalevent.publish", "icalevent.unpublish",
+	"icalevent.editcopy", "icalrepeat.edit", "jevent.delete", "icalevent.delete", "icalrepeat.delete", "icalrepeat.deletefuture")))
 {
-	$browser = JBrowser::getInstance();
+	$browser = Browser::getInstance();
 	if ($params->get("redirectrobots", 0) && ($browser->isRobot() || strpos($browser->getAgentString(), "bingbot") !== false))
 	{
 		// redirect  to crawler menu item
 		$Itemid = $params->get("robotmenuitem", 0);
-		JFactory::getApplication()->redirect(JRoute::_("index.php?option=com_jevents&task=crawler.listevents&Itemid=$Itemid"));
+		$app->redirect(Route::_("index.php?option=com_jevents&task=crawler.listevents&Itemid=$Itemid"));
 	}
 }
 
@@ -233,7 +257,7 @@ if (in_array($cmd, array("year.listevents", "month.calendar", "week.listevents",
 //$time_end = (float) $usec + (float) $sec;
 //echo  "JEvents before importPlugin = ".round($time_end - $starttime, 4)."<br/>";
 
-JPluginHelper::importPlugin("jevents");
+PluginHelper::importPlugin("jevents");
 
 //list ($usec, $sec) = explode(" ", microtime());
 //$time_end = (float) $usec + (float) $sec;
@@ -250,13 +274,13 @@ if (class_exists($controllerClass))
 }
 else
 {
-	JFactory::getApplication()->enqueueMessage('Invalid Controller Class - ' . $controllerClass);
+	$app->enqueueMessage('Invalid Controller Class - ' . $controllerClass);
 	$cmd = "month.calendar";
 	list($controllerName, $task) = explode('.', $cmd);
-	JRequest::setVar("jevtask", $cmd);
-	JRequest::setVar("jevcmd", $cmd);
+	$input->set("jevtask", $cmd);
+	$input->set("jevcmd", $cmd);
 	$controllerClass = ucfirst($controllerName) . 'Controller';
-	$controllerPath = JPATH_COMPONENT . '/' . 'controllers' . '/' . $controllerName . '.php';
+	$controllerPath  = JPATH_COMPONENT . '/' . 'controllers' . '/' . $controllerName . '.php';
 	require_once($controllerPath);
 	$controller = new $controllerClass();
 }
@@ -268,16 +292,16 @@ $cfg = JEVConfig::getInstance();
 
 // Add reference for constructor in registry - unfortunately there is no add by reference method
 // we rely on php efficiency to not create a copy
-$registry = JRegistry::getInstance("jevents");
+$registry = JevRegistry::getInstance("jevents");
 $registry->set("jevents.controller", $controller);
 // record what is running - used by the filters
 $registry->set("jevents.activeprocess", "component");
 
 // Stop viewing ALL events - it could take VAST amounts of memory.  But allow for CSV export
-if ($cfg->get('blockall', 0) && !$cfg->get("csvexport",0) && ( JRequest::getInt("limit", -1) == 0 || JRequest::getInt("limit", -1) > 100 ))
+if ($cfg->get('blockall', 0) && !$cfg->get("csvexport", 0) && ($input->getInt("limit", -1) == 0 || $input->getInt("limit", -1) > 100))
 {
-	JRequest::setVar("limit", 100);
-	JFactory::getApplication()->setUserState("limit", 100);
+	$input->set("limit", 100);
+	$app->setUserState("limit", 100);
 }
 
 // Must reset the timezone back!!
@@ -303,19 +327,23 @@ $controller->execute($task);
 //echo  "JEvents component post task   = ".round($time_end - $starttime, 4)."<br/>";
 
 // Set the browser title to include site name if required
-$title =  JFactory::getDocument()->GetTitle();
-$app = JFactory::getApplication();
-if (empty($title)) {
+$title = Factory::getDocument()->GetTitle();
+$app   = $app;
+if (empty($title))
+{
 	$title = $app->getCfg('sitename');
 }
-elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
-	$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+elseif ($app->getCfg('sitename_pagetitles', 0) == 1)
+{
+	$title = Text::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
 }
-elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
-	$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+elseif ($app->getCfg('sitename_pagetitles', 0) == 2)
+{
+	$title = Text::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
 }
-if (JRequest::getCmd("format")!="feed"){
-	JFactory::getDocument()->SetTitle($title);
+if ($input->getCmd("format") != "feed")
+{
+	Factory::getDocument()->SetTitle($title);
 }
 
 // Redirect if set by the controller

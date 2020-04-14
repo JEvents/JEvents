@@ -9,6 +9,9 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
 /**
  * Utility class for jQuery JavaScript behaviors
  *
@@ -24,14 +27,15 @@ class JevHtmlJquery
 	 */
 	protected static $loaded = array();
 
+
 	/**
 	 * Method to load the jQuery JavaScript framework into the document head
 	 *
 	 * If debugging mode is on an uncompressed version of jQuery is included for easier debugging.
 	 *
-	 * @param   boolean  $noConflict  True to load jQuery in noConflict mode [optional]
-	 * @param   mixed    $debug       Is debugging mode on? [optional]
-	 * @param   boolean  $migrate     True to enable the jQuery Migrate plugin
+	 * @param   boolean $noConflict True to load jQuery in noConflict mode [optional]
+	 * @param   mixed   $debug      Is debugging mode on? [optional]
+	 * @param   boolean $migrate    True to enable the jQuery Migrate plugin
 	 *
 	 * @return  void
 	 *
@@ -39,6 +43,7 @@ class JevHtmlJquery
 	 */
 	public static function framework($noConflict = true, $debug = null, $migrate = true)
 	{
+
 		// Only load once
 		if (!empty(static::$loaded[__METHOD__]))
 		{
@@ -48,92 +53,48 @@ class JevHtmlJquery
 		// If no debugging value is set, use the configuration setting
 		if ($debug === null)
 		{
-			$config = JFactory::getConfig();
+			$config = Factory::getConfig();
 			$debug  = (boolean) $config->get('debug');
 		}
 
 		//We try to load Joomla's version first (will make it faster if caching)
 
-		if(!JHtml::_('script', 'jui/jquery.min.js', false, true, true, false, $debug))
+		if (!HTMLHelper::_('script', 'jui/jquery.min.js', false, true, true, false, $debug))
 		{
-			JHtml::_('script', 'libraries/jevents/bootstrap/js/jquery.min.js', false, false, false, false, $debug);
+			HTMLHelper::_('script', 'libraries/jevents/bootstrap/js/jquery.min.js', false, false, false, false, $debug);
 		}
 		else
 		{
-			JHtml::_('script', 'jui/jquery.min.js', false, true, false, false, $debug);
+			HTMLHelper::_('script', 'jui/jquery.min.js', false, true, false, false, $debug);
 		}
 
 		// Check if we are loading in noConflict
 		if ($noConflict)
 		{
-			if(!JHtml::_('script', 'jui/jquery-noconflict.js', false, true, true, false, false))
+			if (!HTMLHelper::_('script', 'jui/jquery-noconflict.js', false, true, true, false, false))
 			{
-				JHtml::_('script', 'libraries/jevents/bootstrap/js/jquery-noconflict.js', false, false, false, false, false);
+				HTMLHelper::_('script', 'libraries/jevents/bootstrap/js/jquery-noconflict.js', false, false, false, false, false);
 			}
 			else
 			{
-				JHtml::_('script', 'jui/jquery-noconflict.js', false, true, false, false, false);
+				HTMLHelper::_('script', 'jui/jquery-noconflict.js', false, true, false, false, false);
 			}
 		}
 
 		// Check if we are loading Migrate
 		if ($migrate)
 		{
-			if(!JHtml::_('script', 'jui/jquery-migrate.min.js', false, true, true, false, $debug))
+			if (!HTMLHelper::_('script', 'jui/jquery-migrate.min.js', false, true, true, false, $debug))
 			{
-				JHtml::_('script', 'libraries/jevents/bootstrap/js/jquery-migrate.min.js', false, false, false, false, $debug);
+				HTMLHelper::_('script', 'libraries/jevents/bootstrap/js/jquery-migrate.min.js', false, false, false, false, $debug);
 			}
 			else
 			{
-				JHtml::_('script', 'jui/jquery-migrate.min.js', false, true, false, false, $debug);
+				HTMLHelper::_('script', 'jui/jquery-migrate.min.js', false, true, false, false, $debug);
 			}
 		}
 
 		static::$loaded[__METHOD__] = true;
-
-		return;
-	}
-
-	/**
-	 * Method to load the jQuery UI JavaScript framework into the document head
-	 *
-	 * If debugging mode is on an uncompressed version of jQuery UI is included for easier debugging.
-	 *
-	 * @param   array  $components  The jQuery UI components to load [optional]
-	 * @param   mixed  $debug       Is debugging mode on? [optional]
-	 *
-	 * @return  void
-	 *
-	 * @since   3.0
-	 */
-	public static function ui(array $components = array('core'), $debug = null)
-	{
-		// Set an array containing the supported jQuery UI components handled by this method
-		$supported = array('core', 'sortable');
-
-		// Include jQuery
-		static::framework();
-
-		// If no debugging value is set, use the configuration setting
-		if ($debug === null)
-		{
-			$config = JFactory::getConfig();
-			$debug  = (boolean) $config->get('debug');
-		}
-
-		// Load each of the requested components
-		foreach ($components as $component)
-		{
-			// Only attempt to load the component if it's supported in core and hasn't already been loaded
-			if (in_array($component, $supported) && empty(static::$loaded[__METHOD__][$component]))
-			{
-				if(!JHtml::_('script', 'jui/jquery.ui.' . $component . '.min.js', false, true, false, false, $debug))
-				{
-					JHtml::_('script', 'libraries/jevents/bootstrap/js/jquery.ui.' . $component . '.min.js', false, false, false, false, $debug);
-				}
-				static::$loaded[__METHOD__][$component] = true;
-			}
-		}
 
 		return;
 	}

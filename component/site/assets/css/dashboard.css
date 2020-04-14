@@ -3,138 +3,157 @@
 
 input.dashboard,
 select.dashboard {
-/*	width: 149px;*/
+    /*	width: 149px;*/
 }
 
-#jevents button.dashboard , #jevents .jevbootstrap button.dashboard{
-	background: url('../images/dashboard-icon.gif');
-	border: 0;
-	cursor: pointer;
-	height: 20px;
-	width: 20px;
-	margin:0px 10px 0px 5px;;
-	padding:0px;
-	float:none;
+#jevents button.dashboard, #jevents .jevbootstrap button.dashboard {
+    background: url('../images/dashboard-icon.gif');
+    border: 0;
+    cursor: pointer;
+    height: 20px;
+    width: 20px;
+    margin: 0px 10px 0px 5px;;
+    padding: 0px;
+    float: none;
 }
+
 button.dashboard:hover,
 button.dashboard.active {
-	background-position: 0 20px;
+    background-position: 0 20px;
 }
 
 div.dashboard {
-	background: url('../images/dashboard.png');
-	height: 175px;
-	padding: 0 12px;
-	text-align: center;
-	width: 147px;
+    background: url('../images/dashboard.png');
+    height: 175px;
+    padding: 0 12px;
+    text-align: center;
+    width: 147px;
 }
+
 div.dashboard * {
-	margin: 0;
-	padding: 0;
+    margin: 0;
+    padding: 0;
 }
+
 /* Some bootstrap implementations mess the layout up! */
 .dashboard, .dashboard * {
     box-sizing: initial;
 }
+
 div.dashboard div {
-	background: none !important;
-	cursor: move;
-	height: 165px;
-	overflow: hidden;
-	padding-top: 10px;
-	position: relative;
-	width: 147px;
+    background: none !important;
+    cursor: move;
+    height: 165px;
+    overflow: hidden;
+    padding-top: 10px;
+    position: relative;
+    width: 147px;
 }
 
 div.dashboard caption {
-	color: #CF0;
-	font: normal 12px/17px Arial, Helvetica, sans-serif;
-	padding-top: 4px;
-	text-align: center;
-	width: 100%;
-	min-height:17px;
+    color: #CF0;
+    font: normal 12px/17px Arial, Helvetica, sans-serif;
+    padding-top: 4px;
+    text-align: center;
+    width: 100%;
+    min-height: 17px;
 }
+
 div.dashboard caption a {
-	cursor: pointer;
-	display: block;
-	height: 11px;
-	overflow: hidden;
-	position: absolute;
-	text-indent: -100px;
-	top: 16px;
-	width: 11px;
+    cursor: pointer;
+    display: block;
+    height: 11px;
+    overflow: hidden;
+    position: absolute;
+    text-indent: -100px;
+    top: 16px;
+    width: 11px;
 }
+
 div.dashboard caption.dualnav span.year, div.dashboard caption.dualnav span.month {
-	padding-left:12px;
-	padding-right:12px;
-	width:30px;
-	display:block;
-	float:left;
+    padding-left: 12px;
+    padding-right: 12px;
+    width: 30px;
+    display: block;
+    float: left;
 }
+
 div.dashboard caption.dualnav a {
-	top:1px;
+    top: 1px;
 }
+
 div.dashboard caption a.prev {
-	background-image: url('../images/dashboard-prev.gif');
-	left: 1px;
+    background-image: url('../images/dashboard-prev.gif');
+    left: 1px;
 }
+
 div.dashboard caption a.next {
-	background-image: url('../images/dashboard-next.gif');
-	right: 1px;
+    background-image: url('../images/dashboard-next.gif');
+    right: 1px;
 }
+
 div.dashboard caption a:hover {
-	background-position: 0 11px;
+    background-position: 0 11px;
 }
+
 div.dashboard caption span {
-	height: 18px;
-	position: relative;
-	text-align: center;
+    height: 18px;
+    position: relative;
+    text-align: center;
 }
+
 div.dashboard caption span.month {
-	padding-right: 8px;
-	width:68px!important;
+    padding-right: 8px;
+    width: 68px !important;
 }
+
 div.dashboard caption span.month:after {
-	content: ',';
+    content: ',';
 }
 
 div.dashboard table {
-	border: 0;
-	border-collapse: collapse;
-	border-spacing: 0;
-	cursor: default;
-	margin: 0 auto;
-	overflow: hidden;
-	width: 147px;
+    border: 0;
+    border-collapse: collapse;
+    border-spacing: 0;
+    cursor: default;
+    margin: 0 auto;
+    overflow: hidden;
+    width: 147px;
 }
+
 div.dashboard td,
 div.dashboard th {
-	border: 0;
-	color: #999;
-	font: normal 12px Arial, Helvetica, sans-serif;
-	height: 19px;
-	text-align: center;
-	width: 21px;
+    border: 0;
+    color: #999;
+    font: normal 12px Arial, Helvetica, sans-serif;
+    height: 19px;
+    text-align: center;
+    width: 21px;
 }
+
 div.dashboard td {
-	color: #333;
-	font-size: 11px;
-	padding-right: 5px;
-	text-align: right;
-	width: 16px;
+    color: #333;
+    font-size: 11px;
+    padding-right: 5px;
+    text-align: right;
+    width: 16px;
 }
+
 div.dashboard td.invalid {
-	color: #666;
+    color: #666;
 }
+
 div.dashboard td.valid {
-	color: #FFF;
-	cursor: pointer;
+    color: #FFF;
+    cursor: pointer;
 }
+
 div.dashboard td.today {
-	background-color: #313435;
+    background-color: #313435;
 }
+
 div.dashboard td.active,
 div.dashboard td.hover {
-	color: #CF0;
-	cursor: pointer;
+    color: #CF0;
+    cursor: pointer;
 }

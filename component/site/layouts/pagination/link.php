@@ -9,6 +9,9 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
 $item = $displayData['data'];
 
 $display = $item->text;
@@ -16,23 +19,23 @@ $display = $item->text;
 switch ((string) $item->text)
 {
 	// Check for "Start" item
-	case JText::_('JLIB_HTML_START') :
+	case Text::_('JLIB_HTML_START') :
 		$icon = "icon-backward";
 		break;
 
 	// Check for "Prev" item
-	case $item->text == JText::_('JPREV') :
-		$item->text = JText::_('JPREVIOUS');
-		$icon = "icon-step-backward";
+	case $item->text == Text::_('JPREV') :
+		$item->text = Text::_('JPREVIOUS');
+		$icon       = "icon-step-backward";
 		break;
 
 	// Check for "Next" item
-	case JText::_('JNEXT') :
+	case Text::_('JNEXT') :
 		$icon = "icon-step-forward";
 		break;
 
 	// Check for "End" item
-	case JText::_('JLIB_HTML_END') :
+	case Text::_('JLIB_HTML_END') :
 		$icon = "icon-forward";
 		break;
 
@@ -64,9 +67,9 @@ if ($displayData['active'])
 	if (!is_numeric($item->text))
 	{
 		// Always Joomla 3+
-		JHtml::_('bootstrap.tooltip');
+		HTMLHelper::_('bootstrap.tooltip');
 		$cssClasses[] = 'hasTooltip';
-		$title = ' title="' . $item->text . '" ';
+		$title        = ' title="' . $item->text . '" ';
 	}
 
 	$onClick = 'document.adminForm.' . $item->prefix . 'limitstart.value=' . ($item->base > 0 ? $item->base : '0') . '; Joomla.submitform();return false;';
@@ -78,7 +81,8 @@ else
 ?>
 <?php if ($displayData['active']) : ?>
 	<li>
-		<a class="<?php echo implode(' ', $cssClasses); ?>" <?php echo $title; ?> href="#" onclick="<?php echo $onClick; ?>">
+		<a class="<?php echo implode(' ', $cssClasses); ?>" <?php echo $title; ?> href="#"
+		   onclick="<?php echo $onClick; ?>">
 			<?php echo $display; ?>
 		</a>
 	</li>

@@ -1,0 +1,6 @@
+**/*.swap
+**/*.swp
+**/*.yml
+**/composer.json
+**/.gitignore
+**/.git

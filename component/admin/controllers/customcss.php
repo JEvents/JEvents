@@ -5,23 +5,29 @@
  *
  * @version     $Id: customcss.php
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-JEVENTS_COPYRIGHT GWESystems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
 defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+
 jimport('joomla.application.component.controlleradmin');
 
-class CustomCssController extends JControllerLegacy
+class CustomCssController extends Joomla\CMS\MVC\Controller\BaseController
 {
 
 	/**
 	 * Controler for the Custom CSS Editor
-	 * @param array		configuration
+	 *
+	 * @param array        configuration
 	 */
 	function __construct($config = array())
 	{
+
 		parent::__construct($config);
 
 		$this->registerTask('show', 'customcss');
@@ -32,31 +38,35 @@ class CustomCssController extends JControllerLegacy
 
 	public function display($cachable = false, $urlparams = array())
 	{
+
 		// get the view
 		$this->view = $this->getView('customcss', 'html', 'customcssView');
 
-		$mainframe = JFactory::getApplication();
+		$mainframe = Factory::getApplication();
 
 		//Hold on... Are you a super user?
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		// Get/Create the model
-		if ($model = $this->getModel()) {
+		if ($model = $this->getModel())
+		{
 			// Push the model into the view (as default)
 			$this->view->setModel($model, true);
 		}
 
-		if (!$user->authorise('core.admin')) {
-			$msg = JTExt::_('JEV_ERROR_NOT_AUTH_CSS');
+		if (!$user->authorise('core.admin'))
+		{
+			$msg     = JTExt::_('JEV_ERROR_NOT_AUTH_CSS');
 			$msgType = 'error';
 			$mainframe->enqueueMessage($msg, $msgType);
 			$mainframe->redirect('index.php?option=com_jevents&msg=' . $msg . '&msgtype=' . $msgType . '');
+
 			return;
 		}
 
 		// Set the layout
 		$this->view->setLayout('default');
-		$this->view->assign('title', JText::_('JEV_CUSTOM_CSS'));
+		$this->view->title = Text::_('JEV_CUSTOM_CSS');
 
 		$this->view->display();
 	}
@@ -64,7 +74,8 @@ class CustomCssController extends JControllerLegacy
 	//Cancel Function
 	public function cancel()
 	{
-		$this->setRedirect(JRoute::_('index.php?option=com_jevents&view=cpanel', false));
+
+		$this->setRedirect(Route::_('index.php?option=com_jevents&view=cpanel', false));
 	}
 
 	//Save, apply, Save & Close Function
@@ -72,9 +83,9 @@ class CustomCssController extends JControllerLegacy
 	{
 
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		\Joomla\CMS\Session\Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
-		$app          = JFactory::getApplication();
+		$app          = Factory::getApplication();
 		$data         = $this->input->post->get('jform', array(), 'array');
 		$task         = $this->getTask();
 		$model        = $this->getModel();
@@ -84,7 +95,8 @@ class CustomCssController extends JControllerLegacy
 		// Access check.
 		if (!$this->allowSave())
 		{
-			$app->enqueueMessage(JText::_('JLIB_APPLICATION_ERROR_SAVE_NOT_PERMITTED'), 'error');
+			$app->enqueueMessage(Text::_('JLIB_APPLICATION_ERROR_SAVE_NOT_PERMITTED'), 'error');
+
 			return false;
 		}
 
@@ -121,7 +133,7 @@ class CustomCssController extends JControllerLegacy
 
 			// Redirect back to the edit screen.
 			$url = 'index.php?option=com_templates&view=customcss';
-			$this->setRedirect(JRoute::_($url, false));
+			$this->setRedirect(Route::_($url, false));
 
 			return false;
 		}
@@ -130,36 +142,41 @@ class CustomCssController extends JControllerLegacy
 		if (!$model->save($data))
 		{
 			// Redirect back to the edit screen.
-			$this->setMessage(JText::sprintf('JERROR_SAVE_FAILED', $model->getError()), 'warning');
+			$this->setMessage(Text::sprintf('JERROR_SAVE_FAILED', $model->getError()), 'warning');
 			$url = 'index.php?option=com_jevents&view=customcss';
-			$this->setRedirect(JRoute::_($url, false));
+			$this->setRedirect(Route::_($url, false));
 
 			return false;
 		}
 
-		$this->setMessage(JText::_('COM_JEVENTS_CUSTOM_CSS_FILE_SAVE_SUCCESS'));
+		$this->setMessage(Text::_('COM_JEVENTS_CUSTOM_CSS_FILE_SAVE_SUCCESS'));
 
 		// Redirect the user based on the chosen task.
 		if ($task === 'apply')
 		{
 			// Redirect back to the edit screen.
 			$url = 'index.php?option=com_jevents&view=customcss';
-			$this->setRedirect(JRoute::_($url, false));
-		} else {
-			// Redirect to the list screen.
-			$url  = 'index.php?option=com_jevents';
-			$this->setRedirect(JRoute::_($url, false));
+			$this->setRedirect(Route::_($url, false));
 		}
-	return '';
+		else
+		{
+			// Redirect to the list screen.
+			$url = 'index.php?option=com_jevents';
+			$this->setRedirect(Route::_($url, false));
+		}
+
+		return '';
 	}
 
 	protected function allowSave()
 	{
+
 		return $this->allowEdit();
 	}
 
 	protected function allowEdit()
 	{
-		return JFactory::getUser()->authorise('core.admin', 'com_jevents');
+
+		return Factory::getUser()->authorise('core.admin', 'com_jevents');
 	}
 }

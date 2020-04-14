@@ -1,0 +1,33 @@
+// Import UIkit default theme (or uikit.less with only core styles)
+// @import "../src/less/uikit.theme.less";
+
+//
+// Core
+//
+
+//@import "../src/less/components/_import.less";
+
+//
+// Theme
+//
+
+@import "../src/less/theme/_import.less";
+
+
+// Theme
+@import "gsl/_import.less";
+
+// Yarn Command to build Less / Namespaced package is: yarn compile && yarn prefix -p gsl && yarn scope -s 'gsl-scope'
+
+// We can set overrides below.
+@navbar-nav-item-height:                        56px;
+
+@global-medium-gutter:                          20px;
+
+//@table-row-active-background:                   #FFF;
+//@global-muted-background:                       #FFF;
+
+@global-font-size:                              14px;
+@global-line-height:                            1.2;
+
+

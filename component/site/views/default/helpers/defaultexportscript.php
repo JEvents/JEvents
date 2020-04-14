@@ -1,13 +1,16 @@
-<?php 
+<?php
 /* 
  *@JEvents Helper for Generating Exports - Script
  */
 
 defined('_JEXEC') or die('Restricted access');
 
-function DefaultExportScript () {
+use Joomla\CMS\Factory;
 
-$script = <<<SCRIPT
+function DefaultExportScript()
+{
+
+	$script = <<<SCRIPT
 function clearIcalCategories(allcats){
 	if(allcats.checked){
 		jevjq('input[name="categories[]"]:checked').each (function(el){
@@ -61,6 +64,6 @@ function clearAllIcalYears(){
 
 SCRIPT;
 
-$doc = JFactory::getDocument();
-$doc->addScriptDeclaration($script);
+	$doc = Factory::getDocument();
+	$doc->addScriptDeclaration($script);
 }

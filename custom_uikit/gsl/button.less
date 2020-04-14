@@ -1,0 +1,143 @@
+
+//
+// Warning
+//
+
+.hook-button-warning() { border: @button-border-width solid transparent; }
+
+.hook-button-warning-hover() {}
+
+.hook-button-warning-active() {}
+
+//
+// Success
+//
+
+.hook-button-success() { border: @button-border-width solid transparent; }
+
+.hook-button-success-hover() {}
+
+.hook-button-success-active() {}
+
+// import core button theme
+@import "../../src/less/theme/button.less";
+
+// import core button
+@import "../../src/less/components/button.less";
+
+@button-warning-background:                      @global-warning-background;
+@button-warning-color:                           contrast(@global-warning-background);
+@button-warning-hover-background:                darken(@button-warning-background, 5%);
+@button-warning-hover-color:                     @global-inverse-color;
+@button-warning-active-background:               darken(@button-warning-background, 10%);
+@button-warning-active-color:                    @global-inverse-color;
+
+
+@button-success-background:                      @global-success-background;
+@button-success-color:                           @global-inverse-color;
+@button-success-hover-background:                darken(@button-success-background, 5%);
+@button-success-hover-color:                     @global-inverse-color;
+@button-success-active-background:               darken(@button-success-background, 10%);
+@button-success-active-color:                    @global-inverse-color;
+
+// Controls
+@global-control-xsmall-height:                   20px;
+
+// Typography
+@global-xsmall-font-size:                         0.65rem; // 10pxz
+
+// Spacings
+@global-xsmall-gutter:                            5px;
+
+@button-xsmall-line-height:                      @global-control-xsmall-height;
+@button-xsmall-font-size:                        @global-xsmall-font-size;
+@button-xsmall-padding-horizontal:               @global-xsmall-gutter;
+
+/*
+ * Warning
+ */
+
+.uk-button-warning {
+  background-color: @button-warning-background;
+  color: @button-warning-color;
+  .hook-button-warning;
+}
+
+/* Hover + Focus */
+.uk-button-warning:hover,
+.uk-button-warning:focus {
+  background-color: @button-warning-hover-background;
+  color: @button-warning-hover-color;
+  .hook-button-warning-hover;
+}
+
+/* OnClick + Active */
+.uk-button-warning:active,
+.uk-button-warning.uk-active {
+  background-color: @button-warning-active-background;
+  color: @button-warning-active-color;
+  .hook-button-warning-active;
+}
+
+/*
+ * Disabled
+ * The same for all style modifiers
+ */
+.uk-button-warning:disabled {
+  background-color: @button-disabled-background;
+  color: @button-disabled-color;
+  .hook-button-disabled;
+}
+
+
+/*
+ * Success
+ */
+
+.uk-button-success {
+  background-color: @button-success-background;
+  color: @button-success-color;
+  .hook-button-success;
+}
+
+/* Hover + Focus */
+.uk-button-success:hover,
+.uk-button-success:focus {
+  background-color: @button-success-hover-background;
+  color: @button-success-hover-color;
+  .hook-button-success-hover;
+}
+
+/* OnClick + Active */
+.uk-button-success:active,
+.uk-button-success.uk-active {
+  background-color: @button-success-active-background;
+  color: @button-success-active-color;
+  .hook-button-success-active;
+}
+
+/*
+ * Disabled
+ * The same for all style modifiers
+ */
+.uk-button-success:disabled {
+  background-color: @button-disabled-background;
+  color: @button-disabled-color;
+  .hook-button-disabled;
+}
+
+/* Size modifiers
+ ========================================================================== */
+
+.uk-button-xsmall {
+  padding: 0 @button-xsmall-padding-horizontal;
+  line-height: @button-xsmall-line-height;
+  font-size: @button-xsmall-font-size;
+  .hook-button-xsmall;
+}
+
+.hook-button-warning() {}
+
+.hook-button-success() {}
+
+.hook-button-xsmall() {}

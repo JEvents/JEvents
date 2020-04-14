@@ -1,6 +1,8 @@
-<?php 
+<?php
 defined('_JEXEC') or die('Restricted access');
 
-function DefaultViewHelperHeader($view){
+function DefaultViewHelperHeader($view)
+{
+
 	return $view->_header16();
 }

@@ -5,58 +5,64 @@
  *
  * @version     $Id: view.html.php 3543 2012-04-20 08:17:42Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2018 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-JEVENTS_COPYRIGHT GWESystems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+
 /**
  * HTML View class for the component
  *
  * @static
  */
-
-use Joomla\String\StringHelper;
-
-class CustomcssViewCustomcss extends JViewLegacy {
+class CustomcssViewCustomcss extends JEventsAbstractView
+{
 
 	function display($cachable = false)
 	{
+
 		jimport('joomla.html.pane');
 
-		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('COM_JEVENTS') . ': ' . JText::_('JEV_CUSTOM_CSS'));
+		$document = Factory::getDocument();
+		$document->setTitle(Text::_('COM_JEVENTS') . ': ' . Text::_('JEV_CUSTOM_CSS'));
 
-		$bar = JToolbar::getInstance('toolbar');
+		$bar = Toolbar::getInstance('toolbar');
 
-		JToolbarHelper::title(JText::_('COM_JEVENTS') . ': ' . JText::_('JEV_CUSTOM_CSS'), 'jevents');
+		ToolbarHelper::title(Text::_('COM_JEVENTS') . ': ' . Text::_('JEV_CUSTOM_CSS'), 'jevents');
 
-		JToolbarHelper::apply('customcss.apply');
-		JToolbarHelper::save('customcss.save');
-		JToolbarHelper::cancel('customcss.cancel');
-		JToolbarHelper::divider();
+		ToolbarHelper::apply('customcss.apply');
+		ToolbarHelper::save('customcss.save');
+		ToolbarHelper::cancel('customcss.cancel');
+		ToolbarHelper::divider();
 
 
 		//Check if the Customcss file already exists, if not load the .new version
 		$filepath = JPATH_ROOT . '/components/com_jevents/assets/css/jevcustom.css';
 
-		if (!JFile::exists($filepath))
+		if (!File::exists($filepath))
 		{
 			//Whoops doesn't exist yet, lets add the .new to it.
 			$filepath = JPATH_ROOT . $filepath . '.new';
 		}
 
-		$this->file     = $filepath;
-		$this->form     = $this->get('Form');
+		$this->file = $filepath;
+		$this->form = $this->get('Form');
 		$this->form->setFieldAttribute('source', 'syntax', 'css');
-		$this->source   = $this->get('Customcss');
-		$this->type     = 'file';
+		$this->source = $this->get('Customcss');
+		$this->type   = 'file';
 
-		JEventsHelper::addSubmenu();
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
 		return parent::display();
 

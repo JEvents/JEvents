@@ -9,6 +9,11 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Layout\FileLayout;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
 /**
  * Utility class for Bootstrap elements.
  *
@@ -27,10 +32,10 @@ class JevLibHtmlBootstrap
 	/**
 	 * Add javascript support for the Bootstrap affix plugin
 	 *
-	 * @param   string  $selector  Unique selector for the element to be affixed.
-	 * @param   array   $params    An array of options.
-	 *                             Options for the affix plugin can be:
-	 *                             - offset  number|function|object  Pixels to offset from screen when calculating position of scroll.
+	 * @param   string $selector                                     Unique selector for the element to be affixed.
+	 * @param   array  $params                                       An array of options.
+	 *                                                               Options for the affix plugin can be:
+	 *                                                               - offset  number|function|object  Pixels to offset from screen when calculating position of scroll.
 	 *                                                               If a single number is provided, the offset will be applied in both top
 	 *                                                               and left directions. To listen for a single direction, or multiple
 	 *                                                               unique offsets, just provide an object offset: { x: 10 }.
@@ -43,6 +48,7 @@ class JevLibHtmlBootstrap
 	 */
 	public static function affix($selector = 'affix', $params = array())
 	{
+
 		$sig = md5(serialize(array($selector, $params)));
 
 		if (!isset(static::$loaded[__METHOD__][$sig]))
@@ -56,7 +62,7 @@ class JevLibHtmlBootstrap
 			$options = json_encode($opt);
 
 			// Attach the carousel to document
-			JFactory::getDocument()->addScriptDeclaration(
+			Factory::getDocument()->addScriptDeclaration(
 				"(function($){
 					if ($('#$selector')){
 						$('#$selector').affix($options);
@@ -72,9 +78,27 @@ class JevLibHtmlBootstrap
 	}
 
 	/**
+	 * Method to load the Bootstrap JavaScript framework into the document head
+	 *
+	 * If debugging mode is on an uncompressed version of Bootstrap is included for easier debugging.
+	 *
+	 * @param   mixed $debug Is debugging mode on? [optional]
+	 *
+	 * @return  void
+	 *
+	 * @since   3.0
+	 */
+	public static function framework($debug = null)
+	{
+
+		JHtmlBootstrap::framework($debug);
+		return;
+	}
+
+	/**
 	 * Add javascript support for Bootstrap alerts
 	 *
-	 * @param   string  $selector  Common class for the alerts
+	 * @param   string $selector Common class for the alerts
 	 *
 	 * @return  void
 	 *
@@ -82,6 +106,7 @@ class JevLibHtmlBootstrap
 	 */
 	public static function alert($selector = 'alert')
 	{
+
 		// Only load once
 		if (isset(static::$loaded[__METHOD__][$selector]))
 		{
@@ -92,7 +117,7 @@ class JevLibHtmlBootstrap
 		static::framework();
 
 		// Attach the alerts to the document
-		JFactory::getDocument()->addScriptDeclaration(
+		Factory::getDocument()->addScriptDeclaration(
 			"(function($){
 				if ($('#$selector').length){
 					$('.$selector').alert();
@@ -108,7 +133,7 @@ class JevLibHtmlBootstrap
 	/**
 	 * Add javascript support for Bootstrap buttons
 	 *
-	 * @param   string  $selector  Common class for the buttons
+	 * @param   string $selector Common class for the buttons
 	 *
 	 * @return  void
 	 *
@@ -116,6 +141,7 @@ class JevLibHtmlBootstrap
 	 */
 	public static function button($selector = 'button')
 	{
+
 		// Only load once
 		if (isset(static::$loaded[__METHOD__][$selector]))
 		{
@@ -126,7 +152,7 @@ class JevLibHtmlBootstrap
 		static::framework();
 
 		// Attach the alerts to the document
-		JFactory::getDocument()->addScriptDeclaration(
+		Factory::getDocument()->addScriptDeclaration(
 			"(function($){
 				if ($('#$selector').length){
 					$('.$selector').button();
@@ -142,12 +168,12 @@ class JevLibHtmlBootstrap
 	/**
 	 * Add javascript support for Bootstrap carousels
 	 *
-	 * @param   string  $selector  Common class for the carousels.
-	 * @param   array   $params    An array of options for the modal.
-	 *                             Options for the modal can be:
-	 *                             - interval  number  The amount of time to delay between automatically cycling an item.
+	 * @param   string $selector                       Common class for the carousels.
+	 * @param   array  $params                         An array of options for the modal.
+	 *                                                 Options for the modal can be:
+	 *                                                 - interval  number  The amount of time to delay between automatically cycling an item.
 	 *                                                 If false, carousel will not automatically cycle.
-	 *                             - pause     string  Pauses the cycling of the carousel on mouseenter and resumes the cycling
+	 *                                                 - pause     string  Pauses the cycling of the carousel on mouseenter and resumes the cycling
 	 *                                                 of the carousel on mouseleave.
 	 *
 	 * @return  void
@@ -156,10 +182,11 @@ class JevLibHtmlBootstrap
 	 */
 	public static function carousel($selector = 'carousel', $params = array())
 	{
+
 		$sig = md5(serialize(array($selector, $params)));
 
 		if (!isset(static::$loaded[__METHOD__][$sig]))
-		{			// Include Bootstrap framework
+		{            // Include Bootstrap framework
 			static::framework();
 
 
@@ -170,7 +197,7 @@ class JevLibHtmlBootstrap
 			$options = json_encode($opt);
 
 			// Attach the carousel to document
-			JFactory::getDocument()->addScriptDeclaration(
+			Factory::getDocument()->addScriptDeclaration(
 				"(function($){
 					if ($('#$selector').length){
 						$('.$selector').carousel($options);
@@ -188,7 +215,7 @@ class JevLibHtmlBootstrap
 	/**
 	 * Add javascript support for Bootstrap dropdowns
 	 *
-	 * @param   string  $selector  Common class for the dropdowns
+	 * @param   string $selector Common class for the dropdowns
 	 *
 	 * @return  void
 	 *
@@ -196,6 +223,7 @@ class JevLibHtmlBootstrap
 	 */
 	public static function dropdown($selector = 'dropdown-toggle')
 	{
+
 		// Only load once
 		if (isset(static::$loaded[__METHOD__][$selector]))
 		{
@@ -206,7 +234,7 @@ class JevLibHtmlBootstrap
 		static::framework();
 
 		// Attach the dropdown to the document
-		JFactory::getDocument()->addScriptDeclaration(
+		Factory::getDocument()->addScriptDeclaration(
 			"(function($){
 				if ($('#$selector').length){
 					$('.$selector').dropdown();
@@ -220,119 +248,11 @@ class JevLibHtmlBootstrap
 	}
 
 	/**
-	 * Method to load the Bootstrap JavaScript framework into the document head
-	 *
-	 * If debugging mode is on an uncompressed version of Bootstrap is included for easier debugging.
-	 *
-	 * @param   mixed  $debug  Is debugging mode on? [optional]
-	 *
-	 * @return  void
-	 *
-	 * @since   3.0
-	 */
-	public static function framework($debug = null)
-	{
-		// Use Joomla version first
-		if (JevJoomlaVersion::isCompatible("3.0")){
-			JHtmlBootstrap::framework($debug);
-			return;
-		}
-		
-		// Fall back to JEvents version
-		JLoader::register('JevHtmlBootstrap' , JEV_PATH."libraries/bootstrap.php");
-		try {
-			JevHtmlBootstrap::framework($debug);
-			return;
-		}
-		catch (Exception $ex) {
-
-		}
-
-		// Finally use library version as last resort
-		// Only load once
-		if (!empty(static::$loaded[__METHOD__]))
-		{
-			return;
-		}
-
-		// Load jQuery
-		JevHtmlJquery::framework();
-
-		// If no debugging value is set, use the configuration setting
-		if ($debug === null)
-		{
-			$config = JFactory::getConfig();
-			$debug = (boolean) $config->get('debug');
-		}
-
-		JHtml::_('script', 'libraries/jevents/bootstrap/js/bootstrap.min.js', false, false, false, false, $debug);
-		static::$loaded[__METHOD__] = true;
-
-		return;
-	}
-
-	/**
-	 * Add javascript support for Bootstrap modals
-	 *
-	 * @param   string  $selector  The ID selector for the modal.
-	 * @param   array   $params    An array of options for the modal.
-	 *                             Options for the modal can be:
-	 *                             - backdrop  boolean  Includes a modal-backdrop element.
-	 *                             - keyboard  boolean  Closes the modal when escape key is pressed.
-	 *                             - show      boolean  Shows the modal when initialized.
-	 *                             - remote    string   An optional remote URL to load
-	 *
-	 * @return  void
-	 *
-	 * @since   3.0
-	 */
-	public static function modal($selector = 'modal', $params = array())
-	{
-		if (version_compare(JVERSION, "3.0", "ge")) {
-			JHtml::_('bootstrap.modal', $selector, $params);
-			return;
-		}
-
-		$sig = md5(serialize(array($selector, $params)));
-
-		if (!isset(static::$loaded[__METHOD__][$sig]))
-		{
-			// Setup options object
-			$opt['backdrop'] = isset($params['backdrop']) ? (boolean) $params['backdrop'] : true;
-			$opt['keyboard'] = isset($params['keyboard']) ? (boolean) $params['keyboard'] : true;
-			$opt['show']     = isset($params['show']) ? (boolean) $params['show'] : true;
-			$opt['remote']   = isset($params['remote']) ?  $params['remote'] : '';
-
-			$options = json_encode($opt); //json_encode($opt);
-
-			// Attach the modal to document
-			// see http://stackoverflow.com/questions/10636667/bootstrap-modal-appearing-under-background
-			JFactory::getDocument()->addScriptDeclaration(
-				"jQuery(document).ready(function($) {
-					if ($('#$selector')) {
-						// Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap
-						var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
-						if (bootstrap3_enabled && $('#$selector').hasClass('hide')){
-							$('#$selector').removeClass('hide');
-					}
-						//$('#$selector').appendTo('body').modal($options);
-					}
-				});"
-			);
-
-			// Set static array
-			static::$loaded[__METHOD__][$sig] = true;
-		}
-
-		return;
-	}
-
-	/**
 	 * Method to render a Bootstrap modal
 	 *
-	 * @param   string  $selector  The ID selector for the modal.
-	 * @param   array   $params    An array of options for the modal.
-	 * @param   string  $footer    Optional markup for the modal footer
+	 * @param   string $selector The ID selector for the modal.
+	 * @param   array  $params   An array of options for the modal.
+	 * @param   string $footer   Optional markup for the modal footer
 	 *
 	 * @return  string  HTML markup for a modal
 	 *
@@ -340,6 +260,7 @@ class JevLibHtmlBootstrap
 	 */
 	public static function renderModal($selector = 'modal', $params = array(), $footer = '')
 	{
+
 		// Ensure the behavior is loaded
 		static::modal($selector, $params);
 
@@ -363,25 +284,84 @@ class JevLibHtmlBootstrap
 	}
 
 	/**
+	 * Add javascript support for Bootstrap modals
+	 *
+	 * @param   string $selector   The ID selector for the modal.
+	 * @param   array  $params     An array of options for the modal.
+	 *                             Options for the modal can be:
+	 *                             - backdrop  boolean  Includes a modal-backdrop element.
+	 *                             - keyboard  boolean  Closes the modal when escape key is pressed.
+	 *                             - show      boolean  Shows the modal when initialized.
+	 *                             - remote    string   An optional remote URL to load
+	 *
+	 * @return  void
+	 *
+	 * @since   3.0
+	 */
+	public static function modal($selector = 'modal', $params = array())
+	{
+
+		if (version_compare(JVERSION, "3.0", "ge"))
+		{
+			HTMLHelper::_('bootstrap.modal', $selector, $params);
+
+			return;
+		}
+
+		$sig = md5(serialize(array($selector, $params)));
+
+		if (!isset(static::$loaded[__METHOD__][$sig]))
+		{
+			// Setup options object
+			$opt['backdrop'] = isset($params['backdrop']) ? (boolean) $params['backdrop'] : true;
+			$opt['keyboard'] = isset($params['keyboard']) ? (boolean) $params['keyboard'] : true;
+			$opt['show']     = isset($params['show']) ? (boolean) $params['show'] : true;
+			$opt['remote']   = isset($params['remote']) ? $params['remote'] : '';
+
+			$options = json_encode($opt); //json_encode($opt);
+
+			// Attach the modal to document
+			// see http://stackoverflow.com/questions/10636667/bootstrap-modal-appearing-under-background
+			Factory::getDocument()->addScriptDeclaration(
+				"jQuery(document).ready(function($) {
+					if ($('#$selector')) {
+						/** Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap **/
+						var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
+						if (bootstrap3_enabled && $('#$selector').hasClass('hide')){
+							$('#$selector').removeClass('hide');
+					}
+						/** $('#$selector').appendTo('body').modal($options);  */
+					}
+				});"
+			);
+
+			// Set static array
+			static::$loaded[__METHOD__][$sig] = true;
+		}
+
+		return;
+	}
+
+	/**
 	 * Add javascript support for Bootstrap popovers
 	 *
 	 * Use element's Title as popover content
 	 *
-	 * @param   string  $selector  Selector for the popover
-	 * @param   array   $params    An array of options for the popover.
-	 *                  Options for the popover can be:
-	 *                      animation  boolean          apply a css fade transition to the popover
-	 *                      html       boolean          Insert HTML into the popover. If false, jQuery's text method will be used to insert
+	 * @param   string $selector                        Selector for the popover
+	 * @param   array  $params                          An array of options for the popover.
+	 *                                                  Options for the popover can be:
+	 *                                                  animation  boolean          apply a css fade transition to the popover
+	 *                                                  html       boolean          Insert HTML into the popover. If false, jQuery's text method will be used to insert
 	 *                                                  content into the dom.
-	 *                      placement  string|function  how to position the popover - top | bottom | left | right
-	 *                      selector   string           If a selector is provided, popover objects will be delegated to the specified targets.
-	 *                      trigger    string           how popover is triggered - hover | focus | manual
-	 *                      title      string|function  default title value if `title` tag isn't present
-	 *                      content    string|function  default content value if `data-content` attribute isn't present
-	 *                      delay      number|object    delay showing and hiding the popover (ms) - does not apply to manual trigger type
+	 *                                                  placement  string|function  how to position the popover - top | bottom | left | right
+	 *                                                  selector   string           If a selector is provided, popover objects will be delegated to the specified targets.
+	 *                                                  trigger    string           how popover is triggered - hover | focus | manual
+	 *                                                  title      string|function  default title value if `title` tag isn't present
+	 *                                                  content    string|function  default content value if `data-content` attribute isn't present
+	 *                                                  delay      number|object    delay showing and hiding the popover (ms) - does not apply to manual trigger type
 	 *                                                  If a number is supplied, delay is applied to both hide/show
 	 *                                                  Object structure is: delay: { show: 500, hide: 100 }
-	 *                      container  string|boolean   Appends the popover to a specific element: { container: 'body' }
+	 *                                                  container  string|boolean   Appends the popover to a specific element: { container: 'body' }
 	 *
 	 * @return  void
 	 *
@@ -389,6 +369,7 @@ class JevLibHtmlBootstrap
 	 */
 	public static function popover($selector = '.hasPopover', $params = array())
 	{
+
 		// Only load once
 		if (isset(static::$loaded[__METHOD__][$selector]))
 		{
@@ -412,10 +393,10 @@ class JevLibHtmlBootstrap
 		$options = json_encode($opt); //json_encode($opt);
 
 		// Attach the popover to the document
-		JFactory::getDocument()->addScriptDeclaration(
+		Factory::getDocument()->addScriptDeclaration(
 			"jQuery(document).ready(function()
 			{
-				if (".$options.".mouseonly && 'ontouchstart' in document.documentElement) {
+				if (" . $options . ".mouseonly && 'ontouchstart' in document.documentElement) {
 					return;
 				}
 				if (jQuery('$selector')){
@@ -432,8 +413,8 @@ class JevLibHtmlBootstrap
 	/**
 	 * Add javascript support for Bootstrap ScrollSpy
 	 *
-	 * @param   string  $selector  The ID selector for the ScrollSpy element.
-	 * @param   array   $params    An array of options for the ScrollSpy.
+	 * @param   string $selector   The ID selector for the ScrollSpy element.
+	 * @param   array  $params     An array of options for the ScrollSpy.
 	 *                             Options for the modal can be:
 	 *                             - offset  number  Pixels to offset from top when calculating position of scroll.
 	 *
@@ -443,6 +424,7 @@ class JevLibHtmlBootstrap
 	 */
 	public static function scrollspy($selector = 'navbar', $params = array())
 	{
+
 		$sig = md5(serialize(array($selector, $params)));
 
 		if (!isset(static::$loaded[__METHOD__][$sig]))
@@ -456,7 +438,7 @@ class JevLibHtmlBootstrap
 			$options = json_encode($opt);
 
 			// Attach ScrollSpy to document
-			JFactory::getDocument()->addScriptDeclaration(
+			Factory::getDocument()->addScriptDeclaration(
 				"(function($){
 					$('#$selector').scrollspy($options);
 					})(jQuery);"
@@ -475,20 +457,20 @@ class JevLibHtmlBootstrap
 	 * Add a title attribute to any element in the form
 	 * title="title::text"
 	 *
-	 * @param   string  $selector  The ID selector for the tooltip.
-	 * @param   array   $params    An array of options for the tooltip.
-	 *                             Options for the tooltip can be:
-	 *                             - animation  boolean          Apply a CSS fade transition to the tooltip
-	 *                             - html       boolean          Insert HTML into the tooltip. If false, jQuery's text method will be used to insert
+	 * @param   string $selector                                 The ID selector for the tooltip.
+	 * @param   array  $params                                   An array of options for the tooltip.
+	 *                                                           Options for the tooltip can be:
+	 *                                                           - animation  boolean          Apply a CSS fade transition to the tooltip
+	 *                                                           - html       boolean          Insert HTML into the tooltip. If false, jQuery's text method will be used to insert
 	 *                                                           content into the dom.
-	 *                             - placement  string|function  How to position the tooltip - top | bottom | left | right
-	 *                             - selector   string           If a selector is provided, tooltip objects will be delegated to the specified targets.
-	 *                             - title      string|function  Default title value if `title` tag isn't present
-	 *                             - trigger    string           How tooltip is triggered - hover | focus | manual
-	 *                             - delay      integer          Delay showing and hiding the tooltip (ms) - does not apply to manual trigger type
+	 *                                                           - placement  string|function  How to position the tooltip - top | bottom | left | right
+	 *                                                           - selector   string           If a selector is provided, tooltip objects will be delegated to the specified targets.
+	 *                                                           - title      string|function  Default title value if `title` tag isn't present
+	 *                                                           - trigger    string           How tooltip is triggered - hover | focus | manual
+	 *                                                           - delay      integer          Delay showing and hiding the tooltip (ms) - does not apply to manual trigger type
 	 *                                                           If a number is supplied, delay is applied to both hide/show
 	 *                                                           Object structure is: delay: { show: 500, hide: 100 }
-	 *                             - container  string|boolean   Appends the popover to a specific element: { container: 'body' }
+	 *                                                           - container  string|boolean   Appends the popover to a specific element: { container: 'body' }
 	 *
 	 * @return  void
 	 *
@@ -496,6 +478,7 @@ class JevLibHtmlBootstrap
 	 */
 	public static function tooltip($selector = '.hasTooltip', $params = array())
 	{
+
 		if (!isset(static::$loaded[__METHOD__][$selector]))
 		{
 			// Include Bootstrap framework
@@ -512,16 +495,16 @@ class JevLibHtmlBootstrap
 			isset($params['delay']) ? $opt['delay'] = (int) $params['delay'] : '';
 			$opt['container'] = isset($params['container']) ? $params['container'] : 'body';
 			isset($params['template']) ? $opt['template'] = (string) $params['template'] : '';
-			$onShow		= isset($params['onShow']) ? (string) $params['onShow'] : '';
-			$onShown	= isset($params['onShown']) ? (string) $params['onShown'] : '';
-			$onHide		= isset($params['onHide']) ? (string) $params['onHide'] : '';
-			$onHidden	= isset($params['onHidden']) ? (string) $params['onHidden'] : '';
+			$onShow   = isset($params['onShow']) ? (string) $params['onShow'] : '';
+			$onShown  = isset($params['onShown']) ? (string) $params['onShown'] : '';
+			$onHide   = isset($params['onHide']) ? (string) $params['onHide'] : '';
+			$onHidden = isset($params['onHidden']) ? (string) $params['onHidden'] : '';
 
 			$options = json_encode($opt);
-			//$options = JHtml::getJSObject($opt);
-			
+			//$options = HTMLHelper::getJSObject($opt);
+
 			// Build the script.
-			$script = array();
+			$script   = array();
 			$script[] = "jQuery(document).ready(function(){";
 			$script[] = "\tjQuery('" . $selector . "').tooltip(" . $options . ");";
 
@@ -548,7 +531,7 @@ class JevLibHtmlBootstrap
 			$script[] = "});";
 
 			// Attach tooltips to document
-			JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
+			Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
 
 			// Set static array
 			static::$loaded[__METHOD__][$selector] = true;
@@ -560,23 +543,23 @@ class JevLibHtmlBootstrap
 	/**
 	 * Add javascript support for Bootstrap typeahead
 	 *
-	 * @param   string  $selector  The selector for the typeahead element.
-	 * @param   array   $params    An array of options for the typeahead element.
-	 *                             Options for the tooltip can be:
-	 *                             - source       array, function  The data source to query against. May be an array of strings or a function.
+	 * @param   string $selector                                   The selector for the typeahead element.
+	 * @param   array  $params                                     An array of options for the typeahead element.
+	 *                                                             Options for the tooltip can be:
+	 *                                                             - source       array, function  The data source to query against. May be an array of strings or a function.
 	 *                                                             The function is passed two arguments, the query value in the input field and the
 	 *                                                             process callback. The function may be used synchronously by returning the data
 	 *                                                             source directly or asynchronously via the process callback's single argument.
-	 *                             - items        number           The max number of items to display in the dropdown.
-	 *                             - minLength    number           The minimum character length needed before triggering autocomplete suggestions
-	 *                             - matcher      function         The method used to determine if a query matches an item. Accepts a single argument,
+	 *                                                             - items        number           The max number of items to display in the dropdown.
+	 *                                                             - minLength    number           The minimum character length needed before triggering autocomplete suggestions
+	 *                                                             - matcher      function         The method used to determine if a query matches an item. Accepts a single argument,
 	 *                                                             the item against which to test the query. Access the current query with this.query.
 	 *                                                             Return a boolean true if query is a match.
-	 *                             - sorter       function         Method used to sort autocomplete results. Accepts a single argument items and has
+	 *                                                             - sorter       function         Method used to sort autocomplete results. Accepts a single argument items and has
 	 *                                                             the scope of the typeahead instance. Reference the current query with this.query.
-	 *                             - updater      function         The method used to return selected item. Accepts a single argument, the item and
+	 *                                                             - updater      function         The method used to return selected item. Accepts a single argument, the item and
 	 *                                                             has the scope of the typeahead instance.
-	 *                             - highlighter  function         Method used to highlight autocomplete results. Accepts a single argument item and
+	 *                                                             - highlighter  function         Method used to highlight autocomplete results. Accepts a single argument item and
 	 *                                                             has the scope of the typeahead instance. Should return html.
 	 *
 	 * @return  void
@@ -585,16 +568,17 @@ class JevLibHtmlBootstrap
 	 */
 	public static function typeahead($selector = '.typeahead', $params = array())
 	{
+
 		if (!isset(static::$loaded[__METHOD__][$selector]))
 		{
 			// Include Bootstrap framework
 			static::framework();
 
 			// Setup options object
-			$opt['source']      = isset($params['source']) ? $params['source'] : '[]';
-			$opt['items']       = isset($params['items']) ? (int) $params['items'] : 8;
-			$opt['minLength']   = isset($params['minLength']) ? (int) $params['minLength'] : 1;
-			isset($params['matcher']) ? $opt['matcher'] = (string) $params['matcher'] : '' ;
+			$opt['source']    = isset($params['source']) ? $params['source'] : '[]';
+			$opt['items']     = isset($params['items']) ? (int) $params['items'] : 8;
+			$opt['minLength'] = isset($params['minLength']) ? (int) $params['minLength'] : 1;
+			isset($params['matcher']) ? $opt['matcher'] = (string) $params['matcher'] : '';
 			isset($params['sorter']) ? $opt['sorter'] = (string) $params['sorter'] : '';
 			isset($params['updater']) ? $opt['updater'] = (string) $params['updater'] : '';
 			isset($params['highlighter']) ? $opt['highlighter'] = (int) $params['highlighter'] : '';
@@ -602,7 +586,7 @@ class JevLibHtmlBootstrap
 			$options = json_encode($opt);
 
 			// Attach tooltips to document
-			JFactory::getDocument()->addScriptDeclaration(
+			Factory::getDocument()->addScriptDeclaration(
 				"jQuery(document).ready(function()
 				{
 					jQuery('" . $selector . "').typeahead(" . $options . ");
@@ -619,13 +603,13 @@ class JevLibHtmlBootstrap
 	/**
 	 * Add javascript support for Bootstrap accordians and insert the accordian
 	 *
-	 * @param   string  $selector  The ID selector for the tooltip.
-	 * @param   array   $params    An array of options for the tooltip.
-	 *                             Options for the tooltip can be:
-	 *                             - parent  selector  If selector then all collapsible elements under the specified parent will be closed when this
+	 * @param   string $selector                       The ID selector for the tooltip.
+	 * @param   array  $params                         An array of options for the tooltip.
+	 *                                                 Options for the tooltip can be:
+	 *                                                 - parent  selector  If selector then all collapsible elements under the specified parent will be closed when this
 	 *                                                 collapsible item is shown. (similar to traditional accordion behavior)
-	 *                             - toggle  boolean   Toggles the collapsible element on invocation
-	 *                             - active  string    Sets the active slide during load
+	 *                                                 - toggle  boolean   Toggles the collapsible element on invocation
+	 *                                                 - active  string    Sets the active slide during load
 	 *
 	 * @return  string  HTML for the accordian
 	 *
@@ -633,6 +617,7 @@ class JevLibHtmlBootstrap
 	 */
 	public static function startAccordion($selector = 'myAccordian', $params = array())
 	{
+
 		$sig = md5(serialize(array($selector, $params)));
 
 		if (!isset(static::$loaded[__METHOD__][$sig]))
@@ -648,14 +633,14 @@ class JevLibHtmlBootstrap
 			$options = json_encode($opt);
 
 			// Attach accordion to document
-			JFactory::getDocument()->addScriptDeclaration(
+			Factory::getDocument()->addScriptDeclaration(
 				"(function($){
 					$('#$selector').collapse($options);
 				})(jQuery);"
 			);
 
 			// Set static array
-			static::$loaded[__METHOD__][$sig] = true;
+			static::$loaded[__METHOD__][$sig]     = true;
 			static::$loaded[__METHOD__]['active'] = $opt['active'];
 		}
 
@@ -671,16 +656,17 @@ class JevLibHtmlBootstrap
 	 */
 	public static function endAccordion()
 	{
+
 		return '</div>';
 	}
 
 	/**
 	 * Begins the display of a new accordion slide.
 	 *
-	 * @param   string  $selector  Identifier of the accordion group.
-	 * @param   string  $text      Text to display.
-	 * @param   string  $id        Identifier of the slide.
-	 * @param   string  $class     Class of the accordion group.
+	 * @param   string $selector Identifier of the accordion group.
+	 * @param   string $text     Text to display.
+	 * @param   string $id       Identifier of the slide.
+	 * @param   string $class    Class of the accordion group.
 	 *
 	 * @return  string  HTML to add the slide
 	 *
@@ -688,7 +674,8 @@ class JevLibHtmlBootstrap
 	 */
 	public static function addSlide($selector, $text, $id, $class = '')
 	{
-		$in = (static::$loaded['JHtmlBootstrap::startAccordion']['active'] == $id) ? ' in' : '';
+
+		$in    = (static::$loaded['JHtmlBootstrap::startAccordion']['active'] == $id) ? ' in' : '';
 		$class = (!empty($class)) ? ' ' . $class : '';
 
 		$html = '<div class="accordion-group' . $class . '">'
@@ -712,14 +699,15 @@ class JevLibHtmlBootstrap
 	 */
 	public static function endSlide()
 	{
+
 		return '</div></div></div>';
 	}
 
 	/**
 	 * Creates a tab pane
 	 *
-	 * @param   string  $selector  The pane identifier.
-	 * @param   array   $params    The parameters for the pane
+	 * @param   string $selector The pane identifier.
+	 * @param   array  $params   The parameters for the pane
 	 *
 	 * @return  string
 	 *
@@ -727,6 +715,7 @@ class JevLibHtmlBootstrap
 	 */
 	public static function startTabSet($selector = 'myTab', $params = array())
 	{
+
 		$sig = md5(serialize(array($selector, $params)));
 
 		if (!isset(static::$loaded[__METHOD__][$sig]))
@@ -738,15 +727,15 @@ class JevLibHtmlBootstrap
 			$opt['active'] = (isset($params['active']) && ($params['active'])) ? (string) $params['active'] : '';
 
 			// Attach tabs to document
-			JFactory::getDocument()
-				->addScriptDeclaration(JLayoutHelper::render('libraries.cms.html.bootstrap.starttabsetscript', array('selector' => $selector)));
+			Factory::getDocument()
+				->addScriptDeclaration(LayoutHelper::render('libraries.cms.html.bootstrap.starttabsetscript', array('selector' => $selector)));
 
 			// Set static array
-			static::$loaded[__METHOD__][$sig] = true;
+			static::$loaded[__METHOD__][$sig]                = true;
 			static::$loaded[__METHOD__][$selector]['active'] = $opt['active'];
 		}
 
-		$html = JLayoutHelper::render('libraries.cms.html.bootstrap.starttabset', array('selector' => $selector));
+		$html = LayoutHelper::render('libraries.cms.html.bootstrap.starttabset', array('selector' => $selector));
 
 		return $html;
 	}
@@ -760,7 +749,8 @@ class JevLibHtmlBootstrap
 	 */
 	public static function endTabSet()
 	{
-		$html = JLayoutHelper::render('libraries.cms.html.bootstrap.endtabset');
+
+		$html = LayoutHelper::render('libraries.cms.html.bootstrap.endtabset');
 
 		return $html;
 	}
@@ -768,9 +758,9 @@ class JevLibHtmlBootstrap
 	/**
 	 * Begins the display of a new tab content panel.
 	 *
-	 * @param   string  $selector  Identifier of the panel.
-	 * @param   string  $id        The ID of the div element
-	 * @param   string  $title     The title text for the new UL tab
+	 * @param   string $selector Identifier of the panel.
+	 * @param   string $id       The ID of the div element
+	 * @param   string $title    The title text for the new UL tab
 	 *
 	 * @return  string  HTML to start a new panel
 	 *
@@ -778,17 +768,18 @@ class JevLibHtmlBootstrap
 	 */
 	public static function addTab($selector, $id, $title)
 	{
+
 		static $tabScriptLayout = null;
 		static $tabLayout = null;
 
-		$tabScriptLayout = is_null($tabScriptLayout) ? new JLayoutFile('libraries.cms.html.bootstrap.addtabscript') : $tabScriptLayout;
-		$tabLayout = is_null($tabLayout) ? new JLayoutFile('libraries.cms.html.bootstrap.addtab') : $tabLayout;
+		$tabScriptLayout = is_null($tabScriptLayout) ? new FileLayout('libraries.cms.html.bootstrap.addtabscript') : $tabScriptLayout;
+		$tabLayout       = is_null($tabLayout) ? new FileLayout('libraries.cms.html.bootstrap.addtab') : $tabLayout;
 
 		$active = (static::$loaded['JHtmlBootstrap::startTabSet'][$selector]['active'] == $id) ? ' active' : '';
 
 		// Inject tab into UL
-		JFactory::getDocument()
-		->addScriptDeclaration($tabScriptLayout->render(array('selector' => $selector,'id' => $id, 'active' => $active, 'title' => $title)));
+		Factory::getDocument()
+			->addScriptDeclaration($tabScriptLayout->render(array('selector' => $selector, 'id' => $id, 'active' => $active, 'title' => $title)));
 
 		$html = $tabLayout->render(array('id' => $id, 'active' => $active));
 
@@ -804,7 +795,8 @@ class JevLibHtmlBootstrap
 	 */
 	public static function endTab()
 	{
-		$html = JLayoutHelper::render('libraries.cms.html.bootstrap.endtab');
+
+		$html = LayoutHelper::render('libraries.cms.html.bootstrap.endtab');
 
 		return $html;
 	}
@@ -812,16 +804,17 @@ class JevLibHtmlBootstrap
 	/**
 	 * Creates a tab pane
 	 *
-	 * @param   string  $selector  The pane identifier.
-	 * @param   array   $params    The parameters for the pane
+	 * @param   string $selector The pane identifier.
+	 * @param   array  $params   The parameters for the pane
 	 *
 	 * @return  string
 	 *
-	 * @since   3.0
-	 * @deprecated  4.0	Use JHtml::_('bootstrap.startTabSet') instead.
+	 * @since       3.0
+	 * @deprecated  4.0    Use HTMLHelper::_('bootstrap.startTabSet') instead.
 	 */
 	public static function startPane($selector = 'myTab', $params = array())
 	{
+
 		$sig = md5(serialize(array($selector, $params)));
 
 		if (!isset(static::$loaded['JHtmlBootstrap::startTabSet'][$sig]))
@@ -833,7 +826,7 @@ class JevLibHtmlBootstrap
 			$opt['active'] = isset($params['active']) ? (string) $params['active'] : '';
 
 			// Attach tooltips to document
-			JFactory::getDocument()->addScriptDeclaration(
+			Factory::getDocument()->addScriptDeclaration(
 				"jevjq(document).on('ready',function(){
 					jevjq('#$selector a').on('click', function (e) {
 						e.preventDefault();
@@ -844,7 +837,7 @@ class JevLibHtmlBootstrap
 			);
 
 			// Set static array
-			static::$loaded['JHtmlBootstrap::startTabSet'][$sig] = true;
+			static::$loaded['JHtmlBootstrap::startTabSet'][$sig]                = true;
 			static::$loaded['JHtmlBootstrap::startTabSet'][$selector]['active'] = $opt['active'];
 		}
 
@@ -856,27 +849,29 @@ class JevLibHtmlBootstrap
 	 *
 	 * @return  string  HTML to close the pane
 	 *
-	 * @since   3.0
-	 * @deprecated  4.0	Use JHtml::_('bootstrap.endTabSet') instead.
+	 * @since       3.0
+	 * @deprecated  4.0    Use HTMLHelper::_('bootstrap.endTabSet') instead.
 	 */
 	public static function endPane()
 	{
+
 		return '</div>';
 	}
 
 	/**
 	 * Begins the display of a new tab content panel.
 	 *
-	 * @param   string  $selector  Identifier of the panel.
-	 * @param   string  $id        The ID of the div element
+	 * @param   string $selector Identifier of the panel.
+	 * @param   string $id       The ID of the div element
 	 *
 	 * @return  string  HTML to start a new panel
 	 *
-	 * @since   3.0
-	 * @deprecated  4.0 Use JHtml::_('bootstrap.addTab') instead.
+	 * @since       3.0
+	 * @deprecated  4.0 Use HTMLHelper::_('bootstrap.addTab') instead.
 	 */
 	public static function addPanel($selector, $id)
 	{
+
 		$active = (static::$loaded['JHtmlBootstrap::startTabSet'][$selector]['active'] == $id) ? ' active' : '';
 
 		return '<div id="' . $id . '" class="tab-pane' . $active . '">';
@@ -887,20 +882,21 @@ class JevLibHtmlBootstrap
 	 *
 	 * @return  string  HTML to close the pane
 	 *
-	 * @since   3.0
-	 * @deprecated  4.0 Use JHtml::_('bootstrap.endTab') instead.
+	 * @since       3.0
+	 * @deprecated  4.0 Use HTMLHelper::_('bootstrap.endTab') instead.
 	 */
 	public static function endPanel()
 	{
+
 		return '</div>';
 	}
 
 	/**
 	 * Loads CSS files needed by Bootstrap
 	 *
-	 * @param   boolean  $includeMainCss  If true, main bootstrap.css files are loaded
-	 * @param   string   $direction       rtl or ltr direction. If empty, ltr is assumed
-	 * @param   array    $attribs         Optional array of attributes to be passed to JHtml::_('stylesheet')
+	 * @param   boolean $includeMainCss If true, main bootstrap.css files are loaded
+	 * @param   string  $direction      rtl or ltr direction. If empty, ltr is assumed
+	 * @param   array   $attribs        Optional array of attributes to be passed to HTMLHelper::_('stylesheet')
 	 *
 	 * @return  void
 	 *
@@ -908,18 +904,19 @@ class JevLibHtmlBootstrap
 	 */
 	public static function loadCss($includeMainCss = true, $direction = 'ltr', $attribs = array())
 	{
+
 		// Load Bootstrap main CSS
-			if ($includeMainCss)
-			{
-				JHtml::_('stylesheet', 'libraries/jevents/bootstrap/css/bootstrap.css', $attribs, false);
-				JHtml::_('stylesheet', 'libraries/jevents/bootstrap/css/bootstrap-responsive.css', $attribs, false);
-				//JHtml::_('stylesheet', 'com_jevents/jevbootstrap/bootstrap-extended.css', $attribs, true);
-			}
+		if ($includeMainCss)
+		{
+			HTMLHelper::_('stylesheet', 'libraries/jevents/bootstrap/css/bootstrap.css', $attribs, false);
+			HTMLHelper::_('stylesheet', 'libraries/jevents/bootstrap/css/bootstrap-responsive.css', $attribs, false);
+			//HTMLHelper::_('stylesheet', 'com_jevents/jevbootstrap/bootstrap-extended.css', $attribs, true);
+		}
 
 		// Load Bootstrap RTL CSS
-/*		if ($direction === 'rtl')
-		{
-			JHtml::_('stylesheet', 'com_jevents/jevbootstrap/bootstrap-rtl.css', $attribs, true);
-		}*/
+		/*		if ($direction === 'rtl')
+				{
+					HTMLHelper::_('stylesheet', 'com_jevents/jevbootstrap/bootstrap-rtl.css', $attribs, true);
+				}*/
 	}
 }

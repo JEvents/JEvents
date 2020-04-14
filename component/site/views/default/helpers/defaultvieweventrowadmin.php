@@ -1,18 +1,23 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Component\ComponentHelper;
+
 function DefaultViewEventRowAdmin($view, $row, $manage = false)
 {
 
-    $jinput = JFactory::getApplication()->input;
-    $pub_filter = $jinput->get('published_fv', 0);
-	$popup = false;
-	$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+	$input     = Factory::getApplication()->input;
+	$pub_filter = $input->get('published_fv', 0);
+	$popup      = false;
+	$params     = ComponentHelper::getParams(JEV_COM_COMPONENT);
 	if ($params->get("editpopup", 0) && JEVHelper::isEventCreator())
 	{
 		JevHtmlBootstrap::modal();
 		JEVHelper::script('editpopupJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
-		$popup = true;
+		$popup  = true;
 		$popupw = $params->get("popupw", 800);
 		$popuph = $params->get("popuph", 600);
 	}
@@ -23,25 +28,25 @@ function DefaultViewEventRowAdmin($view, $row, $manage = false)
 	$modifylink = '';
 	if (!$manage && JEVHelper::canEditEvent($row))
 	{
-		//$modifylink = '<a href="' . $row->editlink(true) . '" title="' . JText::_('JEV_MODIFY') . '"><b>' . JText::_('JEV_MODIFY') . "</b></a>\n";
-		$modifylink = '<a href="' . $editLink . '" title="' . JText::_('JEV_MODIFY') . '"><b>' . JText::_('JEV_MODIFY') . "</b></a>\n";
+		//$modifylink = '<a href="' . $row->editlink(true) . '" title="' . Text::_('JEV_MODIFY') . '"><b>' . Text::_('JEV_MODIFY') . "</b></a>\n";
+		$modifylink = '<a href="' . $editLink . '" title="' . Text::_('JEV_MODIFY') . '"><b>' . Text::_('JEV_MODIFY') . "</b></a>\n";
 	}
 
 	$deletelink = "";
 	if (!$manage && JEVHelper::canDeleteEvent($row))
 	{
-		$deletelink = '<a href="' . $row->deletelink(false) . "&rettask=admin.listevents" . '" title="' . JText::_('JEV_DELETE') . '"><b>' . JText::_('JEV_DELETE') . "</b></a>\n";
+		$deletelink = '<a href="' . $row->deletelink(false) . "&rettask=admin.listevents" . '" title="' . Text::_('JEV_DELETE') . '"><b>' . Text::_('JEV_DELETE') . "</b></a>\n";
 	}
 
 	if (!$manage && JEVHelper::canPublishEvent($row))
 	{
 		if ($row->published())
 		{
-			$publishlink = '<a href="' . $row->unpublishlink(false) . "&rettask=admin.listevents&published_fv=" . $pub_filter . '" title="' . JText::_('UNPUBLISH') . '"><b>' . JText::_('UNPUBLISH') . "</b></a>\n";
+			$publishlink = '<a href="' . $row->unpublishlink(false) . "&rettask=admin.listevents&published_fv=" . $pub_filter . '" title="' . Text::_('UNPUBLISH') . '"><b>' . Text::_('UNPUBLISH') . "</b></a>\n";
 		}
 		else
 		{
-			$publishlink = '<a href="' . $row->publishlink(false) . "&rettask=admin.listevents&published_fv=" . $pub_filter . '" title="' . JText::_('PUBLISH') . '"><b>' . JText::_('PUBLISH') . "</b></a>\n";
+			$publishlink = '<a href="' . $row->publishlink(false) . "&rettask=admin.listevents&published_fv=" . $pub_filter . '" title="' . Text::_('PUBLISH') . '"><b>' . Text::_('PUBLISH') . "</b></a>\n";
 		}
 	}
 	else
@@ -50,13 +55,14 @@ function DefaultViewEventRowAdmin($view, $row, $manage = false)
 	}
 
 	$eventlink = $row->viewDetailLink($row->yup(), $row->mup(), $row->dup(), false);
-	$eventlink = JRoute::_($eventlink . $view->datamodel->getCatidsOutLink());
-	$border = "border-color:" . $row->bgcolor() . ";";
+	$eventlink = Route::_($eventlink . $view->datamodel->getCatidsOutLink());
+	$border    = "border-color:" . $row->bgcolor() . ";";
 	?>
 
 	<li class="ev_td_li" style="<?php echo $border; ?>">
-		<a class="<?php echo $row->state() ? 'ev_link_row' : 'ev_link_unpublished'; ?>" href="<?php echo $eventlink; ?>" title="<?php echo JEventsHTML::special($row->title()) . ( $row->state() ? '' : JText::_('JEV_UNPUBLISHED') ); ?>"><?php echo $row->title() . ( $row->state() ? '' : JText::_('JEV_UNPUBLISHED') ); ?></a>
-		&nbsp;<?php echo JText::_('JEV_BY'); ?>
+		<a class="<?php echo $row->state() ? 'ev_link_row' : 'ev_link_unpublished'; ?>" href="<?php echo $eventlink; ?>"
+		   title="<?php echo JEventsHTML::special($row->title()) . ($row->state() ? '' : Text::_('JEV_UNPUBLISHED')); ?>"><?php echo $row->title() . ($row->state() ? '' : Text::_('JEV_UNPUBLISHED')); ?></a>
+		&nbsp;<?php echo Text::_('JEV_BY'); ?>
 		&nbsp;<i><?php echo $row->contactlink('', true); ?></i>
 		&nbsp;&nbsp;<?php echo $deletelink; ?>
 		&nbsp;&nbsp;<?php echo $modifylink; ?>

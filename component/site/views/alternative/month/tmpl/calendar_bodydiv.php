@@ -1,6 +1,9 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 $cfg = JEVConfig::getInstance();
 
 if ($cfg->get("tooltiptype", 'overlib') == 'overlib')
@@ -17,73 +20,77 @@ $followingMonth = $this->datamodel->getFollowingMonth($this->data);
 $precedingMonth = $this->datamodel->getPrecedingMonth($this->data);
 ?>
 
-<div class="cal_div">
-	<div class="topleft" ><span></span>
-	</div>
-	<div  class="cal_div_month cal_div_month_prev">
+	<div class="cal_div">
+		<div class="topleft"><span></span>
+		</div>
+		<div class="cal_div_month cal_div_month_prev">
 		<span>
-			<a href='<?php echo $precedingMonth["link"]; ?>' title='<?php echo $precedingMonth['name']; ?>' style='text-decoration:none;'><?php echo $precedingMonth['name']; ?></a>
+			<a href='<?php echo $precedingMonth["link"]; ?>' title='<?php echo $precedingMonth['name']; ?>'
+			   style='text-decoration:none;'><?php echo $precedingMonth['name']; ?></a>
 		</span>
-	</div>
-	<div  class="cal_div_currentmonth">
+		</div>
+		<div class="cal_div_currentmonth">
 		<span>
 			<?php echo $this->data['fieldsetText']; ?>
 		</span>
-	</div>
-	<div class="cal_div_month  cal_div_month_next">
+		</div>
+		<div class="cal_div_month  cal_div_month_next">
 		<span>
-			<a href='<?php echo $followingMonth["link"]; ?>' title='<?php echo $followingMonth['name']; ?>' style='text-decoration:none;'><?php echo $followingMonth['name']; ?></a>
+			<a href='<?php echo $followingMonth["link"]; ?>' title='<?php echo $followingMonth['name']; ?>'
+			   style='text-decoration:none;'><?php echo $followingMonth['name']; ?></a>
 		</span>
-	</div>
-	<?php
-	$count = 0;
-	foreach ($this->data["daynames"] as $dayname)
-	{
-		?>
-		<div class="cal_div_daynames cal_div_daynames<?php echo $count; ?>" >
+		</div>
+		<?php
+		$count = 0;
+		foreach ($this->data["daynames"] as $dayname)
+		{
+			?>
+			<div class="cal_div_daynames cal_div_daynames<?php echo $count; ?>">
 			<span>
 				<?php echo $dayname; ?>
 			</span>
-		</div>
-		<?php
-		$count ++;
-	}
-	$datacount = count($this->data["dates"]);
-	$dn = 0;
-    foreach ($this->data['weeks'] AS $wkn => $week)
-	{
-		?>
-		<div class="cal_div_weekrow" >
-			<div class='cal_div_weeklink'>
-				<span>
-					<?php
-					echo "<a href='".$week."'>$wkn</a></td>\n";
-					?>
-				</span>
 			</div>
 			<?php
-			for ($d = 0; $d < 7 && $dn < $datacount; $d++)
-			{
-				$currentDay = $this->data["dates"][$dn];
-				switch ($currentDay["monthType"]) {
-					case "prior":
-					case "following":
-						?>
-						<div class="cal_div_daysoutofmonth  <?php echo "cal_div_day".$d;?>" >
+			$count++;
+		}
+		$datacount = count($this->data["dates"]);
+		$dn        = 0;
+		foreach ($this->data['weeks'] AS $wkn => $week)
+		{
+			?>
+			<div class="cal_div_weekrow">
+				<div class='cal_div_weeklink'>
+				<span>
+					<?php
+					echo "<a href='" . $week . "'>$wkn</a></td>\n";
+					?>
+				</span>
+				</div>
+				<?php
+				for ($d = 0; $d < 7 && $dn < $datacount; $d++)
+				{
+					$currentDay = $this->data["dates"][$dn];
+					switch ($currentDay["monthType"])
+					{
+						case "prior":
+						case "following":
+							?>
+							<div class="cal_div_daysoutofmonth  <?php echo "cal_div_day" . $d; ?>">
 							<span>
 								<?php echo JEVHelper::getMonthName($currentDay["month"]); ?>
 							</span>
-						</div>
-						<?php
-						break;
-					case "current":
-						$cellclass = $currentDay["today"] ? 'class="cal_div_today cal_div_day'.$d.'"' : 'class="cal_div_daysnoevents cal_div_day'.$d.'"';
-						// stating the height here is needed for konqueror and safari
-						?>
-						<div <?php echo $cellclass; ?>>
+							</div>
+							<?php
+							break;
+						case "current":
+							$cellclass = $currentDay["today"] ? 'class="cal_div_today cal_div_day' . $d . '"' : 'class="cal_div_daysnoevents cal_div_day' . $d . '"';
+							// stating the height here is needed for konqueror and safari
+							?>
+							<div <?php echo $cellclass; ?>>
 							<span>
 								<?php $this->_datecellAddEvent($this->year, $this->month, $currentDay["d"]); ?>
-								<a class="cal_daylink" href="<?php echo $currentDay["link"]; ?>" title="<?php echo JText::_('JEV_CLICK_TOSWITCH_DAY'); ?>"><?php echo $currentDay['d']; ?></a>
+								<a class="cal_daylink" href="<?php echo $currentDay["link"]; ?>"
+								   title="<?php echo Text::_('JEV_CLICK_TOSWITCH_DAY'); ?>"><?php echo $currentDay['d']; ?></a>
 								<?php
 								if (count($currentDay["events"]) > 0)
 								{
@@ -106,24 +113,24 @@ $precedingMonth = $this->datamodel->getPrecedingMonth($this->data);
 											?>
 										</div>
 										<?php
-										$currentDay['countDisplay'] ++;
+										$currentDay['countDisplay']++;
 									}
 								}
 								?>
 							</span>
-						</div>
-						<?php
-						break;
+							</div>
+							<?php
+							break;
+					}
+					$dn++;
 				}
-				$dn++;
-			}
-			?>
-			<div class="divclear"></div>
-		</div>
-		<?php
-	}
-	?>
-</div>
+				?>
+				<div class="divclear"></div>
+			</div>
+			<?php
+		}
+		?>
+	</div>
 <?php
 $this->eventsLegend();
 
@@ -164,5 +171,5 @@ jQuery(document).ready(function(){
 
 });
 SCRIPT;
-$doc = JFactory::getDocument();
+$doc    = Factory::getDocument();
 $doc->addScriptDeclaration($script);

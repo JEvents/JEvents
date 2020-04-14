@@ -4,20 +4,23 @@
  *
  * @version     $Id: iCalEventDetail.php 1742 2011-03-08 10:53:09Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-JEVENTS_COPYRIGHT GWESystems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
 
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
 use Joomla\String\StringHelper;
+use Joomla\CMS\Plugin\PluginHelper;
 
-class iCalEventDetail extends JTable  {
+class iCalEventDetail extends Joomla\CMS\Table\Table
+{
 
 	/** @var int Primary key */
-	var $evdet_id					= null;
+	var $evdet_id = null;
 
 	var $dtstart = null;
 	var $dtstartraw = null;
@@ -42,14 +45,15 @@ class iCalEventDetail extends JTable  {
 	var $sequence = null;
 	var $extra_info = null;
 	var $color = null;
-	var $multiday=null;
-	var $noendtime=null;
-	var $modified=null;
+	var $multiday = null;
+	var $noendtime = null;
+	var $modified = null;
+	var $rawdata = "";
 
-	var $_customFields =  null;
+	var $_customFields = null;
 
 	/**
-	 * This holds the raw data as an array 
+	 * This holds the raw data as an array
 	 *
 	 * @var array
 	 */
@@ -58,46 +62,29 @@ class iCalEventDetail extends JTable  {
 	/**
 	 * Null Constructor
 	 */
-	public function __construct( &$db ) {
+	public function __construct(&$db)
+	{
+
 		// get default value for multiday from params
-		$cfg = JEVConfig::getInstance();
-		$this->_multiday=$cfg->get('multiday',1);
+		$cfg             = JEVConfig::getInstance();
+		$this->_multiday = $cfg->get('multiday', 1);
 
-		parent::__construct( '#__jevents_vevdetail', 'evdet_id', $db );
+		parent::__construct('#__jevents_vevdetail', 'evdet_id', $db);
 
-	}
-
-	/**
-	 * override store function to force rrule to save too!
-	 *
-	 * @param unknown_type $updateNulls
-	 */
-	public function store($updateNulls=false ) {
-		$date = JevDate::getDate();
-		$this->modified = $date->toMySQL();
-
-		if (parent::store($updateNulls)){
-			// I also need to store custom data
-			$dispatcher	= JEventDispatcher::getInstance();
-			// just incase we don't have jevents plugins registered yet
-			JPluginHelper::importPlugin("jevents");
-			$res = $dispatcher->trigger( 'onStoreCustomDetails' , array(&$this));
-		}
-		else {
-			JError::raiseError(321, "Problem saving event ".$this->_db->getErrorMsg());
-		}
-		return $this->evdet_id;
 	}
 
 	/**
 	 * Pseudo Constructor
 	 *
 	 * @param iCal Event parsed from ICS file as an array $ice
+	 *
 	 * @return n/a
 	 */
-	public static function iCalEventDetailFromData($ice){
-		$db	= JFactory::getDbo();
-		$temp = new iCalEventDetail($db);
+	public static function iCalEventDetailFromData($ice)
+	{
+
+		$db          = Factory::getDbo();
+		$temp        = new iCalEventDetail($db);
 		$temp->_data = $ice;
 		$temp->convertData();
 
@@ -105,84 +92,51 @@ class iCalEventDetail extends JTable  {
 	}
 
 	/**
-	 * Pseudo Constructor
-	 *
-	 * @param iCal Event parsed from ICS file as an array $ice
-	 * @return n/a
-	 */
-	public static function iCalEventDetailFromDB($icalrowAsArray){
-		$db	= JFactory::getDbo();
-		$temp = new iCalEventDetail($db);
-		$temp->_data = $icalrowAsArray;
-		$temp->convertData();
-		return $temp;
-	}
-
-	/**
-	 * private function
-	 *
-	 * @param string $field
-	 */
-	public function processField($field,$default,$targetFieldName=""){
-		if ($targetFieldName==""){
-			$targetfield = str_replace("-","_",$field);
-		}
-		else {
-			$targetfield = $targetFieldName;
-		}
-		$this->$targetfield = array_key_exists(strtoupper($field),$this->_data)?$this->_data[strtoupper($field)]:$default;
-	}
-
-	public function processCustom(){
-		if (!isset($this->_customFields)){
-			$this->_customFields = array();
-		}
-		foreach ($this->_data as $key=>$value) {
-			if (strpos($key,"custom_")===0){
-				$field = JString::substr($key,7);
-				$this->_customFields[$field]=$value;
-			}
-		}
-	}
-
-	/**
-	 * Converts $data into class values 
+	 * Converts $data into class values
 	 *
 	 */
-	public function convertData(){
+	public function convertData()
+	{
+
 		$this->_rawdata = serialize($this->_data);
 
-		$this->processField("dtstart",0);
-		$this->processField("dtstartraw","");
-		$this->processField("duration",0);
-		$this->processField("durationraw","");
-		$this->processField("dtend",0);
-		$this->processField("dtendraw","");
-		$this->processField("dtstamp","");
-		$this->processField("class","");
-		$this->processField("categories","");
-		$this->processField("description","");
-		if (strpos($this->description,"##migration##")===0 ){
-			$this->description = JString::substr($this->description,JString::strlen("##migration##"));
+		$this->processField("dtstart", 0);
+		$this->processField("dtstartraw", "");
+		$this->processField("duration", 0);
+		$this->processField("durationraw", "");
+		$this->processField("dtend", 0);
+		$this->processField("dtendraw", "");
+		$this->processField("dtstamp", "");
+		$this->processField("class", "");
+		$this->processField("categories", "");
+		$this->processField("description", "");
+		if (strpos($this->description, "##migration##") === 0)
+		{
+			$this->description = StringHelper::substr($this->description, StringHelper::strlen("##migration##"));
 			$this->description = base64_decode($this->description);
 		}
-		else {
+		else
+		{
 			$this->description = str_replace('\n', "<br/>", $this->description);
 			$this->description = stripslashes($this->description);
 		}
 
-		$this->processField("geolon","0");
-		$this->processField("geolat","0");
-		$this->processField("location","");
+		$this->processField("geolon", "0");
+		$this->processField("geolat", "0");
+		$this->processField("location", "");
+		if (strpos($this->location, '\n'))
+		{
+			$this->location = str_replace('\n', '<br>', $this->location);
+		}
 		$this->loc_id = (int) $this->location;
-		$this->processField("priority","0");
-		$this->processField("status","");
-		$this->processField("summary","");
-		$this->processField("contact","");
-		$this->processField("organizer","");
-		$this->processField("url","");
-		$this->processField("created","");
-		$this->processField("sequence","0");
+		$this->processField("priority", "0");
+		$this->processField("status", "");
+		$this->processField("summary", "");
+		$this->processField("contact", "");
+		$this->processField("organizer", "");
+		$this->processField("url", "");
+		$this->processField("created", "");
+		$this->processField("sequence", "0");
 
 		// Fix some stupid Microsoft IIS driven calendars which don't encode the data properly!
 		// see section 2 of http://www.the-art-of-web.com/html/character-codes/
@@ -193,64 +147,155 @@ class iCalEventDetail extends JTable  {
 		// The description and summary may need escaping !!!
 		// But this will be done by the SQL update function as part of the store so don't do it twice
 		/*
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$this->description = $db->escape($this->description);
 		$this->summary = $db->escape($this->summary);
 		*/
 
 		// get default value for multiday from params
 		$cfg = JEVConfig::getInstance();
-		$this->processField("multiday",$cfg->get('multiday',1));
+		$this->processField("multiday", $cfg->get('multiday', 1));
 
-		$this->processField("noendtime",0);
+		$this->processField("noendtime", 0);
 
-		$this->processField("x-extrainfo","", "extra_info");
+		$this->processField("x-extrainfo", "", "extra_info");
 
-		$this->processField("x-color","", "color");
+		$this->processField("x-color", "", "color");
 
 		// To make DB searches easier I set the dtend regardless
-		if ($this->dtend==0 && $this->duration>0){
-			$this->dtend=$this->dtstart+$this->duration;
+		if ($this->dtend == 0 && $this->duration > 0)
+		{
+			$this->dtend = $this->dtstart + $this->duration;
 		}
-		else if ($this->dtend==0){
+		else if ($this->dtend == 0)
+		{
 			// if no dtend or duration (e.g. from imported iCal) - set no end time
 			$this->noendtime = 1;
-			$icimport = new iCalImport();
-			$this->dtend = $icimport->unixTime($this->dtstartraw);
+			$icimport        = new iCalImport();
+			$this->dtend     = $icimport->unixTime($this->dtstartraw);
 			// an all day event
-			if ($this->dtend==$this->dtstart && JString::strlen($this->dtstartraw)==8){
+			if ($this->dtend == $this->dtstart && StringHelper::strlen($this->dtstartraw) == 8)
+			{
 				// convert to JEvents all day event mode!
-				//$this->allday = 1;				
-				$this->dtend += 86399; 
+				//$this->allday = 1;
+				$this->dtend += 86399;
 			}
 		}
-		if ($this->dtend<$this->dtstart && JString::strlen($this->dtstartraw)==8){
+		if ($this->dtend < $this->dtstart && StringHelper::strlen($this->dtstartraw) == 8)
+		{
 			// convert to JEvents all day event mode!
 			$this->noendtime = 1;
-			//$this->allday = 1;				
-			$this->dtend = $this->dtstart + 86399; 
+			//$this->allday = 1;
+			$this->dtend = $this->dtstart + 86399;
 		}
-                // All day event midnight to same midnight from iCalImport
-                else if ($this->dtstart-$this->dtend==1 && $this->dtendraw == $this->dtstartraw){
-                        if (JevDate::strftime('%H:%M:%S',$this->dtstart)=="00:00:00"){
-                            // convert to JEvents all day event mode!
-                            $this->noendtime = 1;
-                            $this->dtend = $this->dtstart + 86399; 
-                        }
+		// All day event midnight to same midnight from iCalImport
+		else if ($this->dtstart - $this->dtend == 1 && $this->dtendraw == $this->dtstartraw)
+		{
+			if (JevDate::strftime('%H:%M:%S', $this->dtstart) == "00:00:00")
+			{
+				// convert to JEvents all day event mode!
+				$this->noendtime = 1;
+				$this->dtend     = $this->dtstart + 86399;
+			}
 		}
 
 		// Process any custom fields
 		$this->processCustom();
 	}
 
-	public function isCancelled() {
-		return $this->status=="CANCELLED";
+	/**
+	 * private function
+	 *
+	 * @param string $field
+	 */
+	public function processField($field, $default, $targetFieldName = "")
+	{
+
+		if ($targetFieldName == "")
+		{
+			$targetfield = str_replace("-", "_", $field);
+		}
+		else
+		{
+			$targetfield = $targetFieldName;
+		}
+		$this->$targetfield = array_key_exists(strtoupper($field), $this->_data) ? $this->_data[strtoupper($field)] : $default;
 	}
 
-	public function dumpData(){
-		echo "starting : ".$this->dtstart."<br/>";
-		echo "ending : ".$this->dtend."<br/>";
-		if (isset($this->rrule)){
+	public function processCustom()
+	{
+
+		if (!isset($this->_customFields))
+		{
+			$this->_customFields = array();
+		}
+		foreach ($this->_data as $key => $value)
+		{
+			if (strpos($key, "custom_") === 0)
+			{
+				$field                       = StringHelper::substr($key, 7);
+				$this->_customFields[$field] = $value;
+			}
+		}
+	}
+
+	/**
+	 * Pseudo Constructor
+	 *
+	 * @param iCal Event parsed from ICS file as an array $ice
+	 *
+	 * @return n/a
+	 */
+	public static function iCalEventDetailFromDB($icalrowAsArray)
+	{
+
+		$db          = Factory::getDbo();
+		$temp        = new iCalEventDetail($db);
+		$temp->_data = $icalrowAsArray;
+		$temp->convertData();
+
+		return $temp;
+	}
+
+	/**
+	 * override store function to force rrule to save too!
+	 *
+	 * @param unknown_type $updateNulls
+	 */
+	public function store($updateNulls = false)
+	{
+
+		$date           = JevDate::getDate();
+		$this->modified = $date->toMySQL();
+
+		try {
+			parent::store($updateNulls);
+			// just in case we don't have jevents plugins registered yet
+			PluginHelper::importPlugin("jevents");
+			// I also need to store custom data
+			$res = Factory::getApplication()->triggerEvent('onStoreCustomDetails', array(&$this));
+
+		} catch (Exception $e) {
+			JError::raiseError(321, "Problem saving event " . $e);
+
+		}
+
+		return $this->evdet_id;
+	}
+
+	public function isCancelled()
+	{
+
+		return $this->status == "CANCELLED";
+	}
+
+	public function dumpData()
+	{
+
+		echo "starting : " . $this->dtstart . "<br/>";
+		echo "ending : " . $this->dtend . "<br/>";
+		if (isset($this->rrule))
+		{
 			$this->rrule->dumpData();
 		}
 		print_r($this->_data);

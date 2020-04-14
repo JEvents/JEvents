@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="JEvents" default="buildall">
+
+    <property name="rootdir" value="../" override="true" />
+    <property name="builddir" value="./build" override="true" />
+    <property name="uikitdir" value="../../uikit" override="true" />
+    <if>
+        <not>
+            <available file='${uikitdir}/package.json' type='file' property="nouikit"/>
+        </not>
+        <then>
+            <property name="uikitdir" value="../../bitbucket/uikit" override="true" />
+        </then>
+    </if>
+
+    <echo msg="uikit directory set to ${uikitdir}" />
+
+    <!-- Load path properties -->
+    <!--
+    <property file="paths.build.properties" />
+    -->
+
+    <exec command="git rev-parse --abbrev-ref HEAD" dir="./" outputProperty="git-branch"/>
+    <exec command="git describe --tags" dir="./" outputProperty="git-tag"/>
+    <property name="version" value="${git-tag}" override="false">
+        <filterchain>
+            <replaceregexp>
+                <regexp pattern="v([0-9]{1}\.[0-9]{1,2}\.[0-9]{1,2})(-.+)?" replace="\1" ignoreCase="true"/>
+            </replaceregexp>
+        </filterchain>
+    </property>
+    <tstamp>
+        <format property="build.date" pattern="%B %Y" locale="en_GB" />
+    </tstamp>
+
+    <!-- ============================================  -->
+    <!-- Target: prepare                               -->
+    <!-- ============================================  -->
+    <target name="prepare">
+        <echo msg="Making directory ./build" />
+        <mkdir dir="${builddir}" />
+        <!--
+        <phingcall target="fetch-gwejson-plugin" />
+        //-->
+        <!-- build uikit before component since its the component that installs the media files -->
+        <phingcall target="build-uikit" />
+        <phingcall target="build-jevents" />
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: sedreplace                            -->
+    <!-- ============================================  -->
+    <target name="sedreplace" description="Replace version and date values in files !! ">
+        <xmlproperty file="../package/pkg_jevents.xml" />
+        <exec command="find ${builddir}/${sedfolder}/ -type f \( -iname '*.php' -o -iname '*.js' -o -iname '*.xml'  -o -iname '*.css' \) -exec sed -i 's/JEVENTS_VERSION/${extension.version}/' '{}' +;" />
+        <exec command="find ${builddir}/${sedfolder}/ -type f \( -iname '*.php' -o -iname '*.js' -o -iname '*.xml'  -o -iname '*.css' \) -exec sed -i 's/JEVENTS_DATE/${extension.creationDate}/' '{}' +;" />
+        <exec command="find ${builddir}/${sedfolder}/ -type f \( -iname '*.php' -o -iname '*.js' -o -iname '*.xml'  -o -iname '*.css' \) -exec sed -i 's/JEVENTS_COPYRIGHT/${extension.copyrightYear}/' '{}' +;" />
+    </target>
+
+    <!-- ==================================================  -->
+    <!-- Target: JEvents Generic Folder    -->
+    <!-- ==================================================  -->
+    <target name="build-generic" description="Build Generic JEvents Folder ">
+        <echo msg="Building Gemeric Folder ${genericname}..."/>
+        <copy todir="${builddir}/${genericfolder}">
+            <fileset dir="../${genericfolder}">
+                <include name="**"></include>
+                <exclude name="**/.svn/**"></exclude>
+                <excludesfile name="excludedfiles.build"></excludesfile>
+            </fileset>
+        </copy>
+
+        <phingcall target="sedreplace">
+            <property name="name" value="${genericfolder}" />
+        </phingcall>
+
+        <fileset dir="${builddir}/${genericfolder}" id="pluginZip">
+            <include name="**"/>
+            <excludesfile name="excludedfiles.build"></excludesfile>
+        </fileset>
+        <zip ignorelinks="true" destfile="${builddir}/${zipfile}">
+            <fileset refid="pluginZip"/>
+        </zip>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: compileless                           -->
+    <!-- ============================================  -->
+    <target name="compileless" description="Compile Less files !! ">
+        <exec passthru="true" command="lessc --verbose ${rootdir}/component/admin/assets/less/j3.less      ${rootdir}/component/admin/assets/css/j3.css" />
+        <exec passthru="true" command="lessc --verbose ${rootdir}/component/admin/assets/less/j4.less      ${rootdir}/component/admin/assets/css/j4.css" />
+        <exec passthru="true" command="lessc --verbose ${rootdir}/component/admin/assets/less/rsvppro.less ${rootdir}/component/admin/assets/css/rsvppro.css" />
+    </target>
+
+    <!-- ==================================================  -->
+    <!-- Target: Build UIkit    -->
+    <!-- ==================================================  -->
+    <target name="build-uikit" description="Build UIkit">
+        <echo msg="Building UI Kit ..." />
+
+        <!-- copy our repository version of custom files to uikit repository -->
+        <copy todir="${uikitdir}/custom" >
+            <fileset dir="${rootdir}/custom_uikit">
+            </fileset>
+        </copy>
+
+        <!-- delete dist files -->
+        <if>
+            <available file='${uikitdir}/dist/css/uikit.gsl.css' type='file' property="cssexits"/>
+            <then>
+                <delete file="${uikitdir}/dist/css/uikit.gsl.css" failonerror="false" />
+                <delete file="${uikitdir}/dist/css/uikit.gsl.min.css" failonerror="false" />
+            </then>
+        </if>
+
+        <!-- execute yarn scripts there -->
+        <!--
+        run compile help to see this
+        usage:
+
+        build.js [componentA, componentB, ...] [-d|debug|nominify|development]
+
+        examples:
+
+        build.js // builds all of uikit, including icons and does minification (implies 'all')
+        build.js uikit icons -d // builds all of uikit and the icons, skipping the minification
+        build.js core lightbox -d // builds uikit-core and the lightbox, skipping the minification
+
+        //-->
+        <exec command="yarn compile -d" dir="${uikitdir}" outputProperty="yarn.output" >
+        </exec>
+        <echo msg="${yarn.output}" />
+        <exec command="yarn prefix -p gsl " dir="${uikitdir}"  outputProperty="yarn.output2" >
+        </exec>
+        <echo msg="${yarn.output2}" />
+        <exec command="yarn scope -s 'gsl-scope'" dir="${uikitdir}"  outputProperty="yarn.output3" >
+        </exec>
+        <echo msg="${yarn.output3}" />
+
+        <!-- copy the dist files back from uikit repository -->
+        <copy todir="${rootdir}/component/media" >
+            <fileset dir="${uikitdir}/dist">
+                <include name="**"></include>
+                <exclude name="**/.svn/**"></exclude>
+                <exclude name="**/*.zip"></exclude>
+                <exclude name="js/components/**"></exclude>
+            </fileset>
+        </copy>
+
+        <!-- replace colours with CSS variables -->
+        <!-- primary -->
+        <!-- primary hover -->
+        <!-- primary active -->
+        <!--
+        ** REMEMBER TO CHANGE - - in var to remove the space if using this!
+        <reflexive>
+            <fileset dir="${rootdir}/com_jevents/media">
+                <include pattern="**/*.gsl.css" />
+                <include pattern="**/*.gsl.min.css" />
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp pattern="#123456" replace="var(- -defaultbackground)"   ignoreCase="true" multiline="true"/>
+                    <regexp pattern="#234567" replace="var(- -mutedbackground)"     ignoreCase="true" multiline="true"/>
+                    <regexp pattern="#34567a" replace="var(- -primarybackground)"   ignoreCase="true" multiline="true"/>
+                    <regexp pattern="#4567ab" replace="var(- -secondarybackground)" ignoreCase="true" multiline="true"/>
+                    <regexp pattern="#567abc" replace="var(- -successbackground)"   ignoreCase="true" multiline="true"/>
+                    <regexp pattern="#67abcd" replace="var(- -warningbackground)"   ignoreCase="true" multiline="true"/>
+                    <regexp pattern="#7abcde" replace="var(- -dangerbackground)"    ignoreCase="true" multiline="true"/>
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+        -->
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: Build JEvents   -->
+    <!-- ============================================  -->
+    <target name="build-jevents" description="Build JEvents">
+        <echo msg="Building JEvents ..." />
+
+        <phingcall target="build-generic">
+            <property name="genericname" value="Core JEvents Component" />
+            <property name="genericfolder" value="component" />
+            <property name="zipfile" value="com_jevents.zip" />
+        </phingcall>
+
+        <phingcall target="build-libraries"/>
+        <phingcall target="build-modules"/>
+        <phingcall target="build-plugins"/>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: JEvents Plugins     -->
+    <!-- ============================================  -->
+    <target name="build-plugins" description="Build Plugins">
+        <echo msg="Building JEvents Plugins..."/>
+        <phingcall target="build-generic">
+            <property name="genericname" value="ActionLogs Plugin" />
+            <property name="genericfolder" value="plugins/actionlog" />
+            <property name="zipfile" value="actionlog_jevents.zip" />
+        </phingcall>
+
+        <phingcall target="build-generic">
+            <property name="genericname" value="Finder Plugin" />
+            <property name="genericfolder" value="plugins/finder" />
+            <property name="zipfile" value="finder.zip" />
+        </phingcall>
+
+        <phingcall target="build-generic">
+            <property name="genericname" value="GWE JSON Plugin" />
+            <property name="genericfolder" value="plugins/gwejson" />
+            <property name="zipfile" value="gwejson.zip" />
+        </phingcall>
+
+        <phingcall target="build-generic">
+            <property name="genericname" value="Installer Plugin" />
+            <property name="genericfolder" value="plugins/installer" />
+            <property name="zipfile" value="installer.zip" />
+        </phingcall>
+
+        <phingcall target="build-generic">
+            <property name="genericname" value="JEvents Plugin" />
+            <property name="genericfolder" value="plugins/jevents" />
+            <property name="zipfile" value="jevents.zip" />
+        </phingcall>
+
+        <phingcall target="build-generic">
+            <property name="genericname" value="Search Plugin" />
+            <property name="genericfolder" value="plugins/search" />
+            <property name="zipfile" value="search.zip" />
+        </phingcall>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: JEvents Libraries     -->
+    <!-- ============================================  -->
+    <target name="build-libraries" description="Build Libraries">
+        <echo msg="Building JEvents Libraries ..."/>
+        <phingcall target="build-generic">
+            <property name="genericname" value="Googl Library" />
+            <property name="genericfolder" value="libraries/googl" />
+            <property name="zipfile" value="googl.zip" />
+        </phingcall>
+
+        <phingcall target="build-generic">
+            <property name="genericname" value="JEVModal Library" />
+            <property name="genericfolder" value="libraries/jevmodal" />
+            <property name="zipfile" value="jevmodal.zip" />
+        </phingcall>
+
+        <phingcall target="build-generic">
+            <property name="genericname" value="JEV Typeahead Library" />
+            <property name="genericfolder" value="libraries/jevtypeahead" />
+            <property name="zipfile" value="jevtypeahead.zip" />
+        </phingcall>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: JEvents modules     -->
+    <!-- ============================================  -->
+    <target name="build-modules" description="Build Modules">
+        <echo msg="Building JEvents Modules ..."/>
+        <phingcall target="build-generic">
+            <property name="genericname" value="JEvents Calendar Module" />
+            <property name="genericfolder" value="modules/mod_jevents_cal" />
+            <property name="zipfile" value="mod_jevents_cal.zip" />
+        </phingcall>
+        <phingcall target="build-generic">
+            <property name="genericname" value="JEvents custom Module" />
+            <property name="genericfolder" value="modules/mod_jevents_custom" />
+            <property name="zipfile" value="mod_jevents_custom.zip" />
+        </phingcall>
+        <phingcall target="build-generic">
+            <property name="genericname" value="JEvents Filter Module" />
+            <property name="genericfolder" value="modules/mod_jevents_filter" />
+            <property name="zipfile" value="mod_jevents_filter.zip" />
+        </phingcall>
+        <phingcall target="build-generic">
+            <property name="genericname" value="JEvents Latest Module" />
+            <property name="genericfolder" value="modules/mod_jevents_latest" />
+            <property name="zipfile" value="mod_jevents_latest.zip" />
+        </phingcall>
+        <phingcall target="build-generic">
+            <property name="genericname" value="JEvents Legend Module" />
+            <property name="genericfolder" value="modules/mod_jevents_legend" />
+            <property name="zipfile" value="mod_jevents_legend.zip" />
+        </phingcall>
+        <phingcall target="build-generic">
+            <property name="genericname" value="JEvents Switchview Module" />
+            <property name="genericfolder" value="modules/mod_jevents_switchview" />
+            <property name="zipfile" value="mod_jevents_switchview.zip" />
+        </phingcall>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: buildall                                 -->
+    <!-- ============================================  -->
+
+    <target name="buildall" description="Build all targets !! ">
+        <phingcall target="build"></phingcall>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: build                                 -->
+    <!-- ============================================  -->
+
+    <target name="build" depends="prepare">
+
+        <echo msg="Creating Package..." />
+        <copy todir="${builddir}/package">
+            <fileset dir="../package">
+                <include name="**"></include>
+                <exclude name="**/.svn/**"></exclude>
+            </fileset>
+        </copy>
+        <xmlproperty file="${builddir}/package/pkg_jevents.xml" />
+
+        <reflexive>
+            <fileset dir="${builddir}/package">
+                <include pattern="install.php" />
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp pattern="ADD_VERSION" replace="${extension.version}"   ignoreCase="false" multiline="false"/>
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+
+        <copy file="${builddir}/com_jevents.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/finder.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/search.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/gwejson.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/installer.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/actionlog_jevents.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/googl.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/jevmodal.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/jevtypeahead.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/jevents.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/mod_jevents_cal.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/mod_jevents_custom.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/mod_jevents_filter.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/mod_jevents_latest.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/mod_jevents_legend.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/mod_jevents_switchview.zip" todir="${builddir}/package/" />
+
+
+        <fileset dir="${builddir}/package" id="packagedir">
+            <include name="**"></include>
+            <exclude name="**/.svn/**"></exclude>
+        </fileset>
+
+        <zip ignorelinks="true" destfile="${builddir}/../pkg_JEvents_${extension.version}.zip">
+            <fileset refid="packagedir" />
+        </zip>
+        <delete dir="${builddir}" includeemptydirs="true" verbose="false" failonerror="true" />
+
+
+    </target>
+
+
+</project>
