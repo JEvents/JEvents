@@ -98,6 +98,14 @@ class iCalImport
 					curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
 				}
 
+				// Set proxy if enabled
+				$jConfig =  JFactory::getConfig();
+
+				if($jConfig->get('proxy_enable') == 1) {
+					curl_setopt($ch, CURLOPT_PROXY, $jConfig->get('proxy_host') . ":" . $jConfig->get('proxy_port'));
+					curl_setopt($ch, CURLOPT_PROXYUSERPWD, $jConfig->get('proxy_user') . ":" . $jConfig->get('proxy_password'));
+				}
+
 				curl_setopt($ch, CURLOPT_URL, $file);
 				curl_setopt($ch, CURLOPT_VERBOSE, 1);
 				curl_setopt($ch, CURLOPT_POST, 0);
@@ -108,7 +116,7 @@ class iCalImport
 				$this->rawData = curl_exec($ch);
 				curl_close($ch);
 
-				// try file_get_contents as a backu
+				// try file_get_contents as a backup
 				if ($this->rawData === false || $this->rawData == "")
 				{
 					$this->rawData = @file_get_contents($file);

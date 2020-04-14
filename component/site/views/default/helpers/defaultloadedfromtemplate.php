@@ -1732,7 +1732,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$imgpluginparams = new Registry($imgplugin->params);
 
 						$resetparams = false;
-						if ($jevparams->get("sevd_defaultimage", false) && empty($imgpluginparams->get("defaultimage", false)))
+						if ($jevparams->get("sevd_defaultimage", false) && $imgpluginparams->get("defaultimage", '') === '')
 						{
 							$imgpluginparams->set("defaultimage", $jevparams->get("sevd_defaultimage", false));
 							$imgplugin->params = json_encode($imgpluginparams);
