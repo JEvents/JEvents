@@ -74,11 +74,11 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 			if (!isset($templates[$template_name]['*'][0]))
 			{
-				if (method_exists($view, 'getViewName'))
+				try
 				{
 					$viewname = $view->getViewName();
 				}
-				else
+				catch (Exception $e)
 				{
 					$viewname = "default";
 				}
