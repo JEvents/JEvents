@@ -14,10 +14,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\String\StringHelper;
 
 class jIcalEventDB extends jEventCal {
-    
+
 	//var $vevent;
 	var $_icsid=0;
-        
+
 	// array of jIcalEventRepeat
 	var $_repeats=null;
 
@@ -61,13 +61,13 @@ class jIcalEventDB extends jEventCal {
 					if (!is_int($item)){
 						$item = JevDate::strtotime($item." 00:00:00");
 					}
-				});					
+				});
 			}
 			else {
 				$this->_irregulardates = array();
 			}
 			//$this->_irregulardates = @json_decode($vevent->irregulardates);
-				
+
 		}
 		else {
 			$this->_irregulardates = array();
@@ -156,7 +156,7 @@ class jIcalEventDB extends jEventCal {
 	function url($val="") {
 		return $this->getOrSet(__FUNCTION__,$val);
 	}
-	
+
 	function hasContactInfo() {
 		return !empty( $this->_contact);
 
@@ -528,7 +528,7 @@ class jIcalEventDB extends jEventCal {
 			return "";
 		}
 	}
-	
+
 	// Dont report hists for a ICS entry
 	function reportHits(){	}
 
@@ -818,8 +818,8 @@ class jIcalEventDB extends jEventCal {
 		$extratables = "";  // must have comma prefix
 		$extrawhere =array();
 		$extrajoin =array();
-		$dispatcher	= JEventDispatcher::getInstance();
-		$dispatcher->trigger('onListEventsById', array (& $extrafields, & $extratables, & $extrawhere, & $extrajoin));
+
+		JFactory::getApplication()->triggerEvent('onListEventsById', array (& $extrafields, & $extratables, & $extrawhere, & $extrajoin));
 
 		$params = JComponentHelper::getParams("com_jevents");
 		if ($params->get("multicategory", 0))
@@ -827,7 +827,7 @@ class jIcalEventDB extends jEventCal {
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 		}
-		
+
 		$extrajoin = ( count( $extrajoin  ) ?  " \n LEFT JOIN ".implode( " \n LEFT JOIN ", $extrajoin ) : '' );
 		$extrawhere = ( count( $extrawhere ) ? ' AND '. implode( ' AND ', $extrawhere ) : '' );
 
@@ -846,7 +846,7 @@ class jIcalEventDB extends jEventCal {
 		. "\n WHERE ev.ev_id = '".$this->ev_id()."' "
 		. $extrawhere
                 // Should not need Group By but group_concat fields from location addon seems to cause a group by implicitly!!!
-                . "\n GROUP BY rpt.rp_id"        
+                . "\n GROUP BY rpt.rp_id"
 		. "\n ORDER BY rpt.startrepeat asc LIMIT 1" ;
 
 		$db->setQuery( $query );
@@ -856,13 +856,13 @@ class jIcalEventDB extends jEventCal {
 		// iCal agid uses GUID or UUID as identifier
 		if( $rows ){
 			$row = new jIcalEventRepeat($rows[0]);
-			$dispatcher = JEventDispatcher::getInstance();
-			$dispatcher->trigger( 'onDisplayCustomFields', array( &$row ));
+
+			JFactory::getApplication()->triggerEvent( 'onDisplayCustomFields', array( &$row ));
 		}
 		return $row;
 	}
-	
-	
+
+
 	function updateHits(){
 		// stop counter being updated repeatedly and in the wrong place
 		$task = JRequest::getCmd("jevtask", "");
@@ -916,9 +916,9 @@ class jIcalEventDB extends jEventCal {
 
 		// must only ever do this once!
 		if (isset($this->dtfixed) && $this->dtfixed) return;
-		
+
 		$this->dtfixed = 1;
-		
+
 		$db = JFactory::getDbo();
 
 		// Now get the first repeat since dtstart may have been set in a different timezeone and since it is a unixdate it would then be wrong
@@ -938,7 +938,7 @@ class jIcalEventDB extends jEventCal {
 				$this->dtstart($repeat->getUnixStartTime());
 				$this->dtend( $repeat->getUnixEndTime());
 				list($this->_yup, $this->_mup, $this->_dup, $this->_hup, $this->_minup, $this->_sup) = explode(":", str_replace(array("-"," "),":", $repeat->publish_up()));
-				list($this->_ydn, $this->_mdn, $this->_ddn, $this->_hdn, $this->_mindn, $this->_sup) = explode(":", str_replace(array("-"," "),":", $repeat->publish_down()));					
+				list($this->_ydn, $this->_mdn, $this->_ddn, $this->_hdn, $this->_mindn, $this->_sup) = explode(":", str_replace(array("-"," "),":", $repeat->publish_down()));
 			}
 			else {
 				// This is the scenario where the first repeat is an exception so check to see if we need to be worried
@@ -956,7 +956,7 @@ class jIcalEventDB extends jEventCal {
 						if (!$repeat2){
 							$this->dtstart($repeat->getUnixStartTime());
 							$this->dtend( $repeat->getUnixEndTime());
-							
+
 							JFactory::getApplication()->enqueueMessage(JText::_('JEV_PLEASE_CHECK_START_AND_END_TIMES_FOR_THIS_EVENT'));
 						}
 						else {
@@ -978,7 +978,7 @@ class jIcalEventDB extends jEventCal {
 							}
 							else {
 								// In this scenario we have no idea what the time should be unfortunately
-								
+
 								JFactory::getApplication()->enqueueMessage(JText::_('JEV_PLEASE_CHECK_START_AND_END_TIMES_FOR_THIS_EVENT'));
 
 								// switch timezone back

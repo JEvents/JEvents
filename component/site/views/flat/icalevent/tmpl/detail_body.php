@@ -25,11 +25,11 @@ if( array_key_exists('row',$this->data) ){
 	$mask = $this->data['mask'];
 	$page = 0;
 
-	$dispatcher	= JEventDispatcher::getInstance();
+	
 	$params =new JRegistry(null);
 
 	if (isset($row)) {
-		$customresults = $dispatcher->trigger( 'onDisplayCustomFields', array( &$row) );
+		$customresults = JFactory::getApplication()->triggerEvent( 'onDisplayCustomFields', array( &$row) );
 
 		// Dynamic Page Title
 		$this->setPageTitle($row->title());
@@ -48,7 +48,7 @@ if( array_key_exists('row',$this->data) ){
 				</div>
 			<?php
 		}
-		$results = $dispatcher->trigger( 'onAfterDisplayContent', array( &$row, &$params, $page ) );
+		$results = JFactory::getApplication()->triggerEvent( 'onAfterDisplayContent', array( &$row, &$params, $page ) );
 		echo trim( implode( "\n", $results ) );
 	}
 	else { ?>

@@ -103,20 +103,20 @@ class TableUser extends JTable
 
 		$db = JFactory::getDbo();
 		$search		= JFactory::getApplication()->getUserStateFromRequest( "usersearch{".JEV_COM_COMPONENT."}", 'search', '' );
-		$search		= $db->escape( trim( strtolower( $search ) ) );		
+		$search		= $db->escape( trim( strtolower( $search ) ) );
 		if($search != ""){
 			$where[] = " ( ju.name like '$search%' OR ju.username like '$search%')";
 		}
-		
+
 		JPluginHelper::importPlugin("jevents");
-		$dispatcher	= JEventDispatcher::getInstance();
-		$set = $dispatcher->trigger('getAuthorisedUser', array (& $where, & $join));
+
+		$set = JFactory::getApplication()->triggerEvent('getAuthorisedUser', array (& $where, & $join));
 
 		$orderdir = JRequest::getCmd("filter_order_Dir",'asc');
 		$order = JRequest::getCmd("filter_order",'tl.id');
 		$dir = $orderdir=="asc" ? "asc" : "desc";
 		$order = " ORDER BY ".$order." ".$orderdir;
-		
+
 		$sql = "SELECT tl.*, ju.name as jname, ju.username  FROM #__jev_users AS tl ";
 		$sql .= " LEFT JOIN #__users as ju ON tl.user_id=ju.id ";
 		$sql .= count($join)>0?implode(" ",$join):"";
@@ -163,10 +163,10 @@ class TableUser extends JTable
 	public static function getUserCount() {
 
 		JPluginHelper::importPlugin("jevents");
-		$dispatcher	= JEventDispatcher::getInstance();
+
 		$where = array();
 		$join = array();
-		$set = $dispatcher->trigger('getAuthorisedUser', array (& $where, & $join));
+		$set = JFactory::getApplication()->triggerEvent('getAuthorisedUser', array (& $where, & $join));
 
 		$db = JFactory::getDbo();
 		$sql = "SELECT tl.*, ju.name as jname, ju.username  FROM #__jev_users AS tl ";
@@ -192,10 +192,10 @@ class TableUser extends JTable
 		}
 
 		JPluginHelper::importPlugin("jevents");
-		$dispatcher	= JEventDispatcher::getInstance();
+
 		$where = array();
 		$join = array();
-		$set = $dispatcher->trigger('getAuthorisedUser', array (& $where, & $join));
+		$set = JFactory::getApplication()->triggerEvent('getAuthorisedUser', array (& $where, & $join));
 
 		$db = JFactory::getDbo();
 		$sql = "SELECT tl.*, ju.name as jname, ju.username  FROM #__jev_users AS tl ";

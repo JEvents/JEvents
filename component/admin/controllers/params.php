@@ -83,7 +83,7 @@ class AdminParamsController extends JControllerAdmin
                             // reset component id in any menu items and link to the old one
                             $db->setQuery("UPDATE #__menu set component_id=".$validExtensionId." WHERE component_id=".$jevcomponent->extension_id);
                             $db->execute();
-                            
+
                             // remove the older version
                             $db->setQuery("DELETE FROM #__extensions WHERE element='com_jevents' and type='component' and extension_id=".$jevcomponent->extension_id);
                             $db->execute();
@@ -91,7 +91,7 @@ class AdminParamsController extends JControllerAdmin
                         }
                     }
                 }
-                
+
 		// Backwards compatatbility
 		$table->id = $table->extension_id;
 		$table->option = $table->element;
@@ -146,7 +146,7 @@ class AdminParamsController extends JControllerAdmin
 			$sql = "DELETE FROM #__jevents_catmap";
 			$db->setQuery($sql);
 			$db->execute();
-			
+
 			$sql = "REPLACE INTO #__jevents_catmap (evid, catid) SELECT ev_id, catid from #__jevents_vevent WHERE catid in (SELECT id from #__categories where extension='com_jevents')";
 			$db->setQuery($sql);
 			$db->execute();
@@ -205,12 +205,12 @@ class AdminParamsController extends JControllerAdmin
 			'option' => $option
 		);
 		$return = $model->saveRules($data);
-		
+
 //                $db = JFactory::getDbo();
 //                $db->setQuery("Select * from #__extensions where element='com_jevents' and type='component'");
 //                $jevcomp = $db->loadObjectList();
 //               var_dump($jevcomp);exit();
-                
+
 		// Clear cache of com_config component.
 		$this->cleanCache('_system', 1); // admin
 		$this->cleanCache('_system', 0); // site
@@ -222,7 +222,7 @@ class AdminParamsController extends JControllerAdmin
 			$cacheController = JFactory::getCache('_system', 'callback');
 			$cacheController->cache->remove("com_jevents");
 		}
-		
+
                 foreach ($post['plugins'] as $folder=>$plugins) {
                     foreach ($plugins as $plugin => $pluginparams){
                         $table =  JTable::getInstance('extension');
@@ -246,9 +246,9 @@ class AdminParamsController extends JControllerAdmin
                                 JFactory::getApplication()->enqueueMessage('Error 500 - ' . $table->getError(), 'error');
                                 return false;
                         }
-                    }                    
+                    }
                 }
-                
+
 		//SAVE AND APPLY CODE FROM PRAKASH
 		switch ($this->getTask()) {
 			case 'apply':
@@ -289,7 +289,7 @@ class AdminParamsController extends JControllerAdmin
 	protected function cleanCache($group = null, $client_id = 0)
 	{
 		$conf = JFactory::getConfig();
-		$dispatcher = JEventDispatcher::getInstance();
+
 
 		$options = array(
 			'defaultgroup' => ($group) ? $group : (isset($this->option) ? $this->option : JFactory::getApplication()->input->get('option')),
@@ -300,7 +300,7 @@ class AdminParamsController extends JControllerAdmin
 
 		// Trigger the onContentCleanCache event.
 		$this->event_clean_cache = 'onContentCleanCache';
-		$dispatcher->trigger($this->event_clean_cache, $options);
+		JFactory::getApplication()->triggerEvent($this->event_clean_cache, $options);
 	}
-	
+
 }

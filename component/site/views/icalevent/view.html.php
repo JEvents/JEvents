@@ -163,13 +163,13 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 	function _adminStart()
 	{
 
-		$dispatcher = JEventDispatcher::getInstance();
+
 		list($this->year, $this->month, $this->day) = JEVHelper::getYMD();
 		$this->Itemid = JEVHelper::getItemid();
 		$this->datamodel = new JEventsDataModel();
-		$dispatcher->trigger('onJEventsHeader', array($this));
+		JFactory::getApplication()->triggerEvent('onJEventsHeader', array($this));
 		?>
-		<div style="clear:both"  
+		<div style="clear:both"
 		<?php
 		$mainframe = JFactory::getApplication();
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
@@ -201,8 +201,8 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		    ?>
 		</div>
 		    <?php
-		    $dispatcher = JEventDispatcher::getInstance();
-		    $dispatcher->trigger('onJEventsFooter', array($this));
+
+		    JFactory::getApplication()->triggerEvent('onJEventsFooter', array($this));
 	    }
 
 	    function toolbarButton($task = '', $icon = '', $iconOver = '', $alt = '', $listSelect = true)
@@ -334,4 +334,4 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 	    }
 
     }
-    
+

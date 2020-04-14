@@ -15,8 +15,8 @@ JevViewCopyright(); ?>
 </div>
 </div> <!-- close #jevents //-->
 <?php
-	$dispatcher	= JEventDispatcher::getInstance();
-	$dispatcher->trigger( 'onJEventsFooter');
+	
+	JFactory::getApplication()->triggerEvent( 'onJEventsFooter');
 
 	$task = $jinput->getString("jevtask");
 	$view->loadModules("jevpostjevents");

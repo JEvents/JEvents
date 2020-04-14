@@ -20,7 +20,7 @@ class iCalEvent extends JTable  {
 	var $ev_id					= null;
 
 	/**
-	 * This holds the raw data as an array 
+	 * This holds the raw data as an array
 	 *
 	 * @var array
 	 */
@@ -114,7 +114,7 @@ class iCalEvent extends JTable  {
 
 		// place private reference to created_by in event detail in case needed by plugins
 		$this->_detail->_created_by = $this->created_by ;
-				
+
 		$db = JFactory::getDbo();
 		$detailid = $this->_detail->store($updateNulls);
 
@@ -161,16 +161,16 @@ class iCalEvent extends JTable  {
 				$success = $db->execute();
 			}
 		}
-		
+
 		// I also need to store custom data - when we need the event itself and not just the detail
-		$dispatcher	= JEventDispatcher::getInstance();
+
 		// just incase we don't have jevents plugins registered yet
 		JPluginHelper::importPlugin("jevents");
-		$res = $dispatcher->trigger( 'onStoreCustomEvent' , array(&$this));
+		$res = JFactory::getApplication()->triggerEvent( 'onStoreCustomEvent' , array(&$this));
 
 		// some iCal imports do not provide an RRULE entry so create an empty one here
 		if (!isset($this->rrule)) {
-			$this->rrule = iCalRRule::iCalRRuleFromData(array("FREQ"=>"none"));		
+			$this->rrule = iCalRRule::iCalRRuleFromData(array("FREQ"=>"none"));
 		}
 		$this->rrule->eventid = $this->ev_id;
 		if($id = $this->rrule->isDuplicate()){
@@ -178,7 +178,7 @@ class iCalEvent extends JTable  {
 		}
 		$this->rrule->store($updateNulls);
 		echo $db->getErrorMsg()."<br/>";
-		
+
 		return true;
 	}
 
@@ -195,7 +195,7 @@ class iCalEvent extends JTable  {
 
 	function matchingEventDetails(){
 		// no need to look more than once if I've already changed the data
-		if (isset($this->_matched)){ 
+		if (isset($this->_matched)){
 			return;
 		}
 		$uid = str_replace("'", "", $this->uid);
@@ -271,7 +271,7 @@ class iCalEvent extends JTable  {
 
 
 	/**
-	 * Converts $data into class values 
+	 * Converts $data into class values
 	 *
 	 */
 	function convertData(){
@@ -372,7 +372,7 @@ else $this->_detail = false;
 			// $this->_detail->dtstart assumed that the time was in our default timezone via jevdate::strtotime
                         $repeat->startrepeat = JevDate::strftime('%Y-%m-%d %H:%M:%S',$this->_detail->dtstart);
                         $repeat->endrepeat = JevDate::strftime('%Y-%m-%d %H:%M:%S',$this->_detail->dtend);
-			
+
                         // If it is in a non-default timezone then we must change the start and end repeats
 			// so that the stored times are in our default timezone!
                         if ($this->tzid) {
@@ -384,14 +384,14 @@ else $this->_detail = false;
 				$testdate->setTimezone(new DateTimeZone(@date_default_timezone_get()));
 				$repeat->endrepeat = $testdate->format('Y-m-d H:i:s');
                         }
-                        
+
                         $repeat->duplicatecheck = md5($repeat->eventid . $this->_detail->dtstart);
 			$this->_repetitions[] = $repeat;
 			return $this->_repetitions;
 		}
 		else {
 			$this->_repetitions = $this->rrule->getRepetitions($this->_detail->dtstart,$this->_detail->dtend,$this->_detail->duration, $recreate,$this->_exdate);
-                        
+
                         // is it in a non-default timezone
                         if ($this->tzid) {
                             foreach ($this->_repetitions as &$repeat){
@@ -405,7 +405,7 @@ else $this->_detail = false;
                                 unset($repeat);
                             }
                         }
-                        
+
 			return $this->_repetitions;
 		}
 	}
@@ -436,7 +436,7 @@ else $this->_detail = false;
 	 */
 	function adjustRepetition($matchingEvent){
 		$eventid = $this->ev_id;
-		
+
 		$tz = false;
 		if (JString::stristr($this->recurrence_id,"TZID")){
 			list($tz, $this->recurrence_id) = explode(";", $this->recurrence_id);
@@ -515,10 +515,10 @@ else $this->_detail = false;
 			$db->execute();
 
 			// I also need to clean out associated custom data
-			$dispatcher	= JEventDispatcher::getInstance();
+
 			// just incase we don't have jevents plugins registered yet
 			JPluginHelper::importPlugin("jevents");
-			$res = $dispatcher->trigger( 'onDeleteEventDetails' , array($idlist));
+			$res = JFactory::getApplication()->triggerEvent( 'onDeleteEventDetails' , array($idlist));
 
 		}
 

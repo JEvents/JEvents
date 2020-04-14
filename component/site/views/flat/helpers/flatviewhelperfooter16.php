@@ -29,8 +29,8 @@ $jinput = JFactory::getApplication()->input;
 	</div>
 	</div>
 	<?php
-	$dispatcher = JEventDispatcher::getInstance();
-	$dispatcher->trigger('onJEventsFooter');
+
+	JFactory::getApplication()->triggerEvent('onJEventsFooter');
 
 	$task = $jinput->getString('jevtask', '');
 	$view->loadModules("jevpostjevents");
@@ -45,5 +45,5 @@ $jinput = JFactory::getApplication()->input;
 		// It is definitely now created, lets load it!
 		JEVHelper::stylesheet('jevcustom.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
 	}
-	
+
 }

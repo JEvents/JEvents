@@ -42,7 +42,6 @@ class AdminIcaleventController extends JControllerAdmin
 		$this->dataModel = new JEventsDataModel("JEventsAdminDBModel");
 		$this->queryModel = new JEventsDBModel($this->dataModel);
 
-		$dispatcher = JEventDispatcher::getInstance();
 		JPluginHelper::importPlugin('finder');
 
 	}
@@ -252,7 +251,7 @@ class AdminIcaleventController extends JControllerAdmin
 		else if ($state == -1)
 		{
 			$where[] = "\n ev.state=-1";
-		} 
+		}
                 else if ($state == 3){
                     $where[] = "\n (ev.state=1 OR ev.state=0)";
                 }
@@ -629,11 +628,11 @@ class AdminIcaleventController extends JControllerAdmin
 		$this->view->assign('clist', $clist);
 		$this->view->assign('repeatId', $repeatId);
 		$this->view->assign('glist', $glist);
-		
+
 		// for Admin interface only
 		$this->view->assign('with_unpublished_cat', JFactory::getApplication()->isAdmin());
 		$this->view->assignRef('dataModel', $this->dataModel);
-		
+
 		// Keep following fields for backwards compataibility only
 		// only those who can publish globally can set priority field
 		if (JEVHelper::isEventPublisher(true))
@@ -1055,7 +1054,7 @@ class AdminIcaleventController extends JControllerAdmin
 			{
 				ob_end_clean();
 				?>
-				<script type="text/javascript">				
+				<script type="text/javascript">
 					window.parent.alert("<?php echo $msg; ?>");
 					window.location="<?php echo JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=icalevent.edit&evid=$evid&rp_id=$rp_id&year=$year&month=$month&day=$day&Itemid=$Itemid", false); ?>";
 				</script>
@@ -1129,7 +1128,7 @@ class AdminIcaleventController extends JControllerAdmin
 		}
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-                
+
 		// clean out the cache
 		$cache = JFactory::getCache('com_jevents');
 		$cache->clean(JEV_COM_COMPONENT);
@@ -1354,10 +1353,9 @@ class AdminIcaleventController extends JControllerAdmin
 		}
 
 		// I also need to trigger any onpublish event triggers
-		$dispatcher = JEventDispatcher::getInstance();
 		// just incase we don't have jevents plugins registered yet
 		JPluginHelper::importPlugin("jevents");
-		$res = $dispatcher->trigger('onPublishEvent', array($cid, $newstate));
+		$res = JFactory::getApplication()->triggerEvent('onPublishEvent', array($cid, $newstate));
 
 		if (JFactory::getApplication()->isAdmin())
 		{
@@ -1424,7 +1422,7 @@ class AdminIcaleventController extends JControllerAdmin
 				throw new Exception( JText::_('ALERTNOTAUTH'). " 4", 403);
 				return false;
                         }
-                            
+
 			$sql = "UPDATE #__jevents_vevent SET state=$newstate where ev_id='" . $id . "'";
 			$db->setQuery($sql);
 			$db->execute();
@@ -1441,10 +1439,9 @@ class AdminIcaleventController extends JControllerAdmin
 		}
 
 		// I also need to trigger any onpublish event triggers
-		$dispatcher = JEventDispatcher::getInstance();
 		// just incase we don't have jevents plugins registered yet
 		JPluginHelper::importPlugin("jevents");
-		$res = $dispatcher->trigger('onPublishEvent', array($cid, $newstate));
+		$res = JFactory::getApplication()->triggerEvent('onPublishEvent', array($cid, $newstate));
 		$pub_filter = $jinput->get('published_fv', 0);
 
 		if (JFactory::getApplication()->isAdmin())
@@ -1539,10 +1536,9 @@ class AdminIcaleventController extends JControllerAdmin
 				$db->execute();
 
 				// I also need to clean out associated custom data
-				$dispatcher = JEventDispatcher::getInstance();
 				// just incase we don't have jevents plugins registered yet
 				JPluginHelper::importPlugin("jevents");
-				$res = $dispatcher->trigger('onDeleteEventDetails', array($detailidstring));
+				$res = JFactory::getApplication()->triggerEvent('onDeleteEventDetails', array($detailidstring));
 			}
 
 			$query = "DELETE FROM #__jevents_vevent WHERE ev_id IN ($veventidstring)";
@@ -1550,10 +1546,9 @@ class AdminIcaleventController extends JControllerAdmin
 			$db->execute();
 
 			// I also need to delete custom data
-			$dispatcher = JEventDispatcher::getInstance();
 			// just incase we don't have jevents plugins registered yet
 			JPluginHelper::importPlugin("jevents");
-			$res = $dispatcher->trigger('onDeleteCustomEvent', array(&$veventidstring));
+			$res = JFactory::getApplication()->triggerEvent('onDeleteCustomEvent', array(&$veventidstring));
 
 			if (JFactory::getApplication()->isAdmin())
 			{

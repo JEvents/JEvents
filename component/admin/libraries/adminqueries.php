@@ -7,7 +7,7 @@
  * @copyright   Copyright (C)  2008-2019 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
- */ 
+ */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
@@ -18,7 +18,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
 
 	/**
  * gets raw vevent (not a rpt) usually for editing purposes
- * 
+ *
  *
  * @param int $agid vevent id
  * @return stdClass details of vevent selected
@@ -28,8 +28,8 @@ class JEventsAdminDBModel extends JEventsDBModel {
 		$user = JFactory::getUser();
 		// force state value to event state!
 		$accessibleCategories = $this->accessibleCategoryList();
-		
-		
+
+
 		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
 		$extrajoin = "";
 		$extrawhere = "";
@@ -42,7 +42,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
 			$extrawhere .= " AND catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$catwhere = "\n WHERE 1 ";
 		}
-		
+
 		// in case we have an event with no category set for some reason
 		// $accessibleCategories .= ",0";
 		$query = "SELECT ev.*,rr.*, det.*, ev.state as state"
@@ -51,7 +51,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
 		. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
 		. $extrajoin
 		. $catwhere
-		. $extrawhere				
+		. $extrawhere
 		. "\n AND ev.ev_id = '$agid'";
 		if (!$user->get("isRoot")){
 			$query .= "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user));
@@ -59,9 +59,9 @@ class JEventsAdminDBModel extends JEventsDBModel {
 		$db->setQuery( $query );
 
 		$rows = $db->loadObjectList();
-		
+
 		if (count($rows)>0){
-			
+
 			// check multi-category access
 			// do not use jev_com_component incase we call this from locations etc.
 			$params = JComponentHelper::getParams(JRequest::getCmd("option"));
@@ -70,7 +70,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
 				$db->setQuery("SELECT catid FROM #__jevents_catmap WHERE evid=".$rows[0]->ev_id . " ORDER BY ordering ASC");
 				$catids = $db->loadColumn();
 
-				// are there any catids not in list of accessible Categories 
+				// are there any catids not in list of accessible Categories
 				$inaccessiblecats = array_diff($catids, explode(",",$accessibleCategories));
 				if (count($inaccessiblecats )){
 					$inaccessiblecats[] = -1;
@@ -109,7 +109,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
 				}
 				$rows[0]->catids = $catids;
 			}
-			
+
 			return $rows[0];
 		}
 		else return null;
@@ -135,9 +135,9 @@ class JEventsAdminDBModel extends JEventsDBModel {
 		$db->setQuery( $query );
 
 		$rows = $db->loadObjectList();
-		
+
 		if (count($rows)>0){
-			
+
 			// check multi-category access
 			// do not use jev_com_component incase we call this from locations etc.
 			$params = JComponentHelper::getParams(JRequest::getCmd("option"));
@@ -146,14 +146,14 @@ class JEventsAdminDBModel extends JEventsDBModel {
 				$db->setQuery("SELECT catid FROM #__jevents_catmap WHERE evid=".$rows[0]->ev_id);
 				$catids = $db->loadColumn();
 
-				// are there any catids not in list of accessible Categories 
+				// are there any catids not in list of accessible Categories
 				$inaccessiblecats = array_diff($catids, explode(",",$accessibleCategories));
 				if (count($inaccessiblecats )){
 					return null;
 				}
 				$rows[0]->catids = $catids;
 			}
-			
+
 			return $rows[0];
 		}
 		else return null;
@@ -174,13 +174,13 @@ class JEventsAdminDBModel extends JEventsDBModel {
 		$query = "SELECT *"
 		. "\n FROM #__jevents_icsfile as ical"
 		. "\n WHERE ical.icaltype = '2'"
-		. "\n AND ical.state = 1"		
+		. "\n AND ical.state = 1"
 		. "\n AND ical.access  " .' IN (' . JEVHelper::getAid($user) . ')';
                 $query .= "\n ORDER BY isdefault desc, label asc"  ;
-                
-		$dispatcher	= JEventDispatcher::getInstance();
-		$dispatcher->trigger( 'onSelectIcals', array( &$query) );		
-		
+
+
+		JFactory::getApplication()->triggerEvent( 'onSelectIcals', array( &$query) );
+
 		$db->setQuery( $query );
 		$rows = $db->loadObjectList("ics_id");
 

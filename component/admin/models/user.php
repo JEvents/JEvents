@@ -35,14 +35,14 @@ class AdminUserModelUser extends JModelLegacy
 	 * @access private
 	 */
 	var $_users = null;
-	
+
 	/**
 	 * Pagination object
 	 *
 	 * @var object
 	 */
 	var $_pagination = null;
-	
+
 	/**
 	 * default constrcutor
 	 */
@@ -60,10 +60,10 @@ class AdminUserModelUser extends JModelLegacy
 		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
 
 		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);		
+		$this->setState('limitstart', $limitstart);
 	}
-	
-	
+
+
 	/**
 	 * return the model name
 	 */
@@ -88,7 +88,7 @@ class AdminUserModelUser extends JModelLegacy
 
 		return $this->_pagination;
 	}
-	
+
 	/**
 	 * generic method to load the user related data
 	 * @return array of users
@@ -96,11 +96,11 @@ class AdminUserModelUser extends JModelLegacy
 	function getUsers() {
 		TableUser::checkTable();
 		if($this->_users == null) {
-			$this->_loadUsers(); 
+			$this->_loadUsers();
 		}
 		return $this->_users;
 	}
-		
+
 	/**
 	 * generic method to load the user related data
 	 * @return array of users
@@ -125,7 +125,7 @@ class AdminUserModelUser extends JModelLegacy
 	function store($cid, $data) {
 		$user = new TableUser();
 		if ($cid>0){
-			$user->load($cid);	
+			$user->load($cid);
 		}
 		// fix the calendars and categories fields
 		if ($data['calendars']=='select') $data['calendars']=array();
@@ -133,23 +133,23 @@ class AdminUserModelUser extends JModelLegacy
 		$success =  $user->save($data);
 		if ($success){
 			JPluginHelper::importPlugin("jevents");
-			$dispatcher	= JEventDispatcher::getInstance();
-			$set = $dispatcher->trigger('afterSaveUser', array ($user));
+
+			$set = JFactory::getApplication()->triggerEvent('afterSaveUser', array ($user));
 	}
 		return $success;
 	}
-	
+
 	function gettotal(){
 		return TableUser::getUserCount();
 	}
-	
+
 	/**
 	 * Method to load the users in the system
-	 * 
+	 *
 	 * @return void
 	 */
 	function _loadUsers(){
-		$this->_users= TableUser::getUsers();	
+		$this->_users= TableUser::getUsers();
 	}
-			
+
 }

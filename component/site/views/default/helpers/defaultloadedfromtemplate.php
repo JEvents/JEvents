@@ -311,9 +311,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			static $pluginscalled = array();
 			if (!isset($pluginscalled[$event->rp_id()]))
 			{
-				$dispatcher = JEventDispatcher::getInstance();
+				
 				JPluginHelper::importPlugin("jevents");
-				$customresults                  = $dispatcher->trigger('onDisplayCustomFields', array(&$event));
+				$customresults                  = JFactory::getApplication()->triggerEvent('onDisplayCustomFields', array(&$event));
 				$pluginscalled[$event->rp_id()] = $event;
 			}
 			else
@@ -1576,7 +1576,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					{
 						if (JString::strpos($event->contact_info(), '<script') === false)
 						{
-							$dispatcher = JEventDispatcher::getInstance();
+							
 							JPluginHelper::importPlugin('content');
 
 							//Contact
@@ -1593,7 +1593,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 							$tmprow->event = $event;
 							$dispatcher    = JEventDispatcher::getInstance();
 							JPluginHelper::importPlugin('content');
-							$dispatcher->trigger('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
+							JFactory::getApplication()->triggerEvent('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
 							// Make sure each instance is replaced properly
 							// New Joomla code for mail cloak only works once on a page !!!
 							// Random number
@@ -1624,7 +1624,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				//Extra
 				if (JString::strpos($event->extra_info(), '<script') === false && $event->extra_info() != "")
 				{
-					$dispatcher = JEventDispatcher::getInstance();
+					
 					JPluginHelper::importPlugin('content');
 
 					$pattern = '[a-zA-Z0-9&?_.,=%\-\/#]';
@@ -2021,7 +2021,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	$tmprow->event  = $event;
 	$dispatcher     = JEventDispatcher::getInstance();
 	JPluginHelper::importPlugin('content');
-	$dispatcher->trigger('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
+	JFactory::getApplication()->triggerEvent('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
 
 	$template_value = $tmprow->text;
 	$template_value = str_replace("@£@", "@", $template_value);

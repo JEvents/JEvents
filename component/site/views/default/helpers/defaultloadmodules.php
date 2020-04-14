@@ -15,8 +15,8 @@ function DefaultLoadModules($view, $position)
 	$params = JComponentHelper::getParams("com_content");
 
 	JPluginHelper::importPlugin('content');
-	$dispatcher	= JEventDispatcher::getInstance();
-	$results = $dispatcher->trigger('onContentPrepare', array('com_content.article', &$article, &$params, 0));
+
+	$results = JFactory::getApplication()->triggerEvent('onContentPrepare', array('com_content.article', &$article, &$params, 0));
 
         if ($article->text == "{loadposition $position}"){
 		// in case the content plugin is not enabled

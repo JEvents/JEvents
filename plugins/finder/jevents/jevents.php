@@ -283,8 +283,8 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		$item->url = "index.php?option=com_jevents&task=icalevent.detail&evid=".$item->eventid."&Itemid=".$itemid;//$this->getURL($item->id, $this->extension, $this->layout);
 		$item->route = "index.php?option=com_jevents&task=icalevent.detail&evid=".$item->eventid."&Itemid=".$itemid;
 
-		include_once(JPATH_SITE . "/components/com_jevents/jevents.defines.php");		
-		
+		include_once(JPATH_SITE . "/components/com_jevents/jevents.defines.php");
+
 		$item->path = FinderIndexerHelper::getContentPath($item->route);
 		// get the data and query models
 		$dataModel = new JEventsDataModel();
@@ -295,8 +295,8 @@ class plgFinderJEvents extends FinderIndexerAdapter
 
 		if (isset($theevent[0]) && $theevent[0]) {
 			JPluginHelper::importPlugin('jevents');
-			$dispatcher = JEventDispatcher::getInstance();
-			$dispatcher->trigger('onJevFinderIndexing', array(&$theevent));
+
+			JFactory::getApplication()->triggerEvent('onJevFinderIndexing', array(&$theevent));
 		}
 
 		$theevent = count($theevent) === 1 ? $theevent[0] : $theevent;
@@ -323,7 +323,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		{
 			$item->publish_end_date = "2099-12-31 00:00:00";
 		}
-		
+
 		// If the timelimit plugin has values set let's overrride the previous values.
 		if (isset($theevent->timelimits) && !empty($theevent->timelimits)) {
 			// Must change to correct timezone - GMT in finder tables
@@ -338,7 +338,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 				$gmtsql = $date->format('Y-m-d H:i:s');
 
 				$item->publish_start_date   = $gmtsql;
-			} 
+			}
 			if ($theevent->timelimits->endlimit) {
 				//$date = new JevDate($theevent->timelimits->endlimit, $jtz);
 				//$sql = $date->toMySQL();
@@ -349,7 +349,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 				$item->publish_end_date     = $gmtsql;
 			}
 		}
-		
+
 
 		// title is already set
 		//$item->title;
@@ -424,7 +424,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		$sql->select('c.title AS category, c.published AS cat_state, c.access AS cat_access');
 		$sql->select('u.name AS author');
 		$sql->select('evt.state AS state');
-		
+
 		$sql->from('#__jevents_vevdetail AS det');
 		$sql->leftjoin('#__jevents_repetition  AS rpt ON rpt.eventdetail_id=det.evdet_id');
 		$sql->leftjoin('#__jevents_vevent AS evt ON rpt.eventid=evt.ev_id');

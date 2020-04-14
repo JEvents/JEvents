@@ -98,12 +98,12 @@ class JEV_CommonFunctions {
 			}
 			unset ($cat);
 
-			$dispatcher	= JEventDispatcher::getInstance();
-			$dispatcher->trigger('onGetCategoryData', array (& $cats));
+
+			JFactory::getApplication()->triggerEvent('onGetCategoryData', array (& $cats));
 
 		}
-		$dispatcher	= JEventDispatcher::getInstance();
-		$dispatcher->trigger('onGetAccessibleCategories', array (& $cats, false));
+
+		JFactory::getApplication()->triggerEvent('onGetAccessibleCategories', array (& $cats, false));
 
 
 		return $cats;
@@ -298,8 +298,8 @@ class JEV_CommonFunctions {
 
 		// attach anonymous creator etc.
 		JPluginHelper::importPlugin('jevents');
-		$dispatcher	= JEventDispatcher::getInstance();
-		$dispatcher->trigger( 'onDisplayCustomFields', array( &$event) );
+
+		JFactory::getApplication()->triggerEvent( 'onDisplayCustomFields', array( &$event) );
 
 		$rp_id = $testevent->rp_id();
 
@@ -448,8 +448,8 @@ class JEV_CommonFunctions {
 
 		// attach anonymous creator etc.
 		JPluginHelper::importPlugin('jevents');
-		$dispatcher	= JEventDispatcher::getInstance();
-		$dispatcher->trigger( 'onDisplayCustomFields', array( &$event) );
+
+		JFactory::getApplication()->triggerEvent( 'onDisplayCustomFields', array( &$event) );
 
 		if (!isset($event->authoremail) && $params->get('email_replyto', 0) == 1) {
 			$mail->addReplyTo($adminEmail);
@@ -485,7 +485,7 @@ class JEV_CommonFunctions {
 		if ($event){
 			$dispatcher     = JEventDispatcher::getInstance();
 			JPluginHelper::importPlugin("jevents");
-			$res = $dispatcher->trigger( 'onSendAdminMail' , array(&$mail, $event));
+			$res = JFactory::getApplication()->triggerEvent( 'onSendAdminMail' , array(&$mail, $event));
 		}
 
 		if ($cc!=""){

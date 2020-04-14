@@ -394,8 +394,8 @@ class JEventsHTML
 				}
 			}
 
-			$dispatcher = JEventDispatcher::getInstance();
-			$dispatcher->trigger('onGetAccessibleCategoriesForEditing', array(& $cats));
+
+			JFactory::getApplication()->triggerEvent('onGetAccessibleCategoriesForEditing', array(& $cats));
 
 			// allow anon-user event creation through
 			if (isset($user->id) && $user->id > 0)
@@ -430,7 +430,7 @@ class JEventsHTML
 		}
 		else
 		{
-			
+
 		}
 		// if only one category then preselect it
 		if (count($options) == 1)
@@ -1093,4 +1093,4 @@ class JEventsHTML
 	    }
 
     }
-    
+

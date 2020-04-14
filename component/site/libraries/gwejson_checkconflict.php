@@ -16,7 +16,7 @@ function ProcessJsonRequest(&$requestObject, $returnData){
 		JRequest::setVar("Itemid", $ttItemid);
 		$menu->setActive($ttItemid);
 	}
-    
+
 	$returnData->allclear = 1;
 
 	ini_set("display_errors", 0);
@@ -36,7 +36,7 @@ function ProcessJsonRequest(&$requestObject, $returnData){
 	if (JEVHelper::isEventDeletor(true) && isset($requestObject->formdata->overlapoverride) && $requestObject->formdata->overlapoverride==1){
 		return $returnData;
 	}
-	
+
 	// Enforce referrer
 	if (!$params->get("skipreferrer", 0))
 	{
@@ -156,12 +156,12 @@ function simulateSaveEvent($requestObject)
 		$k = str_replace("[]", "", $k);
 		$formdata[$k] = $v;
 	}
-	
+
 	// If the allow HTML flag is set, apply a safe HTML filter to the variable
 	//	$array = JRequest::_cleanVar($formdata, JREQUEST_ALLOWHTML);
 	$safeHtmlFilter = JFilterInput::getInstance(null, null, 1, 1);
 	$array = $safeHtmlFilter->clean($formdata, null);
-		
+
 
 	$dataModel = new JEventsDataModel("JEventsAdminDBModel");
 	$queryModel = new JEventsDBModel($dataModel);
@@ -258,14 +258,14 @@ function simulateSaveRepeat($requestObject)
 	$data["DESCRIPTION"] = valueIfExists($array, "jevcontent", "", 'request', 'html', 2);
 	$data["publish_down"] = valueIfExists($array, "publish_down", "2006-12-12");
 	$data["publish_up"] = valueIfExists($array, "publish_up", "2006-12-12");
-	
+
 	if (isset($array["publish_down2"]) && $array["publish_down2"]){
 		$data["publish_down"] = $array["publish_down2"];
 	}
 	if (isset($array["publish_up2"]) && $array["publish_up2"]){
 		$data["publish_up"] = $array["publish_up2"];
 	}
-	
+
 	$interval = valueIfExists($array, "rinterval", 1);
 	$data["SUMMARY"] = valueIfExists($array, "title", "");
 
@@ -396,7 +396,7 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 		else {
 			$skipCatTest = true;
 		}
-		
+
 		if (!$skipCatTest)
 		{
 			foreach ($testevent->repetitions as $repeat)
@@ -422,7 +422,7 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 				if ($params->get("multicategory", 0))
 				{
 					 $sql .= " AND  catmap.catid IN(" . implode(",",$catids) . ") GROUP BY rpt.rp_id";
-					
+
 				}
 				else {
 					$sql .= " AND (evt.catid=" . $testevent->catid() . ") GROUP BY rpt.rp_id";
@@ -450,10 +450,10 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 				}
 			}
 		}
-		
+
 		// Next check for Calendar overlaps
 		$db = JFactory::getDbo();
-		$db->setQuery("SELECT * FROM #__jevents_icsfile WHERE ics_id = ".$testevent->icsid());		
+		$db->setQuery("SELECT * FROM #__jevents_icsfile WHERE ics_id = ".$testevent->icsid());
 		$calinfo = $db->loadObject();
 		if ($calinfo && intval($calinfo->overlaps)==1)
 		{
@@ -479,11 +479,11 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 				}
 			}
 		}
-		
+
 	}
 
-	$dispatcher = JEventDispatcher::getInstance();
-	$dispatcher->trigger('onCheckEventOverlaps', array(&$testevent, &$overlaps, $eventid, $requestObject));
+
+	JFactory::getApplication()->triggerEvent('onCheckEventOverlaps', array(&$testevent, &$overlaps, $eventid, $requestObject));
 
 	return $overlaps;
 
@@ -524,7 +524,7 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject)
 		if (!$catids){
 			$catids = array($repeat->event->catid());
 		}
-		
+
 		$skipCatTest = false;
 		$catinfo = $dbModel->getCategoryInfo($catids);
 		if ($catinfo && count($catinfo) >0)
@@ -572,7 +572,7 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject)
 				$sql .= " AND (evt.catid=" . $repeat->event->catid() . ") GROUP BY rpt.rp_id";
 			}
 			$sql .= " LIMIT 100";
-			
+
 			$db->setQuery($sql);
 			$conflicts = $db->loadObjectList();
 			if ($conflicts && count($conflicts) > 0)
@@ -596,8 +596,8 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject)
 		}
 	}
 
-	$dispatcher = JEventDispatcher::getInstance();
-	$dispatcher->trigger('onCheckRepeatOverlaps', array(&$repeat, &$overlaps, $eventid, $requestObject));
+
+	JFactory::getApplication()->triggerEvent('onCheckRepeatOverlaps', array(&$repeat, &$overlaps, $eventid, $requestObject));
 
 	return $overlaps;
 

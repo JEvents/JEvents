@@ -238,10 +238,10 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		}
 		$this->form->setFieldAttribute("description", "buttons", "false");
 
-                
-                $dispatcher = JEventDispatcher::getInstance();
-                $dispatcher->trigger('onTranslateEvent', array(&$this->row, $lang), true);
-                                
+
+
+                JFactory::getApplication()->triggerEvent('onTranslateEvent', array(&$this->row, $lang), true);
+
 		$this->addTranslationToolbar();
 	}
 
@@ -263,9 +263,9 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 		// Add a standard button
 		$bar->appendButton('confirm', JText::_("JEV_DELETE_TRANSLATION_WARNING"),  'trash',  'JEV_DELETE', "icalevent.deletetranslation", false);
-		
+
 	}
-	
+
 	function csvimport($tpl = null)
 	{
 
@@ -343,7 +343,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 				$db->setQuery($sql);
 				$userCount = $db->loadResult();
 
-				if ($userCount<=200) {                                
+				if ($userCount<=200) {
                                     $sql = "SELECT * FROM #__users where id IN (" . implode(",", array_values($users)) . ") and block=0 ORDER BY name asc";
                                     $db->setQuery($sql);
                                     $users = $db->loadObjectList();
@@ -351,7 +351,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
                                 else {
                                     return null;
                                 }
-                                    
+
 			}
 
 			// get list of creators - if fewer than 200

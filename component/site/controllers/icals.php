@@ -73,7 +73,7 @@ class ICalsController extends AdminIcalsController
 
 		$view = "icals";
 		$this->addViewPath($this->_basePath . '/' . "views" . '/' . $theme);
-		$this->view = $this->getView($view,$viewType, $theme."View", 
+		$this->view = $this->getView($view,$viewType, $theme."View",
 				array('base_path' => $this->_basePath,
 					"template_path" => $this->_basePath . '/' . "views" . '/' . $theme . '/' . $view . '/' . 'tmpl',
 					"name" => $theme . '/' . $view));
@@ -142,7 +142,7 @@ class ICalsController extends AdminIcalsController
 			// ensure "user" can access non-public categories etc.
 			$this->dataModel->aid = JEVHelper::getAid($puser);
 			$this->dataModel->accessuser = $puser->get('id');
-			
+
 			$registry = JRegistry::getInstance("jevents");
 			$registry->set("jevents.icaluser", $puser);
 		}
@@ -216,7 +216,7 @@ class ICalsController extends AdminIcalsController
 		}
 		$this->dataModel->setupComponentCatids();
 
-		$dispatcher = JEventDispatcher::getInstance();
+
 		// just incase we don't have jevents plugins registered yet
 		JPluginHelper::importPlugin("jevents");
 
@@ -237,7 +237,7 @@ class ICalsController extends AdminIcalsController
 				if (!array_key_exists($row->ev_id(), $icalEvents))
 				{
 
-					$dispatcher->trigger('onExportRow', array(&$row));
+					JFactory::getApplication()->triggerEvent('onExportRow', array(&$row));
 					$icalEvents[$row->ev_id()] = $row;
 
 					// Parse Content Plugins for Description
@@ -312,7 +312,7 @@ class ICalsController extends AdminIcalsController
 
 		$view = "icals";
 		$this->addViewPath($this->_basePath . '/' . "views" . '/' . $theme);
-		$this->view = $this->getView($view,$viewType, $theme."View", 
+		$this->view = $this->getView($view,$viewType, $theme."View",
 				array('base_path' => $this->_basePath,
 					"template_path" => $this->_basePath . '/' . "views" . '/' . $theme . '/' . $view . '/' . 'tmpl',
 					"name" => $theme . '/' . $view));
@@ -345,7 +345,7 @@ class ICalsController extends AdminIcalsController
 			// Find which categories to exclude
 			$db = JFactory::getDbo();
 			$catsql = 'SELECT id  FROM #__categories WHERE id NOT IN (' . str_replace("|", ",", $jevuser->categories) . ') AND extension="com_jevents"';
-			
+
 			$db->setQuery($catsql);
 			$excats = implode(",", $db->loadColumn());
 		}
@@ -512,8 +512,8 @@ class ICalsController extends AdminIcalsController
 			return;
 
 		list($year, $month, $day) = JEVHelper::getYMD();
-		$repeat = $this->dataModel->getEventData($rpid, "icaldb", $year, $month, $day);	
-				
+		$repeat = $this->dataModel->getEventData($rpid, "icaldb", $year, $month, $day);
+
 		if ($repeat && is_array($repeat) && isset($repeat["row"]) && $repeat["row"]->rp_id() == $rpid)
 		{
 			$a = $repeat["row"];
@@ -524,13 +524,13 @@ class ICalsController extends AdminIcalsController
 				$a = $a->getOriginalFirstRepeat();
 			}
 			if (!$a) return;
-			
+
 			JRequest::setVar("tmpl", "component");
-		
-			//$dispatcher = JEventDispatcher::getInstance();
+
+			//
 			// just incase we don't have jevents plugins registered yet
 			//JPluginHelper::importPlugin("jevents");
-			//$dispatcher->trigger('onExportRow', array(&$row));
+			//JFactory::getApplication()->triggerEvent('onExportRow', array(&$row));
 			$icalEvents = array();
 			$icalEvents[$a->ev_id()] = $a;
 
@@ -543,7 +543,7 @@ class ICalsController extends AdminIcalsController
 			$this->view->assign("withrepeats", $withrepeats);
 
 			$this->view->export();
-			return;			
+			return;
 		}
 
 	}

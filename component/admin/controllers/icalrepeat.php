@@ -36,9 +36,9 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$this->dataModel = new JEventsDataModel("JEventsAdminDBModel");
 		$this->queryModel = new JEventsDBModel($this->dataModel);
 
-		$dispatcher	= JEventDispatcher::getInstance();
-		JPluginHelper::importPlugin('finder');		
-		
+
+		JPluginHelper::importPlugin('finder');
+
 	}
 
 	/**
@@ -138,7 +138,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 	{
 		// get the view
 		$this->view = $this->getView("icalrepeat", "html");
- 
+
                 // Get/Create the model
 		if ($model = $this->getModel("icalevent", "icaleventsModel"))
 		{
@@ -272,13 +272,13 @@ class AdminIcalrepeatController extends JControllerLegacy
 			else {
 				$popupdetail = "";
 			}
-                    
+
 			list($year, $month, $day) = JEVHelper::getYMD();
 			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 			if ($params->get("editpopup", 0) || $popupdetail )
 			{
                             $link = JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=icalrepeat.detail&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day$popupdetail", false);
-                            $msg = JText::_("JEV_ICAL_RPT_UPDATED",true );    
+                            $msg = JText::_("JEV_ICAL_RPT_UPDATED",true );
                             if ($popupdetail!=""){
                                     // redirect to event detail page within popup window
                                     $this->setRedirect($link, $msg);
@@ -598,7 +598,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 				foreach ($value as $cfkey => $cfvalue) {
 					$data["custom_".$cfkey]=$cfvalue;
 				}
-			}			
+			}
 		}
 
 		$detail = iCalEventDetail::iCalEventDetailFromData($data);
@@ -654,11 +654,11 @@ class AdminIcalrepeatController extends JControllerLegacy
         }
 
 		// I may also need to process repeat changes
-		$dispatcher	= JEventDispatcher::getInstance();
+
 		// just in case we don't have JEvents plugins registered yet
 		JPluginHelper::importPlugin("jevents");
-		$res = $dispatcher->trigger( 'onStoreCustomRepeat' , array(&$rpt));
-		
+		$res = JFactory::getApplication()->triggerEvent( 'onStoreCustomRepeat' , array(&$rpt));
+
 		$exception = iCalException::loadByRepeatId($rp_id);
 		if (!$exception)
 		{
@@ -841,10 +841,9 @@ class AdminIcalrepeatController extends JControllerLegacy
 			}
 
 			// May want to send notification messages etc.
-			$dispatcher = JEventDispatcher::getInstance();
 			// just incase we don't have jevents plugins registered yet
 			JPluginHelper::importPlugin("jevents");
-			$res = $dispatcher->trigger('onDeleteEventRepeat', $id);
+			$res = JFactory::getApplication()->triggerEvent('onDeleteEventRepeat', $id);
 
 			$query = "SELECT * FROM #__jevents_repetition WHERE rp_id=$id";
 			$db->setQuery($query);
@@ -863,10 +862,9 @@ class AdminIcalrepeatController extends JControllerLegacy
 				$db->execute();
 
 				// I also need to clean out associated custom data
-				$dispatcher = JEventDispatcher::getInstance();
 				// just incase we don't have jevents plugins registered yet
 				JPluginHelper::importPlugin("jevents");
-				$res = $dispatcher->trigger('onDeleteEventDetails', array($data->eventdetail_id));
+				$res = JFactory::getApplication()->triggerEvent('onDeleteEventDetails', array($data->eventdetail_id));
 			}
 
 			// create exception based on deleted repetition
@@ -972,7 +970,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 			$db->setQuery($query);
 			$detailids = $db->loadColumn();
 
-			// Find repeat ids future repetitions 
+			// Find repeat ids future repetitions
 			$query = "SELECT rp_id FROM #__jevents_repetition WHERE eventid=" . $repeatdata->eventid . " AND startrepeat>='" . $repeatdata->startrepeat . "'";
 			$db->setQuery($query);
 			$rp_ids = $db->loadColumn();
@@ -981,10 +979,9 @@ class AdminIcalrepeatController extends JControllerLegacy
 			foreach ($rp_ids as $rp_id)
 			{
 				// May want to send notification messages etc.
-				$dispatcher = JEventDispatcher::getInstance();
 				// just incase we don't have jevents plugins registered yet
 				JPluginHelper::importPlugin("jevents");
-				$res = $dispatcher->trigger('onDeleteEventRepeat', $rp_id);
+				$res = JFactory::getApplication()->triggerEvent('onDeleteEventRepeat', $rp_id);
 			}
 
 
@@ -1019,10 +1016,9 @@ class AdminIcalrepeatController extends JControllerLegacy
 				$db->execute();
 
 				// I also need to clean out associated custom data
-				$dispatcher = JEventDispatcher::getInstance();
 				// just incase we don't have jevents plugins registered yet
 				JPluginHelper::importPlugin("jevents");
-				$res = $dispatcher->trigger('onDeleteEventDetails', array(implode(",", $detailids)));
+				$res = JFactory::getApplication()->triggerEvent('onDeleteEventDetails', array(implode(",", $detailids)));
 			}
 
 			// setup exception data

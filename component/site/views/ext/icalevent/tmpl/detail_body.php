@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('_JEXEC') or die('Restricted access');
 
 $cfg	= JEVConfig::getInstance();
@@ -14,7 +14,7 @@ if( 0 == $this->evid) {
 }
 
 if (is_null($this->data)){
-	
+
 	JFactory::getApplication()->redirect(JRoute::_("index.php?option=".JEV_COM_COMPONENT."&Itemid=$this->Itemid",false), JText::_("JEV_SORRY_UPDATED"));
 }
 
@@ -23,14 +23,14 @@ if( array_key_exists('row',$this->data) ){
 	$mask = $this->data['mask'];
 	$page = 0;
 
-	
-	$cfg	 = JEVConfig::getInstance();	
 
-	$dispatcher	= JEventDispatcher::getInstance();
+	$cfg	 = JEVConfig::getInstance();
+
+
 	$params =new JRegistry(null);
 
 	if (isset($row)) {
-        $customresults = $dispatcher->trigger( 'onDisplayCustomFields', array( &$row) );
+        $customresults = JFactory::getApplication()->triggerEvent( 'onDisplayCustomFields', array( &$row) );
 
         // Dynamic Page Title
 		$this->setPageTitle($row->title());
@@ -53,7 +53,7 @@ if( array_key_exists('row',$this->data) ){
 			<?php
 		}
 
-			$results = $dispatcher->trigger( 'onAfterDisplayContent', array( &$row, &$params, $page ) );
+			$results = JFactory::getApplication()->triggerEvent( 'onAfterDisplayContent', array( &$row, &$params, $page ) );
 			echo trim( implode( "\n", $results ) );
 
         } else { ?>
@@ -71,6 +71,6 @@ if( array_key_exists('row',$this->data) ){
     		</p>
     		<?php
 		}
- */	
+ */
 
 }

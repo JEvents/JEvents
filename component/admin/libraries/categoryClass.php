@@ -73,8 +73,8 @@ class JEventsCategory extends JTableCategory {
 		$success = parent::store();
 		if ($success){
 			JPluginHelper::importPlugin("jevents");
-			$dispatcher	= JEventDispatcher::getInstance();
-			$set = $dispatcher->trigger('afterSaveCategory', array ($this));
+			
+			$set = JFactory::getApplication()->triggerEvent('afterSaveCategory', array ($this));
 /*
 			$table = JTable::getInstance('Category', 'JTable', array('dbo' => JFactory::getDbo()));
 			if (!$table->rebuild())

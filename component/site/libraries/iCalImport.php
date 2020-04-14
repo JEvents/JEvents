@@ -171,8 +171,8 @@ class iCalImport
 		// remove spurious lines before calendar start
 		if (!JString::stristr($this->rawData,'BEGIN:VCALENDAR')) {
 
-			$dispatcher = JEventDispatcher::getInstance();
-			$dispatcher->trigger('onImportCsvFile', array(& $this->rawData));
+
+			JFactory::getApplication()->triggerEvent('onImportCsvFile', array(& $this->rawData));
 
 			// check for CSV format
 			$firstLine = JString::substr($this->rawData,0,JString::strpos($this->rawData,"\n")+1);
@@ -233,7 +233,7 @@ class iCalImport
 					}
 					continue;
 				}
-				$matches = explode(":",$vcLine,3);                                
+				$matches = explode(":",$vcLine,3);
                                 // Catch some bad Microsoft timezones e.g. "(UTC+01:00) Amsterdam, Berlin, Bern, Rom, Stockholm, Wien"
                                 if (count($matches) == 3) {
                                     if (strpos($matches[0], ";TZID")>0){

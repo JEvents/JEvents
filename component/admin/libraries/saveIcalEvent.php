@@ -27,7 +27,7 @@ class SaveIcalEvent {
 		// Allow plugins to check data validity
 		$dispatcher     = JEventDispatcher::getInstance();
 		JPluginHelper::importPlugin("jevents");
-		$res = $dispatcher->trigger( 'onBeforeSaveEvent' , array(&$array, &$rrule, $dryrun));
+		$res = JFactory::getApplication()->triggerEvent( 'onBeforeSaveEvent' , array(&$array, &$rrule, $dryrun));
 
 		// TODO do error and hack checks here
 		$ev_id = (int) ArrayHelper::getValue( $array,  "evid",0);
@@ -225,7 +225,7 @@ class SaveIcalEvent {
 
 		// whilst the DB field is called 'state' we use the variable 'published' in all of JEvents so must set it before the plugin
 		$vevent->published =  $vevent->state;
-		$res = $dispatcher->trigger( 'onAfterSaveEvent' , array(&$vevent, $dryrun));
+		$res = JFactory::getApplication()->triggerEvent( 'onAfterSaveEvent' , array(&$vevent, $dryrun));
 		if ($dryrun) return $vevent;
 
 		// Do the repeats overlap each other

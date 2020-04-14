@@ -29,7 +29,7 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 			$this->_basePath = $this->basePath;
 			$this->_task = $this->task;
 		}
-		
+
 	}
 
 	function detail() {
@@ -44,7 +44,7 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 		$jinput = JFactory::getApplication()->input;
 
 		if ($jinput->getInt("login", 0) && $user->id == 0)
-		{			
+		{
 			$uri = JURI::getInstance();
 			$link = $uri->toString();
 			$comuser= version_compare(JVERSION, '1.6.0', '>=') ? "com_users":"com_user";
@@ -54,11 +54,11 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 			$this->redirect();
 			return;
 		}
-		
+
 		$evid = $jinput->getInt("rp_id", 0);
 		if ($evid==0){
 			$evid =$jinput->getInt("evid", 0);
-			// In this case I do not have a repeat id so I 
+			// In this case I do not have a repeat id so I
 		}
 
 		// special case where loading a direct menu item to an event with nextrepeat specified
@@ -88,11 +88,11 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 						}
 					}
 				}
-			}			
+			}
 		}
 		 *
 		 */
-                
+
                 // If cancelling edit in popup then stay in popup
                 $popupdetail = JPluginHelper::getPlugin("jevents", "jevpopupdetail");
                 if ($popupdetail) {
@@ -103,7 +103,7 @@ class ICalRepeatController extends AdminIcalrepeatController   {
                                 $jinput->set("tmpl","component");
                         }
                 }
-                
+
 		// if cancelling from save of copy and edit use the old event id
 		if ($evid==0){
 			$evid =$jinput->getInt("old_evid", 0);
@@ -116,18 +116,18 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 
 		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
-		
+
 		$cfg = JEVConfig::getInstance();
 		$theme = JEV_CommonFunctions::getJEventsViewName();
 
 		$view = "icalevent";
 
-		$dispatcher = JEventDispatcher::getInstance();
-		$dispatcher->trigger('onBeforeLoadView', array($view, $theme, $viewType, 'icalrepeat.detail', $useCache));
+
+		JFactory::getApplication()->triggerEvent('onBeforeLoadView', array($view, $theme, $viewType, 'icalrepeat.detail', $useCache));
 
 		$this->addViewPath($this->_basePath.'/'."views".'/'.$theme);
-		$this->view = $this->getView($view,$viewType, $theme."View", 
-			array( 'base_path'=>$this->_basePath, 
+		$this->view = $this->getView($view,$viewType, $theme."View",
+			array( 'base_path'=>$this->_basePath,
 				"template_path"=>$this->_basePath.'/'."views".'/'.$theme.'/'.$view.'/'.'tmpl',
 				"name"=>$theme.'/'.$view));
 
@@ -143,9 +143,9 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 		$this->view->assign("evid",$evid);
 		$this->view->assign("jevtype","icaldb");
 		$this->view->assign("uid",$uid);
-		
+
 		// View caching logic -- simple... are we logged in?
-		
+
 		if ($user->get('id') || !$useCache)
 		{
 			$this->view->display();
@@ -173,13 +173,13 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 			}
 			return;
 		}
-		
+
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		if ($params->get("editpopup",0)) JRequest::setVar("tmpl","component");
-		
+
 		parent::edit();
 	}
-	
+
 	function save($key = NULL, $urlVar = NULL){
 		$is_event_editor = JEVHelper::isEventCreator();
 		if (!$is_event_editor){
@@ -188,7 +188,7 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 		}
 		parent::save();
 	}
-	
+
 	function apply(){
 		// Must be at least an event creator to save events
 		$is_event_editor = JEVHelper::isEventCreator();
@@ -198,23 +198,23 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 		}
 		parent::apply();
 	}
-	
+
 	function delete(){
 		$is_event_editor = JEVHelper::isEventCreator();
 		if (!$is_event_editor){
 			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
 			return false;
 		}
-		parent::delete();		
+		parent::delete();
 	}
-	
+
 	function deletefuture(){
 		$is_event_editor = JEVHelper::isEventDeletor();
 		if (!$is_event_editor){
 			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
 			return false;
 		}
-		parent::deletefuture();		
+		parent::deletefuture();
 	}
 
 	function select() {
@@ -228,7 +228,7 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
 			return false;
 		}
-		parent::toggleICalEventPublish($cid,$newstate);		
+		parent::toggleICalEventPublish($cid,$newstate);
 	}
 
 }

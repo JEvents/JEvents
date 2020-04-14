@@ -40,7 +40,7 @@ class IcaleventsModelicalevent extends JModelAdmin
 		// leave form control blank since we want the fields as ev_id and not jform[ev_id]
 		$form = $this->loadForm("jevents.edit.icalevent", 'icalevent', array('control' => '', 'load_data' => false), false, $xpath);
 		JForm::addFieldPath(JPATH_THEMES."/$template/html/com_jevents/fields");
-		
+
 		if (empty($form)) {
 			return false;
 		}
@@ -110,11 +110,11 @@ class IcaleventsModelicalevent extends JModelAdmin
 		include_once JPATH_COMPONENT."/tables/translate.php";
 		$translation = new TableTranslate();
 		$success =  $translation->save($array);
-                
+
                 if ($success) {
-                    $dispatcher = JEventDispatcher::getInstance();
-                    $dispatcher->trigger('onSaveTranslation', array($array), true);
-                }                    
+
+                    JFactory::getApplication()->triggerEvent('onSaveTranslation', array($array), true);
+                }
 
 		return $success;
 	}

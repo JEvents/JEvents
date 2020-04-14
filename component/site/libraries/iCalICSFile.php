@@ -41,7 +41,7 @@ class iCalICSFile extends JTable  {
 
 	var $icaltype;
 	/**
-	 * This holds the raw data as an array 
+	 * This holds the raw data as an array
 	 *
 	 * @var array
 	 */
@@ -166,7 +166,7 @@ RAWTEXT;
 		$temp->_setup($icsid,$catid,$access,$state,$autorefresh,$ignoreembedcat);
 		if ($access==0){
 			$temp->access = intval(JEVHelper::getBaseAccess());
-		}		
+		}
 		$temp->srcURL = "";
 		$temp->filename = $file['name'];
 		$temp->icaltype=1;  // i.e. from file
@@ -233,11 +233,11 @@ RAWTEXT;
 
 		@ini_set("memory_limit","256M");
 		@ini_set("max_execution_time","300");
-		
+
 		// clean out the cache
 		$cache = JFactory::getCache('com_jevents');
 		$cache->clean(JEV_COM_COMPONENT);
-		
+
 		static $categories;
 		if (is_null($categories)){
 			$sql = "SELECT * FROM #__categories WHERE extension='com_jevents'";
@@ -305,7 +305,7 @@ RAWTEXT;
 							$vevent->catid = array();
 							foreach ($evcat as $ct){
 								$vevent->catid[] =  $categories[trim($ct)]->id;
-							}							
+							}
 						}
 						else {
 							$vevent->catid =  $categories[trim($evcat[0])]->id;
@@ -330,7 +330,7 @@ RAWTEXT;
 				if ($matchingEvent = $vevent->matchingEventDetails()){
 					$vevent->ev_id = $matchingEvent->ev_id;
 					$vevent->_detail->evdet_id = $matchingEvent->evdet_id;
-					
+
 					unset($existingevents[$vevent->ev_id]);
 				} else {
 					$vevent->state =  $this->state;
@@ -381,7 +381,7 @@ RAWTEXT;
 					$vevent->published =  $vevent->state ;
 				}
 				// not a dry run of course!
-				$res = $dispatcher->trigger( 'onAfterSaveEvent' , array(&$vevent, false));
+				$res = JFactory::getApplication()->triggerEvent( 'onAfterSaveEvent' , array(&$vevent, false));
 
 				// Save memory by clearing out the repetitions we no longer need
 				$repetitions = null;
@@ -428,10 +428,10 @@ RAWTEXT;
 							$vevent->catid = array();
 							foreach ($evcat as $ct){
 								$vevent->catid[] =  $categories[$ct]->id;
-							}							
+							}
 						}
 						else {
-							$vevent->catid =  $categories[$evcat[0]]->id;							
+							$vevent->catid =  $categories[$evcat[0]]->id;
 						}
 					}
 				}
@@ -463,7 +463,7 @@ RAWTEXT;
 
 		// Now remove existing events that have been deleted
 		if ($cleanup){
-			if(count($existingevents)>0){								
+			if(count($existingevents)>0){
 				$todelete = array();
 				foreach ($existingevents as $event) {
 					$todelete[]= $event->ev_id;
@@ -531,7 +531,7 @@ RAWTEXT;
 		$cache = JFactory::getCache('com_jevents');
 		$cache->clean(JEV_COM_COMPONENT);
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		
+
 		static $categories;
 		if (is_null($categories)){
 			$db	= JFactory::getDbo();
@@ -580,10 +580,10 @@ RAWTEXT;
 					$db->execute();
 
 					// I also need to clean out associated custom data
-					$dispatcher	= JEventDispatcher::getInstance();
+
 					// just incase we don't have jevents plugins registered yet
 					JPluginHelper::importPlugin("jevents");
-					$res = $dispatcher->trigger( 'onDeleteEventDetails' , array($detailidstring));
+					$res = JFactory::getApplication()->triggerEvent( 'onDeleteEventDetails' , array($detailidstring));
 				}
 
 				$query = "DELETE FROM #__jevents_vevent WHERE ev_id IN ($veventidstring)";
@@ -591,7 +591,7 @@ RAWTEXT;
 				$db->execute();
 
 				// I also need to delete custom data
-				$res = $dispatcher->trigger( 'onDeleteCustomEvent' , array(&$veventidstring));
+				$res = JFactory::getApplication()->triggerEvent( 'onDeleteCustomEvent' , array(&$veventidstring));
 
 			}
 
@@ -605,14 +605,14 @@ RAWTEXT;
 							$vevent->catid = array();
 							foreach ($evcat as $ct){
                                                             $vevent->catid[] =  $categories[trim($ct)]->id;
-							}							
+							}
 						}
 						if ($params->get("multicategory",0) && count($evcat)==1){
 							$vevent->catid = array();
 							$vevent->catid[] =  $categories[$evcat[0]]->id;
 						}
 						else {
-							$vevent->catid =  $categories[$evcat[0]]->id;							
+							$vevent->catid =  $categories[$evcat[0]]->id;
 						}
 
 					}
@@ -666,7 +666,7 @@ RAWTEXT;
 				else {
 					$vevent->store();
 				}
-				
+
 				$repetitions = $vevent->getRepetitions(true);
 				$vevent->storeRepetitions();
 
@@ -695,10 +695,10 @@ RAWTEXT;
 							$vevent->catid = array();
 							foreach ($evcat as $ct){
 								$vevent->catid[] =  $categories[$ct]->id;
-							}							
+							}
 						}
 						else {
-							$vevent->catid =  $categories[$evcat[0]]->id;							
+							$vevent->catid =  $categories[$evcat[0]]->id;
 						}
 					}
 					// if no such category then create it

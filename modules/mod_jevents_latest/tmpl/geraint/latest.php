@@ -13,15 +13,15 @@ defined('_JEXEC') or die();
  */
 include_once(JPATH_SITE."/modules/mod_jevents_latest/tmpl/default/latest.php");
 
-class GeraintModLatestView extends DefaultModLatestView  
+class GeraintModLatestView extends DefaultModLatestView
 {
-	
+
 	function displayLatestEvents(){
 
 		$cfg = JEVConfig::getInstance();
 		$compname = JEV_COM_COMPONENT;
-	
-		$dispatcher	= JEventDispatcher::getInstance();
+
+
 		$datenow	= JEVHelper::getNow();
 
 		$this->getLatestEventsData();
@@ -64,7 +64,7 @@ class GeraintModLatestView extends DefaultModLatestView
 							if ( $condtoken['cond'] == 'a'  && !$dayEvent->alldayevent()) continue;
 							else if ( $condtoken['cond'] == '!a' &&  $dayEvent->alldayevent()) continue;
 							else if ( $condtoken['cond'] == 'e'  && !($dayEvent->noendtime() || $dayEvent->alldayevent())) continue;
-							else if ( $condtoken['cond'] == '!e' &&  ($dayEvent->noendtime() || $dayEvent->alldayevent())) continue;							
+							else if ( $condtoken['cond'] == '!e' &&  ($dayEvent->noendtime() || $dayEvent->alldayevent())) continue;
 							else if ( $condtoken['cond'] == '!m' &&  $dayEvent->getUnixStartDate()!=$dayEvent->getUnixEndDate() ) continue;
 							else if ( $condtoken['cond'] == 'm' &&  $dayEvent->getUnixStartDate()==$dayEvent->getUnixEndDate() ) continue;
 						}
@@ -127,11 +127,11 @@ class GeraintModLatestView extends DefaultModLatestView
 		}
 
 		if ($this->modparams->get("contentplugins", 0)){
-			$dispatcher = JEventDispatcher::getInstance();
+
 			$eventdata = new stdClass();
 			//$eventdata->text = str_replace("{/toggle","{/toggle}",$content);
 			$eventdata->text = $content;
-			$dispatcher->trigger('onContentPrepare', array('com_jevents', &$eventdata, &$this->modparams, 0));
+			JFactory::getApplication()->triggerEvent('onContentPrepare', array('com_jevents', &$eventdata, &$this->modparams, 0));
 			 $content = $eventdata->text;
 		}
 
