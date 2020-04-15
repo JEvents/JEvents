@@ -188,6 +188,7 @@ class SaveIcalEvent {
 		$db = JFactory::getDbo();
 		$success = true;
 		//echo "class = ".get_class($vevent);
+		unset($vevent->catids); // Remove catids from storage since they are not part of the table structure
 		if (!$dryrun){
 			try {
 				$vevent->store();
