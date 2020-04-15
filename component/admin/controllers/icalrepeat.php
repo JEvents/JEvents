@@ -27,6 +27,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 	function __construct($config = array())
 	{
 		parent::__construct($config);
+
 		$this->registerTask('list', 'overview');
 		$this->registerDefaultTask("overview");
 
@@ -171,7 +172,8 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 		$db = JFactory::getDbo();
 		$query = "SELECT rpt.eventid"
-				. "\n FROM #__jevents_vevent as ev, #__jevents_icsfile as icsf"
+				. "\n FROM #__jevents_vevent as ev"
+			    . "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid"
 				. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
 				. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 				. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
