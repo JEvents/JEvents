@@ -40,6 +40,7 @@ body.com_jevents .form-horizontal .control-label {
 }
 body.com_jevents #gslc.gsl-scope {
   /* Search button */
+  /* dashboard newsfeed */
 }
 body.com_jevents #gslc.gsl-scope .js-stools .js-stools-field-list,
 body.com_jevents #gslc.gsl-scope .js-stools .js-stools-field-filter {
@@ -85,6 +86,13 @@ body.com_jevents #gslc.gsl-scope .js-stools-field-filter div.chzn-drop ul.chzn-r
 }
 body.com_jevents #gslc.gsl-scope .js-stools-field-filter #filter_tag_chzn {
   max-width: 100%;
+}
+body.com_jevents #gslc.gsl-scope .ys_newsfeed {
+  height: 60px;
+  overflow: hidden;
+}
+body.com_jevents #gslc.gsl-scope .ys_newsfeed li {
+  height: 60px;
 }
 /* Overriding template.css styling when using native Joomla layouts */
 #gslc.gsl-scope .icon-publish::before,

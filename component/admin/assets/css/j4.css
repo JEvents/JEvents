@@ -54,6 +54,7 @@ body.com_jevents #sidebar-wrapper.gsl-hide-sidebar {
 }
 body.com_jevents #gslc.gsl-scope {
   /* Search filters display toggle */
+  /* dashboard newsfeed */
 }
 body.com_jevents #gslc.gsl-scope #left-col {
   /* 3rem for J4 sidebar
@@ -82,6 +83,13 @@ body.com_jevents #gslc.gsl-scope .js-stools .js-stools-container-filters {
 }
 body.com_jevents #gslc.gsl-scope .js-stools .js-stools-container-filters.js-stools-container-filters-visible {
   display: flex;
+}
+body.com_jevents #gslc.gsl-scope .ys_newsfeed {
+  height: 80px;
+  overflow: hidden;
+}
+body.com_jevents #gslc.gsl-scope .ys_newsfeed li {
+  height: 80px;
 }
 body.com_jevents #gslc.gsl-scope.gsl-hide-sidebar #left-col {
   left: 0;
