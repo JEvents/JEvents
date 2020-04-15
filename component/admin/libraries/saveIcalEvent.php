@@ -215,6 +215,12 @@ class SaveIcalEvent
 		$db      = Factory::getDbo();
 		$success = true;
 		//echo "class = ".get_class($vevent);
+
+		if (isset($vevent->catids))
+		{
+			unset($vevent->catids); // Remove catids from storage since they are not part of the table structure
+		}
+
 		if (!$dryrun)
 		{
 			try
