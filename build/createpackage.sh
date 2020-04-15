@@ -2,7 +2,7 @@
 find ./ -type f -name *.zip | xargs rm -f
 VERSION=`xml_grep version ../pkg_jevents.xml --text`
 
-rsync -av --progress ../ ./ --exclude build
+rsync -av --progress ../ ./ --exclude build --exclude '.gitignore' --exclude '.DS_Store' --exclude '._.DS_Store' --exclude '*.css.map' --exclude 'gslframework*' --no-links
 zip  -r com_jevents.zip component -x *.svn*
 cd plugins
 zip  -r --exclude=*.svn* --exclude=*.gitignore* ../finder.zip finder
