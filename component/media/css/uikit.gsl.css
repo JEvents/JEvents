@@ -1,152 +1,33 @@
 /*! UIkit 3.2.6 | http://www.getuikit.com | (c) 2014 - 2019 YOOtheme | MIT License */
-/*
-This won't work because uikit uses les functions like darken() on these colours!
-:root {
-  ~"--mycolor : red;"
-};
-@global-color:                     ~"var(--my-color)";
-*/
-/*
-//
-// Colors
-//
-
-@global-color:                                  #012345;
-@global-emphasis-color:                         #234567;
-@global-muted-color:                            #34567a;
-
-@global-link-color:                             #4567ab;
-@global-link-hover-color:                       #567abc;
-
-@global-inverse-color:                          #67abcd;
-
-//
-// Backgrounds
-//
-
-@global-background:                             #7abcde;
-
-@global-muted-background:                       #abcdef;
-@global-primary-background:                     #f01234;
-@global-secondary-background:                   #f12345;
-
-@global-success-background:                     #f23456;
-@global-warning-background:                     #f34567;
-@global-danger-background:                      #f4567a;
-@global-border:                                 #f5e5e5;
-
-// Darken and Lighten
-@button-default-hover-background:               #f567ab;
-@button-default-active-background:              #f67abc;
-
-@button-primary-hover-background:               #f7abcd;
-@button-primary-active-background:              #fabcde;
-
-@button-secondary-hover-background:             #fbcdef;
-@button-secondary-active-background:            #e12345;
-
-@button-danger-hover-background:                #e23456;
-@button-danger-active-background:               #e34567;
-
-@form-radio-border:                             #e4567a;
-@form-range-thumb-border:                       #e567ab;
-@button-default-hover-border:                   #e67abc;
-@button-default-active-border:                  #e7abcd;
-
-@icon-link-active-color:                        #eabcde;
-
-@icon-button-hover-background:                  #ebcdef;
-@icon-button-active-background:                 #d12345;
-
-@inverse-icon-button-hover-background:          #d23456;
-@inverse-icon-button-active-background:         #d34567;
-
-
-@card-default-hover-background:                 #d4567a;
-@card-primary-hover-background:                 #d567ab;
-@card-secondary-hover-background:               #d67abc;
-
-@form-radio-background:                         #d7abcd;
-@form-range-track-background:                   #dabcde;
-@form-range-track-focus-background:             #dbcdef;
-
-@form-radio-checked-focus-background:           #c12345;
-
-@inverse-form-radio-background:                 #c23456;
-
-@inverse-form-radio-checked-focus-background:   #c23456;
-
-@modal-close-outside-color:                     #c34567;
-@alert-primary-background:                      #c4567a;
-@alert-success-background:                      #c567ab;
-@alert-warning-background:                      #c67abc;
-@alert-danger-background:                       #c7abcd;
-*/
-/* Raw Versions
-@button-default-hover-background:               darken(@button-default-background, 5%);
-@button-default-active-background:              darken(@button-default-background, 10%);
-@button-primary-hover-background:               darken(@button-primary-background, 5%);
-@button-primary-active-background:              darken(@button-primary-background, 10%);
-@button-secondary-hover-background:             darken(@button-secondary-background, 5%);
-@button-secondary-active-background:            darken(@button-secondary-background, 10%);
-@button-danger-hover-background:                darken(@button-danger-background, 5%);
-@button-danger-active-background:               darken(@button-danger-background, 10%);
-
-@form-radio-border:                             darken(@global-border, 10%);
-@form-range-thumb-border:                       darken(@global-border, 10%);
-@button-default-hover-border:                   darken(@global-border, 20%);
-@button-default-active-border:                  darken(@global-border, 30%);
-
-@icon-link-active-color:                        darken(@global-color, 5%);
-
-@icon-button-hover-background:                  darken(@icon-button-background, 5%);
-@icon-button-active-background:                 darken(@icon-button-background, 10%);
-
-@inverse-icon-button-hover-background:          darken(@inverse-icon-button-background, 5%);
-@inverse-icon-button-active-background:         darken(@inverse-icon-button-background, 10%);
-
-
-@card-default-hover-background:                 darken(@card-default-background, 5%);
-@card-primary-hover-background:                 darken(@card-primary-background, 5%);
-@card-secondary-hover-background:               darken(@card-secondary-background, 5%);
-
-@form-radio-background:                         darken(@global-muted-background, 5%);
-@form-range-track-background:                   darken(@global-muted-background, 5%);
-@form-range-track-focus-background:             darken(@global-muted-background, 15%);
-
-@form-radio-checked-focus-background:           darken(@global-primary-background, 10%);
-
-@inverse-form-radio-background:                 darken(@inverse-global-muted-background, 5%);
-
-@inverse-form-radio-checked-focus-background:   darken(@inverse-global-primary-background, 10%);
-
-@inverse-button-default-hover-background:       darken(@inverse-button-default-background, 5%);
-@inverse-button-default-active-background:      darken(@inverse-button-default-background, 10%);
-
-@inverse-button-primary-hover-background:       darken(@inverse-button-primary-background, 5%);
-@inverse-button-primary-active-background:      darken(@inverse-button-primary-background, 10%);
-
-@inverse-button-secondary-hover-background:     darken(@inverse-button-secondary-background, 5%);
-@inverse-button-secondary-active-background:    darken(@inverse-button-secondary-background, 10%);
-
-@modal-close-outside-color:                     lighten(@global-inverse-color, 20%);
-@alert-primary-background:                      lighten(tint(@global-primary-background, 40%), 20%);
-@alert-success-background:                      lighten(tint(@global-success-background, 40%), 25%);
-@alert-warning-background:                      lighten(tint(@global-warning-background, 45%), 15%);
-@alert-danger-background:                       lighten(tint(@global-danger-background, 40%), 20%);
-
-*/
 /* ========================================================================
    Component: Base
  ========================================================================== */
+/*
+ * 1. Set `font-size` to support `rem` units
+ *    Not using `font` property because a leading hyphen (e.g. -apple-system) causes the font to break in IE11 and Edge
+ * 2. Prevent adjustments of font size after orientation changes in iOS.
+ * 3. Style
+ */
+html {
+  /* 1 */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.2;
+  /* 2 */
+  -webkit-text-size-adjust: 100%;
+  /* 3 */
+  background: #fff;
+  color: #666;
+}
+/*
+ * Remove the margin in all browsers.
+ */
+body {
+  margin: 0;
+}
 /* Links
  ========================================================================== */
-/*
- * Remove gaps in links underline in iOS 8+ and Safari 8+.
- */
-a {
-  -webkit-text-decoration-skip: objects;
-}
 /*
  * Remove the outline on focused links when they are also active or hovered
  */
@@ -173,13 +54,12 @@ a:hover,
 /* Text-level semantics
  ========================================================================== */
 /*
- * 1. Add an underline text decoration in Safari, Edge and IE.
- * 2. Add `dotted` style in Safari.
- * Note: The shorthand declaration `underline dotted` is not supported in Safari, Edge and IE.
+ * 1. Add the correct text decoration in Edge.
+ * 2. The shorthand declaration `underline dotted` is not supported in Safari.
  */
 abbr[title] {
   /* 1 */
-  text-decoration: underline;
+  text-decoration: underline dotted;
   /* 2 */
   -webkit-text-decoration-style: dotted;
 }
@@ -206,7 +86,7 @@ strong {
   color: #f0506e;
   white-space: nowrap;
   padding: 2px 6px;
-  background: #f8f8f8;
+  background: #FFF;
 }
 /*
  * Emphasize
@@ -301,10 +181,14 @@ svg:not(:root) {
   overflow: hidden;
 }
 /*
- * Hide `alt` text for lazy load images
- * Selector for background while loading img[data-src*='.jpg'][src*='data:image'] { background: grey; }
+ * 1. Fix lazy loading images if parent element is set to `display: inline` and has `overflow: hidden`.
+ * 2. Hide `alt` text for lazy loading images.
+ * Note: Selector for background while loading img[data-src*='.jpg'][src*='data:image'] { background: grey; }
  */
 img:not([src]) {
+  /* 1 */
+  min-width: 1px;
+  /* 2 */
   visibility: hidden;
 }
 /*
@@ -455,21 +339,17 @@ dd {
 /* Horizontal rules
  ========================================================================== */
 /*
- * 1. Add the correct box sizing and height in Firefox.
- * 2. Show the overflow in Edge and IE.
- * 3. Add the correct text-align in Edge and IE.
- * 4. Style
+ * 1. Show the overflow in Chrome, Edge and IE.
+ * 2. Add the correct text-align in Edge and IE.
+ * 3. Style
  */
 hr,
 .gsl-hr {
   /* 1 */
-  box-sizing: content-box;
-  height: 0;
-  /* 2 */
   overflow: visible;
-  /* 3 */
+  /* 2 */
   text-align: inherit;
-  /* 4 */
+  /* 3 */
   margin: 0 0 20px 0;
   border: 0;
   border-top: 1px solid #e5e5e5;
@@ -908,7 +788,7 @@ a.gsl-link-reset,
   border-bottom: 1px solid #e5e5e5;
 }
 .gsl-list-striped > li:nth-of-type(odd) {
-  background: #f8f8f8;
+  background: #FFF;
 }
 .gsl-list-striped > li:nth-child(n+2) {
   margin-top: 0;
@@ -1019,9 +899,9 @@ a.gsl-link-reset,
   text-align: left;
   vertical-align: bottom;
   /* 1 */
-  font-size: 14px;
-  font-weight: bold;
-  color: #666;
+  font-size: 0.875rem;
+  font-weight: normal;
+  color: #999;
   text-transform: uppercase;
 }
 /* Cell
@@ -1069,7 +949,7 @@ a.gsl-link-reset,
  */
 .gsl-table-striped > tr:nth-of-type(odd),
 .gsl-table-striped tbody tr:nth-of-type(odd) {
-  background: #f8f8f8;
+  background: #FFF;
   border-top: 1px solid #e5e5e5;
   border-bottom: 1px solid #e5e5e5;
 }
@@ -1078,13 +958,13 @@ a.gsl-link-reset,
  */
 .gsl-table-hover > tr:hover,
 .gsl-table-hover tbody tr:hover {
-  background: #ffd;
+  background: #FFF;
 }
 /* Active state
  ========================================================================== */
 .gsl-table > tr.gsl-active,
 .gsl-table tbody tr.gsl-active {
-  background: #ffd;
+  background: #FFF;
 }
 /* Size modifier
  ========================================================================== */
@@ -1276,7 +1156,7 @@ button.gsl-icon:not(:disabled) {
   width: 36px;
   height: 36px;
   border-radius: 500px;
-  background: #f8f8f8;
+  background: #FFF;
   color: #999;
   vertical-align: middle;
   /* 1 */
@@ -1289,14 +1169,14 @@ button.gsl-icon:not(:disabled) {
 /* Hover + Focus */
 .gsl-icon-button:hover,
 .gsl-icon-button:focus {
-  background-color: #ebebeb;
+  background-color: #f2f2f2;
   color: #666;
   outline: none;
 }
 /* OnClick + Active */
 .gsl-icon-button:active,
 .gsl-active > .gsl-icon-button {
-  background-color: #dfdfdf;
+  background-color: #e6e6e6;
   color: #666;
 }
 /* ========================================================================
@@ -1367,7 +1247,7 @@ button.gsl-icon:not(:disabled) {
   height: 15px;
   width: 15px;
   border-radius: 500px;
-  background: #666;
+  background: #fff;
   border: 1px solid #cccccc;
 }
 /* Firefox */
@@ -1378,7 +1258,7 @@ button.gsl-icon:not(:disabled) {
   height: 15px;
   width: 15px;
   border-radius: 500px;
-  background: #666;
+  background: #fff;
   border: 1px solid #cccccc;
 }
 /* Edge */
@@ -1394,7 +1274,7 @@ button.gsl-icon:not(:disabled) {
   height: 15px;
   width: 15px;
   border-radius: 500px;
-  background: #666;
+  background: #fff;
   border: 1px solid #cccccc;
 }
 /* Edge + IE11 */
@@ -1409,32 +1289,32 @@ button.gsl-icon:not(:disabled) {
 /* Webkit */
 .gsl-range::-webkit-slider-runnable-track {
   height: 3px;
-  background: #ebebeb;
+  background: #f2f2f2;
   border-radius: 500px;
 }
 .gsl-range:focus::-webkit-slider-runnable-track,
 .gsl-range:active::-webkit-slider-runnable-track {
-  background: #d2d2d2;
+  background: #d9d9d9;
 }
 /* Firefox */
 .gsl-range::-moz-range-track {
   height: 3px;
-  background: #ebebeb;
+  background: #f2f2f2;
   border-radius: 500px;
 }
 .gsl-range:focus::-moz-range-track {
-  background: #d2d2d2;
+  background: #d9d9d9;
 }
 /* Edge */
 .gsl-range::-ms-fill-lower,
 .gsl-range::-ms-fill-upper {
   height: 3px;
-  background: #ebebeb;
+  background: #f2f2f2;
   border-radius: 500px;
 }
 .gsl-range:focus::-ms-fill-lower,
 .gsl-range:focus::-ms-fill-upper {
-  background: #d2d2d2;
+  background: #d9d9d9;
 }
 /* ========================================================================
    Component: Form
@@ -1557,7 +1437,7 @@ button.gsl-icon:not(:disabled) {
   border: 0 none;
   /* 4 */
   padding: 0 10px;
-  background: #f8f8f8;
+  background: #fff;
   color: #666;
   border: 1px solid #e5e5e5;
   transition: 0.2s ease-in-out;
@@ -1579,7 +1459,7 @@ button.gsl-icon:not(:disabled) {
 /* 2 */
 .gsl-input:not(input),
 .gsl-select:not(select) {
-  line-height: 40px;
+  line-height: 38px;
 }
 /*
  * Multi-line
@@ -1596,7 +1476,7 @@ button.gsl-icon:not(:disabled) {
 .gsl-select:focus,
 .gsl-textarea:focus {
   outline: none;
-  background-color: #f8f8f8;
+  background-color: #fff;
   color: #666;
   border-color: #1e87f0;
 }
@@ -1604,7 +1484,7 @@ button.gsl-icon:not(:disabled) {
 .gsl-input:disabled,
 .gsl-select:disabled,
 .gsl-textarea:disabled {
-  background-color: #f8f8f8;
+  background-color: #FFF;
   color: #999;
   border-color: #e5e5e5;
 }
@@ -1637,7 +1517,7 @@ button.gsl-icon:not(:disabled) {
   padding-right: 8px;
 }
 .gsl-form-small:not(select):not(input):not(textarea) {
-  line-height: 30px;
+  line-height: 28px;
 }
 /*
  * Large
@@ -1651,7 +1531,7 @@ button.gsl-icon:not(:disabled) {
   padding-right: 12px;
 }
 .gsl-form-large:not(select):not(input):not(textarea) {
-  line-height: 55px;
+  line-height: 53px;
 }
 /* Style modifier (`gsl-input`, `gsl-select` and `gsl-textarea`)
  ========================================================================== */
@@ -1779,7 +1659,7 @@ select.gsl-form-width-xsmall {
   -webkit-appearance: none;
   -moz-appearance: none;
   /* 5 */
-  background-color: #ebebeb;
+  background-color: transparent;
   /* 6 */
   background-repeat: no-repeat;
   background-position: 50% 50%;
@@ -1828,7 +1708,7 @@ select.gsl-form-width-xsmall {
  */
 .gsl-radio:disabled,
 .gsl-checkbox:disabled {
-  background-color: #f8f8f8;
+  background-color: #FFF;
   border-color: #e5e5e5;
 }
 .gsl-radio:disabled:checked {
@@ -1921,7 +1801,7 @@ select.gsl-form-width-xsmall {
  */
 .gsl-form-stacked .gsl-form-label {
   display: block;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 /*
  * Horizontal
@@ -1931,7 +1811,7 @@ select.gsl-form-width-xsmall {
   /* Behave like `gsl-form-stacked` */
   .gsl-form-horizontal .gsl-form-label {
     display: block;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
   }
 }
 /* Tablet landscape and bigger */
@@ -2036,9 +1916,9 @@ select.gsl-form-width-xsmall {
   box-sizing: border-box;
   padding: 0 30px;
   vertical-align: middle;
-  font-size: 14px;
+  font-size: 0.875rem;
   /* 8 */
-  line-height: 40px;
+  line-height: 38px;
   /* 9 */
   text-align: center;
   /* 10 */
@@ -2073,21 +1953,21 @@ select.gsl-form-width-xsmall {
  * Default
  */
 .gsl-button-default {
-  background-color: #f8f8f8;
+  background-color: transparent;
   color: #333;
   border: 1px solid #e5e5e5;
 }
 /* Hover + Focus */
 .gsl-button-default:hover,
 .gsl-button-default:focus {
-  background-color: #ebebeb;
+  background-color: transparent;
   color: #333;
   border-color: #b2b2b2;
 }
 /* OnClick + Active */
 .gsl-button-default:active,
 .gsl-button-default.gsl-active {
-  background-color: #dfdfdf;
+  background-color: transparent;
   color: #333;
   border-color: #999999;
 }
@@ -2159,7 +2039,7 @@ select.gsl-form-width-xsmall {
 .gsl-button-primary:disabled,
 .gsl-button-secondary:disabled,
 .gsl-button-danger:disabled {
-  background-color: #f8f8f8;
+  background-color: transparent;
   color: #999;
   border-color: #e5e5e5;
 }
@@ -2167,13 +2047,13 @@ select.gsl-form-width-xsmall {
  ========================================================================== */
 .gsl-button-small {
   padding: 0 15px;
-  line-height: 30px;
+  line-height: 28px;
   font-size: 0.875rem;
 }
 .gsl-button-large {
   padding: 0 20px;
-  line-height: 55px;
-  font-size: 1.25rem;
+  line-height: 53px;
+  font-size: 0.875rem;
 }
 /* Text modifiers
  ========================================================================== */
@@ -2188,7 +2068,7 @@ select.gsl-form-width-xsmall {
   line-height: 1.2;
   background: none;
   /* 2 */
-  color: #999;
+  color: #333;
   position: relative;
 }
 .gsl-button-text::before {
@@ -2197,13 +2077,13 @@ select.gsl-form-width-xsmall {
   bottom: 0;
   left: 0;
   right: 100%;
-  border-bottom: 1px solid #666;
+  border-bottom: 1px solid #333;
   transition: right 0.3s ease-out;
 }
 /* Hover + Focus */
 .gsl-button-text:hover,
 .gsl-button-text:focus {
-  color: #666;
+  color: #333;
 }
 .gsl-button-text:hover::before,
 .gsl-button-text:focus::before {
@@ -2276,71 +2156,6 @@ select.gsl-form-width-xsmall {
 .gsl-button-group .gsl-button.gsl-active {
   position: relative;
   z-index: 1;
-}
-/*
- * Warning
- */
-.gsl-button-warning {
-  background-color: #faa05a;
-  color: #000000;
-  border: 1px solid transparent;
-}
-/* Hover + Focus */
-.gsl-button-warning:hover,
-.gsl-button-warning:focus {
-  background-color: #f99241;
-  color: #fff;
-}
-/* OnClick + Active */
-.gsl-button-warning:active,
-.gsl-button-warning.gsl-active {
-  background-color: #f98428;
-  color: #fff;
-}
-/*
- * Disabled
- * The same for all style modifiers
- */
-.gsl-button-warning:disabled {
-  background-color: #f8f8f8;
-  color: #999;
-  border-color: #e5e5e5;
-}
-/*
- * Success
- */
-.gsl-button-success {
-  background-color: #46a546;
-  color: #fff;
-  border: 1px solid transparent;
-}
-/* Hover + Focus */
-.gsl-button-success:hover,
-.gsl-button-success:focus {
-  background-color: #3e933e;
-  color: #fff;
-}
-/* OnClick + Active */
-.gsl-button-success:active,
-.gsl-button-success.gsl-active {
-  background-color: #378137;
-  color: #fff;
-}
-/*
- * Disabled
- * The same for all style modifiers
- */
-.gsl-button-success:disabled {
-  background-color: #f8f8f8;
-  color: #999;
-  border-color: #e5e5e5;
-}
-/* Size modifiers
- ========================================================================== */
-.gsl-button-xsmall {
-  padding: 0 5px;
-  line-height: 20px;
-  font-size: 0.65rem;
 }
 /* ========================================================================
    Component: Section
@@ -2434,7 +2249,7 @@ select.gsl-form-width-xsmall {
  * Muted
  */
 .gsl-section-muted {
-  background: #f8f8f8;
+  background: #FFF;
 }
 /*
  * Primary
@@ -3076,7 +2891,7 @@ select.gsl-form-width-xsmall {
  * Muted
  */
 .gsl-tile-muted {
-  background: #f8f8f8;
+  background: #FFF;
 }
 /*
  * Primary
@@ -3175,7 +2990,7 @@ select.gsl-form-width-xsmall {
 /* Hover modifier
  ========================================================================== */
 .gsl-card-hover:not(.gsl-card-default):not(.gsl-card-primary):not(.gsl-card-secondary):hover {
-  background: #f8f8f8;
+  background: #fff;
   box-shadow: 0 14px 25px rgba(0, 0, 0, 0.16);
 }
 /* Style modifiers
@@ -3185,7 +3000,7 @@ select.gsl-form-width-xsmall {
  * Note: Header and Footer are only implemented for the default style
  */
 .gsl-card-default {
-  background: #f8f8f8;
+  background: #fff;
   color: #666;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
 }
@@ -3193,7 +3008,7 @@ select.gsl-form-width-xsmall {
   color: #333;
 }
 .gsl-card-default.gsl-card-hover:hover {
-  background-color: #ebebeb;
+  background-color: #fff;
   box-shadow: 0 14px 25px rgba(0, 0, 0, 0.16);
 }
 .gsl-card-default .gsl-card-header {
@@ -3214,7 +3029,7 @@ select.gsl-form-width-xsmall {
   color: #fff;
 }
 .gsl-card-primary.gsl-card-hover:hover {
-  background-color: #0f7ae5;
+  background-color: #1e87f0;
   box-shadow: 0 14px 25px rgba(0, 0, 0, 0.16);
 }
 /*
@@ -3229,7 +3044,7 @@ select.gsl-form-width-xsmall {
   color: #fff;
 }
 .gsl-card-secondary.gsl-card-hover:hover {
-  background-color: #151515;
+  background-color: #222;
   box-shadow: 0 14px 25px rgba(0, 0, 0, 0.16);
 }
 /* Size modifier
@@ -3450,7 +3265,7 @@ select.gsl-form-width-xsmall {
   position: relative;
   margin-bottom: 20px;
   padding: 15px 29px 15px 15px;
-  background: #f8f8f8;
+  background: #FFF;
   color: #666;
 }
 /* Add margin if adjacent element */
@@ -3766,7 +3581,7 @@ select.gsl-form-width-xsmall {
  ========================================================================== */
 .gsl-comment-primary {
   padding: 30px;
-  background-color: #f8f8f8;
+  background-color: #FFF;
 }
 /* ========================================================================
    Component: Search
@@ -3902,12 +3717,12 @@ select.gsl-form-width-xsmall {
   height: 40px;
   padding-left: 6px;
   padding-right: 6px;
-  background: #f8f8f8;
+  background: transparent;
   border: 1px solid #e5e5e5;
 }
 /* Focus */
 .gsl-search-default .gsl-search-input:focus {
-  background-color: #f8f8f8;
+  background-color: transparent;
 }
 /*
  * Icon
@@ -4180,7 +3995,7 @@ ul.gsl-nav-sub {
 /* Container
  ========================================================================== */
 .gsl-navbar-container:not(.gsl-navbar-transparent) {
-  background: #f8f8f8;
+  background: #FFF;
 }
 /*
  * Remove pseudo elements created by micro clearfix as precaution (if Container component is used)
@@ -4288,7 +4103,7 @@ ul.gsl-nav-sub {
   min-height: 56px;
   padding: 0 15px;
   /* 3 */
-  font-size: 14px;
+  font-size: 0.875rem;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   /* 4 */
   text-decoration: none;
@@ -4368,8 +4183,8 @@ ul.gsl-nav-sub {
   box-sizing: border-box;
   width: 200px;
   /* 4 */
-  padding: 15px;
-  background: #f8f8f8;
+  padding: 25px;
+  background: #fff;
   color: #666;
   box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
 }
@@ -4382,16 +4197,16 @@ ul.gsl-nav-sub {
  */
 /* Direction */
 [class*='gsl-navbar-dropdown-top'] {
-  margin-top: 0;
+  margin-top: -15px;
 }
 [class*='gsl-navbar-dropdown-bottom'] {
-  margin-top: 0;
+  margin-top: 15px;
 }
 [class*='gsl-navbar-dropdown-left'] {
-  margin-left: 0;
+  margin-left: -15px;
 }
 [class*='gsl-navbar-dropdown-right'] {
-  margin-left: 0;
+  margin-left: 15px;
 }
 /*
  * Grid
@@ -4399,14 +4214,14 @@ ul.gsl-nav-sub {
  */
 /* Gutter Horizontal */
 .gsl-navbar-dropdown-grid {
-  margin-left: -30px;
+  margin-left: -50px;
 }
 .gsl-navbar-dropdown-grid > * {
-  padding-left: 30px;
+  padding-left: 50px;
 }
 /* Gutter Vertical */
 .gsl-navbar-dropdown-grid > .gsl-grid-margin {
-  margin-top: 30px;
+  margin-top: 50px;
 }
 /* Stack */
 .gsl-navbar-dropdown-stack .gsl-navbar-dropdown-grid > * {
@@ -4484,7 +4299,7 @@ ul.gsl-nav-sub {
 /* Dropbar
  ========================================================================== */
 .gsl-navbar-dropbar {
-  background: #f8f8f8;
+  background: #fff;
 }
 /*
  * Slide modifier
@@ -4517,15 +4332,15 @@ ul.gsl-nav-sub {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 15px;
+  left: 25px;
   border-left: 1px solid #e5e5e5;
 }
 /* Vertical */
 .gsl-navbar-dropdown-grid.gsl-grid-stack > .gsl-grid-margin::before {
   content: "";
   position: absolute;
-  top: -15px;
-  left: 30px;
+  top: -25px;
+  left: 50px;
   right: 0;
   border-top: 1px solid #e5e5e5;
 }
@@ -4620,12 +4435,12 @@ ul.gsl-nav-sub {
 /* Hover + Focus */
 .gsl-subnav-pill > * > a:hover,
 .gsl-subnav-pill > * > a:focus {
-  background-color: #f8f8f8;
+  background-color: #FFF;
   color: #666;
 }
 /* OnClick */
 .gsl-subnav-pill > * > a:active {
-  background-color: #f8f8f8;
+  background-color: #FFF;
   color: #666;
 }
 /* Active */
@@ -4957,7 +4772,7 @@ ul.gsl-nav-sub {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: rgba(102, 102, 102, 0.2);
+  background: transparent;
   /* 1 */
   text-indent: 100%;
   overflow: hidden;
@@ -5202,8 +5017,8 @@ ul.gsl-nav-sub {
   box-sizing: border-box;
   min-width: 200px;
   /* 4 */
-  padding: 15px;
-  background: #f8f8f8;
+  padding: 25px;
+  background: #fff;
   color: #666;
   box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
 }
@@ -5399,12 +5214,12 @@ ul.gsl-nav-sub {
 }
 .gsl-modal-header {
   padding: 15px 30px;
-  background: #f8f8f8;
+  background: #fff;
   border-bottom: 1px solid #e5e5e5;
 }
 .gsl-modal-footer {
   padding: 15px 30px;
-  background: #f8f8f8;
+  background: #fff;
   border-top: 1px solid #e5e5e5;
 }
 /*
@@ -5490,6 +5305,280 @@ ul.gsl-nav-sub {
   right: 0;
   padding: 20px;
   background: #fff;
+}
+/* ========================================================================
+   Component: Lightbox
+ ========================================================================== */
+/*
+ * 1. Hide by default
+ * 2. Set position
+ * 3. Allow scrolling for the modal dialog
+ * 4. Horizontal padding
+ * 5. Mask the background page
+ * 6. Fade-in transition
+ */
+.gsl-lightbox {
+  /* 1 */
+  display: none;
+  /* 2 */
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1010;
+  /* 5 */
+  background: #000;
+  /* 6 */
+  opacity: 0;
+  transition: opacity 0.15s linear;
+}
+/*
+ * Open
+ * 1. Center child
+ * 2. Fade-in
+ */
+.gsl-lightbox.gsl-open {
+  display: block;
+  /* 2 */
+  opacity: 1;
+}
+/* Page
+ ========================================================================== */
+/*
+ * Prevent scrollbars
+ */
+.gsl-lightbox-page {
+  overflow: hidden;
+}
+/* Item
+ ========================================================================== */
+/*
+ * 1. Center child within the viewport
+ * 2. Not visible by default
+ * 3. Color needed for spinner icon
+ * 4. Optimize animation
+ * 5. Responsiveness
+ *    Using `vh` for `max-height` to fix image proportions after resize in Safari and Opera
+ *    Using `vh` and `vw` to make responsive image work in IE11
+ * 6. Suppress outline on focus
+ */
+.gsl-lightbox-items > * {
+  /* 1 */
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  /* 2 */
+  display: none;
+  justify-content: center;
+  align-items: center;
+  /* 3 */
+  color: rgba(255, 255, 255, 0.7);
+  /* 4 */
+  will-change: transform, opacity;
+}
+/* 5 */
+.gsl-lightbox-items > * > * {
+  max-width: 100vw;
+  max-height: 100vh;
+}
+/* 6 */
+.gsl-lightbox-items > :focus {
+  outline: none;
+}
+.gsl-lightbox-items > * > :not(iframe) {
+  width: auto;
+  height: auto;
+}
+.gsl-lightbox-items > .gsl-active {
+  display: flex;
+}
+/* Toolbar
+ ========================================================================== */
+.gsl-lightbox-toolbar {
+  padding: 10px 10px;
+  background: rgba(0, 0, 0, 0.3);
+  color: rgba(255, 255, 255, 0.7);
+}
+.gsl-lightbox-toolbar > * {
+  color: rgba(255, 255, 255, 0.7);
+}
+/* Toolbar Icon (Close)
+ ========================================================================== */
+.gsl-lightbox-toolbar-icon {
+  padding: 5px;
+  color: rgba(255, 255, 255, 0.7);
+}
+/*
+ * Hover
+ */
+.gsl-lightbox-toolbar-icon:hover {
+  color: #fff;
+}
+/* Button (Slidenav)
+ ========================================================================== */
+/*
+ * 1. Center icon vertically and horizontally
+ */
+.gsl-lightbox-button {
+  box-sizing: border-box;
+  width: 50px;
+  height: 50px;
+  background: rgba(0, 0, 0, 0.3);
+  color: rgba(255, 255, 255, 0.7);
+  /* 1 */
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+/*
+ * Hover
+ */
+.gsl-lightbox-button:hover {
+  color: #fff;
+}
+/* Caption
+ ========================================================================== */
+/* Iframe
+ ========================================================================== */
+.gsl-lightbox-iframe {
+  width: 80%;
+  height: 80%;
+}
+/* ========================================================================
+   Component: Slideshow
+ ========================================================================== */
+/*
+ * 1. Prevent tab highlighting on iOS.
+ */
+.gsl-slideshow {
+  /* 1 */
+  -webkit-tap-highlight-color: transparent;
+}
+/* Items
+ ========================================================================== */
+/*
+ * 1. Create position and stacking context
+ * 2. Reset list
+ * 3. Clip child elements
+ * 4. Prevent displaying the callout information on iOS.
+ */
+.gsl-slideshow-items {
+  /* 1 */
+  position: relative;
+  z-index: 0;
+  /* 2 */
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  /* 3 */
+  overflow: hidden;
+  /* 4 */
+  -webkit-touch-callout: none;
+}
+/* Item
+ ========================================================================== */
+/*
+ * 1. Position items above each other
+ * 2. Take the full width
+ * 3. Clip child elements, e.g. for `gsl-cover`
+ * 4. Optimize animation
+ * 5. Disable horizontal panning gestures in IE11 and Edge
+ * 6. Suppress outline on focus
+ */
+.gsl-slideshow-items > * {
+  /* 1 */
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* 2 */
+  right: 0;
+  bottom: 0;
+  /* 3 */
+  overflow: hidden;
+  /* 4 */
+  will-change: transform, opacity;
+  /* 5 */
+  touch-action: pan-y;
+}
+/* 6 */
+.gsl-slideshow-items > :focus {
+  outline: none;
+}
+/*
+ * Hide not active items
+ */
+.gsl-slideshow-items > :not(.gsl-active) {
+  display: none;
+}
+/* ========================================================================
+   Component: Slider
+ ========================================================================== */
+/*
+ * 1. Prevent tab highlighting on iOS.
+ */
+.gsl-slider {
+  /* 1 */
+  -webkit-tap-highlight-color: transparent;
+}
+/* Container
+ ========================================================================== */
+/*
+ * 1. Clip child elements
+ */
+.gsl-slider-container {
+  /* 1 */
+  overflow: hidden;
+}
+/* Items
+ ========================================================================== */
+/*
+ * 1. Optimize animation
+ * 2. Create a containing block. In Safari it's neither created by `transform` nor `will-change`.
+ */
+.gsl-slider-items {
+  /* 1 */
+  will-change: transform;
+  /* 2 */
+  position: relative;
+}
+/*
+ * 1. Reset list style without interfering with grid
+ * 2. Prevent displaying the callout information on iOS.
+ */
+.gsl-slider-items:not(.gsl-grid) {
+  display: flex;
+  /* 1 */
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  /* 2 */
+  -webkit-touch-callout: none;
+}
+.gsl-slider-items.gsl-grid {
+  flex-wrap: nowrap;
+}
+/* Item
+ ========================================================================== */
+/*
+ * 1. Let items take content dimensions (0 0 auto)
+ * 2. Create position context
+ * 3. Disable horizontal panning gestures in IE11 and Edge
+ * 4. Suppress outline on focus
+ */
+.gsl-slider-items > * {
+  /* 1 */
+  flex: none;
+  /* 2 */
+  position: relative;
+  /* 3 */
+  touch-action: pan-y;
+}
+/* 4 */
+.gsl-slider-items > :focus {
+  outline: none;
 }
 /* ========================================================================
    Component: Sticky
@@ -5861,6 +5950,104 @@ ul.gsl-nav-sub {
   padding-top: 10px;
 }
 /* ========================================================================
+   Component: Notification
+ ========================================================================== */
+/*
+ * 1. Set position
+ * 2. Dimensions
+ */
+.gsl-notification {
+  /* 1 */
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 1040;
+  /* 2 */
+  box-sizing: border-box;
+  width: 350px;
+}
+/* Position modifiers
+========================================================================== */
+.gsl-notification-top-right,
+.gsl-notification-bottom-right {
+  left: auto;
+  right: 10px;
+}
+.gsl-notification-top-center,
+.gsl-notification-bottom-center {
+  left: 50%;
+  margin-left: -175px;
+}
+.gsl-notification-bottom-left,
+.gsl-notification-bottom-right,
+.gsl-notification-bottom-center {
+  top: auto;
+  bottom: 10px;
+}
+/* Responsiveness
+========================================================================== */
+/* Phones portrait and smaller */
+@media (max-width: 639px) {
+  .gsl-notification {
+    left: 10px;
+    right: 10px;
+    width: auto;
+    margin: 0;
+  }
+}
+/* Message
+========================================================================== */
+.gsl-notification-message {
+  position: relative;
+  padding: 15px;
+  background: #FFF;
+  color: #666;
+  font-size: 1.25rem;
+  line-height: 1.4;
+  cursor: pointer;
+}
+* + .gsl-notification-message {
+  margin-top: 10px;
+}
+/* Close
+ * Adopts `gsl-close`
+ ========================================================================== */
+.gsl-notification-close {
+  display: none;
+  position: absolute;
+  top: 20px;
+  right: 15px;
+}
+.gsl-notification-message:hover .gsl-notification-close {
+  display: block;
+}
+/* Style modifiers
+ ========================================================================== */
+/*
+ * Primary
+ */
+.gsl-notification-message-primary {
+  color: #1e87f0;
+}
+/*
+ * Success
+ */
+.gsl-notification-message-success {
+  color: #46a546;
+}
+/*
+ * Warning
+ */
+.gsl-notification-message-warning {
+  color: #faa05a;
+}
+/*
+ * Danger
+ */
+.gsl-notification-message-danger {
+  color: #f0506e;
+}
+/* ========================================================================
    Component: Tooltip
  ========================================================================== */
 /*
@@ -5910,7 +6097,7 @@ ul.gsl-nav-sub {
 .gsl-placeholder {
   margin-bottom: 20px;
   padding: 30px 30px;
-  background: #f8f8f8;
+  background: transparent;
   border: 1px dashed #e5e5e5;
 }
 /* Add margin if adjacent element */
@@ -5946,7 +6133,7 @@ ul.gsl-nav-sub {
   /* 4 */
   border: 0;
   /* 5 */
-  background-color: #f8f8f8;
+  background-color: #FFF;
   /* 6 */
   margin-bottom: 20px;
   height: 15px;
@@ -5968,7 +6155,7 @@ ul.gsl-nav-sub {
  * 2. Remove progress bar for indeterminate state in Firefox
  */
 .gsl-progress::-webkit-progress-bar {
-  background-color: #f8f8f8;
+  background-color: #FFF;
   border-radius: 500px;
   overflow: hidden;
 }
@@ -6035,6 +6222,55 @@ ul.gsl-nav-sub {
 .gsl-sortable-handle:hover {
   cursor: move;
 }
+/* ========================================================================
+   Component: Countdown
+ ========================================================================== */
+/* Item
+ ========================================================================== */
+/*
+ * 1. Center numbers and separators vertically
+ */
+.gsl-countdown-number,
+.gsl-countdown-separator {
+  /* 1 */
+  line-height: 0.8;
+}
+/* Number
+ ========================================================================== */
+.gsl-countdown-number {
+  font-size: 2rem;
+}
+/* Phone landscape and bigger */
+@media (min-width: 640px) {
+  .gsl-countdown-number {
+    font-size: 4rem;
+  }
+}
+/* Tablet landscape and bigger */
+@media (min-width: 960px) {
+  .gsl-countdown-number {
+    font-size: 6rem;
+  }
+}
+/* Separator
+ ========================================================================== */
+.gsl-countdown-separator {
+  font-size: 1rem;
+}
+/* Phone landscape and bigger */
+@media (min-width: 640px) {
+  .gsl-countdown-separator {
+    font-size: 2rem;
+  }
+}
+/* Tablet landscape and bigger */
+@media (min-width: 960px) {
+  .gsl-countdown-separator {
+    font-size: 3rem;
+  }
+}
+/* Label
+ ========================================================================== */
 /* ========================================================================
    Component: Animation
  ========================================================================== */
@@ -7364,7 +7600,7 @@ iframe.gsl-cover {
   background-color: #fff;
 }
 .gsl-background-muted {
-  background-color: #f8f8f8;
+  background-color: #FFF;
 }
 .gsl-background-primary {
   background-color: #1e87f0;
@@ -7509,21 +7745,6 @@ iframe.gsl-cover {
 }
 .gsl-background-blend-luminosity {
   background-blend-mode: luminosity;
-}
-/* ========================================================================
-   Component: Background
- ========================================================================== */
-/* Color
- ========================================================================== */
-.gsl-background-warning {
-  background-color: #faa05a;
-  color: #000000;
-}
-.gsl-background-success {
-  background-color: #46a546;
-}
-.gsl-background-danger {
-  background-color: #f0506e;
 }
 /* ========================================================================
    Component: Align
@@ -9124,32 +9345,6 @@ iframe.gsl-cover {
 .gsl-offcanvas-bar {
   color: rgba(255, 255, 255, 0.7);
 }
-.gsl-light .gsl-accordion-title::before,
-.gsl-section-primary:not(.gsl-preserve-color) .gsl-accordion-title::before,
-.gsl-section-secondary:not(.gsl-preserve-color) .gsl-accordion-title::before,
-.gsl-tile-primary:not(.gsl-preserve-color) .gsl-accordion-title::before,
-.gsl-tile-secondary:not(.gsl-preserve-color) .gsl-accordion-title::before,
-.gsl-card-primary.gsl-card-body .gsl-accordion-title::before,
-.gsl-card-primary > :not([class*='gsl-card-media']) .gsl-accordion-title::before,
-.gsl-card-secondary.gsl-card-body .gsl-accordion-title::before,
-.gsl-card-secondary > :not([class*='gsl-card-media']) .gsl-accordion-title::before,
-.gsl-overlay-primary .gsl-accordion-title::before,
-.gsl-offcanvas-bar .gsl-accordion-title::before {
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2213%22%20height%3D%2213%22%20viewBox%3D%220%200%2013%2013%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Crect%20fill%3D%22rgba%28255,%20255,%20255,%200.7%29%22%20width%3D%2213%22%20height%3D%221%22%20x%3D%220%22%20y%3D%226%22%20%2F%3E%0A%20%20%20%20%3Crect%20fill%3D%22rgba%28255,%20255,%20255,%200.7%29%22%20width%3D%221%22%20height%3D%2213%22%20x%3D%226%22%20y%3D%220%22%20%2F%3E%0A%3C%2Fsvg%3E");
-}
-.gsl-light .gsl-open > .gsl-accordion-title::before,
-.gsl-section-primary:not(.gsl-preserve-color) .gsl-open > .gsl-accordion-title::before,
-.gsl-section-secondary:not(.gsl-preserve-color) .gsl-open > .gsl-accordion-title::before,
-.gsl-tile-primary:not(.gsl-preserve-color) .gsl-open > .gsl-accordion-title::before,
-.gsl-tile-secondary:not(.gsl-preserve-color) .gsl-open > .gsl-accordion-title::before,
-.gsl-card-primary.gsl-card-body .gsl-open > .gsl-accordion-title::before,
-.gsl-card-primary > :not([class*='gsl-card-media']) .gsl-open > .gsl-accordion-title::before,
-.gsl-card-secondary.gsl-card-body .gsl-open > .gsl-accordion-title::before,
-.gsl-card-secondary > :not([class*='gsl-card-media']) .gsl-open > .gsl-accordion-title::before,
-.gsl-overlay-primary .gsl-open > .gsl-accordion-title::before,
-.gsl-offcanvas-bar .gsl-open > .gsl-accordion-title::before {
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2213%22%20height%3D%2213%22%20viewBox%3D%220%200%2013%2013%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Crect%20fill%3D%22rgba%28255,%20255,%20255,%200.7%29%22%20width%3D%2213%22%20height%3D%221%22%20x%3D%220%22%20y%3D%226%22%20%2F%3E%0A%3C%2Fsvg%3E");
-}
 .gsl-light a,
 .gsl-light .gsl-link,
 .gsl-section-primary:not(.gsl-preserve-color) a,
@@ -10370,8 +10565,8 @@ iframe.gsl-cover {
 .gsl-card-secondary > :not([class*='gsl-card-media']) .gsl-button-default,
 .gsl-overlay-primary .gsl-button-default,
 .gsl-offcanvas-bar .gsl-button-default {
-  background-color: #fff;
-  color: #666;
+  background-color: transparent;
+  color: #fff;
   border-color: rgba(255, 255, 255, 0.7);
 }
 .gsl-light .gsl-button-default:hover,
@@ -10396,8 +10591,8 @@ iframe.gsl-cover {
 .gsl-overlay-primary .gsl-button-default:focus,
 .gsl-offcanvas-bar .gsl-button-default:hover,
 .gsl-offcanvas-bar .gsl-button-default:focus {
-  background-color: #f2f2f2;
-  color: #666;
+  background-color: transparent;
+  color: #fff;
   border-color: #fff;
 }
 .gsl-light .gsl-button-default:active,
@@ -10422,8 +10617,8 @@ iframe.gsl-cover {
 .gsl-overlay-primary .gsl-button-default.gsl-active,
 .gsl-offcanvas-bar .gsl-button-default:active,
 .gsl-offcanvas-bar .gsl-button-default.gsl-active {
-  background-color: #e6e6e6;
-  color: #666;
+  background-color: transparent;
+  color: #fff;
   border-color: #fff;
 }
 .gsl-light .gsl-button-primary,
@@ -10565,7 +10760,7 @@ iframe.gsl-cover {
 .gsl-card-secondary > :not([class*='gsl-card-media']) .gsl-button-text,
 .gsl-overlay-primary .gsl-button-text,
 .gsl-offcanvas-bar .gsl-button-text {
-  color: rgba(255, 255, 255, 0.5);
+  color: #fff;
 }
 .gsl-light .gsl-button-text::before,
 .gsl-section-primary:not(.gsl-preserve-color) .gsl-button-text::before,
@@ -10602,7 +10797,7 @@ iframe.gsl-cover {
 .gsl-overlay-primary .gsl-button-text:focus,
 .gsl-offcanvas-bar .gsl-button-text:hover,
 .gsl-offcanvas-bar .gsl-button-text:focus {
-  color: rgba(255, 255, 255, 0.7);
+  color: #fff;
 }
 .gsl-light .gsl-button-text:disabled,
 .gsl-section-primary:not(.gsl-preserve-color) .gsl-button-text:disabled,
@@ -10778,7 +10973,7 @@ iframe.gsl-cover {
 .gsl-card-secondary > :not([class*='gsl-card-media']) .gsl-marker,
 .gsl-overlay-primary .gsl-marker,
 .gsl-offcanvas-bar .gsl-marker {
-  background: #f8f8f8;
+  background: #FFF;
   color: #666;
 }
 .gsl-light .gsl-marker:hover,
@@ -10946,7 +11141,7 @@ iframe.gsl-cover {
 .gsl-card-secondary > :not([class*='gsl-card-media']) .gsl-search-default .gsl-search-input,
 .gsl-overlay-primary .gsl-search-default .gsl-search-input,
 .gsl-offcanvas-bar .gsl-search-default .gsl-search-input {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: transparent;
   border-color: rgba(255, 255, 255, 0.2);
 }
 .gsl-light .gsl-search-default .gsl-search-input:focus,
@@ -10960,7 +11155,7 @@ iframe.gsl-cover {
 .gsl-card-secondary > :not([class*='gsl-card-media']) .gsl-search-default .gsl-search-input:focus,
 .gsl-overlay-primary .gsl-search-default .gsl-search-input:focus,
 .gsl-offcanvas-bar .gsl-search-default .gsl-search-input:focus {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: transparent;
 }
 .gsl-light .gsl-search-navbar .gsl-search-input,
 .gsl-section-primary:not(.gsl-preserve-color) .gsl-search-navbar .gsl-search-input,
@@ -11845,7 +12040,7 @@ iframe.gsl-cover {
 .gsl-card-secondary > :not([class*='gsl-card-media']) .gsl-dotnav > * > *,
 .gsl-overlay-primary .gsl-dotnav > * > *,
 .gsl-offcanvas-bar .gsl-dotnav > * > * {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: transparent;
   border-color: rgba(255, 255, 255, 0.9);
 }
 .gsl-light .gsl-dotnav > * > :hover,
@@ -12142,6 +12337,32 @@ iframe.gsl-cover {
 .gsl-offcanvas-bar .gsl-logo-inverse {
   display: inline;
 }
+.gsl-light .gsl-accordion-title::before,
+.gsl-section-primary:not(.gsl-preserve-color) .gsl-accordion-title::before,
+.gsl-section-secondary:not(.gsl-preserve-color) .gsl-accordion-title::before,
+.gsl-tile-primary:not(.gsl-preserve-color) .gsl-accordion-title::before,
+.gsl-tile-secondary:not(.gsl-preserve-color) .gsl-accordion-title::before,
+.gsl-card-primary.gsl-card-body .gsl-accordion-title::before,
+.gsl-card-primary > :not([class*='gsl-card-media']) .gsl-accordion-title::before,
+.gsl-card-secondary.gsl-card-body .gsl-accordion-title::before,
+.gsl-card-secondary > :not([class*='gsl-card-media']) .gsl-accordion-title::before,
+.gsl-overlay-primary .gsl-accordion-title::before,
+.gsl-offcanvas-bar .gsl-accordion-title::before {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2213%22%20height%3D%2213%22%20viewBox%3D%220%200%2013%2013%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Crect%20fill%3D%22rgba%28255,%20255,%20255,%200.7%29%22%20width%3D%2213%22%20height%3D%221%22%20x%3D%220%22%20y%3D%226%22%20%2F%3E%0A%20%20%20%20%3Crect%20fill%3D%22rgba%28255,%20255,%20255,%200.7%29%22%20width%3D%221%22%20height%3D%2213%22%20x%3D%226%22%20y%3D%220%22%20%2F%3E%0A%3C%2Fsvg%3E");
+}
+.gsl-light .gsl-open > .gsl-accordion-title::before,
+.gsl-section-primary:not(.gsl-preserve-color) .gsl-open > .gsl-accordion-title::before,
+.gsl-section-secondary:not(.gsl-preserve-color) .gsl-open > .gsl-accordion-title::before,
+.gsl-tile-primary:not(.gsl-preserve-color) .gsl-open > .gsl-accordion-title::before,
+.gsl-tile-secondary:not(.gsl-preserve-color) .gsl-open > .gsl-accordion-title::before,
+.gsl-card-primary.gsl-card-body .gsl-open > .gsl-accordion-title::before,
+.gsl-card-primary > :not([class*='gsl-card-media']) .gsl-open > .gsl-accordion-title::before,
+.gsl-card-secondary.gsl-card-body .gsl-open > .gsl-accordion-title::before,
+.gsl-card-secondary > :not([class*='gsl-card-media']) .gsl-open > .gsl-accordion-title::before,
+.gsl-overlay-primary .gsl-open > .gsl-accordion-title::before,
+.gsl-offcanvas-bar .gsl-open > .gsl-accordion-title::before {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2213%22%20height%3D%2213%22%20viewBox%3D%220%200%2013%2013%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Crect%20fill%3D%22rgba%28255,%20255,%20255,%200.7%29%22%20width%3D%2213%22%20height%3D%221%22%20x%3D%220%22%20y%3D%226%22%20%2F%3E%0A%3C%2Fsvg%3E");
+}
 /* ========================================================================
    Component: Print
  ========================================================================== */
@@ -12187,3 +12408,110 @@ iframe.gsl-cover {
     page-break-after: avoid;
   }
 }
+/*
+ * Warning
+ */
+.gsl-button-warning {
+  background-color: #faa05a;
+  color: #000000;
+  border: 1px solid transparent;
+}
+/* Hover + Focus */
+.gsl-button-warning:hover,
+.gsl-button-warning:focus {
+  background-color: #f99241;
+  color: #fff;
+}
+/* OnClick + Active */
+.gsl-button-warning:active,
+.gsl-button-warning.gsl-active {
+  background-color: #f98428;
+  color: #fff;
+}
+/*
+ * Disabled
+ * The same for all style modifiers
+ */
+.gsl-button-warning:disabled {
+  background-color: transparent;
+  color: #999;
+  border-color: #e5e5e5;
+}
+/*
+ * Success
+ */
+.gsl-button-success {
+  background-color: #46a546;
+  color: #fff;
+  border: 1px solid transparent;
+}
+/* Hover + Focus */
+.gsl-button-success:hover,
+.gsl-button-success:focus {
+  background-color: #3e933e;
+  color: #fff;
+}
+/* OnClick + Active */
+.gsl-button-success:active,
+.gsl-button-success.gsl-active {
+  background-color: #378137;
+  color: #fff;
+}
+/*
+ * Disabled
+ * The same for all style modifiers
+ */
+.gsl-button-success:disabled {
+  background-color: transparent;
+  color: #999;
+  border-color: #e5e5e5;
+}
+/* Size modifiers
+ ========================================================================== */
+.gsl-button-xsmall {
+  padding: 0 5px;
+  line-height: 20px;
+  font-size: 0.65rem;
+}
+/* ========================================================================
+   Component: Background
+ ========================================================================== */
+/* Color
+ ========================================================================== */
+.gsl-background-warning {
+  background-color: #faa05a;
+  color: #000000;
+}
+.gsl-background-success {
+  background-color: #46a546;
+}
+.gsl-background-danger {
+  background-color: #f0506e;
+}
+/*
+//
+// Background Colours
+//
+@global-background:                             #123456;
+@global-muted-background:                       #234567;
+@global-primary-background:                     #34567a;
+@global-secondary-background:                   #4567ab;
+@global-success-background:                     #567abc;
+@global-warning-background:                     #67abcd;
+@global-danger-background:                      #7abcde;
+
+//
+// Colours
+//
+
+@global-color:                                  #666;
+@global-emphasis-color:                         #333;
+@global-muted-color:                            #999;
+
+@global-link-color:                             #1e87f0;
+@global-link-hover-color:                       #0f6ecd;
+
+@global-inverse-color:                          #fff;
+@global-dark-inverse-color:                     #333;
+
+*/

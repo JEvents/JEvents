@@ -141,7 +141,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 	{
 
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
-		if ($params->get("clubcode", "") && Joomla\String\StringHelper::strlen($params->get("clubcode", "") > 20))
+		if ($params->get("clubcode", "") && Joomla\String\StringHelper::strlen($params->get("clubcode", "")) > 10)
 		{
 			return;
 		}

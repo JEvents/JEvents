@@ -170,7 +170,7 @@ class GslHelper
 			$iconLink->class          = "";
 			$iconLink->active         = $view == "icals";
 			$iconLink->link           = Route::_("index.php?option=com_jevents&task=icals.list");
-			$iconLink->icon           = "thumbnails";
+			$iconLink->icon           = "calendars";
 			$iconLink->label          = Text::_('JEV_ADMIN_ICAL_SUBSCRIPTIONS');
 			$iconLink->tooltip        = Text::_('JEV_ADMIN_ICAL_SUBSCRIPTIONS', true);
 			$iconLink->tooltip_detail = "";

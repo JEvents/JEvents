@@ -233,6 +233,7 @@ document.addEventListener('DOMContentLoaded', function () {
 				wrapper.click();
 			}
 		});
+		/*
 		document.querySelector('#gslc .returntojoomla').addEventListener('mouseover', () => {
 			let sbw = document.getElementById('sidebar-wrapper');
 			if (sbw) {
@@ -245,6 +246,7 @@ document.addEventListener('DOMContentLoaded', function () {
 				wrapper.click();
 			}
 		});
+		 */
 	}
 	else {
 		// Clean up ISIS stuff etc.
