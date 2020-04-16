@@ -3121,7 +3121,7 @@ SCRIPT;
 				// If we have session data then need to block page caching too!!
 				// JCache::getInstance('page', $options); doesn't give an instance its always a NEW copy
 				$cache_plg = JPluginHelper::getPlugin('system', 'cache');
-
+				$dispatcher     = JEventDispatcher::getInstance();
 				$observers = @$dispatcher->get("_observers");
 				if ($observers && is_array($observers))
 				{
@@ -3144,7 +3144,7 @@ SCRIPT;
 				// If we have RSVP PRo data then need to block page caching too!!
 				// JCache::getInstance('page', $options); doesn't give an instance its always a NEW copy
 				$cache_plg = JPluginHelper::getPlugin('system', 'cache');
-
+				$dispatcher     = JEventDispatcher::getInstance();
 				$observers = @$dispatcher->get("_observers");
 				if ($observers && is_array($observers))
 				{
