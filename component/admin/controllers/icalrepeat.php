@@ -845,7 +845,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 			// May want to send notification messages etc.
 			// just incase we don't have jevents plugins registered yet
 			JPluginHelper::importPlugin("jevents");
-			$res = JFactory::getApplication()->triggerEvent('onDeleteEventRepeat', $id);
+			$res = JFactory::getApplication()->triggerEvent('onDeleteEventRepeat', array($id));
 
 			$query = "SELECT * FROM #__jevents_repetition WHERE rp_id=$id";
 			$db->setQuery($query);
@@ -983,7 +983,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 				// May want to send notification messages etc.
 				// just incase we don't have jevents plugins registered yet
 				JPluginHelper::importPlugin("jevents");
-				$res = JFactory::getApplication()->triggerEvent('onDeleteEventRepeat', $rp_id);
+				$res = JFactory::getApplication()->triggerEvent('onDeleteEventRepeat', array($rp_id));
 			}
 
 
