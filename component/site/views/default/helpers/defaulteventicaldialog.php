@@ -95,7 +95,8 @@ function DefaultEventIcalDialog($view, $row, $mask, $bootstrap = false)
 						</div>
 						<?php
 					}
-					?>
+					$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+					if ($params->get("icalformatted", 1) == 1) { ?>
 					<label style="display:inline;">
 						<input name="icf" type="checkbox" value="1" onclick="if (this.checked) {
 								jevjq('#unstyledical').css('display',  'none');
@@ -106,6 +107,7 @@ function DefaultEventIcalDialog($view, $row, $mask, $bootstrap = false)
 							}" />
 						<?php echo JText::_("JEV_PRESERVE_HTML_FORMATTING"); ?>
 					</label>
+					<?php } ?>
 
 				</div>
 				<div class="modal-footer">

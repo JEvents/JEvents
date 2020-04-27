@@ -191,14 +191,15 @@ if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download"
 	</div>
 	<?php
 
-	echo "<div class='icalformat' style='clear:left; padding-top:5px;'>";
 	if ($params->get("icalformatted", 1) == 1){
-	echo "<h3>" . JText::_('JEV_ICAL_FORMATTING') . "</h3>\n";
-	?>
-	<input name="icalformatted" type="checkbox" value="1" <?php echo $jinput->getInt("icalformatted", 0) ? "checked='checked'" : ""; ?> />
-	<label>		<?php echo JText::_("JEV_PRESERVE_HTML_FORMATTING") ; ?>	</label>
-<?php }
-	echo "</div>";
+		echo "<div class='icalformat' style='clear:left; padding-top:5px;'>";
+		echo "<h3>" . JText::_('JEV_ICAL_FORMATTING') . "</h3>\n";
+		?>
+		<input name="icalformatted" type="checkbox" value="1" <?php echo $jinput->getInt("icalformatted", 0) ? "checked='checked'" : ""; ?> />
+		<label>		<?php echo JText::_("JEV_PRESERVE_HTML_FORMATTING") ; ?>	</label>
+		<?php
+		echo "</div>";
+	}
 ?>
 
 <input id="submit" class="ical_submit" type="submit" name="submit" value="<?php echo JText::_('JEV_GENERATE_ICALS'); ?>" />
