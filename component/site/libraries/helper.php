@@ -509,7 +509,7 @@ class JEVHelper
 	}
 
 	public static
-			function forceIntegerArray(&$cid, $asString = true)
+			function forceIntegerArray($cid, $asString = true)
 	{
 		$cid = is_null($cid) ? array() : $cid;
 
@@ -770,7 +770,7 @@ class JEVHelper
 			data-show-time="' . $showtime . '"
 			data-show-others="1"
 			data-only-months-nav="0"
-			data-time-24="' . $timeformat . '" 
+			data-time-24="' . $timeformat . '"
 			' . (!empty($minYear) ? 'data-min-year="' . $minYear . '"' : "") . '
 			' . (!empty($maxYear) ? 'data-max-year="' . $maxYear . '"' : "") . '
 		><span class="icon-calendar"></span></button>. '
