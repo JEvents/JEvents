@@ -109,7 +109,7 @@ class ICalsController extends AdminIcalsController
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
 		$years = JRequest::getVar('years', 'NONE');
-		$cats = JRequest::getVar('catids', 'NONE');
+		$cats = JRequest::getVar('catids', 0);
 
 		// validate the key
 		$icalkey = $params->get("icalkey", "secret phrase");
