@@ -31,16 +31,15 @@ if ($jinput->getString("submit","") != "")
 		$cats[] = 0;
 
 
-	//$years  = str_replace(",","|",JEVHelper::forceIntegerArray(JRequest::getVar('years','','POST'),true));
-	//$cats = implode("|",$cats);
-        $jr_years = $jinput->post->get('years', array(0), null);
-	$years = JEVHelper::forceIntegerArray($jr_years, true);
-        $cats = implode(",", $cats);
+	$jr_years		= $jinput->post->get('years', array(0), null);
+	$years			= JEVHelper::forceIntegerArray($jr_years, true);
+	$catsImploded	= implode(",", $cats);
 
 	$link = JURI::root() . "index.php?option=com_jevents&task=icals.export&format=ical";
+
 	if (count($cats) > 0)
 	{
-		$link .="&catids=" . $cats;
+		$link .="&catids=" . $catsImploded;
 	}
 	$link .="&years=" . $years;
 	if ($jinput->getInt("icalformatted", 0))
@@ -55,12 +54,12 @@ if ($jinput->getString("submit","") != "")
 	}
 
 	$icalkey = $params->get("icalkey", "secret phrase");
-	$publiclink = $link . "&k=" . md5($icalkey . $cats . $years);
+	$publiclink = $link . "&k=" . md5($icalkey . $catsImploded . $years);
 
 	$user = JFactory::getUser();
 	if ($user->id != 0)
 	{
-		$privatelink = $link . "&pk=" . md5($icalkey . $cats . $years . $user->password . $user->username . $user->id) . "&i=" . $user->id;
+		$privatelink = $link . "&pk=" . md5($icalkey . $catsImploded . $years . $user->password . $user->username . $user->id) . "&i=" . $user->id;
 	} else {
 		$privatelink = "";
 	}
