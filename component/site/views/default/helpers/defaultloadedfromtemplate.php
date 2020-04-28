@@ -311,7 +311,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			static $pluginscalled = array();
 			if (!isset($pluginscalled[$event->rp_id()]))
 			{
-				
+
 				JPluginHelper::importPlugin("jevents");
 				$customresults                  = JFactory::getApplication()->triggerEvent('onDisplayCustomFields', array(&$event));
 				$pluginscalled[$event->rp_id()] = $event;
@@ -385,7 +385,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			$blank[]       = "";
 			continue;
 		}
-		// Built in fields	
+		// Built in fields
 		switch ($strippedmatch)
 		{
 			case "{{TITLE}}":
@@ -518,7 +518,6 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				if (!isset($allcat_catids))
 				{
 					$db         = JFactory::getDbo();
-					$arr_catids = array();
 					$catsql     = "SELECT cat.id, cat.title as name, cat.params FROM #__categories  as cat WHERE cat.extension='com_jevents' ";
 					$db->setQuery($catsql);
 					$allcat_catids = $db->loadObjectList('id');
@@ -539,13 +538,38 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				$blank[]   = "";
 				break;
 
+			case "{{ALLCATEGORIESLUGS}}":
+				$search[] = "{{ALLCATEGORIESLUGS}}";
+
+				if (!isset($allcat_catids))
+				{
+					$db         = JFactory::getDbo();
+					$catsql     = "SELECT cat.id, cat.title AS name, cat.alias AS slug cat.params FROM #__categories  AS cat WHERE cat.extension='com_jevents' ";
+					$db->setQuery($catsql);
+					$allcat_catids = $db->loadObjectList('id');
+				}
+				$db = JFactory::getDbo();
+				$db->setQuery("Select catid from #__jevents_catmap  WHERE evid = " . $event->ev_id());
+				$allcat_eventcats = $db->loadColumn();
+
+				$allcats = array();
+				foreach ($allcat_eventcats as $catid)
+				{
+					if (isset($allcat_catids[$catid]))
+					{
+						$allcats[] = $allcat_catids[$catid]->slug;
+					}
+				}
+				$replace[] = implode(" ", $allcats);
+				$blank[]   = "";
+				break;
+
             case "{{ALLCATEGORIES_CAT_COLOURED}}":
                 $search[] = "{{ALLCATEGORIES_CAT_COLOURED}}";
 
                 if (!isset($allcat_catids))
                 {
                     $db         = JFactory::getDbo();
-                    $arr_catids = array();
                     $catsql     = "SELECT cat.id, cat.title as name, cat.params FROM #__categories  as cat WHERE cat.extension='com_jevents' ";
                     $db->setQuery($catsql);
                     $allcat_catids = $db->loadObjectList('id');
@@ -1576,7 +1600,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					{
 						if (JString::strpos($event->contact_info(), '<script') === false)
 						{
-							
+
 							JPluginHelper::importPlugin('content');
 
 							//Contact
@@ -1624,7 +1648,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				//Extra
 				if (JString::strpos($event->extra_info(), '<script') === false && $event->extra_info() != "")
 				{
-					
+
 					JPluginHelper::importPlugin('content');
 
 					$pattern = '[a-zA-Z0-9&?_.,=%\-\/#]';
