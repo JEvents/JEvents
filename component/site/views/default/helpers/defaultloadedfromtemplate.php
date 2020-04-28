@@ -518,7 +518,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				if (!isset($allcat_catids))
 				{
 					$db         = JFactory::getDbo();
-					$catsql     = "SELECT cat.id, cat.title as name, cat.params FROM #__categories  as cat WHERE cat.extension='com_jevents' ";
+					$catsql     = "SELECT cat.id, cat.title AS name, cat.params FROM #__categories AS cat WHERE cat.extension='com_jevents' ";
 					$db->setQuery($catsql);
 					$allcat_catids = $db->loadObjectList('id');
 				}
@@ -570,7 +570,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
                 if (!isset($allcat_catids))
                 {
                     $db         = JFactory::getDbo();
-                    $catsql     = "SELECT cat.id, cat.title as name, cat.params FROM #__categories  as cat WHERE cat.extension='com_jevents' ";
+                    $catsql     = "SELECT cat.id, cat.title AS name, cat.params FROM #__categories AS cat WHERE cat.extension='com_jevents' ";
                     $db->setQuery($catsql);
                     $allcat_catids = $db->loadObjectList('id');
                 }
