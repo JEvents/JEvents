@@ -531,7 +531,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				{
 					if (isset($allcat_catids[$catid]))
 					{
-						$allcats[] = $allcat_catids[$catid]->name;
+						$allcats[] = 'jevcat-' . $allcat_catids[$catid]->name;
 					}
 				}
 				$replace[] = implode(", ", $allcats);
