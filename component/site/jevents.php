@@ -20,6 +20,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
 
+//header("Content-Security-Policy: script-src 'self' 'unsafe-inline'");
 
 $app    = Factory::getApplication();
 $input  = $app->input;
@@ -126,6 +127,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 	$newparams->set('com_cache', 0);
 }
 
+
+$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 $component         = ComponentHelper::getComponent(JEV_COM_COMPONENT);
 $component->params = $newparams;
 
