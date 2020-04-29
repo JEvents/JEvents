@@ -531,7 +531,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				{
 					if (isset($allcat_catids[$catid]))
 					{
-						$allcats[] = 'jevcat-' . $allcat_catids[$catid]->name;
+						$allcats[] = $allcat_catids[$catid]->name;
 					}
 				}
 				$replace[] = implode(", ", $allcats);
@@ -558,7 +558,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				{
 					if (isset($allcat_catids[$catid]))
 					{
-						$allcats[] = $allcat_catids[$catid]->slug;
+						$allcats[] = 'jevcat-' . $allcat_catids[$catid]->slug;
 					}
 				}
 				$replace[] = implode(" ", $allcats);
