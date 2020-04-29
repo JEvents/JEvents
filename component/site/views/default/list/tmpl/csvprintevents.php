@@ -28,7 +28,7 @@ $num_events = count($data['rows']);
 
 $rows = array();
 
-$fields = array();
+$csvfields = array();
 
 $compparams = ComponentHelper::getParams("com_jevents");
 $infields   = explode("||", $compparams->get("columns", "TITLE_LINK|Title Link|Title"));
@@ -40,10 +40,10 @@ foreach ($infields as $infield)
 	$parts             = explode("|", $infield);
 	$cols[]            = $parts[0];
 	$titles[]          = $parts[2];
-	$fields[$parts[2]] = $parts[0];
+	$csvfields[$parts[2]] = $parts[0];
 }
 
-$rows[] = array_keys($fields);
+$rows[] = array_keys($csvfields);
 
 
 $template = "";
@@ -115,7 +115,6 @@ function outputCSV($data)
 
 	function __outputCSV(&$row, $key, $filehandler)
 	{
-
 		if (is_object($row))
 		{
 			$data = array();
@@ -132,12 +131,20 @@ function outputCSV($data)
 				}
 			}
 		}
-		else
+		else if (is_array($row))
 		{
+			foreach ($row as $key => $field)
+			{
+				$row[$key] = htmlspecialchars_decode(trim($field));
+			}
 			$data = $row;
 		}
+		else
+		{
+			$data = htmlspecialchars_decode($row);
+		}
 
-		fputcsv($filehandler, htmlspecialchars_decode($data), ',', '"');
+		fputcsv($filehandler, $data, ',', '"');
 
 	}
 
