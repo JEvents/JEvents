@@ -74,7 +74,8 @@ $fullspan       = 12;
 					<div class="js-stools-container-list hidden-phone hidden-tablet">
 						<div class="hidden-select hidden-phone">
 							<div class="js-stools-field-list">
-								<?php echo $this->plist; ?>
+                                <?php echo Text::_('JEV_HIDE_OLD_EVENTS'); ?>
+                                <?php echo $this->plist; ?>
 							</div>
 							<div class="js-stools-field-list">
 								<?php echo $this->pagination->getLimitBox(); ?>

@@ -753,20 +753,27 @@ function toggleFreq(freq , setup)
 	var bymonthday = document.getElementById('bymonthday');
 	var bymonth = document.getElementById('bymonth');
 	var byday = document.getElementById('byday');
+	var byhour = document.getElementById('byhour');
+	var byminute = document.getElementById('byminute');
+	var bysecond= document.getElementById('bysecond');
 	var byirregular = document.getElementById('byirregular');
 	var weekofmonth = document.getElementById('weekofmonth');
 	var intervalLabel = document.getElementById('interval_label');
+
+	myDiv.style.display="none";
+	byyearday.style.display="none";
+	bymonth.style.display="none";
+	byweekno.style.display="none";
+	bymonthday.style.display="none";
+	byday.style.display="none";
+	byhour.style.display="none";
+	byminute.style.display="none";
+	bysecond.style.display="none";
+	byirregular.style.display="none";
+
 	switch (freq) {
 		case "NONE":
 			{
-				myDiv.style.display="none";
-				byyearday.style.display="none";
-				bymonth.style.display="none";
-				byweekno.style.display="none";
-				bymonthday.style.display="none";
-				byday.style.display="none";
-				byirregular.style.display="none";
-
 				// must also reset freq to 1 and count to 1
 				document.getElementById('rinterval').value="1";
 				document.getElementById('count').value="1";
@@ -781,11 +788,6 @@ function toggleFreq(freq , setup)
 				byyearday.style.display="block";
 				document.getElementById('jevbyd').checked="checked";
 				toggleWhichBy("byyearday");
-				bymonth.style.display="none";
-				byweekno.style.display="none";
-				bymonthday.style.display="none";
-				byday.style.display="none";
-				byirregular.style.display="none";
 
 				if (!setup) fixRepeatDates(true);
 			}
@@ -794,10 +796,6 @@ function toggleFreq(freq , setup)
 			{
 				intervalLabel.innerHTML=jevmonths;
 				myDiv.style.display="block";
-				byyearday.style.display="none";
-				bymonth.style.display="none";
-				byirregular.style.display="none";
-				byweekno.style.display="none";
 				bymonthday.style.display="block";
 				document.getElementById('jevbmd').checked="checked";
 				toggleWhichBy("bymonthday");
@@ -810,11 +808,6 @@ function toggleFreq(freq , setup)
 			{
 				intervalLabel.innerHTML=jevweeks;
 				myDiv.style.display="block";
-				byyearday.style.display="none";
-				bymonth.style.display="none";
-				byweekno.style.display="none";
-				bymonthday.style.display="none";
-				byirregular.style.display="none";
 				byday.style.display="block";
 				document.getElementById('jevbd').checked="checked";
 				// needed for after switching to month repeat and then toi wekely
@@ -834,25 +827,50 @@ function toggleFreq(freq , setup)
 			{
 				intervalLabel.innerHTML=jevdays;
 				myDiv.style.display="block";
-				byyearday.style.display="none";
-				bymonth.style.display="none";
-				byweekno.style.display="none";
-				bymonthday.style.display="none";
-				byday.style.display="none";
-				byirregular.style.display="none";
 				document.getElementById('jevbd').checked="checked";
 				//toggleWhichBy("byday");
 				weekofmonth.style.display="none";
 			}
 			break;
+		case "HOURLY":
+		{
+			intervalLabel.innerHTML=jevhours;
+			myDiv.style.display="block";
+			byday.style.display="block";
+			byhour.style.display="block";
+			document.getElementById('jevbd').checked="checked";
+			//toggleWhichBy("byday");
+			weekofmonth.style.display="block";
+		}
+			break;
+		case "MINUTELY":
+		{
+			intervalLabel.innerHTML=jevminutes;
+			myDiv.style.display="block";
+			byday.style.display="block";
+			byhour.style.display="block";
+			byminute.style.display="block";
+			document.getElementById('jevbd').checked="checked";
+			//toggleWhichBy("byday");
+			weekofmonth.style.display="block";
+		}
+			break;
+		case "SECONDLY":
+		{
+			intervalLabel.innerHTML=jevseconds;
+			myDiv.style.display="block";
+			byday.style.display="block";
+			byhour.style.display="block";
+			byminute.style.display="block";
+			bysecond.style.display="block";
+			document.getElementById('jevbd').checked="checked";
+			//toggleWhichBy("byday");
+			weekofmonth.style.display="block";
+		}
+			break;
 		case "IRREGULAR":
 			{
 				myDiv.style.display="block";
-				byyearday.style.display="none";
-				bymonth.style.display="none";
-				byweekno.style.display="none";
-				bymonthday.style.display="none";
-				byday.style.display="none";
 				byirregular.style.display="block";
 				document.getElementById('interval_div').style.display = "none";
 
@@ -933,6 +951,13 @@ function fixRepeatDates(checkYearDay){
 		}
 	}
 	bd[startDate.getDay()].checked=true;
+
+	var changeevent = new MouseEvent('change', {
+		view: window,
+		bubbles: true,
+		cancelable: true
+	});
+	bd[startDate.getDay()].dispatchEvent(changeevent);
 
 	end_date = document.getElementById("publish_down");
 	endDate = new Date();

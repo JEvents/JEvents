@@ -460,21 +460,63 @@ class jIcalEventDB extends jEventCal
 		else return $this->startMonthDay();
 	}
 
-	function bymonth($raw = false)
+    function bymonth($raw = false)
+    {
+
+        if ($raw) return $this->_bymonth;
+        if (isset($this->_bymonth) && $this->_bymonth != "") return $this->_bymonth;
+        else return $this->startMonth();
+    }
+
+    function startMonth()
+    {
+
+        return intval(JevDate::strftime("%m", $this->dtstart()));
+    }
+
+    function byhour($raw = false)
 	{
 
-		if ($raw) return $this->_bymonth;
-		if (isset($this->_bymonth) && $this->_bymonth != "") return $this->_bymonth;
-		else return $this->startMonth();
+		if ($raw) return $this->_byhour;
+		if (isset($this->_byhour) && $this->_byhour != "") return $this->_byhour;
+		else return $this->startHour();
 	}
 
-	function startMonth()
-	{
+    function startHour()
+    {
 
-		return intval(JevDate::strftime("%m", $this->dtstart()));
-	}
+        return intval(JevDate::strftime("%H", $this->dtstart()));
+    }
 
-	function getByDirectionChecked($direction = "byday")
+    function byminute($raw = false)
+    {
+
+        if ($raw) return $this->_byminute;
+        if (isset($this->_byminute) && $this->_byminute != "") return $this->_byminute;
+        else return $this->startMinute();
+    }
+
+    function startMinute()
+    {
+
+        return intval(JevDate::strftime("%M", $this->dtstart()));
+    }
+
+    function bysecond($raw = false)
+    {
+
+        if ($raw) return $this->_bysecond;
+        if (isset($this->_bysecond) && $this->_bysecond != "") return $this->_bysecond;
+        else return $this->startSecond();
+    }
+
+    function startSecond()
+    {
+
+        return intval(JevDate::strftime("%S", $this->dtstart()));
+    }
+
+    function getByDirectionChecked($direction = "byday")
 	{
 
 		if ($this->getByDirection($direction))
@@ -487,7 +529,7 @@ class jIcalEventDB extends jEventCal
 		}
 	}
 
-	/**
+    /**
 	 * Returns true if from start of period otheriwse false if counting back
 	 */
 	function getByDirection($direction = "byday")

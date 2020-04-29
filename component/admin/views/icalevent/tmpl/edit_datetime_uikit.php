@@ -184,6 +184,18 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 				       onclick="toggleFreq('NONE');"/>
 				<?php echo Text::_('NO_REPEAT'); ?>
 			</label>
+            <label for='MINUTELY' class="gsl-button gsl-button-small gsl-button-default <?php echo $freq ==  "MINUTELY" ? ' gsl-button-primary' : ''; ?>">
+                <input type="radio" name="freq" id="MINUTELY" class="gsl-hidden"
+                       value="MINUTELY" <?php if ($freq ==  "MINUTELY") echo 'checked="checked"'; ?>
+                       onclick="toggleFreq('MINUTELY');"/>
+                <?php echo Text::_('MINUTELY'); ?>
+            </label>
+            <label for='HOURLY' class="gsl-button gsl-button-small gsl-button-default <?php echo $freq ==  "HOURLY" ? ' gsl-button-primary' : ''; ?>">
+                <input type="radio" name="freq" id="HOURLY" class="gsl-hidden"
+                       value="HOURLY" <?php if ($freq ==  "HOURLY") echo 'checked="checked"'; ?>
+                       onclick="toggleFreq('HOURLY');"/>
+                <?php echo Text::_('HOURLY'); ?>
+            </label>
             <label for='DAILY' class="gsl-button gsl-button-small gsl-button-default <?php echo $freq ==  "DAILY" ? ' gsl-button-primary' : ''; ?>">
 				<input type="radio" name="freq" id="DAILY" class="gsl-hidden"
 				       value="DAILY" <?php if ($freq ==  "DAILY") echo 'checked="checked"'; ?>
@@ -335,7 +347,40 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 				</div>
 			</fieldset>
 		</div>
-		<div id="byirregular">
+        <div id="byhour">
+            <fieldset>
+                <legend><input type="radio" name="whichby" id="jevhour" value="bhr"
+                               onclick="toggleWhichBy('byhour');"/><?php echo Text::_('BY_HOUR'); ?></legend>
+                <div>
+                    <?php echo Text::_('COMMA_SEPARATED_LIST'); ?>
+                    <input class="inputbox" type="text" name="byhour" size="30" maxlength="20"
+                           value="<?php echo $this->row->byhour(); ?>" onchange="checkInterval();"/>
+                </div>
+            </fieldset>
+        </div>
+        <div id="byminute">
+            <fieldset>
+                <legend><input type="radio" name="whichby" id="jevminute" value="bsec"
+                               onclick="toggleWhichBy('byminute');"/><?php echo Text::_('BY_MINUTE'); ?></legend>
+                <div>
+                    <?php echo Text::_('COMMA_SEPARATED_LIST'); ?>
+                    <input class="inputbox" type="text" name="byminute" size="30" maxlength="20"
+                           value="<?php echo $this->row->byminute(); ?>" onchange="checkInterval();"/>
+                </div>
+            </fieldset>
+        </div>
+        <div id="bysecond">
+            <fieldset>
+                <legend><input type="radio" name="whichby" id="jevsecond" value="bsec"
+                               onclick="toggleWhichBy('bysecond');"/><?php echo Text::_('BY_SECOND'); ?></legend>
+                <div>
+                    <?php echo Text::_('COMMA_SEPARATED_LIST'); ?>
+                    <input class="inputbox" type="text" name="bysecond" size="30" maxlength="20"
+                           value="<?php echo $this->row->bysecond(); ?>" onchange="checkInterval();"/>
+                </div>
+            </fieldset>
+        </div>
+        <div id="byirregular">
 			<fieldset>
 				<legend><?php echo Text::_('JEV_SELECT_REPEAT_DATES'); ?></legend>
 				<div class="irregularDateSelector">

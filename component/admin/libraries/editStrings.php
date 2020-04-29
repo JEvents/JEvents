@@ -22,6 +22,9 @@ $editStrings .= "var jevyears= '" . Text::_("years", true) . "';\n";
 $editStrings .= "var jevmonths= '" . Text::_("months", true) . "';\n";
 $editStrings .= "var jevweeks= '" . Text::_("weeks", true) . "';\n";
 $editStrings .= "var jevdays= '" . Text::_("days", true) . "';\n";
+$editStrings .= "var jevhours= '" . Text::_("hours", true) . "';\n";
+$editStrings .= "var jevminutes= '" . Text::_("minutes", true) . "';\n";
+$editStrings .= "var jevseconds= '" . Text::_("seconds", true) . "';\n";
 $editStrings .= "var jevirregular= '" . Text::_("irregular", true) . "';\n";
 
 $editStrings .= " // end JEvents Language Srings\n";

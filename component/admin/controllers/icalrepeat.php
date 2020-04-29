@@ -76,6 +76,10 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 			$id = $evid;
 		}
 
+        $hidepast = intval(Factory::getApplication()->getUserStateFromRequest("hidepast", "hidepast", 0));
+        $options[] = HTMLHelper::_('select.option', '0', JText::_('JEV_NO'));
+        $options[] = HTMLHelper::_('select.option', '1', JText::_('JEV_YES'));
+        $plist     = HTMLHelper::_('select.genericlist', $options, 'hidepast', 'class="gsl-select"  onchange="document.adminForm.submit();"', 'value', 'text', $hidepast);
 
 		$limit      = intval(Factory::getApplication()->getUserStateFromRequest("viewlistlimit", 'limit', Factory::getApplication()->getCfg('list_limit', 10)));
 		$limitstart = intval(Factory::getApplication()->getUserStateFromRequest("view{" . JEV_COM_COMPONENT . "}limitstart", 'limitstart', 0));
@@ -87,7 +91,13 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 			$searchTextQuery = "\n AND LOWER(det.summary) LIKE '%$searchText%'";
 		}
 
-		$query = "SELECT count( DISTINCT rpt.rp_id)"
+        if ($hidepast)
+        {
+            $datenow = JevDate::getDate("-1 day");
+            $searchTextQuery .= "\n AND rpt.endrepeat>'" . $datenow->toSql() . "'";
+        }
+
+        $query = "SELECT count( DISTINCT rpt.rp_id)"
 			. "\n FROM #__jevents_vevent as ev"
 			. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid"
 			. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
@@ -148,6 +158,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 		$this->view->icalrows   = $icalrows;
 		$this->view->pagination = $pagination;
 		$this->view->evid       = $id;
+        $this->view->plist      = $plist;
 		$this->view->search     = $searchText;
 
 		$this->view->display();

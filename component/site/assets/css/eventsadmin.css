@@ -289,7 +289,7 @@ a#colorPickButton {
     display: none;
 }
 
-#byyearday, #bymonth, #byweekno, #bymonthday, #byday, #byirregular {
+#byyearday, #bymonth, #byweekno, #bymonthday, #byday,  #byhour,  #byminute,  #bysecond, #byirregular {
     float: left;
     display: none;
     margin-right: 1em;
@@ -363,7 +363,7 @@ table.versionstatuslist a {
     width: 80px;
 }
 
-#cu_until, #cu_count, #interval_div > div, #byyearday, #bymonth, #bymonthday, #byweekno, #byday, #bysetpos, #byirregular {
+#cu_until, #cu_count, #interval_div > div, #byyearday, #bymonth, #bymonthday, #byweekno, #byday, #byhour, #byminute, #bysecond, #bysetpos, #byirregular {
     padding: 5px;
     border-radius: 10px;
 }

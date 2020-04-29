@@ -88,6 +88,9 @@ class iCalRRule extends Joomla\CMS\Table\Table
 		$temp->processField("byhour", "");
 		$temp->processField("byday", "");
 		$temp->processField("bymonthday", "");
+        $temp->processField("byhour", "");
+        $temp->processField("byminute", "");
+        $temp->processField("bysecond", "");
 		$temp->processField("byyearday", "");
 		$temp->processField("byweekno", "");
 		$temp->processField("bymonth", "");
@@ -154,6 +157,9 @@ class iCalRRule extends Joomla\CMS\Table\Table
 		$temp->processField2("byminute", "");
 		$temp->processField2("byhour", "");
 		$temp->processField2("byday", "");
+        $temp->processField2("byhour", "");
+        $temp->processField2("byminute", "");
+        $temp->processField2("bysecond", "");
 		$temp->processField2("bymonthday", "");
 		$temp->processField2("byyearday", "");
 		$temp->processField2("byweekno", "");
@@ -810,6 +816,7 @@ class iCalRRule extends Joomla\CMS\Table\Table
 				return $this->_repetitions;
 				break;
 			case "DAILY":
+            case "HOURLY":
 				$start        = $dtstart;
 				$end          = $dtend;
 				$countRepeats = 0;

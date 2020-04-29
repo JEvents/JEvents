@@ -428,56 +428,84 @@ class SaveIcalEvent
 			});
 		}
 
-		$whichby = ArrayHelper::getValue($array, "whichby", "bd");
+		if ($freq == "HOURLY")
+        {
+            $whichbys = array('bhr', 'bd','bm');
+        }
+		else {
+            $whichbys = array(ArrayHelper::getValue($array, "whichby", "bd"));
+        }
 
-		switch ($whichby)
-		{
-			case "byd":
-				$byd_direction      = ArrayHelper::getValue($array, "byd_direction", "off") == "off" ? "+" : "-";
-				$byyearday          = ArrayHelper::getValue($array, "byyearday", "");
-				$rrule["BYYEARDAY"] = $byd_direction . $byyearday;
-				break;
-			case "bm":
-				$bm_direction     = ArrayHelper::getValue($array, "bm_direction", "off") == "off" ? "+" : "-";
-				$bymonth          = ArrayHelper::getValue($array, "bymonth", "");
-				$rrule["BYMONTH"] = $bymonth;
-				break;
-			case "bwn":
-				$bwn_direction     = ArrayHelper::getValue($array, "bwn_direction", "off") == "off" ? "+" : "-";
-				$byweekno          = ArrayHelper::getValue($array, "byweekno", "");
-				$rrule["BYWEEKNO"] = $bwn_direction . $byweekno;
-				break;
-			case "bmd":
-				$bmd_direction       = ArrayHelper::getValue($array, "bmd_direction", "off") == "off" ? "+" : "-";
-				$bymonthday          = ArrayHelper::getValue($array, "bymonthday", "");
-				$rrule["BYMONTHDAY"] = $bmd_direction . $bymonthday;
-				break;
-			case "bd":
-				$bd_direction = ArrayHelper::getValue($array, "bd_direction", "off") == "off" ? "+" : "-";
-				$weekdays     = ArrayHelper::getValue($array, "weekdays", array());
-				$weeknums     = ArrayHelper::getValue($array, "weeknums", array());
-				$byday        = "";
-				if (count($weeknums) == 0)
-				{
-					// special case for weekly repeats which don't specify week of a month
-					foreach ($weekdays as $wd)
-					{
-						if (StringHelper::strlen($byday) > 0) $byday .= ",";
-						$byday .= $weekdayReverseMap[$wd];
-					}
-				}
-				foreach ($weeknums as $week)
-				{
-					foreach ($weekdays as $wd)
-					{
-						if (StringHelper::strlen($byday) > 0) $byday .= ",";
-						$byday .= $bd_direction . $week . $weekdayReverseMap[$wd];
-					}
-				}
-				$rrule["BYDAY"] = $byday;
-				break;
-		}
+		foreach ($whichbys as $whichby) {
+            switch ($whichby) {
+                case "byd":
+                    $byd_direction = ArrayHelper::getValue($array, "byd_direction", "off") == "off" ? "+" : "-";
+                    $byyearday = ArrayHelper::getValue($array, "byyearday", "");
+                    $rrule["BYYEARDAY"] = $byd_direction . $byyearday;
+                    break;
+                case "bm":
+                    $bm_direction = ArrayHelper::getValue($array, "bm_direction", "off") == "off" ? "+" : "-";
+                    $bymonth = ArrayHelper::getValue($array, "bymonth", "");
+                    $rrule["BYMONTH"] = $bymonth;
+                    break;
+                case "bwn":
+                    $bwn_direction = ArrayHelper::getValue($array, "bwn_direction", "off") == "off" ? "+" : "-";
+                    $byweekno = ArrayHelper::getValue($array, "byweekno", "");
+                    $rrule["BYWEEKNO"] = $bwn_direction . $byweekno;
+                    break;
+                case "bmd":
+                    $bmd_direction = ArrayHelper::getValue($array, "bmd_direction", "off") == "off" ? "+" : "-";
+                    $bymonthday = ArrayHelper::getValue($array, "bymonthday", "");
+                    $rrule["BYMONTHDAY"] = $bmd_direction . $bymonthday;
+                    break;
+                case "bd":
+                    $bd_direction = ArrayHelper::getValue($array, "bd_direction", "off") == "off" ? "+" : "-";
+                    $weekdays = ArrayHelper::getValue($array, "weekdays", array());
+                    $weeknums = ArrayHelper::getValue($array, "weeknums", array());
+                    $byday = "";
+                    if (count($weeknums) == 0) {
+                        // special case for weekly repeats which don't specify week of a month
+                        foreach ($weekdays as $wd) {
+                            if (StringHelper::strlen($byday) > 0) $byday .= ",";
+                            $byday .= $weekdayReverseMap[$wd];
+                        }
+                    }
+                    foreach ($weeknums as $week) {
+                        foreach ($weekdays as $wd) {
+                            if (StringHelper::strlen($byday) > 0) $byday .= ",";
+                            $byday .= $bd_direction . $week . $weekdayReverseMap[$wd];
+                        }
+                    }
+                    $rrule["BYDAY"] = $byday;
+                    break;
+                case "bhr":
+                    $byhour = ArrayHelper::getValue($array, "byhour", "");
+                    $byhour = explode(',', str_replace(' ', '', $byhour));
+                    $hours = array();
+                    foreach ($byhour as $bh)
+                    {
+                        if (strpos($bh, '-') > 0) {
+                            $bhrange = explode('-', $bh);
+                        }
+                        else
+                        {
+                            $bhrange = array($bh, $bh);
+                        }
+                        $bhrange = ArrayHelper::toInteger($bhrange);
+                        if ($bhrange[0] <= $bhrange[1])
+                        {
+                            for ($h = $bhrange[0]; $h <= 23 && $h <= $bhrange[1]; $h ++)
+                            {
+                                $hours[] = $h;
+                            }
+                        }
 
+                    }
+                    $rrule["BYHOUR"] =  implode(',', $hours);
+                    break;
+
+            }
+        }
 		return $rrule;
 	}
 }
