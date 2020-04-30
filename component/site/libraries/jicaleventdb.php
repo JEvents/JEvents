@@ -478,7 +478,7 @@ class jIcalEventDB extends jEventCal
 	{
 
 		if ($raw) return $this->_byhour;
-		if (isset($this->_byhour) && $this->_byhour != "") return $this->_byhour;
+		if (isset($this->_byhour)) return $this->_byhour;
 		else return $this->startHour();
 	}
 
@@ -492,7 +492,7 @@ class jIcalEventDB extends jEventCal
     {
 
         if ($raw) return $this->_byminute;
-        if (isset($this->_byminute) && $this->_byminute != "") return $this->_byminute;
+        if (isset($this->_byminute)) return $this->_byminute;
         else return $this->startMinute();
     }
 

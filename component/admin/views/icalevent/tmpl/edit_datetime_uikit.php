@@ -334,7 +334,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 				</div>
 			</fieldset>
 			<fieldset id="weekofmonth">
-				<legend><?php echo Text::_('WHICH_WEEK'); ?></legend>
+				<legend><?php echo Text::_('WHICH_WEEKS_IN_MONTH'); ?></legend>
 				<div class="gsl-button-group">
 					<?php
 					JEventsHTML::buildWeeksCheckUikit($this->row->getByDay_weeks(), "", "weeknums", $this->row->getByDirection("byday"));
@@ -347,38 +347,71 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 				</div>
 			</fieldset>
 		</div>
-        <div id="byhour">
-            <fieldset>
-                <legend><input type="radio" name="whichby" id="jevhour" value="bhr"
-                               onclick="toggleWhichBy('byhour');"/><?php echo Text::_('BY_HOUR'); ?></legend>
-                <div>
-                    <?php echo Text::_('COMMA_SEPARATED_LIST'); ?>
-                    <input class="inputbox" type="text" name="byhour" size="30" maxlength="20"
-                           value="<?php echo $this->row->byhour(); ?>" onchange="checkInterval();"/>
-                </div>
-            </fieldset>
-        </div>
-        <div id="byminute">
-            <fieldset>
-                <legend><input type="radio" name="whichby" id="jevminute" value="bsec"
-                               onclick="toggleWhichBy('byminute');"/><?php echo Text::_('BY_MINUTE'); ?></legend>
-                <div>
-                    <?php echo Text::_('COMMA_SEPARATED_LIST'); ?>
-                    <input class="inputbox" type="text" name="byminute" size="30" maxlength="20"
-                           value="<?php echo $this->row->byminute(); ?>" onchange="checkInterval();"/>
-                </div>
-            </fieldset>
-        </div>
-        <div id="bysecond">
-            <fieldset>
-                <legend><input type="radio" name="whichby" id="jevsecond" value="bsec"
-                               onclick="toggleWhichBy('bysecond');"/><?php echo Text::_('BY_SECOND'); ?></legend>
-                <div>
-                    <?php echo Text::_('COMMA_SEPARATED_LIST'); ?>
-                    <input class="inputbox" type="text" name="bysecond" size="30" maxlength="20"
-                           value="<?php echo $this->row->bysecond(); ?>" onchange="checkInterval();"/>
-                </div>
-            </fieldset>
+
+        <div class="gsl-grid gsl-child-width-1-1">
+            <div id="byhour">
+                <fieldset>
+                    <legend>
+                        <?php echo Text::_('SPECIFIC_HOURS'); ?>
+                        <a href="#" class="gsl-icon  gsl-text-primary gsl-margin-small-left" type="button" gsl-toggle="target: #hour-constraint-info" data-gsl-icon="icon:info"></a>
+                    </legend>
+                    <div>
+                        <div id="hour-constraint-info" gsl-modal>
+                            <div class="gsl-modal-dialog">
+                                <button class="gsl-modal-close-default" type="button" gsl-close></button>
+                                <div class="gsl-modal-header">
+                                    <h4 class="gsl-modal-title gsl-text-small">
+                                        <?php echo Text::_('COMMA_SEPARATED_LIST_EMPTY_FOR_ALL_OR_HOURS_RANGE'); ?>
+                                    </h4>
+                                </div>
+                                <div class="gsl-modal-body">
+                                    <?php echo Text::_('COMMA_SEPARATED_LIST_EMPTY_FOR_ALL_OR_HOURS_RANGE_MORE'); ?>
+                                </div>
+                            </div>
+                        </div>
+                        <input class="inputbox" type="text" name="byhour" size="30" maxlength="20"
+                               value="<?php echo $this->row->byhour(); ?>" onchange="checkInterval();"/>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div id="byminute">
+                <fieldset>
+                    <legend>
+                        <?php echo Text::_('SPECIFIC_MINUTES'); ?>
+                        <a href="#" class="gsl-icon  gsl-text-primary gsl-margin-small-left" type="button" gsl-toggle="target: #minute-constraint-info" data-gsl-icon="icon:info"></a>
+                    </legend>
+                    <div>
+                        <div id="minute-constraint-info" gsl-modal>
+                            <div class="gsl-modal-dialog">
+                                <button class="gsl-modal-close-default" type="button" gsl-close></button>
+                                <div class="gsl-modal-header">
+                                    <h4 class="gsl-modal-title gsl-text-small">
+                                        <?php echo Text::_('COMMA_SEPARATED_LIST_EMPTY_FOR_ALL_OR_MINUTES_RANGE'); ?>
+                                    </h4>
+                                </div>
+                                <div class="gsl-modal-body">
+				                    <?php echo Text::_('COMMA_SEPARATED_LIST_EMPTY_FOR_ALL_OR_MINUTES_RANGE_MORE'); ?>
+                                </div>
+                            </div>
+                        </div>
+                        <input class="inputbox" type="text" name="byminute" size="30" maxlength="20"
+                               value="<?php echo $this->row->byminute(); ?>" onchange="checkInterval();"/>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div id="bysecond">
+                <fieldset>
+                    <legend><input type="radio" name="whichby" id="jevsecond" value="bsec"
+                                   onclick="toggleWhichBy('bysecond');"/><?php echo Text::_('BY_SECOND'); ?></legend>
+                    <div>
+                        <?php echo Text::_('COMMA_SEPARATED_LIST'); ?>
+                        <input class="inputbox" type="text" name="bysecond" size="30" maxlength="20"
+                               value="<?php echo $this->row->bysecond(); ?>" onchange="checkInterval();"/>
+                    </div>
+                </fieldset>
+            </div>
         </div>
         <div id="byirregular">
 			<fieldset>
@@ -451,7 +484,9 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
         document.getElementById(freq).checked = true;
         toggleFreq(freq, true);
         var by = "<?php
-			if ($this->row->byyearday(true) != "")
+	        if ($freq === "HOURLY")
+		        echo "jevbd";
+			else if ($this->row->byyearday(true) != "")
 				echo "jevbyd";
 			else if ($this->row->bymonth(true) != "")
 				echo "jevbm";
@@ -467,7 +502,9 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 			?>";
         document.getElementById(by).checked = true;
         var by = "<?php
-			if ($this->row->byyearday(true) != "")
+	        if ($freq === "HOURLY")
+		        echo "byday";
+			else if ($this->row->byyearday(true) != "")
 				echo "byyearday";
 			else if ($this->row->bymonth(true) != "")
 				echo "bymonth";
@@ -476,6 +513,8 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 			else if ($this->row->byweekno(true) != "")
 				echo "byweekno";
 			else if ($this->row->byday(true) != "")
+				echo "byday";
+			else
 				echo "byday";
 			?>";
         toggleWhichBy(by);

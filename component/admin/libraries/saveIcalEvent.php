@@ -272,7 +272,7 @@ class SaveIcalEvent
 
 		// Do the repeats overlap each other
 		$overlaprepeats = false;
-		if (count($repetitions) > 1)
+		if (count($repetitions) > 1 && $vevent->rrule->freq !== "HOURLY"  && $vevent->rrule->freq !== "MINUTELY")
 		{
 			$oldrep = false;
 			foreach ($repetitions as $rep)
@@ -428,7 +428,11 @@ class SaveIcalEvent
 			});
 		}
 
-		if ($freq == "HOURLY")
+		if ($freq == "MINUTELY")
+		{
+			$whichbys = array('bmn', 'bhr', 'bd','bm');
+		}
+		else if ($freq == "HOURLY" || $freq == "MINUTELY")
         {
             $whichbys = array('bhr', 'bd','bm');
         }
@@ -478,30 +482,72 @@ class SaveIcalEvent
                     }
                     $rrule["BYDAY"] = $byday;
                     break;
-                case "bhr":
-                    $byhour = ArrayHelper::getValue($array, "byhour", "");
-                    $byhour = explode(',', str_replace(' ', '', $byhour));
-                    $hours = array();
-                    foreach ($byhour as $bh)
+	            case "bhr":
+		            $byhour = ArrayHelper::getValue($array, "byhour", "");
+		            $byhour = explode(',', str_replace(' ', '', $byhour));
+		            $hours = array();
+		            foreach ($byhour as $bh)
+		            {
+			            // All hours
+			            if ($bh === "")
+			            {
+				            continue;
+			            }
+			            if (strpos($bh, '-') > 0) {
+				            $bhrange = explode('-', $bh);
+			            }
+			            else
+			            {
+				            $bhrange = array($bh, $bh);
+			            }
+			            $bhrange = ArrayHelper::toInteger($bhrange);
+			            if ($bhrange[0] <= $bhrange[1])
+			            {
+				            for ($h = $bhrange[0]; $h <= 23 && $h <= $bhrange[1]; $h ++)
+				            {
+					            $hours[] = $h;
+				            }
+			            }
+
+		            }
+		            if (count($hours))
+		            {
+			            $rrule["BYHOUR"] = implode(',', $hours);
+		            }
+
+		            break;
+                case "bmn":
+                    $myminute = ArrayHelper::getValue($array, "byminute", "");
+                    $myminute = explode(',', str_replace(' ', '', $myminute));
+                    $minutes = array();
+                    foreach ($myminute as $mn)
                     {
-                        if (strpos($bh, '-') > 0) {
-                            $bhrange = explode('-', $bh);
+                    	// All hours
+	                    if ($mn === "")
+	                    {
+	                    	continue;
+	                    }
+                        if (strpos($mn, '-') > 0) {
+                            $mnrange = explode('-', $mn);
                         }
                         else
                         {
-                            $bhrange = array($bh, $bh);
+                            $mnrange = array($mn, $mn);
                         }
-                        $bhrange = ArrayHelper::toInteger($bhrange);
-                        if ($bhrange[0] <= $bhrange[1])
+                        $mnrange = ArrayHelper::toInteger($mnrange);
+                        if ($mnrange[0] <= $mnrange[1])
                         {
-                            for ($h = $bhrange[0]; $h <= 23 && $h <= $bhrange[1]; $h ++)
+                            for ($h = $mnrange[0]; $h <= 59 && $h <= $mnrange[1]; $h ++)
                             {
-                                $hours[] = $h;
+	                            $minutes[] = $h;
                             }
                         }
 
                     }
-                    $rrule["BYHOUR"] =  implode(',', $hours);
+                    if (count($minutes))
+                    {
+	                    $rrule["BYMINUTE"] = implode(',', $minutes);
+                    }
                     break;
 
             }
