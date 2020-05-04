@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 use Joomla\String\StringHelper;
+use Joomla\Utilities\ArrayHelper;
 
 class iCalRRule extends Joomla\CMS\Table\Table
 {
@@ -929,6 +930,42 @@ class iCalRRule extends Joomla\CMS\Table\Table
 						$hours = explode(",",str_replace(" ", "", $this->byhour));
 					}
 
+					$allowedHourAndMinuteRanges = array();
+					foreach ($hours as $bh)
+					{
+						if ($bh === "")
+						{
+							continue;
+						}
+						// is this a range?
+						if (strpos($bh, '-') > 0) {
+							$bhrange = explode('-', $bh);
+							if (count($bhrange) != 2)
+							{
+								continue;
+							}
+							for ($b=0; $b<2; $b++)
+							{
+								if (strpos($bhrange[$b], ':') > 0) {
+									$hparts = explode(':', $bhrange[$b]);
+									$hparts = ArrayHelper::toInteger($hparts);
+								}
+								else
+								{
+									$hparts = array(intval($bhrange[$b]), 0);
+								}
+								// convert to minutes
+								$bhrange[$b] = $hparts[0] * 60 + $hparts[1];
+							}
+						}
+						else
+						{
+							$bhrange = array(intval($bh) * 60, intval($bh) * 60);
+						}
+						$allowedHourAndMinuteRanges[] = $bhrange;
+					}
+
+
 					$start             = $dtstart;
 					$end               = $dtend;
 					$countRepeats      = 0;
@@ -941,9 +978,28 @@ class iCalRRule extends Joomla\CMS\Table\Table
 						$currentMonthDays = date("t", $currentMonthStart);
 						$this->sortByDays($days, $currentMonthStart, $dtstart);
 
+						$minuteIntervalStart = $startMin;
+						$hourIntervalStart = $startHour;
+
+						$hour = intval($hourIntervalStart);
+						$minute = intval($minuteIntervalStart);
+
 						foreach ($days as $day)
 						{
-							foreach ($hours as $hour)
+							$hour %= 24;
+
+							if (!iCalRRule::minutesAndHoursAllowed($minute, $hour, array(), $allowedHourAndMinuteRanges))
+							{
+								$hour += intval($this->_interval);
+
+								while ($hour < 24 && !iCalRRule::minutesAndHoursAllowed($minute, $hour, array(), $allowedHourAndMinuteRanges))
+								{
+									$hour += intval($this->_interval);
+								}
+							}
+
+							while ( $hour < 24 &&  $minute < 60
+								&&  iCalRRule::minutesAndHoursAllowed($minute, $hour, array(), $allowedHourAndMinuteRanges))
 							{
 								if ($countRepeats >= $this->count || $this->_afterUntil($start))
 								{
@@ -984,11 +1040,17 @@ class iCalRRule extends Joomla\CMS\Table\Table
 										$targetstartDay = $adjustment + ($weeknumber - 1) * 7;
 
 									}
-									// Special case for first day - can't start hours until start of event!
 
-									if ($targetstartDay == intval($startDay) && intval($startHour > $hour))
+									if ($targetstartDay == intval($startDay) && intval($startHour) > $hour)
 									{
 										continue;
+									}
+
+									// Special case for first day - can't start hours or hours start of event!
+									if ($targetstartDay == intval($startDay) && $countRepeats == 0 )
+									{
+										$hour   = intval($hourIntervalStart);
+										$minute = intval($minuteIntervalStart);
 									}
 									$targetStart = JevDate::mktime($hour, $startMin, $startSecond, $currentMonth, $targetstartDay, $currentYear);
 
@@ -1012,8 +1074,15 @@ class iCalRRule extends Joomla\CMS\Table\Table
 											$countRepeats += $this->_makeRepeat($targetStart, $targetEnd);
 										}
 									}
-
 								}
+
+								$hour += intval($this->_interval);
+
+								while ($hour < 24 && !iCalRRule::minutesAndHoursAllowed($minute, $hour, array(), $allowedHourAndMinuteRanges))
+								{
+									$hour += intval($this->_interval);
+								}
+
 							}
 						}
 						// now go to the start of next month
@@ -1153,6 +1222,60 @@ class iCalRRule extends Joomla\CMS\Table\Table
 						$minutes = explode(",",str_replace(" ", "", $this->byminute));
 					}
 
+					$allowedHourAndMinuteRanges = array();
+					foreach ($hours as $bh)
+					{
+						if ($bh === "")
+						{
+							continue;
+						}
+						// is this a range?
+						if (strpos($bh, '-') > 0) {
+							$bhrange = explode('-', $bh);
+							if (count($bhrange) != 2)
+							{
+								continue;
+							}
+							for ($b=0; $b<2; $b++)
+							{
+								if (strpos($bhrange[$b], ':') > 0) {
+									$hparts = explode(':', $bhrange[$b]);
+									$hparts = ArrayHelper::toInteger($hparts);
+								}
+								else
+								{
+									$hparts = array(intval($bhrange[$b]), 0);
+								}
+								// convert to minutes
+								$bhrange[$b] = $hparts[0] * 60 + $hparts[1];
+							}
+						}
+						else
+						{
+							$bhrange = array(intval($bh) * 60, intval($bh) * 60);
+						}
+						$allowedHourAndMinuteRanges[] = $bhrange;
+					}
+
+					$allowedMinuteRanges = array();
+					foreach ($minutes as $bm)
+					{
+						if ($bm === "")
+						{
+							continue;
+						}
+						// is this a range?
+						if (strpos($bm, '-') > 0) {
+							$bmrange = explode('-', $bm);
+							$bmrange = ArrayHelper::toInteger($bmrange);
+						}
+						else
+						{
+							$bmrange = array(intval($bm), intval($bh));
+						}
+						$allowedMinuteRanges[] = $bmrange;
+					}
+
 					$start             = $dtstart;
 					$end               = $dtend;
 					$countRepeats      = 0;
@@ -1175,8 +1298,22 @@ class iCalRRule extends Joomla\CMS\Table\Table
 						{
 							$hour %= 24;
 
-							while ( $hour < 24 && in_array($hour, $hours)
-								&& $minute < 60 && in_array($minute, $minutes))
+							while ($hour < 24 && !iCalRRule::minutesAndHoursAllowed($minute, $hour, $allowedMinuteRanges, $allowedHourAndMinuteRanges))
+							{
+								$minute += intval($this->_interval);
+								if ($minute >= 60)
+								{
+									$minute %= 60;
+									$hour++;
+								}
+								$minute += intval($this->_interval);
+							}
+
+							$hour %= 24;
+
+							// while ( $hour < 24 && in_array($hour, $hours) && $minute < 60 && in_array($minute, $minutes))
+								while ( $hour < 24 &&  $minute < 60
+									&&  iCalRRule::minutesAndHoursAllowed($minute, $hour, $allowedMinuteRanges, $allowedHourAndMinuteRanges))
 							{
 								if ($countRepeats >= $this->count || $this->_afterUntil($start))
 								{
@@ -1218,10 +1355,12 @@ class iCalRRule extends Joomla\CMS\Table\Table
 
 									}
 									// Special case for first day - can't start hours or hours and minute until start of event!
-									if ($targetstartDay == intval($startDay) && $countRepeatsintval == 0 )
+									if ($targetstartDay == intval($startDay) && $countRepeats == 0 )
 									{
 										$hour   = intval($hourIntervalStart);
 										$minute = intval($minuteIntervalStart);
+
+										// If the time is blocked by hour/minute constraint then we need to catch this possibly??
 									}
 									$targetStart = JevDate::mktime($hour, $minute, $startSecond, $currentMonth, $targetstartDay, $currentYear);
 
@@ -1251,18 +1390,21 @@ class iCalRRule extends Joomla\CMS\Table\Table
 									}
 								}
 								$minute += intval($this->_interval);
-								while ( $minute < 60 && !in_array($minute, $minutes))
-								{
-									$minute += intval($this->_interval);
-								}
 								if ($minute >= 60)
 								{
 									$minute %= 60;
 									$hour++;
-									while ($hour < 24 && !in_array($hour, $hours))
+								}
+
+								while ($hour < 24 && !iCalRRule::minutesAndHoursAllowed($minute, $hour, $allowedMinuteRanges, $allowedHourAndMinuteRanges))
+								{
+									$minute += intval($this->_interval);
+									if ($minute >= 60)
 									{
+										$minute %= 60;
 										$hour++;
 									}
+									$minute += intval($this->_interval);
 								}
 							}
 						}
@@ -1557,5 +1699,37 @@ class iCalRRule extends Joomla\CMS\Table\Table
 		}
 
 		return false;
+	}
+
+	protected static function minutesAndHoursAllowed($minute, $hour, $allowedMinuteRanges, $allowedHourAndMinuteRanges)
+	{
+		$mvalid    = false;
+		$hmvalid   = false;
+		$checktime = $hour * 60 + $minute;
+		foreach ($allowedHourAndMinuteRanges as $range)
+		{
+			if ($checktime >= $range[0] && $checktime <= $range[1])
+			{
+				$hmvalid = true;
+				break;
+			}
+		}
+		if ($hmvalid)
+		{
+			if (count($allowedMinuteRanges) == 0)
+			{
+				$mvalid = true;
+			}
+			foreach ($allowedMinuteRanges as $range)
+			{
+				if ($minute >= $range[0] && $minute <= $range[1])
+				{
+					$mvalid = true;
+					break;
+				}
+			}
+		}
+
+		return $mvalid && $hmvalid;
 	}
 }

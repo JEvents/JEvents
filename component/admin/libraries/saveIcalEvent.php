@@ -495,24 +495,32 @@ class SaveIcalEvent
 			            }
 			            if (strpos($bh, '-') > 0) {
 				            $bhrange = explode('-', $bh);
+				            if (count($bhrange) != 2)
+				            {
+				                continue;
+				            }
+				            for ($b=0; $b<2; $b++)
+				            {
+					            if (strpos($bhrange[$b], ':') > 0) {
+						            $hparts = explode(':', $bhrange[$b]);
+						            $hparts = ArrayHelper::toInteger($hparts);
+						            $bhrange[$b] = implode(":",$hparts);
+					            }
+				            }
+				            $hours[] = implode("-", $bhrange);
 			            }
 			            else
 			            {
-				            $bhrange = array($bh, $bh);
+				            $hours[] = intval($bh);
 			            }
-			            $bhrange = ArrayHelper::toInteger($bhrange);
-			            if ($bhrange[0] <= $bhrange[1])
-			            {
-				            for ($h = $bhrange[0]; $h <= 23 && $h <= $bhrange[1]; $h ++)
-				            {
-					            $hours[] = $h;
-				            }
-			            }
-
 		            }
 		            if (count($hours))
 		            {
 			            $rrule["BYHOUR"] = implode(',', $hours);
+		            }
+		            else
+		            {
+			            $rrule["BYHOUR"] = '0-23';
 		            }
 
 		            break;
@@ -529,24 +537,26 @@ class SaveIcalEvent
 	                    }
                         if (strpos($mn, '-') > 0) {
                             $mnrange = explode('-', $mn);
+	                        if (count($mnrange) != 2)
+	                        {
+		                        continue;
+	                        }
+	                        $mnrange = ArrayHelper::toInteger($mnrange);
+	                        $minutes[] = implode("-", $mnrange);
                         }
                         else
                         {
-                            $mnrange = array($mn, $mn);
-                        }
-                        $mnrange = ArrayHelper::toInteger($mnrange);
-                        if ($mnrange[0] <= $mnrange[1])
-                        {
-                            for ($h = $mnrange[0]; $h <= 59 && $h <= $mnrange[1]; $h ++)
-                            {
-	                            $minutes[] = $h;
-                            }
+	                        $minutes[] = intval($mn);
                         }
 
                     }
                     if (count($minutes))
                     {
 	                    $rrule["BYMINUTE"] = implode(',', $minutes);
+                    }
+                    else
+                    {
+	                    $rrule["BYMINUTE"] = '0-59';
                     }
                     break;
 

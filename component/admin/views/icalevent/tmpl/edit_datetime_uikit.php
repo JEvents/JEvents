@@ -188,7 +188,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
                 <input type="radio" name="freq" id="MINUTELY" class="gsl-hidden"
                        value="MINUTELY" <?php if ($freq ==  "MINUTELY") echo 'checked="checked"'; ?>
                        onclick="toggleFreq('MINUTELY');"/>
-                <?php echo Text::_('MINUTELY'); ?>
+                <?php echo Text::_('JEV_MINUTELY'); ?>
             </label>
             <label for='HOURLY' class="gsl-button gsl-button-small gsl-button-default <?php echo $freq ==  "HOURLY" ? ' gsl-button-primary' : ''; ?>">
                 <input type="radio" name="freq" id="HOURLY" class="gsl-hidden"

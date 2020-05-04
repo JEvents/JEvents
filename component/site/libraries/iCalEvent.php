@@ -581,31 +581,61 @@ else $this->_detail = false;
 		for ($r = 0; $r < count($this->_repetitions); $r++)
 		{
 			$repeat =& $this->_repetitions[$r];
-			// find matching day and only one!!
-			$repeat->startday = StringHelper::substr($repeat->startrepeat, 0, 10);
-			$matched          = false;
-			foreach ($oldrepeats as & $oldrepeat)
+			if (in_array($this->rrule->freq, array("HOURLY", "MINUTELY")))
 			{
-				if ($oldrepeat->startday == $repeat->startday && !isset($repeat->old_rpid) && !isset($oldrepeat->matched))
+				// find matching hour and minute!!
+				$matched          = false;
+				foreach ($oldrepeats as & $oldrepeat)
 				{
-					$matched            = true;
-					$repeat->old_rpid   = $oldrepeat->rp_id;
-					$oldrepeat->matched = true;
-					if (is_null($repeat->rp_id))
+					if ($oldrepeat->startrepeat == $repeat->startrepeat && !isset($repeat->old_rpid) && !isset($oldrepeat->matched))
 					{
-						$repeat->rp_id = $repeat->old_rpid;
+						$matched            = true;
+						$repeat->old_rpid   = $oldrepeat->rp_id;
+						$oldrepeat->matched = true;
+						if (is_null($repeat->rp_id))
+						{
+							$repeat->rp_id = $repeat->old_rpid;
+						}
+						break;
 					}
-					break;
+					if ($oldrepeat->startrepeat > $repeat->startrepeat)
+					{
+						break;
+					}
+					unset($oldrepeat);
 				}
-				if ($oldrepeat->startday > $repeat->startday)
-				{
-					break;
-				}
-				unset($oldrepeat);
+				if (!$matched) $repeat->old_rpid = 0;
+				// free the reference
+				unset($repeat);
 			}
-			if (!$matched) $repeat->old_rpid = 0;
-			// free the reference
-			unset($repeat);
+			else
+			{
+				// find matching day and only one!!
+				$repeat->startday = StringHelper::substr($repeat->startrepeat, 0, 10);
+				$matched          = false;
+				foreach ($oldrepeats as & $oldrepeat)
+				{
+					if ($oldrepeat->startday == $repeat->startday && !isset($repeat->old_rpid) && !isset($oldrepeat->matched))
+					{
+						$matched            = true;
+						$repeat->old_rpid   = $oldrepeat->rp_id;
+						$oldrepeat->matched = true;
+						if (is_null($repeat->rp_id))
+						{
+							$repeat->rp_id = $repeat->old_rpid;
+						}
+						break;
+					}
+					if ($oldrepeat->startday > $repeat->startday)
+					{
+						break;
+					}
+					unset($oldrepeat);
+				}
+				if (!$matched) $repeat->old_rpid = 0;
+				// free the reference
+				unset($repeat);
+			}
 		}
 
 		// if only one repeat in the past and in the future then reuse the same id
