@@ -33,13 +33,13 @@ if ($jinput->getString("submit","") != "")
 
 	//$years  = str_replace(",","|",JEVHelper::forceIntegerArray(JRequest::getVar('years','','POST'),true));
 	//$cats = implode("|",$cats);
-	$years = JEVHelper::forceIntegerArray($jinput->post->get('years', array(0), null), true);
-	$cats = implode(",", $cats);
+	$years			= JEVHelper::forceIntegerArray($jinput->post->get('years', array(0), null), true);
+	$catsImploded	= implode(",", $cats);
 
 	$link = JURI::root() . "index.php?option=com_jevents&task=icals.export&format=ical";
 	if (is_array($cats) && count($cats) > 0)
 	{
-		$link .="&catids=" . $cats;
+		$link .="&catids=" . $catsImploded;
 	}
 	$link .="&years=" . $years;
 	if ($jinput->getInt("icalformatted", 0))
@@ -54,12 +54,12 @@ if ($jinput->getString("submit","") != "")
 	}
 
 	$icalkey = $params->get("icalkey", "secret phrase");
-	$publiclink = $link . "&k=" . md5($icalkey . $cats . $years);
+	$publiclink = $link . "&k=" . md5($icalkey . $catsImploded . $years);
 
 	$user = JFactory::getUser();
 	if ($user->id != 0)
 	{
-		$privatelink = $link . "&pk=" . md5($icalkey . $cats . $years . $user->password . $user->username . $user->id) . "&i=" . $user->id;
+		$privatelink = $link . "&pk=" . md5($icalkey . $catsImploded . $years . $user->password . $user->username . $user->id) . "&i=" . $user->id;
 	} else {
 		$privatelink = "";
 	}
@@ -119,7 +119,7 @@ if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download"
 		}
 		echo $cb . " /><strong>" . JText::_("JEV_EVENT_ALLCAT") . "</strong><br/>\n";
 		?>
-		<div id='othercats' <?php echo $checked ? 'style="display:none;max-height:100px;overflow-y:auto;"' : ''; ?> >
+		<div id='othercats' <?php echo $checked ? 'style="display:none;max-height:100px;overflow-y:auto;"' : 'style="display:block;"'; ?> >
 			<?php
 			foreach ($categories AS $c)
 			{
@@ -191,14 +191,15 @@ if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download"
 	</div>
 	<?php
 
-	echo "<div class='icalformat' style='clear:left; padding-top:5px;'>";
 	if ($params->get("icalformatted", 1) == 1){
-	echo "<h3>" . JText::_('JEV_ICAL_FORMATTING') . "</h3>\n";
-	?>
-	<input name="icalformatted" type="checkbox" value="1" <?php echo $jinput->getInt("icalformatted", 0) ? "checked='checked'" : ""; ?> />
-	<label>		<?php echo JText::_("JEV_PRESERVE_HTML_FORMATTING") ; ?>	</label>
-<?php }
-	echo "</div>";
+		echo "<div class='icalformat' style='clear:left; padding-top:5px;'>";
+		echo "<h3>" . JText::_('JEV_ICAL_FORMATTING') . "</h3>\n";
+		?>
+		<input name="icalformatted" type="checkbox" value="1" <?php echo $jinput->getInt("icalformatted", 0) ? "checked='checked'" : ""; ?> />
+		<label>		<?php echo JText::_("JEV_PRESERVE_HTML_FORMATTING") ; ?>	</label>
+		<?php
+		echo "</div>";
+	}
 ?>
 
 <input id="submit" class="ical_submit" type="submit" name="submit" value="<?php echo JText::_('JEV_GENERATE_ICALS'); ?>" />
