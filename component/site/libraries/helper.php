@@ -509,14 +509,12 @@ class JEVHelper
 	}
 
 	public static
-			function forceIntegerArray(&$cid, $asString = true)
+			function forceIntegerArray($cid, $asString = true)
 	{
 		$cid = is_null($cid) ? array() : $cid;
 
-		for ($c = 0; $c < count($cid); $c++)
-		{
-			$cid[$c] = intval($cid[$c]);
-		}
+		$cid = ArrayHelper::toInteger();
+
 		if ($asString)
 		{
 			$id_string = implode(",", $cid);
@@ -524,9 +522,8 @@ class JEVHelper
 		}
 		else
 		{
-			return "";
+			return $cid;
 		}
-
 	}
 
 	/**

@@ -78,13 +78,13 @@ class JEventsDBModel
 			}
 
 			// If the menu of module has been constrained then we need to take account of that here!
-			JEVHelper::forceIntegerArray($catids, false);
+			$catids = JEVHelper::forceIntegerArray($catids, false);
 			$mmcatids = $this->datamodel->mmcatids;
 			$mmcatidList = $this->datamodel->mmcatidList;
 
 			if (isset($this->datamodel->mmcatids) && count($this->datamodel->mmcatids) > 0)
 			{
-				JEVHelper::forceIntegerArray($this->datamodel->mmcatids, false);
+				$this->datamodel->mmcatids = JEVHelper::forceIntegerArray($this->datamodel->mmcatids, false);
 
 				// Take account of inclusion of subcategories here!
 				if ($includeSubs && $this->cfg->get("include_subcats", 1))

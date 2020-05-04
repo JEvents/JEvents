@@ -169,7 +169,7 @@ class ICalsController extends AdminIcalsController
 		// Fix the cats
 		$cats = explode(',', $cats);
 		// hardening!
-		JEVHelper::forceIntegerArray($cats, false);
+		$cats = JEVHelper::forceIntegerArray($cats, false);
 		if ($cats != array(0))
 		{
 			JRequest::setVar("catids", implode("|", $cats));
