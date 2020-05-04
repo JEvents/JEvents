@@ -535,7 +535,6 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				if (!isset($allcat_catids))
 				{
 					$db         = Factory::getDbo();
-					$arr_catids = array();
 					$catsql     = "SELECT cat.id, cat.title as name, cat.params FROM #__categories  as cat WHERE cat.extension='com_jevents' ";
 					$db->setQuery($catsql);
 					$allcat_catids = $db->loadObjectList('id');
@@ -556,13 +555,39 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				$blank[]   = "";
 				break;
 
-            case "{{ALLCATEGORIES_CAT_COLOURED}}":
+			case "{{ALLCATEGORIESLUGS}}":
+				$search[] = "{{ALLCATEGORIESLUGS}}";
+
+				if (!isset($allcat_catids))
+				{
+					$db         = JFactory::getDbo();
+					$catsql     = "SELECT cat.id, cat.title AS name, cat.alias AS slug, cat.params FROM #__categories  AS cat WHERE cat.extension='com_jevents' ";
+					$db->setQuery($catsql);
+					$allcat_catids = $db->loadObjectList('id');
+				}
+
+				$db = JFactory::getDbo();
+				$db->setQuery("Select catid from #__jevents_catmap  WHERE evid = " . $event->ev_id());
+				$allcat_eventcats = $db->loadColumn();
+
+				$allcats = array();
+				foreach ($allcat_eventcats as $catid)
+				{
+					if (isset($allcat_catids[$catid]))
+					{
+						$allcats[] = 'jevcat-' . $allcat_catids[$catid]->slug;
+					}
+				}
+				$replace[] = implode(" ", $allcats);
+				$blank[]   = "";
+				break;
+
+			case "{{ALLCATEGORIES_CAT_COLOURED}}":
                 $search[] = "{{ALLCATEGORIES_CAT_COLOURED}}";
 
                 if (!isset($allcat_catids))
                 {
                     $db         = Factory::getDbo();
-                    $arr_catids = array();
                     $catsql     = "SELECT cat.id, cat.title as name, cat.params FROM #__categories  as cat WHERE cat.extension='com_jevents' ";
                     $db->setQuery($catsql);
                     $allcat_catids = $db->loadObjectList('id');
@@ -775,7 +800,6 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				if (!isset($allcat_catids))
 				{
 					$db         = Factory::getDbo();
-					$arr_catids = array();
 					$catsql     = "SELECT cat.id, cat.title as name, cat.params FROM #__categories  as cat WHERE cat.extension='com_jevents' ";
 					$db->setQuery($catsql);
 					$allcat_catids = $db->loadObjectList('id');

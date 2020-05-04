@@ -38,12 +38,12 @@ if ($input->getString("submit", "") != "")
 
 	$jr_years = $input->post->get('years', array(0), null);
 	$years    = JEVHelper::forceIntegerArray($jr_years, true);
-	$cats     = implode(",", $cats);
+	$catsImploded     = implode(",", $cats);
 
 	$link = Uri::root() . "index.php?option=com_jevents&task=icals.export&format=ical";
 	if (count($cats) > 0)
 	{
-		$link .= "&catids=" . $cats;
+		$link .= "&catids=" . $catsImploded;
 	}
 	$link .= "&years=" . $years;
 	if ($input->getInt("icalformatted", 0))
@@ -58,12 +58,12 @@ if ($input->getString("submit", "") != "")
 	}
 
 	$icalkey    = $params->get("icalkey", "secret phrase");
-	$publiclink = $link . "&k=" . md5($icalkey . $cats . $years);
+	$publiclink = $link . "&k=" . md5($icalkey . $catsImploded . $years);
 
 	$user = Factory::getUser();
 	if ($user->id != 0)
 	{
-		$privatelink = $link . "&pk=" . md5($icalkey . $cats . $years . $user->password . $user->username . $user->id) . "&i=" . $user->id;
+		$privatelink = $link . "&pk=" . md5($icalkey . $catsImploded . $years . $user->password . $user->username . $user->id) . "&i=" . $user->id;
 	}
 	else
 	{
@@ -101,7 +101,7 @@ if ($input->getString("submit", "") != "")
 }
 if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download", 1) == 0 && $cfg->get("show_webcal_url", 0) == 0 && $cfg->get("show_webcal_google", 0) && $cfg->get("outlook2003icalexport", 0))
 {
-	//If non are enabled we don't want to have user thinking the script is buggy as nothing is produced. 
+	//If non are enabled we don't want to have user thinking the script is buggy as nothing is produced.
 	echo "<div style='margin:15px;font-weight:bold;'>" . Text::_("JEV_ICAL_ALL_DISABLED") . "</div>";
 }
 else
@@ -131,7 +131,7 @@ else
 				}
 				echo $cb . " /><strong>" . Text::_("JEV_EVENT_ALLCAT") . "</strong><br/>\n";
 				?>
-				<div id='othercats' <?php echo $checked ? 'style="display:none;max-height:100px;overflow-y:auto;"' : ''; ?> >
+				<div id='othercats' <?php echo $checked ? 'style="display:none;max-height:100px;overflow-y:auto;"' : 'style="display:block"'; ?> >
 					<?php
 					foreach ($categories AS $c)
 					{
@@ -203,16 +203,17 @@ else
 			</div>
 			<?php
 
-			echo "<div class='icalformat' style='clear:left; padding-top:5px;'>";
 			if ($params->get("icalformatted", 1) == 1)
 			{
+				echo "<div class='icalformat' style='clear:left; padding-top:5px;'>";
 				echo "<h3>" . Text::_('JEV_ICAL_FORMATTING') . "</h3>\n";
 				?>
 				<input name="icalformatted" type="checkbox"
 				       value="1" <?php echo $input->getInt("icalformatted", 0) ? "checked='checked'" : ""; ?> />
 				<label>        <?php echo Text::_("JEV_PRESERVE_HTML_FORMATTING"); ?>    </label>
-			<?php }
-			echo "</div>";
+    			<?php
+				echo "</div>";
+			}
 			?>
 
 			<input id="submit" class="ical_submit" type="submit" name="submit"

@@ -112,12 +112,12 @@ if ($input->getString("submit", "") != "")
 	}
 
 	$icalkey    = $params->get("icalkey", "secret phrase");
-	$publiclink = $link . "&k=" . md5($icalkey . $cats . $years);
+	$publiclink = $link . "&k=" . md5($icalkey . $catsImploded . $years);
 
 	$user = Factory::getUser();
 	if ($user->id != 0)
 	{
-		$privatelink = $link . "&pk=" . md5($icalkey . $cats . $years . $user->password . $user->username . $user->id) . "&i=" . $user->id;
+		$privatelink = $link . "&pk=" . md5($icalkey . $catsImploded . $years . $user->password . $user->username . $user->id) . "&i=" . $user->id;
 	}
 
 	echo "<p><a href='$publiclink'>" . Text::_('JEV_REP_ICAL_PUBLIC') . "</a></p>";
@@ -161,7 +161,7 @@ if ($input->getString("submit", "") != "")
 		}
 		echo $cb . "><strong>" . Text::_("JEV_EVENT_ALLCAT") . "</strong><br/>\n";
 		?>
-		<div id='othercats' <?php echo $checked ? 'style="display:none;max-height:100px;overflow-y:auto;"' : ''; ?> >
+		<div id='othercats' <?php echo $checked ? 'style="display:none;max-height:100px;overflow-y:auto;"' : 'style="display:block;"'; ?> >
 			<?php
 			foreach ($categories AS $c)
 			{
@@ -228,6 +228,8 @@ if ($input->getString("submit", "") != "")
 		</div>
 	</div>
 	<?php
+	if ($params->get("icalformatted", 1) == 1)
+	{
 	echo "<div class='icalformat' style='clear:left; padding-top:5px;'>";
 	echo "<h3>" . Text::_('JEV_ICAL_FORMATTING') . "</h3>\n";
 	?>
@@ -237,7 +239,9 @@ if ($input->getString("submit", "") != "")
 	<br/>
 	<br/>
 	</div>
-
+    <?php
+    }
+    ?>
 	<input type="submit" name="submit" value="<?php echo Text::_('JEV_SELECT'); ?>"/>
 </form>
 

@@ -112,12 +112,12 @@ if ($input->getString("submit", "") != "")
 	}
 
 	$icalkey    = $params->get("icalkey", "secret phrase");
-	$publiclink = $link . "&k=" . md5($icalkey . $cats . $years);
+	$publiclink = $link . "&k=" . md5($icalkey . $catsImploded . $years);
 
 	$user = Factory::getUser();
 	if ($user->id != 0)
 	{
-		$privatelink = $link . "&pk=" . md5($icalkey . $cats . $years . $user->password . $user->username . $user->id) . "&i=" . $user->id;
+		$privatelink = $link . "&pk=" . md5($icalkey . $catsImploded . $years . $user->password . $user->username . $user->id) . "&i=" . $user->id;
 	}
 
 	echo "<p><a href='$publiclink'>" . Text::_('JEV_REP_ICAL_PUBLIC') . "</a></p>";
@@ -232,16 +232,19 @@ if ($input->getString("submit", "") != "")
 		</div>
 	</div>
 	<?php
-	echo "<div class='icalformat' style='clear:left; padding-top:5px;'>";
-	echo "<h3>" . Text::_('JEV_ICAL_FORMATTING') . "</h3>\n";
-	?>
-	<label><input name="icalformatted" type="checkbox"
-	              value="1" <?php echo $input->getInt("icalformatted", 0) ? "checked='checked'" : ""; ?>/><?php echo Text::_("JEV_PRESERVE_HTML_FORMATTING"); ?>
-	</label>
-	<br/>
-	<br/>
-	</div>
-
+	if ($params->get("icalformatted", 1) == 1)
+	{
+        echo "<div class='icalformat' style='clear:left; padding-top:5px;'>";
+        echo "<h3>" . Text::_('JEV_ICAL_FORMATTING') . "</h3>\n";
+        ?>
+        <label><input name="icalformatted" type="checkbox"
+                      value="1" <?php echo $input->getInt("icalformatted", 0) ? "checked='checked'" : ""; ?>/><?php echo Text::_("JEV_PRESERVE_HTML_FORMATTING"); ?>
+        </label>
+        <br/>
+        <br/>
+        </div>
+    <?php
+	} ?>
 	<input type="submit" name="submit" value="<?php echo Text::_('JEV_SELECT'); ?>"/>
 </form>
 
