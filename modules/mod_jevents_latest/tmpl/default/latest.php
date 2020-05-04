@@ -765,7 +765,7 @@ class DefaultModLatestView
                             $token= JSession::getFormToken();
                             $script = <<<SCRIPT
 function fetchMoreLatestEvents(modid, direction)
-{        
+{
         jQuery.ajax({
                     type : 'POST',
                     dataType : 'json',
@@ -773,8 +773,8 @@ function fetchMoreLatestEvents(modid, direction)
                     data : {'json':JSON.stringify({'modid':modid, 'direction':direction})},
                     contentType: "application/x-www-form-urlencoded; charset=utf-8",
                     scriptCharset: "utf-8"
-            })                        
-                .done(function( data ){                    
+            })
+                .done(function( data ){
                     jQuery("#mod_events_latest_"+modid+"_data").replaceWith(data.html);
                     try {
                         document.getElementById("mod_events_latest_"+modid+"_data").parentNode.scrollIntoView({block: "start", behavior: "smooth"});
@@ -910,7 +910,7 @@ SCRIPT;
 			'createdByUserName', 'createdByUserEmail', 'createdByUserEmailLink',
 			'eventDate', 'endDate', 'startDate', 'title', 'category', 'calendar',
 			'contact', 'addressInfo', 'location', 'extraInfo',
-			'countdown', 'categoryimage', 'duration', 'siteroot', 'sitebase', 'allCategoriesColoured'
+			'countdown', 'categoryimage', 'duration', 'siteroot', 'sitebase', 'allCategoriesColoured', 'allCategorieSlugs'
 		);
 		$keywords_or = implode('|', $keywords);
 		$whsp = '[\t ]*'; // white space
@@ -1302,6 +1302,18 @@ SCRIPT;
 
                 $content .= implode(", ", $allcats);
                 break;
+
+			case 'allCategorieSlugs' :
+				$catobj     = $dayEvent->getCategoryData();
+				$allcats    = array();
+
+				foreach ($catobj as $cat)
+				{
+					$allcats[] = 'jevcat-' . $cat->alias;
+				}
+
+				$content .= implode(" ", $allcats);
+				break;
 
 			case 'calendar':
 				$catobj = $dayEvent->getCalendarName();
