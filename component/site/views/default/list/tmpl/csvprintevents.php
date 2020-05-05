@@ -105,28 +105,20 @@ function outputCSV($data)
 
 	function __outputCSV(&$row, $key, $filehandler)
 	{
-		if (is_object($row))
+		if (is_array($row))
 		{
-			$data = array();
-			global $fields;
-			foreach ($fields as $key => $field)
+			foreach ($row as $key => $field)
 			{
-                                if (isset($row->$field))
-				{
-					$data[$key] = $row->$field;
-				}				
-				if (is_array($data[$key]))
-				{
-					$data[$key] = implode(", ", $data[$key]);
-				}				
+				$row[$key] = htmlspecialchars_decode(trim($field));
 			}
+			$data = $row;
 		}
 		else
 		{
 			$data = $row;
 		}
 
-		fputcsv($filehandler, htmlspecialchars_decode($data), ',', '"');
+		fputcsv($filehandler, $data, ',', '"');
 
 	}
 
