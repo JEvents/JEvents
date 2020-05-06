@@ -60,7 +60,7 @@ function clearAllIcalYears(){
 SCRIPT;
 $doc = JFactory::getDocument();
 $doc->addScriptDeclaration($script);
-	
+
 $accessiblecats = explode(",", $this->datamodel->accessibleCategoryList());
 
 echo "<h2 id='cal_title'>" . JText::_('JEV_ICAL_EXPORT') . "</h2>\n";
@@ -156,7 +156,7 @@ if (JRequest::getString("submit","")!="")
 		}
 		echo $cb . "><strong>" . JText::_("JEV_EVENT_ALLCAT") . "</strong><br/>\n";
 		?>
-		<div id='othercats' <?php echo $checked ? 'style="display:none;max-height:100px;overflow-y:auto;"' : ''; ?> >
+		<div id='othercats' <?php echo $checked ? 'style="display:none;max-height:100px;overflow-y:auto;"' : 'style="display:block;"'; ?> >
 			<?php
 			foreach ($categories AS $c)
 			{

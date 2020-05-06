@@ -60,7 +60,7 @@ function clearAllIcalYears(){
 SCRIPT;
 $doc = JFactory::getDocument();
 $doc->addScriptDeclaration($script);
-	
+
 $accessiblecats = explode(",", $this->datamodel->accessibleCategoryList());
 
 echo "<h2 id='cal_title'>" . JText::_('JEV_ICAL_EXPORT') . "</h2>\n";
@@ -226,13 +226,15 @@ if (JRequest::getString("submit","")!="")
 		</div>
 	</div>
 	<?php
-	echo "<div class='icalformat' style='clear:left; padding-top:5px;'>";
-	echo "<h3>" . JText::_('JEV_ICAL_FORMATTING') . "</h3>\n";
-	?>
-	<label><input name="icalformatted" type="checkbox" value="1" <?php echo JRequest::getInt("icalformatted", 0) ? "checked='checked'" : ""; ?>/><?php echo JText::_("JEV_PRESERVE_HTML_FORMATTING"); ?></label>
-	<br/>
-	<br/>
-</div>
+	if ($params->get("icalformatted", 1) == 1) {
+		echo "<div class='icalformat' style='clear:left; padding-top:5px;'>";
+		echo "<h3>" . JText::_('JEV_ICAL_FORMATTING') . "</h3>\n";
+		?>
+		<label><input name="icalformatted" type="checkbox" value="1" <?php echo JRequest::getInt("icalformatted", 0) ? "checked='checked'" : ""; ?>/><?php echo JText::_("JEV_PRESERVE_HTML_FORMATTING"); ?></label>
+		<br/>
+		<br/>
+		</div>
+	<?php } ?>
 
 <input type="submit" name="submit" value="<?php echo JText::_('JEV_SELECT'); ?>" />
 </form>

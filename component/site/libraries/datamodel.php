@@ -49,7 +49,7 @@ class JEventsDataModel {
 
 	function setupModuleCatids($modparams){
 		$this->myItemid = findAppropriateMenuID ($this->catidsOut, $this->catids, $this->catidList, $modparams->toObject(), $this->moduleAllCats);
-		
+
 		// set menu/module constraint values for later use
 		$this->mmcatids = array();
 		// New system
@@ -59,7 +59,7 @@ class JEventsDataModel {
 				if ( !in_array( $newcat, $this->mmcatids )){
 					$this->mmcatids[]	= $newcat;
 				}
-			}				
+			}
 		}
 		else {
 			for ($c=0; $c < 999; $c++) {
@@ -74,14 +74,14 @@ class JEventsDataModel {
 			}
 		}
 		$this->mmcatidList = implode(",",$this->mmcatids);
-		
+
 		return $this->myItemid;
 	}
 
 	function setupComponentCatids(){
 		// if no catids from GET or POST default to the menu values
 		// Note that module links must pass a non default value
-		
+
 		$Itemid = JEVHelper::getItemid();
 		$this->myItemid = $Itemid;
 
@@ -111,7 +111,7 @@ class JEventsDataModel {
 		if ($catidsIn == "NONE"   || $catidsIn == 0 ) {
 			$catidsIn		= JRequest::getVar(	'category_fv', 		'NONE' ) ;
 		}
-		
+
 		// set menu/module constraint values for later use
 		$this->mmcatids = array();
 		// New system
@@ -121,7 +121,7 @@ class JEventsDataModel {
 				if ( !in_array( $newcat, $this->mmcatids )){
 					$this->mmcatids[]	= $newcat;
 				}
-			}				
+			}
 		}
 		else {
 			for ($c=0; $c < 999; $c++) {
@@ -136,7 +136,7 @@ class JEventsDataModel {
 			}
 		}
 		$this->mmcatidList = implode(",",$this->mmcatids);
-		
+
 		// if resettting then always reset to module/menu value
 		if (intval(JRequest::getVar('filter_reset',0))){
 			$this->catids = $this->mmcatids;
@@ -153,7 +153,7 @@ class JEventsDataModel {
 						if ( !in_array( $newcat, $this->catids )){
 							$this->catids[]	= $newcat;
 						}
-					}				
+					}
 				}
 				else {
 					for ($c=0; $c < 999; $c++) {
@@ -185,7 +185,7 @@ class JEventsDataModel {
 	}
 
 	/**
-	 * Gets appropriate Itemid part of URL 
+	 * Gets appropriate Itemid part of URL
 	 *
 	 * @return string
 	 */
@@ -197,8 +197,8 @@ class JEventsDataModel {
 	}
 
 	/**
-	 * Gets appropriate category restriction part of URL 
-	 * 
+	 * Gets appropriate category restriction part of URL
+	 *
 	 * @return string
 	 */
 	function getCatidsOutLink($withAmp=true){
@@ -220,7 +220,7 @@ class JEventsDataModel {
 	 * @return array - calendar data array
 	 */
 	function getCalendarData( $year, $month, $day , $short=false, $veryshort = false){
-		
+
 
 		$data = array();
 		$data['year']=$year;
@@ -465,7 +465,7 @@ class JEventsDataModel {
 
 	function getYearData($year, $limit, $limitstart )
 	{
-		
+
 
 		$data = array();
 		$data ["year"]=$year;
@@ -519,7 +519,7 @@ class JEventsDataModel {
 
 	function getRangeData($start,$end, $limit, $limitstart ,  $order="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC")
 	{
-		
+
 		$data = array();
 
 		$db	= JFactory::getDbo();
@@ -563,7 +563,7 @@ class JEventsDataModel {
 	 */
 	function getWeekData($year, $month, $day, $detailedDay=false) {
 
-		
+
 		$Itemid = JEVHelper::getItemid();
 		$db	= JFactory::getDbo();
 
@@ -696,7 +696,7 @@ class JEventsDataModel {
 	}
 
 	function getDayData($year, $month, $day) {
-		
+
 
 		include_once(JPATH_ADMINISTRATOR."/components/".JEV_COM_COMPONENT."/libraries/colorMap.php");
 
@@ -713,7 +713,7 @@ class JEventsDataModel {
 	function getEventData( $rpid, $jevtype, $year, $month, $day, $uid="" ) {
 		$data = array();
 
-		
+
 		$pop = intval(JRequest::getVar( 'pop', 0 ));
 		$Itemid = JEVHelper::getItemid();
 		$db	= JFactory::getDbo();
@@ -737,7 +737,7 @@ class JEventsDataModel {
 			$rpid = $this->queryModel->findMatchingRepeat($uid, $year, $month, $day);
 			if (isset($rpid) && $rpid>0){
 				$row = $this->queryModel->listEventsById ($rpid, 1, $jevtype);  // include unpublished events for publishers and above
-				if ($row && !$row->published()) {					
+				if ($row && !$row->published()) {
 					if ($user->id!=$row->created_by() && !JEVHelper::canEditEvent($row)  && !JEVHelper::canPublishEvent($row)  && !JEVHelper::isAdminUser($user) ) {
 						$row=null;
 					}
@@ -745,12 +745,12 @@ class JEventsDataModel {
 				$num_row = (is_object($row) ? 1 : (is_array($row) ? count($row) : 0));
 			}
 		}
-		
+
 		if( $num_row ){
 
 			// process the new plugins
-			$dispatcher	= JEventDispatcher::getInstance();
-			$dispatcher->trigger('onGetEventData', array (& $row));
+
+			JFactory::getApplication()->triggerEvent('onGetEventData', array (& $row));
 
 			$params =new JRegistry(null);
 			$row->contactlink = JEventsHTML::getUserMailtoLink( $row->id(), $row->created_by() ,false, $row);
@@ -788,13 +788,13 @@ class JEventsDataModel {
 				$tmprow = new stdClass();
 				$tmprow->text = $row->location();
 
-				$dispatcher	= JEventDispatcher::getInstance();
 
-				$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$tmprow, &$params, 0 ));
-				
+
+				JFactory::getApplication()->triggerEvent( 'onContentPrepare', array('com_jevents', &$tmprow, &$params, 0 ));
+
 				$row->location($tmprow->text);
 			}
-			
+
 			//Contact
 			if (strpos($row->contact_info(),'<a href=')===false){
 				$row->contact_info(preg_replace('#(http://)('.$pattern.'*)#i', '<a href="\\1\\2">\\1\\2</a>', $row->contact_info()));
@@ -802,8 +802,8 @@ class JEventsDataModel {
 			$tmprow = new stdClass();
 			$tmprow->text = $row->contact_info();
 
-			$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$tmprow, &$params, 0 ));
-			
+			JFactory::getApplication()->triggerEvent( 'onContentPrepare', array('com_jevents', &$tmprow, &$params, 0 ));
+
 			$row->contact_info($tmprow->text);
 
 			//Extra
@@ -814,8 +814,8 @@ class JEventsDataModel {
 			$tmprow = new stdClass();
 			$tmprow->text = $row->extra_info();
 
-			$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$tmprow, &$params, 0 ));
-			
+			JFactory::getApplication()->triggerEvent( 'onContentPrepare', array('com_jevents', &$tmprow, &$params, 0 ));
+
 			$row->extra_info($tmprow->text);
 
 			$mask = JFactory::getApplication()->getCfg( 'hideAuthor' ) ? MASK_HIDEAUTHOR : 0;
@@ -836,8 +836,8 @@ class JEventsDataModel {
 			$params->set("image",1);
 			$row->text = $row->content();
 
-			$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$row, &$params, 0 ));
-		
+			JFactory::getApplication()->triggerEvent( 'onContentPrepare', array('com_jevents', &$row, &$params, 0 ));
+
 			$row->content( $row->text );
 
 			$data['row']=$row;
@@ -868,7 +868,7 @@ class JEventsDataModel {
 					$comuser= version_compare(JVERSION, '1.6.0', '>=') ? "com_users":"com_user";
 					$link = 'index.php?option='.$comuser.'&view=login&return='.base64_encode($link);
 					$link = JRoute::_($link);
-					
+
 					JFactory::getApplication()->redirect($link,JText::_('JEV_LOGIN_TO_VIEWEVENT'));
 					return null;
 				}
@@ -876,8 +876,8 @@ class JEventsDataModel {
 
 			// See if a plugin can find our missing event - maybe on another menu item
 			JPluginHelper::importPlugin('jevents');
-			$dispatcher	= JEventDispatcher::getInstance();
-			$dispatcher->trigger('onMissingEvent', array (& $row,$rpid, $jevtype, $year, $month, $day, $uid));
+
+			JFactory::getApplication()->triggerEvent('onMissingEvent', array (& $row,$rpid, $jevtype, $year, $month, $day, $uid));
 
 			return null;
 		}
@@ -919,7 +919,7 @@ class JEventsDataModel {
 		}
 		else {
 			// Override multiple categories using the filter instead
-			
+
 			$tempcat =JFactory::getApplication()->getUserStateFromRequest( 'category_fv_ses', 'category_fv', 0);
 			if ($tempcat>0){
 				$catids = array();
@@ -1061,7 +1061,7 @@ class JEventsDataModel {
 		$data['rows']=$rows;
 
 		$keyword = htmlspecialchars($keyword);
-		
+
 		return $data;
 	}
 
@@ -1123,14 +1123,14 @@ class JEventsDataModel {
 		$monthResult['day1'] = $d1;
 		$monthResult['lastday'] = date("t",$d1);
 		$year = JevDate::strftime("%Y",$d1);
-		
+
 		$cfg = JEVConfig::getInstance();
 		$earliestyear =  JEVHelper::getMinYear();
 		$latestyear = JEVHelper::getMaxYear();
 		if ($year>$latestyear || $year<$earliestyear){
 			return false;
 		}
-		
+
 		$monthResult['year'] = $year;
 		$month = JevDate::strftime("%m",$d1);
 		$monthResult['month'] = $month;
@@ -1159,14 +1159,14 @@ class JEventsDataModel {
 		$d1 = JevDate::mktime(0,0,0,$month,$day+$direction*7,$year);
 		$day = JevDate::strftime("%d",$d1);
 		$year = JevDate::strftime("%Y",$d1);
-		
+
 		$cfg = JEVConfig::getInstance();
 		$earliestyear =  JEVHelper::getMinYear();
 		$latestyear = JEVHelper::getMaxYear();
 		if ($year>$latestyear || $year<$earliestyear){
 			return false;
 		}
-		
+
 		$month = JevDate::strftime("%m",$d1);
 		$task = JRequest::getString('jevtask');
 		$Itemid = JEVHelper::getItemid();
@@ -1189,14 +1189,14 @@ class JEventsDataModel {
 		$d1 = JevDate::mktime(0,0,0,$month,$day+$direction,$year);
 		$day = JevDate::strftime("%d",$d1);
 		$year = JevDate::strftime("%Y",$d1);
-		
+
 		$cfg = JEVConfig::getInstance();
 		$earliestyear =  JEVHelper::getMinYear();
 		$latestyear = JEVHelper::getMaxYear();
 		if ($year>$latestyear || $year<$earliestyear){
 			return false;
 		}
-		
+
 		$month = JevDate::strftime("%m",$d1);
 		$task = JRequest::getString('jevtask');
 		$Itemid = JEVHelper::getItemid();
@@ -1229,7 +1229,7 @@ class JEventsDataModel {
 
 		list( $adate, $atime ) = explode( ' ', $a->publish_up() );
 		list( $bdate, $btime ) = explode( ' ', $b->publish_up() );
-		
+
 		// allday events first, equal time sort by title
 		$atime = $a->alldayevent() ? '00:00'.$a->title() : $atime.$a->title();
 		$btime = $b->alldayevent() ? '00:00'.$b->title() : $btime.$b->title();

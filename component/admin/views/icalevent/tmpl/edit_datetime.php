@@ -43,7 +43,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 			    <?php echo $this->form->getInput("tzid"); ?>
 			</div>
 		    </div>
-		</div>                    
+		</div>
 		<?php
 	}
 	?>
@@ -300,7 +300,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 		    }
 		    JEVHelper::loadElectricCalendar("irregular", "irregular", "", $minyear, $maxyear, '', "setTimeout(function() {selectIrregularDate();updateRepeatWarning();}, 200)", $inputdateformat, $attribs);
 		    //JEVHelper::loadElectricCalendar("irregular", "irregular", "", $minyear, $maxyear, '', "jQuery(this).trigger('calupdate');", $inputdateformat, $attribs);
-		    
+
 		    //"selectIrregularDate();updateRepeatWarning();"
 		    /*
 		    JFactory::getDocument()->addScriptDeclaration(
@@ -401,7 +401,7 @@ if ($this->row->id() != 0 && $this->row->freq())
         //if (window.attachEvent) window.attachEvent("onload",setupRepeats);
         //else window.onload=setupRepeats;
         //setupRepeats();
-        window.setTimeout("setupRepeats()", 500);
+        window.setTimeout(setupRepeats, 500);
         // move to 12h fields
         set12hTime(document.adminForm.start_time);
         set12hTime(document.adminForm.end_time);

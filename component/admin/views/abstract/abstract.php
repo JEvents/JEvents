@@ -56,7 +56,7 @@ class JEventsAbstractView extends JViewLegacy
 
 		// or could have used
 		//$this->addTemplatePath( JPATH_BASE.'/'.'templates'.'/'.JFactory::getApplication()->getTemplate().'/'.'html'.'/'.JEV_COM_COMPONENT.'/'.$config['name'] );
-		
+
 
 	}
 
@@ -126,7 +126,7 @@ class JEventsAbstractView extends JViewLegacy
 			<div class="icon">
 				<a href="<?php echo $link; ?>" <?php echo $target; ?>  <?php echo $onclick; ?> title="<?php echo $alttext; ?>">
 					<?php
-					//echo JHTML::_('image.administrator', $image, $path, NULL, NULL, $text ); 
+					//echo JHTML::_('image.administrator', $image, $path, NULL, NULL, $text );
 					if (strpos($path, '/') === 0)
 					{
 						$path = JString::substr($path, 1);
@@ -310,7 +310,7 @@ class JEventsAbstractView extends JViewLegacy
 				$blank[] = "";
 				continue;
 			}
-			// Built in fields	
+			// Built in fields
 			// can implement special handlers here!
 			/*
 			  switch ($strippedmatch) {
@@ -379,7 +379,7 @@ class JEventsAbstractView extends JViewLegacy
 			// Manually close the tabs
 			$template_value = str_replace("{{TABSEND}}",JHtml::_('bootstrap.endPanel') . JHtml::_('bootstrap.endPane'), $template_value);
 		}
-	
+
 
 		// Now do the plugins
 		// get list of enabled plugins
@@ -444,7 +444,7 @@ class JEventsAbstractView extends JViewLegacy
 		  }
 		  }
 		  }
-		 * 
+		 *
 		 */
 		$searchCount = count($search);
 		for ($s = 0; $s < $searchCount; $s++)
@@ -570,7 +570,7 @@ class JEventsAbstractView extends JViewLegacy
 		$this->form = JForm::getInstance("jevents.edit.icalevent", 'icalevent', array('control' => '', 'load_data' => false), false, $xpath);
 		JForm::addFieldPath(JPATH_THEMES."/$template/html/com_jevents/fields");
 		*/
-		
+
 		$rowdata = array();
 		foreach ($this->row as $k => $v)
 		{
@@ -685,7 +685,7 @@ class JEventsAbstractView extends JViewLegacy
 
 		$this->form->jevdata["state"]["ev_id"] = $this->ev_id;
 		$this->form->jevdata["published"]["ev_id"] = $this->ev_id;
-		
+
 		$this->form->jevdata["location"]["event"] = $this->row;
 		$this->form->jevdata["publish_up"]["event"] = $this->row;
 		$this->form->jevdata["publish_down"]["event"] = $this->row;
@@ -700,7 +700,7 @@ class JEventsAbstractView extends JViewLegacy
 		$this->replacetags = array();
 		$this->blanktags = array();
 		$this->requiredtags = array();
-                
+
 		$requiredTags['id'] = "title";
 		$requiredTags['default_value'] = "";
 		$requiredTags['alert_message'] = JText::_('JEV_ADD_REQUIRED_FIELD',true)." ". JText::_("JEV_FIELD_TITLE",true);
@@ -735,8 +735,8 @@ class JEventsAbstractView extends JViewLegacy
 		// Plugins CAN BE LAYERED IN HERE - In Joomla 3.0 we need to call it earlier to get the tab titles
 		// append array to extratabs keys content, title, paneid
 		$this->extraTabs = array();
-		$dispatcher = JEventDispatcher::getInstance();
-		$dispatcher->trigger('onEventEdit', array(&$this->extraTabs, &$this->row, &$params), true);
+
+		JFactory::getApplication()->triggerEvent('onEventEdit', array(&$this->extraTabs, &$this->row, &$params), true);
 
 		foreach ($this->extraTabs as $extraTab)
 		{
@@ -764,7 +764,7 @@ class JEventsAbstractView extends JViewLegacy
 
 		// load any custom fields
 		$this->customfields = array();
-		$res = $dispatcher->trigger('onEditCustom', array(&$this->row, &$this->customfields));
+		$res = JFactory::getApplication()->triggerEvent('onEditCustom', array(&$this->row, &$this->customfields));
 
 		ob_start();
 		foreach ($this->customfields as $key => $val)

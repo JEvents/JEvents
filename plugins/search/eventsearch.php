@@ -186,14 +186,14 @@ class plgSearchEventsearch extends JPlugin
 		$needsgroup = $filters->needsGroupBy();
 
 		JPluginHelper::importPlugin('jevents');
-		$dispatcher = JEventDispatcher::getInstance();
-		$dispatcher->trigger('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
+
+		JFactory::getApplication()->triggerEvent('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
 		$extrajoin = ( count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '' );
 		$extrawhere = ( count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '' );
 
 		$extrasearchfields = array();
                 // NB extrajoin is a string from now on
-		$dispatcher->trigger('onSearchEvents', array(& $extrasearchfields, & $extrajoin, & $needsgroup));
+		JFactory::getApplication()->triggerEvent('onSearchEvents', array(& $extrasearchfields, & $extrajoin, & $needsgroup));
 
 		$wheres = array();
 		$wheres_ical = array();
@@ -241,7 +241,7 @@ class plgSearchEventsearch extends JPlugin
 
 			$where_ical .= $extraor;
 		}
-		// some of the where statements may already be escaped 
+		// some of the where statements may already be escaped
 		$where_ical = str_replace("%'%'", "%'", $where_ical);
 		$where_ical = str_replace("''", "'", $where_ical);
 		$where_ical = str_replace("'%'%", "'%", $where_ical);

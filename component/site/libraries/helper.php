@@ -509,14 +509,12 @@ class JEVHelper
 	}
 
 	public static
-			function forceIntegerArray(&$cid, $asString = true)
+			function forceIntegerArray($cid = null, $asString = true)
 	{
 		$cid = is_null($cid) ? array() : $cid;
 
-		for ($c = 0; $c < count($cid); $c++)
-		{
-			$cid[$c] = intval($cid[$c]);
-		}
+		$cid = ArrayHelper::toInteger($cid);
+
 		if ($asString)
 		{
 			$id_string = implode(",", $cid);
@@ -524,9 +522,8 @@ class JEVHelper
 		}
 		else
 		{
-			return "";
+			return $cid;
 		}
-
 	}
 
 	/**
@@ -644,7 +641,7 @@ class JEVHelper
 			$done = array();
 		}
 
-		// new script is disabled if readonly is set so set it on an onload event instead		
+		// new script is disabled if readonly is set so set it on an onload event instead
 		if ((isset($attribs['readonly']) && $attribs['readonly'] == 'readonly')
 			|| (isset($attribs[' readonly']) && $attribs[' readonly'] == 'readonly'))
 		{
@@ -702,7 +699,7 @@ class JEVHelper
 		// TODO remove these Joomla 3.7.0 bug workarounds when fixed in Joomla
 		//$tag      = JFactory::getLanguage()->getTag();
 		//JHtml::_('script', $tag . '/calendar-setup.js', array('version' => 'auto', 'relative' => true));
-		//JHtml::_('stylesheet', 'system/calendar-jos.css', array('version' => 'auto', 'relative' => true), $attribs);	
+		//JHtml::_('stylesheet', 'system/calendar-jos.css', array('version' => 'auto', 'relative' => true), $attribs);
 
 		$tag       = JFactory::getLanguage()->getTag();
 
@@ -714,7 +711,7 @@ class JEVHelper
 				unset($attribs['readonly']);
 				unset($attribs[' readonly']);
 			}
-			
+
 			$calendar  = JFactory::getLanguage()->getCalendar();
 			$direction = strtolower(JFactory::getDocument()->getDirection());
 
@@ -725,7 +722,7 @@ class JEVHelper
 			{
 				$helperPath = 'system/fields/calendar-locales/date/' . strtolower($calendar) . '/date-helper.min.js';
 			}
-		
+
 			// Get the appropriate locale file for the current language
 			$localesPath = 'system/fields/calendar-locales/en.js';
 
@@ -755,7 +752,7 @@ class JEVHelper
 			//$div_class	= (!$readonly && !$disabled) ? ' class="input-append"' : '';
 			$btn_style	= $disabled ? ' style="display:none;"' : '';
 			$div_class	= !$disabled ? ' class="input-append"' : '';
-			
+
 			echo '<div class=" field-calendar">'
 				. '<div' . $div_class . '>'
 				. '<input type="text" title="' . ($inputvalue ? JHtml::_('date', $value, null, null) : '')
@@ -774,18 +771,18 @@ class JEVHelper
 			data-show-time="' . $showtime . '"
 			data-show-others="1"
 			data-only-months-nav="0"
-			data-time-24="' . $timeformat . '" 
+			data-time-24="' . $timeformat . '"
 			' . (!empty($minYear) ? 'data-min-year="' . $minYear . '"' : "") . '
 			' . (!empty($maxYear) ? 'data-max-year="' . $maxYear . '"' : "") . '
 		><span class="icon-calendar"></span></button>. '
 			. '</div>'
 			. '</div>';
-		
+
 			if ($readonly)
 			{
 				JFactory::getDocument()->addScriptDeclaration("jQuery(window).on('load', function(){jQuery('#" . $fieldid . "').prop('readonly', true);})");
 			}
-		
+
 		} else {
 			JHtml::_('script', $tag . '/calendar-setup.js', array('version' => 'auto', 'relative' => true));
 			JHtml::_('stylesheet', 'system/calendar-jos.css', array('version' => 'auto', 'relative' => true), $attribs);
@@ -1345,8 +1342,8 @@ class JEVHelper
 			}
 
 			JPluginHelper::importPlugin("jevents");
-			$dispatcher = JEventDispatcher::getInstance();
-			$dispatcher->trigger('isEventCreator', array(& $isEventCreator));
+
+			JFactory::getApplication()->triggerEvent('isEventCreator', array(& $isEventCreator));
 		}
 		if (is_null($isEventCreator)) $isEventCreator = false;
 
@@ -1386,8 +1383,8 @@ class JEVHelper
 					JRequest::setVar("task", "icalevent.edit");
 					$catids = JEVHelper::rowCatids($row)? JEVHelper::rowCatids($row) :array(intval($row->_catid));
 					$catids = implode(",", $catids);
-					$dispatcher = JEventDispatcher::getInstance();
-					$dispatcher->trigger('onGetAccessibleCategories', array(& $catids));
+
+					JFactory::getApplication()->triggerEvent('onGetAccessibleCategories', array(& $catids));
 					$allowedcats = explode(",", $catids);
 					JRequest::setVar("task", $jevtask);
 				}
@@ -1800,8 +1797,8 @@ class JEVHelper
 				$isEventPublisher[$type] = true;
 			}
 
-			$dispatcher = JEventDispatcher::getInstance();
-			$dispatcher->trigger('isEventPublisher', array($type, & $isEventPublisher[$type]));
+
+			JFactory::getApplication()->triggerEvent('isEventPublisher', array($type, & $isEventPublisher[$type]));
 		}
 
 
@@ -2794,8 +2791,8 @@ class JEVHelper
 			if (count($rows))
 			{
 				JPluginHelper::importPlugin('jevents');
-				$dispatcher = JEventDispatcher::getInstance();
-				$dispatcher->trigger('onDisplayCustomFieldsMultiRow', array(&$rows));
+
+				JFactory::getApplication()->triggerEvent('onDisplayCustomFieldsMultiRow', array(&$rows));
 				foreach ($rows as $k => $row)
 				{
 					$id = md5($row->rp_id() . " onDisplayCustomFieldsMultiRow " . $row->uid() . " " . $row->title() . "-" . $cachegroups . $lang);
@@ -2823,8 +2820,8 @@ class JEVHelper
 		else
 		{
 			JPluginHelper::importPlugin('jevents');
-			$dispatcher = JEventDispatcher::getInstance();
-			$dispatcher->trigger('onDisplayCustomFieldsMultiRow', array(&$icalrows));
+
+			JFactory::getApplication()->triggerEvent('onDisplayCustomFieldsMultiRow', array(&$icalrows));
 		}
 
 	}
@@ -3125,7 +3122,7 @@ SCRIPT;
 				// If we have session data then need to block page caching too!!
 				// JCache::getInstance('page', $options); doesn't give an instance its always a NEW copy
 				$cache_plg = JPluginHelper::getPlugin('system', 'cache');
-				$dispatcher = JEventDispatcher::getInstance();
+				$dispatcher     = JEventDispatcher::getInstance();
 				$observers = @$dispatcher->get("_observers");
 				if ($observers && is_array($observers))
 				{
@@ -3148,7 +3145,7 @@ SCRIPT;
 				// If we have RSVP PRo data then need to block page caching too!!
 				// JCache::getInstance('page', $options); doesn't give an instance its always a NEW copy
 				$cache_plg = JPluginHelper::getPlugin('system', 'cache');
-				$dispatcher = JEventDispatcher::getInstance();
+				$dispatcher     = JEventDispatcher::getInstance();
 				$observers = @$dispatcher->get("_observers");
 				if ($observers && is_array($observers))
 				{
@@ -3314,7 +3311,7 @@ SCRIPT;
 			$icalEvents = array_values($icalEvents);
 
 			// Call plugin on each event
-			$dispatcher = JEventDispatcher::getInstance();
+
 			ob_start();
 			JEVHelper::onDisplayCustomFieldsMultiRow($icalEvents);
 			ob_end_clean();
@@ -3620,7 +3617,7 @@ SCRIPT;
 
 
 					ob_start();
-					$dispatcher->trigger('onDisplayCustomFieldsMultiRow', array(&$changedrows));
+					JFactory::getApplication()->triggerEvent('onDisplayCustomFieldsMultiRow', array(&$changedrows));
 					ob_end_clean();
 
 					// TODO look at removing events as array as we will only handle ONE event in mail generation.

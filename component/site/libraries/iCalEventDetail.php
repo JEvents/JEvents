@@ -49,7 +49,7 @@ class iCalEventDetail extends JTable  {
 	var $_customFields =  null;
 
 	/**
-	 * This holds the raw data as an array 
+	 * This holds the raw data as an array
 	 *
 	 * @var array
 	 */
@@ -78,10 +78,10 @@ class iCalEventDetail extends JTable  {
 
 		if (parent::store($updateNulls)){
 			// I also need to store custom data
-			$dispatcher	= JEventDispatcher::getInstance();
+
 			// just incase we don't have jevents plugins registered yet
 			JPluginHelper::importPlugin("jevents");
-			$res = $dispatcher->trigger( 'onStoreCustomDetails' , array(&$this));
+			$res = JFactory::getApplication()->triggerEvent( 'onStoreCustomDetails' , array(&$this));
 		}
 		else {
 			JError::raiseError(321, "Problem saving event ".$this->_db->getErrorMsg());
@@ -146,7 +146,7 @@ class iCalEventDetail extends JTable  {
 	}
 
 	/**
-	 * Converts $data into class values 
+	 * Converts $data into class values
 	 *
 	 */
 	public function convertData(){
@@ -224,22 +224,22 @@ class iCalEventDetail extends JTable  {
 			// an all day event
 			if ($this->dtend==$this->dtstart && JString::strlen($this->dtstartraw)==8){
 				// convert to JEvents all day event mode!
-				//$this->allday = 1;				
-				$this->dtend += 86399; 
+				//$this->allday = 1;
+				$this->dtend += 86399;
 			}
 		}
 		if ($this->dtend<$this->dtstart && JString::strlen($this->dtstartraw)==8){
 			// convert to JEvents all day event mode!
 			$this->noendtime = 1;
-			//$this->allday = 1;				
-			$this->dtend = $this->dtstart + 86399; 
+			//$this->allday = 1;
+			$this->dtend = $this->dtstart + 86399;
 		}
                 // All day event midnight to same midnight from iCalImport
                 else if ($this->dtstart-$this->dtend==1 && $this->dtendraw == $this->dtstartraw){
                         if (JevDate::strftime('%H:%M:%S',$this->dtstart)=="00:00:00"){
                             // convert to JEvents all day event mode!
                             $this->noendtime = 1;
-                            $this->dtend = $this->dtstart + 86399; 
+                            $this->dtend = $this->dtstart + 86399;
                         }
 		}
 

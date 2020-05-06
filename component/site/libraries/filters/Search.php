@@ -39,21 +39,21 @@ class jevSearchFilter extends jevFilter
 
 		$db = JFactory::getDbo();
 		$text = $db->Quote( '%'.$db->escape( $this->filter_value, true ).'%', false );
-		
+
 		$filter = "(det.summary LIKE $text OR det.description LIKE $text OR det.extra_info LIKE $text)";
-		
+
 		return $filter;
-		
+
 		/* Implementing this is more complicated becase of clash between onSearchEvents and onListIcalEvents triggers !
 		// create filter gets called before createjoin !!
 		JPluginHelper::importPlugin('jevents');
-		$dispatcher = JEventDispatcher::getInstance();
-		$dispatcher->trigger('onSearchEvents', array(& $this->extrasearchfields, & $this->extrajoin, & $this->needsgroup));			
-		
+
+		JFactory::getApplication()->triggerEvent('onSearchEvents', array(& $this->extrasearchfields, & $this->extrajoin, & $this->needsgroup));
+
 		$db = JFactory::getDbo();
 		$keyword = $db->Quote( '%'.$db->escape( $this->filter_value, true ).'%', false );
 		$text = $db->escape( $this->filter_value, true );
-							
+
 		if (count($this->extrasearchfields) > 0)
 		{
 			$extraor = implode(" OR ", $this->extrasearchfields);
@@ -61,13 +61,13 @@ class jevSearchFilter extends jevFilter
 			// replace the ### placeholder with the keyword
 			$extraor = str_replace("###", $text, $extraor);
 
-			$filter = "(det.summary LIKE $keyword OR det.description LIKE $keyword OR det.extra_info LIKE $keyword OR det.extra_info LIKE $keyword $extraor)\n" ;				
+			$filter = "(det.summary LIKE $keyword OR det.description LIKE $keyword OR det.extra_info LIKE $keyword OR det.extra_info LIKE $keyword $extraor)\n" ;
 		}
 		else
 		{
 			$filter = "(det.summary LIKE $text OR det.description LIKE $text OR det.extra_info LIKE $text)";
 		}
-		
+
 		return $filter;
 		 */
 	}
@@ -88,7 +88,7 @@ class jevSearchFilter extends jevFilter
 		if (!$this->filterField) return "";
 
 		$db = JFactory::getDbo();
-				
+
 		$filterList=array();
 		$filterList["title"]="<label class='evsearch_label' for='".$this->filterType."_fv'>".$this->filterLabel."</label>";
 		$filterList["html"] = "<input type='text' name='".$this->filterType."_fv' id='".$this->filterType."_fv'  class='evsearch'  value=\"".htmlspecialchars($this->filter_value)."\" />";
@@ -96,7 +96,7 @@ class jevSearchFilter extends jevFilter
 		$script = "try {JeventsFilters.filters.push({id:'".$this->filterType."_fv',value:''});} catch (e) {}";
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration($script);
-		
+
 		return $filterList;
 
 	}

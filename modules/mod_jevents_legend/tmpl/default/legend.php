@@ -80,7 +80,7 @@ class DefaultModLegendView
 		// since this is meant to be a comprehensive legend look for catids from menu first:
 		$cfg = JEVConfig::getInstance();
 		$Itemid = isset($this->myItemid) ? $this->myItemid : JEVHelper::getItemid();
-		
+
 		$user =  JFactory::getUser();
 
 		$db = JFactory::getDbo();
@@ -145,7 +145,7 @@ class DefaultModLegendView
 
 		// I should only show legend for items that **can** be shown in calendar so must filter based on GET/POST
 		$catidsIn = JRequest::getVar('catids', "NONE");
-		if ($catidsIn!="NONE" && $catidsIn!="0") 
+		if ($catidsIn!="NONE" && $catidsIn!="0")
 			$catidsGP = explode($separator, $catidsIn);
 		else
 			$catidsGP = array();
@@ -271,11 +271,11 @@ class DefaultModLegendView
                         $cat->image = $params->get("image", "");
 		}
 		unset($cat);
-		
+
 		// any plugin based resitrictions
-		$dispatcher = JEventDispatcher::getInstance();
+
 		// remember NOT to reindex the list
-		$dispatcher->trigger('onGetAccessibleCategories', array(& $catlist, false));
+		JFactory::getApplication()->triggerEvent('onGetAccessibleCategories', array(& $catlist, false));
 
 		// Copy the array
 		$clonedCatList = unserialize(serialize($catlist));

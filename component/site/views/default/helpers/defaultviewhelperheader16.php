@@ -13,8 +13,8 @@ function DefaultViewHelperHeader16($view){
 	$view->loadModules("jevprejevents");
 	$view->loadModules("jevprejevents_".$task);
 	
-	$dispatcher	= JEventDispatcher::getInstance();
-	$dispatcher->trigger( 'onJEventsHeader', array($view));
+	
+	JFactory::getApplication()->triggerEvent( 'onJEventsHeader', array($view));
 
 	$cfg		= JEVConfig::getInstance();
 	$version	= JEventsVersion::getInstance();

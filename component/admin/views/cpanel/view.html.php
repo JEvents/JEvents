@@ -54,7 +54,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 	protected function checkForAddons () {
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		if ($params->get("clubcode", "") && JString::strlen($params->get("clubcode", "")>20)){
+		if ($params->get("clubcode", "") && JString::strlen($params->get("clubcode", ""))>20){
 			return;
 		}
 
@@ -452,25 +452,25 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 	{
 		$filecontent = file_get_contents($manifest);
 		if ( stripos($filecontent, "jevents.net") === false
-                        && stripos($filecontent, "gwesystems.com") === false 
-                        && stripos($filecontent, "joomlacontenteditor") === false 
-                        && stripos($filecontent, "virtuemart") === false 
-                        && stripos($filecontent, "sh404sef") === false 
-                        && stripos($filecontent, "comprofiler") === false 
-                        && stripos($filecontent, "community") === false 
-                        && stripos($filecontent, "TechJoomla") === false 
+                        && stripos($filecontent, "gwesystems.com") === false
+                        && stripos($filecontent, "joomlacontenteditor") === false
+                        && stripos($filecontent, "virtuemart") === false
+                        && stripos($filecontent, "sh404sef") === false
+                        && stripos($filecontent, "comprofiler") === false
+                        && stripos($filecontent, "community") === false
+                        && stripos($filecontent, "TechJoomla") === false
                         && stripos($filecontent, "hikashop") === false
 			&& stripos($filecontent, "acymailing") === false )
 		{
 			return false;
 		}
 		// for JCE and Virtuemart only check component version number
-		if (stripos($filecontent, "joomlacontenteditor") !== false 
-                        || stripos($filecontent, "virtuemart") !== false 
+		if (stripos($filecontent, "joomlacontenteditor") !== false
+                        || stripos($filecontent, "virtuemart") !== false
                         || stripos($filecontent, "sh404sef") !== false
-                        || strpos($filecontent, "JCE") !== false 
-                        || strpos($filecontent, "Community") !== false 
-                        || strpos($filecontent, "Comprofiler") !== false 
+                        || strpos($filecontent, "JCE") !== false
+                        || strpos($filecontent, "Community") !== false
+                        || strpos($filecontent, "Comprofiler") !== false
                         || strpos($filecontent, "TechJoomla") !== false
                         || strpos($filecontent, "hikashop") !== false)
 		{
@@ -483,14 +483,14 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		$manifestdata = JApplicationHelper::parseXMLInstallFile($manifest);
 		if (!$manifestdata)
 			return false;
-		if (strpos($manifestdata["authorUrl"], "jevents") === false 
+		if (strpos($manifestdata["authorUrl"], "jevents") === false
                         && strpos($manifestdata["authorUrl"], "gwesystems") === false
-                        && strpos($manifestdata["authorUrl"], "joomlacontenteditor") === false 
-                        && strpos($manifestdata["authorUrl"], "virtuemart") === false 
-                        && strpos($manifestdata['name'], "sh404SEF") === false 
-                        && strpos($manifestdata['name'], "Community") === false 
-                        && strpos($manifestdata['name'], "comprofiler") === false 
-                        && strpos($manifestdata['author'], "TechJoomla") === false 
+                        && strpos($manifestdata["authorUrl"], "joomlacontenteditor") === false
+                        && strpos($manifestdata["authorUrl"], "virtuemart") === false
+                        && strpos($manifestdata['name'], "sh404SEF") === false
+                        && strpos($manifestdata['name'], "Community") === false
+                        && strpos($manifestdata['name'], "comprofiler") === false
+                        && strpos($manifestdata['author'], "TechJoomla") === false
                         && strpos($manifestdata['name'], "HikaShop") === false
 						&& strpos($manifestdata['name'], "AcyMailing") === false
                         )
@@ -941,7 +941,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 					JFactory::getApplication()->enqueueMessage('234 - ' . JText::sprintf("MAX_INPUT_VARS_LOW_WARNING",ini_get("max_input_vars")), 'warning');
 
 				}
-                
+
 
 		if (JevJoomlaVersion::isCompatible("3.0"))
 		{
@@ -1040,7 +1040,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			array("element"=>"jevusers","name"=>"jevusers","folder"=>"jevents", "type"=>"plugin"),
 			// Silver - Week Days
 			array("element"=>"jevweekdays","name"=>"jevweekdays","folder"=>"jevents", "type"=>"plugin"),
-			
+
 			// GOLD addons - PaidSubs - TODO check Virtuemart for Joomla 3.0 is available
 			array("element"=>"jevpaidsubs","name"=>"jevpaidsubs","folder"=>"jevents", "type"=>"plugin"),
 			array("element"=>"mod_jevents_paidsubs","name"=>"mod_jevents_paidsubs","type"=>"module"),
@@ -1155,7 +1155,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 	");
 			$cpupdate = $db->loadObject();
 			*/
-			
+
 			$cpupdate = false;
 			foreach ($extensiondata as $ed){
 				if ($ed->extension_type=='component'  && $ed->extension_element==$com ){

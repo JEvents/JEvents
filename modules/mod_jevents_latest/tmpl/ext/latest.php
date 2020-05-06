@@ -13,7 +13,7 @@ defined('_JEXEC') or die();
  */
 include_once(JPATH_SITE."/modules/mod_jevents_latest/tmpl/default/latest.php");
 
-class ExtModLatestView extends DefaultModLatestView  
+class ExtModLatestView extends DefaultModLatestView
 {
 	function displayLatestEvents(){
 
@@ -24,8 +24,8 @@ class ExtModLatestView extends DefaultModLatestView
 		$compname = JEV_COM_COMPONENT;
 
 		$viewpath = "components/".JEV_COM_COMPONENT."/views/".$viewname."/assets/css/";
-		
-		$dispatcher	= JEventDispatcher::getInstance();
+
+
 		$datenow	= JEVHelper::getNow();
 
 		$this->getLatestEventsData();
@@ -65,7 +65,7 @@ class ExtModLatestView extends DefaultModLatestView
 							if ( $condtoken['cond'] == 'a'  && !$dayEvent->alldayevent()) continue;
 							else if ( $condtoken['cond'] == '!a' &&  $dayEvent->alldayevent()) continue;
 							else if ( $condtoken['cond'] == 'e'  && !($dayEvent->noendtime() || $dayEvent->alldayevent())) continue;
-							else if ( $condtoken['cond'] == '!e' &&  ($dayEvent->noendtime() || $dayEvent->alldayevent())) continue;							
+							else if ( $condtoken['cond'] == '!e' &&  ($dayEvent->noendtime() || $dayEvent->alldayevent())) continue;
 							else if ( $condtoken['cond'] == '!m' &&  $dayEvent->getUnixStartDate()!=$dayEvent->getUnixEndDate() ) continue;
 							else if ( $condtoken['cond'] == 'm' &&  $dayEvent->getUnixStartDate()==$dayEvent->getUnixEndDate() ) continue;
 						}
@@ -120,7 +120,7 @@ class ExtModLatestView extends DefaultModLatestView
 
 		if ($this->displayRSS){
 			$rssimg = JURI::root() . "media/system/images/livemarks.png";
-			
+
 			$callink_HTML = '<div class="mod_events_latest_rsslink">'
 			.'<a href="'.$this->rsslink.'" title="'.JText::_("RSS_FEED").'"  target="_blank">'
 			.'<img src="'.$rssimg.'" alt="'.JText::_("RSS_FEED").'" />'
@@ -131,11 +131,11 @@ class ExtModLatestView extends DefaultModLatestView
 		}
 
 		if ($this->modparams->get("contentplugins", 0)){
-			$dispatcher = JEventDispatcher::getInstance();
+
 			$eventdata = new stdClass();
 			//$eventdata->text = str_replace("{/toggle","{/toggle}",$content);
 			$eventdata->text = $content;
-			$dispatcher->trigger('onContentPrepare', array('com_jevents', &$eventdata, &$this->modparams, 0));
+			JFactory::getApplication()->triggerEvent('onContentPrepare', array('com_jevents', &$eventdata, &$this->modparams, 0));
 			 $content = $eventdata->text;
 		}
 

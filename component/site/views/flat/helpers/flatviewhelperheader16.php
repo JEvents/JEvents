@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\String\StringHelper;
@@ -9,9 +9,9 @@ function FlatViewHelperHeader16($view){
 	$task = $jinput->getString('jevtask');
 	$view->loadModules("jevprejevents");
 	$view->loadModules("jevprejevents_".$task);
-		
-	$dispatcher	= JEventDispatcher::getInstance();
-	$dispatcher->trigger( 'onJEventsHeader', array($view));
+
+
+	JFactory::getApplication()->triggerEvent( 'onJEventsHeader', array($view));
 
 	$cfg		= JEVConfig::getInstance();
 	$version	= JEventsVersion::getInstance();
@@ -24,13 +24,13 @@ function FlatViewHelperHeader16($view){
 
 	// stop crawler and set meta tag
 	JEVHelper::checkRobotsMetaTag();
-	
+
 	// Call the MetaTag setter function.
-	if (is_callable(array("JEVHelper","SetMetaTags"))){		
+	if (is_callable(array("JEVHelper","SetMetaTags"))){
 		JEVHelper::SetMetaTags();
 	}
 
-	$lang = JFactory::getLanguage();	
+	$lang = JFactory::getLanguage();
 ?>
 <div id="jevents">
 <div class="contentpaneopen jeventpage<?php echo $params->get( 'pageclass_sfx' ); echo $params->get("darktemplate",0)?" jeventsdark":" "; echo $lang->isRTL()?" jevrtl":" ";?>   jevbootstrap" id="jevents_header">
@@ -86,7 +86,7 @@ function FlatViewHelperHeader16($view){
 		if ($pop) { ?>
 			<li class="print-icon">
 			<a href="javascript:void(0);" rel="nofollow" onclick="javascript:window.print(); return false;" title="<?php echo JText::_('JEV_CMN_PRINT'); ?>">
-					<span class="icon-print"> </span>	
+					<span class="icon-print"> </span>
 			</a>
 			</li> <?php
 		} else { ?>
@@ -137,7 +137,7 @@ function FlatViewHelperHeader16($view){
 	?>
 </div>
 <div class="jev_clear"></div>
-<?php 
+<?php
 	$view->loadModules("jevprejevents2");
 	$view->loadModules("jevprejevents2_".$task);
 ?>

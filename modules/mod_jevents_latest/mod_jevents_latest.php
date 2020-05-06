@@ -52,5 +52,5 @@ if ($tz && is_callable("date_default_timezone_set")){
 	date_default_timezone_set($timezone);
 }
 
-$dispatcher	= JEventDispatcher::getInstance();
-$dispatcher->trigger( 'onJEventsLatestFooter');
+
+JFactory::getApplication()->triggerEvent( 'onJEventsLatestFooter');

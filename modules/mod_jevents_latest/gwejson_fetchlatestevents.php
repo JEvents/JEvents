@@ -17,8 +17,8 @@ function ProcessJsonRequest(&$requestObject, $returnData) {
 
     if (!isset($requestObject->modid) || (int) $requestObject->modid <= 0) {
         PlgSystemGwejson::throwerror("There was an error - no valid module id");
-    }    
-    
+    }
+
     ob_clean();
     ob_start();
     $db = JFactory::getDbo();
@@ -40,9 +40,9 @@ function ProcessJsonRequest(&$requestObject, $returnData) {
             echo $db->getErrorMsg();
             PlgSystemGwejson::throwerror("There was an error - no valid module id 2");
     }
-        
+
     require_once (dirname(__FILE__) . '/' . 'helper.php');
-    
+
     $jevhelper = new modJeventsLatestHelper();
     JEVHelper::loadLanguage('admin');
     $theme = JEV_CommonFunctions::getJEventsViewName();
@@ -61,7 +61,7 @@ function ProcessJsonRequest(&$requestObject, $returnData) {
     $registry->set("jevents.moduleid", $requestObject->modid);
     $registry->set("jevents.moduleparams", $params);
     $registry->set("jevents.fetchlatestevents", 1);
-    
+
     // Set new constraints on dates for pagination!
     //$firstEventDate = JFactory::getApplication()->getUserState("jevents.moduleid".$requestObject->modid.".firstEventDate",false);
     //$lastEventDate = JFactory::getApplication()->getUserState("jevents.moduleid".$requestObject->modid.".lastEventDate",false);
@@ -104,8 +104,8 @@ function ProcessJsonRequest(&$requestObject, $returnData) {
         date_default_timezone_set($timezone);
     }
 
-    $dispatcher = JEventDispatcher::getInstance();
-    $dispatcher->trigger('onJEventsLatestFooter');
+
+    JFactory::getApplication()->triggerEvent('onJEventsLatestFooter');
 
     $returnData->html = ob_get_clean();
     return $returnData;

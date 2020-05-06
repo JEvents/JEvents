@@ -62,12 +62,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 			if (!isset($templates[$template_name]['*'][0]))
 			{
-				try
-				{
+				if (method_exists($view, 'getViewName')) {
 					$viewname = $view->getViewName();
-				}
-				catch (Exception $e)
-				{
+				} else {
 					$viewname = "default";
 				}
 				$templatefile = JPATH_BASE . '/' . 'templates' . '/' . JFactory::getApplication()->getTemplate() . '/' . 'html' . '/' . JEV_COM_COMPONENT . "/$viewname/defaults/$template_name.html";
@@ -314,9 +311,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			static $pluginscalled = array();
 			if (!isset($pluginscalled[$event->rp_id()]))
 			{
-				$dispatcher = JEventDispatcher::getInstance();
+
 				JPluginHelper::importPlugin("jevents");
-				$customresults                  = $dispatcher->trigger('onDisplayCustomFields', array(&$event));
+				$customresults                  = JFactory::getApplication()->triggerEvent('onDisplayCustomFields', array(&$event));
 				$pluginscalled[$event->rp_id()] = $event;
 			}
 			else
@@ -388,7 +385,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			$blank[]       = "";
 			continue;
 		}
-		// Built in fields	
+		// Built in fields
 		switch ($strippedmatch)
 		{
 			case "{{TITLE}}":
@@ -521,8 +518,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				if (!isset($allcat_catids))
 				{
 					$db         = JFactory::getDbo();
-					$arr_catids = array();
-					$catsql     = "SELECT cat.id, cat.title as name, cat.params FROM #__categories  as cat WHERE cat.extension='com_jevents' ";
+					$catsql     = "SELECT cat.id, cat.title AS name, cat.params FROM #__categories AS cat WHERE cat.extension='com_jevents' ";
 					$db->setQuery($catsql);
 					$allcat_catids = $db->loadObjectList('id');
 				}
@@ -542,14 +538,40 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				$blank[]   = "";
 				break;
 
+			case "{{ALLCATEGORIESLUGS}}":
+				$search[] = "{{ALLCATEGORIESLUGS}}";
+
+				if (!isset($allcat_catids))
+				{
+					$db         = JFactory::getDbo();
+					$catsql     = "SELECT cat.id, cat.title AS name, cat.alias AS slug, cat.params FROM #__categories  AS cat WHERE cat.extension='com_jevents' ";
+					$db->setQuery($catsql);
+					$allcat_catids = $db->loadObjectList('id');
+				}
+
+				$db = JFactory::getDbo();
+				$db->setQuery("Select catid from #__jevents_catmap  WHERE evid = " . $event->ev_id());
+				$allcat_eventcats = $db->loadColumn();
+
+				$allcats = array();
+				foreach ($allcat_eventcats as $catid)
+				{
+					if (isset($allcat_catids[$catid]))
+					{
+						$allcats[] = 'jevcat-' . $allcat_catids[$catid]->slug;
+					}
+				}
+				$replace[] = implode(" ", $allcats);
+				$blank[]   = "";
+				break;
+
             case "{{ALLCATEGORIES_CAT_COLOURED}}":
                 $search[] = "{{ALLCATEGORIES_CAT_COLOURED}}";
 
                 if (!isset($allcat_catids))
                 {
                     $db         = JFactory::getDbo();
-                    $arr_catids = array();
-                    $catsql     = "SELECT cat.id, cat.title as name, cat.params FROM #__categories  as cat WHERE cat.extension='com_jevents' ";
+                    $catsql     = "SELECT cat.id, cat.title AS name, cat.params FROM #__categories AS cat WHERE cat.extension='com_jevents' ";
                     $db->setQuery($catsql);
                     $allcat_catids = $db->loadObjectList('id');
                 }
@@ -1579,7 +1601,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					{
 						if (JString::strpos($event->contact_info(), '<script') === false)
 						{
-							$dispatcher = JEventDispatcher::getInstance();
+
 							JPluginHelper::importPlugin('content');
 
 							//Contact
@@ -1596,7 +1618,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 							$tmprow->event = $event;
 							$dispatcher    = JEventDispatcher::getInstance();
 							JPluginHelper::importPlugin('content');
-							$dispatcher->trigger('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
+							JFactory::getApplication()->triggerEvent('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
 							// Make sure each instance is replaced properly
 							// New Joomla code for mail cloak only works once on a page !!!
 							// Random number
@@ -1627,7 +1649,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				//Extra
 				if (JString::strpos($event->extra_info(), '<script') === false && $event->extra_info() != "")
 				{
-					$dispatcher = JEventDispatcher::getInstance();
+
 					JPluginHelper::importPlugin('content');
 
 					$pattern = '[a-zA-Z0-9&?_.,=%\-\/#]';
@@ -1707,7 +1729,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$imgpluginparams = new JRegistry($imgplugin->params);
 
 						$resetparams = false;
-						if ($jevparams->get("sevd_defaultimage", false) && empty($imgpluginparams->get("defaultimage", false)))
+						if ($jevparams->get("sevd_defaultimage", false) && $imgpluginparams->get("defaultimage", '') === '')
 						{
 							$imgpluginparams->set("defaultimage", $jevparams->get("sevd_defaultimage", false));
 							$imgplugin->params = json_encode($imgpluginparams);
@@ -2024,7 +2046,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	$tmprow->event  = $event;
 	$dispatcher     = JEventDispatcher::getInstance();
 	JPluginHelper::importPlugin('content');
-	$dispatcher->trigger('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
+	JFactory::getApplication()->triggerEvent('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
 
 	$template_value = $tmprow->text;
 	$template_value = str_replace("@£@", "@", $template_value);

@@ -35,7 +35,7 @@ class ICalEventController extends AdminIcaleventController   {
 
 		// Do we have to be logged in to see this event
 		$user = JFactory::getUser();
-		
+
 		$cfg	 = JEVConfig::getInstance();
 		$joomlaconf = JFactory::getConfig();
 		$useCache = intval($cfg->get('com_cache', 0)) && $joomlaconf->get('caching', 1);
@@ -91,8 +91,8 @@ class ICalEventController extends AdminIcaleventController   {
 
 		$view = "icalevent";
 
-		$dispatcher = JEventDispatcher::getInstance();
-		$dispatcher->trigger('onBeforeLoadView', array($view, $theme, $viewType, 'icalrepeat.detail', $useCache));
+
+		JFactory::getApplication()->triggerEvent('onBeforeLoadView', array($view, $theme, $viewType, 'icalrepeat.detail', $useCache));
 
 		$this->addViewPath($this->_basePath.'/'."views".'/'.$theme);
 		$this->view = $this->getView($view,$viewType, $theme."View",
@@ -132,7 +132,7 @@ class ICalEventController extends AdminIcaleventController   {
 		// We check specific event editing permissions in the parent class
 		$is_event_creator = JEVHelper::isEventCreator();
 		$is_event_editor = JEVHelper::isEventEditor();
-		
+
 		$user = JFactory::getUser();
 		if ((!$is_event_creator && !$is_event_editor) || ($user->id==0 && JRequest::getInt("evid",0)>0)){
 			if ($user->id){
@@ -198,8 +198,8 @@ class ICalEventController extends AdminIcaleventController   {
 
 	public function edit_cancel() {
 		$session = JFactory::getSession();
-                $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
--               $fallback = $params->get("editreturnto", "day.listevents");
+         $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+        $fallback = $params->get("editreturnto", "day.listevents");
 		$ref = $session->get('jev_referrer',$fallback, 'extref');
 
 		$this->setRedirect($ref);

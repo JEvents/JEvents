@@ -9,12 +9,12 @@ if (isset($moddata))
 		$mode = 0;
 		foreach ($moddata as $md){
                     	JPluginHelper::importPlugin('content');
-                        $dispatcher = JEventDispatcher::getInstance();
+                        
 
                         $eventdata = new stdClass();
 			$eventdata->text = $md;
                         $params = new JRegistry(null);
-			$results = $dispatcher->trigger('onContentPrepare', array('com_jevents', & $eventdata, & $params, 0));
+			$results = JFactory::getApplication()->triggerEvent('onContentPrepare', array('com_jevents', & $eventdata, & $params, 0));
                         $md = $eventdata->text;
                         
 			echo "<div class='jevmodrowcount$count jevmodrow$mode' >".$md."</div>";

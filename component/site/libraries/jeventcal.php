@@ -123,18 +123,18 @@ class jEventCal {
 	function color_bar() { return $this->_color_bar; }
 	function catid() { return $this->_catid; }
 	function created_by() { return $this->_created_by; }
-	function created_by_alias() { 
+	function created_by_alias() {
             if ($this->_created_by_alias != ""){
-                return $this->_created_by_alias; 
+                return $this->_created_by_alias;
             }
             else {
                 $creator = JEVHelper::getUser($this->_created_by);
                 return $creator->name;
-            }            
+            }
         }
 	function created() { return $this->_created; }
 	function modified() { return $this->_modified; }
-	
+
 	function formattedCreationDate() { return $this->_created; }
 	function formattedModifyDate() { return $this->_modified; }
 
@@ -177,8 +177,8 @@ class jEventCal {
 		}
 		return "";
 	}
-	
-	
+
+
 	function location($val="") {
 		return $this->getOrSet("adresse_info",$val);
 	}
@@ -190,10 +190,10 @@ class jEventCal {
 		return $this->getOrSet(__FUNCTION__,$val);
 	}
 
-	public function lockevent() { 
+	public function lockevent() {
 		return $this->_lockevent;
 	}
-	
+
 	function yup() { return $this->_yup; }
 	function mup() { return $this->_mup; }
 	function dup() { return $this->_dup; }
@@ -270,7 +270,7 @@ class jEventCal {
                 }
                 else {
                     // verdsino 3.6.1. experimented with some problematic code but then reversed it!
-                    return  preg_replace_callback('/id="cloak([a-f0-9]+)"/i', 
+                    return  preg_replace_callback('/id="cloak([a-f0-9]+)"/i',
                         function ($matches){
                             $oldrand = $matches[1];
                             // Joomla 3.6.1 changed this YET again!
@@ -290,7 +290,7 @@ class jEventCal {
                             //if (strpos(JFactory, $oldrand))
                             $return = 'id="cloak'.$rand.'" class="cloak'.$oldrand.'" ';
                             return $return;
-                        }, 
+                        },
                         $this->_contactLink);
                 }
 
@@ -338,7 +338,7 @@ class jEventCal {
 			$catsql = "SELECT cat.id, cat.title as name, pcat.title as pname, cat.description, cat.params  FROM #__categories  as cat LEFT JOIN #__categories as pcat on pcat.id=cat.parent_id WHERE cat.extension='com_jevents' ORDER BY cat.lft" ;
 			$db->setQuery($catsql);
 			 $arr_catids = $db->loadObjectList('id') ;
-			
+
 		}
 		$catids = $this->catids();
 		if($catids && is_array($catids)){
@@ -355,10 +355,10 @@ class jEventCal {
 			return $arr_catids[$catid];
 		}
 		return false;
-		
+
 	}
-	
-	function getParentCategory( ){		
+
+	function getParentCategory( ){
 		$data = $this->getCategoryData();
 		if (is_array($data)){
 			$res = array();
@@ -416,7 +416,7 @@ class jEventCal {
 				return $output;
 			}
 		}
-		
+
 		if ($data){
         		if (!is_array($data)) {
                             $params = json_decode($data->params);
@@ -432,12 +432,12 @@ class jEventCal {
 						return JURI::root().$params->image;
 					}
 				}
-                                return "";                            
+                                return "";
                         }
 		}
 		return "";
 	}
-	
+
 	function getCategoryDescription( ){
 		$data = $this->getCategoryData();
 		if (is_array($data)) {
@@ -448,8 +448,8 @@ class jEventCal {
 		}
 		return "";
 	}
-	
-	function getCategoryName( ){		
+
+	function getCategoryName( ){
 		$data = $this->getCategoryData();
 		if (is_array($data)){
 			$res = array();
@@ -463,7 +463,7 @@ class jEventCal {
 		}
 		return "";
 	}
-	
+
 	function checkRepeatMonth($cellDate, $year,$month){
 		// SHOULD REALLY INDEX ON month/year incase more than one being displayed!
 
@@ -809,19 +809,19 @@ class jEventCal {
 	function canUserEdit(){
 		$is_event_creator = JEVHelper::isEventCreator();
 		$user = JFactory::getUser();
-		
+
 		// are we authorised to do anything with this category or calendar
 		$jevuser = JEVHelper::getAuthorisedUser();
 		if ($this->_icsid>0 && $jevuser && $jevuser->calendars!="" && $jevuser->calendars!="all"){
 			$allowedcals = explode("|",$jevuser->calendars);
 			if (!in_array($this->_icsid,$allowedcals)) return false;
 		}
-		
+
 		if ($this->_catid>0 && $jevuser && $jevuser->categories!="" && $jevuser->categories!="all"){
 			$allowedcats = explode("|",$jevuser->categories);
 			if (!in_array($this->_catid,$allowedcats)) return false;
 		}
-		
+
 		// if can create events and this was created by this user then can edit (not valid for anon users)
 		if ($is_event_creator && $this->isEditable() &&  $this->created_by() == $user->id && $user->id>0){
 			return true;
@@ -974,7 +974,7 @@ class jEventCal {
 		}
 		return false;
 	}
-	
+
 	function __get($field) {
 		$underscorefield = "_".$field;
 		if (isset($this->$underscorefield)) return $this->$underscorefield;
@@ -982,9 +982,9 @@ class jEventCal {
                     if (strpos($field, "_")===0){
                         ob_start();
                         $name = substr($field,1);
-                        $dispatcher	= JEventDispatcher::getInstance();
+
                         $available = false;
-                        $dispatcher->trigger( 'onJeventsGetter', array( &$this, $name, &$available) );
+                        JFactory::getApplication()->triggerEvent( 'onJeventsGetter', array( &$this, $name, &$available) );
                         $value = ob_get_clean();
                         if ($available){
                             return $value;
@@ -993,7 +993,7 @@ class jEventCal {
                             return null;
                         }
                     }
-		}		
+		}
 	}
 
 

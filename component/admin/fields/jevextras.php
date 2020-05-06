@@ -52,11 +52,11 @@ class JFormFieldJevextras extends JFormField
 	{
 
 		// load any custom fields
-		$dispatcher = JEventDispatcher::getInstance();
+
 		JPluginHelper::importPlugin("jevents");
 		$id = $this->id;
 		if (version_compare(JVERSION, '3.3.0', '<')){
-			$res = $dispatcher->trigger('onEditMenuItem', array(&$this->data, &$this->value, $this->type, $this->name, $this->id, $this->form));
+			$res = JFactory::getApplication()->triggerEvent('onEditMenuItem', array(&$this->data, &$this->value, $this->type, $this->name, $this->id, $this->form));
 		}
 		if (isset($this->data[$id]))
 		{
@@ -76,12 +76,12 @@ class JFormFieldJevextras extends JFormField
 			function getInput()
 	{
 		// load any custom fields
-		$dispatcher = JEventDispatcher::getInstance();
+
 		JPluginHelper::importPlugin("jevents");
 		$id = $this->id;
 
 		if (version_compare(JVERSION, '3.3.0', '>=')){
-			$res = $dispatcher->trigger('onEditMenuItem', array(&$this->data, &$this->value, $this->type, $this->name, $this->id, $this->form));
+			$res = JFactory::getApplication()->triggerEvent('onEditMenuItem', array(&$this->data, &$this->value, $this->type, $this->name, $this->id, $this->form));
 		}
 
 		JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
@@ -110,10 +110,10 @@ class JFormFieldJevextras extends JFormField
 		return true;
 
 		// load any custom fields
-		$dispatcher = JEventDispatcher::getInstance();
+
 		JPluginHelper::importPlugin("jevents");
 		$id = intval(str_replace("extras", "", $this->name));
-		$res = $dispatcher->trigger('onEditMenuItem', array(&$this->data, &$this->value, $this->type, $this->name, $this->id, $this->form));
+		$res = JFactory::getApplication()->triggerEvent('onEditMenuItem', array(&$this->data, &$this->value, $this->type, $this->name, $this->id, $this->form));
 
 		return true;
 

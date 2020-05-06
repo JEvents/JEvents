@@ -24,33 +24,33 @@ include_once(JEV_ADMINPATH."/views/icalrepeat/view.html.php");
 class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 {
 	var $jevlayout = null;
-	
+
 	function __construct($config = array()){
 		parent::__construct($config);
-		
+
 		// used only for helper functions
-		$this->jevlayout="default";	
-		$this->addHelperPath(realpath(dirname(__FILE__)."/../default/helpers"));		
-		$this->addHelperPath( JPATH_BASE.'/'.'templates'.'/'.JFactory::getApplication()->getTemplate().'/'.'html'.'/'.JEV_COM_COMPONENT.'/'."helpers");		
-	}	
-	
+		$this->jevlayout="default";
+		$this->addHelperPath(realpath(dirname(__FILE__)."/../default/helpers"));
+		$this->addHelperPath( JPATH_BASE.'/'.'templates'.'/'.JFactory::getApplication()->getTemplate().'/'.'html'.'/'.JEV_COM_COMPONENT.'/'."helpers");
+	}
+
 	function edit($tpl = null)
 	{
 		$document = JFactory::getDocument();
 		// Set editstrings var just incase and to avoid IDE reporting not set.
 		$editStrings = "";
-		include(JEV_ADMINLIBS."/editStrings.php");		
+		include(JEV_ADMINLIBS."/editStrings.php");
 		$document->addScriptDeclaration($editStrings);
 
-		JEVHelper::script('editicalJQ.js',  'components/'.JEV_COM_COMPONENT.'/assets/js/');  
+		JEVHelper::script('editicalJQ.js',  'components/'.JEV_COM_COMPONENT.'/assets/js/');
 		JEVHelper::script('view_detailJQ.js', 'components/'.JEV_COM_COMPONENT.'/assets/js/');
                   JEVHelper::script('JevStdRequiredFieldsJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
-		
+
 		$document->setTitle(JText::_( 'EDIT_ICAL_REPEAT' ));
-		
+
 		// Set toolbar items for the page
 		JToolbarHelper::title( JText::_( 'EDIT_ICAL_REPEAT' ), 'jevents' );
-	
+
 		$bar =  JToolBar::getInstance('toolbar');
 		if (JEVHelper::isEventEditor()) {
 			JToolbarHelper::apply('icalrepeat.apply', "JEV_SAVE");
@@ -68,15 +68,15 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 		{
 			$this->toolbarButton("icalevent.detail", 'cancel', 'cancel', 'JEV_SUBMITCANCEL', false);
 		}
-		
+
 		//JToolbarHelper::help( 'screen.icalrepeat.edit', true);
-	
+
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
 		JHTML::_('behavior.tooltip');
 
-		
-		$this->_adminStart();		
+
+		$this->_adminStart();
 
 		// load Joomla javascript classes
 		JHTML::_('behavior.core');
@@ -96,15 +96,15 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 
 		parent::displaytemplate($tpl);
 		$this->_adminEnd();
-	}	
-	
+	}
+
 	function _adminStart(){
-		
-		$dispatcher	= JEventDispatcher::getInstance();
+
+
 		list($this->year,$this->month,$this->day) = JEVHelper::getYMD();
 		$this->Itemid	= JEVHelper::getItemid();
 		$this->datamodel =new JEventsDataModel();
-		$dispatcher->trigger( 'onJEventsHeader', array($this));
+		JFactory::getApplication()->triggerEvent( 'onJEventsHeader', array($this));
 
 ?>
 	<div style="clear:both"
@@ -120,7 +120,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 		//$barhtml = str_replace('href="#"','href="javascript void();"',$barhtml);
 		//$barhtml = str_replace('submitbutton','return submitbutton',$barhtml);
 		echo $barhtml;
-		
+
 		if (JevJoomlaVersion::isCompatible("3.0"))
 		{
 			// JFactory::getApplication()->JComponentTitle;
@@ -133,9 +133,9 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 		echo $title;
 ?>
 		</div>
-<?php		
-		$dispatcher	= JEventDispatcher::getInstance();
-		$dispatcher->trigger( 'onJEventsFooter', array($this));
+<?php
+
+		JFactory::getApplication()->triggerEvent( 'onJEventsFooter', array($this));
 
 
 	}
@@ -143,11 +143,11 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 	function _adminEnd(){
 ?>
 	</div>
-<?php			
+<?php
 	}
-	
+
 	function _xadminStart(){
-		
+
 ?>
 	<div id="content-box" style="clear:both">
 		<div class="border">
@@ -165,7 +165,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 		//$barhtml = str_replace('href="#"','href="javascript void();"',$barhtml);
 		//$barhtml = str_replace('submitbutton','return submitbutton',$barhtml);
 		echo $barhtml;
-		
+
 		$title = JFactory::getApplication()->get('JComponentTitle');
 		echo $title;
 ?>
@@ -173,7 +173,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 					</div>
 					<div class="b">
 						<div class="b">
-							<div class="b"></div>	
+							<div class="b"></div>
 						</div>
 					</div>
   				</div>
@@ -184,7 +184,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 						</div>
 					</div>
 					<div class="m">
-<?php			
+<?php
 	}
 
 	function _xadminEnd(){
@@ -193,14 +193,14 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 					</div>
 					<div class="b">
 						<div class="b">
-							<div class="b"></div>	
+							<div class="b"></div>
 						</div>
 					</div>
   				</div>
 			</div>
 		</div>
 	</div>
-<?php			
+<?php
 	}
 
 	// This handles all methods where the view is passed as the first argument
@@ -220,7 +220,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 			if (class_exists("ReflectionClass") ){
 				$reflectionObj = new ReflectionClass($helper);
 				if (method_exists($reflectionObj,"newInstanceArgs")){
-					$var = $reflectionObj->newInstanceArgs($arguments);	
+					$var = $reflectionObj->newInstanceArgs($arguments);
 				}
 				else {
 					$var = $this->CreateClass($helper,$arguments);
@@ -235,8 +235,8 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 			return call_user_func_array($helper,$arguments);
 		}
 	}
-	
-	
+
+
 	function toolbarButton($task = '', $icon = '', $iconOver = '', $alt = '', $listSelect = true)
 	{
 		$bar =  JToolBar::getInstance('toolbar');
@@ -254,7 +254,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 		$bar->appendButton('Jevlink', $icon, $alt, $task, false);
 
 	}
-	
+
 	protected function CreateClass($className, $params) {
 		switch (count($params)) {
 			case 0:
@@ -300,7 +300,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 	function loadHelper( $file = null)
 	{
 		if (function_exists($file) || class_exists($file)) return true;
-		
+
 		// load the template script
 		jimport('joomla.filesystem.path');
 		$helper = JPath::find($this->_path['helper'], $this->_createFileName('helper', array('name' => $file)));

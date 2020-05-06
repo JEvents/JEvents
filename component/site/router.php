@@ -76,8 +76,8 @@ function JEventsBuildRoute(&$query)
 	}
 
 	JPluginHelper::importPlugin("jevents");
-	$dispatcher	= JEventDispatcher::getInstance();
-	$dispatcher->trigger( 'onJEventsRoute');
+
+	JFactory::getApplication()->triggerEvent( 'onJEventsRoute');
 
 	// Translatable URLs
 	if ($params->get("newsef", 1))
@@ -381,7 +381,7 @@ function JEventsParseRoute($segments)
 	//Get the active menu item
 	$menu =  JFactory::getApplication()->getMenu();
 	$item = $menu->getActive();
-        
+
 	// Count route segments
 	$count = count($segments);
 
@@ -561,7 +561,7 @@ function JEventsBuildRouteNew(&$query, $task)
 
 	$params = JComponentHelper::getParams("com_jevents");
 	$noeventdetailinurl = $params->get("noeventdetailinurl", 0);
-	
+
 	// get a menu item based on Itemid or currently active
 	$app		= JFactory::getApplication();
 	$menu		= $app->getMenu();
