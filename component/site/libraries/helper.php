@@ -513,7 +513,7 @@ class JEVHelper
 	{
 		$cid = is_null($cid) ? array() : $cid;
 
-		$cid = ArrayHelper::toInteger();
+		$cid = ArrayHelper::toInteger($cid);
 
 		if ($asString)
 		{
