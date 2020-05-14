@@ -608,7 +608,7 @@ class JEVHelper
 	}
 
 	public static
-	function forceIntegerArray($cid, $asString = true)
+	function forceIntegerArray($cid = null, $asString = true)
 	{
 
 		$cid = is_null($cid) ? array() : $cid;
