@@ -91,10 +91,11 @@ class JEV_CommonFunctions {
 			$db->setQuery( $sql);
 			$cats = $db->loadObjectList('id');
 			foreach ($cats as &$cat){
-				$cat->name = $cat->title;
-				$params = new JRegistry($cat->params);
-				$cat->color = $params->get("catcolour","");
-				$cat->overlaps = $params->get("overlaps",0);
+				$cat->name		= $cat->title;
+				$cat->alias		= $cat->alias;
+				$params			= new JRegistry($cat->params);
+				$cat->color 	= $params->get("catcolour","");
+				$cat->overlaps 	= $params->get("overlaps",0);
 			}
 			unset ($cat);
 

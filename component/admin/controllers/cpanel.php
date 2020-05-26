@@ -30,34 +30,34 @@ class AdminCpanelController extends JControllerAdmin
 
 	function cpanel()
 	{
-		
+
 		$db = JFactory::getDbo();
-                
+
                 // Enable Jevents Installer Plugin
                // $query = "UPDATE #__extensions SET enabled=1 WHERE folder='installer' and type='plugin' and element='jeventsinstaller'";
                // $db->setQuery($query);
                // $db->execute();
-            
+
                 // Make sure RSVP Pro and RSVP are not both enabled
                 $rsvpplugin = JPluginHelper::isEnabled("jevents", "jevrsvp");
                 $rsvpproplugin = JPluginHelper::isEnabled("jevents", "jevrsvppro");
                 if ($rsvpproplugin && $rsvpplugin) {
                     JFactory::getApplication()->enqueueMessage(JText::_("JEV_INSTALLED_RSVP_AND_RSVPPRO_INCOMPATIBLE"), "ERROR");
                 }
-                
+
 		// Add one category by default if none exist already
 		$sql = "SELECT id from #__categories where extension='com_jevents'";
 		$db->setQuery($sql);
 		$catid = $db->loadResult();
-		
+
 		if (!$catid) {
 			JLoader::register('JEventsCategory',JEV_ADMINPATH."/libraries/categoryClass.php");
 			$cat = new JEventsCategory($db);
-			$cat->bind(array("title"=>JText::_( 'DEFAULT' ), "published"=>1, "color"=>"#CCCCFF", "access"=>1));
+			$cat->bind(array("title"=>JText::_( 'DEFAULT' ), "alias" => "default", "published"=>1, "color"=>"#CCCCFF", "access"=>1));
 			$cat->store();
 			$catid=$cat->id;
 		}
-		
+
 		// Add one native calendar by default if none exist already
 		$sql = "SELECT ics_id from #__jevents_icsfile WHERE icaltype=2";
 		$db->setQuery($sql);
@@ -70,13 +70,13 @@ class AdminCpanelController extends JControllerAdmin
 			$db->execute();
 			echo $db->getErrorMsg();
 		}
-		
+
 		if (false && file_exists(JEV_ADMINPATH."install.php")){
 			include_once(JEV_ADMINPATH."install.php");
 			$installer = new com_jeventsInstallerScript();
 			$installer->update(false);
 		}
-		
+
 		// are config values setup correctyl
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$jevadmin = $params->get("jevadmin", -1);
@@ -102,7 +102,7 @@ class AdminCpanelController extends JControllerAdmin
 		}
 
 		$this->mergeMenus();
-				
+
 		// get the view
 		$this->view = $this->getView("cpanel", "html");
 		$sql = 'SHOW TABLES LIKE "' . $db->getPrefix() . 'events"';
@@ -117,7 +117,7 @@ class AdminCpanelController extends JControllerAdmin
 			$this->view->assign('migrated', 0);
 		}
 			$this->checkCategoryAssets();
-		
+
 
 		// get all the raw native calendars
 		$this->dataModel = new JEventsDataModel("JEventsAdminDBModel");
@@ -144,12 +144,12 @@ class AdminCpanelController extends JControllerAdmin
 		$this->view->display();
 
 	}
-	
+
 	function support()
 	{
 		//Get the view
 		$this->view = $this->getView("cpanel", "html");
-		
+
 		// Set the layout
 		$this->view->setLayout('support');
 		$this->view->assign('title', JText::_('CONTROL_PANEL'));
@@ -351,7 +351,7 @@ class AdminCpanelController extends JControllerAdmin
 						{
 							if ($generatedrepetition->startrepeat == $exception->startrepeat)
 							{
-								
+
 							}
 						}
 					}
@@ -448,7 +448,7 @@ class AdminCpanelController extends JControllerAdmin
 						}
 					}
 				}
-				
+
 				if($oldPackage)
 				{
 					if (JText::_("JEV_UPDATE_LANGUAGE_PACKAGE")=="JEV_UPDATE_LANGUAGE_PACKAGE")
@@ -461,7 +461,7 @@ class AdminCpanelController extends JControllerAdmin
 					}
 					JError::raiseNotice("100", $updateLanguagePackMessage);
 				}
-			}			
+			}
 		}
 	}
 
@@ -496,28 +496,28 @@ class AdminCpanelController extends JControllerAdmin
 		if ($object->parent_id==1)
 		{
 			$table->parent_id = $rootasset->id;
-			// Check for logic 
+			// Check for logic
 			/*
 			$db->setQuery("SELECT * FROM #__assets WHERE name = 'com_jevents.category." . $object->id . "'");
 			$asset = $db->loadObject();
 			echo $asset->name." ".$asset->parent_id . " vs ".$table->name . " ".$table->parent_id . "<br/>";
-			 * 
-			 */	 
+			 *
+			 */
 		}
 		else if (array_key_exists($object->parent_id, $categories) && $categories[$object->parent_id]->asset_id > 0)
 		{
 			$table->parent_id = $categories[$object->parent_id]->asset_id;
-			// Check for logic 
+			// Check for logic
 			/*
 			$db->setQuery("SELECT * FROM #__assets WHERE name = 'com_jevents.category." . $object->id . "'");
 			$asset = $db->loadObject();
 			echo $asset->name." ".$asset->parent_id . " vs ".$table->name . " ".$table->parent_id . "<br/>";
-			 * 
+			 *
 			 */
 		}
-		
+
 		// Make sure this asset doesn't exist already
-		$db->setQuery("SELECT * FROM #__assets WHERE name = ".$db->quote($table->name));		
+		$db->setQuery("SELECT * FROM #__assets WHERE name = ".$db->quote($table->name));
 		$asset = $db->loadObject();
 		if (!$asset){
 			// Insert the asset
@@ -553,19 +553,19 @@ class AdminCpanelController extends JControllerAdmin
 		// merge/unmerge menu items?
 		// Joomla 2.5 version
 		$sql = 'select id from #__menu where client_id=1 and parent_id=1 and (title="com_jevents" OR title="COM_JEVENTS_MENU")';
-		$db->setQuery($sql);			
+		$db->setQuery($sql);
 		$parent = $db->loadResult();
 
 		$tochange = 'LOWER(title)="com_jevlocations"  OR LOWER(title)="com_jeventstags"  OR LOWER(title)="com_jevpeople"  OR LOWER(title)="com_rsvppro" OR LOWER(title)="com_jevlocations_menu"  OR LOWER(title)="com_jeventstags_menu"  OR LOWER(title)="com_jevpeople_menu"  OR LOWER(title)="com_rsvppro_menu" OR LOWER(alias)="jevents-tags"  ';
 		$toexist = ' link="index.php?option=com_jevlocations"  OR link="index.php?option=com_jeventstags"  OR link="index.php?option=com_jevpeople"  OR link="index.php?option=com_rsvppro" ';
-			
+
 		// is this an upgrade of JEvents in which case we may have lost the submenu items and may need to recreate them
 		$sql = 'SELECT id, title, alias, link FROM #__menu where client_id=1 AND (
 		'.$toexist.'
 		)';
 		// order by parent id to remove the appropriate duplicate - list the ones we want to keep first
 		$sql .= ' ORDER BY parent_id '.($params->get("mergemenus", 1) ? 'desc':'asc');
-		$db->setQuery($sql);			
+		$db->setQuery($sql);
 		$existingmenus =  $db->loadObjectList();
 
 		if (!$existingmenus) {
@@ -574,11 +574,11 @@ class AdminCpanelController extends JControllerAdmin
 
 		// are there any duplicates
 		$links = array();
-		$updatemenus = false;			
+		$updatemenus = false;
 		foreach ($existingmenus as $em){
 			if (array_key_exists($em->link, $links)){
 				$sql = "DELETE FROM #__menu where client_id and id=$em->id OR parent_id=$em->id";
-				$db->setQuery($sql);			
+				$db->setQuery($sql);
 				$db->execute();
 				$updatemenus = true;
 			}
@@ -592,13 +592,13 @@ class AdminCpanelController extends JControllerAdmin
 			$menu = JTable::getInstance('Menu');
 			$menu->rebuild();
 		}
-			
+
 		// find list of installed addons
 		$installed = 'element="com_jevlocations"  OR element="com_jeventstags"  OR element="com_jevpeople"  OR element="com_rsvppro" ';
 		$sql = 'SELECT element,extension_id FROM #__extensions  where type="component" AND (
 		'.$installed.'
 		)';
-		$db->setQuery($sql);			
+		$db->setQuery($sql);
 		$installed  =  $db->loadObjectList();
 
 		foreach ($installed as $missingmenu){
@@ -623,7 +623,7 @@ class AdminCpanelController extends JControllerAdmin
 			$table->checked_out_time = $db->getNullDate();
 			$table->setLocation(1, "last-child");
 			$table->store();
-			}					
+			}
 
 		// Fix Tags menu item title if needed
 		$sql = 'UPDATE  #__menu
@@ -647,29 +647,29 @@ class AdminCpanelController extends JControllerAdmin
 			return;
 		}
 
-		$updatemenus = false;			
+		$updatemenus = false;
 		if ($params->get("mergemenus", 1)){
-											
-			$sql = 'SELECT count(id) FROM #__menu 
+
+			$sql = 'SELECT count(id) FROM #__menu
 			where client_id=1 AND parent_id=1 AND (
 				'.$tochange.'
 			)';
-			$db->setQuery($sql);			
+			$db->setQuery($sql);
 			$mus = $db->loadResult();
 			if ($mus){
 				// check to see if we are creating a duplicate from an upgrade of an addon!
-				$sql = 'SELECT * FROM #__menu 
+				$sql = 'SELECT * FROM #__menu
 				where client_id=1 AND parent_id=1 AND (
 					'.$tochange.'
 				)';
-				$db->setQuery($sql);			
+				$db->setQuery($sql);
 				$tomerge = $db->loadObjectList();
 
 	                           $sql = 'SELECT * FROM #__menu
 				where client_id=1 AND parent_id='.$parent.'  AND (
 					'.$tochange.'
 				)';
-				$db->setQuery($sql);			
+				$db->setQuery($sql);
 				$alreadymerged = $db->loadObjectList();
 
 				if ($alreadymerged){
@@ -678,51 +678,51 @@ class AdminCpanelController extends JControllerAdmin
 							if ($merged->alias == $checkitem->alias && $merged->link == $checkitem->link){
 								// remove duplicates
 								$sql = "DELETE FROM #__menu  where id=$checkitem->id";
-								$db->setQuery($sql);			
+								$db->setQuery($sql);
 								$db->execute();
 							}
 						}
 					}
 				}
 				$updatemenus = true;
-				
-				$sql = 'UPDATE  #__menu 
+
+				$sql = 'UPDATE  #__menu
 				set parent_id = '.$parent.'
 				where client_id=1 AND parent_id=1 AND (
 				'.$tochange.'
 				)';
-				$db->setQuery($sql);			
+				$db->setQuery($sql);
 				$db->execute();
 				echo $db->getErrorMsg();
 			}
 		}
 		else {
-			$sql = 'SELECT count(id) FROM #__menu 
+			$sql = 'SELECT count(id) FROM #__menu
 			where client_id=1 AND parent_id='.$parent.' AND (
 			'.$tochange.'
 			)';
-			$db->setQuery($sql);			
+			$db->setQuery($sql);
 			$mus = $db->loadResult();
 			if ($mus){
         			$updatemenus = true;
 				// Joomla 2.5 version
-					$sql = 'UPDATE  #__menu 
+					$sql = 'UPDATE  #__menu
 					set parent_id = 1
 					where client_id=1 AND parent_id='.$parent.' AND (
 					'.$tochange.'
 					)';
-					$db->setQuery($sql);			
+					$db->setQuery($sql);
 					$db->execute();
-					echo $db->getErrorMsg();				
+					echo $db->getErrorMsg();
 				}
 			}
-			
+
 			if ($updatemenus) {
 				JLoader::register('JTableMenu', JPATH_PLATFORM . '/joomla/database/table/menu.php');
 				// rebuild the menus
 				$menu = JTable::getInstance('Menu');
 				$menu->rebuild();
-			}		
+			}
 	}
 
 	public function fixcollations(){
@@ -803,13 +803,13 @@ WHERE cat.id is null
 		if ($multicategory) {
 
 			// Start by removing orphans from the category mapping table itself
-			$sql = "DELETE FROM #__jevents_catmap 
+			$sql = "DELETE FROM #__jevents_catmap
 			WHERE evid NOT IN (SELECT ev_id FROM #__jevents_vevent)";
 			$db->setQuery($sql);
 			$db->execute();
 
 			// Do the bad category Ids first
-			$sql = "SELECT catmap.* FROM #__jevents_catmap as catmap 
+			$sql = "SELECT catmap.* FROM #__jevents_catmap as catmap
 	LEFT JOIN #__categories as cat on cat.id=catmap.catid AND extension='com_jevents'
 	WHERE cat.id is null	";
 			$db->setQuery($sql);
