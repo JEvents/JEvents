@@ -440,8 +440,8 @@ function setEndDateWhenNotRepeating(elem){
     defaultEndDate = endDate.dateFromYMD(end_date.defaultValue);
 
 	/** If the end date is not visible then always set the end date to match the start date **/
-	enddate_container = jQuery('.jevenddate');
-	if (enddate_container.css("display")=="none"){
+	enddate_container = document.querySelector('.jevenddate');
+	if (enddate_container.style.display == "none"){
 		end_date.value = start_date.value;
 	}
 
@@ -534,7 +534,7 @@ function toggleAllDayEvent()
 		sam.disabled=true;
 		spm.disabled=true;
 
-		jQuery('.jevstarttime').css('display','none');
+		document.querySelector('.jevstarttime').style.display = 'none';
 
 		var sd = temp.getYMD();
 		temp = temp.dateFromYMD(enddate.value);
@@ -552,8 +552,8 @@ function toggleAllDayEvent()
 			eam.disabled=true;
 			epm.disabled=true;
 
-			jQuery('.jevendtime').css('display','none');
-            jQuery('.jevnoeendtime').css('display', 'none');
+			document.querySelector('.jevendtime').style.display = 'none';
+			document.querySelector('.jevnoeendtime').style.display = 'none';
 
 		}
 	}
@@ -570,7 +570,7 @@ function toggleAllDayEvent()
 		sam.disabled=false;
 		spm.disabled=false;
 
-		jQuery('.jevstarttime').css('display','inline-block');
+		document.querySelector('.jevstarttime').style.display = 'inline-block';
 
 		if (!noendchecked){
 			hide_end.disabled=false;
@@ -589,8 +589,8 @@ function toggleAllDayEvent()
 			eam.disabled=false;
 			epm.disabled=false;
 
-			jQuery('.jevendtime').css('display','inline-block');
-			jQuery('.jevnoeendtime').css('display','inline-block');
+			document.querySelector('.jevendtime').style.display = 'inline-block';
+			document.querySelector('.jevnoeendtime').style.display = 'inline-block';
 
 		}
 		else {
@@ -646,7 +646,7 @@ function toggleNoEndTime(){
 		eam.disabled=true;
 		epm.disabled=true;
 
-		jQuery('.jevendtime').css('display','none');
+		document.querySelector('.jevendtime').style.display = 'none';
 
 		checkTime(endtime);
 	}
@@ -660,7 +660,7 @@ function toggleNoEndTime(){
 		eam.disabled=false;
 		epm.disabled=false;
 
-		jQuery('.jevendtime').css('display','inline-block');
+		document.querySelector('.jevendtime').style.display = 'inline-block';
 
 	}
 
@@ -818,10 +818,10 @@ function toggleFreq(freq , setup)
 				byday.style.display="block";
 				document.getElementById('jevbd').checked="checked";
 				// needed for after switching to month repeat and then toi wekely
-				jQuery("#jevbd").closest('fieldset').css("background-color","#ffffff");
-				jQuery("#jevbd").parent().css("background-color","#ffffff");
-				jQuery("#byday").css("background-color","#ffffff");
-				jQuery("#jevbd").closest('fieldset').css("opacity","1");
+				document.getElementById("jevbd").closest('fieldset').style.backgroundColor = "#ffffff";
+				document.getElementById("jevbd").parentNode.style.backgroundColor = "#ffffff";
+				document.getElementById("byday").style.backgroundColor = "#ffffff";
+				document.getElementById("jevbd").closest('fieldset').style.opacity = 1;
 
 				//toggleWhichBy("byday");
 				weekofmonth.style.display="none";
@@ -928,11 +928,11 @@ function fixRepeatDates(checkYearDay){
 	// variable bd is reserved in MSIE 8 ?
 	var bd = document.adminForm["weekdays[]"];
 	for(var day=0;day<bd.length;day++){
-		if (parseInt(jQuery("#evid").val())==0) {
+		if (parseInt(document.getElementById('evid').value)==0) {
 			bd[day].checked=false;
 		}
 	}
-	bd[startDate.getDay()].checked=true;
+	document.getElementById('cb_wd' + startDate.getDay()).checked=true;
 
 	end_date = document.getElementById("publish_down");
 	endDate = new Date();
@@ -989,12 +989,12 @@ function updateRepeatWarning(){
 
 function toggleWeeknumDirection () {
     if (jevjq('#weekofmonth input[name="bd_direction"]').attr('checked')){
-        jevjq('.weeknameforward').css('display','none');
-        jevjq('.weeknameback').css('display','inline');
+        jevjq('.weeknameforward').style.display = 'none';
+        jevjq('.weeknameback').style.display = 'inline';
     }
     else {
-        jevjq('.weeknameforward').css('display','inline');
-        jevjq('.weeknameback').css('display','none');
+        jevjq('.weeknameforward').style.display = 'inline';
+        jevjq('.weeknameback').style.display = 'inline';
     }
 }
 
@@ -1202,11 +1202,11 @@ function selectIrregularDate() {
 }
 
 // Set up multi-catid sorting
-jevjq(document).on('ready', function() {
-	var catids = jQuery('.jevcategory select[name="catid[]"]');
-	if(catids.length){
+window.addEventListener('load', function() {
+	var catids = document.querySelector('.jevcategory select[name="catid[]"]') || document.querySelector('.jevcategory select[name="catid"]');
+	if(catids){
 		var sortable = document.querySelector('.jevcategory #catid_chzn .chzn-choices');
-		if (sortable.length)
+		if (sortable)
 		{
 			sortable.setAttribute('data-sortable',
 				Sortable.create(sortable, {
@@ -1215,34 +1215,36 @@ jevjq(document).on('ready', function() {
 			);
 		}
 	}
-    catids.on('change', reorderCategorySelections);
+    catids.addEventListener('change', reorderCategorySelections);
 });
 
 function reorderCategorySelections()
 {
     // Make sure we fetch these fresh each time!
-    var catids = jQuery('.jevcategory select[name="catid[]"]');
-    var chosenCatids = jQuery('.jevcategory #catid_chzn .chzn-choices');
+	var catids = document.querySelector('.jevcategory select[name="catid[]"]') || document.querySelector('.jevcategory select[name="catid"]');
+    var chosenCatids = document.querySelector('.jevcategory #catid_chzn .chzn-choices');
 
-    //catids.css('display', 'block');
     // find all the selected categories
-    var ccats = chosenCatids.find('a');
+    var ccats = chosenCatids.querySelectorAll('a');
 
     var selectedCats = [];
     for (var c = 0; c < ccats.length; c++)
     {
         var cat = ccats[c];
-        var catindex = jQuery(cat).data('optionArrayIndex');
-        selectedCats.push(catids.find('option:eq(' + catindex + ')'));
+        var catindex = cat.dataset.optionArrayIndex;
+        var options = catids.querySelectorAll('option');
+        selectedCats.push(options[catindex]);
     }
 
     for (var sc = 0; sc < selectedCats.length; sc ++)
     {
-        jQuery(selectedCats[sc]).insertBefore(catids.find('option:eq(' + sc + ')'));
+    	var target = catids.querySelector('option:nth-child(' + (sc + 1) + ')');
+		var newNode = selectedCats[sc];
+		catids.insertBefore(newNode, target);
     }
 
-    catids.trigger("chosen:updated");
+    jQuery(catids).trigger("chosen:updated");
     // old style version - still needed!
-    catids.trigger("liszt:updated");
+	jQuery(catids).trigger("liszt:updated");
 }
 

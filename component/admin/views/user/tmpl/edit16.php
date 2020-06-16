@@ -23,7 +23,7 @@ $index  = Route::_("index.php");
     <!--
     Joomla.submitbutton = function (pressbutton) {
         if (pressbutton.substr(0, 6) == 'cancel' || (pressbutton == 'user.overview')) {
-            submitform(pressbutton);
+            Joomla.submitform(pressbutton);
             return;
         }
         var form = document.adminForm;
@@ -32,7 +32,7 @@ $index  = Route::_("index.php");
             alert("<?php echo Text::_('MISSING_USER_SELECTION'); ?>");
         }
         else {
-            submitform(pressbutton);
+            Joomla.submitform(pressbutton);
         }
     }
     //-->

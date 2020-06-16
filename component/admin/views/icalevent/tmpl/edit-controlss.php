@@ -211,7 +211,7 @@ $action = $app->isClient('administrator') ? "index.php" : Route::_("index.php?op
                             document.adminForm['catid'].value = 0;
                             document.adminForm['catid'].disabled = true;
                         }
-                        submitform(pressbutton);
+                        Joomla.submitform(pressbutton);
                         return;
                     }
                     var form = document.adminForm;
@@ -292,7 +292,7 @@ $action = $app->isClient('administrator') ? "index.php" : Route::_("index.php?op
                 function submit2(pressbutton) {
                     // sets the date for the page after save
                     resetYMD();
-                    submitform(pressbutton);
+                    Joomla.submitform(pressbutton);
                 }
 
                 //-->

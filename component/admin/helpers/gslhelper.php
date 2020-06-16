@@ -27,7 +27,7 @@ class GslHelper
 		// set container scope for code
 		$document->addScriptDeclaration("gslUIkit.container = '.gsl-scope';");
 
-		HTMLHelper::stylesheet('media/com_jevents/css/uikit.gsl.css', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false));
+		HTMLHelper::stylesheet('media/com_jevents/css/uikit.css', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false));
 		HTMLHelper::stylesheet('administrator/components/com_jevents/assets/css/jevents.css', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false));
 		$jversion = new Version;
 		if ($jversion->isCompatible('4.0'))

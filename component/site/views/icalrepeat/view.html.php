@@ -85,10 +85,10 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
-
-
-
-		$this->_adminStart();
+		if (!$params->get("newfrontendediting", 1))
+		{
+			$this->_adminStart();
+		}
 
 		// load Joomla javascript classes
 		HTMLHelper::_('behavior.core');
@@ -107,7 +107,10 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 		}
 
 		parent::displaytemplate($tpl);
-		$this->_adminEnd();
+		if (!$params->get("newfrontendediting", 1))
+		{
+    		$this->_adminEnd();
+		}
 	}
 
 	function toolbarButton($task = '', $icon = '', $iconOver = '', $alt = '', $listSelect = true)

@@ -81,7 +81,7 @@ $action = Factory::getApplication()->isClient('administrator') ? "index.php" : "
 		?>
 		function submitbutton(pressbutton) {
 		if (pressbutton.substr(0, 10) == 'icals.list') {
-		submitform( pressbutton );
+        Joomla.submitform( pressbutton );
 		return;
 		}
 
@@ -99,7 +99,7 @@ $action = Factory::getApplication()->isClient('administrator') ? "index.php" : "
 		return(false);
 		} else {
 		//alert('about to submit the form');
-		submitform(pressbutton);
+        Joomla.submitform(pressbutton);
 		}
 		}
 		<?php

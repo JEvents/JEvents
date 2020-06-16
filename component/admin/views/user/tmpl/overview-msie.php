@@ -346,10 +346,10 @@ $fullspan = 12;
 		}
 		?>
 		if (pressbutton == 'cancel') {
-			submitform( pressbutton );
+            Joomla.submitform( pressbutton );
 			return;
 		} else {
-			submitform( pressbutton );
+            Joomla.submitform( pressbutton );
 		}
 	}
 </script>

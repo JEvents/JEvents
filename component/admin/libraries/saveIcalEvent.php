@@ -284,7 +284,7 @@ class SaveIcalEvent
 				}
 				else
 				{
-					if ($rep->startrepeat < $oldrep->endrepeat)
+					if ($rep->startrepeat < $oldrep->endrepeat && $rep->endrepeat > $oldrep->startrepeat)
 					{
 						$overlaprepeats = true;
 						break;

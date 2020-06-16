@@ -2,6 +2,7 @@
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Version;
+use \Joomla\CMS\Factory;
 
 /**
  * @package     Joomla.Site
@@ -18,14 +19,15 @@ defined('JPATH_BASE') or die;
 $msgList = $displayData['msgList'];
 $jversion = new Version;
 
+ob_start();
+
 // Skip Chosen in Joomla 4.x+
 if ($jversion->isCompatible('4.0'))
 {
 	include (JPATH_SITE . "/layouts/joomla/system/message.php");
-	return;
 }
-
-ob_start();
+else
+{
 ?>
 <div id="system-message-container">
 	<?php if (is_array($msgList) && !empty($msgList)) : ?>
@@ -49,12 +51,13 @@ ob_start();
 	<?php endif; ?>
 </div>
 <?php
+}
 $messages = json_encode(ob_get_clean());
-?>
-<script>
+$script = <<< SCRIPT
 	document.addEventListener('DOMContentLoaded', function () {
 		if (document.getElementById('ysts_system_messages')) {
-			document.getElementById('ysts_system_messages').innerHTML = <?php echo $messages;?>;
+			document.getElementById('ysts_system_messages').innerHTML = $messages;
 		}
 	});
-</script>
+SCRIPT;
+Factory::getDocument()->addScriptDeclaration($script);

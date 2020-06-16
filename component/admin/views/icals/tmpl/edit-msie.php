@@ -71,7 +71,7 @@ $action = Factory::getApplication()->isAdmin() ? "index.php" : "index.php?option
 		?>
         function submitbutton(pressbutton) {
         if (pressbutton.substr(0, 10) == 'icals.list') {
-        submitform( pressbutton );
+        Joomla.submitform( pressbutton );
         return;
         }
 
@@ -89,7 +89,7 @@ $action = Factory::getApplication()->isAdmin() ? "index.php" : "index.php?option
         return(false);
         } else {
         //alert('about to submit the form');
-        submitform(pressbutton);
+        Joomla.submitform(pressbutton);
         }
         }
 		<?php

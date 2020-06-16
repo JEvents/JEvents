@@ -87,6 +87,15 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 			$searchTextQuery = "\n AND LOWER(det.summary) LIKE '%$searchText%'";
 		}
 
+		$app    = Factory::getApplication();
+		$showpast = intval($app->getUserStateFromRequest("showpast", "showpast", 0));
+		if (!$showpast)
+		{
+			$datenow = JevDate::getDate("-1 day");
+			$searchTextQuery .= "\n AND rpt.endrepeat>'" . $datenow->toSql() . "'";
+		}
+
+
 		$query = "SELECT count( DISTINCT rpt.rp_id)"
 			. "\n FROM #__jevents_vevent as ev"
 			. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid"

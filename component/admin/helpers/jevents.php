@@ -171,7 +171,7 @@ class JEventsHelper
 					$controller = $dispatcher->getController('display', 'Administrator', array('option' => 'com_categories'));
 
 					$view = $controller->getView($vName, 'html', 'Administrator');
-					$view->addTemplatePath(JPATH_ADMINISTRATOR . "/components/com_yoursites/views/com_categories/$vName/tmpl/");
+					$view->addTemplatePath(JPATH_ADMINISTRATOR . "/components/com_jevents/views/com_categories/$vName/tmpl/");
 				}
 				else
 				{

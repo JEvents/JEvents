@@ -156,7 +156,10 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		// I pass in the rp_id so that I can return to the repeat I was viewing before editing
 		$this->rp_id = $input->getInt("rp_id", 0);
 
-		$this->_adminStart();
+		if (!$params->get("newfrontendediting", 1))
+		{
+			$this->_adminStart();
+		}
 
 		// load Joomla javascript classes
 		HTMLHelper::_('behavior.core');
@@ -176,7 +179,10 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 
 		parent::displaytemplate($tpl);
 
-		$this->_adminEnd();
+		if (!$params->get("newfrontendediting", 1))
+		{
+    		$this->_adminEnd();
+		}
 	}
 
 	function toolbarConfirmButton($task = '', $msg = '', $icon = '', $iconOver = '', $alt = '', $listSelect = true)

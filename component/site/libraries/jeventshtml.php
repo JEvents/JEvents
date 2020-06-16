@@ -472,8 +472,9 @@ class JEventsHTML
 		    $html = ob_get_clean();
 		    if (count($options) == 1)
 		    {
-			$html   =  "<div class='catname'>".  $options[0]->text. "</div>";
-			$html  .= "<input type='hidden' id='" . $fieldname . "' name='" . $fieldname . "[]' value='$catid' />";
+			$html   =  "<div class='catname'>".  $options[0]->text. "</div><div style='display:none'>" . $html . "</div>";
+			// this doesn't work because it throws JS error on showon!
+			//$html  .= "<input type='hidden' id='" . $fieldname . "' name='" . $fieldname . "[]' value='$catid' />";
 		    }
 		return $html;
 	    }

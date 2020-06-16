@@ -15,7 +15,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 
 $app    = Factory::getApplication();
-if ($app->isClient('administrator'))
+$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+if ($app->isClient('administrator') || $params->get("newfrontendediting", 1))
 {
 	echo $this->loadTemplate('datetime_uikit');
 	return;

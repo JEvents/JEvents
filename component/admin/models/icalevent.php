@@ -72,6 +72,7 @@ class JEventsModelicalevent extends ListModel
 		$id .= ':' . $this->getState('list.limit');
 		$id .= ':' . $this->getState('list.ordering');
 		$id .= ':' . $this->getState('list.direction');
+		$id .= ':' . $this->getState('filter.showpast');
 
 		return md5($this->context . ':' . $id);
 	}
@@ -125,14 +126,18 @@ class JEventsModelicalevent extends ListModel
 		JEV_CommonFunctions::getCategoryData();
 
 		$icsFile = intval($this->getState('filter.icsFile', 0));
-		$state = intval($this->getState('filter.state', 3));
+		$state = $this->getState('filter.state', 3);
 		$created_by = $this->getState('filter.created_by', "");
 		if ($created_by !== '')
 		{
 			$created_by = (int) $created_by;
 		}
 		$catid    = intval($this->getState('filter.catid', 0));
-		$showpast = $this->getState("filter.showpast", '1');
+		$showpast = $this->getState("filter.showpast", '');
+		if ($showpast === "")
+		{
+			$showpast = 0;
+		}
 
 		$search     = $this->getState('filter.search', '');
 		$search     = $db->escape(trim(strtolower($search)));
@@ -319,21 +324,29 @@ class JEventsModelicalevent extends ListModel
 				$where[] = "\n rpt.endrepeat>'" . $datenow->toSql() . "'";
 			}
 		}
-		if ($state == 1)
+		if ($state !== '*' && $state !== '')
 		{
-			$where[] = "\n ev.state=1";
-		}
-		else if ($state == 2)
-		{
-			$where[] = "\n ev.state=0";
-		}
-		else if ($state == -1)
-		{
-			$where[] = "\n ev.state=-1";
-		}
-		else if ($state == 3)
-		{
-			$where[] = "\n (ev.state=1 OR ev.state=0)";
+			$state = intval($state);
+			if ($state == 0)
+			{
+				$where[] = "\n ev.state=0";
+			}
+			else if ($state == 1)
+			{
+				$where[] = "\n ev.state=1";
+			}
+			else if ($state == 2)
+			{
+				$where[] = "\n ev.state=0";
+			}
+			else if ($state == -2)
+			{
+				$where[] = "\n ev.state=-1";
+			}
+			else if ($state == 3)
+			{
+				$where[] = "\n (ev.state=1 OR ev.state=0)";
+			}
 		}
 
 		// if anon user plugin enabled then include this information

@@ -394,7 +394,9 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 	</div>
 	<div style="clear:both;"></div>
 </div>
-<script type="text/javascript">
+<?php
+ob_start();
+?>
     // make the correct frequency visible
     function setupRepeats() {
         hideEmptyJevTabs();
@@ -465,4 +467,6 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
     // toggle unvisible time fields
     toggleView12Hour();
 
-</script>
+<?php
+$script = ob_get_clean();
+Factory::getDocument()->addScriptDeclaration($script);

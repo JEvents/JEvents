@@ -89,7 +89,8 @@ body.com_jevents #gslc.gsl-scope .js-stools-field-filter #filter_tag_chzn {
 }
 body.com_jevents #gslc.gsl-scope .ys_newsfeed {
   height: 60px;
-  overflow: hidden;
+  /*overflow: hidden;*/
+  margin-left: 0px;
 }
 body.com_jevents #gslc.gsl-scope .ys_newsfeed li {
   height: 60px;
@@ -121,4 +122,3 @@ h1.page-title {
 h1.page-title span.categories {
   display: none;
 }
-/*# sourceMappingURL=j3.css.map */

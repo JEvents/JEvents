@@ -108,7 +108,14 @@ class jevFilterProcessing
 					$filterFilePath = Path::find($this->filterpath, $filterFile);
 					if ($filterFilePath)
 					{
-						include_once($filterFilePath);
+						try
+						{
+							include_once($filterFilePath);
+						}
+						catch (Exception $e)
+						{
+							continue;
+						}
 					}
 					else
 					{

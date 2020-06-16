@@ -182,7 +182,7 @@
         <field
                 name="sevd_defaultimage"
                 type="jevtext"
-                default=""
+                default="/components/com_jevents/images/logo.png"
                 label="STRUCTURED_EVENT_DATA_DEFAULT_IMAGE_LABEL"
                 description="STRUCTURED_EVENT_DATA_DEFAULT_IMAGE_DESC"
                 conditional="enable_gsed" conditions="1"
@@ -226,6 +226,8 @@
 
 
 	<fieldset name="JEV_EVENT_EDITING" difficulty="1">
+		<field name="newfrontendediting" type="jevboolean" class="gsl-button-group" default="1" menu="hide"
+			   label="JEV_USE_NEW_FRONTEND_EDITING_FORMATTING" description="JEV_USE_NEW_FRONTEND_EDITING_FORMATTING_DESC" difficulty="1"/>
 		<field name="com_calUseStdTime" type="jevboolean" class="gsl-button-group" default="1" menu="hide"
 		       label="JEV_TIME_FORMAT_12" description="JEV_TIME_FORMAT_12_DESC" difficulty="1"/>
 		<!--//<field name="com_jeveditionrequiredfields" type="Jeveditionrequiredfields" default="" size="6" label="JEV_REQUIRED_FIELDS_SELECT" multiple="multiple" description="JEV_REQUIRED_FIELDS_SELECT_DESC" difficulty="3"/>//-->

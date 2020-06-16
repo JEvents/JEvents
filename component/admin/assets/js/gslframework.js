@@ -84,22 +84,32 @@ let YsInstaller = {
 
 function ystsPositionElements()
 {
+	let headerOffsetHeight = document.getElementById('top-head').offsetHeight;
+
+	if (document.getElementById('ysts_system_messages')) {
+		if(document.getElementById('ysts_system_messages').children.length == 0){
+		//	document.getElementById('ysts_system_messages').style.display = 'none';
+		}
+		let thpos = window.getComputedStyle(document.getElementById('top-head')).getPropertyValue('position');
+		if (thpos == "fixed" ) {
+			document.getElementById('ysts_system_messages').style.marginTop = (10 + headerOffsetHeight) + 'px';
+		} else {
+			document.getElementById('ysts_system_messages').style.marginTop = '10px';
+		}
+	}
+
+	// Remainder is not used in the frontend
+	if (!document.getElementById('left-col'))
+	{
+		return;
+	}
+
 	// Setup position of offcanvas and left column to match our main wrapper - can't just rely on height of Isis menu bar
 	let offsetTop = document.getElementById('gslc').offsetTop;
 	document.getElementById('left-col').style.top              = offsetTop + 'px';
 	document.getElementById('offcanvas-right-panel').style.top = offsetTop + 'px';
 	document.getElementById('offcanvas-left-panel').style.top  = offsetTop + 'px';
 	document.querySelector('#offcanvas-right-panel .gsl-offcanvas-bar button.gsl-close').style.top  = 15 + offsetTop + 'px';
-
-	let headerOffsetHeight = document.getElementById('top-head').offsetHeight;
-
-	if (document.getElementById('ysts_system_messages')) {
-		if (window.getComputedStyle(document.getElementById('top-head')).getPropertyValue('position') == "fixed") {
-			document.getElementById('ysts_system_messages').style.marginTop = (10 + headerOffsetHeight) + 'px';
-		} else {
-			document.getElementById('ysts_system_messages').style.marginTop = '10px';
-		}
-	}
 
 	// Handle admin templates that set padding on narrow devices
 	let offsetLeft = document.getElementById('gslc').parentElement.offsetLeft;

@@ -37,6 +37,8 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
 		$this->registerTask('new', 'newical');
 		$this->registerTask('reload', 'save');
 		$this->registerDefaultTask("overview");
+		// Need to force this because of Joomla 3.10 changes
+		$this->registerTask('unpublish', 'unpublish');
 
 		$cfg          = JEVConfig::getInstance();
 		$this->_debug = $cfg->get('jev_debug', 0);

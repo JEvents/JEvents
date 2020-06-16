@@ -5,7 +5,7 @@
  *
  * @version     $Id: view.html.php 3543 2012-04-20 08:17:42Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-JEVENTS_COPYRIGHT GWESystems Ltd
+ * @copyright   Copyright (C)  2008-2020 GWESystems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -62,8 +62,6 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		$this->checkForAddons();
 
 		$this->setUpdateUrls();
-
-		$this->cleanupUpdateUrls();
 
 
 		$this->dataModel  = new JEventsDataModel("JEventsAdminDBModel");
@@ -169,9 +167,13 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 	function setUpdateUrls()
 	{
 
+		$db = Factory::getDbo();
+
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
 		$updates = array(
+			array("element" => "pkg_jeventsplus", "name" => "com_jeventsplus", "type" => "package"),
+
 			array("element" => "pkg_jevents", "name" => "com_jevents", "type" => "package"),
 			array("element" => "pkg_jevlocations", "name" => "com_jevlocations", "type" => "package"),
 			array("element" => "pkg_jevpeople", "name" => "com_jevpeople", "type" => "package"),
@@ -279,6 +281,10 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			// Bronze - sh404sef - TODO
 
 		);
+
+		JFactory::getApplication()->enqueueMessage("CHANGE UPDATE SERVER", 'warning');
+		$updateDomain = "http://ubu.j33jq.com";
+
 		// Do the language files for Joomla
 		$db = Factory::getDbo();
 		$db->setQuery("SELECT * FROM #__extensions where type='file' AND element LIKE '%_JEvents' AND element NOT LIKE '%_JEvents_Addons' and element NOT LIKE '%_JEventsAddons' ");
@@ -302,29 +308,100 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			$updates[] = array("element" => $elem, "name" => $translation->name, "type" => "file");
 		}
 
+		$db = Factory::getDbo();
+		$query = $db->getQuery(true);
+		$query->select('*')
+			->from('#__update_sites')
+			->where('( location = ' . $db->quote("https://www.jevents.net/newupdates/jevents_addon_updates.xml")
+				. ' OR '
+				. 'location = ' . $db->quote("http://ubu.j33jq.com/newupdates/jevents_addon_updates.xml") .')'
+			);
+
+		$db->setQuery($query);
+		$updatesite = $db->loadObject();
+
+		if (!$updatesite)
+		{
+			$query = $db->getQuery(true);
+			$query->insert('#__update_sites')
+				->columns(array($db->qn('name'),
+						$db->qn('type'),
+						$db->qn('location'),
+						$db->qn('enabled'))
+				)
+				->values(
+					$db->q('JEvents And JEvents Addon Updates') . ', ' .
+					$db->q('extension') . ', ' .
+					$db->q("$updateDomain/newupdates/jevents_addon_updates.xml") . ', ' .
+					$db->q(1)
+				);
+
+			$db->setQuery($query);
+			$db->execute();
+
+			$query = $db->getQuery(true);
+			$query->select('*')
+				->from('#__update_sites')
+				->where('location = ' . $db->quote("$updateDomain/newupdates/jevents_addon_updates.xml"));
+
+			$db->setQuery($query);
+			$updatesite = $db->loadObject();
+
+		}
+
+		if ($updatesite)  //&& empty($updatesite->extra_query))
+		{
+			$sitedomain = rtrim(str_replace(array('https://', 'http://'), "", Uri::root()), '/');
+
+			$params   = ComponentHelper::getParams(JEV_COM_COMPONENT);
+			$clubcode = $params->get("clubcode", "");
+			$filter   = new InputFilter();
+			$clubcode = $filter->clean($clubcode, "CMD");
+			$clubcode = $clubcode . "-" . base64_encode($sitedomain);
+			$query = $db->getQuery(true);
+			$query->update('#__update_sites')
+				->set('extra_query = '. $db->quote('dlid=' . $clubcode))
+				->where('( location = ' . $db->quote("https://www.jevents.net/newupdates/jevents_addon_updates.xml")
+					. ' OR '
+					. 'location = ' . $db->quote("http://ubu.j33jq.com/newupdates/jevents_addon_updates.xml") .')'
+				);
+			$db->setQuery($query);
+			$db->execute();
+		}
+
+		// clean up old style records
+		$query = $db->getQuery(true);
+		$query->delete('#__update_sites')
+			->where('location NOT LIKE ' . $db->quote("%newupdates/jevents_addon_updates.xml"))
+			->where('( location LIKE  ' . $db->quote("https://www.jevents.net%")
+				. ' OR '
+				. 'location LIKE ' . $db->quote("http://ubu.j33jq.com%") .')'
+			);
+		$db->setQuery($query);
+		$db->execute();
+
+		$query = $db->getQuery(true);
+		$query->update('#__update_sites')
+			->set('location = ' . $db->q("$updateDomain/newupdates/jevents_addon_updates.xml"))
+			->where('location LIKE ' . $db->quote("%newupdates/jevents_addon_updates.xml"))
+			->where(' location NOT LIKE ' . $db->q("$updateDomain/newupdates/jevents_addon_updates.xml"));
+		$db->setQuery($query);
+		$db->execute();
+
 		foreach ($updates as $package)
 		{
-			$this->setUpdateUrlsByPackage($package);
+			$this->setUpdateUrlsByPackage($package, $updatesite);
 		}
 	}
 
-	function setUpdateUrlsByPackage($package)
+	function setUpdateUrlsByPackage($package, $updatesite)
 	{
+		$db = Factory::getDbo();
 
 		$pkg    = $package["element"];
 		$com    = $package["name"];
 		$folder = isset($package["folder"]) ? $package["folder"] : "";
 		$type   = $package["type"];
-
-		$db = Factory::getDbo();
-
-		// Process the package
-		$db = Factory::getDbo();
-		// Do we already have a record for the update URL for the component - we should remove this in JEvents 3.0!!
-		if ($folder == "" && $package['type'] != "file" && $package['type'] != "module" && $package['type'] != "plugin")
-		{
-			$this->removeComponentUpdate($com);
-		}
 
 		static $extensiondata = false;
 		if (!$extensiondata)
@@ -336,131 +413,36 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		}
 
 		// Now check and setup the package update URL
-		/*
-		$db->setQuery("select *, exn.extension_id as extension_id , exn.type as extension_type  from #__extensions as exn
-LEFT JOIN #__update_sites_extensions as map on map.extension_id=exn.extension_id
-LEFT JOIN #__update_sites as us on us.update_site_id=map.update_site_id
-where exn.type='$type'
-and exn.element='$pkg' and exn.folder='$folder'
-");
-		$pkgupdate = $db->loadObject();
-		*/
 		$pkgupdate = false;
 		foreach ($extensiondata as $ed)
 		{
 			if ($ed->extension_type == $type && $ed->extension_element == $pkg && $ed->extension_folder == $folder)
 			{
 				$pkgupdate = $ed;
+				break;
 			}
 		}
 
 		// we have a package and an update record
-		if ($pkgupdate && $pkgupdate->update_site_id)
+		if ($pkgupdate && $pkgupdate->update_site_id !== $updatesite->update_site_id)
 		{
 			// Now update package update URL
-			$this->setPackageUpdateUrl($pkgupdate);
+			$this->setPackageUpdateUrl($pkgupdate, $updatesite);
 		}
 		// we have a package but not an update record
-		else if ($pkgupdate && $pkgupdate->extension_id)
+		else if ($pkgupdate && $pkgupdate->extension_id && !$pkgupdate->update_site_id)
 		{
 			// Now set package update URL
-			$this->setPackageUpdateUrl($pkgupdate);
-		}
-		else
-		{
-			// No package installed so fall back to component and set it to update using the package URL :)
-
-			// Do we already have a record for the update URL for the component - we should remove this
-			/*
-			$db->setQuery("select *, exn.extension_id as extension_id  from #__extensions as exn
-	LEFT JOIN #__update_sites_extensions as map on map.extension_id=exn.extension_id
-	LEFT JOIN #__update_sites as us on us.update_site_id=map.update_site_id
-	where exn.type='component'
-	and exn.element='$com'
-	");
-			$cpupdate = $db->loadObject();
-			*/
-
-			$cpupdate = false;
-			foreach ($extensiondata as $ed)
-			{
-				if ($ed->extension_type == 'component' && $ed->extension_element == $com)
-				{
-					$cpupdate = $ed;
-				}
-			}
-
-			if ($cpupdate && $cpupdate->update_site_id)
-			{
-				$db->setQuery("DELETE FROM #__update_sites where update_site_id=" . $cpupdate->update_site_id);
-				$db->execute();
-				$db->setQuery("DELETE FROM #__update_sites_extensions where update_site_id=" . $cpupdate->update_site_id . " AND extension_id=" . $cpupdate->extension_id);
-				$db->execute();
-			}
-
-			// Now set package update URL for the component as opposed to the package ;)
-			if ($cpupdate && $cpupdate->extension_id)
-			{
-				$this->setPackageUpdateUrl($cpupdate);
-			}
+			$this->setPackageUpdateUrl($pkgupdate, $updatesite);
 		}
 
 	}
 
 	private
-	function removeComponentUpdate($com)
-	{
-
-		$db      = Factory::getDbo();
-		$version = JEventsVersion::getInstance();
-		$release = $version->get("RELEASE");
-
-		// Do we already have a record for the update URL for the component - we should remove this in JEvents 3.0!!
-		static $comdata = false;
-		if (!$comdata)
-		{
-			$db->setQuery("select * , exn.element as element from #__extensions as exn
-			LEFT JOIN #__update_sites_extensions as map on map.extension_id=exn.extension_id
-			LEFT JOIN #__update_sites as us on us.update_site_id=map.update_site_id
-			where exn.type='component'
-			");
-			$comdata = $db->loadObjectList('element');
-		}
-		$cpupdate = isset($comdata[$com]) ? $comdata[$com] : false;
-		if ($cpupdate && $cpupdate->update_site_id)
-		{
-			$db->setQuery("DELETE FROM #__update_sites where update_site_id=" . $cpupdate->update_site_id);
-			$db->execute();
-			$db->setQuery("DELETE FROM #__update_sites_extensions where update_site_id=" . $cpupdate->update_site_id . " AND extension_id=" . $cpupdate->extension_id);
-			$db->execute();
-		}
-
-	}
-
-	private
-	function setPackageUpdateUrl($pkgupdate)
+	function setPackageUpdateUrl($pkgupdate, $updatesite)
 	{
 
 		$db = Factory::getDbo();
-
-		$sitedomain = rtrim(str_replace(array('https://', 'http://'), "", Uri::root()), '/');
-
-		$params   = ComponentHelper::getParams(JEV_COM_COMPONENT);
-		$clubcode = $params->get("clubcode", "");
-		$filter   = new InputFilter();
-		$clubcode = $filter->clean($clubcode, "CMD");
-		//$clubcode = $filter->clean($clubcode, "BASE64")."-".$sitedomain;
-		//$clubcode = base64_encode($clubcode);
-		$clubcode = $clubcode . "-" . base64_encode($sitedomain);
-
-		$version = JEventsVersion::getInstance();
-		$version = $version->get('RELEASE');
-		$version = str_replace(" ", "", $version);
-		//$domain = "http://ubu.j33jq.com";
-		$domain = "https://www.jevents.net";
-
-		//$extension  = Table::getInstance("Extension");
-		//$extension->load($pkgupdate->extension_id);
 
 		// Save DB queries!
 		static $extensiondata = false;
@@ -472,107 +454,16 @@ and exn.element='$pkg' and exn.folder='$folder'
 
 		$extension = isset($extensiondata[$pkgupdate->extension_id]) ? $extensiondata[$pkgupdate->extension_id] : null;
 
-		// Packages are installed with client_id = 0 which stops the update from taking place to we update the extension to client_id=1
-		/*
-		if ($pkgupdate->client_id==0 && $pkgupdate->extension_type=="package"){
-			$db->setQuery("UPDATE #__extensions SET client_id=1 WHERE extension_id = $pkgupdate->extension_id");
+		if ($extension)
+		{
+			$db->setQuery("REPLACE INTO #__update_sites_extensions (update_site_id, extension_id) VALUES ($updatesite->update_site_id, $pkgupdate->extension_id)");
 			$db->execute();
-			echo $db->getErrorMsg();
-		}
-		 */
-
-		// We already have an update site
-		if ($pkgupdate->update_site_id)
-		{
-			$extensionname = str_replace(" ", "_", $extension->element);
-			if ($extension->folder)
-			{
-				$extensionname = "plg_" . $extension->folder . "_" . $extensionname;
-			}
-			/*
-			 // set the JEvents Version number in the update URL
-			if (isset($extension->manifest_cache)){
-				$extensionmanifest = json_decode($extension->manifest_cache);
-				if (isset($extensionmanifest->version)) {
-					$version = $extensionmanifest->version;
-				}
-			}
-			*/
-			if ($pkgupdate->name != ucwords($extension->name) || $pkgupdate->location != "$domain/updates/$clubcode/$extensionname-update-$version.xml" || $pkgupdate->enabled != 1)
-			{
-				$db->setQuery("UPDATE #__update_sites set name=" . $db->quote(ucwords($extension->name)) . ", location=" . $db->quote("$domain/updates/$clubcode/$extensionname-update-$version.xml") . ", enabled = 1 WHERE update_site_id=" . $pkgupdate->update_site_id);
-
-				try {
-					$db->execute();
-				} catch (Exception $e) {
-					echo $e;
-				}
-			}
-		}
-		else
-		{
-			$extensionname = str_replace(" ", "_", $extension->element);
-			if ($extension->folder)
-			{
-				$extensionname = "plg_" . $extension->folder . "_" . $extensionname;
-			}
-
-			// Check data integrity and clean up if necessary
-			$db->setQuery("SELECT count(update_site_id) FROM #__update_sites_extensions WHERE extension_id = $pkgupdate->extension_id");
-			if ($db->loadResult() > 0)
-			{
-
-				$db->setQuery("DELETE FROM #__update_sites  WHERE update_site_id in (SELECT update_site_id FROM #__update_sites_extensions WHERE extension_id = $pkgupdate->extension_id )");
-				$db->execute();
-
-				$db->setQuery("DELETE FROM #__update_sites_extensions  WHERE extension_id = $pkgupdate->extension_id ");
-				$db->execute();
-			}
-
-			$db->setQuery("INSERT INTO #__update_sites (name, type, location, enabled, last_check_timestamp) VALUES (" . $db->quote(ucwords($extension->name)) . ",'extension'," . $db->quote("$domain/updates/$clubcode/$extensionname-update-$version.xml") . ",'1','0')");
-
-			try {
-				$db->execute();
-			} catch (Exception $e) {
-				echo $e;
-			}
-
-			$id = 0;
-
-			try {
-				$id = $db->insertid();
-			} catch (Exception $e) {
-				echo $e;
-			}
-
-			$db->setQuery("REPLACE INTO #__update_sites_extensions (update_site_id, extension_id) VALUES ($id, $pkgupdate->extension_id)");
-
-			try {
-				$db->execute();
-			} catch (Exception $e) {
-				echo $e;
-			}
 		}
 
 	}
 
 	private function cleanupUpdateUrls()
 	{
-
-		$version = JEventsVersion::getInstance();
-		$version = $version->get('RELEASE');
-		$version = str_replace(" ", "", $version);
-
-		$db = Factory::getDbo();
-		$db->setQuery("SELECT * FROM #__update_sites where location like '%jevents.net%' and location not like '%$version%'");
-		$strays = $db->loadObjectList('update_site_id');
-		if (count($strays) > 0)
-		{
-			$db->setQuery("DELETE  FROM #__update_sites_extensions where update_site_id IN (" . implode(", ", array_keys($strays)) . ")");
-			$db->execute();
-			$db->setQuery("DELETE FROM #__update_sites where location like '%jevents.net%' and location not like '%$version%'");
-			$db->execute();
-		}
 
 		// remove duplicate entries created by Joomla installer that assumes the updateserver will not change
 		//$db->setQuery('SELECT * FROM #__update_sites where location like "%www.jevents.net%/%/'.$package['element'].'-update-%.xml" ');

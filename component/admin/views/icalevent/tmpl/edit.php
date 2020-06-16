@@ -20,7 +20,8 @@ use Joomla\CMS\Session\Session;
 use Joomla\CMS\Component\ComponentHelper;
 
 $app    = Factory::getApplication();
-if ($app->isClient('administrator'))
+$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+if ($app->isClient('administrator') || $params->get("newfrontendediting", 1))
 {
 	echo $this->loadTemplate('uikit');
 	return;
@@ -32,7 +33,6 @@ define("EDITING_JEVENT", 1);
 
 
 $input  = $app->input;
-$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 // get configuration object
 $cfg   = JEVConfig::getInstance();
 $assoc = false && Associations::isEnabled() && Factory::getApplication()->isClient('administrator');
@@ -230,7 +230,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
                             document.adminForm['catid'].value = 0;
                             document.adminForm['catid'].disabled = true;
                         }
-                        submitform(pressbutton);
+                        Joomla.submitform(pressbutton);
                         return;
                     }
                     var form = document.adminForm;
@@ -322,7 +322,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
                 function submit2(pressbutton) {
                     // sets the date for the page after save
                     resetYMD();
-                    submitform(pressbutton);
+                    Joomla.submitform(pressbutton);
                 }
 
                 //-->

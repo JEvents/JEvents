@@ -35,8 +35,8 @@ $componentpath = dirname(dirname(dirname(__FILE__)));
 include_once($componentpath . "/helpers/gslhelper.php");
 
 GslHelper::loadAssets();
-
-$tmpl = Factory::getApplication()->input->getCmd('tmpl', '');
+$app = Factory::getApplication();
+$tmpl = $app->input->getCmd('tmpl', '');
 ?>
 <div class="gsl-scope" id="gslc"> <!-- Open Custom UiKit Container -->
     <?php
@@ -45,18 +45,18 @@ $tmpl = Factory::getApplication()->input->getCmd('tmpl', '');
     <div class="gsl-margin-remove" gsl-grid>
         <!-- LEFT BAR -->
 		<?php
-       if (empty($tmpl))
+       if (empty($tmpl) && !$app->isClient('site'))
        {
 	       echo LayoutHelper::render('gslframework.leftbar', null, dirname(__DIR__, 1));
        }
         ?>
         <!-- /LEFT BAR -->
-        <div id="right-col" class="gsl-padding-remove gsl-width-expand@m <?php if (!empty($tmpl)) echo "noleftbar";?> ">
+        <div id="right-col" class="gsl-padding-remove gsl-width-expand@m <?php if (!empty($tmpl) || $app->isClient('site')) echo "noleftbar";?> ">
 
             <!--HEADER-->
             <header id="top-head">
 	            <?php
-	            if (empty($tmpl))
+	            if (empty($tmpl) && !$app->isClient('site'))
 	            {
 	            ?>
                 <nav class="gsl-navbar-container gsl-background-secondary ys-titlebar" gsl-navbar>

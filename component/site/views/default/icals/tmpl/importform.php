@@ -35,7 +35,7 @@ $action = Factory::getApplication()->isClient('administrator') ? "index.php" : U
                         alert("<?php echo Text::_('JEV_MISSING_ICAL_SELECTION', true); ?>");
                     }
                     else {
-                        submitform();
+                        Joomla.submitform();
                         return true;
                     }
                     return false;

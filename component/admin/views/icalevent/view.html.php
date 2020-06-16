@@ -63,7 +63,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		{
 			$state = 3;
 			JToolbarHelper::trash('icalevent.delete');
-		} else if ($state == -1){
+		} else if ($state == -2){
 			JToolbarHelper::deleteList("JEV_EMPTY_TRASH_DELETE_EVENT_AND_ALL_REPEATS", 'icalevent.emptytrash',"JTOOLBAR_EMPTY_TRASH");
 		}
 		else {
@@ -270,7 +270,6 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			$this->toolbarConfirmButton("icalevent.save", Text::_("JEV_SAVE_ICALEVENT_WARNING"), 'save', 'save', 'JEV_SAVE_CLOSE', false);
 			$this->toolbarConfirmButton("icalevent.savenew", Text::_("JEV_SAVE_COPY_WARNING"), 'save', 'save', 'JEV_SAVE_NEW', false);
 		}
-
 
 
 		JToolbarHelper::cancel('icalevent.cancel');

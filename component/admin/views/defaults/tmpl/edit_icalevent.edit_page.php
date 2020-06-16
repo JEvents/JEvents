@@ -102,7 +102,7 @@ Joomla.submitbutton = function (pressbutton){
                 }
                 else
                 {
-                    submitform(pressbutton);
+                    Joomla.submitform(pressbutton);
                 }
         }
         else
@@ -139,14 +139,14 @@ Joomla.submitbutton = function (pressbutton){
                     }
                     else
                     {
-                        submitform(pressbutton);
+                        Joomla.submitform(pressbutton);
                     }
         }
         
     }
     else
     {
-        submitform(pressbutton);
+        Joomla.submitform(pressbutton);
     }
 }
 <?php

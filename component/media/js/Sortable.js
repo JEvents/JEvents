@@ -2472,6 +2472,6 @@
 
 
 	// Export
-	Sortable.version = 'YOURSITES_VERSION';
+	Sortable.version = 'JEVENTS_VERSION';
 	return Sortable;
 });

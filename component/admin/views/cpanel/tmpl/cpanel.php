@@ -175,10 +175,10 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
 			}
 		}
 		?>
-        <div class="gsl-grid gsl-grid-medium" gsl-grid>
+        <div class="gsl-grid gsl-grid-medium" gsl-grid gsl-height-match="target: > div > .gsl-card">
 
             <!-- panel -->
-            <div class="gsl-width-1-2@l">
+            <div class="gsl-width-1-2@l" >
                 <div class="gsl-card gsl-card-default gsl-card-small gsl-card-hover">
                     <div class="gsl-card-header">
                         <div class="gsl-grid gsl-grid-small">

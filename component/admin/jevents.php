@@ -112,7 +112,7 @@ if (!version_compare(JVERSION, '1.6.0', ">="))
 	$lang->load(JEV_COM_COMPONENT, JPATH_SITE . '/' . "templates" . '/' . $template);
 }
 
-// Split tasl into command and task
+// Split task into command and task
 $cmd = $input->get('task', 'cpanel.show');
 //echo $cmd;die;
 

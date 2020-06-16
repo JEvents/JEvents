@@ -179,7 +179,7 @@ class AdminUserController extends Joomla\CMS\MVC\Controller\BaseController
 	function publishUser()
 	{
 
-		$this->changeState("published", 1, Text::_('USER_ENABLED'));
+		$this->changeState("published", 1, Text::_('COM_JEVENTS_USER_ACTION_ENABLED'));
 	}
 
 	private function changeState($field, $newstate, $successMessage)
@@ -218,7 +218,7 @@ class AdminUserController extends Joomla\CMS\MVC\Controller\BaseController
 	function unpublishUser()
 	{
 
-		$this->changeState("published", 0, Text::_('USER_DISABLED'));
+		$this->changeState("published", 0, Text::_('COM_JEVENTS_USER_ACTION_DISABLED'));
 	}
 
 	function cancreate()
