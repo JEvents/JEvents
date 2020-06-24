@@ -659,6 +659,9 @@ SQL;
 		}
 		else
 		{
+			JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
+			JEVHelper::setUpdateUrls();
+
 			$popupdetail = PluginHelper::getPlugin("jevents", "jevpopupdetail");
 			if ($popupdetail)
 			{

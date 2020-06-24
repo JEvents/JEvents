@@ -29,6 +29,9 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 	function overview($tpl = null)
 	{
+		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
+		JEVHelper::setUpdateUrls();
+
 		$app    = Factory::getApplication();
 
 		$this->rows = $this->getModel()->getItems();

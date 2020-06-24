@@ -95,7 +95,14 @@ class JFormFieldJevfilters extends JFormFieldText
 					$filter = "jev" . ucfirst($filtername) . "Filter";
 					if (!class_exists($filter))
 					{
-						include_once($filterpath);
+						try
+						{
+							include_once($filterpath);
+						}
+						catch (Exception $e)
+						{
+							continue;
+						}
 					}
 					if (!class_exists($filter))
 					{

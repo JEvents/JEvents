@@ -5,7 +5,6 @@ header.header {
 body.com_jevents {
   /* See if we can get fixed positioning working as sticky */
   /* Full sized screen */
-  /* J4 sidebar */
   /*
   #gslc.gsl-scope.joomla-menu-open {
     #left-col {
@@ -47,8 +46,9 @@ body.com_jevents #wrapper > .container-fluid {
 body.com_jevents #wrapper #sidebar-wrapper {
   position: fixed;
   height: 100%;
+  /* J4 sidebar */
 }
-body.com_jevents #sidebar-wrapper.gsl-hide-sidebar {
+body.com_jevents #wrapper #sidebar-wrapper.gsl-hide-sidebar {
   display: none;
   transition: all 0.3s ease;
 }
@@ -140,6 +140,11 @@ body.com_categories #wrapper > .container-fluid {
 body.com_categories #wrapper #sidebar-wrapper {
   position: fixed;
   height: 100%;
+  /* J4 sidebar */
+}
+body.com_categories #wrapper #sidebar-wrapper.gsl-hide-sidebar {
+  display: none;
+  transition: all 0.3s ease;
 }
 body.com_categories #gslc.gsl-scope #left-col {
   /* left: 3rem; */
@@ -179,6 +184,8 @@ body.com_categories h1.page-title {
   margin: 0;
 }
 body.com_categories h1.page-title span.fields,
+body.com_categories h1.page-title span.categories,
+body.com_categories h1.page-title span.category-edit,
 body.com_categories h1.page-title img {
   display: none;
 }
@@ -193,6 +200,19 @@ body.com_categories.view-categories #gslc.gsl-scope #right-col #top-head {
 }
 body.com_categories.view-categories #gslc.gsl-scope .gsl-content {
   margin-left: 3rem;
+}
+body.com_categories.view-categories #gslc.gsl-scope.gsl-hide-sidebar #left-col {
+  left: 0;
+}
+body.com_categories.view-categories #gslc.gsl-scope.gsl-hide-sidebar #right-col:not(.noleftbar) #top-head {
+  left: 50px;
+}
+body.com_categories.view-categories #gslc.gsl-scope.gsl-hide-sidebar .gsl-content,
+body.com_categories.view-categories #gslc.gsl-scope.gsl-hide-sidebar #ysts_system_messages {
+  margin-left: 0;
+}
+body.com_categories.view-categories #gslc.gsl-scope:not(.gsl-hide-sidebar) .left-nav span.nav-label {
+  display: none;
 }
 @media (max-width: 960px) {
   body.com_jevents #gslc.gsl-scope.gsl-hide-sidebar #right-col:not(.noleftbar) #top-head {

@@ -403,8 +403,9 @@ class JEventsHTML
 
 			$app->triggerEvent('onGetAccessibleCategoriesForEditing', array(& $cats));
 
-			// allow anon-user event creation through
-			if (isset($user->id) && $user->id > 0)
+			// allow anon-user event creation through IF anon user event creation plugin is not enabled
+			$plugin = PluginHelper::getPlugin("jevents", "jevanonuser");
+			if (!$plugin || (!isset($user->id) && $user->id > 0))
 			{
 				$count = count($options);
 				for ($o = 0; $o < $count; $o++)

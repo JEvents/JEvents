@@ -198,7 +198,7 @@ class JevTypeahead
 		// Load jQuery
 		HTMLHelper::_('jquery.framework');
 		HTMLHelper::stylesheet('com_jevents/lib_jevtypeahead/jevtypeahead.css', array(), true);
-		HTMLHelper::script('com_jevents/lib_jevtypeahead/typeahead.bundle.min.js', false, true, false, false, true);
+		HTMLHelper::script('com_jevents/lib_jevtypeahead/typeahead.bundle.js', array('framework' =>  false, 'relative' => true, 'pathOnly' => false, 'detectBrowser' => false, 'detectDebug' => true));
 
 		// If no debugging value is set, use the configuration setting
 		if ($debug === null)

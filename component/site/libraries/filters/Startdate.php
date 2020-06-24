@@ -151,7 +151,7 @@ class jevStartdateFilter extends jevFilter
 
 		JEVHelper::script($calendar, "components/" . JEV_COM_COMPONENT . "/assets/js/", true);
 		JEVHelper::stylesheet("dashboard.css", "components/" . JEV_COM_COMPONENT . "/assets/css/", true);
-		$document->addScriptDeclaration('window.addEvent(\'domready\', function() {
+		$document->addScriptDeclaration('document.addEventLister("DOMContentLoaded", function() {
 				new NewCalendar({ ' . $this->filterType . '_fvs1 :  "Y-m-d"},{
 					direction:0, 
 					classes: ["dashboard"],

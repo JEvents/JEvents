@@ -14,6 +14,8 @@
         </then>
     </if>
 
+    <resolvepath propertyName="uikitdir" file="${uikitdir}" />
+
     <echo msg="uikit directory set to ${uikitdir}" />
 
     <!-- Load path properties -->
@@ -62,7 +64,8 @@
     <!-- Target: JEvents Generic Folder    -->
     <!-- ==================================================  -->
     <target name="build-generic" description="Build Generic JEvents Folder ">
-        <echo msg="Building Gemeric Folder ${genericname}..."/>
+        <echo msg="Building Generic Folder ${genericname} : ../${genericfolder}"/>
+        <!--
         <copy todir="${builddir}/${genericfolder}">
             <fileset dir="../${genericfolder}">
                 <include name="**"></include>
@@ -70,6 +73,16 @@
                 <excludesfile name="excludedfiles.build"></excludesfile>
             </fileset>
         </copy>
+
+        Using rsync and safe-links ignores softlinks outside of the current tree!
+        -->
+
+        <filesync destinationDir="${builddir}/${genericfolder}"
+                  rsyncPath="/usr/bin/rsync"
+                  sourceDir="../${genericfolder}"
+                  excludeFile="excludedfiles.build"
+                  options="-rpKz --safe-links"
+        />
 
         <phingcall target="sedreplace">
             <property name="name" value="${genericfolder}" />
@@ -107,9 +120,12 @@
 
         <!-- delete dist files -->
         <if>
-            <available file='${uikitdir}/dist/css/uikit.gsl.css' type='file' property="cssexits"/>
+            <available file='${uikitdir}/dist/css/uikit.css' type='file' property="cssexits"/>
             <then>
-                <delete file="${uikitdir}/dist/css/uikit.gsl.css" failonerror="false" />
+                <delete file="${uikitdir}/dist/css/uikit.css" failonerror="false" />
+                <delete file="${uikitdir}/dist/css/uikit-core.css" failonerror="false" />
+                <delete file="${uikitdir}/dist/css/uikit-rtl.css" failonerror="false" />
+                <delete file="${uikitdir}/dist/css/uikit.css" failonerror="false" />
                 <delete file="${uikitdir}/dist/css/uikit.gsl.min.css" failonerror="false" />
             </then>
         </if>
@@ -128,15 +144,19 @@
         build.js core lightbox -d // builds uikit-core and the lightbox, skipping the minification
 
         //-->
-        <exec command="yarn compile -d" dir="${uikitdir}" outputProperty="yarn.output" >
+        <!-- execute yarn scripts there -->
+        <exec command="yarn compile" dir="${uikitdir}" outputProperty="yarn.output" >
         </exec>
         <echo msg="${yarn.output}" />
         <exec command="yarn prefix -p gsl " dir="${uikitdir}"  outputProperty="yarn.output2" >
         </exec>
         <echo msg="${yarn.output2}" />
-        <exec command="yarn scope -s 'gsl-scope'" dir="${uikitdir}"  outputProperty="yarn.output3" >
+        <exec command="yarn scope cleanup" dir="${uikitdir}"  outputProperty="yarn.output3" >
         </exec>
         <echo msg="${yarn.output3}" />
+        <exec command="yarn scope -s 'gsl-scope'" dir="${uikitdir}"  outputProperty="yarn.output4" >
+        </exec>
+        <echo msg="${yarn.output4}" />
 
         <!-- copy the dist files back from uikit repository -->
         <copy todir="${rootdir}/component/media" >
@@ -186,8 +206,12 @@
             <property name="zipfile" value="com_jevents.zip" />
         </phingcall>
 
+        <!-- rsync needs path created already -->
+        <mkdir dir="${builddir}/libraries" />
         <phingcall target="build-libraries"/>
+        <mkdir dir="${builddir}/modules" />
         <phingcall target="build-modules"/>
+        <mkdir dir="${builddir}/plugins" />
         <phingcall target="build-plugins"/>
     </target>
 

@@ -676,12 +676,11 @@ window.addEventListener('load', function() {
 // If loading from com_categories need to move the system messages
 document.addEventListener('DOMContentLoaded', function () {
 	let msgel = document.getElementById("system-message-container");
-	if (j3 && msgel && msgel.parentNode && msgel.parentNode.id != "ysts_system_messages")
+
+	if (msgel && msgel.parentNode && msgel.parentNode.id != "ysts_system_messages")
 	{
 		let newmsgel = document.getElementById("ysts_system_messages");
-		let innerHTML = msgel.innerHTML;
-		msgel.parentNode.removeChild(msgel);
-		newmsgel.innerHTML = innerHTML;
+		newmsgel.appendChild(msgel);
 	}
 
 	let maincontainer = document.getElementById("j-main-container");

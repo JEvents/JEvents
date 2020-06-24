@@ -5,11 +5,13 @@ defined('JPATH_BASE') or die;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Form\FormHelper;
 
 jimport('joomla.html.html');
-jimport('joomla.form.formfield');
 
-class FormFieldJeveventdate extends FormField
+FormHelper::loadFieldClass('calendar');
+
+class FormFieldJeveventdate extends JFormFieldCalendar
 {
 
 	/**
@@ -31,7 +33,6 @@ class FormFieldJeveventdate extends FormField
 	function getInput()
 	{
 
-		ob_start();
 		$event      = $this->form->jevdata[$this->name]["event"];
 		$eventfield = $this->name == "publish_up" ? "startDate" : "endDate";
 		$showtime = in_array($eventfield, array("starttimelimit", "endtimelimit"));
@@ -89,6 +90,8 @@ class FormFieldJeveventdate extends FormField
 			$event->tzid_adjusted = true;
 		}
 
+		//return parent::getInput();
+
 		$inputdateformat = $params->get("com_editdateformat", "d.m.Y");
 		static $firsttime = true;
 		if ($firsttime)
@@ -98,6 +101,8 @@ class FormFieldJeveventdate extends FormField
 			$document->addScriptDeclaration($js);
 			$firsttime = false;
 		}
+		ob_start();
+
 		$cal = JEVHelper::loadElectricCalendar($this->name, $this->name, $event->$eventfield(), $minyear, $maxyear, 'var elem =jevjq(this);'.$this->element['onhidestart'], "var elem = jevjq(this);".$this->element['onchange'], $inputdateformat, array(), $showtime);
 		echo $cal;
 		?>

@@ -79,7 +79,7 @@ class JevModal
 		HTMLHelper::_('jquery.framework');
 
 		HTMLHelper::stylesheet('com_jevents/lib_jevmodal/jevmodal.css', array(), true);
-		HTMLHelper::script('com_jevents/lib_jevmodal/jevmodal.js', false, true, false, false, true);
+		HTMLHelper::script('com_jevents/lib_jevmodal/jevmodal.js', array('framework' =>  false, 'relative' => true, 'pathOnly' => false, 'detectBrowser' => false, 'detectDebug' => true));
 
 		static::$loaded[__METHOD__] = true;
 

@@ -366,6 +366,38 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		// strip carriage returns other wise the preg replace doesn;y work - needed because wysiwyg editor may add the carriage return in the template field
 		$template_value = str_replace("\r", '', $template_value);
 		$template_value = str_replace("\n", '', $template_value);
+
+		$templateparams = new stdClass();
+		// is there custom css or js - if so push into the params
+		if (strpos($template_value, '{{CUSTOMJS}') !== false)
+		{
+			preg_match('|' . preg_quote('{{CUSTOMJS}}') . '(.*?)' . preg_quote('{{/CUSTOMJS}}') . '|s', $template_value, $matches);
+
+			if (count($matches) == 2)
+			{
+				$templateparams->customjs = $matches[1];
+				$template_value = str_replace($matches[0], "",	$template_value);
+			}
+		}
+		if (strpos($template_value, '{{CUSTOMCSS}') !== false)
+		{
+			preg_match('|' . preg_quote('{{CUSTOMCSS}}') . '(.*?)' . preg_quote('{{/CUSTOMCSS}}') . '|s', $template_value, $matches);
+
+			if (count($matches) == 2)
+			{
+				$templateparams->customcss = $matches[1];
+				$template_value = str_replace($matches[0], "",	$template_value);
+			}
+		}
+		if (isset($templateparams->customcss) && !empty($templateparams->customcss) )
+		{
+			Factory::getDocument()->addStyleDeclaration($templateparams->customcss);
+		}
+		if (isset($templateparams->customjs) && !empty($templateparams->customjs) )
+		{
+			Factory::getDocument()->addScriptDeclaration($templateparams->customjs);
+		}
+
 		// non greedy replacement - because of the ?
 		$template_value = preg_replace_callback('|{{.*?}}|', 'cleanLabels', $template_value);
 

@@ -19,8 +19,6 @@ defined('JPATH_BASE') or die;
 $msgList = $displayData['msgList'];
 $jversion = new Version;
 
-ob_start();
-
 // Skip Chosen in Joomla 4.x+
 if ($jversion->isCompatible('4.0'))
 {
@@ -52,12 +50,3 @@ else
 </div>
 <?php
 }
-$messages = json_encode(ob_get_clean());
-$script = <<< SCRIPT
-	document.addEventListener('DOMContentLoaded', function () {
-		if (document.getElementById('ysts_system_messages')) {
-			document.getElementById('ysts_system_messages').innerHTML = $messages;
-		}
-	});
-SCRIPT;
-Factory::getDocument()->addScriptDeclaration($script);
