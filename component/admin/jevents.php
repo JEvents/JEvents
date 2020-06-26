@@ -58,11 +58,6 @@ HTMLHelper::_('jquery.framework');
 JevHtmlBootstrap::framework();
 JEVHelper::script("jQnc.js", "components/com_jevents/assets/js/");
 
-if (version_compare(JVERSION, "4.0", "lt") && ComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery", 1))
-{
-	// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
-	Factory::getDocument()->addScriptDeclaration("checkJQ();");
-}
 
 $registry = JevRegistry::getInstance("jevents");
 

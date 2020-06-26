@@ -378,7 +378,7 @@ if (count($jevplugins))
 							$fieldhtml = str_replace(array('class="span10', 'class=" span10'), 'class="gsl-width-expand gsl-margin-small-bottom  ', $fieldhtml );
 
 							// Needed to deal with early execution of initTemplate in backend
-							$fieldhtml = str_replace('btn-group', 'btn-group-ysts',$fieldhtml );
+							$fieldhtml = str_replace('gsl-button-group', 'gsl-button-group-ysts',$fieldhtml );
 
 							$html[] = $fieldhtml;
 
@@ -431,7 +431,7 @@ $html[] = '</tr>';
 		{
             ?>
             <li>
-                <ul gsl-accordion class="gsl-list-divider">
+                <ul class="gsl-list-divider" gsl-accordion>
             <?php
 			$i = 0;
 			foreach ($jevplugins as $plugin)
@@ -440,7 +440,7 @@ $html[] = '</tr>';
 				if (file_exists($config))
 				{
 					?>
-					<li clas="gsl-card gsl-card-default gsl-card-hover">
+					<li class="gsl-card gsl-card-default gsl-card-hover" style="position:relative">
 					<?php
 					// Load language file
 					$lang     = Factory::getLanguage();
@@ -470,36 +470,48 @@ $html[] = '</tr>';
 					$safedesc = Text::_($xml->description, true);
 					$safename = Text::_($xml->name, true);
 
+					if ($safedesc)
+					{
+						$popclass = " hasYsPopover";
+						$labelinfo = '  data-yspoptitle="' . $safename . '" data-yspopcontent="' . $safedesc . '" ';
+						$labelinfo .= ' data-yspopoptions=\'{"mode" : "click, hover", "offset" : 20,"delayHide" : 200, "pos" : "top-left"}\' ';
+					}
+					else
+					{
+						$popclass = "";
+						$labelinfo = '';
+					}
+
 					// offer drop down IFF has fields!
 					if ($hasfields)
 					{
-						$label = '<i class="icon-chevron-right"></i> ' . Text::_($xml->name);
+						$label = '<i gsl-icon="icon:chevron-right" ></i> ' . Text::_($xml->name);
 					}
 					else
 					{
-						$label = '<i class="icon-blank"></i> ' . Text::_($xml->name);
+						$label = '<span style="margin-left:25px;" >' . Text::_($xml->name) ."</span>";
 					}
 					if ($safedesc)
 					{
-						$label .= '<i class="icon-info-sign icon-info" data-content="<strong>' . $safename . "</strong><br/>" . $safedesc . '" style="margin-left:10px;font-size:1.2em;"></i> ';
+						$label .= '<i gsl-icon="icon:info" style="margin-left:10px;font-size:1.2em;" class="' . $popclass. '" ' . $labelinfo. '></i> ';
 					}
 					else
 					{
-						$label .= '<i class="icon-blank" style="margin-left:10px"></i> ';
+						$label .= '';
 					}
 
 					$checked1 = $plugin->enabled ? 'checked="checked" ' : '';
 					$checked0 = !$plugin->enabled ? 'checked="checked" ' : '';
-					$label    .= '<fieldset class="btn-group radio"  style="float:right;">'
-						. '<input type="radio"  ' . $checked1 . '  value="1" name="jform_plugin[' . $plugin->type . '][' . $plugin->name . '][enabled]"  id="jform_plugin_' . $plugin->type . '_' . $plugin->name . '_params_enabled1" class="btn">'
-						. '<label for="jform_plugin_' . $plugin->type . '_' . $plugin->name . '_params_enabled1" class="btn">'
+					$labelextra    = '<div class="gsl-button-group " style="position:absolute;right:30px" >'
+						. '<input type="radio"  ' . $checked1 . '  value="1" name="jform_plugin[' . $plugin->type . '][' . $plugin->name . '][enabled]"  id="jform_plugin_' . $plugin->type . '_' . $plugin->name . '_params_enabled1" class="gsl-hidden">'
+						. '<label for="jform_plugin_' . $plugin->type . '_' . $plugin->name . '_params_enabled1" class="gsl-button gsl-button-small ' . ($plugin->enabled ? 'gsl-button-primary' : ''). ' ">'
 						. Text::_('JENABLED')
 						. '</label>'
-						. '<input type="radio" ' . $checked0 . ' value="0" name="jform_plugin[' . $plugin->type . '][' . $plugin->name . '][enabled]"  id="jform_plugin_' . $plugin->type . '_' . $plugin->name . '_params_enabled0" class="btn">'
-						. '<label for="jform_plugin_' . $plugin->type . '_' . $plugin->name . '_params_enabled0" class="btn">'
+						. '<input type="radio" ' . $checked0 . ' value="0" name="jform_plugin[' . $plugin->type . '][' . $plugin->name . '][enabled]"  id="jform_plugin_' . $plugin->type . '_' . $plugin->name . '_params_enabled0" class="gsl-hidden">'
+						. '<label for="jform_plugin_' . $plugin->type . '_' . $plugin->name . '_params_enabled0" class="gsl-button gsl-button-small ' . ($plugin->enabled ? '' : 'gsl-button-danger'). '">'
 						. Text::_('JDISABLED')
 						. '</label>'
-						. '</fieldset>';
+						. '</div>';
 
 					//$label = JText::_($xml->name);
 					if ($hasfields)
@@ -561,45 +573,27 @@ $html[] = '</tr>';
 							$html[] = '</div>';
 						}
 
-						if ($safedesc)
-						{
-							$popclass = " hasYsPopover";
-							$labelinfo = '  data-yspoptitle="' . $safename . '" data-yspopcontent="' . $safedesc . '" ';
-							$labelinfo .= ' data-yspopoptions=\'{"mode" : "click, hover", "offset" : 20,"delayHide" : 200, "pos" : "top-left"}\' ';
-						}
-						else
-						{
-							$popclass = "";
-							$labelinfo = '';
-						}
-
 						?>
-                        <a class="gsl-accordion-title <?php echo $popclass;?>" href="#" <?php echo $labelinfo;?>  ><?php echo $label; ?></a>
+						<?php echo $labelextra; ?>
+                        <a class="gsl-accordion-title " href="#"  >
+	                        <?php echo $label; ?>
+                        </a>
                         <div class="gsl-accordion-content">
 							<?php
 							echo implode("\n", $html);
 							?>
                         </div>
+
 						<?php
 					}
 					else
 					{
-						if ($safedesc)
-						{
-							$popclass = " hasYsPopover";
-							$labelinfo = '  data-yspoptitle="' . $safename . '" data-yspopcontent="' . $safedesc . '"  ';
-							$labelinfo .= ' data-yspopoptions=\'{"mode" : "click, hover", "offset" : 20,"delayHide" : 200, "pos" : "top-left"}\' ';
-						}
-						else {
-							$popclass = "";
-							$labelinfo = '';
-						}
 
 						?>
-					<a class="gsl-accordion-title <?php echo $popclass;?>" href="#" <?php echo $labelinfo;?> ><?php echo $label; ?></a>
-					<div class="gsl-accordion-content">
-						<?php echo JText::_("COM_JEVENTS_NO_CONFIG_OPTIONS");?>
-					</div>
+						<?php echo $labelextra; ?>
+						<div class="gsl-accordion-title "  >
+							<?php echo $label; ?>
+						</div>
 						<?php
 					}
 					?>

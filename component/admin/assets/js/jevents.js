@@ -6,3 +6,10 @@
  * @license    GNU General Public License version 3 or later; see LICENSE.txt
  */
 
+document.addEventListener('DOMContentLoaded', function() {
+    // set container scope for code
+    gslUIkit.container = '.gsl-scope';
+})
+
+ys_popover(".hasYsPopover");
+

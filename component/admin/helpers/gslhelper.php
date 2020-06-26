@@ -24,8 +24,6 @@ class GslHelper
 	public static function loadAssets()
 	{
 		$document = Factory::getDocument();
-		// set container scope for code
-		$document->addScriptDeclaration("gslUIkit.container = '.gsl-scope';");
 
 		HTMLHelper::stylesheet('media/com_jevents/css/uikit.css', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false));
 		HTMLHelper::stylesheet('administrator/components/com_jevents/assets/css/jevents.css', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false));
@@ -39,10 +37,10 @@ class GslHelper
 			HTMLHelper::stylesheet('administrator/components/com_jevents/assets/css/j3.css', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false));
 		}
 
-		HTMLHelper::script('media/com_jevents/js/uikit.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false));
-		HTMLHelper::script('media/com_jevents/js/uikit-icons.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false));
-		HTMLHelper::script('administrator/components/com_jevents/assets/js/gslframework.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false));
-		HTMLHelper::script('administrator/components/com_jevents/assets/js/jevents.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false));
+		HTMLHelper::script('media/com_jevents/js/uikit.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
+		HTMLHelper::script('media/com_jevents/js/uikit-icons.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
+		HTMLHelper::script('administrator/components/com_jevents/assets/js/gslframework.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
+		HTMLHelper::script('administrator/components/com_jevents/assets/js/jevents.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
 	}
 
 	public static function renderModal()
