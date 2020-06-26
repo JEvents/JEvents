@@ -690,6 +690,9 @@ body, body.@{mycomponent}
 
     .ys-titlebar {
       z-index: 999;
+      /* Initial display constraints prior to page flow being completed */
+      max-height:50px;
+      overflow: hidden;
     }
 
     #top-head {

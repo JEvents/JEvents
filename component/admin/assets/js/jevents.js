@@ -8,7 +8,11 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     // set container scope for code
-    gslUIkit.container = '.gsl-scope';
+    gslUIkit.container = document.getElementById('gslc');
+
+    // reveal right top menu icons
+    document.querySelector('.gsl-navbar-right  .gsl-navbar-nav').classList.remove('gsl-hidden');
+
 })
 
 ys_popover(".hasYsPopover");

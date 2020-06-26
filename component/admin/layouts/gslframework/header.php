@@ -54,7 +54,7 @@ $tmpl = $app->input->getCmd('tmpl', '');
         <div id="right-col" class="gsl-padding-remove gsl-width-expand@m <?php if (!empty($tmpl) || $app->isClient('site')) echo "noleftbar";?> ">
 
             <!--HEADER-->
-            <header id="top-head">
+            <header id="top-head" >
 	            <?php
 	            if (empty($tmpl) && !$app->isClient('site'))
 	            {
@@ -66,7 +66,7 @@ $tmpl = $app->input->getCmd('tmpl', '');
                         ?>
                     </div>
                     <div class="gsl-navbar-right  gsl-background-secondary ">
-                            <ul class="gsl-navbar-nav ">
+                            <ul class="gsl-navbar-nav gsl-hidden">
 	                            <?php
 	                            $jversion = new JVersion;
 	                            if (true || $jversion->isCompatible('4.0'))
@@ -181,7 +181,7 @@ $tmpl = $app->input->getCmd('tmpl', '');
             </header>
             <!--/HEADER-->
 
-            <div id="ysts_system_messages"></div>
+            <div id="ysts_system_messages" class="gsl-hidden"></div>
 
             <div class="gsl-content" data-gsl-height-viewport="expand: true;mode: slide">
 

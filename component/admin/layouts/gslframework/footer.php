@@ -27,7 +27,7 @@ echo GslHelper::renderVersion();
     </div>
 
     <!-- OFFCANVAS -->
-    <div id="offcanvas-left-panel" data-gsl-offcanvas="flip: false; overlay: true; container: #gslc;">
+    <div id="offcanvas-left-panel" data-gsl-offcanvas="flip: false; overlay: true; container: #gslc;" class="gsl-hidden">
         <div class="gsl-offcanvas-bar gsl-offcanvas-bar-animation gsl-offcanvas-slide">
             <button class="gsl-offcanvas-close gsl-close gsl-icon" type="button" data-gsl-close></button>
             <div class="offcanvas-content"></div>
@@ -36,7 +36,7 @@ echo GslHelper::renderVersion();
     <!-- /OFFCANVAS -->
 
     <!-- OFFCANVAS -->
-    <div id='right-panel-flip' class="gsl-offcanvas-flip gsl-padding-remove">
+    <div id='right-panel-flip' class="gsl-offcanvas-flip gsl-padding-remove gsl-hidden">
         <div id="offcanvas-right-panel" class="gsl-offcanvas" gsl-offcanvas="mode: push; flip: true; overlay: true; container: #right-panel-flip;esc-close: true;bg-close: false">
 
             <div class="gsl-offcanvas-bar">
