@@ -99,7 +99,7 @@ $user = Factory::getUser();
                             </td>
                             <td align="center">
                                 <?php
-                                $img = $row->state ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+                                $img = $row->state ? "<i gsl-icon='icon:check'></i>" : "<i gsl-icon='icon:close'></i>";
                                 ?>
                                 <a href="javascript: void(0);"
                                    onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->state ? 'icals.unpublish' : 'icals.publish'; ?>')">
@@ -110,7 +110,7 @@ $user = Factory::getUser();
                                 <?php
                                 if ($row->icaltype == 0)
                                 {
-                                    $img = $row->autorefresh ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+                                    $img = $row->autorefresh ? "<i gsl-icon='icon:check'></i>" : "<i gsl-icon='icon:close'></i>";
                                     ?>
                                     <a href="javascript: void(0);"
                                        onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->autorefresh ? 'icals.noautorefresh' : 'icals.autorefresh'; ?>')">
@@ -136,7 +136,7 @@ $user = Factory::getUser();
                                 <?php
                                 if ($row->icaltype == 2)
                                 {
-                                    $img = $row->isdefault ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+                                    $img = $row->isdefault ? "<i gsl-icon='icon:check'></i>" : "<i gsl-icon='icon:close'></i>";
                                     ?>
                                     <a href="javascript: void(0);"
                                        onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->isdefault ? 'icals.notdefault' : 'icals.isdefault'; ?>')">

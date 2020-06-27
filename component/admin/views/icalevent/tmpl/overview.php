@@ -149,15 +149,15 @@ $data['filters'] = $this->filters;
                                 <?php
                                 if ($row->state() == 1)
                                 {
-                                    $img = HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true);
+                                    $img = "<i gsl-icon='icon:check'></i>";
                                 }
                                 else if ($row->state() == 0)
                                 {
-                                    $img = HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+                                    $img = "<i gsl-icon='icon:close'></i>";
                                 }
                                 else
                                 {
-                                    $img = HTMLHelper::_('image', 'admin/trash.png', '', array('title' => ''), true);
+                                    $img = "<i gsl-icon='icon:trash'></i>";
                                 }
                                 ?>
                                 <a href="javascript: void(0);"

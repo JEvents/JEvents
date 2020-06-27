@@ -87,9 +87,6 @@ function ystsPositionElements()
 	let headerOffsetHeight = document.getElementById('top-head').offsetHeight;
 
 	if (document.getElementById('ysts_system_messages')) {
-		if(document.getElementById('ysts_system_messages').children.length == 0){
-		//	document.getElementById('ysts_system_messages').style.display = 'none';
-		}
 		let thpos = window.getComputedStyle(document.getElementById('top-head')).getPropertyValue('position');
 		if (thpos == "fixed" ) {
 			document.getElementById('ysts_system_messages').style.marginTop = (10 + headerOffsetHeight) + 'px';

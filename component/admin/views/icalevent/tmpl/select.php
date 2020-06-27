@@ -142,11 +142,7 @@ $function = $input->getCmd('function', 'jSelectEvent');
 				<td align="center"><?php echo $row->creatorName(); ?></td>
 				<td align="center">
 					<?php
-					$img = $row->state() ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
-					if ($img == "" || strpos($img, 'src=""') > 0)
-					{
-						$img = $row->state() ? Text::_("JEV_PUBLISHED") : Text::_("JEV_NOT_PUBLISHED");
-					}
+					$img = $row->state() ? "<i gsl-icon='icon:check'></i>" : "<i gsl-icon='icon:close'></i>";
 					?>
 					<?php echo $img; ?>
 				</td>

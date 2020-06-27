@@ -1,9 +1,4 @@
 <?php
-
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Version;
-use \Joomla\CMS\Factory;
-
 /**
  * @package     Joomla.Site
  * @subpackage  Layout
@@ -23,15 +18,18 @@ $jversion = new Version;
 if ($jversion->isCompatible('4.0'))
 {
 	include (JPATH_SITE . "/layouts/joomla/system/message.php");
+
 }
 else
 {
+$alert = array('error' => 'alert-error', 'warning' => '', 'notice' => 'alert-info', 'message' => 'alert-success');
+ob_start();
 ?>
 <div id="system-message-container">
 	<?php if (is_array($msgList) && !empty($msgList)) : ?>
 		<div id="system-message">
 			<?php foreach ($msgList as $type => $msgs) : ?>
-				<div class="alert alert-<?php echo $type; ?>">
+				<div class="alert <?php echo isset($alert[$type]) ? $alert[$type] : 'alert-' . $type; ?>">
 					<?php // This requires JS so we should add it through JS. Progressive enhancement and stuff. ?>
 					<a class="close" data-dismiss="alert">×</a>
 
@@ -50,3 +48,10 @@ else
 </div>
 <?php
 }
+$messages = json_encode(ob_get_clean());
+?>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('ysts_system_messages').innerHTML = <?php echo $messages;?>;
+    });
+</script>

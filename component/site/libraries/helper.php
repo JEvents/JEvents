@@ -4526,7 +4526,7 @@ SCRIPT;
 				)
 				->values(
 					$db->q('JEvents And JEvents Addon Updates') . ', ' .
-					$db->q('extension') . ', ' .
+					$db->q('collection') . ', ' .
 					$db->q("$updateDomain/newupdates/jevents_addon_updates.xml") . ', ' .
 					$db->q(1)
 				);

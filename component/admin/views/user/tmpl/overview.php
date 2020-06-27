@@ -127,7 +127,7 @@ $fullspan = 12;
 						</td>
 
 						<?php
-						$img = $row->published ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+						$img = $row->published ? "<i gsl-icon='icon:check'></i>" : "<i gsl-icon='icon:close'></i>";
 
 						$href = '';
 						if ($row->published >= 0)
@@ -145,7 +145,7 @@ $fullspan = 12;
 						<td align="center"><?php echo $href; ?></td>
 
 						<?php
-						$img = $row->cancreate ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+						$img = $row->cancreate ? "<i gsl-icon='icon:check'></i>" : "<i gsl-icon='icon:close'></i>";
 
 						$href = '';
 						if ($row->cancreate >= 0)
@@ -165,7 +165,7 @@ $fullspan = 12;
 						<td align="center"><?php echo $row->eventslimit; ?></td>
 
 						<?php
-						$img = $row->canpublishown ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+						$img = $row->canpublishown ? "<i gsl-icon='icon:check'></i>" : "<i gsl-icon='icon:close'></i>";
 
 						$href = '';
 						if ($row->canpublishown >= 0)
@@ -183,7 +183,7 @@ $fullspan = 12;
 						<td align="center"><?php echo $href; ?></td>
 
 						<?php
-						$img = $row->candeleteown ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+						$img = $row->candeleteown ? "<i gsl-icon='icon:check'></i>" : "<i gsl-icon='icon:close'></i>";
 
 						$href = '';
 						if ($row->candeleteown >= 0)
@@ -201,7 +201,7 @@ $fullspan = 12;
 						<td align="center"><?php echo $href; ?></td>
 
 						<?php
-						$img = $row->canedit ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+						$img = $row->canedit ? "<i gsl-icon='icon:check'></i>" : "<i gsl-icon='icon:close'></i>";
 
 						$href = '';
 						if ($row->canedit >= 0)
@@ -219,7 +219,7 @@ $fullspan = 12;
 						<td align="center"><?php echo $href; ?></td>
 
 						<?php
-						$img = $row->canpublishall ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+						$img = $row->canpublishall ? "<i gsl-icon='icon:check'></i>" : "<i gsl-icon='icon:close'></i>";
 
 						$href = '';
 						if ($row->canpublishall >= 0)
@@ -237,7 +237,7 @@ $fullspan = 12;
 						<td align="center"><?php echo $href; ?></td>
 
 						<?php
-						$img = $row->candeleteall ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+						$img = $row->candeleteall ? "<i gsl-icon='icon:check'></i>" : "<i gsl-icon='icon:close'></i>";
 
 						$href = '';
 						if ($row->candeleteall >= 0)
@@ -255,7 +255,7 @@ $fullspan = 12;
 						<td align="center"><?php echo $href; ?></td>
 
 						<?php
-						$img  = $row->canuploadimages ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+						$img  = $row->canuploadimages ? "<i gsl-icon='icon:check'></i>" : "<i gsl-icon='icon:close'></i>";
 						$href = '';
 						if ($row->canuploadimages >= 0)
 						{
@@ -272,7 +272,7 @@ $fullspan = 12;
 						<td align="center"><?php echo $href; ?></td>
 
 						<?php
-						$img = $row->canuploadmovies ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+						$img = $row->canuploadmovies ? "<i gsl-icon='icon:check'></i>" : "<i gsl-icon='icon:close'></i>";
 
 						$href = '';
 						if ($row->canuploadmovies >= 0)
@@ -290,7 +290,7 @@ $fullspan = 12;
 						<td align="center"><?php echo $href; ?></td>
 
 						<?php
-						$img = $row->cancreateown ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+						$img = $row->cancreateown ? "<i gsl-icon='icon:check'></i>" : "<i gsl-icon='icon:close'></i>";
 
 						$href = '';
 						if ($row->cancreateown >= 0)
@@ -308,7 +308,7 @@ $fullspan = 12;
 						<td align="center"><?php echo $href; ?></td>
 
 						<?php
-						$img = $row->cancreateglobal ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+						$img = $row->cancreateglobal ? "<i gsl-icon='icon:check'></i>" : "<i gsl-icon='icon:close'></i>";
 
 						$href = '';
 						if ($row->cancreateglobal >= 0)
