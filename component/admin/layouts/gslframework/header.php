@@ -42,7 +42,7 @@ $tmpl = $app->input->getCmd('tmpl', '');
     <?php
     GslHelper::renderModal();
     ?>
-    <div class="gsl-margin-remove" gsl-grid>
+    <div class="gsl-margin-remove gsl-grid" gsl-grid>
         <!-- LEFT BAR -->
 		<?php
        if (empty($tmpl) && !$app->isClient('site'))
@@ -181,7 +181,7 @@ $tmpl = $app->input->getCmd('tmpl', '');
             </header>
             <!--/HEADER-->
 
-            <div id="ysts_system_messages" ></div>
+	        <div id="ysts_system_messages">YSTS_SYSTEM_MESSAGES</div>
 
             <div class="gsl-content" data-gsl-height-viewport="expand: true;mode: slide">
 

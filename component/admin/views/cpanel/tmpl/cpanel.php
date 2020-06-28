@@ -25,8 +25,7 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
 <div id="jevents" >
     <!-- CONTENT -->
     <div class="gsl-container gsl-container-expand">
-        <div class="gsl-grid gsl-grid-divider gsl-grid-medium gsl-child-width-1-2 gsl-child-width-1-3@m gsl-child-width-1-4@l"
-             gsl-grid>
+        <div class="gsl-grid gsl-grid-divider gsl-grid-medium gsl-child-width-1-2 gsl-child-width-1-3@m gsl-child-width-1-4@l"    gsl-grid>
             <div>
                 <span class="gsl-text-small">
                         <span gsl-icon="icon:calendar" class="gsl-margin-small-right gsl-text-primary"></span>
@@ -175,7 +174,7 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
 			}
 		}
 		?>
-        <div class="gsl-grid gsl-grid-medium" gsl-grid gsl-height-match="target: > div > .gsl-card">
+        <div class="gsl-grid gsl-grid-medium gsl-grid" gsl-grid gsl-height-match="target: > div > .gsl-card">
 
             <!-- panel -->
             <div class="gsl-width-1-2@l" >

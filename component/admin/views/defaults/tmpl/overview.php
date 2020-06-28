@@ -22,7 +22,7 @@ $fullspan = 12;
     <div id="ysts-main-container">
         <div id="j-main-container" class="span<?php echo (!empty($this->sidebar)) ? $mainspan : $fullspan; ?>  ">
             <div id="jstools clearfix">
-                <div class="js-stools-container-filters gsl-child-width-1-3@s gsl-child-width-1-5@m  " gsl-grid>
+                <div class="js-stools-container-filters gsl-child-width-1-3@s gsl-child-width-1-5@m   gsl-grid" gsl-grid>
                     <?php
                     /*
                     if (count($this->languages) > 1)

@@ -93,7 +93,7 @@ HTMLHelper::_('searchtools.form', $data['options']['formSelector'], $data['optio
 
 ?>
 <div class="js-stools">
-    <div class="ysts_list_filters" gsl-grid>
+    <div class="ysts_list_filters gsl-grid gsl-grid" gsl-grid>
 		<?php if ($data['options']['showSelector']) : ?>
             <div class="js-stools-container-selector">
 				<?php echo LayoutHelper::render('joomla.searchtools.default.selector', $data); ?>
@@ -113,7 +113,7 @@ HTMLHelper::_('searchtools.form', $data['options']['formSelector'], $data['optio
 		$filters = $data['view']->filterForm->getGroup('filter');
 		$expand = count($filters) > 2 ? "gsl-child-width-expand@l" : "";
 		?>
-        <div class="js-stools-container-filters gsl-child-width-1-4@s gsl-child-width-1-6@m <?php echo $filtersActiveClass . " " . $expand; ?>  " gsl-grid>
+        <div class="js-stools-container-filters gsl-child-width-1-4@s gsl-child-width-1-6@m <?php echo $filtersActiveClass . " " . $expand; ?>   gsl-grid" gsl-grid>
 			<?php echo $this->sublayout('filters', $data); ?>
         </div>
 		<?php

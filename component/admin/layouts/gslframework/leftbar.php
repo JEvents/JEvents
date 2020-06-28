@@ -15,7 +15,7 @@ $leftIconLinks = GslHelper::getLeftIconLinks();
 ?>
 <aside id="left-col" class="gsl-padding-remove  gsl-background-secondary hide-label ">
 
-    <nav class="left-nav-wrap  gsl-width-auto@m gsl-navbar-container" gsl-navbar>
+    <nav class="left-nav-wrap  gsl-width-auto@m"  gsl-navbar>
         <div class="left-logo gsl-background-secondary"  gsl-toggle="target:#left-col, #left-col .left-nav, .ysts-page-title; mode: hover;cls: hide-label">
             <div>
                 <?php
