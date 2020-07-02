@@ -375,9 +375,10 @@
             <exclude name="**/.svn/**"></exclude>
         </fileset>
 
-        <zip ignorelinks="true" destfile="${builddir}/../pkg_JEvents_${extension.version}.zip">
+        <zip ignorelinks="true" destfile="${builddir}/../pkg_jevents_${extension.version}.zip">
             <fileset refid="packagedir" />
         </zip>
+        <copy file="${builddir}/../pkg_jevents_${extension.version}.zip" tofile="${builddir}/../pkg_jevents.zip" />
         <delete dir="${builddir}" includeemptydirs="true" verbose="false" failonerror="true" />
 
 
