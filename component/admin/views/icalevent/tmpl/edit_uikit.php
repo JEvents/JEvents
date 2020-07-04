@@ -328,7 +328,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 				if (!$cfg->get('com_single_pane_edit', 0))
 				{
 					?>
-					<ul  id="myEditTabs" gsl-tab>
+					<ul  id="myEditTabs" class="gsl-tab" gsl-tab>
 						<li class="active"><a href="#common"><?php echo Text::_("JEV_TAB_COMMON"); ?></a></li>
 						<?php
 						if (!$cfg->get('com_single_pane_edit', 0) && !$cfg->get('timebeforedescription', 0))

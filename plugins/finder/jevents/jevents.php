@@ -14,6 +14,11 @@ use Joomla\CMS\Date\Date;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Component\Finder\Administrator\Indexer\Adapter;
+use Joomla\Component\Finder\Administrator\Indexer\Helper;
+use Joomla\Component\Finder\Administrator\Indexer\Indexer;
+use Joomla\Component\Finder\Administrator\Indexer\Result;
+
 
 // SEE  http://docs.joomla.org/Creating_a_Smart_Search_plug-in
 
@@ -31,7 +36,7 @@ require_once JPATH_ADMINISTRATOR . '/components/com_finder/helpers/indexer/adapt
  * @subpackage  Finder.JEvents
  * @since       2.5
  */
-class plgFinderJEvents extends FinderIndexerAdapter
+class plgFinderJEvents extends Adapter
 {
 	/**
 	 * The plugin identifier.
@@ -242,15 +247,14 @@ class plgFinderJEvents extends FinderIndexerAdapter
 	/**
 	 * Method to index an item. The item must be a FinderIndexerResult object.
 	 *
-	 * @param   FinderIndexerResult $item   The item to index as an FinderIndexerResult object.
-	 * @param   string              $format The item format
+	 * @param   Result $item   The item to index as an Result object.
 	 *
 	 * @return  void
 	 *
 	 * @since   2.5
 	 * @throws  Exception on database error.
 	 */
-	protected function index(FinderIndexerResult $item, $format = 'html')
+	protected function index(Result $item)
 	{
 
 		// Check if the extension is enabled
@@ -270,8 +274,8 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		$item->metadata = $registry;
 
 		// Trigger the onContentPrepare event.
-		$item->summary = FinderIndexerHelper::prepareContent($item->summary, $item->params);
-		$item->body    = FinderIndexerHelper::prepareContent($item->body, $item->params);
+		$item->summary = Helper::prepareContent($item->summary, $item->params);
+		$item->body    = Helper::prepareContent($item->body, $item->params);
 
 		// Build the necessary route and path information.
 		$itemid      = $this->params->get("target_itemid", 0);
@@ -280,7 +284,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 
 		include_once(JPATH_SITE . "/components/com_jevents/jevents.defines.php");
 
-		$item->path = FinderIndexerHelper::getContentPath($item->route);
+		$item->path = $item->route;
 		// get the data and query models
 		$dataModel  = new JEventsDataModel();
 		$queryModel = new JEventsDBModel($dataModel);
@@ -290,8 +294,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 
 		if (isset($theevent[0]) && $theevent[0]) {
 			PluginHelper::importPlugin('jevents');
-			$dispatcher = JEventDispatcher::getInstance();
-			$dispatcher->trigger('onJevFinderIndexing', array(&$theevent));
+			Factory::getApplication()->triggerEvent('onJevFinderIndexing', array(&$theevent));
 		}
 
 		$theevent = count($theevent) === 1 ? $theevent[0] : $theevent;
@@ -375,7 +378,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		//$item->addTaxonomy('Language', $item->language);
 
 		// Get jevents extras.
-		FinderIndexerHelper::getContentExtras($item);
+		Helper::getContentExtras($item);
 
 		// Index the item.
 		$this->indexer->index($item);
@@ -405,7 +408,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 	 *
 	 * @param   integer $id The id of the content item.
 	 *
-	 * @return  FinderIndexerResult  A FinderIndexerResult object.
+	 * @return  Result  A Result object.
 	 *
 	 * @since   2.5
 	 * @throws  Exception on database error.
@@ -413,7 +416,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 	protected function getItem($id)
 	{
 
-		//Log::add('FinderIndexerAdapter::getItem', Log::INFO);
+		//Log::add('Adapter::getItem', Log::INFO);
 
 		// Get the list query and add the extra WHERE clause.
 		$sql = $this->getListQuery($query = null, 'item');

@@ -4292,7 +4292,7 @@ SCRIPT;
 
 		if (version_compare(JVERSION, '3.7.1', '>='))
 		{
-			$filter = InputFilter::getInstance(null, null, 1, 1);
+			$filter = InputFilter::getInstance(array(), array(), 1, 1);
 
 			//Joomla! no longer provides HTML allowed in input so we need to fetch raw
 			//Then filter on through with InputFilter to HTML

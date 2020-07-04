@@ -457,15 +457,14 @@ ob_start();
 		?>
     }
 
-    //if (window.attachEvent) window.attachEvent("onload",setupRepeats);
-    //else window.onload=setupRepeats;
-    //setupRepeats();
+document.addEventListener('DOMContentLoaded', function () {
     window.setTimeout(setupRepeats, 500);
     // move to 12h fields
     set12hTime(document.adminForm.start_time);
     set12hTime(document.adminForm.end_time);
     // toggle unvisible time fields
     toggleView12Hour();
+});
 
 <?php
 $script = ob_get_clean();

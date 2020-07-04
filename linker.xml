@@ -42,7 +42,7 @@
         <symlink target="${rootPath}/component/media/js" link="${p}/media/${component}/js" overwrite="true" />
         <symlink target="${rootPath}/component/media/css" link="${p}/media/${component}/css" overwrite="true" />
         <symlink target="${rootPath}/component/media/images" link="${p}/media/${component}/images" overwrite="true" />
-        <symlink target="${rootPath}/plugins/finder" link="${p}/plugins/finder/jevents" overwrite="true" />
+        <symlink target="${rootPath}/plugins/finder/jevents" link="${p}/plugins/finder/jevents" overwrite="true" />
         <symlink target="${rootPath}/plugins/search/" link="${p}/plugins/search/eventsearch" overwrite="true" />
         <symlink target="${rootPath}/plugins/installer" link="${p}/plugins/installer/jeventsinstaller" overwrite="true" />
         <symlink target="${rootPath}/plugins/jevents" link="${p}/plugins/content/jevents" overwrite="true" />

@@ -224,12 +224,10 @@ class JEventsHTML
 	public static function buildCategorySelect($catid, $args, $catidList = null, $with_unpublished = false, $require_sel = false, $catidtop = 0, $fieldname = "catid", $sectionname = JEV_COM_COMPONENT, $excludeid = false, $order = "ordering", $eventediting = false, $allowMultiCat = false)
 	{
 		// need to declare this because of bug in Joomla HTMLHelper::_('select.options', on content pages - it loade the WRONG CLASS!
-		include_once(JPATH_SITE . "/libraries/cms/html/category.php");
+		//include_once(JPATH_SITE . "/libraries/cms/html/category.php");
 
 		ob_start();
 		$t_first_entry = ($require_sel) ? Text::_('JEV_EVENT_CHOOSE_CATEG') : Text::_('JEV_EVENT_ALLCAT');
-
-		//$options = HTMLHelper::_('category.options', $sectionname);
 
         $db     = Factory::getDbo();
         $app    = Factory::getApplication();
@@ -454,14 +452,14 @@ class JEventsHTML
 		{
 			$size = count($options) > 6 ? 6 : count($options) + 1;
 			?>
-			<label class="sr-only" for="<?php echo $fieldname;?>"><?php echo Text::_('JEV_CATEGORY_SELECT_LBL'); ?></label>
+			<label class="sr-only" class='gsl-select' for="<?php echo $fieldname;?>"><?php echo Text::_('JEV_CATEGORY_SELECT_LBL'); ?></label>
 			<select name="<?php echo $fieldname; ?>[]"  id="<?php echo $fieldname; ?>" <?php echo $args; ?> multiple="multiple" size="<?php echo $size; ?>" style="width:300px;">
 			    <?php
 		    }
 		    else
 		    {
 			    ?>
-			    <label class="sr-only" for="<?php echo $fieldname;?>"><?php echo Text::_('JEV_CATEGORY_SELECT_LBL'); ?></label>
+			    <label class="sr-only" class='gsl-select' for="<?php echo $fieldname;?>"><?php echo Text::_('JEV_CATEGORY_SELECT_LBL'); ?></label>
 			    <select name="<?php echo $fieldname; ?>" <?php echo $args; ?>  id="<?php echo $fieldname; ?>" >
 				<option value=""><?php echo $t_first_entry; ?></option>
 				<?php
