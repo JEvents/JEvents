@@ -259,7 +259,7 @@ div#jevoverlapwarning h4 {
 }
 
 .jev_edit_event_notice {
-    width: 500px;
+    min-width: 500px;
 }
 
 a#colorPickButton {

@@ -307,53 +307,58 @@ document.addEventListener('DOMContentLoaded', function () {
 	let inputNodes = document.querySelectorAll('input.gsl-hidden');
 	for (let i = 0; i < inputNodes.length; i++) {
 		inputNodes[i].addEventListener('change', function() {
-			let parentNode = this.parentNode;
-			if (! parentNode.classList.contains('gsl-button-group'))
-			{
-				parentNode = this.parentNode.parentNode;
-			}
-			if (parentNode.classList.contains('gsl-button-group'))
-			{
-				let inputNodes = parentNode.querySelectorAll('input');
-				for (let i = 0; i < inputNodes.length; i++)
-				{
-					let label = parentNode.querySelector('[for="' + inputNodes[i].id + '"]');
-					if (label)
-					{
-						let activeClass = inputNodes[i].getAttribute('data-activeclass');
-						if (inputNodes[i].checked)
-						{
-							if (activeClass)
-							{
-								label.classList.add('gsl-button-' + activeClass);
-							}
-							else if (this.value == 0)
-							{
-								label.classList.add('gsl-button-danger');
-							}
-							else
-							{
-								label.classList.add('gsl-button-primary');
-							}
-						}
-						else
-						{
-							if (activeClass)
-							{
-								label.classList.remove('gsl-button-' + activeClass);
-							}
-							label.classList.remove('gsl-button-primary');
-							label.classList.remove('gsl-button-danger');
-						}
-					}
-				}
-			}
-
+			changeHiddenInput(this);
 		});
 	}
 
 
 });
+
+function changeHiddenInput(input)
+{
+	let parentNode = input.parentNode;
+	if (! parentNode.classList.contains('gsl-button-group'))
+	{
+		parentNode = input.parentNode.parentNode;
+	}
+	if (parentNode.classList.contains('gsl-button-group'))
+	{
+		let inputNodes = parentNode.querySelectorAll('input');
+		for (let i = 0; i < inputNodes.length; i++)
+		{
+			let label = parentNode.querySelector('[for="' + inputNodes[i].id + '"]');
+			if (label)
+			{
+				let activeClass = inputNodes[i].getAttribute('data-activeclass');
+				if (inputNodes[i].checked)
+				{
+					if (activeClass)
+					{
+						label.classList.add('gsl-button-' + activeClass);
+					}
+					else if (input.value == 0)
+					{
+						label.classList.add('gsl-button-danger');
+					}
+					else
+					{
+						label.classList.add('gsl-button-primary');
+					}
+				}
+				else
+				{
+					if (activeClass)
+					{
+						label.classList.remove('gsl-button-' + activeClass);
+					}
+					label.classList.remove('gsl-button-primary');
+					label.classList.remove('gsl-button-danger');
+				}
+			}
+		}
+	}
+
+}
 
 // uikit popovers
 
@@ -674,11 +679,17 @@ window.addEventListener('load', function() {
 document.addEventListener('DOMContentLoaded', function () {
 	let msgel = document.getElementById("system-message-container");
 
+	let newmsgel = document.getElementById("ysts_system_messages");
 	if (msgel && msgel.parentNode && msgel.parentNode.id != "ysts_system_messages")
 	{
-		let newmsgel = document.getElementById("ysts_system_messages");
+		newmsgel.innerHTML = "";
 		newmsgel.appendChild(msgel);
 	}
+	if (!msgel && newmsgel)
+	{
+		newmsgel.innerHTML = "&nbsp;";
+	}
+
 
 	let maincontainer = document.getElementById("j-main-container");
 	if (maincontainer) {

@@ -421,6 +421,8 @@ class JEventsModelicalevent extends ListModel
 			$limitstart = 0;
 		}
 
+		$query .= "\n GROUP BY  ev.ev_id";
+
 		$orderdir = $app->getUserStateFromRequest("eventsorderdir", "filter_order_Dir", 'asc');
 		$order    = $app->getUserStateFromRequest("eventsorder", "filter_order", 'start');
 

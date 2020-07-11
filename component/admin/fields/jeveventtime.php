@@ -74,8 +74,8 @@ class FormFieldJeveventtime extends FormField
 		{
 			$test = $event->alldayevent() || $event->noendtime();
 		}
-		$btngroup  = ComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1) ? "btn-group" : "";
-		$btn       = ComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1) ? "btn" : "";
+		$btngroup  = "gsl-button-group";
+		$btn       = "gsl-button gsl-button-small gsl-button-default";
 		$timevalue = $event->$time24function();
 		list($h, $m) = explode(":", $timevalue);
 		?>
@@ -88,15 +88,16 @@ class FormFieldJeveventtime extends FormField
 			<input class="inputbox" type="text" name="<?php echo $partname; ?>_12h" id="<?php echo $partname; ?>_12h"
 			       size="8" maxlength="8" <?php echo $test ? "disabled='disabled'" : ""; ?> value=""
 			       onchange="check12hTime(this);"/>
-			<div class="radio <?php echo $btngroup; ?> " id="<?php echo $partname; ?>_ampm">
-				<label for="<?php echo $partname; ?>AM" class="radio <?php echo $btn; ?>">
+			<div class="<?php echo $btngroup; ?> " id="<?php echo $partname; ?>_ampm">
+				<label for="<?php echo $partname; ?>AM" class=" <?php echo $btn; ?> <?php echo $h <= 12 ? 'gsl-button-primary' : ''; ?>">
 					<input type="radio" name="<?php echo $partname; ?>_ampm" id="<?php echo $partname; ?>AM"
+					       class="gsl-hidden"
 					       value="none" <?php echo $h <= 12 ? 'checked="checked"' : ''; ?>
 					       onclick="toggleAMPM('<?php echo $partname; ?>AM');" <?php echo $test ? "disabled='disabled'" : ""; ?> />
 					<?php echo Text::_('JEV_AM'); ?>
-				</label>
-				<label for="<?php echo $partname; ?>PM" class="radio <?php echo $btn; ?>">
+				</label><label for="<?php echo $partname; ?>PM" class=" <?php echo $btn; ?> <?php echo $h > 12 ? 'gsl-button-primary' : ''; ?>">
 					<input type="radio" name="<?php echo $partname; ?>_ampm" id="<?php echo $partname; ?>PM"
+					       class="gsl-hidden"
 					       value="none" <?php echo $h > 12 ? 'checked="checked"' : ''; ?>
 					       onclick="toggleAMPM('<?php echo $partname; ?>PM');" <?php echo $test ? "disabled='disabled'" : ""; ?> />
 					<?php echo Text::_('JEV_PM'); ?>

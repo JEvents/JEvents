@@ -57,10 +57,29 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 	function overview()
 	{
 
+		// get the view
+		$this->view = $this->getView("icalrepeat", "html");
+
+		// Get/Create the model
+		if ($model = $this->getModel("icalrepeat", "jeventsModel"))
+		{
+			$model->queryModel = $this->queryModel;
+
+			// Push the model into the view (as default)
+			$this->view->setModel($model, true);
+		}
+
+		// getItems so we populate the state and the active filters
+		$total    = $model->getTotal();
+		$icalrows = $model->getItems();
+
+		jimport('joomla.html.pagination');
+		$limit      = intval($model->getState('list.limit', 10));
+		$limitstart = intval($model->getState('list.start', 10));
+		$pagination = new \Joomla\CMS\Pagination\Pagination($total, $limitstart, $limit);
+
 		$input = Factory::getApplication()->input;
 
-		$db            = Factory::getDbo();
-		$publishedOnly = false;
 		$cid           = $input->get('cid', array(0), "array");
 		$cid           = ArrayHelper::toInteger($cid);
 
@@ -68,7 +87,6 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 			$id = $cid[0];
 		else
 			$id = $cid;
-
 		// if cancelling a repeat edit then I get the event id a different way
 		$evid = $input->getInt("evid", 0);
 		if ($evid > 0)
@@ -76,88 +94,12 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 			$id = $evid;
 		}
 
-
-		$limit      = intval(Factory::getApplication()->getUserStateFromRequest("viewlistlimit", 'limit', Factory::getApplication()->getCfg('list_limit', 10)));
-		$limitstart = intval(Factory::getApplication()->getUserStateFromRequest("view{" . JEV_COM_COMPONENT . "}limitstart", 'limitstart', 0));
-		$searchText = Factory::getApplication()->getUserStateFromRequest("view{" . JEV_COM_COMPONENT . "}search", 'search', '');
-
-		$searchTextQuery =  '';
-
-		if (!empty(($searchText))) {
-			$searchTextQuery = "\n AND LOWER(det.summary) LIKE '%$searchText%'";
-		}
-
-		$app    = Factory::getApplication();
-		$showpast = intval($app->getUserStateFromRequest("showpast", "showpast", 0));
-		if (!$showpast)
-		{
-			$datenow = JevDate::getDate("-1 day");
-			$searchTextQuery .= "\n AND rpt.endrepeat>'" . $datenow->toSql() . "'";
-		}
-
-
-		$query = "SELECT count( DISTINCT rpt.rp_id)"
-			. "\n FROM #__jevents_vevent as ev"
-			. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid"
-			. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
-			. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-			. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
-			. "\n WHERE ev.ev_id=" . $id
-			. $searchTextQuery
-			. "\n AND icsf.state=1"
-			. ($publishedOnly ? "\n AND ev.state=1" : "");
-		$db->setQuery($query);
-		$total = $db->loadResult();
-
-		if ($limit > $total)
-		{
-			$limitstart = 0;
-		}
-
-		$query = "SELECT ev.*, rpt.*, rr.*, det.*"
-			. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
-			. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
-			. "\n , HOUR(rpt.startrepeat) as hup, MINUTE(rpt.startrepeat ) as minup, SECOND(rpt.startrepeat ) as sup"
-			. "\n , HOUR(rpt.endrepeat  ) as hdn, MINUTE(rpt.endrepeat   ) as mindn, SECOND(rpt.endrepeat   ) as sdn"
-			. "\n FROM #__jevents_vevent as ev"
-			. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid"
-			. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
-			. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-			. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
-			. "\n WHERE ev.ev_id=" . $id
-			. $searchTextQuery
-			. "\n AND icsf.state=1"
-			. ($publishedOnly ? "\n AND ev.state=1" : "")
-			. "\n GROUP BY rpt.rp_id"
-			. "\n ORDER BY rpt.startrepeat";
-		if ($limit > 0)
-		{
-			$query .= "\n LIMIT $limitstart, $limit";
-		}
-
-		$db->setQuery($query);
-		$icalrows  = $db->loadObjectList();
-		$icalcount = count($icalrows);
-		for ($i = 0; $i < $icalcount; $i++)
-		{
-			// convert rows to jIcalEvents
-			$icalrows[$i] = new jIcalEventRepeat($icalrows[$i]);
-		}
-
-
-		jimport('joomla.html.pagination');
-		$pagination = new \Joomla\CMS\Pagination\Pagination($total, $limitstart, $limit);
-
-		// get the view
-		$this->view = $this->getView("icalrepeat", "html");
-
 		// Set the layout
 		$this->view->setLayout('overview');
 
 		$this->view->icalrows   = $icalrows;
 		$this->view->pagination = $pagination;
 		$this->view->evid       = $id;
-		$this->view->search     = $searchText;
 
 		$this->view->display();
 

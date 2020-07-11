@@ -82,7 +82,7 @@ if (count($jevplugins))
 			<?php echo Text::_('JEV_EVENTS_CONFIG'); ?>
 		</legend>
 <div class="gsl-grid  gsl-margin-remove-left">
-		<ul class="config gsl-tab-left gsl-margin-right gsl-width-auto gsl-list-divider" id="myParamsTabs" gsl-tab="connect: #jvts-config-tabs">
+		<ul class="config gsl-tab gsl-tab-left gsl-margin-right gsl-width-auto gsl-list-divider" id="myParamsTabs" gsl-tab="connect: #jvts-config-tabs">
 			<?php
 			$fieldSets = $this->form->getFieldsets();
 			$first     = true;
@@ -279,7 +279,7 @@ if (count($jevplugins))
 		{
 			?>
             <li>
-			<ul gsl-tab="connect: #jvts-theme-tabs" id="myLayoutTabs">
+			<ul class="gsl-tab" gsl-tab="connect: #jvts-theme-tabs" id="myLayoutTabs">
 				<?php
 				$first = false;
 				foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)

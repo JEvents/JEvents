@@ -87,6 +87,17 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		                <?php echo Text::sprintf("COM_JEVENTS_UPCOMING_REGISTRATIONS_THIS_MONTH", $this->upcomingAttendeesThisMonth);?>
                     </a>
                 <?php }
+                else if (file_exists(JPATH_PLUGINS . "/jevents/jevrsvppro/jevrsvppro.php"))
+                {
+	                ?>
+	                <h2 class="gsl-heading-primary gsl-margin-remove  gsl-text-primary hasYsPopover gsl-h2"
+	                    data-yspoptitle="<?php echo Text::_('COM_JEVENTS_REQUIRES_RSVPPRO_NOTENABLED'); ?>"
+	                    data-yspopcontent="<?php echo Text::_("COM_JEVENTS_REQUIRES_RSVPPRO_NOTENABLED_DETAIL"); ?>"
+	                    ?>
+		                <?php echo Text::_("COM_JEVENTS_NOT_ENABLED");?>
+	                </h2>
+	                <?php
+                }
                 else {
                     ?>
 	                <h2 class="gsl-heading-primary gsl-margin-remove  gsl-text-primary hasYsPopover gsl-h2"

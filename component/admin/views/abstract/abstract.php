@@ -383,51 +383,116 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 		// Close all the tabs in Joomla > 3.0
 		$tabstartarray = array();
 		$tabstartarray0Count = 0;
+		$tabreplace = "";
 		preg_match_all('|{{TABSTART#(.*?)}}|', $template_value, $tabstartarray);
 		if ($tabstartarray && count($tabstartarray) == 2)
 		{
 			$tabstartarray0Count = count($tabstartarray[0]);
 			if ($tabstartarray0Count > 0)
 			{
-				//We get and add all the tabs
-				$tabreplace = '<ul class="nav nav-tabs" id="myEditTabs">';
-				for ($tab = 0; $tab < $tabstartarray0Count; $tab++)
+				if (GSLMSIE10)
 				{
-					$paneid   = str_replace(" ", "_", htmlspecialchars($tabstartarray[1][$tab]));
-					$tablabel = ($paneid == Text::_($paneid)) ? $tabstartarray[1][$tab] : Text::_($paneid);
-					if ($tab == 0)
+					//We get and add all the tabs
+					$tabreplace = '<ul class="nav nav-tabs" id="myEditTabs">';
+					for ($tab = 0; $tab < $tabstartarray0Count; $tab++)
 					{
-						$tabreplace .= '<li class="active" id="tab' . $paneid . '" ><a data-toggle="tab" href="#' . $paneid . '">' . $tablabel . '</a></li>';
+						$paneid   = str_replace(" ", "_", htmlspecialchars($tabstartarray[1][$tab]));
+						$tablabel = ($paneid == Text::_($paneid)) ? $tabstartarray[1][$tab] : Text::_($paneid);
+						if ($tab == 0)
+						{
+							$tabreplace .= '<li class="active" id="tab' . $paneid . '" ><a data-toggle="tab" href="#' . $paneid . '">' . $tablabel . '</a></li>';
+						}
+						else
+						{
+							$tabreplace .= '<li  id="tab' . $paneid . '"><a data-toggle="tab" href="#' . $paneid . '">' . $tablabel . '</a></li>';
+						}
 					}
-					else
-					{
-						$tabreplace .= '<li  id="tab' . $paneid . '"><a data-toggle="tab" href="#' . $paneid . '">' . $tablabel . '</a></li>';
-					}
-				}
-				$tabreplace     .= "</ul>\n";
-				$tabreplace     = $tabreplace . $tabstartarray[0][0];
-				$template_value = str_replace($tabstartarray[0][0], $tabreplace, $template_value);
-			}
-		}
-		// Create the tabs content
-		if ($tabstartarray0Count > 0 && isset($tabstartarray[0]))
-		{
-			for ($tab = 0; $tab < $tabstartarray0Count; $tab++)
-			{
-				$paneid = str_replace(" ", "_", htmlspecialchars($tabstartarray[1][$tab]));
-				if ($tab == 0)
-				{
-					$tabcode = HTMLHelper::_('bootstrap.startPane', 'myEditTabs', array('active' => $paneid)) . HTMLHelper::_('bootstrap.addPanel', "myEditTabs", $paneid);
+					$tabreplace .= "</ul>\n";
 				}
 				else
 				{
-					$tabcode = HTMLHelper::_('bootstrap.endPanel') . HTMLHelper::_('bootstrap.addPanel', "myEditTabs", $paneid);
+					//We get and add all the tabs
+					$tabreplace = '<ul  id="myEditTabs" class="gsl-tab" gsl-tab>';
+					for ($tab = 0; $tab < $tabstartarray0Count; $tab++)
+					{
+						$paneid   = str_replace(" ", "_", htmlspecialchars($tabstartarray[1][$tab]));
+						$tablabel = ($paneid == Text::_($paneid)) ? $tabstartarray[1][$tab] : Text::_($paneid);
+						if ($tab == 0)
+						{
+							$tabreplace .= '<li class="gsl-active"><a href="#' . $paneid . '">' . $tablabel . '</a></li>';
+						}
+						else
+						{
+							$tabreplace .= '<li><a href="#' . $paneid . '">' . $tablabel . '</a></li>';
+						}
+					}
+					$tabreplace .= "</ul>\n";
 				}
-				$template_value = str_replace($tabstartarray[0][$tab], $tabcode, $template_value);
 			}
-			// Manually close the tabs
-			$template_value = str_replace("{{TABSEND}}", HTMLHelper::_('bootstrap.endPanel') . HTMLHelper::_('bootstrap.endPane'), $template_value);
 		}
+		// Create the tabs content
+		if (GSLMSIE10)
+		{
+			if ($tabstartarray0Count > 0 && isset($tabstartarray[0]))
+			{
+				for ($tab = 0; $tab < $tabstartarray0Count; $tab++)
+				{
+					$paneid = str_replace(" ", "_", htmlspecialchars($tabstartarray[1][$tab]));
+					if ($tab == 0)
+					{
+						$tabcode = HTMLHelper::_('bootstrap.startPane', 'myEditTabs', array('active' => $paneid)) . HTMLHelper::_('bootstrap.addPanel', "myEditTabs", $paneid);
+					}
+					else
+					{
+						$tabcode = HTMLHelper::_('bootstrap.endPanel') . HTMLHelper::_('bootstrap.addPanel', "myEditTabs", $paneid);
+					}
+					$template_value = str_replace($tabstartarray[0][$tab], $tabcode, $template_value);
+				}
+				// Manually close the tabs
+				$template_value = str_replace("{{TABSEND}}", HTMLHelper::_('bootstrap.endPanel') . HTMLHelper::_('bootstrap.endPane'), $template_value);
+			}
+		}
+		else
+		{
+			if ($tabstartarray0Count > 0 && isset($tabstartarray[0]))
+			{
+				$tabstartarray[2] = array();
+				for ($tab = 0; $tab < $tabstartarray0Count; $tab++)
+				{
+					$paneid = str_replace(" ", "_", htmlspecialchars($tabstartarray[1][$tab]));
+
+					$tabcontent = substr($template_value, strpos($template_value, $tabstartarray[0][$tab]) + strlen( $tabstartarray[0][$tab]));
+					if ($tab+1 < $tabstartarray0Count)
+					{
+						$tabcontent = substr($tabcontent, 0, strpos($tabcontent, $tabstartarray[0][$tab+1]));
+					}
+					else
+					{
+						$tabcontent = substr($tabcontent, 0, strpos($tabcontent,'{{TABSEND}}'));
+					}
+					if ($tab == 1)
+					{
+						$tabcontent = '<li class="gsl-active">' . $tabcontent . '</li>';
+					}
+					else
+					{
+						$tabcontent = '<li>' . $tabcontent . '</li>';
+					}
+					$tabstartarray[2][] = $tabcontent;
+				}
+				$tabs = '<ul class="gsl-switcher gsl-margin" style="padding-left:40px;">' . implode('', $tabstartarray[2]) . "</ul>";
+
+				// Inject the tabs
+				$tabs = $tabreplace . $tabs;
+
+				$template_start = substr($template_value, 0, strpos($template_value, $tabstartarray[0][0]));
+				$template_end = substr($template_value, strpos($template_value, "{{TABSEND}}") + 11);
+				$template_value = $template_start . $tabs . $template_end;
+
+			}
+
+		}
+
 
 
 		// Now do the plugins
@@ -596,13 +661,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 
 		$uEditor    = Factory::getUser()->getParam('editor',  Factory::getConfig()->get('editor', 'none'));
 
-		if ($uEditor === 'codemirror')
-		{
-			$this->editor = \Joomla\CMS\Editor\Editor::getInstance('none');
-			Factory::getApplication()->enqueueMessage(Text::_("JEV_CODEMIRROR_NOT_COMPATIBLE_EDITOR", "WARNING"));
-		} else {
-			$this->editor = \Joomla\CMS\Editor\Editor::getInstance($uEditor);
-		}
+		$this->editor = \Joomla\CMS\Editor\Editor::getInstance($uEditor);
 
 		// clean any existing cache files
 		$cache = Factory::getCache(JEV_COM_COMPONENT);

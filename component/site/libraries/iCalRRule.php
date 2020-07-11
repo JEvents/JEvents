@@ -73,7 +73,7 @@ class iCalRRule extends Joomla\CMS\Table\Table
 			// cap indefinate repeats if count is blank as well as until
 			if (array_key_exists("COUNT", $temp->data))
 			{
-				$temp->processField("until", "");
+				$temp->processField("until", 0);
 			}
 			else
 			{
@@ -934,7 +934,7 @@ class iCalRRule extends Joomla\CMS\Table\Table
 	public function _afterUntil($testDate)
 	{
 
-		if (StringHelper::strlen($this->until) == 0) return false;
+		if (StringHelper::strlen($this->until) == 0 || $this->until === 0) return false;
 		if (!isset($this->_untilMidnight))
 		{
 			list ($d, $m, $y) = explode(":", JevDate::strftime("%d:%m:%Y", $this->until));

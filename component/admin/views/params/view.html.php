@@ -28,13 +28,7 @@ class AdminParamsViewParams extends JEventsAbstractView
 	{
 		$uEditor    = Factory::getUser()->getParam('editor',  Factory::getConfig()->get('editor', 'none'));
 
-		if ($uEditor === 'codemirror')
-		{
-			$this->editor = \Joomla\CMS\Editor\Editor::getInstance('none');
-			Factory::getApplication()->enqueueMessage(Text::_("JEV_CODEMIRROR_NOT_COMPATIBLE_EDITOR", "WARNING"));
-		} else {
-			$this->editor = \Joomla\CMS\Editor\Editor::getInstance($uEditor);
-		}
+		$this->editor = \Joomla\CMS\Editor\Editor::getInstance($uEditor);
 
 		$document = Factory::getDocument();
 		$document->setTitle(Text::_('COM_JEVENTS_CONFIGURATION'));

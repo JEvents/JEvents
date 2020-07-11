@@ -15,7 +15,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\String\StringHelper;
 
-$this->pageNav = $this->pagination;
 JEventsHelper::addSubmenu();
 $this->sidebar = JHtmlSidebar::render();
 
@@ -64,7 +63,7 @@ $fullspan = 12;
 							<?php echo HTMLHelper::_('grid.id', $i, $row->rp_id()); ?>
                         </td>
                         <td width="30%">
-                            <a href="#edit" onclick="return listItemTask('cb<?php echo $i;?>','icalrepeat.edit')" title="<?php echo Text::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->title(); ?></a>
+                            <a href="#edit" onclick="return Joomla.listItemTask('cb<?php echo $i;?>','icalrepeat.edit')" title="<?php echo Text::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->title(); ?></a>
                         </td>
                         <td width="40%">
 							<?php
@@ -80,7 +79,7 @@ $fullspan = 12;
 					$k = 1 - $k;
 				} ?>
                 <tr>
-                    <th align="center" colspan="3"><?php echo $this->pageNav->getListFooter(); ?></th>
+                    <th align="center" colspan="3"><?php echo $this->pagination->getListFooter(); ?></th>
                 </tr>
             </table>
             <input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT;?>" />

@@ -38,14 +38,20 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 		JToolbarHelper::deleteList('Delete this repeat?', 'icalrepeat.delete');
 		JToolbarHelper::cancel('icalevent.list');
 
-		$app    = Factory::getApplication();
-		$showpast = intval($app->getUserStateFromRequest("showpast", "showpast", 0));
+		$this->filterForm    = $this->get('FilterForm');
+		$this->activeFilters = $this->get('ActiveFilters');
+
+		// This is actually HIDE PAST so switch boolean values
+		$showpast = intval($this->getModel()->getState("filter.showpast", 0));
 		$options   = array();
 		$options[] = HTMLHelper::_('select.option', '0', JText::_('JEV_NO'));
 		$options[] = HTMLHelper::_('select.option', '1', JText::_('JEV_YES'));
-		$plist     = HTMLHelper::_('select.genericlist', $options, 'showpast', 'class="gsl-select"  onchange="document.adminForm.submit();"', 'value', 'text', $showpast);
 
-        $this->plist = $plist;
+		$this->filters =
+			array('showpast' =>
+				       Text::_('JEV_SHOW_PAST') . " " .  HTMLHelper::_('select.genericlist', $options, 'filter[showpast]', 'class="gsl-select"  onchange="document.adminForm.submit();"', 'value', 'text', $showpast)
+			);
+
 	}
 
 	function edit($tpl = null)

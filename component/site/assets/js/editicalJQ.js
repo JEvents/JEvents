@@ -172,29 +172,6 @@ function checkValidTime(time){
 	parts[1] = parts[1].substring(parts[1].length-2);
 	time.value = parts[0]+":"+parts[1];
 	if (document.adminForm.view12Hour.checked){
-		/*
-		if (time.id=="end_time" || time.id=="end_12h"){
-			pm   = document.getElementById("endPM");
-			am   = document.getElementById("endAM");
-			el = jevjq("#end_ampm");
-		}
-		else {
-			pm   = document.getElementById("startPM");
-			am   = document.getElementById("startAM");
-			el = jevjq("#start_ampm");
-		}
-
-		var hour = parseInt(parts[0]);
-		if (hour>12){
-			hour -= 12;
-			pm.checked = true;
-		}
-		else {
-			am.checked = true;
-		}
-		el.trigger("chosen:updated");
-		time.value = hour+":"+parts[1];
-		*/
 		time.value = parts[0]+":"+parts[1];
 	}
 	else {
@@ -371,6 +348,12 @@ function check12hTime(time12h){
 }
 
 function checkDates(elem){
+	// only respond to calendar date selections
+	if (!calendarDateClicked)
+	{
+		return;
+	}
+
 	forceValidDate(elem);
 	setEndDateWhenNotRepeating(elem);
 	checkEndTime();
@@ -494,6 +477,10 @@ function toggleAMPM(elem)
 
 function toggleAllDayEvent()
 {
+	if (typeof document.adminForm.allDayEvent == 'undefined')
+	{
+		return;
+	}
 	var checked = document.adminForm.allDayEvent.checked;
 	if (checked) document.adminForm.noendtime.checked = false;
 	var noendchecked = document.adminForm.noendtime.checked;
@@ -930,9 +917,13 @@ function fixRepeatDates(checkYearDay){
 	for(var day=0;day<bd.length;day++){
 		if (parseInt(document.getElementById('evid').value)==0) {
 			bd[day].checked=false;
+			// Make sure label is highlighted
+			changeHiddenInput(bd[day]);
 		}
 	}
 	document.getElementById('cb_wd' + startDate.getDay()).checked=true;
+	// Make sure label is highlighted
+	changeHiddenInput(document.getElementById('cb_wd' + startDate.getDay()));
 
 	end_date = document.getElementById("publish_down");
 	endDate = new Date();
@@ -1100,9 +1091,12 @@ function checkConflict(checkurl, pressbutton, jsontoken, client, repeatid,  redi
 	});
 }
 
+var calendarDateClicked = true;
+
 // fix for auto-rotating radio boxes in firefox !!!
 // see http://www.ryancramer.com/journal/entries/radio_buttons_firefox/
-jevjq(document).on('ready', function() {
+document.addEventListener('DOMContentLoaded', function() {
+
 	try {
 		if(Browser.firefox) {
 			jevjq("#adminForm").attr("autocomplete",'off');
@@ -1110,6 +1104,32 @@ jevjq(document).on('ready', function() {
 	}
 	catch(e){
 	}
+
+	if (typeof JoomlaCalendar == 'undefined') {
+		return;
+	}
+
+	// Fix JoomlaCalendar too
+	JoomlaCalendar.prototype._handleDayMouseDownOLD = JoomlaCalendar.prototype._handleDayMouseDown;
+	JoomlaCalendar.prototype._handleDayMouseDown = function (ev) {
+		var el = ev.currentTarget;
+		if (typeof el.navtype !== "undefined" && (el.navtype === -2 || el.navtype === -1 || el.navtype === 1 || el.navtype === 2)) {
+			calendarDateClicked = false;
+		}
+		this._handleDayMouseDownOLD(ev);
+		calendarDateClicked = true;
+	};
+	// Method to close/hide the calendar
+	JoomlaCalendar.prototype.closeOLD = JoomlaCalendar.prototype.close;
+	JoomlaCalendar.prototype.close = function () {
+		calendarDateClicked = true;
+		this.closeOLD();
+	};
+	JoomlaCalendar.prototype.showOLD = JoomlaCalendar.prototype.show;
+	JoomlaCalendar.prototype.show = function () {
+		calendarDateClicked = true;
+		this.showOLD();
+	};
 
 	if (jevjq('#view12Hour')){
 		jevjq('#view12Hour').on('click', function(){toggleView12Hour();});
@@ -1147,6 +1167,7 @@ function enableRepeatCount() {
 
 // Hide empty tabs and their links
 function hideEmptyJevTabs() {
+		// Old version
 		// empty tabs - hide the tab link
 		var tabs = jQuery("#myEditTabsContent .tab-pane");
 		if (tabs.length){
@@ -1173,6 +1194,20 @@ function hideEmptyJevTabs() {
 					jQuery(tablink).css("display","none");
 				}
 			})
+		}
+		// new version
+		var uitabs = document.querySelectorAll("#adminForm .gsl-switcher > li");
+		var uitablabels = document.querySelectorAll("#adminForm #myEditTabs > li");
+
+		if (uitabs.length)
+		{
+			uitabs.forEach(function(tab, index)
+			{
+				if(tab.innerHTML.trim().length == 0)
+				{
+					uitablabels[index].style.display = 'none';
+				}
+			});
 		}
 	}
 
@@ -1214,8 +1249,8 @@ window.addEventListener('load', function() {
 				})
 			);
 		}
+		catids.addEventListener('change', reorderCategorySelections);
 	}
-    catids.addEventListener('change', reorderCategorySelections);
 });
 
 function reorderCategorySelections()
@@ -1247,4 +1282,3 @@ function reorderCategorySelections()
     // old style version - still needed!
 	jQuery(catids).trigger("liszt:updated");
 }
-

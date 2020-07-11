@@ -91,7 +91,12 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			$this->eventsByCat[] = $datapoint->title;
 			$this->eventsByCatCounts[] = $datapoint->count;
 			$params = @json_decode($datapoint->params);
-			if (isset($params->catcolour) && !empty($params->catcolour))
+			// catch for old typo!
+			if (isset($params->catcolor) && !isset($params->catcolour))
+			{
+				$params->catcolour = $params->catcolor;
+			}
+			if (isset($params->catcolor) && !empty($params->catcolor) && strtolower($params->catcolor) !== '#ffffff')
 			{
 				$this->eventsByCatColours[] = $params->catcolour;
 			}

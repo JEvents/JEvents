@@ -110,7 +110,7 @@ $data['filters'] = $this->filters;
                     {
                         $row = &$this->rows[$i];
                         ?>
-                        <tr class="row<?php echo $k; ?>">
+                        <tr >
                             <td width="20" style="background-color:<?php echo JEV_CommonFunctions::setColor($row); ?>">
                                 <?php echo HTMLHelper::_('grid.id', $i, $row->ev_id()); ?>
                             </td>
@@ -125,7 +125,7 @@ $data['filters'] = $this->filters;
                                 </a>
                                 </span>
                                 <a href="index.php?option=com_jevents&task=icalevent.edit&cid=<?php echo $row->ev_id(); ?>"
-                                   onclick="return listItemTask('cb<?php echo $i; ?>','icalevent.edit')"
+                                   onclick="return Joomla.listItemTask('cb<?php echo $i; ?>','icalevent.edit')"
                                    title="<?php echo Text::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->title(); ?></a>
                             </td>
                             <td class="center">
@@ -134,7 +134,7 @@ $data['filters'] = $this->filters;
                                 {
                                     ?>
                                     <a href="javascript: void(0);"
-                                       onclick="return listItemTask('cb<?php echo $i; ?>','icalrepeat.list')"
+                                       onclick="return Joomla.listItemTask('cb<?php echo $i; ?>','icalrepeat.list')"
                                        class="btn btn-micro">
                                         <span class="icon-list"> </span>
                                     </a>
@@ -161,7 +161,7 @@ $data['filters'] = $this->filters;
                                 }
                                 ?>
                                 <a href="javascript: void(0);"
-                                   onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->state() ? 'icalevent.unpublish' : 'icalevent.publish'; ?>')"
+                                   onclick="return Joomla.listItemTask('cb<?php echo $i; ?>','<?php echo $row->state() ? 'icalevent.unpublish' : 'icalevent.publish'; ?>')"
                                    class="btn btn-micro">
                                     <?php echo $img; ?>
                                 </a>
@@ -196,10 +196,10 @@ $data['filters'] = $this->filters;
                     }
 
                     if (count($this->rows) === 0) {
-                        echo '<tr class="row0"><td colspan="9">' . Text::_("JEV_NO_EVENTS_FOUND") . '</td></tr>';
+                        echo '<tr><td colspan="9">' . Text::_("JEV_NO_EVENTS_FOUND") . '</td></tr>';
                     } ?>
+	                <tr><td colspan="9" class="gsl-width-1-1" style="text-align:center"><?php echo $this->pagination->getListFooter();?></td></tr>
                 </table>
-                <?php echo $this->pagination->getListFooter(); ?>
                 <input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>
                 <input type="hidden" name="task" value="icalevent.list"/>
                 <input type="hidden" name="boxchecked" value="0"/>

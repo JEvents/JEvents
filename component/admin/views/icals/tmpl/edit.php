@@ -13,19 +13,23 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
+$app    = Factory::getApplication();
+$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+if ($app->isClient('administrator') || $params->get("newfrontendediting", 1))
+{
+	echo $this->loadTemplate('uikit');
+	return;
+}
 
 global $task, $catid;
 $db     = Factory::getDbo();
 
 $uEditor    = Factory::getUser()->getParam('editor',  Factory::getConfig()->get('editor', 'none'));
 
-if ($uEditor === 'codemirror')
-{
-	$editor = \Joomla\CMS\Editor\Editor::getInstance('none');
-	Factory::getApplication()->enqueueMessage(Text::_("JEV_CODEMIRROR_NOT_COMPATIBLE_EDITOR", "WARNING"));
-} else {
-	$editor = \Joomla\CMS\Editor\Editor::getInstance($uEditor);
-}
+$editor = \Joomla\CMS\Editor\Editor::getInstance($uEditor);
+
 // clean any existing cache files
 $cache = Factory::getCache(JEV_COM_COMPONENT);
 $cache->clean(JEV_COM_COMPONENT);

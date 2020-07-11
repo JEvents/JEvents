@@ -71,7 +71,7 @@ $user = Factory::getUser();
                                        onclick="Joomla.isChecked(this.checked);"/>
                             </td>
                             <td>
-                                <a href="#edit" onclick="return listItemTask('cb<?php echo $i; ?>','icals.edit')"
+                                <a href="#edit" onclick="return Joomla.listItemTask('cb<?php echo $i; ?>','icals.edit')"
                                    title="<?php echo Text::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->label; ?></a>
                             </td>
                             <td align="center">
@@ -89,7 +89,7 @@ $user = Factory::getUser();
                                 {
                                     ?>
                                     <a href="javascript: void(0);"
-                                       onclick="return listItemTask('cb<?php echo $i; ?>','icals.reload')">
+                                       onclick="return Joomla.listItemTask('cb<?php echo $i; ?>','icals.reload')">
                                         <span gsl-icon="icon:refresh"></span>
                                     </a>
                                     <?php
@@ -102,7 +102,7 @@ $user = Factory::getUser();
                                 $img = $row->state ? "<i gsl-icon='icon:check'></i>" : "<i gsl-icon='icon:close'></i>";
                                 ?>
                                 <a href="javascript: void(0);"
-                                   onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->state ? 'icals.unpublish' : 'icals.publish'; ?>')">
+                                   onclick="return Joomla.listItemTask('cb<?php echo $i; ?>','<?php echo $row->state ? 'icals.unpublish' : 'icals.publish'; ?>')">
                                     <?php echo $img; ?>
                                 </a>
                             </td>
@@ -113,7 +113,7 @@ $user = Factory::getUser();
                                     $img = $row->autorefresh ? "<i gsl-icon='icon:check'></i>" : "<i gsl-icon='icon:close'></i>";
                                     ?>
                                     <a href="javascript: void(0);"
-                                       onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->autorefresh ? 'icals.noautorefresh' : 'icals.autorefresh'; ?>')">
+                                       onclick="return Joomla.listItemTask('cb<?php echo $i; ?>','<?php echo $row->autorefresh ? 'icals.noautorefresh' : 'icals.autorefresh'; ?>')">
                                         <?php echo $img; ?>
                                     </a>
                                     <?php
@@ -139,7 +139,7 @@ $user = Factory::getUser();
                                     $img = $row->isdefault ? "<i gsl-icon='icon:check'></i>" : "<i gsl-icon='icon:close'></i>";
                                     ?>
                                     <a href="javascript: void(0);"
-                                       onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->isdefault ? 'icals.notdefault' : 'icals.isdefault'; ?>')">
+                                       onclick="return Joomla.listItemTask('cb<?php echo $i; ?>','<?php echo $row->isdefault ? 'icals.notdefault' : 'icals.isdefault'; ?>')">
                                         <?php echo $img; ?>
                                     </a>
                                     <?php

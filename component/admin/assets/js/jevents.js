@@ -11,7 +11,10 @@ document.addEventListener('DOMContentLoaded', function() {
     gslUIkit.container = document.getElementById('gslc');
 
     // reveal right top menu icons
-    document.querySelector('.gsl-navbar-right  .gsl-navbar-nav').classList.remove('gsl-hidden');
+    var navbar = document.querySelector('.gsl-navbar-right  .gsl-navbar-nav');
+    if (navbar) {
+        navbar.classList.remove('gsl-hidden');
+    }
 
 })
 

@@ -83,7 +83,7 @@ class JEventsCategory extends Joomla\CMS\Table\Category
 		{
 			$color = array_key_exists("color", $array) ? $array['color'] : "#000000";
 			if (!preg_match("/^#[0-9a-f]+$/i", $color)) $color = "#000000";
-			$params->set("catcolor", $color);
+			$params->set("catcolour", $color);
 		}
 		if (!$params->get("admin", false))
 		{

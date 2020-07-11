@@ -16,7 +16,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 $db = Factory::getDbo();
 
-$this->pageNav = $this->pagination;
 $this->clist   = $this->filters['catid'];
 $this->search  = $this->getModel()->getState('filter.search', 0);
 $this->search= $db->escape( trim( strtolower( $this->search ) ) );
@@ -91,7 +90,7 @@ $fullspan = 12;
                         <input type="checkbox" id="cb<?php echo $i; ?>" name="cid[]" value="<?php echo $row->ics_id; ?>" onclick="Joomla.isChecked(this.checked);" />
                     </td>
                     <td>
-                        <a href="#edit" onclick="return listItemTask('cb<?php echo $i; ?>','icals.edit')" title="<?php echo Text::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->label; ?></a>
+                        <a href="#edit" onclick="return Joomla.listItemTask('cb<?php echo $i; ?>','icals.edit')" title="<?php echo Text::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->label; ?></a>
                     </td>
                     <td align="center">
 						<?php
@@ -107,7 +106,7 @@ $fullspan = 12;
 						if ($row->srcURL != "")
 						{
 							?>
-                            <a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','icals.reload')">
+                            <a href="javascript: void(0);" onclick="return Joomla.listItemTask('cb<?php echo $i; ?>','icals.reload')">
                                 <img src="<?php echo $pathJeventsIMG . "reload.png"; ?>" border="0" alt="reload" />
                             </a>
 							<?php
@@ -119,7 +118,7 @@ $fullspan = 12;
 						<?php
 						$img = $row->state ? JHTML::_('image', 'admin/tick.png', '', array('title' => ''), true) : JHTML::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
 						?>
-                        <a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->state ? 'icals.unpublish' : 'icals.publish'; ?>')">
+                        <a href="javascript: void(0);" onclick="return Joomla.listItemTask('cb<?php echo $i; ?>','<?php echo $row->state ? 'icals.unpublish' : 'icals.publish'; ?>')">
 							<?php echo $img; ?>
                         </a>
                     </td>
@@ -129,7 +128,7 @@ $fullspan = 12;
 						{
 							$img = $row->autorefresh ? JHTML::_('image', 'admin/tick.png', '', array('title' => ''), true) : JHTML::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
 							?>
-                            <a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->autorefresh ? 'icals.noautorefresh' : 'icals.autorefresh'; ?>')">
+                            <a href="javascript: void(0);" onclick="return Joomla.listItemTask('cb<?php echo $i; ?>','<?php echo $row->autorefresh ? 'icals.noautorefresh' : 'icals.autorefresh'; ?>')">
 								<?php echo $img; ?>
                             </a>
 							<?php
@@ -152,7 +151,7 @@ $fullspan = 12;
 						{
 							$img = $row->isdefault ? JHTML::_('image', 'admin/tick.png', '', array('title' => ''), true) : JHTML::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
 							?>
-                            <a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->isdefault ? 'icals.notdefault' : 'icals.isdefault'; ?>')">
+                            <a href="javascript: void(0);" onclick="return Joomla.listItemTask('cb<?php echo $i; ?>','<?php echo $row->isdefault ? 'icals.notdefault' : 'icals.isdefault'; ?>')">
 								<?php echo $img; ?>
                             </a>
 							<?php
@@ -171,7 +170,7 @@ $fullspan = 12;
 			}
 			?>
             <tr>
-                <th align="center" colspan="10"><?php echo $this->pageNav->getListFooter(); ?></th>
+                <th align="center" colspan="10"><?php echo $this->pagination->getListFooter(); ?></th>
             </tr>
         </table>
 		<?php echo HTMLHelper::_('form.token'); ?>

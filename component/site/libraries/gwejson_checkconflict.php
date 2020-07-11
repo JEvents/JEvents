@@ -176,7 +176,7 @@ function simulateSaveEvent($requestObject)
 	}
 
 	// If the allow HTML flag is set, apply a safe HTML filter to the variable
-	$safeHtmlFilter = InputFilter::getInstance(null, null, 1, 1);
+	$safeHtmlFilter = InputFilter::getInstance(array(), array(), 1, 1);
 	$array          = $safeHtmlFilter->clean($formdata, null);
 
 
@@ -239,7 +239,7 @@ function simulateSaveRepeat($requestObject)
 		$formdata[$k] = $v;
 	}
 
-	$safeHtmlFilter = InputFilter::getInstance(null, null, 1, 1);
+	$safeHtmlFilter = InputFilter::getInstance(array(), array(), 1, 1);
 	$array          = $safeHtmlFilter->clean($formdata, null);
 
 	if (!array_key_exists("rp_id", $array) || intval($array["rp_id"]) <= 0)

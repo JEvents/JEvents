@@ -155,7 +155,7 @@ $fullspan = 12;
                                 $img = $row->state ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
                                 ?>
                                 <a href="javascript: void(0);"
-                                   onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->state ? 'defaults.unpublish' : 'defaults.publish'; ?>')"><?php echo $img; ?></a>
+                                   onclick="return Joomla.listItemTask('cb<?php echo $i; ?>','<?php echo $row->state ? 'defaults.unpublish' : 'defaults.publish'; ?>')"><?php echo $img; ?></a>
                             </td>
                             <td>
                                 <?php echo $i + 1; ?>

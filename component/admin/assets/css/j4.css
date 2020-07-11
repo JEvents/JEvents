@@ -186,6 +186,7 @@ body.com_categories h1.page-title {
 body.com_categories h1.page-title span.fields,
 body.com_categories h1.page-title span.categories,
 body.com_categories h1.page-title span.category-edit,
+body.com_categories h1.page-title span.category-add,
 body.com_categories h1.page-title img {
   display: none;
 }

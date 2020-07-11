@@ -4464,9 +4464,11 @@ SCRIPT;
 
 		);
 
-		JFactory::getApplication()->enqueueMessage("CHANGE UPDATESERVER", 'warning');
-		$updateDomain = "http://ubu.j33jq.com";
+		//JFactory::getApplication()->enqueueMessage("CHANGE UPDATESERVER", 'warning');
 		$debug = "XDEBUG_SESSION_START=PHPSTORM&";
+		//$updateDomain = "http://ubu.j33jq.com";
+		$debug = "";
+		$updateDomain = "https://www.jevents.net";
 
 		// Do the language files for Joomla
 		$db = Factory::getDbo();

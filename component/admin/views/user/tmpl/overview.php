@@ -120,7 +120,7 @@ $fullspan = 12;
 						</td>
 						<td>
 							<a href="#edit"
-							   onclick=" return listItemTask('cb<?php echo $i; ?>','user.edit');"><?php echo $row->jname; ?></a>
+							   onclick=" return Joomla.listItemTask('cb<?php echo $i; ?>','user.edit');"><?php echo $row->jname; ?></a>
 						</td>
 						<td>
 							<?php echo $row->username; ?>
@@ -133,7 +133,7 @@ $fullspan = 12;
 						if ($row->published >= 0)
 						{
 							$href = '<a href="javascript: void(0);" ';
-							$href .= 'onclick="return listItemTask(\'cb' . $i . '\',\'' . ($row->published ? 'user.unpublish' : 'user.publish') . '\')">';
+							$href .= 'onclick="return Joomla.listItemTask(\'cb' . $i . '\',\'' . ($row->published ? 'user.unpublish' : 'user.publish') . '\')">';
 							$href .= $img;
 							$href .= '</a>';
 						}
@@ -151,7 +151,7 @@ $fullspan = 12;
 						if ($row->cancreate >= 0)
 						{
 							$href = '<a href="javascript: void(0);" ';
-							$href .= 'onclick="return listItemTask(\'cb' . $i . '\',\'' . ($row->cancreate ? 'user.cannotcreate' : 'user.cancreate') . '\')">';
+							$href .= 'onclick="return Joomla.listItemTask(\'cb' . $i . '\',\'' . ($row->cancreate ? 'user.cannotcreate' : 'user.cancreate') . '\')">';
 							$href .= $img;
 							$href .= '</a>';
 						}
@@ -171,7 +171,7 @@ $fullspan = 12;
 						if ($row->canpublishown >= 0)
 						{
 							$href = '<a href="javascript: void(0);" ';
-							$href .= 'onclick="return listItemTask(\'cb' . $i . '\',\'' . ($row->canpublishown ? 'user.cannotpublishown' : 'user.canpublishown') . '\')">';
+							$href .= 'onclick="return Joomla.listItemTask(\'cb' . $i . '\',\'' . ($row->canpublishown ? 'user.cannotpublishown' : 'user.canpublishown') . '\')">';
 							$href .= $img;
 							$href .= '</a>';
 						}
@@ -189,7 +189,7 @@ $fullspan = 12;
 						if ($row->candeleteown >= 0)
 						{
 							$href = '<a href="javascript: void(0);" ';
-							$href .= 'onclick="return listItemTask(\'cb' . $i . '\',\'' . ($row->candeleteown ? 'user.cannotdeleteown' : 'user.candeleteown') . '\')">';
+							$href .= 'onclick="return Joomla.listItemTask(\'cb' . $i . '\',\'' . ($row->candeleteown ? 'user.cannotdeleteown' : 'user.candeleteown') . '\')">';
 							$href .= $img;
 							$href .= '</a>';
 						}
@@ -207,7 +207,7 @@ $fullspan = 12;
 						if ($row->canedit >= 0)
 						{
 							$href = '<a href="javascript: void(0);" ';
-							$href .= 'onclick="return listItemTask(\'cb' . $i . '\',\'' . ($row->canedit ? 'user.cannotedit' : 'user.canedit') . '\')">';
+							$href .= 'onclick="return Joomla.listItemTask(\'cb' . $i . '\',\'' . ($row->canedit ? 'user.cannotedit' : 'user.canedit') . '\')">';
 							$href .= $img;
 							$href .= '</a>';
 						}
@@ -225,7 +225,7 @@ $fullspan = 12;
 						if ($row->canpublishall >= 0)
 						{
 							$href = '<a href="javascript: void(0);" ';
-							$href .= 'onclick="return listItemTask(\'cb' . $i . '\',\'' . ($row->canpublishall ? 'user.cannotpublishall' : 'user.canpublishall') . '\')">';
+							$href .= 'onclick="return Joomla.listItemTask(\'cb' . $i . '\',\'' . ($row->canpublishall ? 'user.cannotpublishall' : 'user.canpublishall') . '\')">';
 							$href .= $img;
 							$href .= '</a>';
 						}
@@ -243,7 +243,7 @@ $fullspan = 12;
 						if ($row->candeleteall >= 0)
 						{
 							$href = '<a href="javascript: void(0);" ';
-							$href .= 'onclick="return listItemTask(\'cb' . $i . '\',\'' . ($row->candeleteall ? 'user.cannotdeleteall' : 'user.candeleteall') . '\')">';
+							$href .= 'onclick="return Joomla.listItemTask(\'cb' . $i . '\',\'' . ($row->candeleteall ? 'user.cannotdeleteall' : 'user.candeleteall') . '\')">';
 							$href .= $img;
 							$href .= '</a>';
 						}
@@ -260,7 +260,7 @@ $fullspan = 12;
 						if ($row->canuploadimages >= 0)
 						{
 							$href = '<a href="javascript: void(0);" ';
-							$href .= 'onclick="return listItemTask(\'cb' . $i . '\',\'' . ($row->canuploadimages ? 'user.cannotuploadimages' : 'user.canuploadimages') . '\')">';
+							$href .= 'onclick="return Joomla.listItemTask(\'cb' . $i . '\',\'' . ($row->canuploadimages ? 'user.cannotuploadimages' : 'user.canuploadimages') . '\')">';
 							$href .= $img;
 							$href .= '</a>';
 						}
@@ -278,7 +278,7 @@ $fullspan = 12;
 						if ($row->canuploadmovies >= 0)
 						{
 							$href = '<a href="javascript: void(0);" ';
-							$href .= 'onclick="return listItemTask(\'cb' . $i . '\',\'' . ($row->canuploadmovies ? 'user.cannotuploadmovies' : 'user.canuploadmovies') . '\')">';
+							$href .= 'onclick="return Joomla.listItemTask(\'cb' . $i . '\',\'' . ($row->canuploadmovies ? 'user.cannotuploadmovies' : 'user.canuploadmovies') . '\')">';
 							$href .= $img;
 							$href .= '</a>';
 						}
@@ -296,7 +296,7 @@ $fullspan = 12;
 						if ($row->cancreateown >= 0)
 						{
 							$href = '<a href="javascript: void(0);" ';
-							$href .= 'onclick="return listItemTask(\'cb' . $i . '\',\'' . ($row->cancreateown ? 'user.cannotcreateown' : 'user.cancreateown') . '\')">';
+							$href .= 'onclick="return Joomla.listItemTask(\'cb' . $i . '\',\'' . ($row->cancreateown ? 'user.cannotcreateown' : 'user.cancreateown') . '\')">';
 							$href .= $img;
 							$href .= '</a>';
 						}
@@ -314,7 +314,7 @@ $fullspan = 12;
 						if ($row->cancreateglobal >= 0)
 						{
 							$href = '<a href="javascript: void(0);" ';
-							$href .= 'onclick="return listItemTask(\'cb' . $i . '\',\'' . ($row->cancreateglobal ? 'user.cannotcreateglobal' : 'user.cancreateglobal') . '\')">';
+							$href .= 'onclick="return Joomla.listItemTask(\'cb' . $i . '\',\'' . ($row->cancreateglobal ? 'user.cannotcreateglobal' : 'user.cancreateglobal') . '\')">';
 							$href .= $img;
 							$href .= '</a>';
 						}

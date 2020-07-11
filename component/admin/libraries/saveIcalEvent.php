@@ -61,6 +61,9 @@ class SaveIcalEvent
 		$data["publish_up"]    = ArrayHelper::getValue($array, "publish_up", "2006-12-12");
 		$data["publish_down2"] = ArrayHelper::getValue($array, "publish_down2", false);
 		$data["publish_up2"]   = ArrayHelper::getValue($array, "publish_up2", false);
+
+		$test = JevDate::strtotime($data["publish_up"] . ' 08:00');
+		$test2 = JevDate::strtotime($data["publish_up2"] . ' 08:00');
 		if ($data["publish_down2"])
 		{
 			$data["publish_down"] = $data["publish_down2"];

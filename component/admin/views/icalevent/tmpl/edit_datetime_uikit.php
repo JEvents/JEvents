@@ -22,7 +22,7 @@ if ($this->editCopy || $this->repeatId == 0)
 }
 else
 {
-	$repeatStyle = "style='display:none;' class='jeveditrepeats jevdatetime' ";
+	$repeatStyle = "style='display:none;' class='jeveditrepeats jevdatetime' hidden ";
 }
 
 // Disable event repeats for non-full editors if disable repeats is enabled

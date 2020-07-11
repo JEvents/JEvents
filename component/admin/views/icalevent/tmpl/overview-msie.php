@@ -62,7 +62,7 @@ $fullspan = 12;
 				{ ?>
                     <td align="right">
                         <label for="limit" class="element-invisible"><?php echo Text::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC'); ?></label>
-						<?php echo $this->pageNav->getLimitBox(); ?>
+						<?php echo $this->pagination->getLimitBox(); ?>
                     </td>
 				<?php }
 				?>
@@ -118,14 +118,14 @@ $fullspan = 12;
 						<?php echo HTMLHelper::_('grid.id', $i, $row->ev_id()); ?>
                     </td>
                     <td >
-                        <a href="#edit" onclick="return listItemTask('cb<?php echo $i; ?>','icalevent.edit')" title="<?php echo Text::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->title(); ?></a>
+                        <a href="#edit" onclick="return Joomla.listItemTask('cb<?php echo $i; ?>','icalevent.edit')" title="<?php echo Text::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->title(); ?></a>
                     </td>
                     <td align="center">
 						<?php
 						if ($row->hasrepetition())
 						{
 							?>
-                            <a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','icalrepeat.list')" class="btn btn-micro">
+                            <a href="javascript: void(0);" onclick="return Joomla.listItemTask('cb<?php echo $i; ?>','icalrepeat.list')" class="btn btn-micro">
                                 <span class="icon-list"> </span>
                             </a>
 						<?php } ?>
@@ -161,7 +161,7 @@ $fullspan = 12;
 							$img =  JHTML::_('image', 'admin/trash.png', '', array('title' => ''), true) ;
 						}
 						?>
-                        <a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->state() ? 'icalevent.unpublish' : 'icalevent.publish'; ?>')" class="btn btn-micro" >
+                        <a href="javascript: void(0);" onclick="return Joomla.listItemTask('cb<?php echo $i; ?>','<?php echo $row->state() ? 'icalevent.unpublish' : 'icalevent.publish'; ?>')" class="btn btn-micro" >
 							<?php echo $img; ?>
                         </a>
                     </td>
@@ -195,7 +195,7 @@ $fullspan = 12;
 			}
 			?>
             <tr>
-                <th align="center" colspan="10"><?php echo $this->pageNav->getListFooter(); ?></th>
+                <th align="center" colspan="10"><?php echo $this->pagination->getListFooter(); ?></th>
             </tr>
         </table>
         <input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>" />

@@ -12,6 +12,8 @@
     <description>PLG_FINDER_JEVENTS_XML_DESCRIPTION</description>
     <files>
         <file plugin="jevents">jevents.php</file>
+        <file>jevents3.php</file>
+        <file>jevents4.php</file>
         <filename>index.html</filename>
     </files>
     <languages>

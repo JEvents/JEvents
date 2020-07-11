@@ -11,8 +11,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\String\StringHelper;
 
@@ -34,63 +34,16 @@ $customOptions = array(
 // Merge custom options in the options array Filters
 $data['options'] = array_merge($customOptions, $data['options']);
 
-
-$mainspan       = 10;
-$fullspan       = 12;
 ?>
-<?php if (!empty($this->sidebar)) : ?>
-	<div id="j-sidebar-container" class="span2">
-		<?php echo $this->sidebar; ?>
-	</div>
-<?php endif; ?>
-
 	<form action="index.php" method="post" name="adminForm" id="adminForm">
-		<div id="j-main-container" class="span<?php echo (!empty($this->sidebar)) ? $mainspan : $fullspan; ?>  ">
-			<?php 		// Load search tools
-			HTMLHelper::_('searchtools.form', $data['options']['formSelector'], $data['options']);
+		<div id="ysts-main-container">
+			<?php
+			// Search tools bar
+			// I need to create and initialise the filter form for this to work!
+			echo LayoutHelper::render('joomla.searchtools.jevents', array('view' => $this));
 			?>
-			<div class="js-stools clearfix">
-				<div class="clearfix">
-					<div class="js-stools-container-bar">
-						<label for="search" class="element-invisible">
-							<?php echo Text::_('JEV_SEARCH'); ?>
-						</label>
-						<div class="btn-wrapper input-append">
-							<input type="text" id="search" name="search" value="<?php echo $this->search; ?>"
-							       placeholder="<?php echo Text::_('JEV_SEARCH'); ?>" class="inputbox"
-							       onChange="Joomla.submitform()" />
-							<button type="submit" class="btn hasTooltip" title="" aria-label="Search"
-							        data-original-title="Search">
-								<span class="icon-search" aria-hidden="true"></span>
-							</button>
-						</div>
-						<div class="btn-wrapper">
-							<button type="button" class="btn hasTooltip js-stools-btn-clear" title=""
-							        data-original-title="Clear">
-								<?php echo Text::_('JCLEAR'); ?>
-							</button>
-						</div>
-					</div>
-					<div class="js-stools-container-list hidden-phone hidden-tablet">
-						<div class="hidden-select hidden-phone">
-							<div class="js-stools-field-list">
-								<?php echo Text::_('JEV_HIDE_OLD_EVENTS'); ?>&nbsp;<?php echo $this->plist; ?>
-							</div>
-							<div class="js-stools-field-list">
-								<?php echo $this->pagination->getLimitBox(); ?>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<table cellpadding="4" cellspacing="0" border="0" width="100%">
-				<tr>
-					<td width="100%">
-						&nbsp;
-					</td>
-				</tr>
-			</table>
+			<!-- End Filters -->
+			<div class="clearfix"></div>
 
 			<table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist table table-striped">
 				<tr>
@@ -114,7 +67,7 @@ $fullspan       = 12;
 							<?php echo HTMLHelper::_('grid.id', $i, $row->rp_id()); ?>
 						</td>
 						<td width="30%">
-							<a href="index.php?option=com_jevents&task=icalrepeat.edit&cid[]=<?php echo $row->rp_id(); ?>" onclick="return listItemTask('cb<?php echo $i; ?>','icalrepeat.edit')"
+							<a href="index.php?option=com_jevents&task=icalrepeat.edit&cid[]=<?php echo $row->rp_id(); ?>" onclick="return Joomla.listItemTask('cb<?php echo $i; ?>','icalrepeat.edit')"
 							   title="<?php echo Text::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->title(); ?></a>
 						</td>
 						<td width="40%">

@@ -40,7 +40,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		jimport('joomla.html.pagination');
 		$limit      = intval($this->getModel()->getState("list.limit", $app->getCfg('list_limit', 10)));
 		$limitstart = intval($this->getModel()->getState("list.start", 0));
-		$this->pageNav = $this->pagination = new \Joomla\CMS\Pagination\Pagination($total, $limitstart, $limit);
+		$this->pagination = new \Joomla\CMS\Pagination\Pagination($total, $limitstart, $limit);
 
 		$document = Factory::getDocument();
 		$document->setTitle(Text::_('ICAL_EVENTS'));
@@ -297,13 +297,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 		$uEditor    = Factory::getUser()->getParam('editor',  Factory::getConfig()->get('editor', 'none'));
 
-		if ($uEditor === 'codemirror')
-		{
-			$this->editor = \Joomla\CMS\Editor\Editor::getInstance('none');
-			$app->enqueueMessage(Text::_("JEV_CODEMIRROR_NOT_COMPATIBLE_EDITOR", "WARNING"));
-		} else {
-			$this->editor = \Joomla\CMS\Editor\Editor::getInstance($uEditor);
-		}
+		$this->editor = \Joomla\CMS\Editor\Editor::getInstance($uEditor);
 
 		// Get the form && data
 		$this->form = $this->get('TranslateForm');
