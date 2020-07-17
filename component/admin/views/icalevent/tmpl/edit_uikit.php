@@ -55,7 +55,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 	echo (!Factory::getApplication()->isClient('administrator') && $params->get("darktemplate", 0)) ? "class='jeventsdark $accesslevels'" : "class='$accesslevels' ";
 	?> >
 		<form action="<?php echo $action; ?>" method="post" name="adminForm" enctype='multipart/form-data'
-		      id="adminForm" class="form-horizontal">
+		      id="adminForm" >
 			<?php
 			ob_start();
 
@@ -645,7 +645,12 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 							<label><?php echo $this->customfields[$key]["label"]; ?></label>
 						</div>
 						<div class="gsl-width-expand">
-							<?php echo $this->customfields[$key]["input"]; ?>
+							<?php
+							// Needed to deal with early execution of initTemplate in backend
+							$cfoutput = $this->customfields[$key]["input"];
+							$cfoutput = str_replace('btn-group', 'btn-group-ysts', $cfoutput);
+							echo $cfoutput;
+							?>
 						</div>
 					</div>
 					<?php

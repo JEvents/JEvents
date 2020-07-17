@@ -12,13 +12,21 @@
   /* Overriding template.css styling when using native Joomla layouts */
   div#jevents {
     margin-left:5px;
+
+    #adminForm
+    {
+      /* Buttons in forms */
+      label.gsl-button-small {
+        padding-left: 15px;
+      }
+      /* select and input in event editing */
+      select, input {
+        max-width: 100%;
+      }
+    }
+
   }
 
-  /* Buttons in forms */
-  #jevents #adminForm label.gsl-button-small
-  {
-    padding-left:15px;
-  }
 
   /* Disabled left bar items */
   #left-col ul.left-nav .notinstalled {

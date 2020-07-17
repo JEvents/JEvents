@@ -703,4 +703,10 @@ document.addEventListener('DOMContentLoaded', function () {
 		sidebar.parentNode.removeChild(sidebar);
 	}
 
+/*
+I could merge in font-awesome icons this way
+	gslUIkit.util.ready(function () {
+		gslUIkit.icon.add('fa-users', '<span class="fas fa-users fa-fw" aria-hidden="true"></span>');
+	});
+*/
 });

@@ -117,7 +117,8 @@ function DefaultViewHelperHeader16($view)
 						</li> <?php
 					}
 				}
-				if ($cfg->get('com_email_icon_view', 1))
+				$jversion = new JVersion;
+				if ($cfg->get('com_email_icon_view', 1) && !$jversion->isCompatible('4.0'))
 				{
 
 					$task = $input->getString('jevtask', '');

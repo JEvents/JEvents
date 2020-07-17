@@ -27,7 +27,7 @@ $params = $app->getParams();
 $active = $app->getMenu()->getActive();
 if ($active)
 {
-	$params->merge($active->params);
+	$params->merge($active->getParams());
 }
 
 $infields = explode("||", $compparams->get("columns", "TITLE_LINK|Title Link|Title"));

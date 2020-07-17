@@ -344,7 +344,7 @@ function JEventsBuildRoute(&$query)
 
 }
 
-function JEventsParseRoute($segments)
+function JEventsParseRoute(&$segments)
 {
 
 	$vars = array();
@@ -415,6 +415,7 @@ function JEventsParseRoute($segments)
 		{
 			$task = str_replace(":", "-", $task);
 		}
+
 		if (translatetask("icalrepeat.detail") == "" && !in_array($task, $tasks) && !array_key_exists($task, $translatedTasks))
 		{
 			//array_unshift($segments, "icalrepeat.detail");
@@ -576,6 +577,11 @@ function JEventsParseRoute($segments)
 			default:
 				break;
 		}
+	}
+
+	if (count($vars) == count($segments))
+	{
+		$segments = array();
 	}
 
 	return $vars;
@@ -984,6 +990,7 @@ function JEventsParseRouteNew(&$segments, $task)
 					case "icalevent.detail":
 					case "icalrepeat.detail":
 						$vars['evid'] = $segments[$slugcount];
+						unset( $segments[$slugcount]);
 						$slugcount++;
 						if (!$params->get("nocatindetaillink", 0))
 						{
@@ -991,6 +998,12 @@ function JEventsParseRouteNew(&$segments, $task)
 							if (count($segments) > $slugcount && $segments[$slugcount] != ":")
 							{
 								$vars['catids'] = $segments[$slugcount];
+								unset( $segments[$slugcount]);
+								$slugcount++;
+							}
+							if (count($segments) > $slugcount && $segments[$slugcount] == ":")
+							{
+								unset( $segments[$slugcount]);
 								$slugcount++;
 							}
 						}
@@ -998,6 +1011,7 @@ function JEventsParseRouteNew(&$segments, $task)
 						if (count($segments) > $slugcount && $segments[$slugcount] != "" && $segments[$slugcount] != "-")
 						{
 							$vars['title'] = $segments[$slugcount];
+							unset( $segments[$slugcount]);
 							$slugcount++;
 						}
 						break;
@@ -1006,6 +1020,7 @@ function JEventsParseRouteNew(&$segments, $task)
 						if ($segments[$slugcount] != ":")
 						{
 							$vars['catids'] = $segments[$slugcount];
+							unset( $segments[$slugcount]);
 						}
 						break;
 				}
@@ -1074,6 +1089,10 @@ function JEventsParseRouteNew(&$segments, $task)
 			break;
 	}
 
+	if (count($vars) == count($segments))
+	{
+		$segments = array();
+	}
 	return $vars;
 
 }
