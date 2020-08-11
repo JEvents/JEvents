@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
 					}
 					if (label.classList.contains('btn-success')) {
 						label.classList.remove('btn-success');
-						input.setAttribute('data-activeclass', 'success');
+						input.setAttribute('data-activeclass', 'primary');
 					}
 					if (label.classList.contains('btn-warning')) {
 						label.classList.remove('btn-warning');

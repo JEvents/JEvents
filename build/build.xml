@@ -91,6 +91,7 @@
         <fileset dir="${builddir}/${genericfolder}" id="pluginZip">
             <include name="**"/>
             <excludesfile name="excludedfiles.build"></excludesfile>
+            <exclude name="**/jevcustom.css"></exclude>
         </fileset>
         <zip ignorelinks="true" destfile="${builddir}/${zipfile}">
             <fileset refid="pluginZip"/>

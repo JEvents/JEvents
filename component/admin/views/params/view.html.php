@@ -42,15 +42,16 @@ class AdminParamsViewParams extends JEventsAbstractView
 
 		$model = $this->getModel();
 
-
-
 		jimport('joomla.form.form');
 
 		// Add the search path for the admin component config.xml file.
 		\Joomla\CMS\Form\Form::addFormPath(JPATH_ADMINISTRATOR . '/components/' . JEV_COM_COMPONENT);
 
 		// Get the form.
+		// Some plugins called by the form can wreck the layout by outputting things here like &#65279; !!
+		ob_start();
 		$modelForm = $model->getForm();
+		$junk = ob_get_clean();
 
 		$component = $this->get('Component');
 		// Bind the form to the data.

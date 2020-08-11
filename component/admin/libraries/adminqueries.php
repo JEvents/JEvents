@@ -528,7 +528,7 @@ class JEventsAdminDBModel extends JEventsDBModel
 		$t_datenowSQL         = $t_datenow->toSql();
 
 		// repeating events first
-		$query  = "SELECT atdc.atdcount, det.summary as title, rpt.startrepeat "
+		$query  = "SELECT atdc.atdcount, det.summary as title, rpt.startrepeat, atd.id as atd_id, 0 as repeating , rpt.rp_id "
 			. "\n FROM #__jevents_vevent as ev"
 			. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
 			. "\n LEFT JOIN #__jevents_vevdetail as det ON rpt.eventdetail_id = det.evdet_id"
@@ -538,14 +538,14 @@ class JEventsAdminDBModel extends JEventsDBModel
 			. "\n AND ev.access  IN ( " . JEVHelper::getAid($user) . ") "
 			. "\n AND rpt.startrepeat > '$t_datenowSQL' "
 			. "\n AND ev.state = 1 "
-			. " \n ORDER BY startrepeat ASC";
+			. "\n ORDER BY rpt.startrepeat ASC";
 
 		$db->setQuery($query, 0, $max);
 
 		$reprows = $db->loadObjectList();
 
 		// then non-repeating events
-		$query  = "SELECT atdc.atdcount, det.summary as title, rpt.startrepeat "
+		$query  = "SELECT atdc.atdcount, det.summary as title, rpt.startrepeat, atd.id as atd_id, 1 as repeating, 0 as rp_id"
 			. "\n FROM #__jevents_vevent as ev"
 			. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
 			. "\n LEFT JOIN #__jevents_vevdetail as det ON rpt.eventdetail_id = det.evdet_id"
@@ -556,7 +556,9 @@ class JEventsAdminDBModel extends JEventsDBModel
 			. "\n AND atdc.rp_id = 0"
 			. "\n AND rpt.startrepeat > '$t_datenowSQL' "
 			. "\n AND ev.state = 1 "
-			. " \n ORDER BY startrepeat ASC";
+			. "\n GROUP BY ev.ev_id"
+			. "\n ORDER BY rpt.startrepeat ASC"
+		;
 
 		$db->setQuery($query, 0, $max);
 
@@ -570,13 +572,14 @@ class JEventsAdminDBModel extends JEventsDBModel
 		// Just the first 10
 		$rows = array_slice($rows, 0, $max);
 
-		$data = array('start' => array(), 'title' => array(), 'count' => array());
+		$data = array('start' => array(), 'title' => array(), 'count' => array(), 'link' => array());
 
 		foreach ($rows as $row)
 		{
 			$data['start'][] = $row->startrepeat;
 			$data['title'][] = $row->title; // . '\n' . $row->startrepeat;
 			$data['count'][] = $row->atdcount;
+			$data['link'][] = JRoute::_("index.php?option=com_rsvppro&task=attendees.overview&atd_id[]=" . $row->atd_id . "|" . $row->rp_id . "&repeating=" . $row->repeating, false);
 		}
 		return $data;
 

@@ -72,7 +72,7 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
             </div>
             <div>
                 <span class="gsl-text-small">
-                   <span gsl-icon="icon: users;ratio: 3" class="gsl-margin-small-right gsl-text-primary"></span>
+                   <span gsl-icon="icon: users;" class="gsl-margin-small-right gsl-text-primary"></span>
                    <?php echo Text::_("COM_JEVENTS_UPCOMING_REGISTRATIONS");?>
                 </span>
                 <?php if (PluginHelper::isEnabled("jevents", "jevrsvppro")) { ?>
