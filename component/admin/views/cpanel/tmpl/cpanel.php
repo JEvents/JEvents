@@ -262,7 +262,7 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		new Chart(document.getElementById('chart1'), {
 			type: 'pie',
 			data: {
-				labels: ['<?php echo  implode("', '", $this->eventsByCat); ?>'],
+				labels: <?php echo  json_encode($this->eventsByCat);?>,
 				datasets: [
 					{
 						backgroundColor: ['<?php echo  implode("', '", $this->eventsByCatColours); ?>'],
@@ -327,7 +327,7 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		new Chart(document.getElementById('chart3'), {
 			type: 'bar',
 			data: {
-				labels: ['<?php echo  implode("', '", $this->attendeeCountsByEvent['title']); ?>'],
+				labels: <?php echo  json_encode($this->attendeeCountsByEvent['title']);?>,
 				datasets: [
 					{
 						backgroundColor: "#39f",

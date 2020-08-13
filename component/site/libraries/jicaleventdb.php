@@ -1209,7 +1209,7 @@ class jIcalEventDB extends jEventCal
 							$this->dtstart($repeat->getUnixStartTime());
 							$this->dtend($repeat->getUnixEndTime());
 
-							Factory::getApplication()->enqueueMessage(Text::_('JEV_PLEASE_CHECK_START_AND_END_TIMES_FOR_THIS_EVENT') . " : " .$this->title() . " : problem 1");
+							//Factory::getApplication()->enqueueMessage(Text::_('JEV_PLEASE_CHECK_START_AND_END_TIMES_FOR_THIS_EVENT') . " : " .$this->title() . " : problem 1");
 						}
 						else
 						{
