@@ -1209,7 +1209,7 @@ class jIcalEventDB extends jEventCal
 							$this->dtstart($repeat->getUnixStartTime());
 							$this->dtend($repeat->getUnixEndTime());
 
-							Factory::getApplication()->enqueueMessage(Text::_('JEV_PLEASE_CHECK_START_AND_END_TIMES_FOR_THIS_EVENT'));
+							Factory::getApplication()->enqueueMessage(Text::_('JEV_PLEASE_CHECK_START_AND_END_TIMES_FOR_THIS_EVENT') . " : " .$this->title() . " : problem 1");
 						}
 						else
 						{
@@ -1234,7 +1234,7 @@ class jIcalEventDB extends jEventCal
 							{
 								// In this scenario we have no idea what the time should be unfortunately
 
-								Factory::getApplication()->enqueueMessage(Text::_('JEV_PLEASE_CHECK_START_AND_END_TIMES_FOR_THIS_EVENT'));
+								Factory::getApplication()->enqueueMessage(Text::_('JEV_PLEASE_CHECK_START_AND_END_TIMES_FOR_THIS_EVENT') . " : " .$this->title() . " : problem 2");
 
 								// switch timezone back
 								date_default_timezone_set($timezone);

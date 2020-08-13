@@ -881,8 +881,8 @@ class JEVHelper
 			data-time-24="' . $timeformat . '" 
 			' . (!empty($minYear) ? ' data-min-year="' . $minYear . '"' : "") . '
 			' . (!empty($maxYear) ? ' data-max-year="' . $maxYear . '"' : "") . ' >'
-				. '<span class="icon-calendar"></span>'
-				. '</button>. '
+				. '<span class="gsl-icon" gsl-icon="icon: calendar"></span>'
+				. '</button>'
 				. '</span>'
 				. '</div>'
 				. '</div>';
@@ -1461,7 +1461,6 @@ class JEVHelper
 				}
 				else if ($juser->id > 0 && JEVHelper::isAdminUser($juser))
 				{
-					JError::raiseWarning("403", Text::_("JEV_AUTHORISED_USER_MODE_ENABLED_BUT_NO_ENTRY_FOR_SUPER_USER"));
 					Factory::getApplication()->enqueueMessage(Text::_("JEV_AUTHORISED_USER_MODE_ENABLED_BUT_NO_ENTRY_FOR_SUPER_USER"), 'warning');
 
 				}
@@ -2651,25 +2650,7 @@ class JEVHelper
 			{
 				// if the user has been deleted then try to suppress the warning
 				// this causes a problem in Joomla 2.5.1 on some servers
-				if (version_compare(JVERSION, '2.5', '>='))
-				{
-					$rows[$id] = JEVHelper::getUser($id);
-				}
-				else
-				{
-					$handlers = JError::getErrorHandling(2);
-					JError::setErrorHandling(2, "ignore");
-					$rows[$id] = JEVHelper::getUser($id);
-					foreach ($handlers as $handler)
-					{
-						if (!is_array($handler))
-							JError::setErrorHandling(2, $handler);
-					}
-					if ($rows[$id])
-					{
-						$error = JError::getError(true);
-					}
-				}
+				$rows[$id] = JEVHelper::getUser($id);
 			}
 		}
 

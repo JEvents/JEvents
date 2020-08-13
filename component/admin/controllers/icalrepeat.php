@@ -384,6 +384,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 		$app    = Factory::getApplication();
 		$input  = $app->input;
         $params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+		$filter = InputFilter::getInstance(array(), array(), 1, 1);
 
 		// clean out the cache
 		$cache = Factory::getCache('com_jevents');
@@ -428,7 +429,6 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 			$data["X-EXTRAINFO"] = $input->getRaw("extra_info", "");
 			$data["DESCRIPTION"] = $input->getRaw('jevcontent', '');
 
-			$filter = InputFilter::getInstance(array(), array(), 1, 1);
 			$data["X-EXTRAINFO"] = $filter->clean($data["X-EXTRAINFO"] , 'html');
 			$data["DESCRIPTION"] = $filter->clean($data["DESCRIPTION"] , 'html');
 		}

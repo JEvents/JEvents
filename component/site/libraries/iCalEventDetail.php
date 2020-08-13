@@ -276,8 +276,7 @@ class iCalEventDetail extends Joomla\CMS\Table\Table
 			$res = Factory::getApplication()->triggerEvent('onStoreCustomDetails', array(&$this));
 
 		} catch (Exception $e) {
-			JError::raiseError(321, "Problem saving event " . $e);
-
+			throw new Exception("Problem saving event " . $e, 321);
 		}
 
 		return $this->evdet_id;

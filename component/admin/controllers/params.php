@@ -204,8 +204,7 @@ class AdminParamsController extends AdminController
 			// Push up to three validation messages out to the user.
 			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
 			{
-				//TODO setup a correct exception handling as JError is deprecated.
-				if (JError::isError($errors[$i]))
+				if ($errors[$i] instanceof Exception)
 				{
 					$app->enqueueMessage($errors[$i]->getMessage(), 'notice');
 				}

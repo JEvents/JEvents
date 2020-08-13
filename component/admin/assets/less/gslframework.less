@@ -328,16 +328,17 @@ body, body.@{mycomponent}
   }
 
   /* Search nav */
+  .js-stools-container-filters {
+    .search-field {
+      width: 140px;
+      -webkit-transition: all 0.25s cubic-bezier(0.175, 0.885, 0.320, 1.275);
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.320, 1.275);
+    }
 
-  .search-field {
-    width: 140px;
-    -webkit-transition: all 0.25s cubic-bezier(0.175, 0.885, 0.320, 1.275);
-    transition: all 0.25s cubic-bezier(0.175, 0.885, 0.320, 1.275);
-  }
-
-  .search-field:focus {
-    width: 200px;
-    border-color: #fff !important;
+    .search-field:focus {
+      width: 200px;
+      border-color: #fff !important;
+    }
   }
 
   .gsl-card {

@@ -31,7 +31,7 @@ class Pkg_JeventsInstallerScript
 
 		if (version_compare(PHP_VERSION, JEVENTS_MINIMUM_PHP, '<'))
 		{
-			Jerror::raiseWarning(null, Text::sprintf("COM_JEVENTS_PHP_VERSION_WARNING", PHP_VERSION));
+			Factory::getApplication()->enqueueMessage(Text::sprintf("COM_JEVENTS_PHP_VERSION_WARNING", PHP_VERSION), 'warning');
 		}
 
 		// Joomla! broke the update call, so we have to create a workaround check.
@@ -44,7 +44,7 @@ class Pkg_JeventsInstallerScript
 			$this->hasJEventsInst = 0;
 			if (version_compare(JVERSION, '3.8.0', '<'))
 			{
-				Jerror::raiseWarning(null, 'Warning! You are running a very insecure version of Joomla! <br/>Please update Joomla! to at least 3.8.0 before installing JEvents. This will also prevent issues with JEvents');
+				Factory::getApplication()->enqueueMessage('Warning! You are running a very insecure version of Joomla! <br/>Please update Joomla! to at least 3.8.0 before installing JEvents. This will also prevent issues with JEvents', 'warning');
 
 				return false;
 			}
@@ -56,7 +56,7 @@ class Pkg_JeventsInstallerScript
 			$this->hasJEventsInst = 1;
 			if (version_compare(JVERSION, '3.8.0', '<'))
 			{
-				Jerror::raiseWarning(null, 'This version of JEvents is designed for Joomla 3.8.0 and later.<br/>Please update Joomla! before upgrading JEvents to this version');
+				Factory::getApplication()->enqueueMessage('This version of JEvents is designed for Joomla 3.8.0 and later.<br/>Please update Joomla! before upgrading JEvents to this version', 'warning');
 
 				return false;
 			}

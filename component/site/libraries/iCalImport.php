@@ -130,11 +130,11 @@ class iCalImport
 			if ($this->rawData === false)
 			{
 				// file_get_contents: no or blocked wrapper for $file
-				JError::raiseNotice(0, 'file_get_contents() failed, try fsockopen');
+				Factory::getApplication()->enqueueMessage('file_get_contents() failed, try fsockopen', 'notice');
 				$parsed_url = parse_url($file);
 				if ($parsed_url === false)
 				{
-					JError::raiseWarning(0, 'url not parsed: ' . $file);
+					Factory::getApplication()->enqueueMessage('url not parsed: ' . $file, 'warning');
 				}
 				else
 				{
@@ -154,7 +154,7 @@ class iCalImport
 						if ($fh === false)
 						{
 							// fsockopen: no connect
-							JError::raiseWarning(0, 'fsockopen: no connect for ' . $file . ' - ' . $errstr);
+							Factory::getApplication()->enqueueMessage('fsockopen: no connect for ' . $file . ' - ' . $errstr, 'warning');
 
 							return false;
 						}
@@ -230,8 +230,7 @@ class iCalImport
 						exit();
 					}
 				}
-				JError::raiseWarning(0, 'Not a valid VCALENDAR data file: ' . $this->srcURL);
-				//JError::raiseWarning(0, 'Not a valid VCALENDAR or CSV data file: ' . $this->srcURL);
+				Factory::getApplication()->enqueueMessage('Not a valid VCALENDAR data file: ' . $this->srcURL, 'warning');
 				// return false so that we don't remove a valid calendar because of a bad URL load!
 				return false;
 			}

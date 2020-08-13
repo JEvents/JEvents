@@ -3,9 +3,11 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 
 if (!isset($this->jevviewdone))
 {
+	HTMLHelper::_('stylesheet', 'jui/icomoon.css', array('version' => 'auto', 'relative' => true));
 	$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 	if ($params->get("newfrontendediting", 1))
 	{

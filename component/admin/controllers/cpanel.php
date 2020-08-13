@@ -140,7 +140,8 @@ class AdminCpanelController extends AdminController
 		$nativeCals      = $this->dataModel->queryModel->getNativeIcalendars();
 		if (is_null($nativeCals) || count($nativeCals) == 0)
 		{
-			JError::raiseWarning("100", Text::_('CALENDARS_NOT_SETUP_PROPERLY'));
+
+			Factory::getApplication()->enqueueMessage(Text::_("CALENDARS_NOT_SETUP_PROPERLY"), 'warning');
 		}
 
 		/*
@@ -1088,7 +1089,7 @@ WHERE ics.ics_id is null
 					{
 						$updateLanguagePackMessage = Text::sprintf('JEV_UPDATE_LANGUAGE_PACKAGE', $language['name']);
 					}
-					JError::raiseNotice("100", $updateLanguagePackMessage);
+					Factory::getApplication()->enqueueMessage($updateLanguagePackMessage, 'notice');
 				}
 			}
 		}
