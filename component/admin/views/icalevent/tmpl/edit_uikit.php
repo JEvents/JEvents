@@ -37,10 +37,6 @@ $assoc = false && Associations::isEnabled() && Factory::getApplication()->isClie
 JevHtmlBootstrap::framework();
 HTMLHelper::_('behavior.keepalive');
 
-if ($params->get("bootstrapchosen", 1))
-{
-	HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
-}
 // Do not load bootstrap
 
 // use Route to preseve language selection

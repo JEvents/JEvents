@@ -175,7 +175,12 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 			JEVHelper::stylesheet('jevcustom.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
 		}
 
-		$this->setupEditForm();
+        if ($params->get("bootstrapchosen", 1))
+        {
+            HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
+        }
+
+        $this->setupEditForm();
 
 		parent::displaytemplate($tpl);
 

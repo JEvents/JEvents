@@ -126,12 +126,12 @@ document.addEventListener('DOMContentLoaded', function () {
 window.addEventListener('load', function() {
 	if (document.querySelectorAll) {
 
-		let showonFields = document.getElementById('jevents').querySelectorAll('[data-showon]');
+		let showonFields = document.getElementById('jevents').querySelectorAll('[data-showon-gsl]');
 
 		// Setup each 'showon' field onkeypress to mimic onchange
 		for (let is = 0; is < showonFields.length; is++) {
 			let target = showonFields[is];
-			let jsondata = JSON.parse(target.getAttribute('data-showon')) || [],
+			let jsondata = JSON.parse(target.getAttribute('data-showon-gsl')) || [],
 				fields = [];
 
 			if (typeof jsondata['AND'] !== 'undefined') {
