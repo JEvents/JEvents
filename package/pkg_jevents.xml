@@ -37,6 +37,6 @@
 		<file type="library" id="jevtypeahead">jevtypeahead.zip</file>
 	</files>
 	<updateservers>
-		<server type="extension" name="JEvents Updates">https://www.jevents.net/newupdates/jevents_addon_updates.xml</server>
+		<server type="extension" name="JEvents Updates">https://www.jevents.net/newupdates/package_jevents.xml</server>
 	</updateservers>
 </extension>

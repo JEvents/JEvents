@@ -4310,312 +4310,376 @@ SCRIPT;
 		return $array;
 	}
 
-	public static function setUpdateUrls()
-	{
-		// Only do this once every 30 minutes
-		$options = array(
-			'defaultgroup' => 'jevents_updateurls',
-			'cachebase'    => JPATH_ADMINISTRATOR . '/cache',
-			'lifetime'     => 30
-		);
-		$cache   = JCache::getInstance('', $options);
-		$cache->setCaching(true);
+    public static function setUpdateUrls()
+    {
+        // Only do this once every 30 minutes
+        $options = array(
+            'defaultgroup' => 'jevents_updateurls',
+            'cachebase'    => JPATH_ADMINISTRATOR . '/cache',
+            'lifetime'     => 30
+        );
+        $cache   = JCache::getInstance('', $options);
+        $cache->setCaching(true);
 
-		$alreadyUpdated = $cache->get('alreadyUpdated', 'jevents_updateurls');
-		if ($alreadyUpdated)
-		{
-			return;
-		}
-		$cache->store(1, 'alreadyUpdated', 'jevents_updateurls');
+        $alreadyUpdated = $cache->get('alreadyUpdated', 'jevents_updateurls');
+        if ($alreadyUpdated)
+        {
+            return;
+        }
+        $cache->store(1, 'alreadyUpdated', 'jevents_updateurls');
 
-		$starttime = microtime(true);
+        $starttime = microtime(true);
 
-		$db = Factory::getDbo();
+        $db = Factory::getDbo();
 
-		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+        $params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		$updates = array(
-			array("element" => "pkg_jeventsplus", "name" => "com_jeventsplus", "type" => "package"),
+        $updates = array(
+            array("element" => "pkg_jeventsplus", "name" => "com_jeventsplus", "type" => "package"),
 
-			array("element" => "pkg_jevents", "name" => "com_jevents", "type" => "package"),
-			array("element" => "pkg_jevlocations", "name" => "com_jevlocations", "type" => "package"),
-			array("element" => "pkg_jevpeople", "name" => "com_jevpeople", "type" => "package"),
-			array("element" => "pkg_rsvppro", "name" => "com_rsvppro", "type" => "package"),
-			array("element" => "pkg_jeventstags", "name" => "com_jeventstags", "type" => "package"),
+            array("element" => "pkg_jevents", "name" => "com_jevents", "type" => "package"),
+            array("element" => "pkg_jevlocations", "name" => "com_jevlocations", "type" => "package"),
+            array("element" => "pkg_jevpeople", "name" => "com_jevpeople", "type" => "package"),
+            array("element" => "pkg_rsvppro", "name" => "com_rsvppro", "type" => "package"),
+            array("element" => "pkg_jeventstags", "name" => "com_jeventstags", "type" => "package"),
 
-			// Silver - AnonUsers
-			array("element" => "jevanonuser", "name" => "jevanonuser", "folder" => "jevents", "type" => "plugin"),
-			// Silver - AutoTweet
-			array("element" => "jevsendfb", "name" => "jevsendfb", "folder" => "jevents", "type" => "plugin"),
-			array("element" => "autotweetjevents", "name" => "autotweetjevents", "folder" => "system", "type" => "plugin"),
-			// Silver - MatchingEvents
-			array("element" => "jevmatchingevents", "name" => "jevmatchingevents", "folder" => "jevents", "type" => "plugin"),
-			// Silver - StandardImage
-			array("element" => "jevfiles", "name" => "jevfiles", "folder" => "jevents", "type" => "plugin"),
-			// Silver - agendaminutes
-			array("element" => "agendaminutes", "name" => "agendaminutes", "folder" => "jevents", "type" => "plugin"),
-			array("element" => "jevent_embed", "name" => "jevent_embed", "folder" => "content", "type" => "plugin"),
-			// Silver - authorisedusers
-			array("element" => "jevuser", "name" => "jevuser", "folder" => "user", "type" => "plugin"),
-			// Silver - calendar
-			array("element" => "jevcalendar", "name" => "jevcalendar", "folder" => "jevents", "type" => "plugin"),
-			// Silver - catcal
-			array("element" => "jevcatcal", "name" => "jevcatcal", "folder" => "jevents", "type" => "plugin"),
-			// Silver - cck
-			array("element" => "jevcck", "name" => "jevcck", "folder" => "jevents", "type" => "plugin"),
-			array("element" => "k2embedded", "name" => "k2embedded", "folder" => "k2", "type" => "plugin"),
-			// Silver - creator
-			array("element" => "jevcreator", "name" => "jevcreator", "folder" => "content", "type" => "plugin"),
-			// Silver - customfields
-			array("element" => "jevcustomfields", "name" => "jevcustomfields", "folder" => "jevents", "type" => "plugin"),
-			// Silver - Dynamic legend
-			array("element" => "mod_jevents_dynamiclegend", "name" => "mod_jevents_dynamiclegend", "type" => "module"),
-			// Silver - Calendar Plus
-			array("element" => "mod_jevents_calendarplus", "name" => "mod_jevents_calendarplus", "type" => "module"),
-			// Silver - Slideshow Module
-			array("element" => "mod_jevents_slideshow", "name" => "mod_jevents_slideshow", "type" => "module"),
-			// Silver - facebook
-			array("element" => "jevfacebook", "name" => "jevfacebook", "folder" => "jevents", "type" => "plugin"),
-			// Silver - facebook social
-			array("element" => "jevfacebooksocial", "name" => "jevfacebooksocial", "folder" => "jevents", "type" => "plugin"),
-			// Silver - featured
-			array("element" => "jevfeatured", "name" => "jevfeatured", "folder" => "jevents", "type" => "plugin"),
-			// Silver - hiddendetail
-			array("element" => "jevhiddendetail", "name" => "jevhiddendetail", "folder" => "jevents", "type" => "plugin"),
-			// Silver - jomsocial -  TODO
-			array("element" => "jevjsstream", "name" => "jevjsstream", "folder" => "jevents", "type" => "plugin"),
-			array("element" => "jevents", "name" => "jevents", "folder" => "community", "type" => "plugin"),
-			// Silver - layouts
-			array("element" => "extplus", "name" => "extplus", "type" => "file"),
-			array("element" => "ruthin", "name" => "ruthin", "type" => "file"),
-			array("element" => "flatplus", "name" => "flatplus", "type" => "file"),
-			array("element" => "iconic", "name" => "iconic", "type" => "file"),
-			array("element" => "map", "name" => "map", "type" => "file"),
-			array("element" => "smartphone", "name" => "smartphone", "type" => "file"),
-			array("element" => "zim", "name" => "zim", "type" => "file"),
-			array("element" => "float", "name" => "float", "type" => "file"),
+            // Silver - AnonUsers
+            array("element" => "jevanonuser", "name" => "jevanonuser", "folder" => "jevents", "type" => "plugin"),
+            // Silver - AutoTweet
+            array("element" => "jevsendfb", "name" => "jevsendfb", "folder" => "jevents", "type" => "plugin"),
+            array("element" => "autotweetjevents", "name" => "autotweetjevents", "folder" => "system", "type" => "plugin"),
+            // Silver - MatchingEvents
+            array("element" => "jevmatchingevents", "name" => "jevmatchingevents", "folder" => "jevents", "type" => "plugin"),
+            // Silver - StandardImage
+            array("element" => "jevfiles", "name" => "jevfiles", "folder" => "jevents", "type" => "plugin"),
+            // Silver - agendaminutes
+            array("element" => "agendaminutes", "name" => "agendaminutes", "folder" => "jevents", "type" => "plugin"),
+            array("element" => "jevent_embed", "name" => "jevent_embed", "folder" => "content", "type" => "plugin"),
+            // Silver - authorisedusers
+            array("element" => "jevuser", "name" => "jevuser", "folder" => "user", "type" => "plugin"),
+            // Silver - calendar
+            array("element" => "jevcalendar", "name" => "jevcalendar", "folder" => "jevents", "type" => "plugin"),
+            // Silver - catcal
+            array("element" => "jevcatcal", "name" => "jevcatcal", "folder" => "jevents", "type" => "plugin"),
+            // Silver - cck
+            array("element" => "jevcck", "name" => "jevcck", "folder" => "jevents", "type" => "plugin"),
+            array("element" => "k2embedded", "name" => "k2embedded", "folder" => "k2", "type" => "plugin"),
+            // Silver - creator
+            array("element" => "jevcreator", "name" => "jevcreator", "folder" => "content", "type" => "plugin"),
+            // Silver - customfields
+            array("element" => "jevcustomfields", "name" => "jevcustomfields", "folder" => "jevents", "type" => "plugin"),
+            // Silver - Dynamic legend
+            array("element" => "mod_jevents_dynamiclegend", "name" => "mod_jevents_dynamiclegend", "type" => "module"),
+            // Silver - Calendar Plus
+            array("element" => "mod_jevents_calendarplus", "name" => "mod_jevents_calendarplus", "type" => "module"),
+            // Silver - Slideshow Module
+            array("element" => "mod_jevents_slideshow", "name" => "mod_jevents_slideshow", "type" => "module"),
+            // Silver - facebook
+            array("element" => "jevfacebook", "name" => "jevfacebook", "folder" => "jevents", "type" => "plugin"),
+            // Silver - facebook social
+            array("element" => "jevfacebooksocial", "name" => "jevfacebooksocial", "folder" => "jevents", "type" => "plugin"),
+            // Silver - featured
+            array("element" => "jevfeatured", "name" => "jevfeatured", "folder" => "jevents", "type" => "plugin"),
+            // Silver - hiddendetail
+            array("element" => "jevhiddendetail", "name" => "jevhiddendetail", "folder" => "jevents", "type" => "plugin"),
+            // Silver - jomsocial -  TODO
+            array("element" => "jevjsstream", "name" => "jevjsstream", "folder" => "jevents", "type" => "plugin"),
+            array("element" => "jevents", "name" => "jevents", "folder" => "community", "type" => "plugin"),
+            // Silver - layouts
+            array("element" => "extplus", "name" => "extplus", "type" => "file"),
+            array("element" => "ruthin", "name" => "ruthin", "type" => "file"),
+            array("element" => "flatplus", "name" => "flatplus", "type" => "file"),
+            array("element" => "iconic", "name" => "iconic", "type" => "file"),
+            array("element" => "map", "name" => "map", "type" => "file"),
+            array("element" => "smartphone", "name" => "smartphone", "type" => "file"),
+            array("element" => "zim", "name" => "zim", "type" => "file"),
+            array("element" => "float", "name" => "float", "type" => "file"),
 
-			// These have been renamed in the XML file - need to be careful doing that!!!
-			array("element" => "JEventsExtplusLayout", "name" => "extplus", "type" => "file"),
-			array("element" => "JEventsRuthinLayout", "name" => "ruthin", "type" => "file"),
-			array("element" => "JEventsFlatplusLayout", "name" => "flatplus", "type" => "file"),
-			array("element" => "JEventsIconicLayout", "name" => "iconic", "type" => "file"),
-			array("element" => "JEventsMapLayout", "name" => "map", "type" => "file"),
-			array("element" => "JEventsSmartphoneLayout", "name" => "smartphone", "type" => "file"),
-			array("element" => "JEventsZimLayout", "name" => "zim", "type" => "file"),
-			array("element" => "JEventsFloatLayout", "name" => "float", "type" => "file"),
+            // These have been renamed in the XML file - need to be careful doing that!!!
+            array("element" => "JEventsExtplusLayout", "name" => "extplus", "type" => "file"),
+            array("element" => "JEventsRuthinLayout", "name" => "ruthin", "type" => "file"),
+            array("element" => "JEventsFlatplusLayout", "name" => "flatplus", "type" => "file"),
+            array("element" => "JEventsIconicLayout", "name" => "iconic", "type" => "file"),
+            array("element" => "JEventsMapLayout", "name" => "map", "type" => "file"),
+            array("element" => "JEventsSmartphoneLayout", "name" => "smartphone", "type" => "file"),
+            array("element" => "JEventsZimLayout", "name" => "zim", "type" => "file"),
+            array("element" => "JEventsFloatLayout", "name" => "float", "type" => "file"),
 
-			// Silver - Jevents Categories
-			array("element" => "mod_jevents_categories", "name" => "mod_jevents_categories", "type" => "module"),
-			// Silver - Newsletters - some TODO
-			array("element" => "tagjevents_jevents", "name" => "tagjevents_jevents", "folder" => "acymailing", "type" => "plugin"),
-			// Silver - Nnotifications
-			array("element" => "jevnotify", "name" => "jevnotify", "folder" => "jevents", "type" => "plugin"),
-			array("element" => "mod_jevents_notify", "name" => "mod_jevents_notify", "type" => "module"),
-			// Silver - simpleattend
-			array("element" => "jevrsvp", "name" => "jevrsvp", "folder" => "jevents", "type" => "plugin"),
-			// Silver - tabbed modules
-			array("element" => "mod_tabbedmodules", "name" => "mod_tabbedmodules", "type" => "module"),
-			// Silver - time Limit
-			array("element" => "jevtimelimit", "name" => "jevtimelimit", "folder" => "jevents", "type" => "plugin"),
-			// Silver - User Events
-			array("element" => "jevusers", "name" => "jevusers", "folder" => "jevents", "type" => "plugin"),
-			// Silver - Week Days
-			array("element" => "jevweekdays", "name" => "jevweekdays", "folder" => "jevents", "type" => "plugin"),
+            // Silver - Jevents Categories
+            array("element" => "mod_jevents_categories", "name" => "mod_jevents_categories", "type" => "module"),
+            // Silver - Newsletters - some TODO
+            array("element" => "tagjevents_jevents", "name" => "tagjevents_jevents", "folder" => "acymailing", "type" => "plugin"),
+            // Silver - Nnotifications
+            array("element" => "jevnotify", "name" => "jevnotify", "folder" => "jevents", "type" => "plugin"),
+            array("element" => "mod_jevents_notify", "name" => "mod_jevents_notify", "type" => "module"),
+            // Silver - simpleattend
+            array("element" => "jevrsvp", "name" => "jevrsvp", "folder" => "jevents", "type" => "plugin"),
+            // Silver - tabbed modules
+            array("element" => "mod_tabbedmodules", "name" => "mod_tabbedmodules", "type" => "module"),
+            // Silver - time Limit
+            array("element" => "jevtimelimit", "name" => "jevtimelimit", "folder" => "jevents", "type" => "plugin"),
+            // Silver - User Events
+            array("element" => "jevusers", "name" => "jevusers", "folder" => "jevents", "type" => "plugin"),
+            // Silver - Week Days
+            array("element" => "jevweekdays", "name" => "jevweekdays", "folder" => "jevents", "type" => "plugin"),
 
-			// GOLD addons - PaidSubs - TODO check Virtuemart for Joomla 3.0 is available
-			array("element" => "jevpaidsubs", "name" => "jevpaidsubs", "folder" => "jevents", "type" => "plugin"),
-			array("element" => "mod_jevents_paidsubs", "name" => "mod_jevents_paidsubs", "type" => "module"),
+            // GOLD addons - PaidSubs - TODO check Virtuemart for Joomla 3.0 is available
+            array("element" => "jevpaidsubs", "name" => "jevpaidsubs", "folder" => "jevents", "type" => "plugin"),
+            array("element" => "mod_jevents_paidsubs", "name" => "mod_jevents_paidsubs", "type" => "module"),
 
-			// Translations - TODO club translations.  Normal JEvents translations handled below!
+            // Translations - TODO club translations.  Normal JEvents translations handled below!
 
-			// Bronze - editor button
-			array("element" => "jevents", "name" => "jevents", "folder" => "editors-xtd", "type" => "plugin"),
+            // Bronze - editor button
+            array("element" => "jevents", "name" => "jevents", "folder" => "editors-xtd", "type" => "plugin"),
 
-			// Bronze - Meta tags
-			array("element" => "jevmetatags", "name" => "jevmetatags", "folder" => "jevents", "type" => "plugin"),
+            // Bronze - Meta tags
+            array("element" => "jevmetatags", "name" => "jevmetatags", "folder" => "jevents", "type" => "plugin"),
 
-			// Bronze - Missing Events
-			array("element" => "jevmissingevent", "name" => "jevmissingevent", "folder" => "jevents", "type" => "plugin"),
+            // Bronze - Missing Events
+            array("element" => "jevmissingevent", "name" => "jevmissingevent", "folder" => "jevents", "type" => "plugin"),
 
-			// Bronze - Popups
-			array("element" => "jevpopupdetail", "name" => "jevpopupdetail", "folder" => "jevents", "type" => "plugin"),
+            // Bronze - Popups
+            array("element" => "jevpopupdetail", "name" => "jevpopupdetail", "folder" => "jevents", "type" => "plugin"),
 
-			// Bronze - sh404sef - TODO
+            // Bronze - sh404sef - TODO
 
-		);
+        );
 
-		//JFactory::getApplication()->enqueueMessage("CHANGE UPDATESERVER", 'warning');
-		$debug = "XDEBUG_SESSION_START=PHPSTORM&";
-		//$updateDomain = "http://ubu.j33jq.com";
-		$debug = "";
-		$updateDomain = "https://www.jevents.net";
+        //JFactory::getApplication()->enqueueMessage("CHANGE UPDATESERVER", 'warning');
+        $debug = "XDEBUG_SESSION_START=PHPSTORM&";
+        //$updateDomain = "http://ubu.j33jq.com";
+        $debug = "";
+        $updateDomain = "https://www.jevents.net";
 
-		// Do the language files for Joomla
-		$db = Factory::getDbo();
-		$db->setQuery("SELECT * FROM #__extensions where type='file' AND element LIKE '%_JEvents' AND element NOT LIKE '%_JEvents_Addons' and element NOT LIKE '%_JEventsAddons' ");
-		$translations = $db->loadObjectList();
-		foreach ($translations as $translation)
-		{
-			if ($translation->name == "")
-			{
-				$translation->name = "JEvents Translation - " . $translation->element;
-			}
-			//	array("element"=>"ar-AA_JEvents","name"=>"Arabic translation for JEvents","type"=>"file"),
-			$updates[] = array("element" => $translation->element, "name" => $translation->name, "type" => "file");
-		}
+        // Do the language files for Joomla
+        $db = Factory::getDbo();
+        $db->setQuery("SELECT * FROM #__extensions where type='file' AND element LIKE '%_JEvents' AND element NOT LIKE '%_JEvents_Addons' and element NOT LIKE '%_JEventsAddons' ");
+        $translations = $db->loadObjectList();
+        foreach ($translations as $translation)
+        {
+            if ($translation->name == "")
+            {
+                $translation->name = "JEvents Translation - " . $translation->element;
+            }
+            //	array("element"=>"ar-AA_JEvents","name"=>"Arabic translation for JEvents","type"=>"file"),
+            $updates[] = array("element" => $translation->element, "name" => $translation->name, "type" => "file");
+        }
 
-		$db->setQuery("SELECT * FROM #__extensions where type='file' AND (element LIKE '%_JEvents_Addons' OR element LIKE '%_JEventsAddons') ");
-		$translations = $db->loadObjectList();
-		foreach ($translations as $translation)
-		{
-			//	array("element"=>"ar-AA_JEvents","name"=>"Arabic translation for JEvents","type"=>"file"),
-			$elem      = str_replace("_Addons", "Addons_", $translation->element);
-			$updates[] = array("element" => $elem, "name" => $translation->name, "type" => "file");
-		}
+        $db->setQuery("SELECT * FROM #__extensions where type='file' AND (element LIKE '%_JEvents_Addons' OR element LIKE '%_JEventsAddons') ");
+        $translations = $db->loadObjectList();
+        foreach ($translations as $translation)
+        {
+            //	array("element"=>"ar-AA_JEvents","name"=>"Arabic translation for JEvents","type"=>"file"),
+            $elem      = str_replace("_Addons", "Addons_", $translation->element);
+            $updates[] = array("element" => $elem, "name" => $translation->name, "type" => "file");
+        }
 
-		// Eliminate duplicates
-		$db = Factory::getDbo();
-		$query = $db->getQuery(true);
-		$query->select('*')
-			->from('#__update_sites')
-			->where('location LIKE ' . $db->quote("%newupdates/jevents_addon_updates.xml"));
-		$db->setQuery($query);
-		$updatesites = $db->loadObjectList();
+        // Eliminate JEvents duplicates
+        $db = Factory::getDbo();
+        $query = $db->getQuery(true);
+        $query->select('*')
+            ->from('#__update_sites')
+            ->where('location LIKE ' . $db->quote("%newupdates/jevents_package.xml"));
+        $db->setQuery($query);
+        $updatesites = $db->loadObjectList();
 
-		if ($updatesites && count($updatesites) > 1)
-		{
-			// clean up duplicate records
-			$query = $db->getQuery(true);
-			$query->delete('#__update_sites')
-				->where('location LIKE ' . $db->quote("%newupdates/jevents_addon_updates.xml"));
-			$db->setQuery($query);
-			$db->execute();
-			$updatesite = false;
-		}
-		else
-		{
-			$updatesite = isset($updatesites[0]) ? $updatesites[0] : false;
-		}
+        if ($updatesites && count($updatesites) > 1)
+        {
+            // clean up duplicate records
+            $query = $db->getQuery(true);
+            $query->delete('#__update_sites')
+                ->where('location LIKE ' . $db->quote("%newupdates/jevents_package.xml"));
+            $db->setQuery($query);
+            $db->execute();
+            $updateJeventsSite = false;
+        }
+        else
+        {
+            $updateJeventsSite = isset($updatesites[0]) ? $updatesites[0] : false;
+        }
 
-		if (!$updatesite)
-		{
-			$query = $db->getQuery(true);
-			$query->insert('#__update_sites')
-				->columns(array($db->qn('name'),
-						$db->qn('type'),
-						$db->qn('location'),
-						$db->qn('enabled'))
-				)
-				->values(
-					$db->q('JEvents And JEvents Addon Updates') . ', ' .
-					$db->q('collection') . ', ' .
-					$db->q("$updateDomain/newupdates/jevents_addon_updates.xml") . ', ' .
-					$db->q(1)
-				);
+        if (!$updateJeventsSite)
+        {
+            $query = $db->getQuery(true);
+            $query->insert('#__update_sites')
+                ->columns(array($db->qn('name'),
+                        $db->qn('type'),
+                        $db->qn('location'),
+                        $db->qn('enabled'))
+                )
+                ->values(
+                    $db->q('JEvents Addon Updates') . ', ' .
+                    $db->q('extension') . ', ' .
+                    $db->q("$updateDomain/newupdates/jevents_package.xml") . ', ' .
+                    $db->q(1)
+                );
 
-			$db->setQuery($query);
-			$db->execute();
+            $db->setQuery($query);
+            $db->execute();
 
-			$query = $db->getQuery(true);
-			$query->select('*')
-				->from('#__update_sites')
-				->where('location = ' . $db->quote("$updateDomain/newupdates/jevents_addon_updates.xml"));
+            $query = $db->getQuery(true);
+            $query->select('*')
+                ->from('#__update_sites')
+                ->where('location = ' . $db->quote("$updateDomain/newupdates/jevents_package.xml"));
 
-			$db->setQuery($query);
-			$updatesite = $db->loadObject();
+            $db->setQuery($query);
+            $updateJeventsSite = $db->loadObject();
 
-		}
+        }
 
-		if ($updatesite)  //&& empty($updatesite->extra_query))
-		{
-			$sitedomain = rtrim(str_replace(array('https://', 'http://'), "", Uri::root()), '/');
+        // Eliminate duplicates
+        $db = Factory::getDbo();
+        $query = $db->getQuery(true);
+        $query->select('*')
+            ->from('#__update_sites')
+            ->where('location LIKE ' . $db->quote("%newupdates/jevents_addons_updates.xml"));
+        $db->setQuery($query);
+        $updatesites = $db->loadObjectList();
 
-			$params   = ComponentHelper::getParams(JEV_COM_COMPONENT);
-			$clubcode = $params->get("clubcode", "");
-			$filter   = new InputFilter();
-			$clubcode = $filter->clean($clubcode, "CMD");
-			$clubcode = $clubcode . "-" . base64_encode($sitedomain);
-			$query = $db->getQuery(true);
-			$query->update('#__update_sites')
-				->set('extra_query = '. $db->quote($debug . 'dlid=' . $clubcode))
-				->set('name = '. $db->quote('JEvents And JEvents Addon Updates'))
-				->where('location LIKE ' . $db->quote("%newupdates/jevents_addon_updates.xml"));
-			$db->setQuery($query);
-			$db->execute();
-		}
+        if ($updatesites && count($updatesites) > 1)
+        {
+            // clean up duplicate records
+            $query = $db->getQuery(true);
+            $query->delete('#__update_sites')
+                ->where('location LIKE ' . $db->quote("%newupdates/jevents_addons_updates.xml"));
+            $db->setQuery($query);
+            $db->execute();
+            $updatesite = false;
+        }
+        else
+        {
+            $updatesite = isset($updatesites[0]) ? $updatesites[0] : false;
+        }
 
-		// clean up old style records
-		$query = $db->getQuery(true);
-		$query->delete('#__update_sites')
-			->where('location NOT LIKE ' . $db->quote("%newupdates/jevents_addon_updates.xml"))
-			->where('( location LIKE  ' . $db->quote("https://www.jevents.net%")
-				. ' OR '
-				. 'location LIKE ' . $db->quote("http://ubu.j33jq.com%") .')'
-			);
-		$db->setQuery($query);
-		$db->execute();
+        if (!$updatesite)
+        {
+            $query = $db->getQuery(true);
+            $query->insert('#__update_sites')
+                ->columns(array($db->qn('name'),
+                        $db->qn('type'),
+                        $db->qn('location'),
+                        $db->qn('enabled'))
+                )
+                ->values(
+                    $db->q('JEvents Addon Updates') . ', ' .
+                    $db->q('collection') . ', ' .
+                    $db->q("$updateDomain/newupdates/jevents_addons_updates.xml") . ', ' .
+                    $db->q(1)
+                );
 
-		$query = $db->getQuery(true);
-		$query->update('#__update_sites')
-			->set('location = ' . $db->q("$updateDomain/newupdates/jevents_addon_updates.xml"))
-			->where('location LIKE ' . $db->quote("%newupdates/jevents_addon_updates.xml"))
-			->where(' location NOT LIKE ' . $db->q("$updateDomain/newupdates/jevents_addon_updates.xml"));
-		$db->setQuery($query);
-		$db->execute();
+            $db->setQuery($query);
+            $db->execute();
 
-		foreach ($updates as $package)
-		{
-			JEVHelper::setUpdateUrlsByPackage($package, $updatesite);
-		}
+            $query = $db->getQuery(true);
+            $query->select('*')
+                ->from('#__update_sites')
+                ->where('location = ' . $db->quote("$updateDomain/newupdates/jevents_addons_updates.xml"));
 
-		$time_end = microtime(true);
-		// echo  "JEVHelper::setUpdateUrls = ".round($time_end - $starttime, 4)."<br/>";
-	}
+            $db->setQuery($query);
+            $updatesite = $db->loadObject();
 
-	private static function setUpdateUrlsByPackage($package, $updatesite)
-	{
-		$db = Factory::getDbo();
+        }
 
-		$pkg    = $package["element"];
-		$com    = $package["name"];
-		$folder = isset($package["folder"]) ? $package["folder"] : "";
-		$type   = $package["type"];
+        if ($updatesite)  //&& empty($updatesite->extra_query))
+        {
+            $sitedomain = rtrim(str_replace(array('https://', 'http://'), "", Uri::root()), '/');
 
-		static $extensiondata = false;
-		if (!$extensiondata)
-		{
-			$db->setQuery("select map.update_site_id, exn.extension_id as extension_id , exn.type as extension_type, exn.element as extension_element, exn.folder as extension_folder, exn.package_id as extension_package_id  from #__extensions as exn
+            $params   = ComponentHelper::getParams(JEV_COM_COMPONENT);
+            $clubcode = $params->get("clubcode", "");
+            $filter   = new InputFilter();
+            $clubcode = $filter->clean($clubcode, "CMD");
+            $clubcode = $clubcode . "-" . base64_encode($sitedomain);
+            $query = $db->getQuery(true);
+            $query->update('#__update_sites')
+                ->set('extra_query = '. $db->quote($debug . 'dlid=' . $clubcode))
+                ->set('name = '. $db->quote('JEvents Addon Updates'))
+                ->where('location LIKE ' . $db->quote("%newupdates/jevents_addons_updates.xml"));
+            $db->setQuery($query);
+            $db->execute();
+        }
+
+        // clean up old style records
+        $query = $db->getQuery(true);
+        $query->delete('#__update_sites')
+            ->where('(location NOT LIKE ' . $db->quote("%newupdates/jevents_addons_updates.xml")
+                . ' AND location NOT LIKE ' . $db->quote("%newupdates/jevents_package.xml") .')')
+            ->where('( location LIKE  ' . $db->quote("https://www.jevents.net%")
+                . ' OR '
+                . 'location LIKE ' . $db->quote("http://ubu.j33jq.com%") .')'
+            );
+        $db->setQuery($query);
+        $db->execute();
+
+        $query = $db->getQuery(true);
+        $query->update('#__update_sites')
+            ->set('location = ' . $db->q("$updateDomain/newupdates/jevents_addons_updates.xml"))
+            ->where('location LIKE ' . $db->quote("%newupdates/jevents_addons_updates.xml"))
+            ->where(' location NOT LIKE ' . $db->q("$updateDomain/newupdates/jevents_addons_updates.xml"));
+        $db->setQuery($query);
+        $db->execute();
+
+        foreach ($updates as $package)
+        {
+            JEVHelper::setUpdateUrlsByPackage($package, $updatesite, $updateJeventsSite);
+        }
+
+        $time_end = microtime(true);
+        // echo  "JEVHelper::setUpdateUrls = ".round($time_end - $starttime, 4)."<br/>";
+    }
+
+    private static function setUpdateUrlsByPackage($package, $updatesite, $updateJeventsSite)
+    {
+        $db = Factory::getDbo();
+
+        $pkg    = $package["element"];
+        $com    = $package["name"];
+        $folder = isset($package["folder"]) ? $package["folder"] : "";
+        $type   = $package["type"];
+
+        static $extensiondata = false;
+        if (!$extensiondata)
+        {
+            $db->setQuery("select map.update_site_id, exn.extension_id as extension_id , exn.type as extension_type, exn.element as extension_element, exn.folder as extension_folder, exn.package_id as extension_package_id  from #__extensions as exn
 	LEFT JOIN #__update_sites_extensions as map on map.extension_id=exn.extension_id
 	LEFT JOIN #__update_sites as us on us.update_site_id=map.update_site_id");
-			$extensiondata = $db->loadObjectList('extension_id');
-		}
+            $extensiondata = $db->loadObjectList('extension_id');
+        }
 
-		// Now check and setup the package update URL
-		$pkgupdate = false;
-		foreach ($extensiondata as $ed)
-		{
-			if ($ed->extension_type == $type && $ed->extension_element == $pkg && $ed->extension_folder == $folder)
-			{
-				$pkgupdate = $ed;
-				break;
-			}
-		}
+        // Now check and setup the package update URL
+        $pkgupdate = false;
+        foreach ($extensiondata as $ed)
+        {
+            if ($ed->extension_type == $type && $ed->extension_element == $pkg && $ed->extension_folder == $folder)
+            {
+                $pkgupdate = $ed;
+                break;
+            }
+        }
 
-		// we have a package and an update record
-		if ($pkgupdate && $pkgupdate->update_site_id !== $updatesite->update_site_id)
-		{
-			// Now update package update URL
-			JEVHelper::setPackageUpdateUrl($pkgupdate, $updatesite);
-		}
-		// we have a package but not an update record
-		else if ($pkgupdate && $pkgupdate->extension_id && !$pkgupdate->update_site_id)
-		{
-			// Now set package update URL
-			JEVHelper::setPackageUpdateUrl($pkgupdate, $updatesite);
-		}
-
-	}
+        if ($pkg == 'pkg_jevents')
+        {
+            // we have a package and an update record
+            if ($pkgupdate && $pkgupdate->update_site_id !== $updateJeventsSite->update_site_id) {
+                // Now update package update URL
+                JEVHelper::setPackageUpdateUrl($pkgupdate, $updateJeventsSite);
+            } // we have a package but not an update record
+            else if ($pkgupdate && $pkgupdate->extension_id && !$pkgupdate->update_site_id) {
+                // Now set package update URL
+                JEVHelper::setPackageUpdateUrl($pkgupdate, $updateJeventsSite);
+            }
+        }
+        else {
+            // we have a package and an update record
+            if ($pkgupdate && $pkgupdate->update_site_id !== $updatesite->update_site_id) {
+                // Now update package update URL
+                JEVHelper::setPackageUpdateUrl($pkgupdate, $updatesite);
+            } // we have a package but not an update record
+            else if ($pkgupdate && $pkgupdate->extension_id && !$pkgupdate->update_site_id) {
+                // Now set package update URL
+                JEVHelper::setPackageUpdateUrl($pkgupdate, $updatesite);
+            }
+        }
+    }
 
 	private static function setPackageUpdateUrl($pkgupdate, $updatesite)
 	{
