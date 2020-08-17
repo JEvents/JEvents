@@ -50,7 +50,7 @@ body.com_jevents #wrapper #sidebar-wrapper {
 }
 body.com_jevents #wrapper #sidebar-wrapper.gsl-hide-sidebar {
   display: none;
-  transition: all 0.3s ease;
+  transition: all .3s ease;
 }
 body.com_jevents #gslc.gsl-scope {
   /* Search filters display toggle */
@@ -61,14 +61,14 @@ body.com_jevents #gslc.gsl-scope #left-col {
       left: 3rem;
        */
   left: 0;
-  transition: all 0.3s ease;
+  transition: all .3s ease;
 }
 body.com_jevents #gslc.gsl-scope #right-col:not(.noleftbar) #top-head {
   /* 3rem for J4 sidebar
       left: ~"calc(50px + 3rem)";
        */
   left: 50px;
-  transition: all 0.3s ease;
+  transition: all .3s ease;
 }
 body.com_jevents #gslc.gsl-scope .gsl-content,
 body.com_jevents #gslc.gsl-scope #ysts_system_messages {
