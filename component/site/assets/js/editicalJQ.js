@@ -766,9 +766,11 @@ function toggleFreq(freq , setup)
 	byweekno.style.display="none";
 	bymonthday.style.display="none";
 	byday.style.display="none";
-	byhour.style.display="none";
-	byminute.style.display="none";
-	bysecond.style.display="none";
+	if (byhour) {
+		byhour.style.display = "none";
+		byminute.style.display = "none";
+		bysecond.style.display = "none";
+	}
 	byirregular.style.display="none";
 
 	switch (freq) {
