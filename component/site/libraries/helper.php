@@ -4495,7 +4495,7 @@ SCRIPT;
 		}
 		else
 		{
-			$updatesite = $updatesites[0];
+			$updatesite = isset($updatesites[0]) ? $updatesites[0] : false;
 		}
 
 		if (!$updatesite)
