@@ -110,6 +110,9 @@ function DefaultEventIcalDialog($view, $row, $mask, $bootstrap = false)
 						</div>
 						<?php
 					}
+					$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+					if ($params->get("icalformatted", 1) == 1)
+					{
 					?>
 					<label style="display:inline;">
 						<input name="icf" type="checkbox" value="1" onclick="if (this.checked) {
@@ -121,7 +124,7 @@ function DefaultEventIcalDialog($view, $row, $mask, $bootstrap = false)
 							}"/>
 						<?php echo Text::_("JEV_PRESERVE_HTML_FORMATTING"); ?>
 					</label>
-
+                    <?php } ?>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default"

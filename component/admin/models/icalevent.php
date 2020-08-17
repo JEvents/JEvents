@@ -132,7 +132,7 @@ class JEventsModelicalevent extends ListModel
 			$created_by = (int) $created_by;
 		}
 		$catid    = intval($this->getState('filter.catid', 0));
-		$showpast = $this->getState("filter.showpast", '1');
+		$showpast = $this->getState("filter.showpast", '0');
 
 		$search     = $this->getState('filter.search', '');
 		$search     = $db->escape(trim(strtolower($search)));

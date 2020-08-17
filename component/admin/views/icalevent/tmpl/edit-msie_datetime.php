@@ -406,7 +406,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 	//if (window.attachEvent) window.attachEvent("onload",setupRepeats);
 	//else window.onload=setupRepeats;
 	//setupRepeats();
-	window.setTimeout("setupRepeats()", 500);
+	window.setTimeout(setupRepeats, 500);
 	// move to 12h fields
 	set12hTime(document.adminForm.start_time);
 	set12hTime(document.adminForm.end_time);

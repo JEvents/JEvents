@@ -841,7 +841,7 @@ function toggleFreq(freq , setup)
 			byday.style.display="block";
 			byhour.style.display="block";
 			document.getElementById('jevbd').checked="checked";
-			//toggleWhichBy("byday");
+			toggleWhichBy("byday");
 			weekofmonth.style.display="block";
 		}
 			break;
@@ -1156,7 +1156,7 @@ jevjq(document).on('ready', function() {
 
         // setup rounded grey response
         jevjq('#byyearday, #bymonth, #byweekno, #bymonthday, #byday, #byirregular, #bysetpos').on('click', function() {
-            jevjq('#'+this.id).find('legend input[name="whichby"]').attr('checked', true);
+			jevjq('#'+this.id).find('legend input[name="whichby"]').attr('checked', true);
             toggleWhichBy(this.id);
         });
 

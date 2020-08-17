@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 use Joomla\String\StringHelper;
+use Joomla\Utilities\ArrayHelper;
 
 class iCalRRule extends Joomla\CMS\Table\Table
 {
@@ -88,9 +89,6 @@ class iCalRRule extends Joomla\CMS\Table\Table
 		$temp->processField("byhour", "");
 		$temp->processField("byday", "");
 		$temp->processField("bymonthday", "");
-        $temp->processField("byhour", "");
-        $temp->processField("byminute", "");
-        $temp->processField("bysecond", "");
 		$temp->processField("byyearday", "");
 		$temp->processField("byweekno", "");
 		$temp->processField("bymonth", "");
@@ -157,9 +155,6 @@ class iCalRRule extends Joomla\CMS\Table\Table
 		$temp->processField2("byminute", "");
 		$temp->processField2("byhour", "");
 		$temp->processField2("byday", "");
-        $temp->processField2("byhour", "");
-        $temp->processField2("byminute", "");
-        $temp->processField2("bysecond", "");
 		$temp->processField2("bymonthday", "");
 		$temp->processField2("byyearday", "");
 		$temp->processField2("byweekno", "");
@@ -306,8 +301,8 @@ class iCalRRule extends Joomla\CMS\Table\Table
 						}
 						// now ago to the start of next year
 						$maxyear = (PHP_INT_SIZE === 8) ? 2999 : 2037;
-						if ($currentYear + $this->rinterval > $maxyear) return $this->_repetitions;
-						$currentYearStart = JevDate::mktime(0, 0, 0, 1, 1, $currentYear + $this->rinterval);
+						if ($currentYear + $this->_interval > $maxyear) return $this->_repetitions;
+						$currentYearStart = JevDate::mktime(0, 0, 0, 1, 1, $currentYear + $this->_interval);
 					}
 				}
 				// assume for now that its an anniversary of the start month only!
@@ -358,8 +353,8 @@ class iCalRRule extends Joomla\CMS\Table\Table
 							}
 						}
 						// now ago to the start of next month
-						if ($currentYear + $this->rinterval > 2099) return $this->_repetitions;
-						$currentMonthStart = JevDate::mktime(0, 0, 0, $currentMonth, 1, $currentYear + $this->rinterval);
+						if ($currentYear + $this->_interval > 2099) return $this->_repetitions;
+						$currentMonthStart = JevDate::mktime(0, 0, 0, $currentMonth, 1, $currentYear + $this->_interval);
 					}
 
 				}
@@ -388,9 +383,9 @@ class iCalRRule extends Joomla\CMS\Table\Table
 						$currentYear = JevDate::strftime("%Y", $start);
 						list ($h, $min, $s, $d, $m, $y) = explode(":", JevDate::strftime("%H:%M:%S:%d:%m:%Y", $start));
 						$maxyear = (PHP_INT_SIZE === 8) ? 2999 : 2037;
-						if (($currentYear + $this->rinterval) >= $maxyear) break;
-						$start = JevDate::strtotime("+" . $this->rinterval . " years", $start);
-						$end   = JevDate::strtotime("+" . $this->rinterval . " years", $end);
+						if (($currentYear + $this->_interval) >= $maxyear) break;
+						$start = JevDate::strtotime("+" . $this->_interval . " years", $start);
+						$end   = JevDate::strtotime("+" . $this->_interval . " years", $end);
 					}
 				}
 				else
@@ -516,8 +511,8 @@ class iCalRRule extends Joomla\CMS\Table\Table
 						$start = $targetStart;
 						$end   = $targetEnd;
 						list ($h, $min, $s, $d, $m, $y) = explode(":", JevDate::strftime("%H:%M:%S:%d:%m:%Y", $start));
-						if (($y + $this->rinterval + $m / 12) > 2099) return $this->_repetitions;
-						$start = JevDate::mktime($h, $min, $s, $m, 1, $y + $this->rinterval);
+						if (($y + $this->_interval + $m / 12) > 2099) return $this->_repetitions;
+						$start = JevDate::mktime($h, $min, $s, $m, 1, $y + $this->_interval);
 						$end   = $start + $duration;
 					}
 
@@ -624,8 +619,8 @@ class iCalRRule extends Joomla\CMS\Table\Table
 							}
 						}
 						// now ago to the start of next month
-						if (($currentYear + ($currentMonth + $this->rinterval) / 12) > 2099) return $this->_repetitions;
-						$currentMonthStart = JevDate::mktime(0, 0, 0, $currentMonth + $this->rinterval, 1, $currentYear);
+						if (($currentYear + ($currentMonth + $this->_interval) / 12) > 2099) return $this->_repetitions;
+						$currentMonthStart = JevDate::mktime(0, 0, 0, $currentMonth + $this->_interval, 1, $currentYear);
 					}
 
 				}
@@ -728,8 +723,8 @@ class iCalRRule extends Joomla\CMS\Table\Table
 							}
 						}
 						// now go to the start of next month
-						if (($currentYear + ($currentMonth + $this->rinterval) / 12) > 2099) return $this->_repetitions;
-						$currentMonthStart = JevDate::mktime(0, 0, 0, $currentMonth + $this->rinterval, 1, $currentYear);
+						if (($currentYear + ($currentMonth + $this->_interval) / 12) > 2099) return $this->_repetitions;
+						$currentMonthStart = JevDate::mktime(0, 0, 0, $currentMonth + $this->_interval, 1, $currentYear);
 					}
 				}
 
@@ -809,29 +804,618 @@ class iCalRRule extends Joomla\CMS\Table\Table
 
 					// now go to the start of next week
 					if ($currentYear + ($currentMonth / 12) > 2099) return $this->_repetitions;
-					$currentWeekStart = JevDate::strtotime("+" . ($this->rinterval) . " weeks", $currentWeekStart);
+					$currentWeekStart = JevDate::strtotime("+" . ($this->_interval) . " weeks", $currentWeekStart);
 
 				}
 
 				return $this->_repetitions;
 				break;
 			case "DAILY":
-            case "HOURLY":
-				$start        = $dtstart;
-				$end          = $dtend;
-				$countRepeats = 0;
-
-				$startYear = JevDate::strftime("%Y", $start);
-				while ($startYear < 2027 && $countRepeats < $this->count && !$this->_afterUntil($start))
+			case "HOURLY":
+				// Modelled on Monthly but expanded using byhours
+				if ($this->bymonthday == "" && $this->byday == "")
 				{
-					//while ($startYear<5027 && $countRepeats < $this->count && !$this->_afterUntil($start)) {
-					$countRepeats += $this->_makeRepeat($start, $end);
-					$start        = JevDate::strtotime("+" . $this->rinterval . " days", $start);
-					$end          = JevDate::strtotime("+" . $this->rinterval . " days", $end);
-					$startYear    = JevDate::strftime("%Y", $start);
+					$this->bymonthday = $startDay;
+				}
+				if ($this->bymonthday != "")
+				{
+					echo "bymonthday" . $this->bymonthday . " <br/>";
+					// if not byday then by monthday
+					$days = explode(",", str_replace(" ", "", $this->bymonthday));
+					// If I have byday and bymonthday then the two considions must be met
+					$weekdays = array();
+					if ($this->byday != "")
+					{
+						foreach (explode(",", str_replace(" ", "", $this->byday)) as $bday)
+						{
+							$weekdays[] = $weekdayMap[$bday];
+						}
+					}
+
+					$start             = $dtstart;
+					$end               = $dtend;
+					$countRepeats      = 0;
+					$currentMonthStart = JevDate::mktime(0, 0, 0, $startMonth, 1, $startYear);
+
+					// do the current month first
+					while ($countRepeats < $this->count && !$this->_afterUntil($currentMonthStart))
+					{
+						//echo $countRepeats ." ".$this->count." ".$currentMonthStart."<br/>";
+						list ($currentMonth, $currentYear) = explode(":", JevDate::strftime("%m:%Y", $currentMonthStart));
+						$currentMonthDays = date("t", $currentMonthStart);
+						foreach ($days as $day)
+						{
+							if ($countRepeats >= $this->count || $this->_afterUntil($start)) return $this->_repetitions;
+
+							$details = array();
+							preg_match("/(\+|-?)(\d+)/", $day, $details);
+							if (count($details) != 3)
+							{
+								echo "<br/><br/><b>PROBLEMS with $day</b><br/><br/>";
+
+								return $this->_repetitions;
+							}
+							else
+							{
+								list($temp, $plusminus, $daynumber) = $details;
+								if (StringHelper::strlen($plusminus) == 0) $plusminus = "+";
+								if (StringHelper::strlen($daynumber) == 0) $daynumber = $startDay;
+
+								// always check for dtstart (nothing is allowed earlier)
+								if ($plusminus == "-")
+								{
+									// must not go before start of month etc.
+									if ($daynumber > $currentMonthDays) continue;
+
+									echo "I need to check negative bymonth days <br/>";
+									$targetStart = JevDate::mktime($startHour, $startMin, $startSecond, $currentMonth, $currentMonthDays + 1 - $daynumber, $currentYear);
+									$targetEnd   = $targetStart + $duration;
+									if ($countRepeats >= $this->count)
+									{
+										return $this->_repetitions;
+									}
+									if ($targetStart >= $dtstartMidnight && !$this->_afterUntil($targetStart))
+									{
+										$countRepeats += $this->_makeRepeat($targetStart, $targetEnd);
+									}
+								}
+								else
+								{
+									//echo "$daynumber $currentMonthDays bd=".$this->byday." <br/>";
+									// must not go over end month etc.
+									if ($daynumber > $currentMonthDays) continue;
+									//echo "$startHour,$startMin,$startSecond,$currentMonth,$daynumber,$currentYear<br/>";
+									$targetStart = JevDate::mktime($startHour, $startMin, $startSecond, $currentMonth, $daynumber, $currentYear);
+									$targetEnd   = $targetStart + $duration;
+									// WE can't just add the duration since if summer time starts/ends within the event length then the end and possibly the date could be wrong
+									$targetEnd = JevDate::mktime($endHour, $endMin, $endSecond, $currentMonth, $daynumber + $durationdays, $currentYear);
+									//echo "$targetStart $targetEnd $dtstartMidnight<br/>";
+									if ($countRepeats >= $this->count)
+									{
+										return $this->_repetitions;
+									}
+									if ($targetStart >= $dtstartMidnight && !$this->_afterUntil($targetStart))
+									{
+										// double check for byday constraints
+										if ($this->byday != "")
+										{
+											if (!in_array(JevDate::strftime("%w", $targetStart), $weekdays))
+											{
+												continue;
+											}
+										}
+										$countRepeats += $this->_makeRepeat($targetStart, $targetEnd);
+										//echo "countrepeats = $countRepeats<br/>";
+									}
+								}
+							}
+						}
+						// now ago to the start of next month
+						if (($currentYear + ($currentMonth + $this->_interval) / 12) > 2099) return $this->_repetitions;
+						$currentMonthStart = JevDate::mktime(0, 0, 0, $currentMonth + $this->_interval, 1, $currentYear);
+					}
+
+				}
+				// This is byday
+				else
+				{
+					$days = explode(",", str_replace(" ", "", $this->byday));
+
+					if (trim($this->byhour) === "")
+					{
+						$hours = range(0,23);
+					}
+					else
+					{
+						$hours = explode(",",str_replace(" ", "", $this->byhour));
+					}
+
+					$allowedHourAndMinuteRanges = array();
+					foreach ($hours as $bh)
+					{
+						if ($bh === "")
+						{
+							continue;
+						}
+						// is this a range?
+						if (strpos($bh, '-') > 0) {
+							$bhrange = explode('-', $bh);
+							if (count($bhrange) != 2)
+							{
+								continue;
+							}
+							for ($b=0; $b<2; $b++)
+							{
+								if (strpos($bhrange[$b], ':') > 0) {
+									$hparts = explode(':', $bhrange[$b]);
+									$hparts = ArrayHelper::toInteger($hparts);
+								}
+								else
+								{
+									$hparts = array(intval($bhrange[$b]), 0);
+								}
+								// convert to minutes
+								$bhrange[$b] = $hparts[0] * 60 + $hparts[1];
+							}
+						}
+						else
+						{
+							$bhrange = array(intval($bh) * 60, intval($bh) * 60);
+						}
+						$allowedHourAndMinuteRanges[] = $bhrange;
+					}
+
+
+					$start             = $dtstart;
+					$end               = $dtend;
+					$countRepeats      = 0;
+					$currentMonthStart = JevDate::mktime(0, 0, 0, $startMonth, 1, $startYear);
+
+					// do the current month first
+					while ($countRepeats < $this->count && !$this->_afterUntil($currentMonthStart))
+					{
+						list ($currentMonth, $currentYear, $currentMonthStartWD) = explode(":", JevDate::strftime("%m:%Y:%w", $currentMonthStart));
+						$currentMonthDays = date("t", $currentMonthStart);
+						$this->sortByDays($days, $currentMonthStart, $dtstart);
+
+						$minuteIntervalStart = $startMin;
+						$hourIntervalStart = $startHour;
+
+						$hour = intval($hourIntervalStart);
+						$minute = intval($minuteIntervalStart);
+
+						foreach ($days as $day)
+						{
+							$hour %= 24;
+
+							if (!iCalRRule::minutesAndHoursAllowed($minute, $hour, array(), $allowedHourAndMinuteRanges))
+							{
+								$hour += intval($this->_interval);
+
+								while ($hour < 24 && !iCalRRule::minutesAndHoursAllowed($minute, $hour, array(), $allowedHourAndMinuteRanges))
+								{
+									$hour += intval($this->_interval);
+								}
+							}
+
+							while ( $hour < 24 &&  $minute < 60
+								&&  iCalRRule::minutesAndHoursAllowed($minute, $hour, array(), $allowedHourAndMinuteRanges))
+							{
+								if ($countRepeats >= $this->count || $this->_afterUntil($start))
+								{
+									return $this->_repetitions;
+								}
+
+								$details = array();
+								preg_match("/(\+|-?)(\d?)(.+)/", $day, $details);
+								if (count($details) != 4)
+								{
+									echo "<br/><br/><b>PROBLEMS with $day</b><br/><br/>";
+
+									return $this->_repetitions;
+								}
+								else
+								{
+									list($temp, $plusminus, $weeknumber, $dayname) = $details;
+									if (StringHelper::strlen($plusminus) == 0) $plusminus = "+";
+									if (StringHelper::strlen($weeknumber) == 0) $weeknumber = 1;
+
+									$multiplier = $plusminus == "+" ? 1 : -1;
+									// always check for dtstart (nothing is allowed earlier)
+									if ($plusminus == "-")
+									{
+										//echo "count back $weeknumber weeks on $dayname<br/>";
+										$startLast         = date("t", $currentMonthStart);
+										$currentMonthEndWD = ($startLast - 1 + $currentMonthStartWD) % 7;
+
+										$adjustment = $startLast - (7 + $currentMonthEndWD - $weekdayMap[$dayname]) % 7;
+
+										$targetstartDay = $adjustment - ($weeknumber - 1) * 7;
+									}
+									else
+									{
+										//echo "count forward $weeknumber weeks on $dayname<br/>";
+										$adjustment = 1 + (7 + $weekdayMap[$dayname] - $currentMonthStartWD) % 7;
+
+										$targetstartDay = $adjustment + ($weeknumber - 1) * 7;
+
+									}
+
+									if ($targetstartDay == intval($startDay) && intval($startHour) > $hour)
+									{
+										continue;
+									}
+
+									// Special case for first day - can't start hours or hours start of event!
+									if ($targetstartDay == intval($startDay) && $countRepeats == 0 )
+									{
+										$hour   = intval($hourIntervalStart);
+										$minute = intval($minuteIntervalStart);
+									}
+									$targetStart = JevDate::mktime($hour, $startMin, $startSecond, $currentMonth, $targetstartDay, $currentYear);
+
+									if ($currentMonth == JevDate::strftime("%m", $targetStart))
+									{
+										// WE can't just add the duration since if summer time starts/ends within the event length then the end and possibly the date could be wrong
+										$targetEnd = $targetStart + $duration;
+										$hourdelta = $hour - $startHour;
+										if ($hourdelta < 0)
+										{
+											$hourdelta += 24;
+										}
+
+										$targetEnd = JevDate::mktime($endHour + $hourdelta, $endMin, $endSecond, $currentMonth, $targetstartDay + $durationdays, $currentYear);
+										if ($countRepeats >= $this->count)
+										{
+											return $this->_repetitions;
+										}
+										if ($targetStart >= $dtstartMidnight && !$this->_afterUntil($targetStart))
+										{
+											$countRepeats += $this->_makeRepeat($targetStart, $targetEnd);
+										}
+									}
+								}
+
+								$hour += intval($this->_interval);
+
+								while ($hour < 24 && !iCalRRule::minutesAndHoursAllowed($minute, $hour, array(), $allowedHourAndMinuteRanges))
+								{
+									$hour += intval($this->_interval);
+								}
+
+							}
+						}
+						// now go to the start of next month
+						if (($currentYear + ($currentMonth + $this->_interval) / 12) > 2099) return $this->_repetitions;
+						$currentMonthStart = JevDate::mktime(0, 0, 0, $currentMonth + $this->_interval, 1, $currentYear);
+					}
 				}
 
 				return $this->_repetitions;
+
+				break;
+			case "MINUTELY":
+				// Modelled on Monthly but expanded using byhours and byminutes
+				if ($this->bymonthday == "" && $this->byday == "")
+				{
+					$this->bymonthday = $startDay;
+				}
+				if ($this->bymonthday != "")
+				{
+					echo "bymonthday" . $this->bymonthday . " <br/>";
+					// if not byday then by monthday
+					$days = explode(",", str_replace(" ", "", $this->bymonthday));
+					// If I have byday and bymonthday then the two considions must be met
+					$weekdays = array();
+					if ($this->byday != "")
+					{
+						foreach (explode(",", str_replace(" ", "", $this->byday)) as $bday)
+						{
+							$weekdays[] = $weekdayMap[$bday];
+						}
+					}
+
+					$start             = $dtstart;
+					$end               = $dtend;
+					$countRepeats      = 0;
+					$currentMonthStart = JevDate::mktime(0, 0, 0, $startMonth, 1, $startYear);
+
+					// do the current month first
+					while ($countRepeats < $this->count && !$this->_afterUntil($currentMonthStart))
+					{
+						//echo $countRepeats ." ".$this->count." ".$currentMonthStart."<br/>";
+						list ($currentMonth, $currentYear) = explode(":", JevDate::strftime("%m:%Y", $currentMonthStart));
+						$currentMonthDays = date("t", $currentMonthStart);
+						foreach ($days as $day)
+						{
+							if ($countRepeats >= $this->count || $this->_afterUntil($start)) return $this->_repetitions;
+
+							$details = array();
+							preg_match("/(\+|-?)(\d+)/", $day, $details);
+							if (count($details) != 3)
+							{
+								echo "<br/><br/><b>PROBLEMS with $day</b><br/><br/>";
+
+								return $this->_repetitions;
+							}
+							else
+							{
+								list($temp, $plusminus, $daynumber) = $details;
+								if (StringHelper::strlen($plusminus) == 0) $plusminus = "+";
+								if (StringHelper::strlen($daynumber) == 0) $daynumber = $startDay;
+
+								// always check for dtstart (nothing is allowed earlier)
+								if ($plusminus == "-")
+								{
+									// must not go before start of month etc.
+									if ($daynumber > $currentMonthDays) continue;
+
+									echo "I need to check negative bymonth days <br/>";
+									$targetStart = JevDate::mktime($startHour, $startMin, $startSecond, $currentMonth, $currentMonthDays + 1 - $daynumber, $currentYear);
+									$targetEnd   = $targetStart + $duration;
+									if ($countRepeats >= $this->count)
+									{
+										return $this->_repetitions;
+									}
+									if ($targetStart >= $dtstartMidnight && !$this->_afterUntil($targetStart))
+									{
+										$countRepeats += $this->_makeRepeat($targetStart, $targetEnd);
+									}
+								}
+								else
+								{
+									//echo "$daynumber $currentMonthDays bd=".$this->byday." <br/>";
+									// must not go over end month etc.
+									if ($daynumber > $currentMonthDays) continue;
+									//echo "$startHour,$startMin,$startSecond,$currentMonth,$daynumber,$currentYear<br/>";
+									$targetStart = JevDate::mktime($startHour, $startMin, $startSecond, $currentMonth, $daynumber, $currentYear);
+									$targetEnd   = $targetStart + $duration;
+									// WE can't just add the duration since if summer time starts/ends within the event length then the end and possibly the date could be wrong
+									$targetEnd = JevDate::mktime($endHour, $endMin, $endSecond, $currentMonth, $daynumber + $durationdays, $currentYear);
+									//echo "$targetStart $targetEnd $dtstartMidnight<br/>";
+									if ($countRepeats >= $this->count)
+									{
+										return $this->_repetitions;
+									}
+									if ($targetStart >= $dtstartMidnight && !$this->_afterUntil($targetStart))
+									{
+										// double check for byday constraints
+										if ($this->byday != "")
+										{
+											if (!in_array(JevDate::strftime("%w", $targetStart), $weekdays))
+											{
+												continue;
+											}
+										}
+										$countRepeats += $this->_makeRepeat($targetStart, $targetEnd);
+										//echo "countrepeats = $countRepeats<br/>";
+									}
+								}
+							}
+						}
+						// now ago to the start of next month
+						if (($currentYear + ($currentMonth + $this->_interval) / 12) > 2099) return $this->_repetitions;
+						$currentMonthStart = JevDate::mktime(0, 0, 0, $currentMonth + $this->_interval, 1, $currentYear);
+					}
+
+				}
+				// This is byday
+				else
+				{
+					$days = explode(",", str_replace(" ", "", $this->byday));
+
+					if (trim($this->byhour) === "")
+					{
+						$hours = range(0,23);
+					}
+					else
+					{
+						$hours = explode(",",str_replace(" ", "", $this->byhour));
+					}
+
+					if (trim($this->byminute) === "")
+					{
+						$minutes = range(0,59);
+					}
+					else
+					{
+						$minutes = explode(",",str_replace(" ", "", $this->byminute));
+					}
+
+					$allowedHourAndMinuteRanges = array();
+					foreach ($hours as $bh)
+					{
+						if ($bh === "")
+						{
+							continue;
+						}
+						// is this a range?
+						if (strpos($bh, '-') > 0) {
+							$bhrange = explode('-', $bh);
+							if (count($bhrange) != 2)
+							{
+								continue;
+							}
+							for ($b=0; $b<2; $b++)
+							{
+								if (strpos($bhrange[$b], ':') > 0) {
+									$hparts = explode(':', $bhrange[$b]);
+									$hparts = ArrayHelper::toInteger($hparts);
+								}
+								else
+								{
+									$hparts = array(intval($bhrange[$b]), 0);
+								}
+								// convert to minutes
+								$bhrange[$b] = $hparts[0] * 60 + $hparts[1];
+							}
+						}
+						else
+						{
+							$bhrange = array(intval($bh) * 60, intval($bh) * 60);
+						}
+						$allowedHourAndMinuteRanges[] = $bhrange;
+					}
+
+					$allowedMinuteRanges = array();
+					foreach ($minutes as $bm)
+					{
+						if ($bm === "")
+						{
+							continue;
+						}
+						// is this a range?
+						if (strpos($bm, '-') > 0) {
+							$bmrange = explode('-', $bm);
+							$bmrange = ArrayHelper::toInteger($bmrange);
+						}
+						else
+						{
+							$bmrange = array(intval($bm), intval($bh));
+						}
+						$allowedMinuteRanges[] = $bmrange;
+					}
+
+					$start             = $dtstart;
+					$end               = $dtend;
+					$countRepeats      = 0;
+					$currentMonthStart = JevDate::mktime(0, 0, 0, $startMonth, 1, $startYear);
+
+					// do the current month first
+					while ($countRepeats < $this->count && !$this->_afterUntil($currentMonthStart))
+					{
+						list ($currentMonth, $currentYear, $currentMonthStartWD) = explode(":", JevDate::strftime("%m:%Y:%w", $currentMonthStart));
+						$currentMonthDays = date("t", $currentMonthStart);
+						$this->sortByDays($days, $currentMonthStart, $dtstart);
+
+						$minuteIntervalStart = $startMin;
+						$hourIntervalStart = $startHour;
+
+						$hour = intval($hourIntervalStart);
+						$minute = intval($minuteIntervalStart);
+
+						foreach ($days as $day)
+						{
+							$hour %= 24;
+
+							while ($hour < 24 && !iCalRRule::minutesAndHoursAllowed($minute, $hour, $allowedMinuteRanges, $allowedHourAndMinuteRanges))
+							{
+								$minute += intval($this->_interval);
+								if ($minute >= 60)
+								{
+									$minute %= 60;
+									$hour++;
+								}
+								$minute += intval($this->_interval);
+							}
+
+							$hour %= 24;
+
+							// while ( $hour < 24 && in_array($hour, $hours) && $minute < 60 && in_array($minute, $minutes))
+								while ( $hour < 24 &&  $minute < 60
+									&&  iCalRRule::minutesAndHoursAllowed($minute, $hour, $allowedMinuteRanges, $allowedHourAndMinuteRanges))
+							{
+								if ($countRepeats >= $this->count || $this->_afterUntil($start))
+								{
+									return $this->_repetitions;
+								}
+
+								$details = array();
+								preg_match("/(\+|-?)(\d?)(.+)/", $day, $details);
+								if (count($details) != 4)
+								{
+									echo "<br/><br/><b>PROBLEMS with $day</b><br/><br/>";
+
+									return $this->_repetitions;
+								}
+								else
+								{
+									list($temp, $plusminus, $weeknumber, $dayname) = $details;
+									if (StringHelper::strlen($plusminus) == 0) $plusminus = "+";
+									if (StringHelper::strlen($weeknumber) == 0) $weeknumber = 1;
+
+									$multiplier = $plusminus == "+" ? 1 : -1;
+									// always check for dtstart (nothing is allowed earlier)
+									if ($plusminus == "-")
+									{
+										//echo "count back $weeknumber weeks on $dayname<br/>";
+										$startLast         = date("t", $currentMonthStart);
+										$currentMonthEndWD = ($startLast - 1 + $currentMonthStartWD) % 7;
+
+										$adjustment = $startLast - (7 + $currentMonthEndWD - $weekdayMap[$dayname]) % 7;
+
+										$targetstartDay = $adjustment - ($weeknumber - 1) * 7;
+									}
+									else
+									{
+										//echo "count forward $weeknumber weeks on $dayname<br/>";
+										$adjustment = 1 + (7 + $weekdayMap[$dayname] - $currentMonthStartWD) % 7;
+
+										$targetstartDay = $adjustment + ($weeknumber - 1) * 7;
+
+									}
+									// Special case for first day - can't start hours or hours and minute until start of event!
+									if ($targetstartDay == intval($startDay) && $countRepeats == 0 )
+									{
+										$hour   = intval($hourIntervalStart);
+										$minute = intval($minuteIntervalStart);
+
+										// If the time is blocked by hour/minute constraint then we need to catch this possibly??
+									}
+									$targetStart = JevDate::mktime($hour, $minute, $startSecond, $currentMonth, $targetstartDay, $currentYear);
+
+									if ($currentMonth == JevDate::strftime("%m", $targetStart))
+									{
+										// WE can't just add the duration since if summer time starts/ends within the event length then the end and possibly the date could be wrong
+										$targetEnd = $targetStart + $duration;
+										$hourdelta = $hour - $startHour;
+										if ($hourdelta < 0)
+										{
+											$hourdelta += 24;
+										}
+										$minutedelta = $minute - $startMin;
+										if ($minutedelta < 0)
+										{
+											$minutedelta += 60;
+										}
+										$targetEnd = JevDate::mktime($endHour + $hourdelta, $endMin + $minutedelta, $endSecond, $currentMonth, $targetstartDay + $durationdays, $currentYear);
+										if ($countRepeats >= $this->count)
+										{
+											return $this->_repetitions;
+										}
+										if ($targetStart >= $dtstartMidnight && !$this->_afterUntil($targetStart))
+										{
+											$countRepeats += $this->_makeRepeat($targetStart, $targetEnd);
+										}
+									}
+								}
+								$minute += intval($this->_interval);
+								if ($minute >= 60)
+								{
+									$minute %= 60;
+									$hour++;
+								}
+
+								while ($hour < 24 && !iCalRRule::minutesAndHoursAllowed($minute, $hour, $allowedMinuteRanges, $allowedHourAndMinuteRanges))
+								{
+									$minute += intval($this->_interval);
+									if ($minute >= 60)
+									{
+										$minute %= 60;
+										$hour++;
+									}
+									$minute += intval($this->_interval);
+								}
+							}
+						}
+						// now go to the start of next month
+						if (($currentYear + ($currentMonth + $this->_interval) / 12) > 2099) return $this->_repetitions;
+						$currentMonthStart = JevDate::mktime(0, 0, 0, $currentMonth + $this->_interval, 1, $currentYear);
+					}
+				}
+
+				return $this->_repetitions;
+
 				break;
 			case "IRREGULAR":
 				$processedDates = array();
@@ -1115,5 +1699,37 @@ class iCalRRule extends Joomla\CMS\Table\Table
 		}
 
 		return false;
+	}
+
+	protected static function minutesAndHoursAllowed($minute, $hour, $allowedMinuteRanges, $allowedHourAndMinuteRanges)
+	{
+		$mvalid    = false;
+		$hmvalid   = false;
+		$checktime = $hour * 60 + $minute;
+		foreach ($allowedHourAndMinuteRanges as $range)
+		{
+			if ($checktime >= $range[0] && $checktime <= $range[1])
+			{
+				$hmvalid = true;
+				break;
+			}
+		}
+		if ($hmvalid)
+		{
+			if (count($allowedMinuteRanges) == 0)
+			{
+				$mvalid = true;
+			}
+			foreach ($allowedMinuteRanges as $range)
+			{
+				if ($minute >= $range[0] && $minute <= $range[1])
+				{
+					$mvalid = true;
+					break;
+				}
+			}
+		}
+
+		return $mvalid && $hmvalid;
 	}
 }

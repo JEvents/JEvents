@@ -1069,7 +1069,7 @@ SCRIPT;
 			'createdByUserName', 'createdByUserEmail', 'createdByUserEmailLink',
 			'eventDate', 'endDate', 'startDate', 'title', 'category', 'calendar',
 			'contact', 'addressInfo', 'location', 'extraInfo',
-			'countdown', 'categoryimage', 'duration', 'siteroot', 'sitebase', 'allCategoriesColoured'
+			'countdown', 'categoryimage', 'duration', 'siteroot', 'sitebase', 'allCategoriesColoured', 'allCategorieSlugs'
 		);
 		$keywords_or = implode('|', $keywords);
 		$whsp        = '[\t ]*'; // white space
@@ -1317,6 +1317,19 @@ SCRIPT;
 
                 $content .= implode(", ", $allcats);
                 break;
+
+
+			case 'allCategorieSlugs' :
+				$catobj     = $dayEvent->getCategoryData();
+				$allcats    = array();
+
+				foreach ($catobj as $cat)
+				{
+					$allcats[] = 'jevcat-' . $cat->alias;
+				}
+
+				$content .= implode(" ", $allcats);
+				break;
 
 			case 'calendar':
 				$catobj  = $dayEvent->getCalendarName();

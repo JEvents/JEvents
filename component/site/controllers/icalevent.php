@@ -180,7 +180,7 @@ class ICalEventController extends AdminIcaleventController
 
 	function editcopy()
 	{
-
+		$input = Factory::getApplication()->input;
 		// Must be at least an event creator to edit or create events
 		$is_event_editor = JEVHelper::isEventCreator() || JEVHelper::isEventEditor();
 		if (!$is_event_editor)
@@ -241,7 +241,7 @@ class ICalEventController extends AdminIcaleventController
 
 		$session = Factory::getSession();
 		$params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
-		-$fallback = $params->get("editreturnto", "day.listevents");
+		$fallback = $params->get("editreturnto", "day.listevents");
 		$ref = $session->get('jev_referrer', $fallback, 'extref');
 
 		$this->setRedirect($ref);
