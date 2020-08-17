@@ -340,7 +340,7 @@
                 <exclude name="**/.svn/**"></exclude>
             </fileset>
         </copy>
-        <xmlproperty file="${builddir}/package/pkg_jevents.xml" />
+        <xmlproperty file="${rootdir}/package/pkg_jevents.xml" />
 
         <reflexive>
             <fileset dir="${builddir}/package">
