@@ -64,7 +64,7 @@ class AdminCpanelController extends AdminController
 		{
 			JLoader::register('JEventsCategory', JEV_ADMINPATH . "/libraries/categoryClass.php");
 			$cat = new JEventsCategory($db);
-			$cat->bind(array("title" => Text::_('DEFAULT'), "published" => 1, "color" => "#CCCCFF", "access" => 1));
+			$cat->bind(array("title" => Text::_('DEFAULT'), "alias" => "default", "published" => 1, "color" => "#CCCCFF", "access" => 1));
 			$cat->store();
 			$catid = $cat->id;
 		}
