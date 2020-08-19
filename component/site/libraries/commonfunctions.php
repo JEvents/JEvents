@@ -454,10 +454,12 @@ class JEV_CommonFunctions
 		if ((strpos($adminEmail, '@example.com') !== false)) return;
 
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
-		if ($params->get("com_notifyboth", 0) == 3)
+
+		if ((int) $params->get("com_notifyboth", 0) === 3)
 		{
 			return; // no notifications
 		}
+
 		$messagetemplate = $params->get("notifymessage", Text::_('JEV_DEFAULT_NOTIFYMESSAGE'));
 
 		if (strpos($messagetemplate, "JEV_DEFAULT_NOTIFYMESSAGE") !== false || trim(strip_tags($messagetemplate)) == "")

@@ -1069,7 +1069,8 @@ SCRIPT;
 			'createdByUserName', 'createdByUserEmail', 'createdByUserEmailLink',
 			'eventDate', 'endDate', 'startDate', 'title', 'category', 'calendar',
 			'contact', 'addressInfo', 'location', 'extraInfo',
-			'countdown', 'categoryimage', 'duration', 'siteroot', 'sitebase', 'allCategoriesColoured', 'allCategorieSlugs'
+			'countdown', 'categoryimage', 'duration', 'siteroot', 'sitebase', 'allCategoriesColoured', 'allCategorieSlugs',
+        	'today', 'tomorrow'
 		);
 		$keywords_or = implode('|', $keywords);
 		$whsp        = '[\t ]*'; // white space
@@ -1251,6 +1252,17 @@ SCRIPT;
 				if (!$this->disableDateStyle)
 					$content .= "</span>";
 				break;
+
+            case 'today' :
+                if($dayEvent->getUnixStartDate() === strtotime(date( 'Y-m-d'))) {
+                    $content .= JText::_('JEV_EVENT_TODAY');
+                }
+                break;
+            case 'tomorrow' :
+                if($dayEvent->getUnixStartDate() === strtotime(date( 'Y-m-d') . '+1 day')) {
+                    $content .= JText::_('JEV_EVENT_TOMORROW');
+                }
+                break;
 
 			case 'title':
 				$title = $dayEvent->title();

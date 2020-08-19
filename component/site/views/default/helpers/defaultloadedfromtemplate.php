@@ -1042,6 +1042,19 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				}
 				break;
 
+            case "{{TODAY}}" :
+            case "{{TOMORROW}}" :
+                if(strtotime($event->startDate()) === strtotime(date( 'Y-m-d'))) {
+                    $search[]   = '{{TODAY}}';
+                    $replace[]  = JText::_('JEV_EVENT_TODAY');
+                }
+
+                if(strtotime($event->startDate()) === strtotime(date( 'Y-m-d') . '+1 day')) {
+                    $search[]   = '{{TOMORROW}}';
+                    $replace[]  = JText::_('JEV_EVENT_TOMORROW');
+                }
+                break;
+
 			case "{{REPEATSUMMARY}}":
 			case "{{STARTDATE}}":
 			case "{{ENDDATE}}":
@@ -1611,6 +1624,43 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
             case "{{CREATOR_ID}}":
                 $search[]   = "{{CREATOR_ID}}";
                 $replace[]  = $event->created_by();
+                break;
+            case "{{CREATOR_DISPLAY_BEFORE_FIRST_SPACE}}":
+                $search[] = "{{CREATOR_DISPLAY_BEFORE_FIRST_SPACE}}";
+                if ($jevparams->get("com_byview", 1))
+                {
+                    $value      = JFactory::getUser($event->created_by())->name;
+                    $expParts   = explode(' ', $value);
+                    $newValue   = $expParts[0];
+                    $replace[]  = $newValue;
+                }
+                else
+                {
+                    $replace[] = "";
+                }
+                $blank[] = "";
+                break;
+            case "{{CREATOR_DISPLAY_AFTER_FIRST_SPACE}}":
+                $search[] = "{{CREATOR_DISPLAY_AFTER_FIRST_SPACE}}";
+                if ($jevparams->get("com_byview", 1))
+                {
+                    $value      = JFactory::getUser($event->created_by())->name;
+                    $expParts   = explode(' ', $value);
+                    $newValue   = $expParts[0];
+                    $replace[]  = $newValue;
+                    if(count($expParts) > 1) {
+                        $newValue  = $expParts[1];
+                        $replace[]  = $newValue;
+                    } else {
+                        $newValue  = $expParts[0];
+                        $replace[]  = $newValue;
+                    }
+                }
+                else
+                {
+                    $replace[] = "";
+                }
+                $blank[] = "";
                 break;
 			case "{{HITS}}":
 				$search[] = "{{HITS}}";
