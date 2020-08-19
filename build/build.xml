@@ -63,6 +63,51 @@
     <!-- ==================================================  -->
     <!-- Target: JEvents Generic Folder    -->
     <!-- ==================================================  -->
+    <target name="build-component" description="Build JEvents Component ">
+        <echo msg="Building Generic Folder ${genericname} : ../${genericfolder}"/>
+        <!--
+        <copy todir="${builddir}/${genericfolder}">
+            <fileset dir="../${genericfolder}">
+                <include name="**"></include>
+                <exclude name="**/.svn/**"></exclude>
+                <excludesfile name="excludedfiles.build"></excludesfile>
+            </fileset>
+        </copy>
+
+        Using rsync and safe-links ignores softlinks outside of the current tree!
+        -->
+
+        <filesync destinationDir="${builddir}/${genericfolder}"
+                  rsyncPath="/usr/bin/rsync"
+                  sourceDir="../${genericfolder}"
+                  excludeFile="excludedfiles.build"
+                  options="-rpKz --safe-links"
+        />
+
+        <!-- copy backend css files to the frontend -->
+        <copy file="../${genericfolder}/admin/assets/js/gslframework.js" todir="${builddir}/${genericfolder}/component/site/assets/js/" />
+        <copy file="../${genericfolder}/admin/assets/js/jevents.js" todir="${builddir}/${genericfolder}/component/site/assets/js/" />
+        <copy file="../${genericfolder}/admin/assets/css/j3.css" todir="${builddir}/${genericfolder}/component/site/assets/css/" />
+        <copy file="../${genericfolder}/admin/assets/css/j4.css" todir="${builddir}/${genericfolder}/component/site/assets/css/" />
+        <copy file="../${genericfolder}/admin/assets/css/jevents.css" todir="${builddir}/${genericfolder}/component/site/assets/css/" />
+
+        <phingcall target="sedreplace">
+            <property name="name" value="${genericfolder}" />
+        </phingcall>
+
+        <fileset dir="${builddir}/${genericfolder}" id="pluginZip">
+            <include name="**"/>
+            <excludesfile name="excludedfiles.build"></excludesfile>
+            <exclude name="**/jevcustom.css"></exclude>
+        </fileset>
+        <zip ignorelinks="true" destfile="${builddir}/${zipfile}">
+            <fileset refid="pluginZip"/>
+        </zip>
+    </target>
+
+    <!-- ==================================================  -->
+    <!-- Target: JEvents Generic Folder    -->
+    <!-- ==================================================  -->
     <target name="build-generic" description="Build Generic JEvents Folder ">
         <echo msg="Building Generic Folder ${genericname} : ../${genericfolder}"/>
         <!--
@@ -103,7 +148,7 @@
     <!-- ============================================  -->
     <target name="compileless" description="Compile Less files !! ">
         <exec passthru="true" command="lessc --verbose ${rootdir}/component/admin/assets/less/j3.less      ${rootdir}/component/admin/assets/css/j3.css" />
-        <exec passthru="true" command="lessc --verbose ${rootdir}/component/admin/assets/less/j4.less      ${rootdir}/component/admin/assets/css/j4.css" />
+        <exec passthru="true" command="lessc --verbose ${rootdir}/component/admin//assets/less/j4.less      ${rootdir}/component/admin/assets/css/j4.css" />
         <exec passthru="true" command="lessc --verbose ${rootdir}/component/admin/assets/less/rsvppro.less ${rootdir}/component/admin/assets/css/rsvppro.css" />
     </target>
 
@@ -201,7 +246,7 @@
     <target name="build-jevents" description="Build JEvents">
         <echo msg="Building JEvents ..." />
 
-        <phingcall target="build-generic">
+        <phingcall target="build-component">
             <property name="genericname" value="Core JEvents Component" />
             <property name="genericfolder" value="component" />
             <property name="zipfile" value="com_jevents.zip" />

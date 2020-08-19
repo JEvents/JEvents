@@ -659,7 +659,12 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		$uEditor    = Factory::getUser()->getParam('editor',  Factory::getConfig()->get('editor', 'none'));
+        if ($params->get("bootstrapchosen", 1))
+        {
+            HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
+        }
+
+        $uEditor    = Factory::getUser()->getParam('editor',  Factory::getConfig()->get('editor', 'none'));
 
 		$this->editor = \Joomla\CMS\Editor\Editor::getInstance($uEditor);
 

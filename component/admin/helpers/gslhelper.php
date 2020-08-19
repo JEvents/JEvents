@@ -26,21 +26,21 @@ class GslHelper
 		$document = Factory::getDocument();
 
 		HTMLHelper::stylesheet('media/com_jevents/css/uikit.css', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false));
-		HTMLHelper::stylesheet('administrator/components/com_jevents/assets/css/jevents.css', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false));
+		HTMLHelper::stylesheet('components/com_jevents/assets/css/jevents.css', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false));
 		$jversion = new Version;
 		if ($jversion->isCompatible('4.0'))
 		{
-			HTMLHelper::stylesheet('administrator/components/com_jevents/assets/css/j4.css', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false));
+			HTMLHelper::stylesheet('components/com_jevents/assets/css/j4.css', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false));
 		}
 		else
 		{
-			HTMLHelper::stylesheet('administrator/components/com_jevents/assets/css/j3.css', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false));
+			HTMLHelper::stylesheet('components/com_jevents/assets/css/j3.css', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false));
 		}
 
 		HTMLHelper::script('media/com_jevents/js/uikit.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
 		HTMLHelper::script('media/com_jevents/js/uikit-icons.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
-		HTMLHelper::script('administrator/components/com_jevents/assets/js/gslframework.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
-		HTMLHelper::script('administrator/components/com_jevents/assets/js/jevents.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
+		HTMLHelper::script('components/com_jevents/assets/js/gslframework.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
+		HTMLHelper::script('components/com_jevents/assets/js/jevents.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
 	}
 
 	public static function renderModal()
