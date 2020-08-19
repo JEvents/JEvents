@@ -1,6 +1,7 @@
 /nbproject/private/
 /nbproject/
 .DS_Store
+._.DS_Store
 .idea
 /component/site/assets/css/jevcustom.css
 /modules/mod_jevents_latest/tmpl/verna
