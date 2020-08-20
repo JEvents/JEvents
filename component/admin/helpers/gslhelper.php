@@ -148,7 +148,7 @@ class GslHelper
 		$iconLink->link           = Route::_("index.php?option=com_jevents&task=icalevent.list");
 		$iconLink->icon           = "calendar";
 		$iconLink->label          = Text::_('JEV_ADMIN_ICAL_EVENTS');
-		$iconLink->tooltip        = Text::_("JEV_INSTAL_MANAGE", true);
+		$iconLink->tooltip        = ""; //Text::_("JEV_INSTAL_MANAGE", true);
 		$iconLink->tooltip_detail = "";
 		$iconLinks[]              = $iconLink;
 
@@ -158,7 +158,7 @@ class GslHelper
 		$iconLink->link           = Route::_("index.php?option=com_categories&view=categories&extension=com_jevents");
 		$iconLink->icon           = "album";
 		$iconLink->label          = Text::_('JEV_INSTAL_CATS');
-		$iconLink->tooltip        = Text::_("JEV_INSTAL_CATS", true);
+		$iconLink->tooltip        = ""; //Text::_("JEV_INSTAL_CATS", true);
 		$iconLink->tooltip_detail = "";
 		$iconLinks[]              = $iconLink;
 
@@ -170,7 +170,7 @@ class GslHelper
 			$iconLink->link           = Route::_("index.php?option=com_jevents&task=icals.list");
 			$iconLink->icon           = "calendars";
 			$iconLink->label          = Text::_('JEV_ADMIN_ICAL_SUBSCRIPTIONS');
-			$iconLink->tooltip        = Text::_('JEV_ADMIN_ICAL_SUBSCRIPTIONS', true);
+			$iconLink->tooltip        = ""; //Text::_('JEV_ADMIN_ICAL_SUBSCRIPTIONS', true);
 			$iconLink->tooltip_detail = "";
 			$iconLinks[]              = $iconLink;
 
@@ -183,7 +183,7 @@ class GslHelper
 				$iconLink->link           = Route::_("index.php?option=com_jevents&task=user.list");
 				$iconLink->icon           = "users";
 				$iconLink->label          = Text::_('JEV_MANAGE_USERS');
-				$iconLink->tooltip        = Text::_('JEV_MANAGE_USERS', true);
+				$iconLink->tooltip        = ""; //Text::_('JEV_MANAGE_USERS', true);
 				$iconLink->tooltip_detail = "";
 				$iconLinks[]              = $iconLink;
 			}
@@ -195,7 +195,7 @@ class GslHelper
 		$iconLink->link           = Route::_("index.php?option=com_jevents&task=defaults.list");
 		$iconLink->icon           = "file-edit";
 		$iconLink->label          = Text::_('JEV_LAYOUT_DEFAULTS');
-		$iconLink->tooltip        = Text::_('JEV_LAYOUT_DEFAULTS', true);
+		$iconLink->tooltip        = ""; //Text::_('JEV_LAYOUT_DEFAULTS', true);
 		$iconLink->tooltip_detail = "";
 		$iconLinks[]              = $iconLink;
 
@@ -205,7 +205,7 @@ class GslHelper
 		$iconLink->link           = Route::_("index.php?option=com_jevents&task=cpanel.support");
 		$iconLink->icon           = "file-text";
 		$iconLink->label          = Text::_('SUPPORT_INFO');
-		$iconLink->tooltip        = Text::_('SUPPORT_INFO', true);
+		$iconLink->tooltip        = ""; //Text::_('SUPPORT_INFO', true);
 		$iconLink->tooltip_detail = "";
 		$iconLinks[]              = $iconLink;
 
@@ -215,7 +215,7 @@ class GslHelper
 		$iconLink->link           = Route::_("index.php?option=com_jevents&view=customcss");
 		$iconLink->icon           = "paint-bucket";
 		$iconLink->label          = Text::_('JEV_CUSTOM_CSS');
-		$iconLink->tooltip        = Text::_('JEV_CUSTOM_CSS', true);
+		$iconLink->tooltip        = ""; //Text::_('JEV_CUSTOM_CSS', true);
 		$iconLink->tooltip_detail = "";
 		$iconLinks[]              = $iconLink;
 
@@ -235,7 +235,7 @@ class GslHelper
 			$iconLink->link           = Route::_("index.php?option=com_jevlocations");
 			$iconLink->icon           = "location";
 			$iconLink->label          = Text::_('COM_JEVLOCATIONS');
-			$iconLink->tooltip        = Text::_('COM_JEVLOCATIONS', true);
+			$iconLink->tooltip        = ""; //Text::_('COM_JEVLOCATIONS', true);
 			$iconLink->tooltip_detail = "";
 			$iconLinks[]              = $iconLink;
 		}
@@ -267,7 +267,7 @@ class GslHelper
 			$iconLink->link           = Route::_("index.php?option=com_jeventstags");
 			$iconLink->icon           = "hashtag";
 			$iconLink->label          = Text::_('COM_JEVENTSTAGS');
-			$iconLink->tooltip        = Text::_('COM_JEVENTSTAGS', true);
+			$iconLink->tooltip        = ""; //Text::_('COM_JEVENTSTAGS', true);
 			$iconLink->tooltip_detail = "";
 			$iconLinks[]              = $iconLink;
 		}
@@ -277,7 +277,7 @@ class GslHelper
 			$iconLink->class          = "notinstalled";
 			$iconLink->active         = $view == "jeventstags";
 			$iconLink->link           = "https://www.jevents.net/join-club-jevents";
-			$iconLink->icon           = "location";
+			$iconLink->icon           = "hashtag";
 			$iconLink->label          = Text::_('COM_JEVENTS_TAGS');
 			$iconLink->tooltip        = Text::_("COM_JEVENTS_DISABLED_OPTION", true);
 			$iconLink->tooltip_detail = Text::_("COM_JEVENTS_DISABLED_OPTION_DESC", true);
@@ -299,7 +299,7 @@ class GslHelper
 			$iconLink->link           = Route::_("index.php?option=com_jevpeople");
 			$iconLink->icon           = "user";
 			$iconLink->label          = Text::_('COM_JEVPEOPLE');
-			$iconLink->tooltip        = Text::_('COM_JEVPEOPLE', true);
+			$iconLink->tooltip        = ""; //Text::_('COM_JEVPEOPLE', true);
 			$iconLink->tooltip_detail = "";
 			$iconLinks[]              = $iconLink;
 		}
@@ -309,7 +309,7 @@ class GslHelper
 			$iconLink->class          = "notinstalled";
 			$iconLink->active         = $view == "jevpeople";
 			$iconLink->link           = "https://www.jevents.net/join-club-jevents";
-			$iconLink->icon           = "location";
+			$iconLink->icon           = "user";
 			$iconLink->label          = Text::_('COM_JEVENTS_PEOPLE');
 			$iconLink->tooltip        = Text::_("COM_JEVENTS_DISABLED_OPTION", true);
 			$iconLink->tooltip_detail = Text::_("COM_JEVENTS_DISABLED_OPTION_DESC", true);
@@ -331,7 +331,7 @@ class GslHelper
 			$iconLink->link           = Route::_("index.php?option=com_rsvppro");
 			$iconLink->icon           = "cart";
 			$iconLink->label          = Text::_('COM_RSVPPRO');
-			$iconLink->tooltip        = Text::_('COM_RSVPPRO', true);
+			$iconLink->tooltip        = ""; //Text::_('COM_RSVPPRO', true);
 			$iconLink->tooltip_detail = "";
 			$iconLinks[]              = $iconLink;
 		}
@@ -365,7 +365,7 @@ class GslHelper
 			$iconLink->link           = Route::_("index.php?option=com_jevents&task=plugin.jev_customfields.overview");
 			$iconLink->icon           = "code";
 			$iconLink->label          = Text::_('JEV_CUSTOM_FIELDS');
-			$iconLink->tooltip        = Text::_('JEV_CUSTOM_FIELDS', true);
+			$iconLink->tooltip        = ""; //Text::_('JEV_CUSTOM_FIELDS', true);
 			$iconLink->tooltip_detail = "";
 			$iconLinks[]              = $iconLink;
 		}
