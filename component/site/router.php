@@ -575,7 +575,10 @@ function JEventsParseRoute(&$segments)
 				break;
 
 			default:
-				break;
+			    if ($task !== "") {
+                    return JError::raiseError(404, JText::_('COM_JEVENTS_UNKNOWN_TASK'));
+                }
+			    break;
 		}
 	}
 

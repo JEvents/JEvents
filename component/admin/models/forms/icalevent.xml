@@ -208,7 +208,6 @@
 			   onchange="checkDates(elem);"
 			   label="JEV_EVENT_ENDDATE"
 			   description="JEV_EVENT_ENDDATE_TIP"
-			   showon="publish_up!:CURRENT_DATE"
 		/>
 
 		<field name="end_time"
@@ -218,7 +217,6 @@
 			   labelclass=""
 			   label="JEV_EVENT_ENDTIME"
 			   description="JEV_EVENT_ENDTIME_TIP"
-			   showon="publish_up!:CURRENT_DATE"
 		/>
 
 		<field name="noendtime"
@@ -230,7 +228,6 @@
 			   onclick="toggleNoEndTime();"
 			   description="JEV_EVENT_NOENDTIME_TIP"
 			   value="1"
-			   showon="publish_up!:CURRENT_DATE"
 		/>
 
 		<field name="tzid"
@@ -246,7 +243,6 @@
 			   type="text"
 			   default="0"
 			   labelclass=""
-			   showon="publish_up!:CURRENT_DATE"
 		/>
 		<field name="customfields"
 			   type="text"

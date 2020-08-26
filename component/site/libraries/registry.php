@@ -19,10 +19,24 @@ if (!defined("JEVREGISTRY"))
 	class JevRegistry extends \Joomla\Registry\Registry
 	{
 
-		static function &getInstance($id, $namespace = 'default')
+        static function &getInstance($id, $namespace = 'default')
 		{
 
-			static $instances;
+            $rc = new ReflectionClass('JevRegistry');
+            if($rc->hasMethod('getInstance'))
+            {
+                if (empty(parent::$instances[$id]))
+                {
+                    parent::$instances[$id] = new self;
+                }
+
+                return parent::$instances[$id];
+
+                $instance =  parent::getInstance($id, $namespace);
+                return $instance;
+            }
+
+            static $instances;
 
 			if (!isset($instances))
 			{
@@ -38,7 +52,26 @@ if (!defined("JEVREGISTRY"))
 
 		}
 
-		function setReference($regpath, & $value)
+        static function &getInstanceWithReferences($id, $namespace = 'default')
+        {
+
+            static $instances;
+
+            if (!isset($instances))
+            {
+                $instances = array();
+            }
+
+            if (empty($instances[$id]))
+            {
+                $instances[$id] = new JevRegistry($namespace);
+            }
+
+            return $instances[$id];
+
+        }
+
+        function setReference($regpath, & $value)
 		{
 
 			// Explode the registry path into an array

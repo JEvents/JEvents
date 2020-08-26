@@ -194,7 +194,7 @@ class GetjsonController extends Joomla\CMS\MVC\Controller\BaseController
 //		$cfg->set("com_showrepeats", true);
 
 		// TODO Check for sanity of $start and $end
-		$reg             = JevRegistry::getInstance("jevents");
+		$reg             = JevRegistry::getInstanceWithReferences("jevents");
 		$this->datamodel = $reg->getReference("jevents.datamodel", false);
 
 		if (!$this->datamodel)

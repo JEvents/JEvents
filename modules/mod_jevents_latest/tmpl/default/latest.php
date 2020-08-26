@@ -1135,7 +1135,9 @@ SCRIPT;
 		$app        = Factory::getApplication();
 
 		// RSVP Pro plugin may have reset publish_up/publish_down - these now need to be restored
-		$dayEvent->fixDtstart(true);
+        if (isset($dayEvent->_olddtstart)) {
+            $dayEvent->fixDtstart(true);
+        }
 
 		// get the title and start time
 		$startDate = JevDate::strtotime($dayEvent->publish_up());

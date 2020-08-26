@@ -1,6 +1,6 @@
 /** Remove Headers from page **/
 #isisJsData,
-header.header {
+body.admin header.header {
   display: none;
 }
 body.com_jevents {

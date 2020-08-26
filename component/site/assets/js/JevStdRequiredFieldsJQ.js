@@ -40,7 +40,7 @@ var JevStdRequiredFields = {
                     item.preAction();
                 }
                 catch (ex) {
-                    alert('preAction failed : ' + ex.message + ' \n\nfunction is ' + item.preAction);
+                    console.log('preAction failed : ' + ex.message + ' \n\nfunction is ' + item.preAction);
                 }
             }
             if (typeof item.getValue === 'function') {
@@ -48,7 +48,7 @@ var JevStdRequiredFields = {
                     value = item.getValue();
                 }
                 catch (e) {
-                    alert("getValue failed " + e.message + ' \n\nfunction is ' + item.getValue);
+                    console.log("getValue failed " + e.message + ' \n\nfunction is ' + item.getValue);
                 }
             }
 
