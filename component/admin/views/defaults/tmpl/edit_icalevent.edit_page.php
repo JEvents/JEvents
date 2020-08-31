@@ -109,16 +109,16 @@ Joomla.submitbutton = function (pressbutton){
         {
                 var missingFields = [];
                 //We check tabs closing if necessary:
-                var tabStart =  "\{\{.*:TABSTART#.*\}\}";
-                var tabsEnd =  "\{\{.*:TABSEND.*\}\}";
-                if (defaultsLayout.test(tabStart) && !defaultsLayout.test(tabsEnd))
+                var tabStart =  RegExp("\{\{.*:TABSTART#.*\}\}");
+                var tabsEnd =  RegExp("\{\{.*:TABSEND.*\}\}");
+                if (tabStart.test(defaultsLayout) && !tabStart.test(defaultsLayout))
                 {
                     missingFields.push('TABSEND');
                 }
 		//  Native Javascript array
                 requiredFields.forEach(function(requiredField, index){
-                    var requiredFieldRE = "\{\{.*:"+requiredField+"\}\}";                    
-                    if(!defaultsLayout.test(requiredFieldRE))
+                    var requiredFieldRE = RegExp("\{\{.*:"+requiredField+"\}\}");
+                    if(!requiredFieldRE.test(defaultsLayout))
                     {
 			 var options = jQuery('#jevdefaults option');
 			 options.each (function(idx, opt){

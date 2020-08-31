@@ -4,11 +4,20 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 if (!isset($this->jevviewdone))
 {
 	HTMLHelper::_('stylesheet', 'jui/icomoon.css', array('version' => 'auto', 'relative' => true));
 	$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+
+    if ($params->get('show_page_heading', 1)) : ?>
+    <h1>
+        <?php echo $this->escape($params->get('page_heading')); ?>
+    </h1>
+    <?php endif;
+
 	if ($params->get("newfrontendediting", 1))
 	{
 		echo LayoutHelper::render('gslframework.header', null, JPATH_COMPONENT_ADMINISTRATOR . "/layouts");

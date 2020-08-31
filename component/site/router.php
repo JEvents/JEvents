@@ -575,7 +575,28 @@ function JEventsParseRoute(&$segments)
 				break;
 
 			default:
-				break;
+                $app    = Factory::getApplication();
+                $input  = $app->input;
+			    if ($task !== "") {
+                    if (strpos($task, '.') == false) {
+
+                        $view = $input->getCmd('view', false);
+                        $layout = $input->getCmd('layout', "show");
+                        if ($view && $layout) {
+                            $task = $view . '.' . $layout;
+                        }
+                    }
+                    if (strpos($task, '.') == false) {
+                        return JError::raiseError(404, JText::_('COM_JEVENTS_UNKNOWN_TASK'));
+                    }
+                    list($controllerName, $cmd) = explode('.', $task);
+                    $controllerName = strtolower($controllerName);
+                    $controllerPath = JPATH_COMPONENT . '/' . 'controllers' . '/' . $controllerName . '.php';
+                    if (!file_exists($controllerPath)) {
+                        return JError::raiseError(404, JText::_('COM_JEVENTS_UNKNOWN_TASK'));
+                    }
+                }
+			    break;
 		}
 	}
 

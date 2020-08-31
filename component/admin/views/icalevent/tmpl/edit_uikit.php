@@ -37,10 +37,6 @@ $assoc = false && Associations::isEnabled() && Factory::getApplication()->isClie
 JevHtmlBootstrap::framework();
 HTMLHelper::_('behavior.keepalive');
 
-if ($params->get("bootstrapchosen", 1))
-{
-	HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
-}
 // Do not load bootstrap
 
 // use Route to preseve language selection
@@ -621,7 +617,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 						<?php echo $this->form->getInput("contact_info"); ?>
 					</div>
 				</div>
-				<div class="row jev_extrainfo gsl-margin-small-top gsl-child-width-1-1 gsl-grid" <?php JEventsHelper::showOnRel($this->form, 'extrainfo'); ?>>
+				<div class="row jev_extrainfo gsl-margin-small-top gsl-child-width-1-1 gsl-grid" <?php JEventsHelper::showOnRel($this->form, 'extra_info'); ?>>
                     <div class="gsl-width-1-6@m gsl-width-1-3"  >
 						<?php echo $this->form->getLabel("extra_info"); ?>
 					</div>

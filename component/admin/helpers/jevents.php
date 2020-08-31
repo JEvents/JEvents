@@ -385,9 +385,10 @@ STYLE;
 		if ($field && $field->showon)
 		{
 			HTMLHelper::_('jquery.framework');
-			HTMLHelper::_('script', 'jui/cms.js', array('version' => 'auto', 'relative' => true));
+            JEVHelper::script('showon.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
+//            HTMLHelper::_('script', 'jui/cms.js', array('version' => 'auto', 'relative' => true), array('defer' => true));
 
-			$rel           = ' data-showon=\'' .
+			$rel           = ' data-showon-gsl=\'' .
 				json_encode(FormHelper::parseShowOnConditions($field->showon, $field->formControl, $field->group)) . '\'';
 		}
 		echo $rel;

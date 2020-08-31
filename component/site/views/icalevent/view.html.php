@@ -175,7 +175,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 			JEVHelper::stylesheet('jevcustom.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
 		}
 
-		$this->setupEditForm();
+        $this->setupEditForm();
 
 		parent::displaytemplate($tpl);
 

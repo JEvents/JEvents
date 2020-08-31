@@ -1151,11 +1151,14 @@ class jIcalEventDB extends jEventCal
 
 	function fixDtstart($reset = false)
 	{
-		if ($reset && isset($this->_olddtstart)){
-			$this->dtstart($this->_olddtstart);
-			$this->dtend($this->_olddtend);
-			$this->_publish_up = $this->_oldpu;
-			$this->_publish_down =$this->_oldpd;
+		if ($reset){
+		    // Only do this if called from RSVP to modify timezones
+            if (isset($this->_olddtstart)) {
+                $this->dtstart($this->_olddtstart);
+                $this->dtend($this->_olddtend);
+                $this->_publish_up = $this->_oldpu;
+                $this->_publish_down = $this->_oldpd;
+            }
 			return;
 		}
 

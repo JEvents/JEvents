@@ -257,7 +257,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 	else {
 		// Clean up ISIS stuff etc.
-		let joomlaelements = document.querySelectorAll('#isisJsData, header.header, .btn.btn-subhead');
+		let joomlaelements = document.querySelectorAll('#isisJsData, body.admin header.header, .btn.btn-subhead');
 		for (let j = 0; j < joomlaelements.length; j++) {
 			joomlaelements[j].remove();
 		}

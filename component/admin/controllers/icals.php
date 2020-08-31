@@ -365,8 +365,9 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
 			$state     = 1;
 			$uploadURL = $input->getString('uploadURL', '');
 			$icsLabel  = $input->getString('icsLabel', '');
+            $autorefresh = $input->getInt('autorefresh', 0);
 
-		}
+        }
 		if ($catid == 0)
 		{
 			// Paranoia, should not be here, validation is done by java script
@@ -409,8 +410,6 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
 			{
 				$icsFile->created_by = $input->getInt("created_by", 0);
 			}
-
-            $icsFile->autorefresh = $input->getInt('autorefresh', 0);
 
             $icsFileid = $icsFile->store();
 			$message   = Text::_('ICS_FILE_IMPORTED');
