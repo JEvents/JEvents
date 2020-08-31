@@ -1238,9 +1238,16 @@ SQL;
 			if (is_null($event) || !JEVHelper::canDeleteEvent($event))
 			{
 
-				$app->enqueueMessage('870 -' . Text::_('JEV_NO_DELETE_ROW'), 'warning');
-
 				unset($cid[$key]);
+				if (count($cid) == 0)
+				{
+					$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.list', JTEXT::_("JEV_NO_DELETE_ROW") . " : " . (is_null($event) ? 1 : 0);
+					$this->redirect();
+				}
+				else
+				{
+					$app->enqueueMessage('870 -' . Text::_('JEV_NO_DELETE_ROW'), 'warning');
+				}
 			}
 		}
 
