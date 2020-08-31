@@ -23,8 +23,10 @@ if (!defined("JEVREGISTRY"))
 		{
 
             $rc = new ReflectionClass('JevRegistry');
+            $rc = $rc->getParentClass();
             if($rc->hasMethod('getInstance'))
             {
+
                 if (empty(parent::$instances[$id]))
                 {
                     parent::$instances[$id] = new self;

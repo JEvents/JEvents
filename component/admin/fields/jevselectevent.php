@@ -132,3 +132,4 @@ class FormFieldJEVselectEvent extends FormField
 		return implode("\n", $html);
 	}
 }
+class_alias("FormFieldJEVselectEvent", "JFormFieldJEVselectEvent");
