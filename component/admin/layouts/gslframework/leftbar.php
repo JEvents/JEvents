@@ -15,7 +15,7 @@ $leftIconLinks = GslHelper::getLeftIconLinks();
 ?>
 <aside id="left-col" class="gsl-padding-remove  gsl-background-secondary hide-label ">
 
-    <nav class="left-nav-wrap  gsl-width-auto@m"  gsl-navbar>
+    <nav class="left-nav-wrap  gsl-width-auto@m"  gsl-navbar="mode: hover">
         <div class="left-logo gsl-background-secondary"  gsl-toggle="target:#left-col, #left-col .left-nav, .ysts-page-title; mode: hover;cls: hide-label">
             <div>
                 <?php
@@ -53,7 +53,7 @@ $leftIconLinks = GslHelper::getLeftIconLinks();
 
 	                ?>
                     <li class="<?php echo $leftIconLink->class . ($leftIconLink->active ? " gsl-active" : ""); ?>" <?php echo $tooltip;?> <?php echo $events;?>>
-                        <a href="<?php echo $leftIconLink->link; ?>" target="<?php echo isset($leftIconLink->target) ? $leftIconLink->target : "_self"; ?>">
+	                    <a href="<?php echo $leftIconLink->link; ?>" target="<?php echo isset($leftIconLink->target) ? $leftIconLink->target : "_self"; ?>" onclick="if((window.getComputedStyle(this.querySelector('.nav-label')).getPropertyValue('display')=='none' && window.innerWidth <= 960) || window.getComputedStyle(this.querySelector('.nav-label')).getPropertyValue('display')!=='none') {document.location=this.href;}return false;">
                             <span data-gsl-icon="icon: <?php echo $leftIconLink->icon; ?>" class="gsl-margin-small-right"></span>
                             <span class="nav-label"><?php echo $leftIconLink->label; ?></span>
                         </a>

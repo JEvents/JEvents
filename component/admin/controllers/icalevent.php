@@ -1234,14 +1234,15 @@ SQL;
 		foreach ($cid as $key => $id)
 		{
 			// I should be able to do this in one operation but that can come later
-			$event = $this->queryModel->getEventById(intval($id), 1, "icaldb");
+			// Do not check access as we are checking canDeleteEvent
+			$event = $this->queryModel->getEventById(intval($id), 1, "icaldb", false);
 			if (is_null($event) || !JEVHelper::canDeleteEvent($event))
 			{
 
 				unset($cid[$key]);
 				if (count($cid) == 0)
 				{
-					$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.list', JTEXT::_("JEV_NO_DELETE_ROW") . " : " . (is_null($event) ? 1 : 0);
+					$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.list', JTEXT::_("JEV_NO_DELETE_ROW") . " : " . (is_null($event) ? $id : 0));
 					$this->redirect();
 				}
 				else

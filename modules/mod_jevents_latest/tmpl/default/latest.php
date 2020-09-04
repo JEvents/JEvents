@@ -1175,7 +1175,7 @@ SCRIPT;
 				{
 					if ($this->com_calUseStdTime)
 					{
-						$time_fmt = $dayEvent->alldayevent() ? '' : IS_WIN ? ' @%I:%M%p' : ' @%l:%M%p';
+						$time_fmt = $dayEvent->alldayevent() ? '' : (IS_WIN ? ' @%I:%M%p' : ' @%l:%M%p');
 					}
 					else
 					{

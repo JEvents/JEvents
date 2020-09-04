@@ -3597,6 +3597,8 @@ class JEventsDBModel
 		}
 		else
 		{
+			//$app    = Factory::getApplication();
+			//$app->enqueueMessage($query, 'warning');
 			$row = null;
 		}
 

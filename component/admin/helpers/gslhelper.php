@@ -112,7 +112,7 @@ class GslHelper
 	static public function cpanelIconLink()
 	{
 		?>
-        <a href="<?php echo Route::_("index.php?option=com_jevents&view=cpanel"); ?>" class="">
+        <a href="<?php echo Route::_("index.php?option=com_jevents&view=cpanel"); ?>" class=""  onclick="if((window.getComputedStyle(this.querySelector('.nav-label')).getPropertyValue('display')=='none' && window.innerWidth <= 960) || window.getComputedStyle(this.querySelector('.nav-label')).getPropertyValue('display')!=='none') {document.location=this.href;}return false;">
             <img src="<?php echo Uri::base(); ?>components/com_jevents/assets/images/logo.png"
                  alt="JEvents Logo">
             <span class="nav-label"><?php echo Text::_('JEVENTS_DASHBOARD'); ?></span>

@@ -586,14 +586,21 @@ function JEventsParseRoute(&$segments)
                             $task = $view . '.' . $layout;
                         }
                     }
-                    if (strpos($task, '.') == false) {
-                        return JError::raiseError(404, JText::_('COM_JEVENTS_UNKNOWN_TASK'));
-                    }
+				    $lang = Factory::getLanguage();
+				    $lang->load("com_jevents", JPATH_ADMINISTRATOR);
+
+				    if (strpos($task, '.') == false) {
+					    throw new Exception(Text::_('COM_JEVENTS_UNKNOWN_TASK'), 404);
+
+					    return false;
+				    }
                     list($controllerName, $cmd) = explode('.', $task);
                     $controllerName = strtolower($controllerName);
-                    $controllerPath = JPATH_COMPONENT . '/' . 'controllers' . '/' . $controllerName . '.php';
+                    $controllerPath = JPATH_SITE . '/components/com_jevents/controllers/' . $controllerName . '.php';
                     if (!file_exists($controllerPath)) {
-                        return JError::raiseError(404, JText::_('COM_JEVENTS_UNKNOWN_TASK'));
+	                    throw new Exception(Text::_('COM_JEVENTS_UNKNOWN_TASK'), 404);
+
+	                    return false;
                     }
                 }
 			    break;

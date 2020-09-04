@@ -57,5 +57,18 @@ echo GslHelper::renderVersion();
         }
 	});
 </script>
+<script >
+    // remove &#65279; non breaking white space and other joiners that may break the layout - could be used instead of regexp in jevents.php
+    document.addEventListener('DOMContentLoaded',  function () {
+        var gslc = document.getElementById('gslc');
+        if (gslc)
+        {
+            if(gslc.previousSibling && gslc.previousSibling.nodeType == 3)
+            {
+                gslc.previousSibling.nodeValue = gslc.previousSibling.nodeValue.trim();
+            }
+        }
+    });
+</script>
 
 
