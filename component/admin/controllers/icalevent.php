@@ -1238,6 +1238,15 @@ SQL;
 			$event = $this->queryModel->getEventById(intval($id), 1, "icaldb", false);
 			if (is_null($event) || !JEVHelper::canDeleteEvent($event))
 			{
+				// check for corrupted repeats table
+				if (is_null($event))
+				{
+					$db->setQuery("SELECT * FROM #__jevents_repetition WHERE eventid = " . intval($id) . " LIMIT 1");
+					if (!$db->loadObject())
+					{
+						continue;
+					}
+				}
 
 				unset($cid[$key]);
 				if (count($cid) == 0)
@@ -1324,6 +1333,16 @@ SQL;
 
 			if (is_null($event) || !JEVHelper::canDeleteEvent($event))
 			{
+				// check for corrupted repeats table
+				if (is_null($event))
+				{
+					$db->setQuery("SELECT * FROM #__jevents_repetition WHERE eventid = " . intval($id) . " LIMIT 1");
+					if (!$db->loadObject())
+					{
+						continue;
+					}
+				}
+
 				$app->enqueueMessage('534 -' . Text::_('JEV_NO_DELETE_ROW'), 'warning');
 
 				unset($cid[$key]);

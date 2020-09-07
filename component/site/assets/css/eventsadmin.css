@@ -203,6 +203,13 @@ fieldset.checkboxes li {
     min-height: 40px;
 }
 
+/* showon initial style for event editing */
+/* Initial showon hidden */
+#jevents .adminform [data-showon-gsl]:not([data-showon-gsl=""]), #jevents .adminform [data-showon]:not([data-showon=""])
+{
+    display:none;
+}
+
 #jevents .jevbootstrap .adminform #myEditTabsContent .row, #jevents .jevbootstrap .adminform div, adminform .row {
     margin-left: 0;
     padding-bottom: 10px;

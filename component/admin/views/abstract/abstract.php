@@ -93,6 +93,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 
 		// Allow the layout to be overriden by menu parameter - this only works if its valid for the task
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+		$this->componentParams = $params;
 
 		// layout may get re-assigned by $this->$layout($tpl); for handle different versions of Joomla
 		$layout    = $this->getLayout();

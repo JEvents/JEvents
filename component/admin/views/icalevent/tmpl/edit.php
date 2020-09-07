@@ -625,7 +625,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 						<?php echo $this->form->getInput("contact_info"); ?>
 					</div>
 				</div>
-				<div class="row jev_extrainfo" <?php JEventsHelper::showOnRel($this->form, 'extrainfo'); ?>>
+				<div class="row jev_extrainfo" <?php JEventsHelper::showOnRel($this->form, 'extra_info'); ?>>
 					<div class="span2">
 						<?php echo $this->form->getLabel("extra_info"); ?>
 					</div>

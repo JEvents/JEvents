@@ -378,7 +378,7 @@ if (count($jevplugins))
 							$fieldhtml = str_replace(array('class="span10', 'class=" span10'), 'class="gsl-width-expand gsl-margin-small-bottom  ', $fieldhtml );
 
 							// Needed to deal with early execution of initTemplate in backend
-							$fieldhtml = str_replace('gsl-button-group', 'gsl-button-group-ysts',$fieldhtml );
+							//$fieldhtml = str_replace('gsl-button-group', 'gsl-button-group-ysts',$fieldhtml );
 
 							$html[] = $fieldhtml;
 

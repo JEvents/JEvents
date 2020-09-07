@@ -27,7 +27,7 @@ class Pkg_JeventsInstallerScript
 	public function preflight($type, $parent)
 	{
 
-		define('JEVENTS_MINIMUM_PHP', '5.6.0');
+		define('JEVENTS_MINIMUM_PHP', '7.0.0');
 
 		if (version_compare(PHP_VERSION, JEVENTS_MINIMUM_PHP, '<'))
 		{
