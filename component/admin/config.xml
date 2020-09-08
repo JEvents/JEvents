@@ -33,6 +33,13 @@
 			   conditional="clubcode" conditions="!"
 		/>
 
+		<field name="leftmenutrigger" type="jevlist" default="0" label="JEV_BACKEND_LEFT_MENU_HANDLER"
+			   description="JEV_BACKEND_LEFT_MENU_HANDLER_DESC" difficulty="1">
+			<option value="0">JEV_MOUSEOVER_TOUCH</option>
+			<option value="1">JEV_CLICK_TOUCH</option>
+			<option value="2">JEV_NO_LEFT_MENU_LABELS</option>
+		</field>
+
 		<field name="com_calViewName" type="jevview" default="flat" except="float" menu="hide" label="JEV_VIEWNAME"
 		       description="JEV_TIP_VIEWNAME" difficulty="1"/>
 		<field name="darktemplate" type="jevboolean" class="gsl-button-group" default="0" menu="hide" label="JEV_DARK_TEMPLATE"

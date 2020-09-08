@@ -30,7 +30,7 @@ class jevEventlistFilter extends jevFilter
 		{
 			include_once($file);
 		}
-		$reg             = JevRegistry::getInstance("jevents");
+		$reg             = JevRegistry::getInstanceWithReferences("jevents");
 		$this->datamodel = $reg->getReference("jevents.datamodel", false);
 		if (!$this->datamodel)
 		{

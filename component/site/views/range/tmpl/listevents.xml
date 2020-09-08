@@ -51,7 +51,7 @@
 			<field name="dataorder" type="list" default="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC"  label="JEV_DATA_ORDER" description="JEV_DATA_ORDER_DESC">
 				<option value="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC" >JEV_STARTDATE_INCREASING</option>
 				<option value="rpt.startrepeat desc, rpt.endrepeat desc, det.summary ASC" >JEV_STARTDATE_DECREASING</option>
-				<option value="det.summary ASC, rpt.startrepeat desc, rpt.endrepeat desc " >JEV_ALPHABETICAL</option>
+				<option value="det.summary ASC, rpt.startrepeat asc, rpt.endrepeat asc " >JEV_ALPHABETICAL</option>
 				<option value="ev.created DESC" >JEV_MOST_RECENT</option>
 				<option value="ev.created ASC" >JEV_MOST_RECENT_ASC</option>
 				<option value="det.modified DESC" >JEV_MOST_RECENT_MODIFIED_DESC</option>

@@ -2,7 +2,7 @@ var JeventsFilters = {
     filters: [],
     reset: function (form) {
         // native array
-        JeventsFilters.filters.each(function (item, i) {
+        JeventsFilters.filters.forEach(function (item) {
             if (item.action) {
                 eval(item.action);
             }

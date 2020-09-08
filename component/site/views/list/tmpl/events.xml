@@ -65,7 +65,7 @@
 				</option>
 				<option value="rpt.startrepeat desc, rpt.endrepeat desc, det.summary ASC">JEV_STARTDATE_DECREASING
 				</option>
-				<option value="det.summary ASC, rpt.startrepeat desc, rpt.endrepeat desc ">JEV_ALPHABETICAL</option>
+				<option value="det.summary ASC, rpt.startrepeat asc, rpt.endrepeat desc ">JEV_ALPHABETICAL</option>
 				<option value="rpt.endrepeat ASC, rpt.startrepeat asc, det.summary ASC">JEV_ENDDATE_INCREASING</option>
 				<option value="rpt.endrepeat desc, rpt.startrepeat desc, det.summary ASC">JEV_ENDDATE_DECREASING
 				</option>

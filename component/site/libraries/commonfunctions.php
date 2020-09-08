@@ -455,7 +455,7 @@ class JEV_CommonFunctions
 
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		if ((int) $params->get("com_notifyboth", 0) === 3)
+		if ((int) $params->get("com_notifyboth", 0) == 3)
 		{
 			return; // no notifications
 		}

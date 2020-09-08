@@ -19,6 +19,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
 
+ob_start();
+
 $input = Factory::getApplication()->input;
 
 if (version_compare(phpversion(), '5.0.0', '<') === true)
@@ -250,5 +252,28 @@ $registry->set("jevents.activeprocess", "administrator");
 // Perform the Request task
 $controller->execute($task);
 
+$output = ob_get_clean();
+// remove &#65279; non breaking white space and other joiners that may break the layout
+$output = preg_replace('/[\x{200B}-\x{200D}\x{FEFF}]/u', '', $output);
+echo $output;
+
+// I could also try this in the footer file - but it doesn't work there in com_categories even with an event listener:(
+/*
+?>
+	<script defer>
+        var bomsearch = document.evaluate( '//*[contains(text(), "\uFEFF")]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null );
+        if (bomsearch.singleNodeValue)
+        {
+            for (var n=0; n<bomsearch.singleNodeValue.childNodes.length; n++)
+            {
+                if (bomsearch.singleNodeValue.childNodes[n].nodeType = 3)
+                {
+                    bomsearch.singleNodeValue.childNodes[n].nodeValue = bomsearch.singleNodeValue.childNodes[n].textContent.replace("\uFEFF", "");
+                }
+            }
+        }
+	</script>
+<?php
+*/
 // Redirect if set by the controller
 $controller->redirect();

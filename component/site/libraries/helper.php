@@ -699,6 +699,7 @@ class JEVHelper
 		$forcepopupcalendar = $params->get("forcepopupcalendar", 1);
 		$offset             = $params->get("com_starday", 1);
 
+		$app    = Factory::getApplication();
 
 		if ($showtime)
 		{
@@ -881,7 +882,7 @@ class JEVHelper
 			data-time-24="' . $timeformat . '" 
 			' . (!empty($minYear) ? ' data-min-year="' . $minYear . '"' : "") . '
 			' . (!empty($maxYear) ? ' data-max-year="' . $maxYear . '"' : "") . ' >'
-				. '<span class="gsl-icon" gsl-icon="icon: calendar"></span>'
+				. (($app->isClient('administrator') || $params->get("newfrontendediting", 1)) ? '<span class="gsl-icon" gsl-icon="icon: calendar"></span>' : '<span class="icon-calendar"></span>')
 				. '</button>'
 				. '</span>'
 				. '</div>'

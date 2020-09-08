@@ -298,6 +298,14 @@ class JEventsHTML
 		}
 
 		// Needs to be ordered so that selected values appear first when editing an event with sortable multiple categories
+		$params = ComponentHelper::getParams($input->getCmd("option", "com_jevents"));
+		if ($allowMultiCat || ($eventediting && $params->get("multicategory", 0)))
+		{
+			if (is_string($catid) && !empty($catid))
+			{
+				$catid = explode(",", $catid);
+			}
+		}
 		if (is_array($catid) && $eventediting)
 		{
             for ($c = 0; $c < count($catid); $c ++)
@@ -1185,6 +1193,13 @@ class JEventsHTML
 	    {
 		    $assetGroups = HTMLHelper::_('access.assetgroups');
 		    // only offer access levels the user has access to
+            $access  = (int) $access;
+            if($access === 0) {
+                // Set default config value
+                $config         = Factory::getConfig();
+                $access          = (int) $config->get('access', 1); // 1 = public.
+            }
+
 		    $user = Factory::getUser();
 
 		    $access  = (int) $access;

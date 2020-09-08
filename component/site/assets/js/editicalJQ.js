@@ -1259,6 +1259,9 @@ function reorderCategorySelections()
 	var catids = document.querySelector('.jevcategory select[name="catid[]"]') || document.querySelector('.jevcategory select[name="catid"]');
     var chosenCatids = document.querySelector('.jevcategory #catid_chzn .chzn-choices');
 
+    if (!chosenCatids)
+    	return;
+
     // find all the selected categories
     var ccats = chosenCatids.querySelectorAll('a');
 

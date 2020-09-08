@@ -1234,13 +1234,30 @@ SQL;
 		foreach ($cid as $key => $id)
 		{
 			// I should be able to do this in one operation but that can come later
-			$event = $this->queryModel->getEventById(intval($id), 1, "icaldb");
+			// Do not check access as we are checking canDeleteEvent
+			$event = $this->queryModel->getEventById(intval($id), 1, "icaldb", false);
 			if (is_null($event) || !JEVHelper::canDeleteEvent($event))
 			{
-
-				$app->enqueueMessage('870 -' . Text::_('JEV_NO_DELETE_ROW'), 'warning');
+				// check for corrupted repeats table
+				if (is_null($event))
+				{
+					$db->setQuery("SELECT * FROM #__jevents_repetition WHERE eventid = " . intval($id) . " LIMIT 1");
+					if (!$db->loadObject())
+					{
+						continue;
+					}
+				}
 
 				unset($cid[$key]);
+				if (count($cid) == 0)
+				{
+					$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.list', JTEXT::_("JEV_NO_DELETE_ROW") . " : " . (is_null($event) ? $id : 0));
+					$this->redirect();
+				}
+				else
+				{
+					$app->enqueueMessage('870 -' . Text::_('JEV_NO_DELETE_ROW'), 'warning');
+				}
 			}
 		}
 
@@ -1316,6 +1333,16 @@ SQL;
 
 			if (is_null($event) || !JEVHelper::canDeleteEvent($event))
 			{
+				// check for corrupted repeats table
+				if (is_null($event))
+				{
+					$db->setQuery("SELECT * FROM #__jevents_repetition WHERE eventid = " . intval($id) . " LIMIT 1");
+					if (!$db->loadObject())
+					{
+						continue;
+					}
+				}
+
 				$app->enqueueMessage('534 -' . Text::_('JEV_NO_DELETE_ROW'), 'warning');
 
 				unset($cid[$key]);

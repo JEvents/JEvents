@@ -125,8 +125,13 @@ class ICalsController extends AdminIcalsController
 		$input  = $app->input;
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		$years = $input->getCmd('years', 'NONE');
-		$cats  = $input->getCmd('catids', 0);
+		$years = $input->getString('years', '0');
+		$years = explode(",", $years);
+		$years = JEVHelper::forceIntegerArray($years, true);
+
+		$cats  = $input->getString('catids', '0');
+		$cats = explode(",", $cats);
+		$cats = JEVHelper::forceIntegerArray($cats, true);
 
 		// validate the key
 		$icalkey = $params->get("icalkey", "secret phrase");

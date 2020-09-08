@@ -1070,7 +1070,7 @@ SCRIPT;
 			'eventDate', 'endDate', 'startDate', 'title', 'category', 'calendar',
 			'contact', 'addressInfo', 'location', 'extraInfo',
 			'countdown', 'categoryimage', 'duration', 'siteroot', 'sitebase', 'allCategoriesColoured', 'allCategorieSlugs',
-        	'today', 'tomorrow'
+			'today', 'tomorrow'
 		);
 		$keywords_or = implode('|', $keywords);
 		$whsp        = '[\t ]*'; // white space
@@ -1136,7 +1136,9 @@ SCRIPT;
 		$app        = Factory::getApplication();
 
 		// RSVP Pro plugin may have reset publish_up/publish_down - these now need to be restored
-		$dayEvent->fixDtstart(true);
+        if (isset($dayEvent->_olddtstart)) {
+            $dayEvent->fixDtstart(true);
+        }
 
 		// get the title and start time
 		$startDate = JevDate::strtotime($dayEvent->publish_up());
@@ -1174,7 +1176,7 @@ SCRIPT;
 				{
 					if ($this->com_calUseStdTime)
 					{
-						$time_fmt = $dayEvent->alldayevent() ? '' : IS_WIN ? ' @%I:%M%p' : ' @%l:%M%p';
+						$time_fmt = $dayEvent->alldayevent() ? '' : (IS_WIN ? ' @%I:%M%p' : ' @%l:%M%p');
 					}
 					else
 					{
@@ -1253,16 +1255,16 @@ SCRIPT;
 					$content .= "</span>";
 				break;
 
-            case 'today' :
-                if($dayEvent->getUnixStartDate() === strtotime(date( 'Y-m-d'))) {
-                    $content .= JText::_('JEV_EVENT_TODAY');
-                }
-                break;
-            case 'tomorrow' :
-                if($dayEvent->getUnixStartDate() === strtotime(date( 'Y-m-d') . '+1 day')) {
-                    $content .= JText::_('JEV_EVENT_TOMORROW');
-                }
-                break;
+			case 'today' :
+				if($dayEvent->getUnixStartDate() === strtotime(date( 'Y-m-d'))) {
+					$content .= JText::_('JEV_EVENT_TODAY');
+				}
+				break;
+			case 'tomorrow' :
+				if($dayEvent->getUnixStartDate() === strtotime(date( 'Y-m-d') . '+1 day')) {
+					$content .= JText::_('JEV_EVENT_TOMORROW');
+				}
+				break;
 
 			case 'title':
 				$title = $dayEvent->title();

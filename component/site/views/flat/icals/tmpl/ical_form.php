@@ -36,7 +36,7 @@ if ($input->getString("submit", "") != "")
 		$cats[] = 0;
 
 	$years = JEVHelper::forceIntegerArray($input->post->get('years', array(0), null), true);
-    $catsImploded	= implode(",", $cats);
+	$catsImploded	= implode(",", $cats);
 
 	$link = Uri::root() . "index.php?option=com_jevents&task=icals.export&format=ical";
 	if (is_array($cats) && count($cats) > 0)

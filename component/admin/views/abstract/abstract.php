@@ -93,6 +93,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 
 		// Allow the layout to be overriden by menu parameter - this only works if its valid for the task
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+		$this->componentParams = $params;
 
 		// layout may get re-assigned by $this->$layout($tpl); for handle different versions of Joomla
 		$layout    = $this->getLayout();
@@ -470,7 +471,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 					{
 						$tabcontent = substr($tabcontent, 0, strpos($tabcontent,'{{TABSEND}}'));
 					}
-					if ($tab == 1)
+					if ($tab == 0)
 					{
 						$tabcontent = '<li class="gsl-active">' . $tabcontent . '</li>';
 					}
@@ -581,6 +582,9 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
+
+		// Disable showon effects if using a customised event editing form
+        $template_value = str_replace("data-showon-gsl", "data-showon-gsl-disabled", $template_value);
 
 		echo $template_value;
 
