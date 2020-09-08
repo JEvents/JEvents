@@ -1193,6 +1193,13 @@ class JEventsHTML
 	    {
 		    $assetGroups = HTMLHelper::_('access.assetgroups');
 		    // only offer access levels the user has access to
+            $access  = (int) $access;
+            if($access === 0) {
+                // Set default config value
+                $config         = Factory::getConfig();
+                $access          = (int) $config->get('access', 1); // 1 = public.
+            }
+
 		    $user = Factory::getUser();
 		    if (!$user->get("isRoot", 0))
 		    {

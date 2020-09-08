@@ -38,12 +38,12 @@ if ($input->getString("submit", "") != "")
 
 	$jr_years = $input->post->get('years', array(0), null);
 	$years    = JEVHelper::forceIntegerArray($jr_years, true);
-	$cats     = implode(",", $cats);
+	$catsImploded	= implode(",", $cats);
 
 	$link = Uri::root() . "index.php?option=com_jevents&task=icals.export&format=ical";
 	if (count($cats) > 0)
 	{
-		$link .= "&catids=" . $cats;
+		$link .= "&catids=" . $catsImploded;
 	}
 	$link .= "&years=" . $years;
 	if ($input->getInt("icalformatted", 0))
