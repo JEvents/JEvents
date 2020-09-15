@@ -13,7 +13,7 @@ $view = $this->getViewName();
 $script = <<<SCRIPT
 function clearIcalCategories(allcats){
 	if(allcats.checked){
-		jevjq('input[name="categories[]"]:checked').each (function(el){
+		jevjq('input[name="categories[]"]:checked').each (function(i, el){
 			if (el.value!=0){
 				el.checked=false;
 			}
@@ -21,7 +21,7 @@ function clearIcalCategories(allcats){
 		jevjq('#othercats').css('display','none');
 	}
 	else {
-		jevjq('input[name="categories[]"]').each (function(el){
+		jevjq('input[name="categories[]"]').each (function(i, el){
 			if (el.value!=0 && el.checked==false){
 				el.checked=true;
 			}
@@ -30,7 +30,7 @@ function clearIcalCategories(allcats){
 	}
 }
 function clearAllIcalCategories(){
-		jevjq('input[name="categories[]"]:checked').each (function(el){
+		jevjq('input[name="categories[]"]:checked').each (function(i, el){
 			if (el.value==0){
 				el.checked=false;
 			}
@@ -38,7 +38,7 @@ function clearAllIcalCategories(){
 }
 function clearIcalYears(allyears){
 	if(allyears.checked){
-		jevjq('input[name="years[]"]:checked').each (function(el){
+		jevjq('input[name="years[]"]:checked').each (function(i, el){
 			if (el.value!=0){
 				el.checked=false;
 			}
@@ -46,7 +46,7 @@ function clearIcalYears(allyears){
 		jevjq('#otheryears').css('display','none');
 	}
 	else {
-		jevjq('input[name="years[]"]').each (function(el){
+		jevjq('input[name="years[]"]').each (function(i, el){
 			if (el.value!=0 && el.checked==false){
 				el.checked=true;
 			}
@@ -55,7 +55,7 @@ function clearIcalYears(allyears){
 	}
 }
 function clearAllIcalYears(){
-		jevjq('input[name="years[]"]:checked').each (function(el){
+		jevjq('input[name="years[]"]:checked').each (function(i, el){
 			if (el.value==0){
 				el.checked=false;
 			}

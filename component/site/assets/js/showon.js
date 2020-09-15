@@ -36,6 +36,10 @@ Joomla = window.Joomla || {};
                 $fields.each(function() {
                     var $field = $(this);
 
+                    if ($field.prop("tagName").toLowerCase() == "select")
+                    {
+                        var x = 1;
+                    }
                     // If checkbox or radio box the value is read from properties
                     if (['checkbox', 'radio'].indexOf($field.attr('type')) !== -1) {
                         if (!$field.prop('checked')) {
@@ -56,7 +60,10 @@ Joomla = window.Joomla || {};
 
                     // Convert to array to allow multiple values in the field (e.g. type=list multiple)
                     // and normalize as string
-                    if (!(typeof itemval === 'object')) {
+                    if (typeof itemval == 'string') {
+                        itemval = [ itemval ];
+                    }
+                    else if (typeof itemval !== 'object') {
                         itemval = JSON.parse('["' + itemval + '"]');
                     }
 

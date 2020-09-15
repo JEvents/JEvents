@@ -225,7 +225,9 @@ class ICalsController extends AdminIcalsController
 		}
 		else if ($years != "NONE")
 		{
-			$years = explode(",", $input->getCmd('years', ''));
+			// already fetched and sanitised
+			$years = explode(",", $years);
+
 			if (!is_array($years) || count($years) == 0)
 			{
 				list($y, $m, $d) = JEVHelper::getYMD();

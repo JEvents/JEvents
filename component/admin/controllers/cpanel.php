@@ -53,6 +53,17 @@ class AdminCpanelController extends AdminController
 		if ($rsvpproplugin && $rsvpplugin)
 		{
 			$app->enqueueMessage(Text::_("JEV_INSTALLED_RSVP_AND_RSVPPRO_INCOMPATIBLE"), "ERROR");
+			$db = Factory::getDbo();
+			$query = $db->getQuery(true)
+				->update('#__extensions')
+				->set('enabled = 0')
+				->where('enabled = 1')
+				->where('type = ' . $db->quote('plugin'))
+				->where('folder = ' . $db->quote('jevents'))
+				->where('element = ' . $db->quote('jevrsvp'))
+				->where('state IN (0,1)');
+			$db->setQuery($query);
+			$db->execute();
 		}
 
 		// Add one category by default if none exist already

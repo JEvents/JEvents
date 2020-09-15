@@ -119,6 +119,18 @@ document.addEventListener('DOMContentLoaded', function () {
 				label.classList.remove('active');
 			}
 		}
+/*
+		elems = document.querySelectorAll("#gslc i[class^='icon-']");
+		for (let e = 0; e < elems.length; e++) {
+			if (elems[e].classList.contains('icon-globe'))
+			{
+				alert (elems[e].classList);
+				elems[e].classList.remove('icon-globe');
+				elems[e].classList.add('gsl-icon');
+				elems[e].setAttribute('data-gsl-icon' , 'icon:location');
+			}
+		}
+ */
 	}
 });
 
