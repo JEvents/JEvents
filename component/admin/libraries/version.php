@@ -28,7 +28,7 @@ class JEventsVersion
 	/** @var string Development Status */
 	var $DEV_STATUS = 'Stable';
 	/** @var string Copyright Text */
-	var $COPYRIGHT = 'Copyright &copy; 2006-2020';
+	var $COPYRIGHT = 'Copyright &copy; 2006-JEVENTS_COPYRIGHT';
 	/** @var string Copyright Text */
 	var $COPYRIGHTBY = 'GWE Systems Ltd, JEvents Project Group';
 	/** @var string LINK */
