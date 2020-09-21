@@ -1201,6 +1201,14 @@ class JEventsHTML
             }
 
 		    $user = Factory::getUser();
+
+		    $access  = (int) $access;
+            if($access === 0) {
+                // Set default config value
+                $config         = Factory::getConfig();
+                $access          = (int) $config->get('access', 1); // 1 = public.
+            }
+
 		    if (!$user->get("isRoot", 0))
 		    {
 			    $viewlevels = $user->getAuthorisedViewLevels();

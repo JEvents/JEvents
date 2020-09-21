@@ -55,9 +55,9 @@
     <!-- ============================================  -->
     <target name="sedreplace" description="Replace version and date values in files !! ">
         <xmlproperty file="../package/pkg_jevents.xml" />
-        <exec command="find ${builddir}/${sedfolder}/ -type f \( -iname '*.php' -o -iname '*.js' -o -iname '*.xml'  -o -iname '*.css' -o -iname '*.ini' \) -exec sed -i 's/\bJEVENTS_VERSION\b/${extension.version}/' '{}' +;" />
-        <exec command="find ${builddir}/${sedfolder}/ -type f \( -iname '*.php' -o -iname '*.js' -o -iname '*.xml'  -o -iname '*.css' -o -iname '*.ini' \) -exec sed -i 's/\bJEVENTS_DATE\b/${extension.creationDate}/' '{}' +;" />
-        <exec command="find ${builddir}/${sedfolder}/ -type f \( -iname '*.php' -o -iname '*.js' -o -iname '*.xml'  -o -iname '*.css' -o -iname '*.ini' \) -exec sed -i 's/\bJEVENTS_COPYRIGHT\b/${extension.copyrightYear}/' '{}' +;" />
+        <exec command="find ${builddir}/${sedfolder}/ -type f \( -iname '*.php' -o -iname '*.js' -o -iname '*.xml'  -o -iname '*.css' \) -exec sed -i 's/JEVENTS_VERSION/${extension.version}/' '{}' +;" />
+        <exec command="find ${builddir}/${sedfolder}/ -type f \( -iname '*.php' -o -iname '*.js' -o -iname '*.xml'  -o -iname '*.css' \) -exec sed -i 's/JEVENTS_DATE/${extension.creationDate}/' '{}' +;" />
+        <exec command="find ${builddir}/${sedfolder}/ -type f \( -iname '*.php' -o -iname '*.js' -o -iname '*.xml'  -o -iname '*.css' \) -exec sed -i 's/JEVENTS_COPYRIGHT/${extension.copyrightYear}/' '{}' +;" />
     </target>
 
     <!-- ==================================================  -->
