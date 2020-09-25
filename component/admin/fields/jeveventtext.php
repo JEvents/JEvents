@@ -37,7 +37,7 @@ class FormFieldJeveventtext extends JFormFieldText
 				$placeholder = $params->get("titleplaceholder", $placeholder);
 
 				$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
-				if (!$params->get("enableshowon", 1))
+				if (!$params->get("enableshowon", 0))
 				{
 					$placeholder = "JEV_EVENT_TITLE";
 				}
