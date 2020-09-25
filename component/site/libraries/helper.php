@@ -4533,7 +4533,7 @@ SCRIPT;
         $query = $db->getQuery(true);
         $query->select('*')
             ->from('#__update_sites')
-            ->where('location LIKE ' . $db->quote("%newupdates/jevents_addons_updates.xml"));
+            ->where('location LIKE ' . $db->quote("%newupdates/jevents_addon_updates.xml"));
         $db->setQuery($query);
         $updatesites = $db->loadObjectList();
 
@@ -4542,7 +4542,7 @@ SCRIPT;
             // clean up duplicate records
             $query = $db->getQuery(true);
             $query->delete('#__update_sites')
-                ->where('location LIKE ' . $db->quote("%newupdates/jevents_addons_updates.xml"));
+                ->where('location LIKE ' . $db->quote("%newupdates/jevents_addon_updates.xml"));
             $db->setQuery($query);
             $db->execute();
             $updatesite = false;
@@ -4564,7 +4564,7 @@ SCRIPT;
                 ->values(
                     $db->q('JEvents Addon Updates') . ', ' .
                     $db->q('collection') . ', ' .
-                    $db->q("$updateDomain/newupdates/jevents_addons_updates.xml") . ', ' .
+                    $db->q("$updateDomain/newupdates/jevents_addon_updates.xml") . ', ' .
                     $db->q(1)
                 );
 
@@ -4574,7 +4574,7 @@ SCRIPT;
             $query = $db->getQuery(true);
             $query->select('*')
                 ->from('#__update_sites')
-                ->where('location = ' . $db->quote("$updateDomain/newupdates/jevents_addons_updates.xml"));
+                ->where('location = ' . $db->quote("$updateDomain/newupdates/jevents_addon_updates.xml"));
 
             $db->setQuery($query);
             $updatesite = $db->loadObject();
@@ -4594,7 +4594,7 @@ SCRIPT;
             $query->update('#__update_sites')
                 ->set('extra_query = '. $db->quote($debug . 'dlid=' . $clubcode))
                 ->set('name = '. $db->quote('JEvents Addon Updates'))
-                ->where('location LIKE ' . $db->quote("%newupdates/jevents_addons_updates.xml"));
+                ->where('location LIKE ' . $db->quote("%newupdates/jevents_addon_updates.xml"));
             $db->setQuery($query);
             $db->execute();
         }
@@ -4602,7 +4602,7 @@ SCRIPT;
         // clean up old style records
         $query = $db->getQuery(true);
         $query->delete('#__update_sites')
-            ->where('(location NOT LIKE ' . $db->quote("%newupdates/jevents_addons_updates.xml")
+            ->where('(location NOT LIKE ' . $db->quote("%newupdates/jevents_addon_updates.xml")
                 . ' AND location NOT LIKE ' . $db->quote("%newupdates/jevents_package.xml") .')')
             ->where('( location LIKE  ' . $db->quote("https://www.jevents.net%")
                 . ' OR '
@@ -4613,9 +4613,9 @@ SCRIPT;
 
         $query = $db->getQuery(true);
         $query->update('#__update_sites')
-            ->set('location = ' . $db->q("$updateDomain/newupdates/jevents_addons_updates.xml"))
-            ->where('location LIKE ' . $db->quote("%newupdates/jevents_addons_updates.xml"))
-            ->where(' location NOT LIKE ' . $db->q("$updateDomain/newupdates/jevents_addons_updates.xml"));
+            ->set('location = ' . $db->q("$updateDomain/newupdates/jevents_addon_updates.xml"))
+            ->where('location LIKE ' . $db->quote("%newupdates/jevents_addon_updates.xml"))
+            ->where(' location NOT LIKE ' . $db->q("$updateDomain/newupdates/jevents_addon_updates.xml"));
         $db->setQuery($query);
         $db->execute();
 

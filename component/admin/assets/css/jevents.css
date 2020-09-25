@@ -890,6 +890,7 @@ body.com_jevents {
 #gslc.gsl-scope {
   /* Overriding template.css styling when using native Joomla layouts */
   /* Disabled left bar items */
+  /* Parameter editing for accordion */
 }
 #gslc.gsl-scope div#jevents {
   margin-left: 5px;
@@ -923,6 +924,9 @@ body.com_jevents {
 #gslc.gsl-scope .adminlist.table-striped .tags li {
   display: inline-block;
   margin: 0 2px 4px 0;
+}
+#gslc.gsl-scope .gsl-accordion-title.no-accordion-icon:before {
+  background-image: none;
 }
 /* Overriding template.css styling when using native Joomla layouts for com_categories */
 body.com_categories #gslc.gsl-scope form#item-form {

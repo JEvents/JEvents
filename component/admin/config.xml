@@ -33,6 +33,12 @@
 			   conditional="clubcode" conditions="!"
 		/>
 
+		<field name="landingpage" type="radio" class="gsl-button-group"  default="cpanel.cpanel" label="COM_JEVENTS_ADMIN_LANDING_PAGE"
+			   description="COM_JEVENTS_ADMIN_LANDING_PAGE_DESC" difficulty="1">
+			<option value="cpanel.cpanel">JEVENTS_DASHBOARD</option>
+			<option value="icalevent.list">JEV_ADMIN_ICAL_EVENTS</option>
+		</field>
+
 		<field name="leftmenutrigger" type="jevlist" default="0" label="JEV_BACKEND_LEFT_MENU_HANDLER"
 			   description="JEV_BACKEND_LEFT_MENU_HANDLER_DESC" difficulty="1">
 			<option value="0">JEV_MOUSEOVER_TOUCH</option>
@@ -90,7 +96,7 @@
 		       description="JEV_EARLIEST_YEAR_DESC" difficulty="1"/>
 		<field name="com_latestyear" type="jevtext" default="+5" menu="hide" size="6" label="JEV_LATEST_YEAR"
 		       description="JEV_LATEST_YEAR_DESC" difficulty="1"/>
-		<field name="com_starday" type="jevlist" default="0" menu="hide" label="JEV_FIRST_DAY" description=""
+		<field name="com_starday" type="jevlist" default="1" menu="hide" label="JEV_FIRST_DAY" description=""
 		       difficulty="1">
 			<option value="0">JEV_SUNDAY_FIRST</option>
 			<option value="1">JEV_MONDAY_FIRST</option>
@@ -235,6 +241,15 @@
 	<fieldset name="JEV_EVENT_EDITING" difficulty="1">
 		<field name="newfrontendediting" type="jevboolean" class="gsl-button-group" default="1" menu="hide"
 			   label="JEV_USE_NEW_FRONTEND_EDITING_FORMATTING" description="JEV_USE_NEW_FRONTEND_EDITING_FORMATTING_DESC" difficulty="1"/>
+
+		<field name="enableshowon" type="jevboolean" class="gsl-button-group" default="1" menu="hide"
+			   label="COM_JEVENT_ENABLE_SHOWON_EDITING" description="COM_JEVENT_ENABLE_SHOWON_EDITING_DESC" difficulty="1"/>
+
+		<field name="titleplaceholder" type="jevtext" size="60" default='JEV_EVENT_TITLE_PLACEHOLDER' menu="hide" label="COM_JEVENTS_TITLE_PLACEHOLDER"
+			   description="COM_JEVENTS_TITLE_PLACEHOLDER_DESC" difficulty="1"
+			   conditional="enableshowon" conditions="1"
+		/>
+
 		<field name="com_calUseStdTime" type="jevboolean" class="gsl-button-group" default="1" menu="hide"
 		       label="JEV_TIME_FORMAT_12" description="JEV_TIME_FORMAT_12_DESC" difficulty="1"/>
 		<!--//<field name="com_jeveditionrequiredfields" type="Jeveditionrequiredfields" default="" size="6" label="JEV_REQUIRED_FIELDS_SELECT" multiple="multiple" description="JEV_REQUIRED_FIELDS_SELECT_DESC" difficulty="3"/>//-->

@@ -3,6 +3,7 @@ defined('JPATH_BASE') or die;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Component\ComponentHelper;
 
 FormHelper::loadFieldClass('text');
 
@@ -29,7 +30,19 @@ class FormFieldJeveventtext extends JFormFieldText
 		$input = parent::getInput();
 		if (strpos($input, "placeholder") === false)
 		{
-			$placeholder = $this->element['placeholder'] ? ' placeholder="' . htmlspecialchars(Text::_($this->element['placeholder'])) . '"' : '';
+			$placeholder = $this->element['placeholder'] ? (string) $this->element['placeholder'] : '';
+			if ($this->name === "title" && $placeholder === "JEV_EVENT_TITLE_PLACEHOLDER")
+			{
+				$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+				$placeholder = $params->get("titleplaceholder", $placeholder);
+
+				$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+				if (!$params->get("enableshowon", 1))
+				{
+					$placeholder = "JEV_EVENT_TITLE";
+				}
+			}
+			$placeholder = !empty($placeholder) ? ' placeholder="' . htmlspecialchars(Text::_($placeholder)) . '"' : '';
 			$input       = str_replace("/>", " $placeholder />", $input);
 		}
 

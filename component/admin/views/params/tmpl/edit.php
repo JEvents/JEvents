@@ -179,12 +179,12 @@ if (count($jevplugins))
 
 			$html = array();
 
-			$html[] = '<table class="paramlist admintable" >';
+			$html[] = '<div class="gsl-width-1-1" >';
 
 			if (isset($fieldSet->description) && !empty($fieldSet->description))
 			{
 				$desc   = Text::_($fieldSet->description);
-				$html[] = '<tr><td class="paramlist_description" colspan="2">' . $desc . '</td></tr>';
+				$html[] = '<div  class="gsl-width-1-1 gsl-card gsl-card-default" >' . $desc . '</div>';
 			}
 
 			foreach ($this->form->getFieldset($name) as $field)
@@ -217,36 +217,37 @@ if (count($jevplugins))
 				$class = isset($field->class) ? $field->class : "";
 
 				$difficultyClass = "difficulty" . $this->form->getFieldAttribute($field->fieldname, "difficulty");
-				if ($this->component->params->get("com_difficulty", 1) < $this->form->getFieldAttribute($field->fieldname, "difficulty"))
+				if ($this->component->params->get("com_difficulty", 1) < $this->form->getFieldAttribute($field->fieldname, "difficulty1"))
 				{
 					$difficultyClass .= " hiddenDifficulty";
 				}
 
 				if (StringHelper::strlen($class) > 0)
 				{
-					$class = " class='$class $difficultyClass'";
+					$class = " class='gsl-grid $class $difficultyClass'";
 				}
 				else
 				{
-					$class = " class=' $difficultyClass'";
+					$class = " class='gsl-grid  $difficultyClass'";
 				}
 
-				$html[] = "<tr $class>";
-				if (strtolower($field->type) == "note")
+				$html[] = "<div $class>";
+				if (strtolower($field->type) == "note" || strtolower($field->type) == "jevinfo")
                 {
-	                $html[] = '<td class="paramlist_value" colspan="2">' . $field->label . "<div>" . $field->input . '<br></div></td>';
+	                $html[] = '<div class="gsl-width-1-1" >' . $field->label . "<div>" . $field->input . '<br></div></div>';
                 }
 				else if (!isset($field->label) || $field->label == "")
 				{
-					$html[] = '<td class="paramlist_key"><span class="editlinktip">' . $field->label . '</span></td>';
-					$html[] = '<td class="paramlist_value">' . $field->input . '</td>';
+					$html[] = '<div class="gsl-width-1-2"><span class="editlinktip">' . $field->label . '</span></div>';
+					$html[] = '<div class="gsl-width-1-2">' . $field->input . '</div>';
 				}
 				else
 				{
-					$html[] = '<td class="paramlist_value" colspan="2">' . $field->input . '</td>';
+					$html[] = '<div class="gsl-width-1-1" >' . $field->input . '</div>';
 				}
+				$label = $field->label;
 
-				$html[] = '</tr>';
+				$html[] = '</div>';
 			}
 
 			if ($name == "JEV_PERMISSIONS")
@@ -260,14 +261,14 @@ if (count($jevplugins))
 					{
 						$class = " class='$class'";
 					}
-					$html[] = "<tr $class>";
-					$html[] = '<td class="paramlist_value" colspan="2">' . $field->input . '</td>';
+					$html[] = "<div $class>";
+					$html[] = '<div class="gsl-width-1-1" >' . $field->input . '</div>';
 
-					$html[] = '</tr>';
+					$html[] = '</div>';
 				}
 			}
 
-			$html[] = '</table>';
+			$html[] = '</div>';
 
 			echo implode("\n", $html);
 			?>
@@ -343,13 +344,15 @@ if (count($jevplugins))
 					$hasconfig = false;
 					foreach ($fieldSets as $name => $fieldSet)
 					{
-						$html[] = '<div class="paramlist admintable form-horizontal" >';
+						$html[] = '<div class="gsl-width-1-1" >';
 
 						if (isset($fieldSet->description) && !empty($fieldSet->description))
 						{
 							$desc   = Text::_($fieldSet->description);
-							$html[] = '<div class="paramlist_description" colspan="2">' . $desc . '</div>';
+							$html[] = '<div  class="gsl-width-1-1 gsl-card gsl-card-default" >' . $desc . '</div>';
 						}
+
+						$html[] = '<div class="paramlist admintable form-horizontal" >';
 
 						foreach ($layoutform->getFieldset($name) as $field)
 						{
@@ -382,25 +385,6 @@ if (count($jevplugins))
 
 							$html[] = $fieldhtml;
 
-							/*
-$class = isset($field->class) ? $field->class : "";
-
-if (StringHelper::strlen($class) > 0)
-{
-	$class = " class='$class'";
-}
-$html[] = "<tr $class>";
-if (!isset($field->label) || $field->label == "")
-{
-	$html[] = '<td class="paramlist_key"><span class="editlinktip">' . $field->label . '</span></td>';
-	$html[] = '<td class="paramlist_value">' . $field->input . '</td>';
-}
-else
-{
-	$html[] = '<td class="paramlist_value" colspan="2">' . $field->input . '</td>';
-}
-$html[] = '</tr>';
-							 */
 						}
 						$html[] = '</div>';
 					}
@@ -431,7 +415,7 @@ $html[] = '</tr>';
 		{
             ?>
             <li>
-                <ul class="gsl-list-divider" gsl-accordion>
+                <ul class="gsl-list-divider" gsl-accordion="targets: > *:not(.no-accordion-icon)">
             <?php
 			$i = 0;
 			foreach ($jevplugins as $plugin)
@@ -439,9 +423,6 @@ $html[] = '</tr>';
 				$config = JPATH_SITE . "/plugins/" . $plugin->type . "/" . $plugin->name . "/" . $plugin->name . ".xml";
 				if (file_exists($config))
 				{
-					?>
-					<li class="gsl-card gsl-card-default gsl-card-hover" style="position:relative">
-					<?php
 					// Load language file
 					$lang     = Factory::getLanguage();
 					$langfile = "plg_" . $plugin->type . "_" . $plugin->name . ".sys";
@@ -453,11 +434,6 @@ $html[] = '</tr>';
 					$pluginform = Form::getInstance("com_jevents.config.plugins." . $plugin->name, $config, array('control' => 'jform_plugin[' . $plugin->type . '][' . $plugin->name . ']', 'load_data' => true), true, "/extension/config/fields");
 					$pluginparams = new JevRegistry($plugin->params);
 
-					// Load the whole XML config file to get the plugin name in plain english
-					$xml = new SimpleXMLElement($config, 0, true);
-					// TODO Consider adding enabled/disabled method here for plugins inclusing unpublished ones!
-					// TODO handle unpublished plugins too
-
 					$hasfields = false;
 					$fieldSets = $pluginform->getFieldsets();
 					foreach ($fieldSets as $name => $fieldSet)
@@ -467,6 +443,16 @@ $html[] = '</tr>';
 							$hasfields = true;
 						}
 					}
+
+					?>
+					<li class="gsl-card gsl-card-default gsl-card-hover <?php echo !$hasfields ? "no-accordion-icon" : "";?>" style="position:relative">
+					<?php
+
+					// Load the whole XML config file to get the plugin name in plain english
+					$xml = new SimpleXMLElement($config, 0, true);
+					// TODO Consider adding enabled/disabled method here for plugins inclusing unpublished ones!
+					// TODO handle unpublished plugins too
+
 					$safedesc = Text::_($xml->description, true);
 					$safename = Text::_($xml->name, true);
 
@@ -532,7 +518,7 @@ $html[] = '</tr>';
 							if (isset($fieldSet->description) && !empty($fieldSet->description))
 							{
 								$desc   = Text::_($fieldSet->description);
-								$html[] = '<div class="paramlist_description" colspan="2">' . $desc . '</div>';
+								$html[] = '<div class="paramlist_description" >' . $desc . '</div>';
 							}
 
 							foreach ($pluginform->getFieldset($name) as $field)
@@ -591,7 +577,7 @@ $html[] = '</tr>';
 
 						?>
 						<?php echo $labelextra; ?>
-						<div class="gsl-accordion-title "  >
+						<div class="gsl-accordion-title no-accordion-icon" >
 							<?php echo $label; ?>
 						</div>
 						<?php

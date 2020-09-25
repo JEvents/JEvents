@@ -287,7 +287,7 @@ class AdminParamsController extends AdminController
 				$this->redirect();
 				break;
 			default:
-				$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=cpanel.cpanel", Text::_('CONFIG_SAVED'));
+				$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT, Text::_('CONFIG_SAVED'));
 				$this->redirect();
 				break;
 		}
