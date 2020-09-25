@@ -135,7 +135,7 @@ $data['filters'] = $this->filters;
                                     ?>
                                     <a href="javascript: void(0);"
                                        onclick="return Joomla.listItemTask('cb<?php echo $i; ?>','icalrepeat.list')"
-                                       class="btn btn-micro">
+                                       >
                                         <span class="icon-list"> </span>
                                     </a>
                                 <?php } ?>
@@ -149,11 +149,11 @@ $data['filters'] = $this->filters;
                                 <?php
                                 if ($row->state() == 1)
                                 {
-                                    $img = "<i gsl-icon='icon:check'></i>";
+                                    $img = "<i gsl-icon='icon:check' class='gsl-text-success'></i>";
                                 }
                                 else if ($row->state() == 0)
                                 {
-                                    $img = "<i gsl-icon='icon:close'></i>";
+                                    $img = "<i gsl-icon='icon:close' class='gsl-text-danger'></i>";
                                 }
                                 else
                                 {
@@ -162,7 +162,7 @@ $data['filters'] = $this->filters;
                                 ?>
                                 <a href="javascript: void(0);"
                                    onclick="return Joomla.listItemTask('cb<?php echo $i; ?>','<?php echo $row->state() ? 'icalevent.unpublish' : 'icalevent.publish'; ?>')"
-                                   class="btn btn-micro">
+                                   >
                                     <?php echo $img; ?>
                                 </a>
                             </td>
