@@ -166,6 +166,15 @@ class Pkg_JeventsInstallerScript
 		echo "<div class='jev_install'>
 				<div class='jev_logo'><a href='index.php?option=com_jevents' ><img src='https://www.jevents.net/logo/$logo' /></a></div>
 				<div class='version'><h2 class='gsl-h2'>" . $inst_text . ": ADD_VERSION </h2></div>
+				<h3>Exciting New Styling & Joomla 4 Support</h3>
+				<p>JEvents 3.6 brings you</p>
+				<ul>
+					<li>A new backend theme (with new configuration options)</li>
+					<li>A new dashboard that gives you an overview and graphical summary of your events (you can choose this or the events list as your landing page)</li>
+					<li>A new, more modern, interface for event creation/editing (with new configuration options)</li>
+					<li>Joomla 4.0 support</li>
+				</ul>
+				<p>Please see our latest <a href='https://www.jevents.net/blog/jevents-3-6-exciting-new-styling-featured' target='_blank'>blog post</a> for more information about these features and how they can be configured.</p>
 				<div class='installed'>
 					<ul>
 						<li><a href='index.php?option=com_jevents' >JEvents Core Component</a></li>
@@ -186,7 +195,6 @@ class Pkg_JeventsInstallerScript
 						<li><a href='https://www.jevents.net/docs/jevents' alt='JEvents Documentation'><img src='components/com_jevents/assets/images/documentation.jpg' alt='JEvents Documentation' /><br/>Documentation</a></li>
 					</ul>
 				</div>";
-
 
 		if ($this->hasJEventsInst == 0)
 		{
