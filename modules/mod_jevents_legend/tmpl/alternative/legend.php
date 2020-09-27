@@ -11,6 +11,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\String\StringHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * HTML View class for the component frontend
@@ -113,7 +114,7 @@ class AlternativeModLegendView extends DefaultModLegendView
 		$catidsIn = $input->getString('catids', "NONE");
 		if ($catidsIn != "NONE" && $catidsIn != "0") $catidsGP = explode($separator, $catidsIn);
 		else $catidsGP = array();
-		\Joomla\Utilities\ArrayHelper::toInteger($catidsGP);
+		$catidsGP = ArrayHelper::toInteger($catidsGP);
 		$catidsGPList = implode(",", $catidsGP);
 
 		// This produces a full tree of categories
