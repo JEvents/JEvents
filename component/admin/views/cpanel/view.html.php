@@ -52,8 +52,6 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 		JEventsHelper::addSubmenu();
 
-
-
 		if (GSLMSIE10)
 		{
 			$this->sidebar = JHtmlSidebar::render();

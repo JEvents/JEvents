@@ -117,7 +117,7 @@ class DefaultModLatestView
 		}
 
 		// get params exclusive to component
-		$this->com_starday       = intval($jevents_config->get('com_starday', 0));
+		$this->com_starday       = intval($jevents_config->get('com_starday', 1));
 		$this->com_calUseStdTime = intval($jevents_config->get('com_calUseStdTime', 1));
 		if ($this->com_calUseStdTime)
 		{

@@ -109,8 +109,9 @@ if (!version_compare(JVERSION, '1.6.0', ">="))
 	$lang->load(JEV_COM_COMPONENT, JPATH_SITE . '/' . "templates" . '/' . $template);
 }
 
+$landingpage = $params->get("landingpage", 'cpanel.cpanel');
 // Split task into command and task
-$cmd = $input->get('task', 'cpanel.show');
+$cmd = $input->get('task', $landingpage);
 //echo $cmd;die;
 
 //Time to handle view switching for our current setup for J3.7
@@ -119,18 +120,22 @@ $view = $input->get('view', '');
 if ($view === 'customcss')
 {
 //	Factory::getApplication()->redirect('index.php?option=com_jevents&task=cpanel.custom_css');
-	if ($cmd === 'cpanel.show' || strpos($cmd, '.') === 0)
+	if ($cmd === $landingpage || strpos($cmd, '.') === 0)
 	{
 		$cmd = $view;
 	}
 	$controllerName = 'CustomCss';
 }
-if($view === 'import') {
-	if ($cmd === 'cpanel.show' || strpos($cmd, '.') === 0)
+else if($view === 'import') {
+	if ($cmd === $landingpage || strpos($cmd, '.') === 0)
 	{
 		$cmd = $view;
 	}
 	$controllerName = 'Import';
+}
+else if($view === 'cpanel' && ($cmd === $landingpage || strpos($cmd, '.') === 0))
+{
+	$cmd = 'cpanel.show';
 }
 
 if ($view === 'supportinfo')

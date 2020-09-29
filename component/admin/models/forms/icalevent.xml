@@ -7,7 +7,7 @@
 			   default=""
 			   size="40"
 			   layoutfield="TITLE"
-			   placeholder="JEV_EVENT_TITLE"
+			   placeholder="JEV_EVENT_TITLE_PLACEHOLDER"
 			   maxlength="255"
 			   class="inputbox"
 			   label="JEV_EVENT_TITLE"

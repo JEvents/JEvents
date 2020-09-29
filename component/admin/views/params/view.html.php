@@ -15,6 +15,7 @@ defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * HTML View class for the component
@@ -38,7 +39,9 @@ class AdminParamsViewParams extends JEventsAbstractView
 
 		JToolbarHelper::apply('params.apply');
 		JToolbarHelper::save('params.save');
-		JToolbarHelper::cancel('cpanel.cpanel');
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+		$landingpage = $params->get("landingpage", 'cpanel.cpanel');
+		JToolbarHelper::cancel($landingpage);
 
 		$model = $this->getModel();
 
@@ -78,7 +81,9 @@ class AdminParamsViewParams extends JEventsAbstractView
 
 		// Set toolbar items for the page
 		JToolbarHelper::title(Text::_('DB_SETUP'), 'jevents');
-		JToolbarHelper::cancel('cpanel.cpanel');
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+		$landingpage = $params->get("landingpage", 'cpanel.cpanel');
+		JToolbarHelper::cancel($landingpage);
 
 	}
 }

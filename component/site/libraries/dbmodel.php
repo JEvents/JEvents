@@ -18,6 +18,7 @@ use Joomla\CMS\Factory;
 use Joomla\String\StringHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Utilities\ArrayHelper;
 
 // load language constants
 JEVHelper::loadLanguage('front');
@@ -54,7 +55,7 @@ class JEventsDBModel
 			$catids = $this->datamodel->catids;
 		}
 
-		\Joomla\Utilities\ArrayHelper::toInteger($catids);
+		$catids = ArrayHelper::toInteger($catids);
 		$catidList = implode(",", $catids);
 
 		$cfg         = JEVConfig::getInstance();
@@ -370,7 +371,7 @@ class JEventsDBModel
 
 		if (is_array($catidList))
 		{
-			\Joomla\Utilities\ArrayHelper::toInteger($catidList);
+			$catidList = ArrayHelper::toInteger($catidList);
 			$catidListIndex = implode(", ", $catidList);
 		}
 		else

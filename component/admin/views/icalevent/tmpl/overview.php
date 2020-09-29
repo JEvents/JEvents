@@ -48,9 +48,9 @@ $selectorFieldName = isset($data['options']['selectorFieldName']) ? $data['optio
 $showSelector = true;
 // Set some basic options.
 $customOptions = array(
-    'defaultLimit'        => 20,
-    'searchFieldSelector' => '#search',
-    'formSelector'        => !empty($data['options']['formSelector']) ? $data['options']['formSelector'] : '#adminForm',
+	'defaultLimit'        => 20,
+	'searchFieldSelector' => '#search',
+	'formSelector'        => !empty($data['options']['formSelector']) ? $data['options']['formSelector'] : '#adminForm',
 );
 // Merge custom options in the options array Filters
 $data['options'] = array_merge($customOptions, $data['options']);
@@ -63,13 +63,13 @@ $data['filters'] = $this->filters;
 
 <form action="index.php" method="post" name="adminForm" id="adminForm" class="eventlist">
     <div id="ysts-main-container">
-        <?php
-        // Search tools bar
-        // I need to create and initialise the filter form for this to work!
-        echo LayoutHelper::render('joomla.searchtools.jevents', array('view' => $this));
-        ?>
+		<?php
+            // Search tools bar
+            // I need to create and initialise the filter form for this to work!
+            echo LayoutHelper::render('joomla.searchtools.jevents', array('view' => $this));
+		?>
 
-        <!-- End Filters -->
+		<!-- End Filters -->
         <div class="clearfix"></div>
 
         <div class="mainlistblock">
@@ -120,7 +120,7 @@ $data['filters'] = $this->filters;
                                    id="modal_preview" title="Preview"
                                    data-caption="Preview"
                                    data-type="iframe"
-                                >
+                                   >
                                     <span class="icon-out-2 small"></span>
                                 </a>
                                 </span>
@@ -135,7 +135,7 @@ $data['filters'] = $this->filters;
                                     ?>
                                     <a href="javascript: void(0);"
                                        onclick="return Joomla.listItemTask('cb<?php echo $i; ?>','icalrepeat.list')"
-                                    >
+                                       >
                                         <span class="icon-list"> </span>
                                     </a>
                                 <?php } ?>
@@ -198,7 +198,7 @@ $data['filters'] = $this->filters;
                     if (count($this->rows) === 0) {
                         echo '<tr><td colspan="9">' . Text::_("JEV_NO_EVENTS_FOUND") . '</td></tr>';
                     } ?>
-                    <tr><td colspan="9" class="gsl-width-1-1" style="text-align:center"><?php echo $this->pagination->getListFooter();?></td></tr>
+	                <tr><td colspan="9" class="gsl-width-1-1" style="text-align:center"><?php echo $this->pagination->getListFooter();?></td></tr>
                 </table>
                 <input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>
                 <input type="hidden" name="task" value="icalevent.list"/>

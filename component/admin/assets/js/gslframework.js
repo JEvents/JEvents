@@ -263,6 +263,24 @@ document.addEventListener('DOMContentLoaded', function () {
 		}
 	}
 
+	// Hide toggled left-menu if in click mode
+	document.querySelector('#right-col > .gsl-content').addEventListener('mouseover', () => {
+		if (!document.getElementById('left-col').classList.contains('hide-label')) {
+			var elements = document.querySelectorAll('#left-col, #left-col .left-nav, .ysts-page-title');
+			elements.forEach(function(element)
+			{
+				if (element.classList.contains('hide-label'))
+				{
+					element.classList.remove('hide-label');
+				}
+				else
+				{
+					element.classList.add('hide-label');
+				}
+			})
+		}
+	});
+
 	ystsPositionElements()
 
 	// Handle 'flip' events - delay by 100 to make sure its a late event response!

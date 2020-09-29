@@ -102,7 +102,7 @@ class ExtModLegendView extends DefaultModLegendView
 		$catidsIn = $input->getString('catids', "NONE");
 		if ($catidsIn != "NONE" && $catidsIn != "0") $catidsGP = explode($separator, $catidsIn);
 		else $catidsGP = array();
-		ArrayHelper::toInteger($catidsGP);
+		$catidsGP = ArrayHelper::toInteger($catidsGP);
 		$catidsGPList = implode(",", $catidsGP);
 
 		// This produces a full tree of categories
@@ -180,7 +180,7 @@ class ExtModLegendView extends DefaultModLegendView
 					$component = ComponentHelper::getComponent(JEV_COM_COMPONENT);
 
 					$registry   = JevRegistry::getInstance("jevents");
-					$controller =& $registry->get("jevents.controller", null);
+					$controller = $registry->get("jevents.controller", null);
 					if (!$controller) return $content;
 					$view = $controller->view;
 

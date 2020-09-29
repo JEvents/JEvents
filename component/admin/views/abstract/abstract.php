@@ -851,7 +851,15 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 					$requiredTags['default_value'] = $this->form->getFieldAttribute($key, "default");
 					$requiredTags['alert_message'] = Text::_('JEV_ADD_REQUIRED_FIELD', true) . " " . Text::_("JEV_FIELD_" . $fieldAttribute, true);
 					$this->requiredtags[]          = $requiredTags;
+
+					$this->form->setFieldAttribute($key, 'required', 1);
 				}
+			}
+
+			// title, category and calendar are always required
+			if ($key === "title" || $key === "catid" || $key === "ics_id")
+			{
+				$this->form->setFieldAttribute($key, 'required', 1);
 			}
 		}
 

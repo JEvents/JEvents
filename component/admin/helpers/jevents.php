@@ -380,6 +380,12 @@ STYLE;
 
 	static public function showOnRel($form, $fieldid)
 	{
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+		if (!$params->get("enableshowon", 0))
+		{
+			return "";
+		}
+
 		$field = $form->getField($fieldid);
 		$rel = "";
 		if ($field && $field->showon)
