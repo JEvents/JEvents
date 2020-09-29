@@ -106,7 +106,7 @@ class plgContentJEvents extends CMSPlugin
 			// 2  = Archived
 			// -2 = Transhed
 			$app    = Factory::getApplication();
-			$input  = $app->inpt;
+			$input  = $app->input;
 
 			$lang = Factory::getLanguage();
 			$lang->load("com_jevents", JPATH_ADMINISTRATOR);
