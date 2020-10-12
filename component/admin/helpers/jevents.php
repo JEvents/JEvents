@@ -86,7 +86,7 @@ class JEventsHelper
 	{
 		$vName      = Factory::getApplication()->input->getCmd('view', 'categories');
 
-		if (Factory::getApplication()->input->get('view') == "categories")
+		if (Factory::getApplication()->input->get('view') == "categories" || (Factory::getApplication()->input->get('option') == "com_categories" && Factory::getApplication()->input->get('extension') == "com_jevents"))
 		{
 			if (!defined("GSLMSIE10"))
 			{

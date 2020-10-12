@@ -1,7 +1,7 @@
 <?php
 /**
  * @version    CVS: JEVENTS_VERSION
- * @package    com_yoursites
+ * @package    com_jevents
  * @author     Geraint Edwards <yoursites@gwesystems.com>
  * @copyright  2016-JEVENTS_COPYRIGHT GWESystems Ltd
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
@@ -18,6 +18,8 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Layout\LayoutHelper;
+
+JLoader::register('JEventsHelper', JPATH_ADMINISTRATOR . "/components/com_jevents/helpers/jevents.php");
 
 class GslHelper
 {

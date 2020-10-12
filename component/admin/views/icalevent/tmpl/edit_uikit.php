@@ -384,7 +384,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 				if ($this->form->getLabel("ics_id"))
 				{
 					?>
-					<div class="row jevcalendar  gsl-grid gsl-margin-small-top" <?php JEventsHelper::showOnRel($this->form, 'ics_id'); ?> >
+					<div class="row jevcalendar   gsl-margin-small-top" <?php JEventsHelper::showOnRel($this->form, 'ics_id'); ?> >
                         <div class="gsl-width-1-3"  >
 							<?php echo $this->form->getLabel("ics_id"); ?>
 						</div>
@@ -402,7 +402,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 				if ($this->form->getInput("lockevent"))
 				{
 					?>
-					<div class="row jevlockevent  gsl-grid gsl-margin-small-top" <?php JEventsHelper::showOnRel($this->form, 'lockevent'); ?> >
+					<div class="row jevlockevent   gsl-margin-small-top" <?php JEventsHelper::showOnRel($this->form, 'lockevent'); ?> >
                         <div class="gsl-width-1-3"  >
 							<?php echo $this->form->getLabel("lockevent"); ?>
 						</div>
@@ -416,7 +416,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 				if ($this->form->getLabel("catid"))
 				{
 					?>
-					<div class="row  jevcategory  gsl-grid gsl-margin-small-top" <?php JEventsHelper::showOnRel($this->form, 'catid'); ?> >
+					<div class="row  jevcategory   gsl-margin-small-top" <?php JEventsHelper::showOnRel($this->form, 'catid'); ?> >
 						<?php
 						if ($this->form->getLabel("catid"))
 						{
@@ -451,7 +451,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 		                        if ($this->form->getInput("priority"))
 		                        {
 			                        ?>
-                                    <div class="row jevpriority gsl-grid" <?php JEventsHelper::showOnRel($this->form, 'priority'); ?> >
+                                    <div class="row jevpriority " <?php JEventsHelper::showOnRel($this->form, 'priority'); ?> >
                                         <div class="gsl-width-1-3"  >
 					                        <?php echo $this->form->getLabel("priority"); ?>
                                         </div>
@@ -466,7 +466,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 		                        if ($this->form->getInput("creator"))
 		                        {
 			                        ?>
-                                    <div class="row jevcreator  gsl-grid gsl-margin-small-top" <?php JEventsHelper::showOnRel($this->form, 'creator'); ?>>
+                                    <div class="row jevcreator   gsl-margin-small-top" <?php JEventsHelper::showOnRel($this->form, 'creator'); ?>>
                                         <div class="gsl-width-1-3"  >
 					                        <?php echo $this->form->getLabel("creator"); ?>
                                         </div>
@@ -510,7 +510,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 				if ($this->repeatId === 0 && $this->form->getLabel("access"))
 				{
 					?>
-					<div class="row  jevaccess gsl-grid gsl-margin-small-top" <?php JEventsHelper::showOnRel($this->form, 'access'); ?> >
+					<div class="row  jevaccess  gsl-margin-small-top" <?php JEventsHelper::showOnRel($this->form, 'access'); ?> >
 						<?php
 						if ($this->form->getLabel("access"))
 						{
@@ -537,7 +537,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 				else if ($this->form->getLabel("state"))
 				{
 					?>
-					<div class="row jevpublished gsl-grid gsl-margin-small-top" <?php JEventsHelper::showOnRel($this->form, 'state'); ?> >
+					<div class="row jevpublished  gsl-margin-small-top" <?php JEventsHelper::showOnRel($this->form, 'state'); ?> >
                         <div class="gsl-width-1-3"  >
 							<?php echo $this->form->getLabel("state"); ?>
 						</div>
@@ -558,8 +558,8 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 				if ($this->form->getInput("color"))
 				{
 					?>
-                            <div class=" gsl-margin-small-top gsl-child-width-1-1" gsl-grid>
-					<div class="row jevcolour gsl-grid gsl-margin-small-top" <?php JEventsHelper::showOnRel($this->form, 'color'); ?> >
+                            <div class=" gsl-margin-small-top gsl-child-width-1-1" >
+					<div class="row jevcolour  gsl-margin-small-top" <?php JEventsHelper::showOnRel($this->form, 'color'); ?> >
                         <div class="gsl-width-1-6@m gsl-width-1-3"  >
 							<?php echo $this->form->getLabel("color"); ?>
 						</div>

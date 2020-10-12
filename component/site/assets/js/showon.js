@@ -116,7 +116,18 @@ Joomla = window.Joomla || {};
             // If conditions are satisfied show the target field(s), else hide.
             // Note that animations don't work on list options other than in Chrome.
             if (animate && !target.is('option')) {
-                (showfield) ? target.slideDown() : target.slideUp();
+                //(showfield) ? target.slideDown() : target.slideUp();
+                if (!target[0].classList.contains('gsl-animation-slide-bottom')) {
+                    target[0].classList.add('gsl-animation-slide-bottom');
+                }
+                if (showfield)
+                {
+                    target[0].style.display = target[0].classList.contains('gsl-grid') ? 'flex' : 'block';
+                }
+                else
+                {
+                    target[0].style.display='none';
+                }
             } else {
                 target.toggle(showfield);
                 if (target.is('option')) {

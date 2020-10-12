@@ -8,9 +8,11 @@
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
- * Utility class for Bootstrap Modal Popups especially URL based Modals which bootstrap usually fails on
+ * Utility class for Bootstrap or UIKit Modal Popups especially URL based Modals which bootstrap usually fails on
  *
  */
 class JevModal
@@ -75,12 +77,21 @@ class JevModal
 			return;
 		}
 
-		// Load jQuery
-		HTMLHelper::_('jquery.framework');
+		$jevparams = ComponentHelper::getParams('com_jevents');
 
-		HTMLHelper::stylesheet('com_jevents/lib_jevmodal/jevmodal.css', array(), true);
-		HTMLHelper::script('com_jevents/lib_jevmodal/jevmodal.js', array('framework' =>  false, 'relative' => true, 'pathOnly' => false, 'detectBrowser' => false, 'detectDebug' => true));
+		// UIKit or Bootstrap
+		if (Factory::getApplication()->isClient('administrator') || $jevparams->get("newfrontendediting", 1))
+		{
+			HTMLHelper::script('com_jevents/lib_jevmodal/jevmodal_uikit.js', array('framework' => false, 'relative' => true, 'pathOnly' => false, 'detectBrowser' => false, 'detectDebug' => true));
+		}
+		else
+		{
+			// Load jQuery
+			HTMLHelper::_('jquery.framework');
 
+			HTMLHelper::stylesheet('com_jevents/lib_jevmodal/jevmodal.css', array(), true);
+			HTMLHelper::script('com_jevents/lib_jevmodal/jevmodal.js', array('framework' => false, 'relative' => true, 'pathOnly' => false, 'detectBrowser' => false, 'detectDebug' => true));
+		}
 		static::$loaded[__METHOD__] = true;
 
 		return;

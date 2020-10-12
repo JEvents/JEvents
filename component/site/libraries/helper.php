@@ -4471,8 +4471,7 @@ SCRIPT;
         foreach ($translations as $translation)
         {
             //	array("element"=>"ar-AA_JEvents","name"=>"Arabic translation for JEvents","type"=>"file"),
-            $elem      = str_replace("_Addons", "Addons_", $translation->element);
-            $updates[] = array("element" => $elem, "name" => $translation->name, "type" => "file");
+	        $updates[] = array("element" => $translation->element, "name" => $translation->name, "type" => "file");
         }
 
         // Eliminate JEvents duplicates

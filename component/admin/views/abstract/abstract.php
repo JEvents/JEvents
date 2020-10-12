@@ -830,6 +830,28 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 		$this->requiredtags[]          = $requiredTags;
 
 		$fields = $this->form->getFieldSet();
+
+		foreach ($fields as $key => $field)
+		{
+			// title, category and calendar are always required
+			if ($key === "title" || $key === "catid" || $key === "ics_id")
+			{
+				$this->form->setFieldAttribute($key, 'required', 1);
+			}
+
+			$fieldAttribute = $this->form->getFieldAttribute($key, "layoutfield");
+
+			if ($fieldAttribute)
+			{
+				if (in_array($fieldAttribute, $requiredFields))
+				{
+					$this->form->setFieldAttribute($key, 'required', 1);
+				}
+			}
+		}
+
+		$fields = $this->form->getFieldSet();
+
 		foreach ($fields as $key => $field)
 		{
 			$fieldAttribute = $this->form->getFieldAttribute($key, "layoutfield");
@@ -851,16 +873,9 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 					$requiredTags['default_value'] = $this->form->getFieldAttribute($key, "default");
 					$requiredTags['alert_message'] = Text::_('JEV_ADD_REQUIRED_FIELD', true) . " " . Text::_("JEV_FIELD_" . $fieldAttribute, true);
 					$this->requiredtags[]          = $requiredTags;
-
-					$this->form->setFieldAttribute($key, 'required', 1);
 				}
 			}
 
-			// title, category and calendar are always required
-			if ($key === "title" || $key === "catid" || $key === "ics_id")
-			{
-				$this->form->setFieldAttribute($key, 'required', 1);
-			}
 		}
 
 		// Plugins CAN BE LAYERED IN HERE - In Joomla 3.0 we need to call it earlier to get the tab titles

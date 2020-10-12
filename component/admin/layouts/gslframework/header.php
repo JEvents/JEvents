@@ -1,7 +1,7 @@
 <?php
 /**
  * @version    CVS: JEVENTS_VERSION
- * @package    com_yoursites
+ * @package    com_jevents
  * @author     Geraint Edwards <yoursites@gwesystems.com>
  * @copyright  2016-JEVENTS_COPYRIGHT GWESystems Ltd
  * @license    GNU General Public License version 2 or later; see LICENSE.txt

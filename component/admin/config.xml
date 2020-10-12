@@ -243,7 +243,7 @@
 			   label="JEV_USE_NEW_FRONTEND_EDITING_FORMATTING" description="JEV_USE_NEW_FRONTEND_EDITING_FORMATTING_DESC" difficulty="1"/>
 
 		<field name="enableshowon" type="jevboolean" class="gsl-button-group" default="0" menu="hide"
-			   label="COM_JEVENT_ENABLE_SHOWON_EDITING" description="COM_JEVENT_ENABLE_SHOWON_EDITING_DESC" difficulty="1"/>
+		   label="COM_JEVENT_ENABLE_SHOWON_EDITING" description="COM_JEVENT_ENABLE_SHOWON_EDITING_DESC" difficulty="1"/>
 
 		<field name="titleplaceholder" type="jevtext" size="60" default='JEV_EVENT_TITLE_PLACEHOLDER' menu="hide" label="COM_JEVENTS_TITLE_PLACEHOLDER"
 			   description="COM_JEVENTS_TITLE_PLACEHOLDER_DESC" difficulty="1"

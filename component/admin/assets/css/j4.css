@@ -50,7 +50,7 @@ body.com_jevents #wrapper #sidebar-wrapper {
 }
 body.com_jevents #wrapper #sidebar-wrapper.gsl-hide-sidebar {
   display: none;
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
 body.com_jevents #gslc.gsl-scope {
   /* Search filters display toggle */
@@ -61,14 +61,14 @@ body.com_jevents #gslc.gsl-scope #left-col {
       left: 3rem;
        */
   left: 0;
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
 body.com_jevents #gslc.gsl-scope #right-col:not(.noleftbar) #top-head {
   /* 3rem for J4 sidebar
       left: ~"calc(50px + 3rem)";
        */
   left: 50px;
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
 body.com_jevents #gslc.gsl-scope .gsl-content,
 body.com_jevents #gslc.gsl-scope #ysts_system_messages {
@@ -76,13 +76,15 @@ body.com_jevents #gslc.gsl-scope #ysts_system_messages {
       margin-left: 3rem;
        */
   margin-left: 0;
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
 body.com_jevents #gslc.gsl-scope .js-stools .js-stools-container-filters {
   display: none;
 }
 body.com_jevents #gslc.gsl-scope .js-stools .js-stools-container-filters.js-stools-container-filters-visible {
   display: flex;
+  background-color: transparent;
+  margin: 0 0 20px 10px;
 }
 body.com_jevents #gslc.gsl-scope .ys_newsfeed {
   height: 80px;
@@ -144,19 +146,19 @@ body.com_categories #wrapper #sidebar-wrapper {
 }
 body.com_categories #wrapper #sidebar-wrapper.gsl-hide-sidebar {
   display: none;
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
 body.com_categories #gslc.gsl-scope #left-col {
   /* left: 3rem; */
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
 body.com_categories #gslc.gsl-scope #right-col #top-head {
   /* left: ~"calc(50px + 3rem)";*/
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
 body.com_categories #gslc.gsl-scope .gsl-content {
   /*margin-left: 3rem;*/
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
 body.com_categories #gslc.gsl-scope.joomla-menu-open #left-col {
   left: 18rem;

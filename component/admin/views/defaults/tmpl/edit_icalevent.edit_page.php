@@ -132,7 +132,7 @@ Joomla.submitbutton = function (pressbutton){
                     if (missingFields.length >0){
 			var message = '<?php echo Text::_("JEV_LAYOUT_MISSING_FIELD",true);?>'+'\n';
 			// native array!
-			missingFields.each (function (msg, index){
+			missingFields.forEach (function (msg, index){
 				message +=  msg +'\n';
 			});
 			alert(message);

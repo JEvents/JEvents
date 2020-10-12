@@ -1,6 +1,6 @@
 /**
  * @version    CVS: JEVENTS_VERSION
- * @package    com_yoursites
+ * @package    com_jevents
  * @author     Geraint Edwards
  * @copyright  2017--JEVENTS_COPYRIGHT GWESystems Ltd
  * @license    GNU General Public License version 3 or later; see LICENSE.txt
@@ -265,7 +265,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	// Hide toggled left-menu if in click mode
 	document.querySelector('#right-col > .gsl-content').addEventListener('mouseover', () => {
-		if (!document.getElementById('left-col').classList.contains('hide-label')) {
+		if (document.getElementById('left-col') && document.getElementById('left-col') && !document.getElementById('left-col').classList.contains('hide-label')) {
 			var elements = document.querySelectorAll('#left-col, #left-col .left-nav, .ysts-page-title');
 			elements.forEach(function(element)
 			{
