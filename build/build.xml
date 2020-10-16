@@ -172,6 +172,7 @@
                 <delete file="${uikitdir}/dist/css/uikit-core.css" failonerror="false" />
                 <delete file="${uikitdir}/dist/css/uikit-rtl.css" failonerror="false" />
                 <delete file="${uikitdir}/dist/css/uikit.css" failonerror="false" />
+                <delete file="${uikitdir}/dist/css/uikit.gsl.css" failonerror="false" />
                 <delete file="${uikitdir}/dist/css/uikit.gsl.min.css" failonerror="false" />
             </then>
         </if>

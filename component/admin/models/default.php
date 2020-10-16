@@ -139,7 +139,7 @@ class DefaultsModelDefault extends BaseDatabaseModel
 						$keys = array_keys(get_object_vars($oldparams));
 						foreach ($keys as $key)
 						{
-							if ($key == "modid" || $key == "modval")
+							if ($key == "modid" || $key == "modval" || $key == "customjs"  || $key == "customcss")
 							{
 								continue;
 							}

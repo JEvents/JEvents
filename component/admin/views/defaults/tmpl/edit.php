@@ -245,17 +245,13 @@ $this->item->params = json_encode($templateparams);
             <div class="gsl-grid gsl-grid small">
                 <div class="form-group gsl-width-expand@m">
                 <h3><?php echo Text::_("JEV_DEFAULTS_CUSTOM_CSS");?></h3>
-                    <textarea id="customcss" name="params[customcss]"  class="gsl-width-expand@m  gsl-height-medium">
-                        <?php echo htmlspecialchars($customcss, ENT_QUOTES, 'UTF-8');?>
-                    </textarea>
+                    <textarea id="customcss" name="params[customcss]"  class="gsl-width-expand@m  gsl-height-medium"><?php echo htmlspecialchars($customcss, ENT_QUOTES, 'UTF-8');?></textarea>
                 </div>
             </div>
             <div class="gsl-grid gsl-grid small">
                 <div class="form-group gsl-width-expand@m">
                 <h3><?php echo Text::_("JEV_DEFAULTS_CUSTOM_JS");?></h3>
-                    <textarea id="customjs" name="params[customjs]" class="gsl-width-expand@m gsl-height-medium">
-                        <?php echo htmlspecialchars($customjs, ENT_QUOTES, 'UTF-8');?>
-                    </textarea>
+                    <textarea id="customjs" name="params[customjs]" class="gsl-width-expand@m gsl-height-medium"><?php echo htmlspecialchars($customjs, ENT_QUOTES, 'UTF-8');?></textarea>
                 </div>
             </div>
         </div>
