@@ -80,7 +80,10 @@ class JevModal
 		$jevparams = ComponentHelper::getParams('com_jevents');
 
 		// UIKit or Bootstrap
-		if (Factory::getApplication()->isClient('administrator') || $jevparams->get("newfrontendediting", 1))
+		$jinput = JFactory::getApplication()->input;
+		if (($jinput->getString("task", "") == "icalevent.edit" || $jinput->getString("task", "") == "icalrepeat.edit")
+			&& (Factory::getApplication()->isClient('administrator') || $jevparams->get("newfrontendediting", 1))
+		)
 		{
 			HTMLHelper::script('com_jevents/lib_jevmodal/jevmodal_uikit.js', array('framework' => false, 'relative' => true, 'pathOnly' => false, 'detectBrowser' => false, 'detectDebug' => true));
 		}
