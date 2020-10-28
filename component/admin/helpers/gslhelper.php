@@ -108,7 +108,7 @@ class GslHelper
 
 	static public function configLink()
 	{
-		return Uri::base() . 'index.php?option=com_jevents&task=params.edit';
+		return Uri::base() . 'index.php?option=com_jevents&task=params.edit&component=com_jevents&view=component';
 	}
 
 	static public function cpanelIconLink()

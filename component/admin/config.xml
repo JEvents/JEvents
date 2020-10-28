@@ -414,6 +414,8 @@
 		       description="" difficulty="1"/>
 		<field name="com_hitsview" type="jevboolean" class="gsl-button-group" default="1" menu="hide" label="JEV_VIEW_HITS"
 		       description="" difficulty="1"/>
+		<field name="autoprint" type="jevboolean" class="gsl-button-group" default="0" menu="hide"
+			   label="JEV_AUTOPRINT" description="JEV_AUTOPRINT_TIP" difficulty="3"/>
 		<field name="com_repeatview" type="jevboolean" class="gsl-button-group" default="1" menu="hide"
 		       label="JEV_VIEW_REPEAT_TIME" description="JEV_VIEW_REPEAT_TIME_DESC" difficulty="1"/>
 		<field name="contact_display_name" type="jevlist" default="0" menu="hide" label="JEV_CONTACT_DISPLAY_NAME"

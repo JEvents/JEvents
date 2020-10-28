@@ -171,6 +171,29 @@ class ICalRepeatController extends AdminIcalrepeatController
 			$cache = Factory::getCache(JEV_COM_COMPONENT, 'view');
 			$cache->get($this->view, 'display');
 		}
+
+		if( $pop && intval($input->get('print')) == 1 && $cfg->get("autoprint", 0))
+		{
+			$document = Factory::getDocument();
+
+			// auto print and close
+			if ($input->getInt("pop", 0))
+			{
+				$autoPrint = <<< SCRIPT
+window.addEventListener('load', function() {
+	window.addEventListener("afterprint", function(event)  { 
+	    window.close();
+	});
+	window.print();
+});
+SCRIPT;
+
+				$document->addScriptDeclaration($autoPrint);
+			}
+
+
+		}
+
 	}
 
 	function edit($key = null, $urlVar = null)

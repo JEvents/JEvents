@@ -92,6 +92,7 @@ function DefaultViewHelperHeader16($view)
 						. ($view->day ? '&day=' . $view->day : '')
 						. $view->datamodel->getItemidLink()
 						. $view->datamodel->getCatidsOutLink()
+						. '&print=1'
 						. '&pop=1'
 						. '&tmpl=component';
 					$print_link = Route::_($print_link);

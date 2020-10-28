@@ -4564,6 +4564,78 @@
 .gsl-scope .gsl-width-11-12 {
   width: calc(91.65902841%);
 }
+@media (min-width: 640px) {
+  .gsl-scope .gsl-child-width-1-12\@s > *,
+  .gsl-scope .gsl-width-1-12\@s {
+    width: calc(8.33263895%);
+  }
+  .gsl-scope .gsl-child-width-5-12\@s > *,
+  .gsl-scope .gsl-width-5-12\@s {
+    width: calc(41.66319473%);
+  }
+  .gsl-scope .gsl-child-width-7-12\@s > *,
+  .gsl-scope .gsl-width-7-12\@s {
+    width: calc(58.32847263%);
+  }
+  .gsl-scope .gsl-child-width-11-12\@s > *,
+  .gsl-scope .gsl-width-11-12\@s {
+    width: calc(91.65902841%);
+  }
+}
+@media (min-width: 960px) {
+  .gsl-scope .gsl-child-width-1-12\@m > *,
+  .gsl-scope .gsl-width-1-12\@m {
+    width: calc(8.33263895%);
+  }
+  .gsl-scope .gsl-child-width-5-12\@m > *,
+  .gsl-scope .gsl-width-5-12\@m {
+    width: calc(41.66319473%);
+  }
+  .gsl-scope .gsl-child-width-7-12\@m > *,
+  .gsl-scope .gsl-width-7-12\@m {
+    width: calc(58.32847263%);
+  }
+  .gsl-scope .gsl-child-width-11-12\@m > *,
+  .gsl-scope .gsl-width-11-12\@m {
+    width: calc(91.65902841%);
+  }
+}
+@media (min-width: 1200px) {
+  .gsl-scope .gsl-child-width-1-12\@l > *,
+  .gsl-scope .gsl-width-1-12\@l {
+    width: calc(8.33263895%);
+  }
+  .gsl-scope .gsl-child-width-5-12\@l > *,
+  .gsl-scope .gsl-width-5-12\@l {
+    width: calc(41.66319473%);
+  }
+  .gsl-scope .gsl-child-width-7-12\@l > *,
+  .gsl-scope .gsl-width-7-12\@l {
+    width: calc(58.32847263%);
+  }
+  .gsl-scope .gsl-child-width-11-12\@l > *,
+  .gsl-scope .gsl-width-11-12\@l {
+    width: calc(91.65902841%);
+  }
+}
+@media (min-width: 1600px) {
+  .gsl-scope .gsl-child-width-1-12\@xl > *,
+  .gsl-scope .gsl-width-1-12\@xl {
+    width: calc(8.33263895%);
+  }
+  .gsl-scope .gsl-child-width-5-12\@xl > *,
+  .gsl-scope .gsl-width-5-12\@xl {
+    width: calc(41.66319473%);
+  }
+  .gsl-scope .gsl-child-width-7-12\@xl > *,
+  .gsl-scope .gsl-width-7-12\@xl {
+    width: calc(58.32847263%);
+  }
+  .gsl-scope .gsl-child-width-11-12\@xl > *,
+  .gsl-scope .gsl-width-11-12\@xl {
+    width: calc(91.65902841%);
+  }
+}
 .gsl-scope [class*='gsl-height'] {
   box-sizing: border-box;
 }
