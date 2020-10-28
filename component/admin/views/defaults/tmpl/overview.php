@@ -149,7 +149,7 @@ $fullspan = 12;
 
                             <td class="center">
                                 <?php
-                                $img = $row->state ? "<i gsl-icon='icon:check'></i>" : "<i gsl-icon='icon:close'></i>";
+                                $img = $row->state ? "<i gsl-icon='icon:check' class='gsl-text-success'></i>" : "<i gsl-icon='icon:close' class='gsl-text-danger'></i>";
                                 ?>
                                 <a href="javascript: void(0);"
                                    onclick="return Joomla.listItemTask('cb<?php echo $i; ?>','<?php echo $row->state ? 'defaults.unpublish' : 'defaults.publish'; ?>')"><?php echo $img; ?></a>
