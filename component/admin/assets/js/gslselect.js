@@ -7,9 +7,9 @@
  * @license    GNU General Public License version 3 or later; see LICENSE.txt
  */
 
-function gslselect() {
+function gslselect(selector) {
 
-let selectElements = document.querySelectorAll('.js-stools-field-filter select:not(#filter_tag2)');
+let selectElements = document.querySelectorAll(selector);
 
 selectElements.forEach (
     function(selectElement) {
@@ -294,5 +294,5 @@ selectElements.forEach (
 };
 
 document.addEventListener('DOMContentLoaded', function () {
-    gslselect();
+    gslselect('.js-stools-field-filter select:not(#filter_tag2)');
 })

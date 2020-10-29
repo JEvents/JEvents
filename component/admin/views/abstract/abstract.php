@@ -663,9 +663,29 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
-        if ($params->get("bootstrapchosen", 1))
+        if ($params->get("bootstrapchosen", 1) || $app->isClient('administrator'))
         {
-            HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
+	        if ($app->isClient('administrator') || $params->get("newfrontendediting", 1))
+	        {
+
+		        HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
+
+		        /*
+				JHtml::script('administrator/components/com_jevents/assets/js/gslselect.js');
+				$script = <<< SCRIPT
+				document.addEventListener('DOMContentLoaded', function () {
+				gslselect('#adminForm select');
+				})
+
+SCRIPT;
+
+							Factory::getDocument()->addScriptDeclaration($script);
+				 */
+	        }
+	        else
+	        {
+		        HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
+	        }
         }
 
         $uEditor    = Factory::getUser()->getParam('editor',  Factory::getConfig()->get('editor', 'none'));

@@ -558,7 +558,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 				if ($this->form->getInput("color"))
 				{
 					?>
-                            <div class=" gsl-margin-small-top gsl-child-width-1-1" >
+                            <div class=" gsl-margin-small-top gsl-child-width-1-1 gsl-grid" >
 					<div class="row jevcolour  gsl-margin-small-top" <?php JEventsHelper::showOnRel($this->form, 'color'); ?> >
                         <div class="gsl-width-1-6@m gsl-width-1-3"  >
 							<?php echo $this->form->getLabel("color"); ?>
@@ -645,6 +645,9 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 							// Needed to deal with early execution of initTemplate in backend
 							$cfoutput = $this->customfields[$key]["input"];
 							$cfoutput = str_replace('btn-group', 'btn-group-ysts', $cfoutput);
+
+							// replace out of date showon
+							$cfoutput = str_replace('data-showon', 'data-showon-gsl', $cfoutput);
 							echo $cfoutput;
 							?>
 						</div>

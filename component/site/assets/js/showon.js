@@ -116,20 +116,32 @@ Joomla = window.Joomla || {};
             // If conditions are satisfied show the target field(s), else hide.
             // Note that animations don't work on list options other than in Chrome.
             if (animate && !target.is('option')) {
-                //(showfield) ? target.slideDown() : target.slideUp();
+
+                // In fact animations cause drop downs to appear behind each other e.g. on select list 1* in event editing when using chosen!
                 if (!target[0].classList.contains('gsl-animation-slide-bottom')) {
-                    target[0].classList.add('gsl-animation-slide-bottom');
+                   // target[0].classList.add('gsl-animation-slide-bottom');
                 }
+
                 if (showfield)
                 {
-                    target[0].style.display = target[0].classList.contains('gsl-grid') ? 'flex' : 'block';
+                    var isGrid = target[0].classList.contains('gsl-grid') || target[0].parentNode.classList.contains('gsl-grid');
+                    target[0].style.display = isGrid ? 'flex' : 'block';
                 }
                 else
                 {
                     target[0].style.display='none';
                 }
             } else {
-                target.toggle(showfield);
+                if (showfield)
+                {
+                    var isGrid = target[0].classList.contains('gsl-grid') || target[0].parentNode.classList.contains('gsl-grid');
+                    target[0].style.display = isGrid ? 'flex' : 'block';
+                }
+                else
+                {
+                    target[0].style.display='none';
+                }
+
                 if (target.is('option')) {
                     target.attr('disabled', showfield ? false : true);
                     // If chosen active for the target select list then update it
