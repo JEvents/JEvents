@@ -3452,82 +3452,33 @@
   padding: 20px;
   background: #fff;
 }
-.gsl-scope .gsl-lightbox {
-  display: none;
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1010;
-  background: #000;
-  opacity: 0;
-  transition: opacity 0.15s linear;
+.gsl-scope .gsl-slider {
+  -webkit-tap-highlight-color: transparent;
 }
-.gsl-scope .gsl-lightbox.gsl-open {
-  display: block;
-  opacity: 1;
-}
-.gsl-scope .gsl-lightbox-page {
+.gsl-scope .gsl-slider-container {
   overflow: hidden;
 }
-.gsl-scope .gsl-lightbox-items > * {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  display: none;
-  justify-content: center;
-  align-items: center;
-  color: rgba(255, 255, 255, 0.7);
-  will-change: transform, opacity;
+.gsl-scope .gsl-slider-items {
+  will-change: transform;
+  position: relative;
 }
-.gsl-scope .gsl-lightbox-items > * > * {
-  max-width: 100vw;
-  max-height: 100vh;
-}
-.gsl-scope .gsl-lightbox-items > :focus {
-  outline: none;
-}
-.gsl-scope .gsl-lightbox-items > * > :not(iframe) {
-  width: auto;
-  height: auto;
-}
-.gsl-scope .gsl-lightbox-items > .gsl-active {
+.gsl-scope .gsl-slider-items:not(.gsl-grid) {
   display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  -webkit-touch-callout: none;
 }
-.gsl-scope .gsl-lightbox-toolbar {
-  padding: 10px 10px;
-  background: rgba(0, 0, 0, 0.3);
-  color: rgba(255, 255, 255, 0.7);
+.gsl-scope .gsl-slider-items.gsl-grid {
+  flex-wrap: nowrap;
 }
-.gsl-scope .gsl-lightbox-toolbar > * {
-  color: rgba(255, 255, 255, 0.7);
+.gsl-scope .gsl-slider-items > * {
+  flex: none;
+  position: relative;
+  touch-action: pan-y;
 }
-.gsl-scope .gsl-lightbox-toolbar-icon {
-  padding: 5px;
-  color: rgba(255, 255, 255, 0.7);
-}
-.gsl-scope .gsl-lightbox-toolbar-icon:hover {
-  color: #fff;
-}
-.gsl-scope .gsl-lightbox-button {
-  box-sizing: border-box;
-  width: 50px;
-  height: 50px;
-  background: rgba(0, 0, 0, 0.3);
-  color: rgba(255, 255, 255, 0.7);
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-}
-.gsl-scope .gsl-lightbox-button:hover {
-  color: #fff;
-}
-.gsl-scope .gsl-lightbox-iframe {
-  width: 80%;
-  height: 80%;
+.gsl-scope .gsl-slider-items > :focus {
+  outline: none;
 }
 .gsl-scope .gsl-sticky-fixed {
   z-index: 980;

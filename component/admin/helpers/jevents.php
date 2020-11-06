@@ -353,7 +353,7 @@ STYLE;
 
 		foreach ($actions as $action)
 		{
-			$result = JEventsHelper::ObjectSettter($action, $user->authorise($action, $assetName));
+			$result = JEventsHelper::ObjectSetter($action, $user->authorise($action, $assetName));
 		}
 
 		return $result;
@@ -370,7 +370,7 @@ STYLE;
 	 *
 	 * @since   11.1
 	 */
-	public function ObjectSettter($property, $value = null)
+	public function ObjectSetter($property, $value = null)
 	{
 		$previous = isset($this->$property) ? $this->$property : null;
 		$this->$property = $value;

@@ -152,7 +152,7 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
 								$uri  = !$uri || stripos($uri, 'http') !== 0 ? $rssurl : $uri;
 								$text = $feed[$i]->content !== '' ? trim($feed[$i]->content) : '';
 								?>
-                                <li style="padding:0 20px 0 10px">
+                                <li style="padding:0 20px 0 10px;">
 									<?php if (!empty($uri)) : ?>
                                         <span class="feed-link">
 						<a href="<?php echo htmlspecialchars($uri, ENT_COMPAT, 'UTF-8'); ?>" target="_blank">

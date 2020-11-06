@@ -319,7 +319,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 
 	// Process tooltips
-	ys_tooltip(".hasYsTooltip");
+	ys_setuptooltip(".hasYsTooltip");
 
 	// toggle radio buttons and check box highlighting
 	let inputNodes = document.querySelectorAll('input.gsl-hidden');

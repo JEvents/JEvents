@@ -210,6 +210,62 @@
 				conditional="enable_gsed" conditions="1"
 		/>
 
+		<field
+				name="sevd_organizertype"
+				type="jevpeople"
+				default="0"
+				label="STRUCTURED_EVENT_DATA_ORGANIZER_TYPE_LABEL"
+				description="STRUCTURED_EVENT_DATA_ORGANIZER_TYPE_DESC"
+				conditional="enable_gsed"
+				conditions="1"
+		/>
+
+		<field
+				name="sevd_onlineeventfield"
+				type="jevcustomfield"
+				fieldtype="jevcfonlineevent"
+				default="0"
+				label="STRUCTURED_EVENT_DATA_ONLINE_EVENT_DETAILS_LABEL"
+				description="STRUCTURED_EVENT_DATA_ONLINE_EVENT_DETAILS_DESC"
+				selectmessage="SELECT_ONLINE_EVENT_DETAILS"
+				badconfigmessage="STRUCTURED_DATA_OUTPUT_REQUIRES_CUSTOM_FIELDS_AND_EVENT_URL_SET_UP"
+				conditional="enable_gsed"
+				conditions="1"
+		/>
+
+		<field
+				name="sevd_eventstatus"
+				type="jevcustomfield"
+				fieldtype="jevcfeventstatus"
+				default="0"
+				label="STRUCTURED_EVENT_DATA_EVENT_STATUS_DETAILS_LABEL"
+				description="STRUCTURED_EVENT_DATA_EVENT_STATUS_DETAILS_DESC"
+				badconfigmessage="STRUCTURED_DATA_OUTPUT_REQUIRES_CUSTOM_FIELDS_AND_EVENT_URL_SET_UP"
+				selectmessage="SELECT_EVENT_STATUS_DETAILS"
+				conditional="enable_gsed"
+				conditions="1"
+		/>
+<!--
+Default should be set by the custom field
+		<field name="sevd_eventstatus_default"
+			   type="list"
+			   class="gsl-select"
+			   default="0"
+			   multiple="multiple"
+			   menu="hide"
+			   size="6"
+			   label='STRUCTURED_EVENT_DATA_EVENT_STATUS_DEFAULT_LABEL'
+			   description='STRUCTURED_EVENT_DATA_EVENT_STATUS_DEFAULT__DESC'
+			   showon="sevd_eventstatus!:0"
+		>
+			<option value="0">SELECT_STRUCTURED_EVENT_DATA_EVENT_STATUS_DEFAULT</option>
+			<option value="1">EventScheduled</option>
+			<option value="2">EventCancelled</option>
+			<option value="3">EventMovedOnline</option>
+			<option value="4">EventPostponed</option>
+			<option value="5">Eventrescheduled</option>
+		</field>
+//-->
 	</fieldset>
 
 

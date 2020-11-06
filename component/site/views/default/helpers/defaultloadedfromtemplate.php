@@ -1853,12 +1853,13 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
                         {
                             // for sites that haven't upgraded standard images
 	                        $lddata["image"] = $event->$imageurl;
+	                        if (strpos($lddata["image"], "/") === 0)
+	                        {
+		                        $lddata["image"] = substr($lddata["image"], 1);
+	                        }
+	                        // no need to add host details to call to getSizedImage Url
+	                        $lddata["image"] = array(JURI::root(false)  . $lddata["image"]);
                         }
-						if (strpos($lddata["image"], "/") === 0)
-						{
-							$lddata["image"] = substr($lddata["image"], 1);
-						}
-						$lddata["image"] = array(JURI::root(false)  . $lddata["image"]);
 
 						if ($resetparams)
                         {
@@ -1917,7 +1918,59 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
                                 break;
                             }
                         }
+	                    foreach ($event->_jevpeople as $person)
+	                    {
+		                    if ($person->type_id == $jevparams->get("sevd_organizertype", -1))
+		                    {
+			                    $pdata = array();
+			                    $pdata["@type"] = "Organization";
+			                    $pdata["name"] = $person->title;
+			                    if (isset($person->www) && !empty($person->www))
+			                    {
+				                    $pdata["url"] = $person->www;
+			                    }
+
+			                    $lddata["organizer"] = $pdata;
+			                    break;
+		                    }
+	                    }
                     }
+
+					$onlineevent = $jevparams->get("sevd_onlineeventfield", 0);
+                    if ($onlineevent !== 0 && isset($event->customfields) && isset($event->customfields[$onlineevent]) && !empty($event->customfields[$onlineevent]['value']))
+                    {
+                    	if (isset($lddata["location"]))
+	                    {
+		                    $lddata["location"] = array($lddata["location"]);
+
+		                    $address["@type"] = "VirtualLication";
+		                    $loc["url"] = $event->customfields[$onlineevent]['value'];
+
+		                    $lddata["location"][] = $loc;
+
+		                    $lddata["eventAttendanceMode"] = "https://schema.org/MixedEventAttendanceMode";
+	                    }
+                    	else
+	                    {
+		                    $lddata["eventAttendanceMode"] = "https://schema.org/OnlineEventAttendanceMode";
+		                    $address["@type"] = "VirtualLocation";
+		                    $loc["url"] = $event->customfields[$onlineevent]['value'];
+
+		                    $lddata["location"] = $loc;
+	                    }
+
+                    }
+
+					$eventstatus = $jevparams->get("sevd_eventstatus", 0);
+					if ($eventstatus !== 0 && isset($event->customfields) && isset($event->customfields[$eventstatus]) && !empty($event->customfields[$eventstatus]['value']))
+					{
+						$lddata["eventStatus"] = array();
+						$statuses = explode(",", $event->customfields[$eventstatus]['value']);
+						foreach ($statuses as $status)
+						{
+							$lddata["eventStatus"][] = "https://schema.org/" . trim($status);
+						}
+					}
 
                     // TODO RSVP Pro
                     /*

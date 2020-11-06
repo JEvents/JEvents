@@ -17,6 +17,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\String\StringHelper;
+use Joomla\CMS\Form\FormHelper;
 
 // We need to get the params first
 
@@ -231,7 +232,16 @@ if (count($jevplugins))
 					$class = " class='gsl-grid  $difficultyClass'";
 				}
 
-				$html[] = "<div $class>";
+				$showon = "";
+				if ($field && $field->showon)
+				{
+					HTMLHelper::_('jquery.framework');
+					JEVHelper::script('showon.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
+
+					$showon  = ' data-showon-gsl=\'' .
+						json_encode(FormHelper::parseShowOnConditions($field->showon, $field->formControl, $field->group)) . '\'';
+				}
+				$html[] = "<div $class " . $showon . " >";
 				if (strtolower($field->type) == "note" || strtolower($field->type) == "jevinfo")
                 {
 	                $html[] = '<div class="gsl-width-1-1" >' . $field->label . "<div>" . $field->input . '<br></div></div>';
