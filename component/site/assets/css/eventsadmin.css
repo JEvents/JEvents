@@ -239,12 +239,6 @@ td.r2, span.r2 {
     padding-right: 5px;
 }
 
-div#jevents .adminform input, div#jevents .adminformtextarea, div#jevents .adminforminputbox,
-div#jevents .adminform#rinterval, div#jevents .adminform#count, div#jevents .adminform#until {
-    padding: 4px 5px;
-    width: auto;
-    margin-bottom: 0;
-}
 
 div#jevents .adminformselect {
     padding: 3px 5px;
