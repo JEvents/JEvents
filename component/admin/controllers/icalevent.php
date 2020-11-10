@@ -977,11 +977,11 @@ SQL;
 		// reload the event to get the reptition ids
 		$evid      = intval($event->ev_id());
 		$testevent = $this->queryModel->getEventById($evid, 1, "icaldb");
-		$rp_id     = $testevent->rp_id();
+		$rp_id     = !is_null($testevent) ? $testevent->rp_id() : null;
+
 		if (!$rp_id)
 		{
 			$app->enqueueMessage(Text::_("JEV_CANNOT_DISPLAY_SAVED_EVENT_ON_THIS_MENU_ITEM", "WARNING"));
-
 			return;
 		}
 		list($year, $month, $day) = JEVHelper::getYMD();

@@ -29,3 +29,17 @@ oldfloat
 lib_jevmodal
 lib_jevisotope
 lib_jevtypeahead
+css/uikit.css
+css/uikit.min.css
+css/uikit.gsl.css
+css/uikit.gsl.min.css
+css/uikit-core.css
+css/uikit-core.min.css
+css/uikit-rtl.css
+css/uikit-rtl.min.css
+js/uikit.js
+js/uikit.min.js
+js/uikit-core.js
+js/uikit-core.min.js
+js/uikit-icons.js
+js/uikit-icons.min.js
