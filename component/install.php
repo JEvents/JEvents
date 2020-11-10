@@ -36,6 +36,84 @@ class com_jeventsInstallerScript
 
 	}
 
+	//
+	// Some sites are having autoIncremental value reset - So lets set it correctly.
+	//
+
+	private function fixAutoIncrementals() {
+		$db = Factory::getDbo();
+
+		// Fix auto incremental values on repetition table
+		$query = $db
+			->getQuery(true)
+			->select('rp_id')
+			->from($db->quoteName('#__jevents_repetition'))
+			->order($db->quoteName('rp_id') . ' DESC')
+			->setLimit(1);
+
+		$db->setQuery($query);
+		$lastRpId = (int) $db->loadResult();
+		$nextRpId = $lastRpId +2; // Increase by one on the off chance someone created an event at the same time we install.
+
+		$sql = <<<SQL
+ALTER TABLE #__jevents_repetition AUTO_INCREMENT = $nextRpId;
+SQL;
+		$db->setQuery($sql);
+
+		try {
+			$db->execute();
+		} catch (Exception $e) {
+			echo $e;
+		}
+
+		// Fix auto incremental values on event table
+		$query = $db
+			->getQuery(true)
+			->select('ev_id')
+			->from($db->quoteName('#__jevents_vevent'))
+			->order($db->quoteName('ev_id') . ' DESC')
+			->setLimit(1);
+
+		$db->setQuery($query);
+		$lastEv_id = (int) $db->loadResult();
+		$nextEv_id = $lastEv_id +2; // Increase by one on the off chance someone created an event at the same time we install.
+
+		$sql = <<<SQL
+ALTER TABLE #__jevents_vevent AUTO_INCREMENT = $nextEv_id;
+SQL;
+		$db->setQuery($sql);
+
+		try {
+			$db->execute();
+		} catch (Exception $e) {
+			echo $e;
+		}
+
+		// Fix auto incremental values on event detail table
+		$query = $db
+			->getQuery(true)
+			->select('evdet_id')
+			->from($db->quoteName('#__jevents_vevdetail'))
+			->order($db->quoteName('evdet_id') . ' DESC')
+			->setLimit(1);
+
+		$db->setQuery($query);
+		$lastEvd_id = (int) $db->loadResult();
+		$nextEvd_id = $lastEvd_id +2; // Increase by one on the off chance someone created an event at the same time we install.
+
+		$sql = <<<SQL
+ALTER TABLE #__jevents_vevdetail AUTO_INCREMENT = $nextEvd_id;
+SQL;
+		$db->setQuery($sql);
+
+		try {
+			$db->execute();
+		} catch (Exception $e) {
+			echo $e;
+		}
+
+	}
+
 	private function createTables()
 	{
 
@@ -956,6 +1034,8 @@ SQL;
 		$this->createTables();
 
 		$this->updateTables();
+
+		$this->fixAutoIncrementals();
 
 		return true;
 
