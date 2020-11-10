@@ -125,6 +125,22 @@ class AdminDefaultsController extends Joomla\CMS\MVC\Controller\FormController
 			$db->execute();
 		}
 
+		if (!isset($defaults['module.latest_event']))
+		{
+			$db->setQuery("INSERT INTO  #__jev_defaults set name='module.latest_event',
+						title=" . $db->Quote("JEV_TAB_LATEST_MOD") . ",
+						subject='',
+						value='',
+						state=0,
+						params='{}'");
+			$db->execute();
+		}
+		else
+		{
+			$db->setQuery("UPDATE #__jev_defaults set title=" . $db->Quote("JEV_TAB_LATEST_MOD") . " WHERE name='module.latest_event'");
+			$db->execute();
+		}
+
 		/*
 		 * Edit Page config must wait for plugins to be updated!
 				if (!isset($defaults['icalevent.edit_page'])){

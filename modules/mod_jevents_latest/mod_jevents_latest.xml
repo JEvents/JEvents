@@ -78,6 +78,22 @@
 					<option value="1">JEV_LATEST_USE_SETTINGS_BELOW</option>
 				</field>
                 <field name="showNavigation" type="jevboolean" class="btn-group"  default="0" label="JEV_SHOW_NAVIGATION_CLUB_ONLY" description="JEV_SHOW_NAVIGATION_CLUB_ONLY_DESC" conditional="modlatest_useLocalParam" conditions="1" />
+				<field name="uselayouteditor"
+					   type="jevboolean"
+					   class="btn-group"
+					   default="0"
+					   label="JEV_USE_JEVENTS_LAYOUT_EDITOR_TO_CUSTOMISE"
+					   description="JEV_USE_JEVENTS_LAYOUT_EDITOR_TO_CUSTOMISE_DESC"
+					   showon="modlatest_useLocalParam:1"
+					    />
+				<field name="layouteditorlink"
+					   type="jeveditlayout"
+					   default=""
+					   alttext="JEV_SAVE_THE_MODULE_BEFORE_EDIT_LAYOUT"
+					   label="JEV_CLICK_TO_EDIT_LAYOUT"
+					   description="JEV_CLICK_TO_EDIT_LAYOUT_DESC"
+					   showon="uselayouteditor:1"
+				/>
 				<field name="CustomFromTemplate"
 					   type="jevcustomlayout"
 					   layouttype="LatestEvents"
@@ -91,21 +107,39 @@
 					   inccss='jform_params_modlatest_inccss'
 					   label="JEV_LEV_CUSTOM_LAYOUT_IMPORT"
 					   description="JEV_LEV_CUSTOM_LAYOUT_IMPORT_TIP"
-					   conditional="modlatest_useLocalParam"
-					   conditions="1" />
-				<field name="modlatest_CustFmtStr" type="jevtextarea" filter="raw" cols="50" rows="5"  class="jevtextarea" default='&lt;span class="icon-calendar"&gt;&lt;/span&gt;${startDate(%d %b %Y)};&lt;br /&gt;&lt;span class="icon-time"&gt;&lt;/span&gt;${startDate(%I:%M%p)}[!a: - ${endDate(%I:%M%p)}]&lt;br /&gt;&lt;span class="icon-hand-right"&gt;&lt;/span&gt;${title}'  label="JEV_LEV_CUST_FORM_STRING" description="JEV_LEV_CUST_FORM_STRING_TIP" conditional="modlatest_useLocalParam" conditions="1" />
+					   showon="modlatest_useLocalParam:1[AND]uselayouteditor:0"
+				/>
+				<field name="modlatest_CustFmtStr" type="jevtextarea" filter="raw" cols="50" rows="5"
+					   class="jevtextarea"
+					   default='&lt;span class="icon-calendar"&gt;&lt;/span&gt;${startDate(%d %b %Y)};&lt;br /&gt;&lt;span class="icon-time"&gt;&lt;/span&gt;${startDate(%I:%M%p)}[!a: - ${endDate(%I:%M%p)}]&lt;br /&gt;&lt;span class="icon-hand-right"&gt;&lt;/span&gt;${title}'
+					   label="JEV_LEV_CUST_FORM_STRING"
+					   description="JEV_LEV_CUST_FORM_STRING_TIP"
+					   showon="modlatest_useLocalParam:1[AND]uselayouteditor:0"
+				/>
 				<field name="modlatest_ignorebr"
 					   type="list"
 					   default="0"
 					   label="JEV_LATEST_FORMAT_STRING_INGNORE_CARRIAGE_RETURNS"
-					   description="JEV_LATEST_FORMAT_STRING_INGNORE_CARRIAGE_RETURNS_DESC">
+					   description="JEV_LATEST_FORMAT_STRING_INGNORE_CARRIAGE_RETURNS_DESC"
+					   showon="modlatest_useLocalParam:1[AND]uselayouteditor:0"
+				>
 					<option value="0">JEV_NO</option>
 					<option value="1">JEV_Yes</option>
 				</field>
 
-				<field name="modlatest_customcss" type="jevtextarea" filter="raw" cols="50" rows="5"  class="jevtextarea" default=''  label="JEV_LEV_CUSTOM_CSS" description="JEV_LEV_CUSTOM_CSS_TIP" conditional="modlatest_useLocalParam" conditions="1" />
-				<field name="modlatest_MaxEvents" type="jevtext" size="3" default="10" label="JEV_LEV_MAX_DISPLAY" description="JEV_LEV_MAX_DISPLAY_TIP" conditional="modlatest_useLocalParam" conditions="1" />
-				<field name="modlatest_Mode" type="jevmultilist" default="3" label="JEV_LEV_DISPLAY_MODE" description="JEV_LEV_DISPLAY_MODE_TIP" conditional="modlatest_useLocalParam" conditions="1" >
+				<field name="modlatest_customcss"
+					   type="jevtextarea"
+					   filter="raw"
+					   cols="50"
+					   rows="5"
+					   class="jevtextarea"
+					   default=''
+					   label="JEV_LEV_CUSTOM_CSS"
+					   description="JEV_LEV_CUSTOM_CSS_TIP"
+					   showon="modlatest_useLocalParam:1[AND]uselayouteditor:0"
+				/>
+				<field name="modlatest_MaxEvents" type="jevtext" size="3" default="10" label="JEV_LEV_MAX_DISPLAY" description="JEV_LEV_MAX_DISPLAY_TIP" showon="modlatest_useLocalParam:1[AND]uselayouteditor:0" />
+				<field name="modlatest_Mode" type="jevmultilist" default="3" label="JEV_LEV_DISPLAY_MODE" description="JEV_LEV_DISPLAY_MODE_TIP" showon="modlatest_useLocalParam:1[AND]uselayouteditor:0" >
 					<option value="0">JEV_LATEST_DISPLAY_MODE_0</option>
 					<option value="1">JEV_LATEST_DISPLAY_MODE_1</option>
 					<option value="2">JEV_LATEST_DISPLAY_MODE_2</option>
@@ -118,19 +152,19 @@
 				</field>
 				<field name="modlatest_Days" type="jevtext" default="30" size="2"
 				       label="JEV_LATEST_DISPLAY_EVENTS_FOR_DAYS" description="JEV_LATEST_DISPLAY_EVENTS_FOR_DAYS_DESC"
-				       conditional="modlatest_useLocalParam" conditions="1"/>
+				       showon="modlatest_useLocalParam:1[AND]uselayouteditor:0"/>
 				<field name="startnow" type="jevradio" class="btn-group" default="0" label="START_NOW"
-				       description="START_NOW_DESC" conditional="modlatest_useLocalParam" conditions="1">
+				       description="START_NOW_DESC" showon="modlatest_useLocalParam:1[AND]uselayouteditor:0">
 					<option value="0">JEV_NO</option>`
 					<option value="1">JEV_Yes</option>
 				</field>
 				<field name="pastonly" type="jevmultilist" default="0" label="JEV_LATEST_PAST_ONLY"
-				       description="JEV_LATEST_PAST_ONLY_DESC" conditional="modlatest_useLocalParam" conditions="1">
-					<option value="0">JEV_LATEST_PAST_OPTION_0</option>`
+				       description="JEV_LATEST_PAST_ONLY_DESC" showon="modlatest_useLocalParam:1[AND]uselayouteditor:0">
+					<option value="0">JEV_LATEST_PAST_OPTION_0</option>
 					<option value="1">JEV_LATEST_PAST_OPTION_1</option>
 					<option value="2">JEV_LATEST_PAST_OPTION_2</option>
 				</field>
-				<field name="modlatest_NoRepeat" type="list" default="0" label="JEV_LEV_REP_EV_DISPLAY_OPTIONS" description="JEV_LEV_REP_EV_DISPLAY_OPTIONS_TIP" conditional="modlatest_useLocalParam" conditions="1" >
+				<field name="modlatest_NoRepeat" type="list" default="0" label="JEV_LEV_REP_EV_DISPLAY_OPTIONS" description="JEV_LEV_REP_EV_DISPLAY_OPTIONS_TIP" showon="modlatest_useLocalParam:1[AND]uselayouteditor:0" >
                     <option value="0">JEV_SHOW_ALL_REPEATS</option>
                     <option value="1">JEV_SHOW_ONE_REPEAT</option>
                     <option value="2">JEV_SHOW_FIRST_REPEAT_ONLY</option>
@@ -147,38 +181,38 @@
 				</field>
 				<field name="modlatest_DispLinks" type="jevradio" class="btn-group" default="1"
 				       label="JEV_LEV_EV_AS_LINK" description="JEV_LEV_EV_AS_LINK_TIP"
-				       conditional="modlatest_useLocalParam" conditions="1">
+				       showon="modlatest_useLocalParam:1[AND]uselayouteditor:0">
 					<option value="0">JEV_NO</option>
 					<option value="1">JEV_Yes</option>
 				</field>
 				<field name="modlatest_DispYear" type="jevradio" class="btn-group" default="0"
 				       label="JEV_LEV_DISPLAY_YEAR" description="JEV_LEV_DISPLAY_YEAR_TIP"
-				       conditional="modlatest_useLocalParam" conditions="1">
+				       showon="modlatest_useLocalParam:1[AND]uselayouteditor:0">
 					<option value="0">JEV_NO</option>
 					<option value="1">JEV_Yes</option>
 				</field>
 				<field name="modlatest_NoEvents" type="jevradio" default="1" class="btn-group"
 				       label="JEV_LATEST_NO_EVENT" description="JEV_LATEST_NO_EVENT_DESC"
-				       conditional="modlatest_useLocalParam" conditions="1">
+				       showon="modlatest_useLocalParam:1">
 					<option value="0">JEV_LATEST_NO_EVENT_DISPLAY_OPTION_0</option>
 					<option value="1">JEV_LATEST_NO_EVENT_DISPLAY_OPTION_1</option>
 				</field>
 
 				<field name="modlatest_DisDateStyle" type="jevradio" class="btn-group" default="0"
 				       label="JEV_LEV_CSS_DATE_FIELD" description="JEV_LEV_CSS_DATE_FIELD_TIP"
-				       conditional="modlatest_useLocalParam" conditions="1">
+				       showon="modlatest_useLocalParam:1[AND]uselayouteditor:0">
 					<option value="0">JEV_NO</option>
 					<option value="1">JEV_Yes</option>
 				</field>
 				<field name="modlatest_DisTitleStyle" type="jevradio" class="btn-group" default="0"
 				       label="JEV_LEV_CSS_TITLE_FIELD" description="JEV_LEV_CSS_TITLE_FIELD_TIP"
-				       conditional="modlatest_useLocalParam" conditions="1">
+				       showon="modlatest_useLocalParam:1[AND]uselayouteditor:0">
 					<option value="0">JEV_NO</option>
 					<option value="1">JEV_Yes</option>
 				</field>
 				<field name="modlatest_LinkToCal" type="jevradio" class="btn-group" default="0"
 				       label="JEV_LEV_LINKCAL_FIELD" description="JEV_LEV_LINKCAL_FIELD_TIP"
-				       conditional="modlatest_useLocalParam" conditions="1">
+				       showon="modlatest_useLocalParam:1[AND]uselayouteditor:0">
 					<option value="0">JEV_LEV_NOLINK</option>
 					<option value="1">JEV_LEV_FIRSTLINE</option>
 					<option value="2">JEV_LEV_LASTLINE</option>
@@ -191,36 +225,35 @@
 				</field>
 				<field name="modlatest_SortReverse" type="jevradio" class="btn-group" default="0"
 				       label="JEV_LEV_SORTREVERSE" description="JEV_LEV_SORTREVERSE_TIP"
-				       conditional="modlatest_useLocalParam" conditions="1">
+				       showon="modlatest_useLocalParam:1">
 					<option value="0">JEV_NO</option>
 					<option value="1">JEV_Yes</option>
 				</field>
 				<field name="modlatest_RSS" type="jevradio" class="btn-group" default="0" label="JEV_LEV_RSSLINK_FIELD"
-				       description="JEV_LEV_RSSLINK_TIP" conditional="modlatest_useLocalParam" conditions="1">
+				       description="JEV_LEV_RSSLINK_TIP" showon="modlatest_useLocalParam:1">
 					<option value="0">JEV_NO</option>
 					<option value="1">JEV_Yes</option>
 				</field>
 				<field name="modlatest_rss_title" type="jevtextarea" filter="raw" cols="50" rows="1"
 				       default=""
 				       label="JEV_RSS_TITLE"
-				       description="JEV_LATEST_RSS_TITLE_DESC" conditional="modlatest_useLocalParam" conditions="1"/>
+				       description="JEV_LATEST_RSS_TITLE_DESC" showon="modlatest_useLocalParam:1"/>
 				<field name="modlatest_rss_description" type="jevtextarea" filter="raw" cols="50" rows="2"
 				       default=""
 				       label="JEV_RSS_DESCRIPTION"
-				       description="JEV_LATEST_RSS_DESCRIPTION_DESC" conditional="modlatest_useLocalParam"
-				       conditions="1"/>
+				       description="JEV_LATEST_RSS_DESCRIPTION_DESC" showon="modlatest_useLocalParam:1"/>
 				<!--<field name="@spacer" type="spacer" default="" label="Advanced Settings" description="The following settings are for advanced users only"/>//-->
 				<field name="modlatest_templatetop" type="jevtextarea" filter="raw" cols="50" rows="2"
 				       class="jevtextarea" default='' label="JEV_LEV_TEMPLATE_TOP"
-				       description="JEV_LEV_TEMPLATE_TOP_TIP" conditional="modlatest_useLocalParam" conditions="1"/>
+				       description="JEV_LEV_TEMPLATE_TOP_TIP" showon="modlatest_useLocalParam:1[AND]uselayouteditor:0"/>
 				<field name="modlatest_templaterow" type="jevtextarea" filter="raw" cols="50" rows="3"
 				       class="jevtextarea" default='' label="JEV_LEV_TEMPLATE_ROW"
-				       description="JEV_LEV_TEMPLATE_ROW_TIP" conditional="modlatest_useLocalParam" conditions="1"/>
+				       description="JEV_LEV_TEMPLATE_ROW_TIP" showon="modlatest_useLocalParam:1[AND]uselayouteditor:0"/>
 				<field name="modlatest_templatebottom" type="jevtextarea" filter="raw" cols="50" rows="2"
 				       class="jevtextarea" default='' label="JEV_LEV_TEMPLATE_BOTTOM"
-				       description="JEV_LEV_TEMPLATE_BOTTOM_TIP" conditional="modlatest_useLocalParam" conditions="1"/>
+				       description="JEV_LEV_TEMPLATE_BOTTOM_TIP" showon="modlatest_useLocalParam:1[AND]uselayouteditor:0"/>
 				<field name="bootstrapcss" type="list" default="1" label="JEV_LOAD_BOOTSTRAP_CSS"
-				       description="JEV_LOAD_BOOTSTRAP_CSS_DESC" conditional="modlatest_useLocalParam" conditions="1">
+				       description="JEV_LOAD_BOOTSTRAP_CSS_DESC" showon="modlatest_useLocalParam:1[AND]uselayouteditor:0">
 					<option value="0">JEV_DO_NOT_LOAD_BOOSTRAP</option>
 					<option value="1">JEV_USE_GLOBAL_JEVENTS_BOOTSTRAP</option>
 					<option value="2">JEV_USE_JOOMLA_BOOTSTRAP</option>

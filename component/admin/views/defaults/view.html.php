@@ -114,10 +114,6 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		JToolbarHelper::save("defaults.save");
 		JToolbarHelper::cancel("defaults.cancel");
 
-
-
-
-
 		// Get data from the model
 		$item  = $this->get('Data');
 

@@ -55,6 +55,14 @@ if ($this->item->name == 'icalevent.list_block3' && $this->item->value == "" && 
 	$this->item->value = file_get_contents(JPATH_SITE . '/components/com_jevents/views/float/defaults/icalevent.list_block3.html');
 }
 
+if (strpos($this->item->name, "module.") === 0
+	&& $this->item->value == ""
+	&& file_exists(dirname(__FILE__) . '/' . preg_replace("#\.[0-9]+#", "", $this->item->name) . ".html")
+)
+{
+	$this->item->value = file_get_contents(dirname(__FILE__) . '/' . preg_replace("#\.[0-9]+#", "", $this->item->name) . ".html");
+}
+
 $this->replaceLabels($this->item->value);
 
 $templateparams = new stdClass();
@@ -79,6 +87,27 @@ if (strpos($this->item->value, '{{CUSTOMCSS}') !== false)
 	if (count($matches) == 2)
 	{
 		$templateparams->customcss = $matches[1];
+		$this->item->value = str_replace($matches[0], "",	$this->item->value);
+	}
+}
+// is there custom header or footer html - if so push into the params
+if (strpos($this->item->value, '{{HTMLHEADER}') !== false)
+{
+	preg_match('|' . preg_quote('{{HTMLHEADER}}') . '(.+?)' . preg_quote('{{/HTMLHEADER}}') . '|s', $this->item->value, $matches);
+
+	if (count($matches) == 2)
+	{
+		$templateparams->htmlheader = $matches[1];
+		$this->item->value = str_replace($matches[0], "",	$this->item->value);
+	}
+}
+if (strpos($this->item->value, '{{HTMLFOOTER}') !== false)
+{
+	preg_match('|' . preg_quote('{{HTMLFOOTER}}') . '(.+?)' . preg_quote('{{/HTMLFOOTER}}') . '|s', $this->item->value, $matches);
+
+	if (count($matches) == 2)
+	{
+		$templateparams->htmlheader = $matches[1];
 		$this->item->value = str_replace($matches[0], "",	$this->item->value);
 	}
 }
@@ -153,7 +182,7 @@ $this->item->params = json_encode($templateparams);
 
 		<!-- Custom Module Form -->
 		<?php
-		if ($this->item->name != "month.calendar_tip" && $this->item->name != "icalevent.edit_page" && strpos($this->item->name, "com_jevpeople") === false && strpos($this->item->name, "com_jevlocations") === false)
+		if ($this->item->name != "month.calendar_tip" && strpos($this->item->name, "module.") === false && $this->item->name != "icalevent.edit_page" && strpos($this->item->name, "com_jevpeople") === false && strpos($this->item->name, "com_jevlocations") === false)
 		{
 			?>
 			<div class="gsl-container gsl-container-expand">
@@ -235,8 +264,34 @@ $this->item->params = json_encode($templateparams);
 		<?php
 		}
 
-		// Custom CSS and Javascript
 		$params = new Registry($this->item->params);
+
+		if (strpos($this->item->name,  "module." ) === 0 )
+		{
+			$headerhtml = $params->get("header", '');
+			$footerhtml = $params->get("footer", '');
+
+			?>
+			<div class="gsl-container gsl-container-expand">
+				<div class="gsl-grid gsl-grid small">
+					<div class="form-group gsl-width-expand@m">
+						<h3><?php echo Text::_("JEV_DEFAULTS_HTML_HEADER");?></h3>
+						<?php
+						echo $editor->display('params[header]', htmlspecialchars($headerhtml, ENT_QUOTES, 'UTF-8'), 600, 450, '70', '15', false);
+						?>
+					</div>
+				</div>
+				<div class="gsl-grid gsl-grid small">
+					<div class="form-group gsl-width-expand@m">
+						<h3><?php echo Text::_("JEV_DEFAULTS_HTML_FOOTER");?></h3>
+						<?php echo $editor->display('params[footer]' , htmlspecialchars($footerhtml, ENT_QUOTES, 'UTF-8'), 600, 450, '70', '15', false, 'header' . $count); ?>
+					</div>
+				</div>
+			</div>
+			<?php
+		}
+
+		// Custom CSS and Javascript
 		$customcss = $params->get("customcss", '');
 		$customjs = $params->get("customjs", '');
 
