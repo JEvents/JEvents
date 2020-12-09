@@ -588,8 +588,9 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
 
-		// Disable showon effects if using a customised event editing form
-        $template_value = str_replace("data-showon-gsl", "data-showon-gsl-disabled", $template_value);
+		// Disable general showon effects if using a customised event editing form
+         $template_value = str_replace("data-showon-gsl", "data-showon-gsl-disabled", $template_value);
+		 $template_value = str_replace("data-showon-2gsl", "data-showon-gsl", $template_value);
 
 		echo $template_value;
 
@@ -938,7 +939,7 @@ SCRIPT;
 
 		// load any custom fields
 		$this->customfields = array();
-		$res                = $app->triggerEvent('onEditCustom', array(&$this->row, &$this->customfields));
+		$res  = $app->triggerEvent('onEditCustom', array(&$this->row, &$this->customfields));
 
 		ob_start();
 		foreach ($this->customfields as $key => $val)
@@ -999,8 +1000,19 @@ SCRIPT;
 				$requiredTags['label'] = $this->customfields[$key]["label"];
 				$this->requiredtags[]  = $requiredTags;
 			}
+
+			ob_start();
+			// this echos the showon
+			JEventsHelper::showOnRel($this->form, 'customfields');
+			$showon = ob_get_clean();
+			if (isset($this->customfields[$key]["showon"]) && !empty($this->customfields[$key]["showon"]))
+			{
+				$showon = $this->customfields[$key]["showon"];
+				// keep a copy for custom fields since for customised layouts we loose the general showon handling!
+				$showon .= str_replace("data-showon-gsl", "data-showon-2gsl" , $showon);
+			}
 			?>
-			<div class=" gsl-margin-remove-top gsl-child-width-1-1 gsl-grid  jevplugin_<?php echo $key; ?>" <?php echo (isset($this->customfields[$key]["showon"]) && !empty($this->customfields[$key]["showon"])) ? $this->customfields[$key]["showon"] : JEventsHelper::showOnRel($this->form, 'customfields');; ?>>
+			<div class=" gsl-margin-remove-top gsl-child-width-1-1 gsl-grid  jevplugin_<?php echo $key; ?>" <?php echo $showon; ?>>
                 <div class="gsl-width-1-6@m gsl-width-1-3">
 				    <label class="control-label "><?php echo $this->customfields[$key]["label"]; ?></label>
                 </div>
