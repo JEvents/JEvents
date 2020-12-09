@@ -199,9 +199,13 @@ SCRIPT;
 	function edit($key = null, $urlVar = null)
 	{
 		$input  = Factory::getApplication()->input;
-		$is_event_editor = JEVHelper::isEventCreator();
+		// Must be at least an event creator to edit or create events
+		// We check specific event editing permissions in the parent class
+		$is_event_creator = JEVHelper::isEventCreator();
+		$is_event_editor  = JEVHelper::isEventEditor();
 
-		if (!$is_event_editor)
+		$user = Factory::getUser();
+		if ((!$is_event_creator && !$is_event_editor) || ($user->id == 0 && $input->getInt("evid", 0) > 0))
 		{
 			$user = Factory::getUser();
 			if ($user->id)
