@@ -183,6 +183,13 @@
 			   description=""
 			   difficulty="1"/>
 
+		<field name="ldjson_striptags" type="jevboolean"
+			   class="gsl-button-group" default="1"
+			   menu="hide"
+			   label='JEV_STRUCTURED_EVENT_DATA_STRIP_TAGS'
+			   description='JEV_STRUCTURED_EVENT_DATA_STRIP_TAGS_DESC'
+			   difficulty="1"/>
+
 		<field
 				name="sevd_imagename"
 				type="jevimagename"

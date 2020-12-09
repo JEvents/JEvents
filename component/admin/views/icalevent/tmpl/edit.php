@@ -31,6 +31,9 @@ if (defined("EDITING_JEVENT"))
 	return;
 define("EDITING_JEVENT", 1);
 
+// needed for sortable category IDs
+HTMLHelper::script('media/com_jevents/js/Sortable.js', array('version' => JeventsHelper::JEvents_Version(false), 'relative' => false));
+
 
 $input  = $app->input;
 // get configuration object

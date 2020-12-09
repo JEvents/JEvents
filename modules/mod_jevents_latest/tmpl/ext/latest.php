@@ -38,7 +38,7 @@ class ExtModLatestView extends DefaultModLatestView
 
 		if (isset($this->eventsByRelDay) && count($this->eventsByRelDay))
 		{
-			$content .= $this->modparams->get("modlatest_templatetop") || $this->modparams->get("modlatest_templatebottom") ? $this->modparams->get("modlatest_templatetop") : '<table class="mod_events_latest_table jevbootstrap" cellspacing="0" cellpadding="0">';
+			$content .= $this->getModuleHeader('<table class="mod_events_latest_table jevbootstrap" cellspacing="0" cellpadding="0">');
 
 			// Now to display these events, we just start at the smallest index of the $this->eventsByRelDay array
 			// and work our way up.
@@ -62,6 +62,11 @@ class ExtModLatestView extends DefaultModLatestView
 				// get all of the events for this day
 				foreach ($daysEvents as $dayEvent)
 				{
+
+					if ($this->processTemplate($content, $dayEvent))
+					{
+						continue;
+					}
 
 					$eventcontent = "";
 
@@ -114,7 +119,7 @@ class ExtModLatestView extends DefaultModLatestView
 					$firstTime = false;
 				} // end of foreach
 			} // end of foreach
-			$content .= $this->modparams->get("modlatest_templatebottom") || $this->modparams->get("modlatest_templatetop") ? $this->modparams->get("modlatest_templatebottom") : "</table>\n";
+			$content .= $this->getModuleFooter("</table>\n");
 
 		}
 		else if ($this->modparams->get("modlatest_NoEvents", 1))

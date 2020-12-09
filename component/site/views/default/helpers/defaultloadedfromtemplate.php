@@ -13,7 +13,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Layout\LayoutHelper;
 
-function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $template_value = false, $runplugins = true)
+function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $template_value = false, $runplugins = true, $skipfiles = false)
 {
 	$jevparams  = ComponentHelper::getParams(JEV_COM_COMPONENT);
 	$db         = Factory::getDbo();
@@ -72,7 +72,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				}
 			}
 
-			if (!isset($templates[$template_name]['*'][0]))
+			if (!isset($templates[$template_name]['*'][0]) && !$skipfiles)
 			{
 				try
 				{
@@ -186,6 +186,18 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				$templates[$template_name] = null;
 			}
 
+			$hasLocationOrIsOnline = false;
+			$onlineevent = $jevparams->get("sevd_onlineeventfield", 0);
+			if ($onlineevent !== 0 && isset($event->customfields) && isset($event->customfields[$onlineevent]) && !empty($event->customfields[$onlineevent]['value']))
+			{
+				$hasLocationOrIsOnline = true;
+			}
+			if (isset($event->_jevlocation)
+				&& !empty($event->_jevlocation))
+			{
+				$hasLocationOrIsOnline = true;
+			}
+
 			$matched = false;
 			foreach (array_keys($templates[$template_name]) as $catid)
 			{
@@ -196,8 +208,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						&& $jevparams->get("enable_gsed", 0)
 						&& $jevparams->get("sevd_imagename", 0)
 						&& $jevparams->get("permatarget", 0)
-						&& isset($event->_jevlocation)
-						&& !empty($event->_jevlocation)
+						&& $hasLocationOrIsOnline
 					)
 					{
 						$templates[$template_name][$catid]->value .= "<script type='application/ld+json'>{{Structured Data:LDJSON}}</script>";
@@ -1823,21 +1834,21 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
                     && $jevparams->get("enable_gsed", 0)
                     && $jevparams->get("sevd_imagename", 0)
 					&& $jevparams->get("permatarget", 0)
-                    && isset($event->_jevlocation)
-                    && !empty($event->_jevlocation)
+                    && $hasLocationOrIsOnline
                 )
 				{
+					$compparams = ComponentHelper::getParams(JEV_COM_COMPONENT);
+
 					$lddata = array();
 					$lddata["@context"] = "https://schema.org";
 					$lddata["@type"] =  "Event";
 					$lddata["name"] =  $event->title();
-					$lddata["description"] =  $event->content();
+					$lddata["description"] =  $compparams->get("ldjson_striptags", 1) ?  strip_tags( $event->content() ) : $event->content();
 
 					// Timezone
 					// event tzid
 					// icaltimezonelive
 					// icaltimezone
-					$compparams = ComponentHelper::getParams(JEV_COM_COMPONENT);
 					$jtz        = $compparams->get("icaltimezonelive", "");
 					$jtz        = isset($event->_tzid) && !empty($event->_tzid) ? $event->_tzid : $jtz;
 					if (!empty($jtz))
@@ -1990,7 +2001,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	                    {
 		                    $lddata["location"] = array($lddata["location"]);
 
-		                    $address["@type"] = "VirtualLication";
+		                    $loc = array();
+		                    $loc["@type"] = "VirtualLocation";
 		                    $loc["url"] = $event->customfields[$onlineevent]['value'];
 
 		                    $lddata["location"][] = $loc;
@@ -2000,7 +2012,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
                     	else
 	                    {
 		                    $lddata["eventAttendanceMode"] = "https://schema.org/OnlineEventAttendanceMode";
-		                    $address["@type"] = "VirtualLocation";
+		                    $loc = array();
+		                    $loc["@type"] = "VirtualLocation";
 		                    $loc["url"] = $event->customfields[$onlineevent]['value'];
 
 		                    $lddata["location"] = $loc;
@@ -2009,10 +2022,18 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
                     }
 
 					$eventstatus = $jevparams->get("sevd_eventstatus", 0);
-					if ($eventstatus !== 0 && isset($event->customfields) && isset($event->customfields[$eventstatus]) && !empty($event->customfields[$eventstatus]['value']))
+					if ($eventstatus !== 0 && isset($event->customfields) && isset($event->customfields[$eventstatus]) && !empty($event->customfields[$eventstatus]['rawvalue']))
 					{
+						$eventStatus = array(
+							1 => "EventScheduled",
+							2 => "EventCancelled",
+							3 => "EventMovedOnline",
+							4 => "EventPostponed",
+							5 => "EventRescheduled"
+						);
+
 						$lddata["eventStatus"] = array();
-						$statuses = explode(",", $event->customfields[$eventstatus]['value']);
+						$statuses = explode(",", $eventStatus[$event->customfields[$eventstatus]['rawvalue']]);
 						foreach ($statuses as $status)
 						{
 							$lddata["eventStatus"][] = "https://schema.org/" . trim($status);

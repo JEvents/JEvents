@@ -391,7 +391,10 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 			$tabstartarray0Count = count($tabstartarray[0]);
 			if ($tabstartarray0Count > 0)
 			{
-				if (GSLMSIE10)
+				$app    = Factory::getApplication();
+				$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+
+				if (GSLMSIE10 || (!$app->isClient('administrator') && !$params->get("newfrontendediting", 1)))
 				{
 					//We get and add all the tabs
 					$tabreplace = '<ul class="nav nav-tabs" id="myEditTabs">';
@@ -409,6 +412,8 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 						}
 					}
 					$tabreplace .= "</ul>\n";
+					$tabreplace = $tabreplace . $tabstartarray[0][0];
+					$template_value = str_replace($tabstartarray[0][0], $tabreplace, $template_value);
 				}
 				else
 				{
@@ -432,7 +437,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 			}
 		}
 		// Create the tabs content
-		if (GSLMSIE10)
+		if (GSLMSIE10  || (!$app->isClient('administrator') && !$params->get("newfrontendediting", 1)))
 		{
 			if ($tabstartarray0Count > 0 && isset($tabstartarray[0]))
 			{

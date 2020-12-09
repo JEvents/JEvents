@@ -1,4 +1,4 @@
-<div id='jeviso_item{{Repeat id:RPID}}' class='jeviso_item w3 style3'>
+<div id='jeviso_item{{Repeat id:RPID}}' class='jeviso_item'>
     <div class='jfloat-event ng-scope ng-isolate-scope' itemscope='' itemtype='http://schema.org/Event'>
         <div class='jeviso_item_image uk-height-small' uk-toggle='target: #modal-event{{Repeat id:RPID}}'>
             {{Scaled Image:JEV_SIZEDIMAGE_1;400x300}}
@@ -15,7 +15,7 @@
             </h3>
         </div>
         <!-- This is the modal -->
-        <div id='modal-event{{Repeat id:RPID}}' uk-modal='container:jev_isoitem{{Repeat id:RPID}}' class='style3-modal'>
+        <div id='modal-event{{Repeat id:RPID}}' uk-modal='container:jev_isoitem{{Repeat id:RPID}}' class='jeviso-modal'>
             <div class='uk-modal-dialog'>
                 <div class='uk-modal-header uk-padding-small' uk-grid>
                     <h2 class='startdate'>{{Start Date:STARTDATE;<div class='startmonth'>%b</div><div class='startday'>%d</div>}}</h2>
@@ -85,65 +85,5 @@
         </div>
     </div>
 </div>
-{{CUSTOMJS}}
-window.addEventListener('load', function () {
-    /* Sort out the map here! */
-
-    /*
-    UIkit.util.on( document.getElementById("modal-event{{Repeat id:RPID}}") , 'beforeshow', function () {
-        document.getElementById("modal-iframe{{Repeat id:RPID}}").src="{{Link:LINK}}";
-    });
-    */
-});
-
-document.addEventListener('DOMContentLoaded', function () {
-
-    jQuery('div.jeviso_container').on('jevisolist', function () {
-        var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-
-        if (w > 960) {
-            jQuery('.jfloat-event').addClass('uk-height-small');
-            jQuery('.jfloat-event .jeviso_item_image').addClass("uk-float-right");
-            jQuery('.jfloat-event .jeviso_eventsummary, .jfloat-event .jeviso_item_image').addClass("uk-width-1-2@m");
-            jQuery('.jfloat-event .jeviso_eventsummary').addClass('uk-height-1-1');
-            jQuery('.jfloat-event .uk-first-column').addClass('noleftpadding');
-        }
-    });
-    jQuery('div.jeviso_container').on('jevisogrid', function () {
-        jQuery('.jfloat-event').removeClass('uk-height-small');
-        jQuery('.jfloat-event .jeviso_item_image').removeClass("uk-float-right");
-        jQuery('.jfloat-event .jeviso_eventsummary, .jfloat-event .jeviso_item_image').removeClass("uk-width-1-2@m");
-        jQuery('.jfloat-event .jeviso_eventsummary').removeClass('uk-height-1-1');
-        jQuery('.jfloat-event .uk-first-column').removeClass('noleftpadding');
-    });
-    jQuery(window).on('resize' , function() {
-        if(jQuery('div.jeviso_container .listv').length) {
-            var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-            if (w > 960) {
-                jQuery('.jfloat-event').addClass('uk-height-small');
-                jQuery('.jfloat-event .jeviso_item_image').addClass("uk-float-right");
-                jQuery('.jfloat-event .jeviso_eventsummary, .jfloat-event .jeviso_item_image').addClass("uk-width-1-2@m");
-                jQuery('.jfloat-event .jeviso_eventsummary').addClass('uk-height-1-1');
-                jQuery('.jfloat-event .uk-first-column').addClass('noleftpadding');
-            }
-            else {
-                jQuery('.jfloat-event').removeClass('uk-height-small');
-                jQuery('.jfloat-event .jeviso_item_image').removeClass("uk-float-right");
-                jQuery('.jfloat-event .jeviso_eventsummary, .jfloat-event .jeviso_item_image').removeClass("uk-width-1-2@m");
-                jQuery('.jfloat-event .jeviso_eventsummary').removeClass('uk-height-1-1');
-                jQuery('.jfloat-event .uk-first-column').removeClass('noleftpadding');
-            }
-        }
-
-    });
-});
-/*
-document.querySelector('div.jeviso_container').addEventListener('test', function (){
-    alert("test triggered");
-});
-jevevent = new Event('test');
-document.querySelector('div.jeviso_container').dispatchEvent(jevevent);
-*/
-{{/CUSTOMJS}}
-{{CUSTOMCSS}}
-{{/CUSTOMCSS}}
+{{CUSTOMJS}}{{/CUSTOMJS}}
+{{CUSTOMCSS}}{{/CUSTOMCSS}}

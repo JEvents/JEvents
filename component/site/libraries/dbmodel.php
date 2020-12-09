@@ -1820,7 +1820,7 @@ class JEventsDBModel
 				// future events
 				foreach ($rows1 as $val)
 				{
-					if (!in_array($val->rp_id(), $repeats))
+					if (!is_bool($val) && !in_array($val->rp_id(), $repeats))
 					{
 						$repeats[] = $val->rp_id();
 						$rows[]    = $val;
@@ -1886,22 +1886,31 @@ class JEventsDBModel
 		$ignoreRepeatIds = "";
 		if (count($shownEventIds) > 0)
 		{
-			$ignoreRepeatIds = array();
-			foreach ($shownEventIds as $shownpage => $shownids)
+			// Already done this page so only pick up these repeat ids!
+			if (isset($shownEventIds[$page]) && count($shownEventIds[$page]) > 0)
 			{
-				if ($shownpage == $page)
-				{
-					continue;
-				}
-				$ignoreRepeatIds = array_merge($ignoreRepeatIds, $shownids);
-			}
-			if (!count($ignoreRepeatIds))
-			{
-				$ignoreRepeatIds = "";
+				// To be clean it should be in a different method by hei ho!
+				$ignoreRepeatIds = " rpt.rp_id IN (" . implode(",", $shownEventIds[$page]) . ")";
 			}
 			else
 			{
-				$ignoreRepeatIds = " rpt.rp_id NOT IN (" . implode(",", $ignoreRepeatIds) . ")";
+				$ignoreRepeatIds = array();
+				foreach ($shownEventIds as $shownpage => $shownids)
+				{
+					if ($shownpage == $page)
+					{
+						continue;
+					}
+					$ignoreRepeatIds = array_merge($ignoreRepeatIds, $shownids);
+				}
+				if (!count($ignoreRepeatIds))
+				{
+					$ignoreRepeatIds = "";
+				}
+				else
+				{
+					$ignoreRepeatIds = " rpt.rp_id NOT IN (" . implode(",", $ignoreRepeatIds) . ")";
+				}
 			}
 		}
 

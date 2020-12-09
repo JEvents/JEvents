@@ -93,11 +93,27 @@ class DefaultsModelDefault extends BaseDatabaseModel
 					' WHERE d.id = ' . $this->_db->Quote($this->_id);
 				$this->_db->setQuery($query);
 				$this->_data = $this->_db->loadObject();
+
+				$input = Factory::getApplication()->input;
+				$catid = $input->getInt("catid", -1);
+
+				// we have changed the category in the edit page so we should find the matching layout
+				if ($catid >-1 && $this->_data && intval($this->_data->catid) !== $catid)
+				{
+					$query = 'SELECT d.* , c.title as category_title FROM #__jev_defaults as d ' .
+						'LEFT JOIN #__categories as c on c.id = d.catid' .
+						' WHERE d.catid = ' . $this->_db->Quote($catid) .
+						' AND   d.name = '  . $this->_db->Quote($this->_data->name) .
+						' AND   d.language = ' . $this->_db->Quote($this->_data->language)
+					;
+					$this->_db->setQuery($query);
+					$this->_data = $this->_db->loadObject();
+				}
 			}
 			else if ($this->modid > 0)
 			{
 				$db = Factory::getDbo();
-				$db->setQuery("SELECT * FROM #__jev_defaults");
+				$db->setQuery("SELECT * FROM #__jev_defaults as d WHERE d.catid = 0 AND d.language = '*'");
 				$defaults = $db->loadObjectList("name");
 
 				$layoutname = $this->layouttype . '.' . $this->modid;
@@ -110,7 +126,7 @@ class DefaultsModelDefault extends BaseDatabaseModel
 						state=0,
 						params='{}'");
 					$db->execute();
-					$db->setQuery("SELECT * FROM #__jev_defaults");
+					$db->setQuery("SELECT * FROM #__jev_defaults as d WHERE d.catid = 0 AND d.language = '*'");
 					$defaults = $db->loadObjectList("name");
 				}
 				else
@@ -173,7 +189,7 @@ class DefaultsModelDefault extends BaseDatabaseModel
 						$keys = array_keys(get_object_vars($oldparams));
 						foreach ($keys as $key)
 						{
-							if ($key == "modid" || $key == "modval" || $key == "customjs"  || $key == "customcss")
+							if ($key == "modid" || $key == "modval" || $key == "customjs"  || $key == "customcss" || $key == "header" || $key == "footer"  || $key == "columnsL")
 							{
 								continue;
 							}
