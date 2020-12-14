@@ -860,6 +860,9 @@ class JEVHelper
 			$btn_style = $disabled ? ' style="display:none;"' : '';
 			$div_class = !$disabled ? ' class="input-group"' : '';
 
+			$task = Factory::getApplication()->input->getString("jevtask");
+			$isedit = (strpos($jevtask, "icalevent.edit") !== false || strpos($jevtask, "icalrepeat.edit") !== false );
+
 			echo '<div class=" field-calendar">'
 				. '<div' . $div_class . '>'
 				. '<input type="text" title="' . ($inputvalue ? HTMLHelper::_('date', $value, null, null) : '')
@@ -882,7 +885,7 @@ class JEVHelper
 			data-time-24="' . $timeformat . '" 
 			' . (!empty($minYear) ? ' data-min-year="' . $minYear . '"' : "") . '
 			' . (!empty($maxYear) ? ' data-max-year="' . $maxYear . '"' : "") . ' >'
-				. (($app->isClient('administrator') || $params->get("newfrontendediting", 1)) ? '<span class="gsl-icon" gsl-icon="icon: calendar"></span>' : '<span class="icon-calendar"></span>')
+				. (($app->isClient('administrator') || ($params->get("newfrontendediting", 1) && $isedit)) ? '<span class="gsl-icon" gsl-icon="icon: calendar"></span>' : '<span class="icon-calendar"></span>')
 				. '</button>'
 				. '</span>'
 				. '</div>'

@@ -149,15 +149,15 @@ if (!empty($this->icalEvents))
 		{
 			if (!is_numeric($a->location()))
 			{
-				$html .= "LOCATION:" . $this->wraplines($this->replacetags($a->location())) . "\r\n";
+				$html .= "LOCATION:" . $this->wraplines(str_replace(array(","), array("\,"), $this->replacetags($a->location()))) . "\r\n";
 			}
 			else if (isset($a->_loc_title))
 			{
-				$html .= "LOCATION:" . $this->wraplines($this->replacetags($a->_loc_title)) . "\r\n";
+				$html .= "LOCATION:" . $this->wraplines(str_replace(array(","), array("\,"), $this->replacetags($a->_loc_title))) . "\r\n";
 			}
 			else
 			{
-				$html .= "LOCATION:" . $this->wraplines($this->replacetags($a->location())) . "\r\n";
+				$html .= "LOCATION:" . $this->wraplines(str_replace(array(","), array("\,"), $this->replacetags($a->location()))) . "\r\n";
 			}
 		}
 		// We Need to wrap this according to the specs

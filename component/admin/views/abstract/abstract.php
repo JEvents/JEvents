@@ -268,6 +268,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 	 */
 	function loadEditFromTemplate($template_name = 'icalevent.edit_page', $event, $mask, $search = array(), $replace = array(), $blank = array())
 	{
+		$app    = Factory::getApplication();
 
 		$db = Factory::getDbo();
 		// find published template
@@ -391,7 +392,6 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 			$tabstartarray0Count = count($tabstartarray[0]);
 			if ($tabstartarray0Count > 0)
 			{
-				$app    = Factory::getApplication();
 				$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
 				if (GSLMSIE10 || (!$app->isClient('administrator') && !$params->get("newfrontendediting", 1)))
