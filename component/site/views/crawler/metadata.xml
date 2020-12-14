@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- $Id: metadata.xml 1255 2010-10-06 13:05:26Z royceharding $ --> 
+<!-- $Id: metadata.xml 1255 2010-10-06 13:05:26Z royceharding $ -->
 <metadata>
 	<view title="JEV_CRAWLER">
 		<message><![CDATA[JEV_CRAWLER_VIEW]]></message>
-		<options var="layout" >
-			<option value='listevents' name="JEV_CRAWLER_VIEW" msg="COM_JEVENTS_CRAWLER_DEFAULT_DESC" />
-		</options>		
-		<options var="task" >
-			<option value='crawler.listevents' name="JEV_CRAWLER_VIEW" msg="COM_JEVENTS_CRAWLER_DEFAULT_DESC" />
+		<options var="layout">
+			<option value='listevents' name="JEV_CRAWLER_VIEW" msg="COM_JEVENTS_CRAWLER_DEFAULT_DESC"/>
+		</options>
+		<options var="task">
+			<option value='crawler.listevents' name="JEV_CRAWLER_VIEW" msg="COM_JEVENTS_CRAWLER_DEFAULT_DESC"/>
 		</options>
 	</view>
 	<state>
 		<name>JEvents</name>
 		<description>JEV_CRAWLER_VIEW</description>
-		<params >			
+		<params>
 		</params>
 	</state>
 </metadata>

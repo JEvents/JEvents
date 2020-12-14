@@ -1,13 +1,12 @@
 {
-    "name": "gwe-systems-ltd/gitjevents",
-    "description": "Description of project gitjevents.",
-    "authors": [
-        {
-            "name": "Geraint Edwards",
-            "email": "jevents@gwesystems.com"
-        }
-    ],
-    "require": {
-
+  "name": "gwe-systems-ltd/gitjevents",
+  "description": "Description of project gitjevents.",
+  "authors": [
+    {
+      "name": "Geraint Edwards",
+      "email": "jevents@gwesystems.com"
     }
+  ],
+  "require": {
+  }
 }

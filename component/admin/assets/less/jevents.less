@@ -1,0 +1,74 @@
+// Your custom code goes here, e.g. mixins, variables.
+// See "how to create a theme" below for more info.
+@import "vars.less";
+//@import "j3.less"; // Joomla Overrides
+//@import "j4.less"; // Joomla Overrides
+@import "gslframework.less"; // Generla gslframework css file
+
+/* JEvents Specific CSS */
+/* Put responsive.less at the bottom so it can override other values */
+
+#gslc.gsl-scope {
+  /* Overriding template.css styling when using native Joomla layouts */
+  div#jevents {
+    margin-left:5px;
+
+    #adminForm
+    {
+      /* Buttons in forms */
+      label.gsl-button-small {
+        padding-left: 15px;
+      }
+      /* select and input in event editing */
+      select, input {
+        max-width: 100%;
+      }
+    }
+
+  }
+
+
+  /* Disabled left bar items */
+  #left-col ul.left-nav .notinstalled {
+      opacity : 0.25;
+  }
+
+  .adminlist.table-striped {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+
+      .row0 {
+        td {
+          background-color: transparent;
+        }
+      }
+      .row1 {
+        td {
+          background-color: #eee;
+        }
+      }
+      .tags li {
+        display: inline-block;
+        margin:0 2px 4px 0;
+      }
+  }
+
+  /* Parameter editing for accordion */
+  .gsl-accordion-title.no-accordion-icon:before {
+    background-image:none;
+  }
+}
+/* Overriding template.css styling when using native Joomla layouts for com_categories */
+body.com_categories {
+  #gslc.gsl-scope {
+    form#item-form {
+      margin-left: 5px;
+    }
+
+  }
+}
+
+
+@import "responsive.less";

@@ -1,42 +1,51 @@
 /* Sliders */
 .pane-sliders {
-	margin: 0;
-	position: relative;
+    margin: 0;
+    position: relative;
 }
+
 .pane-sliders .title {
-	margin: 0;
-	padding: 2px;
-	cursor: pointer;
+    margin: 0;
+    padding: 2px;
+    cursor: pointer;
 }
+
 .pane-sliders .panel {
-	margin-bottom: 3px;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
+    margin-bottom: 3px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
 }
+
 .pane-sliders .adminlist td {
-	border: 0 none;
+    border: 0 none;
 
 }
+
 h3.pane-toggler-down a:focus,
 h3.pane-toggler a:focus {
-	outline: none;
+    outline: none;
 }
+
 .pane-toggler span {
-	padding-left: 20px;
+    padding-left: 20px;
 }
+
 .pane-toggler-down span {
-	padding-left: 20px;
+    padding-left: 20px;
 }
+
 .pane-slider.pane-hide {
-	display: none;
+    display: none;
 }
+
 div#position-icon.pane-sliders div.pane-down div.icon-wrapper {
-	margin: 5px 0 5px 0;
+    margin: 5px 0 5px 0;
 }
+
 div#position-icon.pane-sliders div.pane-down .icon-wrapper .icon {
-	padding: 5px 0 5px 10px;
-	margin: 0;
+    padding: 5px 0 5px 10px;
+    margin: 0;
 }
 
 /* Category Editing */
@@ -47,73 +56,84 @@ div#position-icon.pane-sliders div.pane-down .icon-wrapper .icon {
 
 /*Sliders color */
 .pane-sliders .title {
-	color: #2c2c2c;
+    color: #2c2c2c;
 }
+
 .pane-sliders .panel {
-	border: 1px solid #CCC;
+    border: 1px solid #CCC;
 }
+
 .pane-sliders .panel h3 {
-	font-size: 1.182em;
+    font-size: 1.182em;
 }
+
 .pane-sliders .panel h3:hover {
-	background: #e5d9c3;
+    background: #e5d9c3;
 }
+
 .pane-sliders .panel h3:hover a {
-	text-decoration: none;
+    text-decoration: none;
 }
+
 .pane-sliders .adminlist {
-	border: 0 none;
+    border: 0 none;
 }
+
 .pane-sliders .adminlist td {
-	border: 0 none;
+    border: 0 none;
 }
+
 .pane-toggler span {
-	background: transparent url('../images/j_arrow.png') 5px 50% no-repeat;
+    background: transparent url('../images/j_arrow.png') 5px 50% no-repeat;
 }
+
 .pane-toggler-down span {
-	background: transparent url('../images/j_arrow_down.png') 5px 50% no-repeat;
+    background: transparent url('../images/j_arrow_down.png') 5px 50% no-repeat;
 }
+
 .pane-toggler-down {
-	border-bottom: 1px solid #738498;
+    border-bottom: 1px solid #738498;
 }
+
 .pane-sliders th, .pane-sliders td {
-	text-align:left;
-	padding:5px;
+    text-align: left;
+    padding: 5px;
 }
 
 .versionsinfo {
-	width:100%;
-	margin:0px;
+    width: 100%;
+    margin: 0;
 }
 
 /* -- CONTROL PANEL STYLES ----------------------------- */
 .cpanel div.icon, #cpanel div.icon {
-	text-align: center;
-	margin-right: 15px;
-	float: left;
-	margin-bottom: 15px;
-	font-size:12px;
-	line-height: 14px;
+    text-align: center;
+    margin-right: 15px;
+    float: left;
+    margin-bottom: 15px;
+    font-size: 12px;
+    line-height: 14px;
 }
-.cpanel div.icon a, #cpanel div.icon a {
-	background-color: #fff;
-	background-position: -30px;
-	display: block;
-	float: left;
-	height: 97px;
-	width: 108px;
-	color: #565656;
-	vertical-align: middle;
-	text-decoration: none;
-	border: 1px solid #CCC;
-	padding:3px;
 
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
-	-webkit-transition-duration: 0.8s;
-	-moz-transition-duration: 0.8s;
-	transition-duration: 0.8s;
+.cpanel div.icon a, #cpanel div.icon a {
+    background-color: #fff;
+    background-position: -30px;
+    display: block;
+    float: left;
+    height: 97px;
+    width: 108px;
+    color: #565656;
+    vertical-align: middle;
+    text-decoration: none;
+    border: 1px solid #CCC;
+    padding: 3px;
+
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-transition-duration: 0.8s;
+    -moz-transition-duration: 0.8s;
+    transition-duration: 0.8s;
 }
 
 #cpanel div.icon a:hover,
@@ -122,56 +142,59 @@ div#position-icon.pane-sliders div.pane-down .icon-wrapper .icon {
 .cpanel div.icon a:hover,
 .cpanel div.icon a:focus,
 .cpanel div.icon a:active {
-	background-position: 0;
-	-webkit-border-bottom-left-radius: 50% 20px;
-	-moz-border-radius-bottomleft: 50% 20px;
-	border-bottom-left-radius: 50% 20px;
-	-webkit-box-shadow: -5px 10px 15px rgba(0, 0, 0, 0.25);
-	-moz-box-shadow: -5px 10px 15px rgba(0, 0, 0, 0.25);
-	box-shadow: -5px 10px 15px rgba(0, 0, 0, 0.25);
-	position: relative;
-	z-index: 10;
+    background-position: 0;
+    -webkit-border-bottom-left-radius: 50% 20px;
+    -moz-border-radius-bottomleft: 50% 20px;
+    border-bottom-left-radius: 50% 20px;
+    -webkit-box-shadow: -5px 10px 15px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: -5px 10px 15px rgba(0, 0, 0, 0.25);
+    box-shadow: -5px 10px 15px rgba(0, 0, 0, 0.25);
+    position: relative;
+    z-index: 10;
 }
 
 #cpanel img,
 .cpanel img {
-	padding: 10px 0;
-	margin: 0 auto;
+    padding: 10px 0;
+    margin: 0 auto;
 }
 
 #cpanel span,
 .cpanel span {
-	display: block;
-	text-align: center;
+    display: block;
+    text-align: center;
 }
 
 div.cpanel-left {
-	width: 54%;
-	float: left;
+    width: 54%;
+    float: left;
 }
+
 div.cpanel-right {
-	width: 45%;
-	float: right;
+    width: 45%;
+    float: right;
 }
 
 /* params editing styling */
 .paramlist_key {
-	width:30%;
-	padding-bottom:10px;
+    width: 30%;
+    padding-bottom: 10px;
 }
+
 textarea.jevtextarea {
-	min-width: 300px;
-	width: auto;
+    min-width: 300px;
+    width: auto;
 }
 
 /* Form styling for checkboxes etc. */
 fieldset.checkboxes ul {
-    margin-left:0px;
+    margin-left: 0;
 }
+
 fieldset.checkboxes li {
-    float:left;
+    float: left;
     margin-left: 5px;
-    margin-right:0px;
+    margin-right: 0;
     list-style: none;
 }
 
@@ -179,134 +202,185 @@ fieldset.checkboxes li {
 #jevents .adminform .row {
     min-height: 40px;
 }
+
+/* showon initial style for event editing */
+/* Initial showon hidden */
+#jevents .adminform [data-showon-gsl]:not([data-showon-gsl=""]), #jevents .adminform [data-showon]:not([data-showon=""])
+{
+    display:none;
+}
+
 #jevents .jevbootstrap .adminform #myEditTabsContent .row, #jevents .jevbootstrap .adminform div, adminform .row {
     margin-left: 0;
     padding-bottom: 10px;
 }
+
 /* new Joomla calendar */
-#jevents .jevbootstrap .adminform .js-calendar div
-{
-    padding-bottom: 0px;
+#jevents .jevbootstrap .adminform .js-calendar div {
+    padding-bottom: 0;
 }
+
 /* Custom fields */
 .jevextrablock .btn-group {
     padding: 0 !important;
 }
 
 /* fix for wysiwyg editors */
-#jevents .jevbootstrap .adminform .jev_description div , #jevents .jevbootstrap .adminform #jeveditor div, #jevents .jevbootstrap .adminform .editor div {
+#jevents .jevbootstrap .adminform .jev_description div, #jevents .jevbootstrap .adminform #jeveditor div, #jevents .jevbootstrap .adminform .editor div {
     padding-bottom: 0;
 }
+
 td.r1, span.r1 {
-	background-color:#eeeeee!important;
-	padding:5px 5px 0px 0px;
+    background-color: #eeeeee !important;
+    padding: 5px 5px 0 0;
 }
+
 td.r2, span.r2 {
-	padding-right:5px;
+    padding-right: 5px;
 }
-div#jevents .adminform input,div#jevents .adminformtextarea,div#jevents .adminforminputbox,
-div#jevents .adminform#rinterval , div#jevents .adminform#count , div#jevents .adminform#until{
-	padding:3px 5px;
-	width: auto;
-	margin-bottom:0px;
-}
+
+
 div#jevents .adminformselect {
-	padding:3px 5px;
+    padding: 3px 5px;
 }
+
 div#jevents .adminform .countback {
-	margin-top:10px;
+    margin-top: 10px;
 }
 
 div#jevoverlapwarning {
-	border:solid 1px red;
-	padding:5px;
-	display:none;
+    border: solid 1px red;
+    padding: 5px;
+    display: none;
 }
+
 div#jevoverlapwarning h4 {
-	font-weight:bold;
-	margin:5px 0px;
+    font-weight: bold;
+    margin: 5px 0;
 }
 
 .jev_edit_event_notice {
-	width:500px;
+    min-width: 500px;
 }
+
 a#colorPickButton {
-	text-decoration:none;
-	padding:5px;
+    text-decoration: none;
+    padding: 5px;
 }
-.icon-32-save 			{ background-image: url('../images/icon-32-save.png'); }
-.icon-32-edit 			{ background-image: url('../images/icon-32-edit.png'); }
-.icon-32-cancel 		{ background-image: url('../images/icon-32-cancel.png'); }
-.icon-32-apply			{ background-image: url('../images/icon-32-apply.png'); }
+
+.icon-32-save {
+    background-image: url('../images/icon-32-save.png');
+}
+
+.icon-32-edit {
+    background-image: url('../images/icon-32-edit.png');
+}
+
+.icon-32-cancel {
+    background-image: url('../images/icon-32-cancel.png');
+}
+
+.icon-32-apply {
+    background-image: url('../images/icon-32-apply.png');
+}
 
 #interval_div {
-	margin-top:20px;
-	clear:both;
-	display:none;
-}
-#byyearday,#bymonth,#byweekno,#bymonthday,#byday,#byirregular
- {
-	float:left;
-	display:none;
-	margin-right:1em;
-	margin-top:10px;
+    margin-top: 20px;
+    clear: both;
+    display: none;
 }
 
-#jevents  fieldset.checkboxes li label {
-	display:block;
+#byyearday, #bymonth, #byweekno, #bymonthday, #byday, #byirregular {
+    float: left;
+    display: none;
+    margin-right: 1em;
+    margin-top: 10px;
 }
-#jevents  fieldset.checkboxes li {min-width: 40px;}
-div.icon-48-jevents { height: 45px; width:170px; }
+
+#jevents fieldset.checkboxes li label {
+    display: block;
+}
+
+#jevents fieldset.checkboxes li {
+    min-width: 40px;
+}
+
+div.icon-48-jevents {
+    height: 45px;
+    width: 170px;
+}
+
 /* workaround for stupid protostar sizing defaults which eliminate multi-select list height settings*/
-.select[multiple],select[size] {
-	height: auto!important;
+.select[multiple], select[size] {
+    height: auto !important;
 }
 
 #filter-bar .fltrt {
-	float:right;
+    float: right;
 }
+
 .adminlist {
-	width:100%;
-	margin-top:10px;
+    width: 100%;
+    margin-top: 10px;
 }
-.adminlist.table.table-striped tr:first-child {
+
+.adminlist.table.table-striped tr {
     border-left:1px solid #DDD;
     border-right: 1px solid #DDD;
+    border-bottom: 1px solid #DDD;
 }
-table.versionstatuslist tr:nth-child(odd)		{ background-color:#f5f5f5;}
-table.versionstatuslist tr:nth-child(even)		{ background-color:#fff; }
-table.versionstatuslist a {color: #08c;font-weight:bolder; font-size: 12px;}
+
+table.versionstatuslist tr:nth-child(odd) {
+    background-color: #f5f5f5;
+}
+
+table.versionstatuslist tr:nth-child(even) {
+    background-color: #fff;
+}
+
+table.versionstatuslist a {
+    color: #08c;
+    font-weight: bolder;
+    font-size: 12px;
+}
 
 /* Bootstrap styling - ensure minimal width for list! */
 /*#jevents .jevminwidth { width:250px;}*/
 
 /* Fix for bad templates that leave default modal class unchanged in bootstrap */
 #jevents a.modal {
-	position:static;
+    position: static;
 }
+
 .radio.btn > input[type="radio"] {
     display: none;
 }
 
-.adminform#publish_up-lbl, .adminform#publish_down-lbl  {
-	width:100px;
+.adminform#publish_up-lbl, .adminform#publish_down-lbl {
+    width: 100px;
 }
-.adminform#start_time-lbl, .adminform#end_time-lbl  {
-	width:80px;
+
+.adminform#start_time-lbl, .adminform#end_time-lbl {
+    width: 80px;
 }
-#cu_until,#cu_count , #interval_div > div, #byyearday, #bymonth,#bymonthday,#byweekno, #byday, #bysetpos, #byirregular {
-	padding:5px;
-	border-radius:10px;
+
+#cu_until, #cu_count, #interval_div > div, #byyearday, #bymonth, #bymonthday, #byweekno, #byday, #bysetpos, #byirregular {
+    padding: 5px;
+    border-radius: 10px;
 }
-#jevents fieldset legend input[type='radio'] {margin-right:10px!important}
+
+#jevents fieldset legend input[type='radio'] {
+    margin-right: 10px !important
+}
 
 .jevbootstrap input, .jevbootstrap textarea, .jevbootstrap .uneditable-input {
     width: auto;
 }
+
 /* chosen button styling !!  */
-#jevents  label.btn {
-    padding-right: 10px!important;
-    padding-left: 10px!important;
+#jevents label.btn {
+    padding-right: 10px !important;
+    padding-left: 10px !important;
 }
 
 /* EasyProfile  com_jsn needs this! */
@@ -315,24 +389,25 @@ table.versionstatuslist a {color: #08c;font-weight:bolder; font-size: 12px;}
 }
 
 .tip-wrap {
-	max-width:80%!important;
-	text-align: left!important;
+    max-width: 80% !important;
+    text-align: left !important;
 }
 
 .jevdate_labels {
-	float:left;
-	min-width:80px
+    float: left;
+    min-width: 80px
 }
+
 .jevdate_date {
-	float:left;
+    float: left;
 }
 
 #selectlocationbutton {
-	margin-left: 5px;   
+    margin-left: 5px;
 }
 
-.hiddenDifficulty  {
-	display: none;
+.hiddenDifficulty {
+    display: none;
 }
 
 #myParamsTabs {
@@ -340,17 +415,18 @@ table.versionstatuslist a {color: #08c;font-weight:bolder; font-size: 12px;}
     border-bottom-left-radius: 5px;
     border-color: #DDDDDD;
     border-style: solid;
-    border-top-left-radius: 5px;
-    border-width: 1px 0 1px 1px;
-    margin-right: -1px;
+    border-top-radius: 5px;
+    border-width: 1px;
 }
+
 #myParamsTabsContent table.paramlist {
     width: 100%;
 }
+
 #myParamsTabsContent {
-	border:1px solid #ddd;
-	margin-top:-19px;
-	padding: 15px;
+    border: 1px solid #ddd;
+    margin-top: -19px;
+    padding: 15px;
     border-radius: 5px;
     border-top-left-radius: 0;
 }
@@ -358,60 +434,90 @@ table.versionstatuslist a {color: #08c;font-weight:bolder; font-size: 12px;}
 #myParamsTabsContent input, #myParamsTabsContent select, #myParamsTabsContent textarea {
     width: auto;
 }
+
 .jev_config_version {
-	background-color: #ededed;
-	border:1px solid #ddd;
-	border-radius: 3px;
-	float:right;
-	margin-top:-20px;
-	padding:2px 5px 2px 5px;
+    background-color: #ededed;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    float: right;
+    margin-top: -20px;
+    padding: 2px 5px 2px 5px;
 }
-div#jevents .adminform #start_ampm , div#jevents .adminform #end_ampm  {
-	display:inline-block;
-	padding:0px;
+
+div#jevents .adminform #start_ampm, div#jevents .adminform #end_ampm {
+    display: inline-block;
+    padding: 0;
 }
+
 div#jevents .adminform #start_ampm label, div#jevents .adminform #end_ampm label {
-    padding-left:8px;
+    padding-left: 8px;
     padding-right: 8px;
 }
-.jeveditrepeats {margin-bottom:12px;}
+
+.jeveditrepeats {
+    margin-bottom: 12px;
+}
 
 /* Toolbar - stop buttons being vertical*/
-.jeventslight #toolbar.btn-toolbar div , .jeventsdark  #toolbar.btn-toolbar div{
-	display:inline-block;
-	margin-right:6px;
+.jeventslight #toolbar.btn-toolbar div, .jeventsdark #toolbar.btn-toolbar div {
+    display: inline-block;
+    margin-right: 6px;
 }
-table.settings_level {text-align:left;}
-table.settings_level .difficulty1 .paramlist_value {vertical-align: top;}
-table.settings_level label#jform_com_difficulty-lbl {width:150px;margin-bottom:15px;}
-.nav.nav-list.config { width: 15%; float: left;}
-.jevconfig #myParamsTabsContent.tab-content  {width: 75%; float: left; margin-top:0px;}
+
+table.settings_level {
+    text-align: left;
+}
+
+table.settings_level .difficulty1 .paramlist_value {
+    vertical-align: top;
+}
+
+table.settings_level label#jform_com_difficulty-lbl {
+    width: 150px;
+    margin-bottom: 15px;
+}
+
+.nav.nav-list.config {
+    width: 15%;
+    float: left;
+}
+
+.jevconfig #myParamsTabsContent.tab-content {
+    width: 75%;
+    float: left;
+    margin-top: 0;
+}
 
 /* We need to hide links from print views, it looks silly with so many events */
 @media print {
-	#jevents a[href]:after {
-		content:"" !important;
-	}
+    #jevents a[href]:after {
+        content: "" !important;
+    }
+
     #jevents abbr[title]:after {
-		content: "" !important;
-	}
+        content: "" !important;
+    }
 }
+
 /** End of hiding links from print views **/
 
 /* Rockettheme workarounds */
-#jevents #adminForm  label {
-    width:auto;
-    font-weight:bold;
-    padding-left:0px;
+#jevents #adminForm label {
+    width: auto;
+    font-weight: bold;
+    padding-left: 0;
 }
+
 /* Rockettheme messes up padding on chosen radio/checkbox replacements so need padding left 15px */
-#jevents #adminForm  .controls label {
-	padding-left:15px;
+#jevents #adminForm .controls label {
+    padding-left: 15px;
 }
+
 /* Editor needs extra space after it! */
 #jevents #jeveditor {
-margin-bottom:10px;
+    margin-bottom: 10px;
 }
+
 /* Can't be universal since it affects event editing and normal Joomla buttons!
 #jevents .btn-group a {
 	color:#fff;
@@ -419,41 +525,123 @@ margin-bottom:10px;
 */
 
 /** Default Event Details Custom Layout Control **/
-#jevents_body .jev_evdt {padding:10px;}
-.jev_evdt .jev_evdt_header {width:100%;max-width:100%;}
-.jev_evdt .jev_evdt_icons {float:right;height:26px;margin-top:-15px;}
-.jev_evdt .jev_evdt_icons a {display:inline-block;}
-.jev_evdt .jev_evdt_icons > div {display:inline-block; vertical-align:top;}
-.jev_evdt .jev_evdt_icons img {height:24px;vertical-align:top;}
-.jev_evdt .jev_evdt_title {font-size:160%;padding-bottom:10px;}
-.jev_evdt_contact span.contact {padding:0 0 0 0;}
+#jevents_body .jev_evdt {
+    padding: 10px;
+}
 
-.jev_evdt .jev_evdt_summary {width:75%;display:inline-block;}
-.jev_evdt .jev_eventdetails_body > div {padding-bottom:10px;vertical-align:top;}
-.jev_evdt .jev_evdt_hits {width:24%; display:inline-block;text-align:right;}
-.jev_evdt .jev_evdt_creator, .jev_evdt .jev_evdt_contact {display:inline-block;margin-right:25px;}
-.jev_evdt span.creator, .jev_evdt span.contact {font-weight:bold;}
-.jev_evdt .jev_evdt_summary .ev_prevrepeat,.jev_evdt .jev_evdt_summary  .ev_nextrepeat {  display: inline-block;  margin-right: 15px;}
+.jev_evdt .jev_evdt_header {
+    width: 100%;
+    max-width: 100%;
+}
+
+.jev_evdt .jev_evdt_icons {
+    float: right;
+    height: 26px;
+    margin-top: -15px;
+}
+
+.jev_evdt .jev_evdt_icons a {
+    display: inline-block;
+}
+
+.jev_evdt .jev_evdt_icons > div {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.jev_evdt .jev_evdt_icons img {
+    height: 24px;
+    vertical-align: top;
+}
+
+.jev_evdt .jev_evdt_title {
+    font-size: 160%;
+    padding-bottom: 10px;
+}
+
+.jev_evdt_contact span.contact {
+    padding: 0 0 0 0;
+}
+
+.jev_evdt .jev_evdt_summary {
+    width: 75%;
+    display: inline-block;
+}
+
+.jev_evdt .jev_eventdetails_body > div {
+    padding-bottom: 10px;
+    vertical-align: top;
+}
+
+.jev_evdt .jev_evdt_hits {
+    width: 24%;
+    display: inline-block;
+    text-align: right;
+}
+
+.jev_evdt .jev_evdt_creator, .jev_evdt .jev_evdt_contact {
+    display: inline-block;
+    margin-right: 25px;
+}
+
+.jev_evdt span.creator, .jev_evdt span.contact {
+    font-weight: bold;
+}
+
+.jev_evdt .jev_evdt_summary .ev_prevrepeat, .jev_evdt .jev_evdt_summary .ev_nextrepeat {
+    display: inline-block;
+    margin-right: 15px;
+}
+
 /** End of default event details custom layout control **/
 
-.jev_none {display:none;}
-.jev_block {display:block;}
-.jev_inline {display:inline;}
-img.jev_help {float: none; vertical-align:bottom; cursor:help;}
-span.jev_help_close {border:solid white 1px;padding:0px;margin:1px;}
+.jev_none {
+    display: none;
+}
+
+.jev_block {
+    display: block;
+}
+
+.jev_inline {
+    display: inline;
+}
+
+img.jev_help {
+    float: none;
+    vertical-align: bottom;
+    cursor: help;
+}
+
+span.jev_help_close {
+    border: solid white 1px;
+    padding: 0;
+    margin: 1px;
+}
 
 /* backend ical input box */
-#uploadURL {width:auto;}
+#uploadURL {
+    width: auto;
+}
 
 /* Location editing */
 #createlocationbutton .icon-edit:before {
     color: inherit;
 }
+
 /* Removed Inline CSS and added the below */
 
-form.search_form { padding:30px 0px;}
-td.ev_td_right ul.ev_ul {list-style: none;}
-#jevents_body ul.ev_ul li.ev_td_li {margin-bottom:10px;}
+form.search_form {
+    padding: 30px 0;
+}
+
+td.ev_td_right ul.ev_ul {
+    list-style: none;
+}
+
+#jevents_body ul.ev_ul li.ev_td_li {
+    margin-bottom: 10px;
+}
 
 .jevbootstrap div.modal {
     background-clip: padding-box;
@@ -462,205 +650,367 @@ td.ev_td_right ul.ev_ul {list-style: none;}
     border-radius: 6px;
     box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
     outline: medium none;
-    top:5%;
-    left:50%!important;
-    position:fixed!important;
+    top: 5%;
+    left: 50% !important;
+    position: fixed !important;
     z-index: 1050;
     text-align: left;
 }
 
 .jevbootstrap .ical_dialogJQ, .jevbootstrap .action_dialogJQ {
-    right:0px;
+    right: 0;
     margin-left: -40%;
 }
 
-.jevbootstrap .ical_dialogJQ {max-width: 300px; bottom:auto!important;padding-right: 0px!important;margin-left:-150px!important;}
-.jevbootstrap .ical_dialogJQ img {   height: 24px;margin-right:1em;margin-bottom:7px;}
-.jevbootstrap .ical_dialogJQ input[type="checkbox"] {   margin-right: 10px;}
-.jevbootstrap .ical_dialogJQ #unstyledical {padding:0px;margin:0px;}
-.jevbootstrap .ical_dialogJQ #styledical {padding:0px;margin:0px;display:none;}
+.jevbootstrap .ical_dialogJQ {
+    max-width: 300px;
+    bottom: auto !important;
+    padding-right: 0 !important;
+    margin-left: -150px !important;
+}
 
-.jevbootstrap .action_dialogJQ {   max-width: 300px; bottom:auto!important;padding-right: 0px!important;margin-left:-150px!important;}
-.jevbootstrap .action_dialogJQ a {text-decoration:none; line-height:28px;}
-.jevbootstrap .action_dialogJQ .close_dialog a {font-weight:bold;color:#000000;}
+.jevbootstrap .ical_dialogJQ img {
+    height: 24px;
+    margin-right: 1em;
+    margin-bottom: 7px;
+}
+
+.jevbootstrap .ical_dialogJQ input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.jevbootstrap .ical_dialogJQ #unstyledical {
+    padding: 0;
+    margin: 0;
+}
+
+.jevbootstrap .ical_dialogJQ #styledical {
+    padding: 0;
+    margin: 0;
+    display: none;
+}
+
+.jevbootstrap .action_dialogJQ {
+    max-width: 300px;
+    bottom: auto !important;
+    padding-right: 0 !important;
+    margin-left: -150px !important;
+}
+
+.jevbootstrap .action_dialogJQ a {
+    text-decoration: none;
+    line-height: 28px;
+}
+
+.jevbootstrap .action_dialogJQ .close_dialog a {
+    font-weight: bold;
+    color: #000000;
+}
+
 .jevbootstrap .action_dialogJQ #publish_reccur img, .jevbootstrap .action_dialogJQ #edit_reccur img,
 .jevbootstrap .action_dialogJQ #edit_event img, .jevbootstrap .action_dialogJQ #edit_eventcopy img,
 .jevbootstrap .action_dialogJQ #delete_repeat img, .jevbootstrap .action_dialogJQ #delete_eventfuture img,
-.jevbootstrap .action_dialogJQ #delete_event img {width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;}
-.jevbootstrap img.jev_ev_sml,  .jevbootstrap  img.jev_ev_sml {height:24px; text-align:center;}
-.jevbootstrap .action_dialogJQ .modal-body , .jevbootstrap .action_dialogJQ .modal-header {text-align: left;}
-
-.jevbootstrap .action_dialogJQ .modal-dialog, jevbootstrap .ical_dialogJQ .modal-dialog {
-   width:auto;
-   margin:0px;
+.jevbootstrap .action_dialogJQ #delete_event img {
+    width: 20px;
+    height: 20px;
+    border: 0;
+    margin-right: 1em;
+    vertical-align: middle;
 }
 
-div.ev_navigation {width:100%;}
-table.ev_navtable {width:300px; border:0px; text-align:center;margin: auto auto}
-table.ev_navtable tr {vertical-align:top; }
-.choosecat #othercats {display:none;max-height:100px;overflow-y:auto;}
-.choosecat .chooseyear {float:left;width:300px;}
-.choosecat #otheryear {display:none;max-height:100px;overflow-y:auto;}
-.buttonheading {width:24px;height:24px;display:inline-block;}
-#jumpto {margin: 10px 0;}
+.jevbootstrap img.jev_ev_sml, .jevbootstrap img.jev_ev_sml {
+    height: 24px;
+    text-align: center;
+}
+
+.jevbootstrap .action_dialogJQ .modal-body, .jevbootstrap .action_dialogJQ .modal-header {
+    text-align: left;
+}
+
+.jevbootstrap .action_dialogJQ .modal-dialog, jevbootstrap .ical_dialogJQ .modal-dialog {
+    width: auto;
+    margin: 0;
+}
+
+div.ev_navigation {
+    width: 100%;
+}
+
+table.ev_navtable {
+    width: 300px;
+    border: 0;
+    text-align: center;
+    margin: auto auto
+}
+
+table.ev_navtable tr {
+    vertical-align: top;
+}
+
+.choosecat #othercats {
+    display: none;
+    max-height: 100px;
+    overflow-y: auto;
+}
+
+.choosecat .chooseyear {
+    float: left;
+    width: 300px;
+}
+
+.choosecat #otheryear {
+    display: none;
+    max-height: 100px;
+    overflow-y: auto;
+}
+
+.buttonheading {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+}
+
+#jumpto {
+    margin: 10px 0;
+}
+
 /* global simple individual styles */
-.vtop {vertical-align:top;}
-.vmiddle {vertical-align:middle;}
-.vbottom {vertical-align:bottom;}
-.w100 {width:100%;}
-.w8px {width:8px;}
-.w10px {width:10px;}
-.t300 {width:300px;}
-.b0 {border:0px;}
-.b1sw {border:1px solid #FFF;}
-.p0 {padding:0;}
-.p10px {padding:10px;}
-.fs1px {font-size:1px;}
-.fs10px {font-size:10px;}
-.h100 {height:100%;}
-.h1 {height:1px;}
-#jevents img.h12px {height:12px;}
-#jevents img.h24px {height:24px;}
-.h80px {height:80px;}
-.pos_rel {position:relative;}
-.fleft {float:left;}
-.fwb {font-weight:bold;}
-.probs_check_ev {color:black!important;background-color:yellow!important;font-weight:bold}
+.vtop {
+    vertical-align: top;
+}
+
+.vmiddle {
+    vertical-align: middle;
+}
+
+.vbottom {
+    vertical-align: bottom;
+}
+
+.w100 {
+    width: 100%;
+}
+
+.w8px {
+    width: 8px;
+}
+
+.w10px {
+    width: 10px;
+}
+
+.t300 {
+    width: 300px;
+}
+
+.b0 {
+    border: 0;
+}
+
+.b1sw {
+    border: 1px solid #FFF;
+}
+
+.p0 {
+    padding: 0;
+}
+
+.p10px {
+    padding: 10px;
+}
+
+.fs1px {
+    font-size: 1px;
+}
+
+.fs10px {
+    font-size: 10px;
+}
+
+.h100 {
+    height: 100%;
+}
+
+.h1 {
+    height: 1px;
+}
+
+#jevents img.h12px {
+    height: 12px;
+}
+
+#jevents img.h24px {
+    height: 24px;
+}
+
+.h80px {
+    height: 80px;
+}
+
+.pos_rel {
+    position: relative;
+}
+
+.fleft {
+    float: left;
+}
+
+.fwb {
+    font-weight: bold;
+}
+
+.probs_check_ev {
+    color: black !important;
+    background-color: yellow !important;
+    font-weight: bold
+}
 
 /* End of Inline CSS Removal. */
 
 /* Modal event editing  and CSV import*/
 
 #myEditModal {
-	bottom:5%;
-	position:fixed;
-	overflow: hidden;
+    bottom: 5%;
+    position: fixed;
+    overflow: hidden;
 }
+
 #myImportModal {
-	margin-left: -280px;
-	width:560px;
-	height:500px;
-	overflow:hidden;
-	position: fixed;
-	z-index: 1050;
-	background-color: #ffffff;
-	border: 1px solid #999;
-	border: 1px solid rgba(0, 0, 0, 0.3);
-	-webkit-border-radius: 6px;
-	-moz-border-radius: 6px;
-	border-radius: 6px;
-	outline: none;
-	-webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
-	-moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
-	box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
-	-webkit-background-clip: padding-box;
-	-moz-background-clip: padding-box;
-	background-clip: padding-box;
-	text-align: left;
+    margin-left: -280px;
+    width: 560px;
+    height: 500px;
+    overflow: hidden;
+    position: fixed;
+    z-index: 1050;
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    outline: none;
+    -webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding;
+    background-clip: padding-box;
+    text-align: left;
 }
+
 #myEditModal.modal {
-	position: fixed;
-	bottom: 5%;
-	top: 5%;
-	left: 5%;
-	margin:0px;
-	z-index: 1050;
-	width: 90%;
-	background-color: #ffffff;
-	border: 1px solid #999;
-	border: 1px solid rgba(0, 0, 0, 0.3);
-	-webkit-border-radius: 6px;
-	-moz-border-radius: 6px;
-	border-radius: 6px;
-	outline: none;
-	-webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
-	-moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
-	box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
-	-webkit-background-clip: padding-box;
-	-moz-background-clip: padding-box;
-	background-clip: padding-box;
-	text-align: left;
+    position: fixed;
+    bottom: 5%;
+    top: 5%;
+    left: 5%;
+    margin: 0;
+    z-index: 1050;
+    width: 90%;
+    background-color: #ffffff;
+    border: 1px solid #999;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    outline: none;
+    -webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding-box;
+    background-clip: padding-box;
+    text-align: left;
 }
- #myEditModal.modal.fade {
-	top: -25%;
-	-webkit-transition: opacity 0.3s linear, top 0.3s ease-out;
-	-moz-transition: opacity 0.3s linear, top 0.3s ease-out;
-	-o-transition: opacity 0.3s linear, top 0.3s ease-out;
-	transition: opacity 0.3s linear, top 0.3s ease-out;
+
+#myEditModal.modal.fade {
+    top: -25%;
+    -webkit-transition: opacity 0.3s linear, top 0.3s ease-out;
+    -moz-transition: opacity 0.3s linear, top 0.3s ease-out;
+    -o-transition: opacity 0.3s linear, top 0.3s ease-out;
+    transition: opacity 0.3s linear, top 0.3s ease-out;
 }
+
 #myEditModal.modal.fade.in {
-	top: 5%;
+    top: 5%;
 }
+
 #myEditModal body.modal {
-	padding-top: 0;
+    padding-top: 0;
 }
 
-#myEditModal .close , #myImportModal .close {
-	float: right;
-	font-size: 20px;
-	font-weight: bold;
-	line-height: 20px;
-	color: #000000;
-	text-shadow: 0 1px 0 #ffffff;
-	opacity: 0.2;
-	filter: alpha(opacity=20);
-}
-#myEditModal  .close:hover,
-#myEditModal  .close:focus,
-#myImportModal  .close:hover,
-#myImportModal  .close:focus{
-	color: #000000;
-	text-decoration: none;
-	cursor: pointer;
-	opacity: 0.4;
-	filter: alpha(opacity=40);
-}
-#myEditModal   button.close , #myImportModal   button.close {
-	padding: 0;
-	cursor: pointer;
-	background: transparent;
-	border: 0;
-	-webkit-appearance: none;
+#myEditModal .close, #myImportModal .close {
+    float: right;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 20px;
+    color: #000000;
+    text-shadow: 0 1px 0 #ffffff;
+    opacity: 0.2;
+    filter: alpha(opacity=20);
 }
 
-#myEditModal  .modal-header .close , #myImportModal  .modal-header .close {
-	margin-top: 2px;
+#myEditModal .close:hover,
+#myEditModal .close:focus,
+#myImportModal .close:hover,
+#myImportModal .close:focus {
+    color: #000000;
+    text-decoration: none;
+    cursor: pointer;
+    opacity: 0.4;
+    filter: alpha(opacity=40);
+}
+
+#myEditModal button.close, #myImportModal button.close {
+    padding: 0;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    -webkit-appearance: none;
+}
+
+#myEditModal .modal-header .close, #myImportModal .modal-header .close {
+    margin-top: 2px;
 }
 
 #myEditModal .modal-footer, #myImportModal .modal-footer {
-	padding: 14px 15px 15px;
-	margin-bottom: 0;
-	text-align: right;
-	background-color: #f5f5f5;
-	border-top: 1px solid #ddd;
-	-webkit-border-radius: 0 0 6px 6px;
-	-moz-border-radius: 0 0 6px 6px;
-	border-radius: 0 0 6px 6px;
-	-webkit-box-shadow: inset 0 1px 0 #ffffff;
-	-moz-box-shadow: inset 0 1px 0 #ffffff;
-	box-shadow: inset 0 1px 0 #ffffff;
+    padding: 14px 15px 15px;
+    margin-bottom: 0;
+    text-align: right;
+    background-color: #f5f5f5;
+    border-top: 1px solid #ddd;
+    -webkit-border-radius: 0 0 6px 6px;
+    -moz-border-radius: 0 0 6px 6px;
+    border-radius: 0 0 6px 6px;
+    -webkit-box-shadow: inset 0 1px 0 #ffffff;
+    -moz-box-shadow: inset 0 1px 0 #ffffff;
+    box-shadow: inset 0 1px 0 #ffffff;
 }
+
 #myEditModal .modal-footer:before,
 #myEditModal .modal-footer:after,
 #myImporttModal .modal-footer:before,
-#myImportModal .modal-footer:after{
-	display: table;
-	line-height: 0;
-	content: "";
+#myImportModal .modal-footer:after {
+    display: table;
+    line-height: 0;
+    content: "";
 }
-#myEditModal .modal-footer:after , #myImportModal .modal-footer:after {
-	clear: both;
+
+#myEditModal .modal-footer:after, #myImportModal .modal-footer:after {
+    clear: both;
 }
- #myEditModal .modal-footer .btn + .btn , #myImportModal .modal-footer .btn + .btn {
-	margin-bottom: 0;
-	margin-left: 5px;
+
+#myEditModal .modal-footer .btn + .btn, #myImportModal .modal-footer .btn + .btn {
+    margin-bottom: 0;
+    margin-left: 5px;
 }
+
 #myEditModal .modal-footer .btn-group .btn + .btn, #myImportModal .modal-footer .btn-group .btn + .btn {
-	margin-left: -1px;
+    margin-left: -1px;
 }
- #myEditModal .modal-footer .btn-block + .btn-block , #myImportModal .modal-footer .btn-block + .btn-block{
-	margin-left: 0;
+
+#myEditModal .modal-footer .btn-block + .btn-block, #myImportModal .modal-footer .btn-block + .btn-block {
+    margin-left: 0;
 }
+
 #myEditModal .modal-header, #myImportModal .modal-header {
     float: none;
     height: 35px;
@@ -670,137 +1020,271 @@ table.ev_navtable tr {vertical-align:top; }
     padding: 9px 15px;
     border-bottom: 1px solid #eee;
 }
-#myEditModal h4, #myImportModal h4  {
-	margin: 0px;
-	font-family: inherit;
-	font-weight: bold;
-	font-size: 17.5px;
-	line-height: 20px;
-	color: inherit;
-	text-rendering: optimizelegibility;
+
+#myEditModal h4, #myImportModal h4 {
+    margin: 0;
+    font-family: inherit;
+    font-weight: bold;
+    font-size: 17.5px;
+    line-height: 20px;
+    color: inherit;
+    text-rendering: optimizelegibility;
 }
-#myEditModal .modal-body, #myImportModal .modal-body  {
-    position:absolute;
-    left :0px;
-    right:0px;
-    bottom:10px;
+
+#myEditModal .modal-body, #myImportModal .modal-body {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 10px;
     top: 36px;
     overflow-y: auto;
-    max-height:none;
-    padding:10px 0px 5px 0px;
-   width:100%;
-   /*	http://dev.magnolia-cms.com/blog/2012/05/strategies-for-the-iframe-on-the-ipad-problem/ */
-   -webkit-overflow-scrolling: touch;
+    max-height: none;
+    padding: 10px 0 5px 0;
+    width: 100%;
+    /*	http://dev.magnolia-cms.com/blog/2012/05/strategies-for-the-iframe-on-the-ipad-problem/ */
+    -webkit-overflow-scrolling: touch;
 }
-#myEditModal .modal-body iframe, #myImportModal .modal-body iframe  {
-	width:99.5%;
-	border:none;
-	height:100%;
-	max-height:100%;
-	/* See http://stackoverflow.com/questions/9129182/iframe-100-height-causes-vertical-scrollbar */
-	display:block;
+
+#myEditModal .modal-body iframe, #myImportModal .modal-body iframe {
+    width: 99.5%;
+    border: none;
+    height: 100%;
+    max-height: 100%;
+    /* See http://stackoverflow.com/questions/9129182/iframe-100-height-causes-vertical-scrollbar */
+    display: block;
 }
+
 #myEditModal .modal-dialog {
     height: 100%;
-   width:auto;
-   margin:0px;
+    width: auto;
+    margin: 0;
 }
- #myImportModal .modal-dialog {
-	 height: 100%;
-   width:auto;
- }
+
+#myImportModal .modal-dialog {
+    height: 100%;
+    width: auto;
+}
+
 #myImportModal .modal-content, #myEditModal .modal-content {
     box-sizing: border-box;
     height: 100%;
     margin: 5px;
     position: relative;
-	box-shadow: none;
-	border:none;
+    box-shadow: none;
+    border: none;
 }
 
-
 /* Backwards compatible CSS for old club layouts */
-#jevents_body #ical_dialog {position:absolute;right:0px;background-color:#dedede;border:solid 1px #000000;width:200px;padding:10px;visibility:hidden;z-index:999;}
-#jevents_body #ical_dialog a {text-decoration:none;}
-#jevents_body #ical_dialog img {border:0px;margin-right:1em;height:16px;}
-#jevents_body #ical_dialog .ical_dialog_close {width:12px!important;float:right;background-color:#ffffff;border:solid #000000;border-width:0 0 1px 1px;text-align:center;margin:-10px;}
-#jevents_body #ical_dialog .ical_dialog_close a {font-weight:bold;text-decoration:none;color:#000000;}
-#jevents_body #ical_dialog #unstyledical {padding:0px;margin:0px;}
-#jevents_body #ical_dialog #styledical {padding:0px;margin:0px;display:none;}
+#jevents_body #ical_dialog {
+    position: absolute;
+    right: 0;
+    background-color: #dedede;
+    border: solid 1px #000000;
+    width: 200px;
+    padding: 10px;
+    visibility: hidden;
+    z-index: 999;
+}
 
-#jevents_body #action_dialog a {text-decoration:none;}
-#jevents_body #action_dialog .close_dialog a {font-weight:bold;color:#000000;}
-#jevents_body #action_dialog #publish_reccur img, #jevents_body #action_dialog #edit_reccur img, #jevents_body  #action_dialog #edit_event img, #jevents_body  #action_dialog #edit_eventcopy img, #jevents_body #action_dialog #delete_repeat img, #jevents_body #action_dialog #delete_eventfuture img, #jevents_body #action_dialog #delete_event img {width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;}
+#jevents_body #ical_dialog a {
+    text-decoration: none;
+}
 
-#jevents ul.actions li {list-style: none;float:right;}
+#jevents_body #ical_dialog img {
+    border: 0;
+    margin-right: 1em;
+    height: 16px;
+}
 
-.jev_version {font-size:12px;border-top:1px dashed;margin-top:15px;text-align:center;padding-top:10px;}
-.jev_version .update_text {display:block;width:100%;}
-.jev_version .update_cur_ver {display:block; width:100%;}
+#jevents_body #ical_dialog .ical_dialog_close {
+    width: 12px !important;
+    float: right;
+    background-color: #ffffff;
+    border: solid #000000;
+    border-width: 0 0 1px 1px;
+    text-align: center;
+    margin: -10px;
+}
+
+#jevents_body #ical_dialog .ical_dialog_close a {
+    font-weight: bold;
+    text-decoration: none;
+    color: #000000;
+}
+
+#jevents_body #ical_dialog #unstyledical {
+    padding: 0;
+    margin: 0;
+}
+
+#jevents_body #ical_dialog #styledical {
+    padding: 0;
+    margin: 0;
+    display: none;
+}
+
+#jevents_body #action_dialog a {
+    text-decoration: none;
+}
+
+#jevents_body #action_dialog .close_dialog a {
+    font-weight: bold;
+    color: #000000;
+}
+
+#jevents_body #action_dialog #publish_reccur img, #jevents_body #action_dialog #edit_reccur img, #jevents_body #action_dialog #edit_event img, #jevents_body #action_dialog #edit_eventcopy img, #jevents_body #action_dialog #delete_repeat img, #jevents_body #action_dialog #delete_eventfuture img, #jevents_body #action_dialog #delete_event img {
+    width: 20px;
+    height: 20px;
+    border: 0;
+    margin-right: 1em;
+    vertical-align: middle;
+}
+
+#jevents ul.actions li {
+    list-style: none;
+    float: right;
+}
+
+.jev_version {
+    font-size: 12px;
+    border-top: 1px dashed;
+    margin-top: 15px;
+    text-align: center;
+    padding-top: 10px;
+}
+
+.jev_version .update_text {
+    display: block;
+    width: 100%;
+}
+
+.jev_version .update_cur_ver {
+    display: block;
+    width: 100%;
+}
 
 /* Backend translation links */
-span.hastranslation {background-color:#55aa55;}
+span.hastranslation {
+    background-color: #55aa55;
+}
 
 /* colour picker */
 div#jevents .jevcolour .minicolors-theme-bootstrap .minicolors-input {
-    font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
+    font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
     font-size: 14px;
     height: 19px;
     margin: 0;
     padding: 4px 6px 4px 30px;
     width: 65px;
 }
+
 /* Event editing rounded grey boxes */
 .roundedgrey {
-    background-color:#ddd;
-    opacity: 0.75;
+        opacity: 1;
 }
+
 /* Only for sites that want a max size for the popup! */
 
-@media (min-width: 1200px){
-	#myEditModal.modal {
-		left: 50%;
-		margin-left: -550px;
-		max-width: 1100px;
-	}
+@media (min-width: 1200px) {
+    #myEditModal.modal {
+        left: 50%;
+        margin-left: -550px;
+        max-width: 1100px;
+    }
 }
-@media (max-width: 1199px){
-	#myEditModal.modal {
-		left: 45%;
-		margin-left: -45%;
 
-	}
-}
-@media (max-width: 900px){
-	#myEditModal.modal {
-		width:98%;
-		left: 49%;
-		margin-left: -49%;
+@media (max-width: 1199px) {
+    #myEditModal.modal {
+        left: 45%;
+        margin-left: -45%;
 
-	}
+    }
 }
-@media (max-height: 900px){
-	#myEditModal.modal {
-		height:98%;
-		bottom:1%;
-	}
-	#myEditModal.modal.fade.in {
-		top:1%;
-	}
+
+@media (max-width: 900px) {
+    #myEditModal.modal {
+        width: 98%;
+        left: 49%;
+        margin-left: -49%;
+
+    }
+}
+
+@media (max-height: 900px) {
+    #myEditModal.modal {
+        height: 98%;
+        bottom: 1%;
+    }
+
+    #myEditModal.modal.fade.in {
+        top: 1%;
+    }
 }
 
 /** CP Accordion Styling **/
-#plugin_options .accordion-toggle fieldset.radio.btn-group{
-	margin-top: -5px;
+#plugin_options .accordion-toggle fieldset.radio.btn-group {
+    margin-top: -5px;
 }
 
-/** Fixes issues with some templates. The inline display: block; always overrides this anyhow**/
+/** Fixes issues with some templates. The inline display: block; always overrides this anyhow **/
 
-.jevbootstrap > div.action_dialogJQ, .jevbootstrap div.ical_dialogJQ  {display:none;}
+.jevbootstrap > div.action_dialogJQ, .jevbootstrap div.ical_dialogJQ {
+    display: none;
+}
 
-/* Joomla 3.7.0 backend icon fix for poor bootstrap css issues */
+/** Joomla 3.7.0 backend icon fix for poor bootstrap css issues **/
 
-.com_jevents [class^="icon-"] {
+body.admin.com_jevents [class^="icon-"] {
     background-image:none;
     vertical-align:baseline;
 }
+
+/* Fix for calendar popup width */
+.jevbootstrap .js-calendar .table {
+    width: 280px;
+}
+
+.jevbootstrap .modal > .modal-dialog {
+    left: 0;
+    right: 0;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap; /* added line */
+    border: 0;
+}
+
+/** Bootstrap Fix since J3.8.12 broke btn-group inline multi-select **/
+.jevbootstrap .jev-button-group, .jevbootstrap .jev-button-group * {
+    text-align: center;
+}
+.jevbootstrap .jev-button-group input{
+	display: none;
+}
+
+.jevbootstrap .jev-button-group input:checked + label,
+.jevbootstrap .jev-button-group input:checked + label:active {
+    color: #ffffff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    background-color: #5bb75b;
+    background-image: -moz-linear-gradient(top, #62c462, #51a351);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#62c462), to(#51a351));
+    background-image: -webkit-linear-gradient(top, #62c462, #51a351);
+    background-image: -o-linear-gradient(top, #62c462, #51a351);
+    background-image: linear-gradient(to bottom, #62c462, #51a351);
+    background-repeat: repeat-x;
+    border-color: #51a351 #51a351 #387038;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+}
+
+.jevbootstrap .jev-button-group .btn:hover, .jevbootstrap .jev-button-group .btn:focus {
+    background-position: 0;
+}
+

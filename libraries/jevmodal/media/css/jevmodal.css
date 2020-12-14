@@ -1,131 +1,158 @@
-.jevmodal-small {max-width: 300px; bottom:auto!important;padding-right: 0px!important;margin-left:-150px!important;}
-.jevmodal-small .modal-body , .jevmodal-small .modal-header {text-align: left;}
-.jevmodal-small {  text-align: left;left:25%;}
+.jevmodal-small {
+    max-width: 300px;
+    bottom: auto !important;
+    padding-right: 0px !important;
+    margin-left: -150px !important;
+}
+
+.jevmodal-small .modal-body, .jevmodal-small .modal-header {
+    text-align: left;
+}
+
+.jevmodal-small {
+    text-align: left;
+    left: 25%;
+}
+
 .jevmodal-small .modal-dialog {
-	width:auto;
-	margin:0px;
+    width: auto;
+    margin: 0px;
 }
+
 .jevmodal-medium {
-	left: 50%;
-	margin-left: -280px;
-	width:560px;
-	height:500px;
-	overflow:hidden;
+    left: 50%;
+    margin-left: -280px;
+    width: 560px;
+    height: 500px;
+    overflow: hidden;
 }
+
 .jevmodal-medium .modal-dialog {
-	height: 100%;
-	width:auto;
+    height: 100%;
+    width: auto;
 }
 
 .jevmodal-full {
-	bottom:5%;
-	position:fixed;
-	overflow: hidden;
-}
-.jevmodal-full.modal {
-	position: fixed;
-	bottom: 5%;
-	top: 5%;
-	left: 5%;
-	margin:0px;
-	z-index: 1050;
-	width: 90%;
-	background-color: #ffffff;
-	border: 1px solid #999;
-	border: 1px solid rgba(0, 0, 0, 0.3);
-	*border: 1px solid #999;
-	-webkit-border-radius: 6px;
-	-moz-border-radius: 6px;
-	border-radius: 6px;
-	outline: none;
-	-webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
-	-moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
-	box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
-	-webkit-background-clip: padding-box;
-	-moz-background-clip: padding-box;
-	background-clip: padding-box;
-	text-align: left;
-}
-.jevmodal-full.modal.fade {
-	top: -25%;
-	-webkit-transition: opacity 0.3s linear, top 0.3s ease-out;
-	-moz-transition: opacity 0.3s linear, top 0.3s ease-out;
-	-o-transition: opacity 0.3s linear, top 0.3s ease-out;
-	transition: opacity 0.3s linear, top 0.3s ease-out;
-}
-.jevmodal-full.modal.fade.in {
-	top: 5%;
-	display: block!important
-}
-.jevmodal-full body.modal {
-	padding-top: 0;
+    bottom: 5%;
+    position: fixed;
+    overflow: hidden;
 }
 
+.jevmodal-full.modal {
+    position: fixed;
+    bottom: 5%;
+    top: 5%;
+    left: 5%;
+    margin: 0px;
+    z-index: 1050;
+    width: 90%;
+    background-color: #ffffff;
+    border: 1px solid #999;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    *border: 1px solid #999;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    outline: none;
+    -webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding-box;
+    background-clip: padding-box;
+    text-align: left;
+}
+
+.jevmodal-full.modal.fade {
+    top: -25%;
+    -webkit-transition: opacity 0.3s linear, top 0.3s ease-out;
+    -moz-transition: opacity 0.3s linear, top 0.3s ease-out;
+    -o-transition: opacity 0.3s linear, top 0.3s ease-out;
+    transition: opacity 0.3s linear, top 0.3s ease-out;
+}
+
+.jevmodal-full.modal.fade.in {
+    top: 5%;
+    display: block !important
+}
+
+.jevmodal-full body.modal {
+    padding-top: 0;
+}
 
 /* Common CSS */
 .jevmodal .close {
-	float: right;
-	font-size: 20px;
-	font-weight: bold;
-	line-height: 20px;
-	color: #000000;
-	text-shadow: 0 1px 0 #ffffff;
-	opacity: 0.2;
-	filter: alpha(opacity=20);
+    float: right;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 20px;
+    color: #000000;
+    text-shadow: 0 1px 0 #ffffff;
+    opacity: 0.2;
+    filter: alpha(opacity=20);
 }
-.jevmodal  .close:hover,
-.jevmodal  .close:focus
-{
-	color: #000000;
-	text-decoration: none;
-	cursor: pointer;
-	opacity: 0.4;
-	filter: alpha(opacity=40);
+
+.jevmodal .close:hover,
+.jevmodal .close:focus {
+    color: #000000;
+    text-decoration: none;
+    cursor: pointer;
+    opacity: 0.4;
+    filter: alpha(opacity=40);
 }
-.jevmodal   button.close  {
-	padding: 0;
-	cursor: pointer;
-	background: transparent;
-	border: 0;
-	-webkit-appearance: none;
+
+.jevmodal button.close {
+    padding: 0;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    -webkit-appearance: none;
 }
-.jevmodal  .modal-header .close  {
-	margin-top: 2px;
+
+.jevmodal .modal-header .close {
+    margin-top: 2px;
 }
+
 .jevmodal .modal-footer {
-	padding: 14px 15px 15px;
-	margin-bottom: 0;
-	text-align: right;
-	background-color: #f5f5f5;
-	border-top: 1px solid #ddd;
-	-webkit-border-radius: 0 0 6px 6px;
-	-moz-border-radius: 0 0 6px 6px;
-	border-radius: 0 0 6px 6px;
-	*zoom: 1;
-	-webkit-box-shadow: inset 0 1px 0 #ffffff;
-	-moz-box-shadow: inset 0 1px 0 #ffffff;
-	box-shadow: inset 0 1px 0 #ffffff;
+    padding: 14px 15px 15px;
+    margin-bottom: 0;
+    text-align: right;
+    background-color: #f5f5f5;
+    border-top: 1px solid #ddd;
+    -webkit-border-radius: 0 0 6px 6px;
+    -moz-border-radius: 0 0 6px 6px;
+    border-radius: 0 0 6px 6px;
+    *zoom: 1;
+    -webkit-box-shadow: inset 0 1px 0 #ffffff;
+    -moz-box-shadow: inset 0 1px 0 #ffffff;
+    box-shadow: inset 0 1px 0 #ffffff;
 }
+
 .jevmodal .modal-footer:before,
-.jevmodal .modal-footer:after{
-	display: table;
-	line-height: 0;
-	content: "";
+.jevmodal .modal-footer:after {
+    display: table;
+    line-height: 0;
+    content: "";
 }
-.jevmodal .modal-footer:after{
-	clear: both;
+
+.jevmodal .modal-footer:after {
+    clear: both;
 }
-.jevmodal .modal-footer .btn + .btn{
-	margin-bottom: 0;
-	margin-left: 5px;
+
+.jevmodal .modal-footer .btn + .btn {
+    margin-bottom: 0;
+    margin-left: 5px;
 }
-.jevmodal .modal-footer .btn-group .btn + .btn{
-	margin-left: -1px;
+
+.jevmodal .modal-footer .btn-group .btn + .btn {
+    margin-left: -1px;
 }
-.jevmodal .modal-footer .btn-block + .btn-block{
-	margin-left: 0;
+
+.jevmodal .modal-footer .btn-block + .btn-block {
+    margin-left: 0;
 }
-.jevmodal .modal-header{
+
+.jevmodal .modal-header {
     float: none;
     height: 35px;
     left: 0;
@@ -134,55 +161,59 @@
     padding: 9px 15px;
     border-bottom: 1px solid #eee;
 }
+
 .jevmodal h4 {
-	margin: 0px;
-	font-family: inherit;
-	font-weight: bold;
-	font-size: 17.5px;
-	line-height: 20px;
-	color: inherit;
-	text-rendering: optimizelegibility;
-}
-.jevmodal .modal-body {
-    position:absolute;
-    left :0px;
-	right:0px;
-    bottom:10px;
-    top: 36px;
-    overflow-y: hidden;
-    max-height:none;
-    padding:10px 5px 5px 5px;
-	width:100%;
-	box-sizing:padding-box;
-}
-.jevmodal .modal-body iframe{
-	width:100%;
-	border:none;
-	height:100%;
-	max-height:100%;
-}
-.jevmodal .modal-dialog {
-    height: 100%;
-	width:auto;
-	margin:0px;
+    margin: 0px;
+    font-family: inherit;
+    font-weight: bold;
+    font-size: 17.5px;
+    line-height: 20px;
+    color: inherit;
+    text-rendering: optimizelegibility;
 }
 
-.jevmodal .modal-content{
+.jevmodal .modal-body {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    bottom: 10px;
+    top: 36px;
+    overflow-y: hidden;
+    max-height: none;
+    padding: 10px 5px 5px 5px;
+    width: 100%;
+    box-sizing: padding-box;
+}
+
+.jevmodal .modal-body iframe {
+    width: 100%;
+    border: none;
+    height: 100%;
+    max-height: 100%;
+}
+
+.jevmodal .modal-dialog {
+    height: 100%;
+    width: auto;
+    margin: 0px;
+}
+
+.jevmodal .modal-content {
     box-sizing: border-box;
     height: 100%;
     margin-left: 5px;
     position: relative;
     box-shadow: none;
-    border:none;
+    border: none;
 }
 
 /* Only for sites that want a max size for the popup! */
 
-@media (min-width: 1200px){
-	.jevmodal-full.modal {
-		left: 50%;
-		margin-left: -550px;
-		max-width: 1100px;
-	}
+@media (min-width: 1200px) {
+    .jevmodal-full.modal {
+        left: 50%;
+        margin-left: -550px;
+        max-width: 1100px;
+    }
 }
 

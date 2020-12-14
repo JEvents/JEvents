@@ -1,0 +1,124 @@
+/** Remove Headers from page **/
+#isisJsData,
+body.admin header.header {
+  display: none;
+}
+body.com_jevents {
+  margin: 0;
+  /* Specific filter */
+  /* Editing */
+}
+body.com_jevents .container-fluid {
+  padding: 0 0 0 0;
+}
+body.com_jevents #system-message-container {
+  margin: 0;
+  padding: 0;
+}
+body.com_jevents .gsl-offcanvas .gsl-offcanvas-bar fieldset legend {
+  text-transform: uppercase;
+  color: #fff;
+  line-height: 22px;
+  margin-bottom: 10px;
+  border-bottom: 0;
+}
+body.com_jevents #filter_coretype label {
+  display: inline-block;
+  margin: 0;
+  float: left;
+  padding: 0 10px;
+  min-width: 80px;
+}
+body.com_jevents #filter_coretype input[type="radio"] {
+  float: none;
+  display: inline-block;
+  margin: 4px 5px 0 0;
+}
+body.com_jevents .form-horizontal .control-label {
+  padding: 0;
+  width: 250px;
+}
+body.com_jevents #gslc.gsl-scope {
+  /* Search button */
+  /* dashboard newsfeed */
+}
+body.com_jevents #gslc.gsl-scope .js-stools .js-stools-field-list,
+body.com_jevents #gslc.gsl-scope .js-stools .js-stools-field-filter {
+  margin: 5px 0;
+}
+body.com_jevents #gslc.gsl-scope .js-stools-btn-filter.btn-primary:not(:focus) {
+  color: #fff;
+}
+body.com_jevents #gslc.gsl-scope .ysts_list_filters {
+  margin-left: -25px;
+  margin-right: 5px;
+}
+body.com_jevents #gslc.gsl-scope .js-stools-container-filters {
+  margin-left: -15px;
+  margin-right: 5px;
+}
+body.com_jevents #gslc.gsl-scope .js-stools-field-filter a.chzn-single {
+  padding: 0;
+  line-height: inherit;
+  border: none;
+  border-radius: 0;
+}
+body.com_jevents #gslc.gsl-scope .js-stools-field-filter a.chzn-single:hover {
+  text-decoration: none;
+  color: inherit;
+}
+body.com_jevents #gslc.gsl-scope .js-stools-field-filter a.chzn-single span {
+  margin-right: 0;
+}
+body.com_jevents #gslc.gsl-scope .js-stools-field-filter a.chzn-single div {
+  display: none;
+}
+body.com_jevents #gslc.gsl-scope .js-stools-field-filter div.chzn-drop {
+  width: auto;
+}
+body.com_jevents #gslc.gsl-scope .js-stools-field-filter div.chzn-drop .chzn-search input {
+  padding: 0 25px 0 5px;
+  line-height: 30px;
+  height: 30px;
+}
+body.com_jevents #gslc.gsl-scope .js-stools-field-filter div.chzn-drop ul.chzn-results li {
+  white-space: nowrap;
+}
+body.com_jevents #gslc.gsl-scope .js-stools-field-filter #filter_tag_chzn {
+  max-width: 100%;
+}
+body.com_jevents #gslc.gsl-scope .ys_newsfeed {
+  height: 60px;
+  /*overflow: hidden;*/
+  margin-left: 0px;
+}
+body.com_jevents #gslc.gsl-scope .ys_newsfeed li {
+  height: 60px;
+}
+/* Overriding template.css styling when using native Joomla layouts */
+#gslc.gsl-scope .icon-publish::before,
+#gslc.gsl-scope .icon-save::before,
+#gslc.gsl-scope .icon-ok::before,
+#gslc.gsl-scope .icon-save-new::before,
+#gslc.gsl-scope .icon-save-copy::before,
+#gslc.gsl-scope .btn-toolbar .icon-copy::before,
+#gslc.gsl-scope .icon-unpublish::before,
+#gslc.gsl-scope .icon-not-ok::before,
+#gslc.gsl-scope .icon-eye-close::before,
+#gslc.gsl-scope .icon-ban-circle::before,
+#gslc.gsl-scope .icon-minus-sign::before,
+#gslc.gsl-scope .icon-edit::before,
+#gslc.gsl-scope .btn-toolbar .icon-cancel::before {
+  color: inherit;
+}
+/* Old Stuff and com_categories, com_fields */
+h1.page-title {
+  font-size: 1.5em;
+  line-height: 50px;
+  color: #fff;
+  padding: 0 0 0 10px;
+  margin: 0;
+}
+h1.page-title span.categories {
+  display: none;
+}

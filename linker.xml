@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Usage - run  phing -f linker.xml -Dp=/var/www/je -->
+
+<project name="linker" default="link" basedir=".">
+    <property name="URI.base" value="./"/>
+    <resolvepath propertyName="URI.base" file="${URI.base}"/>
+    <property name="p" value="" />
+    <property name="component" value="com_jevents"/>
+    <property name="rootPath" value="${URI.base}"/>
+
+    <target name="link" description="Build all targets !! ">
+
+        <echo>Current Path: ${rootPath}</echo>
+        <echo>Target Path: ${p}</echo>
+
+        <!-- Delete folders, but don't worry if it fails as it could be a symbolic link -->
+        <delete dir="${p}/administrator/components/${component}/" includeemptydirs="true" verbose="true" failonerror="false" />
+        <delete dir="${p}/components/${component}/" includeemptydirs="true" verbose="true" failonerror="false" />
+        <delete dir="${p}/plugins/finder/jevents/" includeemptydirs="true" verbose="true" failonerror="false" />
+        <delete dir="${p}/plugins/system/gwejson/" includeemptydirs="true" verbose="true" failonerror="false" />
+        <delete dir="${p}/plugins/search/eventsearch/" includeemptydirs="true" verbose="true" failonerror="false" />
+        <delete dir="${p}/plugins/installer/jeventsinstaller/" includeemptydirs="true" verbose="true" failonerror="false" />
+        <delete dir="${p}/plugins/content/jevents/" includeemptydirs="true" verbose="true" failonerror="false" />
+        <delete dir="${p}/media/${component}/css/" includeemptydirs="true" verbose="true" failonerror="false" />
+        <delete dir="${p}/media/${component}/js/" includeemptydirs="true" verbose="true" failonerror="false" />
+        <delete dir="${p}/media/${component}/images/" includeemptydirs="true" verbose="true" failonerror="false" />
+        <delete dir="${p}/libraries/googl/" includeemptydirs="true" verbose="true" failonerror="false" />
+        <delete dir="${p}/libraries/jevents/jevmodal/" includeemptydirs="true" verbose="true" failonerror="false" />
+        <delete dir="${p}/libraries/jevents/jevbootstrap/" includeemptydirs="true" verbose="true" failonerror="false" />
+        <delete dir="${p}/libraries/jevents/jevtypeahead/" includeemptydirs="true" verbose="true" failonerror="false" />
+        <delete dir="${p}/modules/mod_jevents_cal/" includeemptydirs="true" verbose="true" failonerror="false" />
+        <delete dir="${p}/modules/mod_jevents_custom/" includeemptydirs="true" verbose="true" failonerror="false" />
+        <delete dir="${p}/modules/mod_jevents_filter/" includeemptydirs="true" verbose="true" failonerror="false" />
+        <delete dir="${p}/modules/mod_jevents_latest/" includeemptydirs="true" verbose="true" failonerror="false" />
+        <delete dir="${p}/modules/mod_jevents_legend/" includeemptydirs="true" verbose="true" failonerror="false" />
+        <delete dir="${p}/modules/mod_jevents_switchview/" includeemptydirs="true" verbose="true" failonerror="false" />
+
+        <!-- Create System Links -->
+        <symlink target="${rootPath}/component/admin" link="${p}/administrator/components/${component}"  overwrite="true" />
+        <symlink target="${rootPath}/component/site" link="${p}/components/${component}"  overwrite="true"/>
+        <symlink target="${rootPath}/component/media/js" link="${p}/media/${component}/js" overwrite="true" />
+        <symlink target="${rootPath}/component/media/css" link="${p}/media/${component}/css" overwrite="true" />
+        <symlink target="${rootPath}/component/media/images" link="${p}/media/${component}/images" overwrite="true" />
+        <symlink target="${rootPath}/plugins/finder/jevents" link="${p}/plugins/finder/jevents" overwrite="true" />
+        <symlink target="${rootPath}/plugins/search/" link="${p}/plugins/search/eventsearch" overwrite="true" />
+        <symlink target="${rootPath}/plugins/installer" link="${p}/plugins/installer/jeventsinstaller" overwrite="true" />
+        <symlink target="${rootPath}/plugins/jevents" link="${p}/plugins/content/jevents" overwrite="true" />
+        <symlink target="${rootPath}/plugins/gwejson" link="${p}/plugins/system/gwejson" overwrite="true" />
+        <symlink target="${rootPath}/libraries/googl" link="${p}/libraries/googl" overwrite="true" />
+        <symlink target="${rootPath}/libraries/jevmodal" link="${p}/libraries/jevents/jevmodal" overwrite="true" />
+        <symlink target="${rootPath}/libraries/bootstrap" link="${p}/libraries/jevents/bootstrap" overwrite="true" />
+        <symlink target="${rootPath}/libraries/jevtypeahead" link="${p}/libraries/jevents/jevtypeahead" overwrite="true" />
+        <symlink target="${rootPath}/modules/mod_jevents_cal" link="${p}/modules/mod_jevents_cal" overwrite="true" />
+        <symlink target="${rootPath}/modules/mod_jevents_custom" link="${p}/modules/mod_jevents_custom" overwrite="true" />
+        <symlink target="${rootPath}/modules/mod_jevents_filter" link="${p}/modules/mod_jevents_filter" overwrite="true" />
+        <symlink target="${rootPath}/modules/mod_jevents_latest" link="${p}/modules/mod_jevents_latest" overwrite="true" />
+        <symlink target="${rootPath}/modules/mod_jevents_legend" link="${p}/modules/mod_jevents_legend" overwrite="true" />
+        <symlink target="${rootPath}/modules/mod_jevents_switchview" link="${p}/modules/mod_jevents_switchview" overwrite="true" />
+
+        <!-- Language System Links -->
+        <symlink target="${rootPath}/component/admin/language/en-GB.${component}.ini" link="${p}/administrator/language/en-GB/en-GB.${component}.ini" overwrite="true" />
+        <symlink target="${rootPath}/component/admin/language/en-GB.${component}.sys.ini" link="${p}/administrator/language/en-GB/en-GB.${component}.sys.ini" overwrite="true" />
+        <symlink target="${rootPath}/component/admin/language/en-GB.${component}.menu.ini" link="${p}/administrator/language/en-GB/en-GB.${component}.menu.ini" overwrite="true" />
+        <symlink target="${rootPath}/component/admin/language/en-GB.jev_package_title.ini" link="${p}/administrator/language/en-GB/en-GB.jev_package_title.ini" overwrite="true" />
+        <symlink target="${rootPath}/component/site/language/en-GB.${component}.ini" link="${p}/language/en-GB/en-GB.${component}.ini" overwrite="true" />
+
+        <symlink target="${rootPath}/modules/mod_jevents_cal/language/en-GB/en-GB.mod_jevents_cal.ini" link="${p}/language/en-GB/en-GB.mod_jevents_cal.ini" overwrite="true" />
+        <symlink target="${rootPath}/modules/mod_jevents_cal/language/en-GB/en-GB.mod_jevents_cal.sys.ini" link="${p}/language/en-GB/en-GB.mod_jevents_cal.sys.ini" overwrite="true" />
+        <symlink target="${rootPath}/modules/mod_jevents_custom/languagev/en-GB.mod_jevents_custom.ini" link="${p}/language/en-GB/en-GB.mod_jevents_custom.ini" overwrite="true" />
+        <symlink target="${rootPath}/modules/mod_jevents_custom/language/en-GB/en-GB.mod_jevents_custom.sys.ini" link="${p}/language/en-GB/en-GB.mod_jevents_custom.sys.ini" overwrite="true" />
+        <symlink target="${rootPath}/modules/mod_jevents_filter/language/en-GB/en-GB.mod_jevents_filter.ini" link="${p}/language/en-GB/en-GB.mod_jevents_filter.ini" overwrite="true" />
+        <symlink target="${rootPath}/modules/mod_jevents_filter/language/en-GB/en-GB.mod_jevents_filter.sys.ini" link="${p}/language/en-GB/en-GB.mod_jevents_filter.sys.ini" overwrite="true" />
+        <symlink target="${rootPath}/modules/mod_jevents_latest/language/en-GB/en-GB.mod_jevents_latest.ini" link="${p}/language/en-GB/en-GB.mod_jevents_latest.ini" overwrite="true" />
+        <symlink target="${rootPath}/modules/mod_jevents_latest/language/en-GB/en-GB.mod_jevents_latest.sys.ini" link="${p}/language/en-GB/en-GB.mod_jevents_latest.sys.ini" overwrite="true" />
+        <symlink target="${rootPath}/modules/mod_jevents_legend/language/en-GB/en-GB.mod_jevents_legend.ini" link="${p}/language/en-GB/en-GB.mod_jevents_legend.ini" overwrite="true" />
+        <symlink target="${rootPath}/modules/mod_jevents_legend/language/en-GB/en-GB.mod_jevents_legend.sys.ini" link="${p}/language/en-GB/en-GB.mod_jevents_legend.sys.ini" overwrite="true" />
+        <symlink target="${rootPath}/modules/mod_jevents_switchview/language/en-GB/en-GB.mod_jevents_switchview.ini" link="${p}/language/en-GB/en-GB.mod_jevents_switchview.ini" overwrite="true" />
+        <symlink target="${rootPath}/modules/mod_jevents_switchview/language/en-GB/en-GB.mod_jevents_switchview.sys.ini" link="${p}/language/en-GB/en-GB.mod_jevents_switchview.sys.ini" overwrite="true" />
+
+        <symlink target="${rootPath}/plugins/finder/jevents/language/en-GB.plg_finder_jevents.ini" link="${p}/administrator/language/en-GB/en-GB.plg_finder_jevents.ini" overwrite="true" />
+        <symlink target="${rootPath}/plugins/finder/jevents/language/en-GB.plg_finder_jevents.sys.ini" link="${p}/administrator/language/en-GB/en-GB.plg_finder_jevents.sys.ini" overwrite="true" />
+        <symlink target="${rootPath}/plugins/gwejson/language/en-GB/en-GB.plg_system_gwejson.ini" link="${p}/administrator/language/en-GB/en-GB.plg_system_gwejson.ini" overwrite="true" />
+        <symlink target="${rootPath}/plugins/gwejson/language/en-GB/en-GB.plg_system_gwejson.sys.ini" link="${p}/administrator/language/en-GB/en-GB.plg_system_gwejson.sys.ini" overwrite="true" />
+        <symlink target="${rootPath}/plugins/installer/language/en-GB/en-GB.plg_installer_jeventsinstaller.ini" link="${p}/administrator/language/en-GB/en-GB.plg_installer_jeventsinstaller.ini" overwrite="true" />
+        <symlink target="${rootPath}/plugins/installer/language/en-GB/en-GB.plg_installer_jeventsinstaller.sys.ini" link="${p}/administrator/language/en-GB/en-GB.plg_installer_jeventsinstaller.sys.ini" overwrite="true" />
+        <symlink target="${rootPath}/plugins/jevents/language/en-GB/en-GB.plg_content_jevents.ini" link="${p}/administrator/language/en-GB/en-GB.plg_content_jevents.ini" overwrite="true" />
+        <symlink target="${rootPath}/plugins/jevents/language/en-GB/en-GB.plg_content_jevents.sys.ini" link="${p}/administrator/language/en-GB/en-GB.plg_content_jevents.sys.ini" overwrite="true" />
+        <symlink target="${rootPath}/plugins/search/language/en-GB/en-GB.plg_search_eventsearch.ini" link="${p}/administrator/language/en-GB/en-GB.plg_search_eventsearch.ini" overwrite="true" />
+        <symlink target="${rootPath}/plugins/search/language/en-GB/en-GB.plg_search_eventsearch.ini" link="${p}/administrator/language/en-GB/en-GB.plg_search_eventsearch.sys.ini" overwrite="true" />
+
+    </target>
+</project>

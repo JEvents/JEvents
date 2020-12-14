@@ -2,8 +2,8 @@
 <metadata>
 	<view title="COM_JEVENTS_EVENT_DETAIL_DEFAULT_TITLE">
 		<message><![CDATA[COM_JEVENTS_EVENT_DETAIL_DEFAULT_TITLE]]></message>
-		<options var="layout" >
-			<option value='detail' name="COM_JEVENTS_EVENT_DETAIL_TITLE" msg="COM_JEVENTS_EVENT_DETAIL_DESC" />
-		</options>				
+		<options var="layout">
+			<option value='detail' name="COM_JEVENTS_EVENT_DETAIL_TITLE" msg="COM_JEVENTS_EVENT_DETAIL_DESC"/>
+		</options>
 	</view>
 </metadata>

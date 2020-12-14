@@ -11,26 +11,27 @@
  */
 
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 // record what is running - used by the filters
-$registry	= JRegistry::getInstance("jevents");
-$registry->set("jevents.activeprocess","mod_jevents_legend");
+$registry = JevRegistry::getInstance("jevents");
+$registry->set("jevents.activeprocess", "mod_jevents_legend");
 $registry->set("jevents.moduleid", $module->id);
 $registry->set("jevents.moduleparams", $params);
 
-require_once (dirname(__FILE__).'/'.'helper.php');
+require_once(dirname(__FILE__) . '/' . 'helper.php');
 
 $jevhelper = new modJeventsLegendHelper();
 
-$theme = JEV_CommonFunctions::getJEventsViewName();
+$theme    = JEV_CommonFunctions::getJEventsViewName();
 $modtheme = $params->get("com_calViewName", $theme);
-if ($modtheme=="" || $modtheme=="global"){
-	$modtheme=$theme;
+if ($modtheme == "" || $modtheme == "global")
+{
+	$modtheme = $theme;
 }
-$theme=$modtheme;
+$theme = $modtheme;
 
-$viewclass = $jevhelper->getViewClass($theme, 'mod_jevents_legend',$theme.'/'."legend", $params);
-$modview = new $viewclass($params, $module->id);
+$viewclass          = $jevhelper->getViewClass($theme, 'mod_jevents_legend', $theme . '/' . "legend", $params);
+$modview            = new $viewclass($params, $module->id);
 $modview->jevlayout = $theme;
 echo $modview->displayCalendarLegend();

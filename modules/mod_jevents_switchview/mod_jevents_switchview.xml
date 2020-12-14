@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="2.5.0" method="upgrade" client="site">
 	<name>MOD_JEV_SWITCH_VIEW_TITLE</name>
-	<creationDate>February 2018</creationDate>
+	<creationDate>JEVENTS_DATE</creationDate>
 	<author>GWE Systems Ltd</author>
-	<copyright>(C) 2009-2018 GWE Systems Ltd, 2006-2008 JEvents Project Group</copyright>	  
-	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>	  
+	<copyright>(C) 2009-JEVENTS_COPYRIGHT GWESystems Ltd, 2006-2008 JEvents Project Group</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail></authorEmail>
 	<authorUrl>http://www.jevents.net</authorUrl>
-	<version>3.4.44</version>
+	<version>JEVENTS_VERSION</version>
 	<description>MOD_JEV_SWITCH_VIEW_DESC</description>
 	<files>
 		<filename module="mod_jevents_switchview">mod_jevents_switchview.php</filename>
@@ -18,17 +18,21 @@
 	</languages>
 	<config>
 		<fields name="params">
-			<fieldset name="basic"  addfieldpath="/administrator/components/com_jevents/fields/">
-				<field name="cache" type="radio" class="btn-group" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
+			<fieldset name="basic" addfieldpath="/administrator/components/com_jevents/fields/">
+				<field name="cache" type="radio" class="btn-group" default="0" label="Enable Cache"
+				       description="Select whether to cache the content of this module">
 					<option value="0">No</option>
 					<option value="1">Yes</option>
 				</field>
-				<field name="moduleclass_sfx" type="text" default="" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
-				<field name="show_preview" type="radio" class="btn-group" default="0" label="Show Preview" description="Template preview is to be shown">
+				<field name="moduleclass_sfx" type="text" default="" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+				       description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC"/>
+				<field name="show_preview" type="radio" class="btn-group" default="0" label="Show Preview"
+				       description="Template preview is to be shown">
 					<option value="0">Hide</option>
 					<option value="1">Show</option>
 				</field>
-				<field name="target_itemid" type="jevmenu" default="" label="Target Menu Item" description="Menu item for target page" />
+				<field name="target_itemid" type="jevmenu" default="" label="Target Menu Item"
+				       description="Menu item for target page"/>
 			</fieldset>
 		</fields>
 	</config>

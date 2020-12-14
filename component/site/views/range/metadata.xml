@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- $Id: metadata.xml 1962 2011-04-26 13:32:33Z geraintedwards $ --> 
+<!-- $Id: metadata.xml 1962 2011-04-26 13:32:33Z geraintedwards $ -->
 <metadata>
 	<view title="Date Range">
 		<message><![CDATA[Monthly View]]></message>
-		<options var="layout" >
-			<option value='listevents' name="COM_JEVENTS_DATE_RANGE_DEFAULT_TITLE" msg="COM_JEVENTS_DATE_RANGE_DEFAULT_DESC" />
-		</options>		
-		<options var="task" >
-			<option value='range.listevents' name="COM_JEVENTS_DATE_RANGE_DEFAULT_TITLE" msg="COM_JEVENTS_DATE_RANGE_DEFAULT_DESC" />
+		<options var="layout">
+			<option value='listevents' name="COM_JEVENTS_DATE_RANGE_DEFAULT_TITLE"
+			        msg="COM_JEVENTS_DATE_RANGE_DEFAULT_DESC"/>
+		</options>
+		<options var="task">
+			<option value='range.listevents' name="COM_JEVENTS_DATE_RANGE_DEFAULT_TITLE"
+			        msg="COM_JEVENTS_DATE_RANGE_DEFAULT_DESC"/>
 		</options>
 	</view>
 	<state>
 		<name>JEvents</name>
 		<description>Date Range List of Events</description>
-		<params >
+		<params>
 		</params>
 	</state>
 </metadata>

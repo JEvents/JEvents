@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Usage - run
+    phing -f newlinker.xml -Dp=/var/www/siteroot
+    because =
+    -D allows us to pass parameter 'p' in
+-->
+
+<project name="newlinker" default="link">
+
+    <property name="rootdir" value="./"/>
+    <resolvepath propertyName="rootdir" file="${rootdir}"/>
+
+    <property name="p" value="" />
+    <property name="component" value="com_jevents"/>
+
+    <target name="link" description="Build all links !! ">
+
+        <if>
+            <equals arg1="${p}" arg2="" />
+            <then>
+                <echo>Target Path is empty</echo>
+            </then>
+        </if>
+        <echo>Current Path: ${rootdir}</echo>
+        <echo>Target Path: ${p}</echo>
+
+        <foreach param="filename" absparam="absfilename" target="processdirectory" >
+            <fileset dir="${rootdir}">
+                <type type="dir" />
+                <include name="**"></include>
+                <exclude name="**/.svn/**"></exclude>
+            </fileset>
+        </foreach>
+
+    </target>
+
+    <target name="processdirectory">
+        <property name="newfilename" value="${absfilename}">
+            <filterchain>
+                <replaceregexp>
+                    <regexp pattern="testxx" replace="test${xx}" ignoreCase="true"/>
+                </replaceregexp>
+            </filterchain>
+        </property>
+
+        <echo msg="I can do something to : ${absfilename} or ${filename}" />
+    </target>
+
+
+
+    <!-- ============================================  -->
+    <!-- Target: build                                 -->
+    <!-- ============================================  -->
+
+    <target name="build" depends="prepare">
+        <phingcall target="build-package" >
+            <property name="xx" value="xu" />
+            <property name="xxlabel" value="No update server specified" />
+        </phingcall>
+
+        <phingcall target="build-standalone" >
+            <property name="xx" value="xu" />
+            <property name="xxlabel" value="Standalone No update server specified" />
+        </phingcall>
+
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: prepare                               -->
+    <!-- ============================================  -->
+    <target name="prepare">
+        <echo msg="Making directory ./build" />
+        <mkdir dir="${builddir}" />
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: sedreplace                            -->
+    <!-- ============================================  -->
+    <target name="sedreplace" description="Replace UPDATESERVERS in files !! ">
+        <xmlproperty file="${builddir}/package/pkg_test${xx}package.xml" />
+        <exec command="find ${builddir}/${sedfolder}/ -type f \( -iname '*.php' -o -iname '*.js' -o -iname '*.xml'  -o -iname '*.css' \) -exec sed -i 's/JEVENTS_VERSION/${extension.version}/' '{}' +;" />
+        <exec command="find ${builddir}/${sedfolder}/ -type f \( -iname '*.xml' \) -exec sed -i 's/UPDATESERVERS/ /' '{}' +;" />
+        <exec command="find ${builddir}/${sedfolder}/ -type f \( -iname '*.php' -o -iname '*.js' -o -iname '*.xml'  -o -iname '*.css' \) -exec sed -i 's/testxx/test${xx}/mg' '{}' +;" />
+        <exec command="find ${builddir}/${sedfolder}/ -type f \( -iname '*.php' -o -iname '*.js' -o -iname '*.xml'  -o -iname '*.css' \) -exec sed -i 's/Testxx/Test ${xxlabel}/mg' '{}' +;" />
+        <exec command="find ${builddir}/package/ -type f \( -iname '*.php' -o -iname '*.js' -o -iname '*.xml'  -o -iname '*.css' \) -exec sed -i 's/testxx/test${xx}/mg' '{}' +;" />
+        <exec command="find ${builddir}/package/ -type f \( -iname '*.php' -o -iname '*.js' -o -iname '*.xml'  -o -iname '*.css' \) -exec sed -i 's/Testxx/Test ${xxlabel}/mg' '{}' +;" />
+    </target>
+
+    <!-- ==================================================  -->
+    <!-- Target: JEvents Generic Folder    -->
+    <!-- ==================================================  -->
+    <target name="build-generic" description="Build Generic Folder ">
+        <echo msg="Building Generic Folder ${genericname}..."/>
+
+        <copy todir="${builddir}/${genericfolder}">
+            <fileset dir="../${genericfolder}">
+                <include name="**"></include>
+                <exclude name="**/.svn/**"></exclude>
+                <excludesfile name="excludedfiles.build"></excludesfile>
+            </fileset>
+        </copy>
+
+        <!-- A way to replace the content of the individual files -->
+        <!--
+        <reflexive>
+            <fileset dir="${builddir}/${genericfolder}">
+                <include name="**"></include>
+                <exclude name="**/.svn/**"></exclude>
+                <excludesfile name="excludedfiles.build"></excludesfile>
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp pattern="testxx" replace="test${xx}44" ignoreCase="false"/>
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+        -->
+
+        <foreach param="filename" absparam="absfilename" target="renamedirectory" >
+            <fileset dir="${builddir}/${genericfolder}">
+                <type type="dir" />
+                <include name="**"></include>
+                <exclude name="**/.svn/**"></exclude>
+                <excludesfile name="excludedfiles.build"></excludesfile>
+            </fileset>
+        </foreach>
+
+        <foreach param="filename" absparam="absfilename" target="renamefiles" >
+            <fileset dir="${builddir}/${genericfolder}">
+                <type type="file" />
+                <include name="**"></include>
+                <exclude name="**/.svn/**"></exclude>
+                <excludesfile name="excludedfiles.build"></excludesfile>
+            </fileset>
+        </foreach>
+
+        <phingcall target="sedreplace">
+            <property name="xx" value="${xx}" />
+            <property name="sedfolder" value="${genericfolder}" />
+        </phingcall>
+
+        <fileset dir="${builddir}/${genericfolder}" id="pluginZip">
+            <include name="**"/>
+            <excludesfile name="excludedfiles.build"></excludesfile>
+        </fileset>
+        <zip ignorelinks="true" destfile="${builddir}/${zipfile}">
+            <fileset refid="pluginZip"/>
+        </zip>
+    </target>
+
+    <target name="renamedirectory">
+        <property name="newfilename" value="${absfilename}">
+            <filterchain>
+                <replaceregexp>
+                    <regexp pattern="testxx" replace="test${xx}" ignoreCase="true"/>
+                </replaceregexp>
+            </filterchain>
+        </property>
+        <if>
+            <not>
+                <equals arg1="${absfilename}" arg2="${newfilename}" />
+            </not>
+            <then>
+                <trycatch>
+                    <try>
+                        <move file="${absfilename}" tofile="${newfilename}" />
+                        <echo msg="moved file: ${absfilename} to ${newfilename}" />
+                    </try>
+                    <catch>
+                        <echo msg="unable to move file: ${absfilename} to ${newfilename}" />
+                    </catch>
+                </trycatch>
+
+            </then>
+        </if>
+    </target>
+
+    <target name="renamefiles">
+        <property name="newfilename" value="${absfilename}">
+            <filterchain>
+                <replaceregexp>
+                    <regexp pattern="testxx" replace="test${xx}" ignoreCase="true"/>
+                </replaceregexp>
+            </filterchain>
+        </property>
+        <if>
+            <not>
+                <equals arg1="${absfilename}" arg2="${newfilename}" />
+            </not>
+            <then>
+                <trycatch>
+                    <try>
+                        <move file="${absfilename}" tofile="${newfilename}" />
+                        <echo msg="moved file: ${absfilename} to ${newfilename}" />
+                    </try>
+                    <catch>
+                        <!-- This is usually a parent folder that has already been rewritten! -->
+                    </catch>
+                </trycatch>
+
+            </then>
+        </if>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: Build Everything   -->
+    <!-- ============================================  -->
+    <target name="build-everything" description="Build Everything">
+        <echo msg="Building Everything ..." />
+
+        <phingcall target="build-generic">
+            <property name="genericname" value="Test${xx} Component" />
+            <property name="genericfolder" value="component" />
+            <property name="zipfile" value="test${xx}component.zip" />
+        </phingcall>
+
+        <phingcall target="build-generic">
+            <property name="genericname" value="Test${xx} Translation" />
+            <property name="genericfolder" value="file" />
+            <property name="zipfile" value="test${xx}translation.zip" />
+        </phingcall>
+
+        <phingcall target="build-generic">
+            <property name="genericname" value="Test${xx} Module" />
+            <property name="genericfolder" value="module" />
+            <property name="zipfile" value="test${xx}module.zip" />
+        </phingcall>
+
+        <phingcall target="build-generic">
+            <property name="genericname" value="Test${xx} Plugin" />
+            <property name="genericfolder" value="plugin" />
+            <property name="zipfile" value="test${xx}plugin.zip" />
+        </phingcall>
+
+        <phingcall target="build-generic">
+            <property name="genericname" value="Test${xx} Template" />
+            <property name="genericfolder" value="template" />
+            <property name="zipfile" value="test${xx}template.zip" />
+        </phingcall>
+
+    </target>
+
+    <target name="build-package"  depends="prepare">
+
+        <echo msg="Creating Installation Package..." />
+
+        <copy todir="${builddir}/package">
+            <fileset dir="../package">
+                <include name="**"></include>
+                <exclude name="**/.svn/**"></exclude>
+            </fileset>
+        </copy>
+
+        <move file="${builddir}/package/pkg_testxxpackage.xml" tofile="${builddir}/package/pkg_test${xx}package.xml" />
+
+        <phingcall target="build-everything" >
+            <property name="xx" value="${xx}" />
+        </phingcall>
+
+        <xmlproperty file="${builddir}/package/pkg_test${xx}package.xml" />
+
+        <copy file="${builddir}/test${xx}component.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/test${xx}translation.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/test${xx}module.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/test${xx}plugin.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/test${xx}template.zip" todir="${builddir}/package/" />
+
+        <fileset dir="${builddir}/package/" id="packagedir">
+            <include name="**"></include>
+            <exclude name="**/.svn/**"></exclude>
+        </fileset>
+
+        <delete file="${builddir}/../test${xx}package.zip"  verbose="false" failonerror="false" />
+
+        <zip ignorelinks="true" destfile="${builddir}/../test${xx}package.zip">
+            <fileset refid="packagedir" />
+        </zip>
+
+        <delete dir="${builddir}" includeemptydirs="true" verbose="false" failonerror="true" />
+
+    </target>
+
+    <target name="build-standalone"  depends="prepare">
+
+        <echo msg="Creating Standalone installers ..." />
+
+        <copy todir="${builddir}/package">
+            <fileset dir="../package">
+                <include name="**"></include>
+                <exclude name="**/.svn/**"></exclude>
+            </fileset>
+        </copy>
+
+        <move file="${builddir}/package/pkg_testxxpackage.xml" tofile="${builddir}/package/pkg_test${xx}package.xml" />
+
+        <phingcall target="build-everything" >
+            <property name="xx" value="${xx}" />
+        </phingcall>
+
+        <copy file="${builddir}/test${xx}component.zip" todir="${builddir}/../" />
+        <copy file="${builddir}/test${xx}translation.zip" todir="${builddir}/../" />
+        <copy file="${builddir}/test${xx}module.zip" todir="${builddir}/../" />
+        <copy file="${builddir}/test${xx}module.zip" todir="${builddir}/../" />
+        <copy file="${builddir}/test${xx}plugin.zip" todir="${builddir}/../" />
+        <copy file="${builddir}/test${xx}template.zip" todir="${builddir}/../" />
+
+        <delete dir="${builddir}" includeemptydirs="true" verbose="false" failonerror="true" />
+
+    </target>
+
+</project>

@@ -3,11 +3,17 @@
  * @package     JEvents
  * @subpackage  com_jjevents
  *
- * @copyright   Copyright (C) 2017 - 2017 GWE Systems Ltd. All rights reserved.
+ * @copyright   Copyright (C) 2017 - -JEVENTS_COPYRIGHT GWESystems Ltd. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
+
+use Joomla\CMS\MVC\Model\FormModel;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Factory;
 
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
@@ -17,15 +23,15 @@ jimport('joomla.filesystem.file');
  *
  * @since  3.4.29
  */
-
-class CustomcssModelCustomcss extends JModelForm
+class CustomcssModelCustomcss extends FormModel
 {
 	public function getForm($data = array(), $loadData = true)
 	{
-		$app = JFactory::getApplication();
+
+		$app = Factory::getApplication();
 
 		// Codemirror or Editor None should be enabled
-		$db = $this->getDbo();
+		$db    = $this->getDbo();
 		$query = $db->getQuery(true)
 			->select('COUNT(*)')
 			->from('#__extensions as a')
@@ -40,7 +46,7 @@ class CustomcssModelCustomcss extends JModelForm
 
 		if ((int) $state < 1)
 		{
-			$app->enqueueMessage(JText::_('COM_TEMPLATES_ERROR_EDITOR_DISABLED'), 'warning');
+			$app->enqueueMessage(Text::_('COM_TEMPLATES_ERROR_EDITOR_DISABLED'), 'warning');
 		}
 
 		// Get the form.
@@ -54,8 +60,64 @@ class CustomcssModelCustomcss extends JModelForm
 		return $form;
 	}
 
+	public function save($data)
+	{
+
+		jimport('joomla.filesystem.file');
+		$app = Factory::getApplication();
+
+		$fileName    = 'jevcustom.css';
+		$filepath    = JPATH_ROOT . '/components/com_jevents/assets/css/' . $fileName;
+		$srcfilepath = $filepath . '.new';
+
+		if (!File::exists($filepath))
+		{
+			//Create the new file so we have a base file to save to
+			Jfile::copy($srcfilepath, $filepath);
+		}
+
+		$filePath = Path::clean($filepath);
+
+		$user = get_current_user();
+		chown($filePath, $user);
+		Path::setPermissions($filePath, '0644');
+
+		// Try to make the template file writable.
+		if (!is_writable($filePath))
+		{
+			$app->enqueueMessage(Text::_('COM_JEVENTS_CUSTOM_CSS_FILE_NOT_WRITEABLE'), 'warning');
+			$app->enqueueMessage(Text::sprintf('COM_JEVENTS_CUSTOM_CSS_FILE_NOT_WRITEABLE_PERMISSIONS_ISSUE', Path::getPermissions($filePath)), 'warning');
+
+			if (!Path::isOwner($filePath))
+			{
+				$app->enqueueMessage(Text::spritf('COM_JEVENTS_CUSTOM_CSS_FILE_CHECK_OVWNERSHIP', $filePath), 'warning');
+			}
+
+			return false;
+		}
+
+		// Make sure EOL is Unix
+		$data['source'] = str_replace(array("\r\n", "\r"), "\n", $data['source']);
+
+		$return = File::write($filePath, $data['source']);
+
+		if (!$return)
+		{
+			$app->enqueueMessage(Text::sprintf('COM_JEVENTS_CUSTOM_CSS_FILE_FAILED_TO_SAVE', $fileName), 'error');
+
+			return false;
+		}
+
+		// Get the extension of the changed file. - May use later with a compiler.
+		$explodeArray = explode('.', $fileName);
+		$ext          = end($explodeArray);
+
+		return true;
+	}
+
 	protected function loadFormData()
 	{
+
 		$data = $this->getSource();
 
 		$this->preprocessData('com_jevents.customcss', $data);
@@ -73,14 +135,17 @@ class CustomcssModelCustomcss extends JModelForm
 	public function &getSource()
 	{
 
-		$app = JFactory::getApplication();
+		$app  = Factory::getApplication();
 		$item = new stdClass;
 
 		//Define a check for both locations
-		if (JFile::exists(JEVHelper::CustomCSSFile())) {
-			$new_filePath = JPath::check(JEVHelper::CustomCSSFile());
-		} else {
-			$new_filePath = JPath::check(JEVHelper::CustomCSSFile() . '.new');
+		if (File::exists(JEVHelper::CustomCSSFile()))
+		{
+			$new_filePath = Path::check(JEVHelper::CustomCSSFile());
+		}
+		else
+		{
+			$new_filePath = Path::check(JEVHelper::CustomCSSFile() . '.new');
 		}
 
 		try
@@ -89,68 +154,15 @@ class CustomcssModelCustomcss extends JModelForm
 		}
 		catch (Exception $e)
 		{
-			$app->enqueueMessage(JText::_('COM_JEVENTS_CUSTOM_CSS_SOURCE_NOT_FOUND'), 'error');
+			$app->enqueueMessage(Text::_('COM_JEVENTS_CUSTOM_CSS_SOURCE_NOT_FOUND'), 'error');
+
 			return;
 		}
 
 		//We know the file already exists as we try/catch above. Load it in.
 		$item->filename = 'jevcustom.css';
-		$item->source = file_get_contents($filePath);
+		$item->source   = file_get_contents($filePath);
 
 		return $item;
-	}
-
-	public function save($data)
-	{
-		jimport('joomla.filesystem.file');
-		$app = JFactory::getApplication();
-
-		$fileName = 'jevcustom.css';
-		$filepath       = JPATH_ROOT . '/components/com_jevents/assets/css/' . $fileName;
-		$srcfilepath    = $filepath . '.new';
-
-		if (!JFile::exists($filepath))
-		{
-			//Create the new file so we have a base file to save to
-			Jfile::copy($srcfilepath, $filepath);
-		}
-
-		$filePath = JPath::clean($filepath);
-
-		$user = get_current_user();
-		chown($filePath, $user);
-		JPath::setPermissions($filePath, '0644');
-
-		// Try to make the template file writable.
-		if (!is_writable($filePath))
-		{
-			$app->enqueueMessage(JText::_('COM_JEVENTS_CUSTOM_CSS_FILE_NOT_WRITEABLE'), 'warning');
-			$app->enqueueMessage(JText::sprintf('COM_JEVENTS_CUSTOM_CSS_FILE_NOT_WRITEABLE_PERMISSIONS_ISSUE', JPath::getPermissions($filePath)), 'warning');
-
-			if (!JPath::isOwner($filePath))
-			{
-				$app->enqueueMessage(JText::spritf('COM_JEVENTS_CUSTOM_CSS_FILE_CHECK_OVWNERSHIP', $filePath), 'warning');
-			}
-
-			return false;
-		}
-
-		// Make sure EOL is Unix
-		$data['source'] = str_replace(array("\r\n", "\r"), "\n", $data['source']);
-
-		$return = JFile::write($filePath, $data['source']);
-
-		if (!$return)
-		{
-			$app->enqueueMessage(JText::sprintf('COM_JEVENTS_CUSTOM_CSS_FILE_FAILED_TO_SAVE', $fileName), 'error');
-
-			return false;
-		}
-
-		// Get the extension of the changed file. - May use later with a compiler.
-		$explodeArray = explode('.', $fileName);
-		$ext = end($explodeArray);
-
-		return true;
 	}
 }

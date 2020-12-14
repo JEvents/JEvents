@@ -2,6 +2,27 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+#### 10-07-2018 - Tony Partridge
+ * Added language strings for Full Calendar Theme
+ * added {{DESCRIPTION_ADDSLASHES}} shortcode 
+ 
+#### 24-04-2018 - Tony Partridge
+### Fixed
+ * Accessibility improvements to the category select and pagination limit list.
+ 
+#### 02-03-2018 - Tony Partridge
+### Fixed
+ * event list being filtered after cancelling event creation i.e. events filtered by published state.
+
+#### 27-02-2018 - Tony Partridge
+### Fixed
+ * Saving bug resulting in call on null / rp_id() / location()
+ * Event and event repeat selector not working due to incorrect JSession Check
+ * Emptying trashed events
+ * Joomla 3.6.x fatal error when trying to load Joomla 3.7 new calendar. 
+ * List of Events view return blank on Repeat Summary
+ * Set calendar popup width to be 300px; a nice size rather than 100%.
+ 
 #### 17-02-2018 Geraint Edwards
  * JEvents 3.4.44
  * Authorisation check on save should check creator and editor permissions
@@ -91,7 +112,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
  
 #### 11-05-2017 Tony Partridge
 * JEvents 3.4.38 
-* Fixed issue with JInputFilter saving on pre J3.7.1
+* Fixed issue with inputFilter saving on pre J3.7.1
 
 #### 10-05-2017 Geraint Edwards
 * JEvents 3.4.37
@@ -104,7 +125,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Added published_fv to the publish/unpublish links within Manage Events View, this keeps the manage events filter state i.e. all events, published or un-published.
 
 #### 03-05-2017 Tony Partridge
-*Fixed issue with 504 Gateway timeout when saving on some servers, caused but using JRequest, replaced with JInput
+*Fixed issue with 504 Gateway timeout when saving on some servers, caused but using JRequest, replaced with input
 
 ####26-04-2017 Geraint Edwards
 * JEvents 3.4.36 

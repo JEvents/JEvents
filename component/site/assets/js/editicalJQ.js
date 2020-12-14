@@ -3,7 +3,7 @@
  *
  * @version     $Id: editicalJQ.js 3576 2012-05-01 14:11:04Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008--JEVENTS_COPYRIGHT GWESystems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -20,7 +20,7 @@ Array.prototype.associate = function (keys) {
   return result;
 };
 // from Mootools
-// 
+//
 // my version
 Date.prototype.clearTime =  function(){
 	this.setHours(0);
@@ -34,7 +34,7 @@ var eventEditDateFormat = "Y-m-d";
 //Date.defineParser(eventEditDateFormat.replace("d","%d").replace("m","%m").replace("Y","%Y"));
 
 Date.prototype.jeventsParseDate = function (from ){
-				
+
 		var keys = {
 			d: /[0-2]?[0-9]|3[01]/,
 			H: /[01]?[0-9]|2[0-3]/,
@@ -50,7 +50,7 @@ Date.prototype.jeventsParseDate = function (from ){
 
 		keys.m = keys.I;
 		keys.S = keys.M;
-		
+
 		var parsed = [];
 		var re = eventEditDateFormat;
 		re = re.replace(/\((?!\?)/g, '(?:') // make all groups non-capturing
@@ -63,7 +63,7 @@ Date.prototype.jeventsParseDate = function (from ){
 				return '(' + p.source + ')';
 			}
 		);
-		
+
 		re = new RegExp('^' + re + '$', 'i');
 		var handler = function(bits){
 			bits = bits.slice(1).associate(parsed);
@@ -79,9 +79,9 @@ Date.prototype.jeventsParseDate = function (from ){
 
 			return date;
 		}
-		
+
 		var bits = re.exec(from);
-		return (bits) ? (parsed = handler(bits)) : false;		
+		return (bits) ? (parsed = handler(bits)) : false;
 
 	}
 
@@ -172,29 +172,6 @@ function checkValidTime(time){
 	parts[1] = parts[1].substring(parts[1].length-2);
 	time.value = parts[0]+":"+parts[1];
 	if (document.adminForm.view12Hour.checked){
-		/*
-		if (time.id=="end_time" || time.id=="end_12h"){
-			pm   = document.getElementById("endPM");
-			am   = document.getElementById("endAM");
-			el = jevjq("#end_ampm");
-		}
-		else {
-			pm   = document.getElementById("startPM");
-			am   = document.getElementById("startAM");
-			el = jevjq("#start_ampm");
-		}
-
-		var hour = parseInt(parts[0]);
-		if (hour>12){
-			hour -= 12;
-			pm.checked = true;
-		}
-		else {
-			am.checked = true;
-		}
-		el.trigger("chosen:updated");
-		time.value = hour+":"+parts[1];
-		*/
 		time.value = parts[0]+":"+parts[1];
 	}
 	else {
@@ -371,8 +348,14 @@ function check12hTime(time12h){
 }
 
 function checkDates(elem){
+	// only respond to calendar date selections
+	if (!calendarDateClicked)
+	{
+		return;
+	}
+
 	forceValidDate(elem);
-	setEndDateWhenNotRepeating();
+	setEndDateWhenNotRepeating(elem);
 	checkEndTime();
 	checkUntil();
 	updateRepeatWarning();
@@ -391,7 +374,7 @@ function reformatStartEndDates() {
 	startDate = new Date();
 	startDate = startDate.dateFromYMD(start_date.value);
 	start_date2.value = startDate.getFullYear()+"-"+(startDate.getMonth()+1)+"-"+startDate.getDate();
-	
+
 	end_date = document.getElementById("publish_down");
 	end_date2 = document.getElementById("publish_down2");
 	endDate = new Date();
@@ -409,11 +392,11 @@ function checkUntil(){
 
 	start_date = document.getElementById("publish_up");
 	startDate = new Date();
-	startDate = startDate.dateFromYMD(start_date.value);	
+	startDate = startDate.dateFromYMD(start_date.value);
 
 	until_date = document.getElementById("until");
 	untilDate = new Date();
-	untilDate = untilDate.dateFromYMD(until_date.value);	
+	untilDate = untilDate.dateFromYMD(until_date.value);
 
 	if (untilDate<startDate){
 		until_date.value = start_date.value;
@@ -421,24 +404,36 @@ function checkUntil(){
 
 }
 
-function setEndDateWhenNotRepeating(){
+function setEndDateWhenNotRepeating(elem){
+	var id = elem[0].id;
 	var norepeat = document.getElementById("NONE");
 	start_date = document.getElementById("publish_up");
 	end_date = document.getElementById("publish_down");
 
 	startDate = new Date();
-	startDate = startDate.dateFromYMD(start_date.value);	
-	
-	endDate = new Date();
-	endDate = endDate.dateFromYMD(end_date.value);	
+	startDate = startDate.dateFromYMD(start_date.value);
 
-	// if the end date is not visible then always set the end date to match the start date
-	enddate_container = jQuery('.jevenddate');
-	if (enddate_container.css("display")=="none"){
+	defaultStartDate = new Date();
+    defaultStartDate = startDate.dateFromYMD(start_date.defaultValue);
+
+	endDate = new Date();
+	endDate = endDate.dateFromYMD(end_date.value);
+
+    defaultEndDate = new Date();
+    defaultEndDate = endDate.dateFromYMD(end_date.defaultValue);
+
+	/** If the end date is not visible then always set the end date to match the start date **/
+	enddate_container = document.querySelector('.jevenddate');
+	if (enddate_container.style.display == "none"){
 		end_date.value = start_date.value;
 	}
 
-	if (startDate>endDate){
+	/** New way of handling publidh_up and publish_down calendar inputs **/
+
+	if (id === 'publish_up' && startDate != defaultStartDate) {
+        end_date.value = start_date.value;
+        normaliseElem(end_date);
+	} else if (startDate > endDate) {
 		end_date.value = start_date.value;
 		normaliseElem(end_date);
 	}
@@ -482,6 +477,10 @@ function toggleAMPM(elem)
 
 function toggleAllDayEvent()
 {
+	if (typeof document.adminForm.allDayEvent == 'undefined')
+	{
+		return;
+	}
 	var checked = document.adminForm.allDayEvent.checked;
 	if (checked) document.adminForm.noendtime.checked = false;
 	var noendchecked = document.adminForm.noendtime.checked;
@@ -522,7 +521,7 @@ function toggleAllDayEvent()
 		sam.disabled=true;
 		spm.disabled=true;
 
-		jQuery('.jevstarttime').css('display','none');
+		document.querySelector('.jevstarttime').style.display = 'none';
 
 		var sd = temp.getYMD();
 		temp = temp.dateFromYMD(enddate.value);
@@ -540,8 +539,8 @@ function toggleAllDayEvent()
 			eam.disabled=true;
 			epm.disabled=true;
 
-			jQuery('.jevendtime').css('display','none');
-            jQuery('.jevnoeendtime').css('display', 'none');
+			document.querySelector('.jevendtime').style.display = 'none';
+			document.querySelector('.jevnoeendtime').style.display = 'none';
 
 		}
 	}
@@ -558,7 +557,7 @@ function toggleAllDayEvent()
 		sam.disabled=false;
 		spm.disabled=false;
 
-		jQuery('.jevstarttime').css('display','inline-block');
+		document.querySelector('.jevstarttime').style.display = 'inline-block';
 
 		if (!noendchecked){
 			hide_end.disabled=false;
@@ -577,8 +576,8 @@ function toggleAllDayEvent()
 			eam.disabled=false;
 			epm.disabled=false;
 
-			jQuery('.jevendtime').css('display','inline-block');
-			jQuery('.jevnoeendtime').css('display','inline-block');
+			document.querySelector('.jevendtime').style.display = 'inline-block';
+			document.querySelector('.jevnoeendtime').style.display = 'inline-block';
 
 		}
 		else {
@@ -634,7 +633,7 @@ function toggleNoEndTime(){
 		eam.disabled=true;
 		epm.disabled=true;
 
-		jQuery('.jevendtime').css('display','none');
+		document.querySelector('.jevendtime').style.display = 'none';
 
 		checkTime(endtime);
 	}
@@ -648,7 +647,7 @@ function toggleNoEndTime(){
 		eam.disabled=false;
 		epm.disabled=false;
 
-		jQuery('.jevendtime').css('display','inline-block');
+		document.querySelector('.jevendtime').style.display = 'inline-block';
 
 	}
 
@@ -734,7 +733,7 @@ function toggleWhichBy(wb)
 function toggleFreq(freq , setup)
 {
 	var currentFreq = jevjq("input[name=freq]:checked").val().toUpperCase();
-	
+
 	var myDiv = document.getElementById('interval_div');
 	var byyearday = document.getElementById('byyearday');
 	var byweekno = document.getElementById('byweekno');
@@ -806,10 +805,10 @@ function toggleFreq(freq , setup)
 				byday.style.display="block";
 				document.getElementById('jevbd').checked="checked";
 				// needed for after switching to month repeat and then toi wekely
-				jQuery("#jevbd").closest('fieldset').css("background-color","#ffffff");
-				jQuery("#jevbd").parent().css("background-color","#ffffff");
-				jQuery("#byday").css("background-color","#ffffff");
-				jQuery("#jevbd").closest('fieldset').css("opacity","1");
+				document.getElementById("jevbd").closest('fieldset').style.backgroundColor = "#ffffff";
+				document.getElementById("jevbd").parentNode.style.backgroundColor = "#ffffff";
+				document.getElementById("byday").style.backgroundColor = "#ffffff";
+				document.getElementById("jevbd").closest('fieldset').style.opacity = 1;
 
 				//toggleWhichBy("byday");
 				weekofmonth.style.display="none";
@@ -843,7 +842,7 @@ function toggleFreq(freq , setup)
 				byday.style.display="none";
 				byirregular.style.display="block";
 				document.getElementById('interval_div').style.display = "none";
-				
+
 				weekofmonth.style.display="none";
 			}
 			break;
@@ -854,7 +853,7 @@ function toggleFreq(freq , setup)
 		if (document.adminForm.updaterepeats){
 			document.adminForm.updaterepeats.value = 1;
 		}
-		
+
 	}
 }
 
@@ -863,8 +862,8 @@ function fixRepeatDates(checkYearDay){
 	starttimeparts = start_time.value.split(":");
 	start_date = document.getElementById("publish_up");
 	startDate = new Date();
-	startDate = startDate.dateFromYMD(start_date.value);	
-	
+	startDate = startDate.dateFromYMD(start_date.value);
+
 	// special case where we first press yearly repeat - should check for 28 Feb
 	if (checkYearDay && (document.adminForm.evid.value==0 || document.adminForm.updaterepeats.value==1)) {
 		yearStart = new Date(startDate.getFullYear(),0,0,0,0,0,0);
@@ -916,11 +915,27 @@ function fixRepeatDates(checkYearDay){
 	// variable bd is reserved in MSIE 8 ?
 	var bd = document.adminForm["weekdays[]"];
 	for(var day=0;day<bd.length;day++){
-		if (parseInt(jQuery("#evid").val())==0) {
+		if (parseInt(document.getElementById('evid').value)==0) {
 			bd[day].checked=false;
+			// Make sure label is highlighted
+			try {
+				changeHiddenInput(bd[day]);
+			}
+			catch (e)
+			{
+
+			}
 		}
 	}
-	bd[startDate.getDay()].checked=true;
+	document.getElementById('cb_wd' + startDate.getDay()).checked=true;
+	// Make sure label is highlighted
+	try {
+		changeHiddenInput(document.getElementById('cb_wd' + startDate.getDay()));
+	}
+	catch (e)
+	{
+
+	}
 
 	end_date = document.getElementById("publish_down");
 	endDate = new Date();
@@ -952,8 +967,8 @@ function toggleWeekNums(newstate){
 function resetYMD(){
 	start_date = document.getElementById("publish_up");
 	startDate = new Date();
-	startDate = startDate.dateFromYMD(start_date.value);	
-	
+	startDate = startDate.dateFromYMD(start_date.value);
+
 	document.adminForm.year.value = startDate.getFullYear();
 	document.adminForm.month.value = startDate.getMonth()+1;
 	document.adminForm.day.value = startDate.getDate();
@@ -977,12 +992,12 @@ function updateRepeatWarning(){
 
 function toggleWeeknumDirection () {
     if (jevjq('#weekofmonth input[name="bd_direction"]').attr('checked')){
-        jevjq('.weeknameforward').css('display','none');
-        jevjq('.weeknameback').css('display','inline');
+        jevjq('.weeknameforward').style.display = 'none';
+        jevjq('.weeknameback').style.display = 'inline';
     }
     else {
-        jevjq('.weeknameforward').css('display','inline');
-        jevjq('.weeknameback').css('display','none');
+        jevjq('.weeknameforward').style.display = 'inline';
+        jevjq('.weeknameback').style.display = 'inline';
     }
 }
 
@@ -1027,7 +1042,7 @@ function checkConflict(checkurl, pressbutton, jsontoken, client, repeatid,  redi
 	requestObject.formdata = jevjq(document.adminForm).formToJson();
 
 	var doRedirect = (typeof redirect =='undefined') ?  1 : redirect;
-	
+
 	requestObject.redirect = doRedirect;
 	var hasConflicts = false;
 
@@ -1051,7 +1066,7 @@ function checkConflict(checkurl, pressbutton, jsontoken, client, repeatid,  redi
 			if (doRedirect) submit2(pressbutton);
 			else hasConflicts = true;
 		}
-		if (json.error){
+		else if (json.error){
 			try {
 				eval(json.error);
 			}
@@ -1088,16 +1103,45 @@ function checkConflict(checkurl, pressbutton, jsontoken, client, repeatid,  redi
 	});
 }
 
+var calendarDateClicked = true;
+
 // fix for auto-rotating radio boxes in firefox !!!
 // see http://www.ryancramer.com/journal/entries/radio_buttons_firefox/
-jevjq(document).on('ready', function() {
+document.addEventListener('DOMContentLoaded', function() {
+
 	try {
 		if(Browser.firefox) {
 			jevjq("#adminForm").attr("autocomplete",'off');
 		}
 	}
-	catch(e){	
+	catch(e){
 	}
+
+	if (typeof JoomlaCalendar == 'undefined') {
+		return;
+	}
+
+	// Fix JoomlaCalendar too
+	JoomlaCalendar.prototype._handleDayMouseDownOLD = JoomlaCalendar.prototype._handleDayMouseDown;
+	JoomlaCalendar.prototype._handleDayMouseDown = function (ev) {
+		var el = ev.currentTarget;
+		if (typeof el.navtype !== "undefined" && (el.navtype === -2 || el.navtype === -1 || el.navtype === 1 || el.navtype === 2)) {
+			calendarDateClicked = false;
+		}
+		this._handleDayMouseDownOLD(ev);
+		calendarDateClicked = true;
+	};
+	// Method to close/hide the calendar
+	JoomlaCalendar.prototype.closeOLD = JoomlaCalendar.prototype.close;
+	JoomlaCalendar.prototype.close = function () {
+		calendarDateClicked = true;
+		this.closeOLD();
+	};
+	JoomlaCalendar.prototype.showOLD = JoomlaCalendar.prototype.show;
+	JoomlaCalendar.prototype.show = function () {
+		calendarDateClicked = true;
+		this.showOLD();
+	};
 
 	if (jevjq('#view12Hour')){
 		jevjq('#view12Hour').on('click', function(){toggleView12Hour();});
@@ -1114,13 +1158,13 @@ jevjq(document).on('ready', function() {
 	jevjq('#cu_until').on('mousedown', function(){enableRepeatUntil();});
 	jevjq('#cu_count').on('click', function(){enableRepeatCount();});
 	jevjq('#cu_count').on('mousedown', function(){enableRepeatCount();});
-        
+
         // setup rounded grey response
         jevjq('#byyearday, #bymonth, #byweekno, #bymonthday, #byday, #byirregular, #bysetpos').on('click', function() {
             jevjq('#'+this.id).find('legend input[name="whichby"]').attr('checked', true);
             toggleWhichBy(this.id);
         });
-                    
+
 });
 
 function enableRepeatUntil() {
@@ -1135,6 +1179,7 @@ function enableRepeatCount() {
 
 // Hide empty tabs and their links
 function hideEmptyJevTabs() {
+		// Old version
 		// empty tabs - hide the tab link
 		var tabs = jQuery("#myEditTabsContent .tab-pane");
 		if (tabs.length){
@@ -1151,21 +1196,43 @@ function hideEmptyJevTabs() {
 		}
 		// tab link with no matching tab - hide the link
 		var tablinks = jevjq("#myEditTabs.nav-tabs li a");
+
 		if (tablinks.length){
 			tablinks.each(function(index, tablink) {
-				var href = jQuery(tablink).prop('href');
+				// use attr instead of prop here because prop messes up special characters!
+				var href = jQuery(tablink).attr('href');
 				href = href.substr(href.indexOf('#'));
-				var tab = jevjq("#myEditTabsContent "+href);
-				if (!tab.length) {
+				var tab = document.querySelector("#myEditTabsContent "+href);
+				if (!tab) {
 					tablink.innerHTML="xx";
 					jQuery(tablink).css("display","none");
 				}
 			})
 		}
+		// new version
+		var uitabs = document.querySelectorAll("#adminForm .gsl-switcher > li");
+		var uitablabels = document.querySelectorAll("#adminForm #myEditTabs > li");
+
+		if (uitabs.length)
+		{
+			uitabs.forEach(function(tab, index)
+			{
+				if(tab.innerHTML.trim().length == 0)
+				{
+					uitablabels[index].style.display = 'none';
+				}
+			});
+		}
 	}
 
 function selectIrregularDate() {
-	var selectElem = jQuery("#irregularDates");
+	var calpopup = document.querySelector(".irregularDateSelector .js-calendar");
+
+	// Trap month to month movement!
+	if (calpopup.style.display !== "none")
+	{
+		return;
+	}
 
 	var repeatDate = new Date();
 	repeatDate  = repeatDate.dateFromYMD(jQuery("#irregular").val());
@@ -1176,8 +1243,59 @@ function selectIrregularDate() {
 		"text" : jQuery("#irregular").val(),
 		"selected" : true
 	});
+	var selectElem = jQuery("#irregularDates");
 	selectElem.append(option);
 	//selectElem.chosen();
 	selectElem.trigger("chosen:updated");
 	selectElem.trigger("liszt:updated");
+}
+
+// Set up multi-catid sorting
+window.addEventListener('load', function() {
+	var catids = document.querySelector('.jevcategory select[name="catid[]"]') || document.querySelector('.jevcategory select[name="catid"]');
+	if(catids){
+		var sortable = document.querySelector('.jevcategory #catid_chzn .chzn-choices');
+		if (sortable)
+		{
+			sortable.setAttribute('data-sortable',
+				Sortable.create(sortable, {
+					onEnd: reorderCategorySelections,
+				})
+			);
+		}
+		catids.addEventListener('change', reorderCategorySelections);
+	}
+});
+
+function reorderCategorySelections()
+{
+    // Make sure we fetch these fresh each time!
+	var catids = document.querySelector('.jevcategory select[name="catid[]"]') || document.querySelector('.jevcategory select[name="catid"]');
+    var chosenCatids = document.querySelector('.jevcategory #catid_chzn .chzn-choices');
+
+    if (!chosenCatids)
+    	return;
+
+    // find all the selected categories
+    var ccats = chosenCatids.querySelectorAll('a');
+
+    var selectedCats = [];
+    for (var c = 0; c < ccats.length; c++)
+    {
+        var cat = ccats[c];
+        var catindex = cat.dataset.optionArrayIndex;
+        var options = catids.querySelectorAll('option');
+        selectedCats.push(options[catindex]);
+    }
+
+    for (var sc = 0; sc < selectedCats.length; sc ++)
+    {
+    	var target = catids.querySelector('option:nth-child(' + (sc + 1) + ')');
+		var newNode = selectedCats[sc];
+		catids.insertBefore(newNode, target);
+    }
+
+    jQuery(catids).trigger("chosen:updated");
+    // old style version - still needed!
+	jQuery(catids).trigger("liszt:updated");
 }

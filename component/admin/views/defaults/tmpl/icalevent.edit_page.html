@@ -1,24 +1,27 @@
 {{Message:MESSAGE}}
 <div align="left" class="adminform form-horizontal">
 	{{Tab Start:TABSTART#JEV_TAB_COMMON}}
-	<table cellpadding="5" cellspacing="2" border="0"  class="adminform" id="jevadminform">
+	<table cellpadding="5" cellspacing="2" border="0" class="adminform" id="jevadminform">
 		<tr>
 			<td align="left">
-				{{Title Label:TITLE_LBL}} :</td>
+				{{Title Label:TITLE_LBL}} :
+			</td>
 			<td>{{Title:TITLE}}</td>
-			<td align="left" {{Priority:PRIORITY# #class="jev_none"}}>
-				{{Priority Label:PRIORITY_LBL}} :</td>
+			<td align="left" {{Priority:PRIORITY# #class="jev_none" }}>
+				{{Priority Label:PRIORITY_LBL}} :
+			</td>
 			<td>{{Priority:PRIORITY}}</td>
 
 		</tr>
-		<tr {{Creator:CREATOR# class="jevcreator" #class="jevcreator jev_none"}}>
+		<tr {{Creator:CREATOR# class="jevcreator" #class="jevcreator jev_none" }}>
 			<td align="left">
-				{{Creator label:CREATOR_LBL}}:</td>
+				{{Creator label:CREATOR_LBL}}:
+			</td>
 			<td colspan="3">
 				{{Creator:CREATOR}}
 			</td>
-		</tr>			
-		<tr {{Calendar:ICAL# class="jevical" #class="jevical jev_none"}}>
+		</tr>
+		<tr {{Calendar:ICAL# class="jevical" #class="jevical jev_none" }}>
 			<td align="left">
 				{{Calendar label:ICAL_LBL}}
 			</td>
@@ -26,7 +29,7 @@
 				{{Calendar:ICAL}}
 			</td>
 		</tr>
-		<tr {{Lock Event:LOCK# class="jevlock" #class="jevlock jev_none"}}>
+		<tr {{Lock Event:LOCK# class="jevlock" #class="jevlock jev_none" }}>
 			<td align="left">
 				{{Lock Event label:LOCK_LBL}}
 			</td>
@@ -34,40 +37,40 @@
 				{{Lock Event:LOCK}}
 			</td>
 		</tr>
-		<tr {{Category:CATEGORY# class="jevcategory" #class="jevcategory jev_none"}}>
-			<td valign="top" align="left" >
+		<tr {{Category:CATEGORY# class="jevcategory" #class="jevcategory jev_none" }}>
+			<td valign="top" align="left">
 				{{Category label:CATEGORY_LBL}}
 			</td>
-			<td style="width:200px"  >
+			<td style="width:200px">
 				{{Category:CATEGORY}}
 			</td>
 		</tr>
-		<tr {{Access:ACCESS# class="jevaccess" #class="jevaccess jev_none"}}>
-			<td valign="top" align="left" >
+		<tr {{Access:ACCESS# class="jevaccess" #class="jevaccess jev_none" }}>
+			<td valign="top" align="left">
 				{{Access label:ACCESS_LBL}}
 			</td>
-			<td style="width:200px"  >
+			<td style="width:200px">
 				{{Access:ACCESS}}
 			</td>
 		</tr>
-		<tr {{Status:STATE# class="jevstate" #class="jevstate jev_none"}}>
-			<td valign="top" align="left" >
+		<tr {{Status:STATE# class="jevstate" #class="jevstate jev_none" }}>
+			<td valign="top" align="left">
 				{{State label:STATE_LBL}}
 			</td>
-			<td style="width:200px"  >
+			<td style="width:200px">
 				{{State:STATE}}
 			</td>
 		</tr>
-		<tr {{Event Colour:COLOUR# class="jevcolour" #class="jevcolour jev_none"}}>
-			<td valign="top" align="left" >
+		<tr {{Event Colour:COLOUR# class="jevcolour" #class="jevcolour jev_none" }}>
+			<td valign="top" align="left">
 				{{Colour label:COLOUR_LBL}}
 			</td>
-			<td style="width:200px"  >
+			<td style="width:200px">
 				{{Event Colour:COLOUR}}
 			</td>
 		</tr>
-		
-		<tr  class="jev_description">
+
+		<tr class="jev_description">
 			<td valign="top" align="left">
 				{{Description label:DESCRIPTION_LBL}}
 			</td>
@@ -76,8 +79,8 @@
 			</td>
 		</tr>
 
-		<tr  class="jeveditlocation">
-			<td width="130" align="left"  valign="top">
+		<tr class="jeveditlocation">
+			<td width="130" align="left" valign="top">
 				{{LOCATION label:LOCN_LBL}}
 			</td>
 			<td colspan="3">
@@ -85,7 +88,7 @@
 			</td>
 		</tr>
 
-		<tr  class="jev_contact">
+		<tr class="jev_contact">
 			<td valign="top" align="left">
 				{{Contact label:CONTACT_LBL}}
 			</td>
@@ -102,7 +105,7 @@
 				{{Extra:EXTRA}}
 			</td>
 		</tr>
-		
+
 		<tr>
 			<td colspan="4"><strong>Example of single custom field</strong></td>
 		</tr>
@@ -110,10 +113,10 @@
 			<td>{{Custom joomlauser2 label:customfield_joomlauser2_lbl}}</td>
 			<td>{{Custom joomlauser2:customfield_joomlauser2}}</td>
 		</tr>
-		
+
 	</table>
-	<table cellpadding="5" cellspacing="2" border="0"  class="adminform" id="jevadminform">
-		{{Custom Fields:CUSTOMFIELDS}} 
+	<table cellpadding="5" cellspacing="2" border="0" class="adminform" id="jevadminform">
+		{{Custom Fields:CUSTOMFIELDS}}
 	</table>
 
 	{{Tab Start:TABSTART#JEV_TAB_CALENDAR}}
@@ -124,7 +127,7 @@
 
 	{{Tab Start:TABSTART#Custom Fields Tab Two}}
 	{{Tab 2:CUSTOM_2}}
-        
+
 	{{Tab Start:TABSTART#JEV_ATTENDANCE}}
 	{{Attendance Tab:JEV_ATTENDANCE}}
 

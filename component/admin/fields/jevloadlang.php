@@ -5,7 +5,7 @@
  *
  * @version     $Id: jevboolean.php 1331 2010-10-19 12:35:49Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-JEVENTS_COPYRIGHT GWESystems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -13,17 +13,21 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormHelper;
+
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 jimport('joomla.form.helper');
-JFormHelper::loadFieldClass('spacer');
+FormHelper::loadFieldClass('spacer');
 
 /**
  * JevModule Load Language class for the JEvents Component
  *
  * @package      JEvents.fields
  * @subpackage   modules
- * @since      1.6
+ * @since        1.6
  */
 class JFormFieldJevloadlang extends JFormFieldSpacer
 {
@@ -31,14 +35,16 @@ class JFormFieldJevloadlang extends JFormFieldSpacer
 
 	public function getinput()
 	{
-		include_once (JPATH_ADMINISTRATOR."/components/com_jevents/jevents.defines.php");
-		$lang = jfactory::getLanguage();
+
+		include_once(JPATH_ADMINISTRATOR . "/components/com_jevents/jevents.defines.php");
+		$lang = Factory::getLanguage();
 
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 		$lang->load("mod_jevents_latest", JPATH_SITE);
 		$lang->load("mod_jevents_latest", JPATH_SITE, "en-GB");
-		
-		if (JText::_("JEV_LATEST_OVERRIDE_LAYOUT")=="JEV_LATEST_OVERRIDE_LAYOUT"){
+
+		if (Text::_("JEV_LATEST_OVERRIDE_LAYOUT") == "JEV_LATEST_OVERRIDE_LAYOUT")
+		{
 			$lang->load("mod_jevents_latest", JPATH_SITE, "en-GB");
 		}
 

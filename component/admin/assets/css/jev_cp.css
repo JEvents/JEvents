@@ -10,3 +10,17 @@
 
 #jevents.span12 {margin-left: 0px;}
 div#sidebar.sidebar {clear:both;}
+
+.adminlist .row1, .adminlist .row0 {
+    border-left: 1px solid #DDD;
+    border-right: 1px solid #DDD;
+}
+
+.adminlist > tr:last-child {
+    border-bottom: 1px solid #DDD;
+    border-right: 1px solid #DDD;
+    border-left: 1px solid #DDD;
+}
+.customlayouts {padding: 10px 30px;}
+
+.adminlist foot tr {background-color:grey;}

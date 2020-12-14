@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fields name="filter">
+		<field
+			name="search"
+			type="text"
+			label="COM_JEVENTS_SEARCH_FILTER"
+			description="COM_JEVENTS_SEARCH_FILTER_DESC"
+			hint="JSEARCH_FILTER"
+		/>
+
+		<field
+				name="catid"
+		/>
+
+		<field
+				name="showpast"
+		/>
+
+		<field
+				name="icsfile"
+		/>
+
+		<field
+				name="created_by"
+		/>
+
+		<field
+				name="state"
+				type="status"
+				label="JPUBLISHED_FILTER"
+				description="COM_CONTENT_FILTER_PUBLISHED_DESC"
+				onchange="this.form.submit();"
+				class="gsl-select"
+				default=""
+		>
+			<option value="">JOPTION_SELECT_PUBLISHED</option>
+		</field>
+
+		<field
+				name="access"
+				type="accesslevel"
+				label="JOPTION_FILTER_ACCESS"
+				description="JOPTION_FILTER_ACCESS_DESC"
+				multiple="false"
+				class="accessLevels gsl-select"
+				onchange="this.form.submit();"
+		>
+			<option value="">JOPTION_SELECT_ACCESS</option>
+		</field>
+
+	</fields>
+	<fields name="list">
+		<field
+			name="fullordering"
+			type="list"
+			class="gsl-select"
+			label="COM_CONTENT_LIST_FULL_ORDERING"
+			description="COM_CONTENT_LIST_FULL_ORDERING_DESC"
+			onchange="this.form.submit();"
+			default=""
+			>
+			<option value="">JGLOBAL_SORT_BY</option>
+			<option value="a.title ASC">COM_JEVENTS_SORT_TITLE_ASC</option>
+			<option value="a.title DESC">COM_JEVENTS_SORT_TITLE_DESC</option>
+			<option value="a.starttime ASC">COM_JEVENTS_SORT_STARTTIME_ASC</option>
+			<option value="a.starttime DESC">COM_JEVENTS_SORT_STARTTIME_DESC</option>
+			<option value="a.endtime ASC">COM_JEVENTS_SORT_ENDTIME_ASC</option>
+			<option value="a.endtime DESC">COM_JEVENTS_SORT_ENDTIME_DESC</option>
+		</field>
+
+		<field
+			name="limit"
+			type="limitbox"
+			class="gsl-select"
+			default="25"
+			label="COM_CONTENT_LIST_LIMIT"
+			description="COM_CONTENT_LIST_LIMIT_DESC"
+			onchange="this.form.submit();"
+		/>
+	</fields>
+</form>

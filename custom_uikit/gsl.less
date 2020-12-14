@@ -1,0 +1,72 @@
+// Import UIkit default theme (or uikit.less with only core styles)
+// @import "../src/less/uikit.theme.less";
+
+//
+// Core
+//
+
+//@import "../src/less/components/_import.less";
+
+//
+// Theme
+//
+
+@import "../src/less/theme/_import.less";
+
+
+// Theme
+@import "gsl/_import.less";
+
+// Yarn Command to build Less / Namespaced package is: yarn compile && yarn prefix -p gsl && yarn scope -s 'gsl-scope'
+
+// We can set overrides below.
+@navbar-nav-item-height:                        56px;
+
+@global-medium-gutter:                          20px;
+
+//@table-row-active-background:                   #FFF;
+//@global-muted-background:                       #FFF;
+
+@global-font-size:                              14px;
+@global-line-height:                            1.2;
+
+
+.hook-width-misc() {
+  .uk-child-width-1-12  > *, .uk-width-1-12  { width: ~'calc(100% * 1  / 12.001)'; }
+  .uk-child-width-5-12  > *, .uk-width-5-12  { width: ~'calc(100% * 5  / 12.001)'; }
+  .uk-child-width-7-12  > *, .uk-width-7-12  { width: ~'calc(100% * 7  / 12.001)'; }
+  .uk-child-width-11-12 > *, .uk-width-11-12 { width: ~'calc(100% * 11 / 12.001)'; }
+
+  /* Phone landscape and bigger */
+  @media (min-width: @breakpoint-small) {
+    .uk-child-width-1-12\@s  > *, .uk-width-1-12\@s  { width: ~'calc(100% * 1  / 12.001)'; }
+    .uk-child-width-5-12\@s  > *, .uk-width-5-12\@s  { width: ~'calc(100% * 5  / 12.001)'; }
+    .uk-child-width-7-12\@s  > *, .uk-width-7-12\@s  { width: ~'calc(100% * 7  / 12.001)'; }
+    .uk-child-width-11-12\@s > *, .uk-width-11-12\@s { width: ~'calc(100% * 11 / 12.001)'; }
+  }
+
+  /* Tablet landscape and bigger */
+  @media (min-width: @breakpoint-medium) {
+    .uk-child-width-1-12\@m  > *, .uk-width-1-12\@m  { width: ~'calc(100% * 1  / 12.001)'; }
+    .uk-child-width-5-12\@m  > *, .uk-width-5-12\@m  { width: ~'calc(100% * 5  / 12.001)'; }
+    .uk-child-width-7-12\@m  > *, .uk-width-7-12\@m  { width: ~'calc(100% * 7  / 12.001)'; }
+    .uk-child-width-11-12\@m > *, .uk-width-11-12\@m { width: ~'calc(100% * 11 / 12.001)'; }
+  }
+
+  /* Desktop and bigger */
+  @media (min-width: @breakpoint-large) {
+    .uk-child-width-1-12\@l  > *, .uk-width-1-12\@l  { width: ~'calc(100% * 1  / 12.001)'; }
+    .uk-child-width-5-12\@l  > *, .uk-width-5-12\@l  { width: ~'calc(100% * 5  / 12.001)'; }
+    .uk-child-width-7-12\@l  > *, .uk-width-7-12\@l  { width: ~'calc(100% * 7  / 12.001)'; }
+    .uk-child-width-11-12\@l > *, .uk-width-11-12\@l { width: ~'calc(100% * 11 / 12.001)'; }
+  }
+
+  /* Large screen and bigger */
+  @media (min-width: @breakpoint-xlarge) {
+    .uk-child-width-1-12\@xl  > *, .uk-width-1-12\@xl  { width: ~'calc(100% * 1  / 12.001)'; }
+    .uk-child-width-5-12\@xl  > *, .uk-width-5-12\@xl  { width: ~'calc(100% * 5  / 12.001)'; }
+    .uk-child-width-7-12\@xl  > *, .uk-width-7-12\@xl  { width: ~'calc(100% * 7  / 12.001)'; }
+    .uk-child-width-11-12\@xl > *, .uk-width-11-12\@xl { width: ~'calc(100% * 11 / 12.001)'; }
+  }
+
+}

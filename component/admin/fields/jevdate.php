@@ -4,7 +4,7 @@
  *
  * @version     $Id: jevdate.php 1300 2010-10-13 14:49:16Z royceharding $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-JEVENTS_COPYRIGHT GWESystems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -13,19 +13,22 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Form\FormHelper;
+
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 jimport('joomla.form.helper');
-JFormHelper::loadFieldClass('calendar');
+FormHelper::loadFieldClass('calendar');
 
 class JFormFieldJEVDate extends JFormFieldCalendar
 {
-	public $type = 'JEVDate';  // must be public as per JFormFieldCalendar!! 
-	
+	public $type = 'JEVDate';  // must be public as per JFormFieldCalendar!!
+
 	public function getInput()
 	{
-		JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
-		JEVHelper::ConditionalFields( $this->element,$this->form->getName());
+
+		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
+		JEVHelper::ConditionalFields($this->element, $this->form->getName());
 		parent::getInput();
 	}
 

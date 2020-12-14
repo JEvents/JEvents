@@ -1,72 +1,84 @@
-<?php 
+<?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
 use Joomla\String\StringHelper;
 
-$cfg	= JEVConfig::getInstance();
-$jinput = JFactory::getApplication()->input;
+$cfg    = JEVConfig::getInstance();
+$app    = Factory::getApplication();
+$input  = $app->input;
 
-if( 0 == $this->evid) {
+if (0 == $this->evid)
+{
 
-	$Itemid = $jinput->getInt('Itemid', '');
-	JFactory::getApplication()->redirect( JRoute::_('index.php?option=' . JEV_COM_COMPONENT. "&task=day.listevents&year=$this->year&month=$this->month&day=$this->day&Itemid=$Itemid",false));
+	$Itemid = $input->getInt('Itemid', '');
+	$app->redirect(Route::_('index.php?option=' . JEV_COM_COMPONENT . "&task=day.listevents&year=$this->year&month=$this->month&day=$this->day&Itemid=$Itemid", false));
+
 	return;
 }
 
-if (is_null($this->data)){
-	
-	JFactory::getApplication()->redirect(JRoute::_("index.php?option=".JEV_COM_COMPONENT."&Itemid=$this->Itemid",false), JText::_("JEV_SORRY_UPDATED"));
+if (is_null($this->data))
+{
+
+	$app->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$this->Itemid", false), Text::_("JEV_SORRY_UPDATED"));
 }
 
-if( array_key_exists('row',$this->data) ){
-	$row=$this->data['row'];
-
-	// Dynamic Page Title
-	$this->setPageTitle($row->title());
+if (array_key_exists('row', $this->data))
+{
+	$row = $this->data['row'];
 
 	$mask = $this->data['mask'];
 	$page = 0;
 
-	$cfg	 = JEVConfig::getInstance();
+	$cfg = JEVConfig::getInstance();
 
-	$dispatcher	= JEventDispatcher::getInstance();
-	$params =new JRegistry(null);
+	$params     = new JevRegistry(null);
 
-	if (isset($row)) {
-		$customresults = $dispatcher->trigger( 'onDisplayCustomFields', array( &$row) );
-		$templated =  $this->loadedFromTemplate('icalevent.detail_body', $row, $mask);
-		if (!$templated && count($customresults)>0){
+	if (isset($row))
+	{
+		$customresults = $app->triggerEvent('onDisplayCustomFields', array(&$row));
+
+		// Dynamic Page Title
+		$this->setPageTitle($row->title());
+
+		$templated = $this->loadedFromTemplate('icalevent.detail_body', $row, $mask);
+		if (!$templated && count($customresults) > 0)
+		{
 			?>
 			<div class="jev_evdt">
-			<?php
-			foreach ($customresults as $result) {
-				if (is_string($result) && JString::strlen($result)>0){
-					echo "<div>".$result."</div>";
+				<?php
+				foreach ($customresults as $result)
+				{
+					if (is_string($result) && StringHelper::strlen($result) > 0)
+					{
+						echo "<div>" . $result . "</div>";
+					}
 				}
-			}
-			?>
-				</div>
+				?>
+			</div>
 			<?php
 		}
-		$results = $dispatcher->trigger( 'onAfterDisplayContent', array( &$row, &$params, $page ) );
-		echo trim( implode( "\n", $results ) );
+		$results = $app->triggerEvent('onAfterDisplayContent', array(&$row, &$params, $page));
+		echo trim(implode("\n", $results));
 	}
 	else
 	{ ?>
-        <table class="w100" border="0" cellspacing="0" cellpadding="0">
-            <tr>
-                <td class="contentheading vtop"  align="left"><?php echo JText::_('JEV_REP_NOEVENTSELECTED'); ?></td>
-            </tr>
-        </table>
-        <?php
-    }
-    /*
+		<table class="w100" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<td class="contentheading vtop" align="left"><?php echo Text::_('JEV_REP_NOEVENTSELECTED'); ?></td>
+			</tr>
+		</table>
+		<?php
+	}
+	/*
 	if(!($mask & MASK_BACKTOLIST)) { ?>
 		<p align="center">
-			<a href="javascript:window.history.go(-1);" class="jev_back btn" title="<?php echo JText::_('JEV_BACK'); ?>"><?php echo JText::_('JEV_BACK'); ?></a>
+			<a href="javascript:window.history.go(-1);" class="jev_back btn" title="<?php echo Text::_('JEV_BACK'); ?>"><?php echo Text::_('JEV_BACK'); ?></a>
 		</p>
 		<?php
 	}
-    */
+	*/
 
 }

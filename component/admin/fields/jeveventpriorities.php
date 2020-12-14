@@ -2,47 +2,66 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
-class JFormFieldJeveventpriorities extends JFormField
+class FormFieldJeveventpriorities extends FormField
 {
 	/**
 	 * The form field type.
 	 *
-	 * @var		string
-	 * @since	1.6
+	 * @var        string
+	 * @since    1.6
 	 */
 	protected $type = 'Jeveventpriorities';
 
 	/**
 	 * Method to get the field input markup.
 	 *
-	 * @return	string	The field input markup.
-	 * @since	1.6
+	 * @return    string    The field input markup.
+	 * @since    1.6
 	 */
 	protected function getInput()
-	{	
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		$showpriority = $params->get("showpriority", 0);
+	{
 
-		JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
-		JEVHelper::ConditionalFields( $this->element,$this->form->getName());
+		$params         = ComponentHelper::getParams(JEV_COM_COMPONENT);
+		$showpriority   = $params->get("showpriority", 0);
+		$showPriorityTo = (int) $params->get('showPriorityACL', 0);
+
+		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
+		JEVHelper::ConditionalFields($this->element, $this->form->getName());
+
+		$isAuth = JEVHelper::isEventPublisher(true);
+		if ($showPriorityTo === 1)
+		{
+			$isAuth = JEVHelper::isEventCreator(true);
+		}
+		else if ($showPriorityTo === 2)
+		{
+			$isAuth = JEVHelper::isEventEditor();
+		}
 
 		// only those who can publish globally can set priority field
-		if ($showpriority && JEVHelper::isEventPublisher(true))
+		if ($showpriority && $isAuth)
 		{
 			$list = array();
 			for ($i = 0; $i < 10; $i++)
 			{
-				$list[] = JHTML::_('select.option', $i, $i, 'val', 'text');
+				$list[] = HTMLHelper::_('select.option', $i, $i, 'val', 'text');
 			}
-			return  JHTML::_('select.genericlist', $list, 'priority', "style='width:50px'", 'val', 'text', $this->value);
+
+			return HTMLHelper::_('select.genericlist', $list, 'priority', "style='width:50px'", 'val', 'text', $this->value);
 		}
-		else {
+		else
+		{
 			return "";
 		}
 
 	}
 
 }
+class_alias("FormFieldJeveventpriorities", "JFormFieldJeveventpriorities");

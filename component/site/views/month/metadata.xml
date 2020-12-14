@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- $Id: metadata.xml 1405 2010-11-09 11:46:23Z geraintedwards $ --> 
+<!-- $Id: metadata.xml 1405 2010-11-09 11:46:23Z geraintedwards $ -->
 <metadata>
 	<view title="COM_JEVENTS_MONTH_VIEW_DEFAULT_TITLE">
 		<message><![CDATA[COM_JEVENTS_MONTH_VIEW_DEFAULT_DESC]]></message>
-		<options var="layout" >
-			<option value='calendar' name="COM_JEVENTS_MONTH_VIEW_DEFAULT_TITLE" msg="COM_JEVENTS_MONTH_VIEW_DEFAULT_DESC" />
+		<options var="layout">
+			<option value='calendar' name="COM_JEVENTS_MONTH_VIEW_DEFAULT_TITLE"
+			        msg="COM_JEVENTS_MONTH_VIEW_DEFAULT_DESC"/>
 		</options>
 		<!--
 		<options var="layout" >
 			<option value='calendar' name="Monthly Calendar" msg="Tabular calendar view by month" />
 		</options>
 		//-->
-		<options var="task" >
-			<option value='month.calendar' name="COM_JEVENTS_MONTH_VIEW_DEFAULT_TITLE" msg="COM_JEVENTS_MONTH_VIEW_DEFAULT_DESC" />
+		<options var="task">
+			<option value='month.calendar' name="COM_JEVENTS_MONTH_VIEW_DEFAULT_TITLE"
+			        msg="COM_JEVENTS_MONTH_VIEW_DEFAULT_DESC"/>
 		</options>
 	</view>
 	<state>
 		<name>JEvents</name>
 		<description>Monthly Calendar Layout</description>
-		<params >
+		<params>
 		</params>
 	</state>
 

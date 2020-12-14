@@ -5,15 +5,22 @@
  *
  * @version     $Id: jevcategory.php 1987 2011-04-28 09:53:46Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-JEVENTS_COPYRIGHT GWESystems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Access\Access;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+
 jimport('joomla.form.helper');
-JFormHelper::loadFieldClass('list');
+FormHelper::loadFieldClass('list');
 
 class JFormFieldJevcategory extends JFormFieldList
 {
@@ -23,13 +30,14 @@ class JFormFieldJevcategory extends JFormFieldList
 	/**
 	 * Method to get the field options.
 	 *
-	 * @return	array	The field option objects.
-	 * @since	1.6
+	 * @return    array    The field option objects.
+	 * @since    1.6
 	 */
 	protected function getOptions()
 	{
+
 		// Initialize variables.
-		$session = JFactory::getSession();
+		$session = Factory::getSession();
 		$options = array();
 
 		// Initialize some field attributes.
@@ -43,11 +51,11 @@ class JFormFieldJevcategory extends JFormFieldList
 			// Filter over published state or not depending upon if it is present.
 			if ($published)
 			{
-				$options = JHtml::_('category.options', $extension, array('filter.published' => explode(',', $published)));
+				$options = HTMLHelper::_('category.options', $extension, array('filter.published' => explode(',', $published)));
 			}
 			else
 			{
-				$options = JHtml::_('category.options', $extension);
+				$options = HTMLHelper::_('category.options', $extension);
 			}
 
 			// Verify permissions.  If the action attribute is set, then we scan the options.
@@ -55,10 +63,10 @@ class JFormFieldJevcategory extends JFormFieldList
 			{
 
 				// Get the current user object.
-				$user = JFactory::getUser();
+				$user = Factory::getUser();
 
-				// TODO: Add a preload method to JAccess so that we can get all the asset rules in one query and cache them.
-				// eg JAccess::preload('core.create', 'com_content.category')
+				// TODO: Add a preload method to Access so that we can get all the asset rules in one query and cache them.
+				// eg Access::preload('core.create', 'com_content.category')
 				foreach ($options as $i => $option)
 				{
 					// Unset the option if the user isn't authorised for it.
@@ -69,18 +77,18 @@ class JFormFieldJevcategory extends JFormFieldList
 				}
 			}
 
-			array_unshift($options, JHTML::_('select.option', '0', '- ' . JText::_( 'JEV_SELECT_CATEGORY' ) . ' -'));
+			array_unshift($options, HTMLHelper::_('select.option', '0', '- ' . Text::_('JEV_SELECT_CATEGORY') . ' -'));
 		}
 		else
 		{
 
-			JFactory::getApplication()->enqueueMessage('500 - ' . JText::_('JLIB_FORM_ERROR_FIELDS_CATEGORY_ERROR_EXTENSION_EMPTY'), 'warning');
+			Factory::getApplication()->enqueueMessage('500 - ' . Text::_('JLIB_FORM_ERROR_FIELDS_CATEGORY_ERROR_EXTENSION_EMPTY'), 'warning');
 		}
 
 		// if no value exists, try to load a selected filter category from the list view
-		if (!$this->value && ($this->form instanceof JForm))
+		if (!$this->value && ($this->form instanceof Form))
 		{
-			$context = $this->form->getName();
+			$context     = $this->form->getName();
 			$this->value = $session->get($context . '.filter.category_id', $this->value);
 		}
 

@@ -1,89 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- $Id: listevents.xml 3320 2012-03-08 10:11:31Z geraintedwards $ --> 
+<!-- $Id: listevents.xml 3320 2012-03-08 10:11:31Z geraintedwards $ -->
 <metadata>
 
 	<layout title="COM_JEVENTS_LIST_DEFAULT_TITLE">
 		<help
-			key = "COM_JEVENTS_LIST_HELP"
+				key="COM_JEVENTS_LIST_HELP"
 		/>
 		<message>
 			<![CDATA[COM_JEVENTS_LIST_DEFAULT_DESC]]>
 		</message>
 	</layout>
-	
+
 	<!-- Add fields to the parameters object for the layout. -->
-	<fields name="params" >
+	<fields name="params">
 
-		<fieldset name="basic"  addfieldpath="/administrator/components/com_jevents/fields/" >
+		<fieldset name="basic" addfieldpath="/administrator/components/com_jevents/fields/">
 
-			<field name="com_calViewName" type="jevview" except="float" default="" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME"/>
-			<field name="darktemplate" type="jevboolean" class="btn-group" default="0"  label="JEV_DARK_TEMPLATE" description="JEV_DARK_TEMPLATE_DESC"/>
+			<field name="com_calViewName" type="jevview" except="float" default="" label="JEV_VIEWNAME"
+			       description="JEV_TIP_VIEWNAME"/>
+			<field name="darktemplate" type="jevboolean" class="btn-group" default="0" label="JEV_DARK_TEMPLATE"
+			       description="JEV_DARK_TEMPLATE_DESC"/>
 
-			<field name="columns" type="jevcolumns" default="" extension="com_jevents" label="JEV_SELECT_COLUMNS" description="JEV_SELECT_COLUMNS_DESC"/>
+			<field name="columns" type="jevcolumns" default="" extension="com_jevents" label="JEV_SELECT_COLUMNS"
+			       description="JEV_SELECT_COLUMNS_DESC"/>
 
 			<field name="catidnew" type="jevcategorynew" default="" size="10" multiple="multiple" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC" />
 			<field name="include_subcats" class="btn-group" type="jevboolean" default="1" extension="com_jevents" label="JEV_INCLUDE_SUBCATEGORIES" description="JEV_INCLUDE_SUBCATEGORIES_DESC" />
--->
+
 			<field name="@spacer0" type="spacer" label="COM_MENUS_RANGEDATETIME_FIELDSET_LABEL" />
 			<field name="relative" type="radio"  class="btn-group" default='rel'  label="COM_JEVENTS_DATE_RANGE_RELATIVE_LABEL" description="COM_JEVENTS_DATE_RANGE_RELATIVE_DESC">
 				<option value="abs">COM_JEVENTS_DATE_RANGE_RELATIVE_ABS</option>
 				<option value="rel">COM_JEVENTS_DATE_RANGE_RELATIVE_REL</option>
 				<option value="strtotime">COM_JEVENTS_DATE_RANGE_RELATIVE_STR</option>
 			</field>
-			<field name="usedates" type="list"  class="btn-group" default='both'  label="COM_JEVENTS_DATE_RANGE_TO_USE" description="COM_JEVENTS_DATE_RANGE_TO_USE_DESC">
+			<field name="usedates" type="list" class="btn-group" default='both' label="COM_JEVENTS_DATE_RANGE_TO_USE"
+			       description="COM_JEVENTS_DATE_RANGE_TO_USE_DESC">
 				<option value="both">COM_JEVENTS_DATE_RANGE_BOTH</option>
 				<option value="start">COM_JEVENTS_DATE_RANGE_START</option>
 				<option value="end">COM_JEVENTS_DATE_RANGE_END</option>
 			</field>
 
-			<field name="@spacer1" type="jevinfo" default="COM_JEVENTS_DATE_RANGE_ABS_LABEL" label="" description="" showon="relative:abs" />
-			<field name="absstart" type="calendar" default="" label="COM_JEVENTS_DATE_RANGE_ABS_START_LABEL" description="" format="%Y-%m-%d" showon="relative:abs[AND]usedates:both,start" />
-			<field name="absend" type="calendar" default="" label="COM_JEVENTS_DATE_RANGE_ABS_END_LABEL" description="" format="%Y-%m-%d" showon="relative:abs[AND]usedates:both,end" />
-			<field name="@spacer2" type="jevinfo" default="COM_JEVENTS_DATE_RANGE_REL_LABEL" label="" description="" showon="relative:rel" />
-			<field name='relstart' type='text' default="-1w" label="COM_JEVENTS_DATE_RANGE_REL_START_LABEL" description="JEV_RELSTART_DESC" showon="relative:rel[AND]usedates:both,start" />
-			<field name='relend' type='text' default="+1m" label="COM_JEVENTS_DATE_RANGE_REL_END_LABEL" description="JEV_RELEND_DESC" showon="relative:rel[AND]usedates:both,end" />
-			<field name="@spacer3" type="jevinfo" default="COM_JEVENTS_DATE_RANGE_STR_LABEL" label="" description="" showon="relative:strtotime" />
-			<field name='strstart' type='text' default='YESTERDAY'  label="COM_JEVENTS_DATE_RANGE_STR_START_LABEL" description="" showon="relative:strtotime[AND]usedates:both,start" />
-			<field name='strend' type='text' default='TOMORROW'  label="COM_JEVENTS_DATE_RANGE_STR_END_LABEL" description="" showon="relative:strtotime[AND]usedates:both,end" />
+			<field name="@spacer1" type="jevinfo" default="COM_JEVENTS_DATE_RANGE_ABS_LABEL" label="" description=""
+			       showon="relative:abs"/>
+			<field name="absstart" type="calendar" default="" label="COM_JEVENTS_DATE_RANGE_ABS_START_LABEL"
+			       description="" format="%Y-%m-%d" showon="relative:abs[AND]usedates:both,start"/>
+			<field name="absend" type="calendar" default="" label="COM_JEVENTS_DATE_RANGE_ABS_END_LABEL" description=""
+			       format="%Y-%m-%d" showon="relative:abs[AND]usedates:both,end"/>
+			<field name="@spacer2" type="jevinfo" default="COM_JEVENTS_DATE_RANGE_REL_LABEL" label="" description=""
+			       showon="relative:rel"/>
+			<field name='relstart' type='text' default="-1w" label="COM_JEVENTS_DATE_RANGE_REL_START_LABEL"
+			       description="JEV_RELSTART_DESC" showon="relative:rel[AND]usedates:both,start"/>
+			<field name='relend' type='text' default="+1m" label="COM_JEVENTS_DATE_RANGE_REL_END_LABEL"
+			       description="JEV_RELEND_DESC" showon="relative:rel[AND]usedates:both,end"/>
+			<field name="@spacer3" type="jevinfo" default="COM_JEVENTS_DATE_RANGE_STR_LABEL" label="" description=""
+			       showon="relative:strtotime"/>
+			<field name='strstart' type='text' default='YESTERDAY' label="COM_JEVENTS_DATE_RANGE_STR_START_LABEL"
+			       description="" showon="relative:strtotime[AND]usedates:both,start"/>
+			<field name='strend' type='text' default='TOMORROW' label="COM_JEVENTS_DATE_RANGE_STR_END_LABEL"
+			       description="" showon="relative:strtotime[AND]usedates:both,end"/>
 
-			<field name="dataorder" type="list" default="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC"  label="JEV_DATA_ORDER" description="JEV_DATA_ORDER_DESC">
-				<option value="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC" >JEV_STARTDATE_INCREASING</option>
-				<option value="rpt.startrepeat desc, rpt.endrepeat desc, det.summary ASC" >JEV_STARTDATE_DECREASING</option>
-				<option value="det.summary ASC, rpt.startrepeat desc, rpt.endrepeat desc " >JEV_ALPHABETICAL</option>
-				<option value="rpt.endrepeat ASC, rpt.startrepeat asc, det.summary ASC" >JEV_ENDDATE_INCREASING</option>
-				<option value="rpt.endrepeat desc, rpt.startrepeat desc, det.summary ASC" >JEV_ENDDATE_DECREASING</option>
-				<option value="det.priority desc, rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC" >JEV_PRIORITY_DECREASING</option>
+			<field name="dataorder" type="list" default="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC"
+			       label="JEV_DATA_ORDER" description="JEV_DATA_ORDER_DESC">
+				<option value="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC">JEV_STARTDATE_INCREASING
+				</option>
+				<option value="rpt.startrepeat desc, rpt.endrepeat desc, det.summary ASC">JEV_STARTDATE_DECREASING
+				</option>
+				<option value="det.summary ASC, rpt.startrepeat asc, rpt.endrepeat desc ">JEV_ALPHABETICAL</option>
+				<option value="rpt.endrepeat ASC, rpt.startrepeat asc, det.summary ASC">JEV_ENDDATE_INCREASING</option>
+				<option value="rpt.endrepeat desc, rpt.startrepeat desc, det.summary ASC">JEV_ENDDATE_DECREASING
+				</option>
+				<option value="det.priority desc, rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC">
+					JEV_PRIORITY_DECREASING
+				</option>
 			</field>
-			<field name="com_showrepeats" type="list" class="btn-group" default="-1" menu="hide" label="JEV_VIEW_REPEAT_YEAR_LIST" description="" difficulty="2">
+			<field name="com_showrepeats" type="list" class="btn-group" default="-1" menu="hide"
+			       label="JEV_VIEW_REPEAT_YEAR_LIST" description="" difficulty="2">
 				<option value="-1">USE_GLOBAL</option>
 				<option value="0">JEV_NO</option>
 				<option value="1">JEV_YES</option>
 			</field>
-			<field name="csvexport" type="jevboolean" class="btn-group" default="0"  label="JEV_CSV_EXPORT" description="JEV_CSV_EXPORT_DESC"/>
-			<field name="csvexportfiler" showon="csvexport:1" type="list" default="0"  label="JEV_CSV_EXPORT_FILTER" description="JEV_CSV_EXPORT_FILTER_DESC">
-				<option value="0" >JEV_CSV_EXPORT_FILTER_FIELD_0</option>
-				<option value="1" >JEV_CSV_EXPORT_FILTER_FIELD_1</option>
-				<option value="2" >JEV_CSV_EXPORT_FILTER_FIELD_2</option>
+			<field name="csvexport" type="jevboolean" class="btn-group" default="0" label="JEV_CSV_EXPORT"
+			       description="JEV_CSV_EXPORT_DESC"/>
+			<field name="csvexportfiler" showon="csvexport:1" type="list" default="0" label="JEV_CSV_EXPORT_FILTER"
+			       description="JEV_CSV_EXPORT_FILTER_DESC">
+				<option value="0">JEV_CSV_EXPORT_FILTER_FIELD_0</option>
+				<option value="1">JEV_CSV_EXPORT_FILTER_FIELD_1</option>
+				<option value="2">JEV_CSV_EXPORT_FILTER_FIELD_2</option>
 			</field>
-			<field name="extras0" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
-			<field name="extras1" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
-			<field name="extras2" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
-			<field name="extras3" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
-			<field name="extras4" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
-			<field name="extras5" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
-			<field name="extras6" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
-			<field name="extras7" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
-			<field name="extras8" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
-			<field name="extras9" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
-			<field name="extras10" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
-			<field name="extras11" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
-			<field name="extras12" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
-			<field name="extras13" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
-			<field name="extras14" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
-			<field name="extras15" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
+			<field name="extras0" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'
+			       description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'/>
+			<field name="extras1" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'
+			       description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'/>
+			<field name="extras2" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'
+			       description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'/>
+			<field name="extras3" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'
+			       description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'/>
+			<field name="extras4" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'
+			       description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'/>
+			<field name="extras5" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'
+			       description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'/>
+			<field name="extras6" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'
+			       description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'/>
+			<field name="extras7" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'
+			       description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'/>
+			<field name="extras8" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'
+			       description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'/>
+			<field name="extras9" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'
+			       description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'/>
+			<field name="extras10" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'
+			       description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'/>
+			<field name="extras11" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'
+			       description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'/>
+			<field name="extras12" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'
+			       description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'/>
+			<field name="extras13" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'
+			       description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'/>
+			<field name="extras14" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'
+			       description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'/>
+			<field name="extras15" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'
+			       description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'/>
 
-			<field name="@spacer" type="jevinfo" default='ADVANCED_SETTINGS'  label="" description="" />
-			<field name="overridelayout" type="text" default="" label='OVERRIDE_LAYOUT'  description="OVERRIDE_LAYOUT_DESC"/>
+			<field name="@spacer" type="jevinfo" default='ADVANCED_SETTINGS' label="" description=""/>
+			<field name="overridelayout" type="text" default="" label='OVERRIDE_LAYOUT'
+			       description="OVERRIDE_LAYOUT_DESC"/>
 		</fieldset>
 	</fields>
 </metadata>

@@ -1,54 +1,255 @@
 <?xml version="1.0" encoding="utf-8"?><!-- $Id: config.xml 3576 2012-05-01 14:11:04Z geraintedwards $ -->
 <form>
 	<fieldset  name="JEV_TAB_COMPONENT" addfieldpath="/administrator/components/com_jevents/fields/">
-								
-		<field name="title" type="jeveventtext" default="" size="40" layoutfield="TITLE" placeholder="JEV_EVENT_TITLE" maxlength="255" class="inputbox"  label="JEV_EVENT_TITLE" description="JEV_EVENT_TITLE_TIP" />
-		<field name="catid" type="jeveventcategory" default="0"  layoutfield="CATEGORY"  label="JEV_EVENT_CATEGORY" description="JEV_EVENT_CATEGORY_TIP" />
-		<field name="primarycatid" type="jeveventprimarycategory" default="0"  layoutfield="PRIMARYCATEGORY"  label="JEV_EVENT_PRIMARY_CATEGORY" description="JEV_EVENT_PRIMARY_CATEGORY_TIP" />
-		<field name="priority" type="jeveventpriorities" default="0"  layoutfield="PRIORITY"  label="JEV_EVENT_PRIORITY" description="JEV_EVENT_PRIORITY_TIP" />
-		<field name="creator" type="jeveventcreator" default="0"  layoutfield="CREATOR"  label="JEV_EVENT_CREATOR" description="JEV_EVENT_CREATOR_TIP" />
+
+		<field name="title"
+			   type="jeveventtext"
+			   default=""
+			   size="40"
+			   layoutfield="TITLE"
+			   placeholder="JEV_EVENT_TITLE_PLACEHOLDER"
+			   maxlength="255"
+			   class="inputbox"
+			   label="JEV_EVENT_TITLE"
+			   description="JEV_EVENT_TITLE_TIP" />
+		<field name="catid"
+			   type="jeveventcategory"
+			   default="0"
+			   layoutfield="CATEGORY"
+			   label="JEV_EVENT_CATEGORY"
+			   description="JEV_EVENT_CATEGORY_TIP"
+			   showon="title!:[AND]ics_id!:0"
+		/>
+		<field name="primarycatid"
+			   type="jeveventprimarycategory"
+			   default="0"
+			   layoutfield="PRIMARYCATEGORY"
+			   label="JEV_EVENT_PRIMARY_CATEGORY"
+			   description="JEV_EVENT_PRIMARY_CATEGORY_TIP"
+			   showon="catid!:,0[AND]title!:"
+		/>
+		<field name="priority"
+			   type="jeveventpriorities"
+			   default="0"
+			   layoutfield="PRIORITY"
+			   label="JEV_EVENT_PRIORITY"
+			   description="JEV_EVENT_PRIORITY_TIP"
+			   showon="catid!:,0[AND]title!:"
+		/>
+		<field name="creator"
+			   type="jeveventcreator"
+			   default="0"
+			   layoutfield="CREATOR"
+			   label="JEV_EVENT_CREATOR"
+			   description="JEV_EVENT_CREATOR_TIP"
+			   showon="catid!:,0[AND]title!:"
+		/>
 		<!--
 		conditional="title" conditions="fred" />
 		//-->
-		<field name="ics_id" type="jeveventcalendar" default="0"   layoutfield="ICAL"  label="JEV_EVENT_CALENDAR" description="JEV_EVENT_CALENDAR_TIP" />
-		<field name="lockevent" type="jeveventlock" default="0"   layoutfield="LOCK" label="JEV_LOCK_EVENT" description="JEV_LOCK_EVENT_TIP" />
-		<field name="access" type="jeveventaccess" default="1"   layoutfield="ACCESS" labelclass="accesslevel"   label="JEV_EVENT_ACCESSLEVEL" description="JEV_EVENT_ACCESSLEVEL_TIP" />
-		<field name="state" type="jeveventpublished" default="0"   layoutfield="STATE" labelclass="jevpublished"   label="JEV_EVENT_STATE" description="JEV_EVENT_STATE_TIP" />
+		<field name="ics_id"
+			   type="jeveventcalendar"
+			   default="0"
+			   layoutfield="ICAL"
+			   label="JEV_EVENT_CALENDAR"
+			   description="JEV_EVENT_CALENDAR_TIP"
+			   showon="title!:"
+		/>
+		<field name="lockevent"
+			   type="jeveventlock"
+			   default="0"
+			   layoutfield="LOCK"
+			   label="JEV_LOCK_EVENT"
+			   description="JEV_LOCK_EVENT_TIP" />
+		<field name="access"
+			   type="jeveventaccess"
+			   default="1"
+			   layoutfield="ACCESS"
+			   labelclass="accesslevel"
+			   label="JEV_EVENT_ACCESSLEVEL"
+			   description="JEV_EVENT_ACCESSLEVEL_TIP"
+			   showon="catid!:,0[AND]title!:"
+		/>
+		<field name="state"
+			   type="jeveventpublished"
+			   default="0"
+			   layoutfield="STATE"
+			   labelclass="jevpublished"
+			   label="JEV_EVENT_STATE"
+			   description="JEV_EVENT_STATE_TIP"
+			   showon="catid!:,0[AND]title!:"
+		/>
 
-		<field name="jevcontent" type="editor" default=""   filter="JComponentHelper::filterText" width="100%" height="250" 
-		layoutfield="DESCRIPTION" labelclass="jeveditor"   label="JEV_EVENT_ACTIVITY" description="JEV_EVENT_ACTIVITY_TIP" />
-		<field name="location" type="jeveventlocation" default=""   layoutfield="LOCN" labelclass=""   label="JEV_EVENT_ADRESSE" description="JEV_EVENT_ADRESSE_TIP" />
-				
-		<field name="color" type="jevcolor" default=""  layoutfield="COLOUR"   label="JEV_EVENT_COLOR" size="30" description="JEV_EVENT_COLOR_TIP" />
+		<field name="jevcontent"
+			   type="editor"
+			   default=""
+			   filter="JComponentHelper::filterText"
+			   width="100%"
+			   height="250"
+			   layoutfield="DESCRIPTION"
+			   labelclass="jeveditor"
+			   label="JEV_EVENT_ACTIVITY"
+			   description="JEV_EVENT_ACTIVITY_TIP"
+			   showon="catid!:,0[AND]title!:"
+		/>
+		<field name="location"
+			   type="jeveventlocation"
+			   default=""
+			   layoutfield="LOCN"
+			   labelclass=""
+			   label="JEV_EVENT_ADRESSE"
+			   description="JEV_EVENT_ADRESSE_TIP"
+			   showon="catid!:,0[AND]title!:"
+		/>
+		<field name="geolon"
+			   type="text"
+			   default="0"
+			   layoutfield="GEOLON"
+			   labelclass=""
+			   label="JEV_FIELD_GEOLON"
+			   description="JEV_FIELD_GEOLON"
+			   showon="catid!:,0[AND]title!:"
+		/>
+		<field name="geolat"
+			   type="text"
+			   default="0"
+			   layoutfield="GEOLAT"
+			   labelclass=""
+			   label="JEV_FIELD_GEOLAT"
+			   description="JEV_FIELD_GEOLAT"
+			   showon="catid!:,0[AND]title!:"
+		/>
 
-		<field name="contact_info" type="text" default=""  size="60" maxlength="120" layoutfield="CONTACT"  class="inputbox" 
-			   label="JEV_EVENT_CONTACT" description="JEV_EVENT_CONTACT_TIP" />
-		<field name="extra_info" type="textarea" default=""  rows="5" cols="60" layoutfield="EXTRA"  class="text_area"  label="JEV_EVENT_EXTRA" description="JEV_EVENT_EXTRA_TIP" />
-						
+		<field name="color"
+			   type="jevcolor"
+			   default=""
+			   layoutfield="COLOUR"
+			   label="JEV_EVENT_COLOR"
+			   size="30"
+			   description="JEV_EVENT_COLOR_TIP"
+			   showon="catid!:,0[AND]title!:"
+		/>
+
+		<field
+				name="tags"
+				type="tag"
+				label="JTAG"
+				description="JTAG_DESC"
+				multiple="true"
+				showon="catid!:,0[AND]title!:"
+		/>
+
+		<field name="contact_info"
+			   type="text"
+			   default=""
+			   size="60"
+			   maxlength="120"
+			   layoutfield="CONTACT"
+			   class="inputbox"
+			   label="JEV_EVENT_CONTACT"
+			   description="JEV_EVENT_CONTACT_TIP"
+			   showon="catid!:,0[AND]title!:"
+		/>
+		<field name="extra_info"
+			   type="textarea"
+			   default=""
+			   rows="5"
+			   cols="60"
+			   layoutfield="EXTRA"
+			   class="text_area"
+			   label="JEV_EVENT_EXTRA"
+			   description="JEV_EVENT_EXTRA_TIP"
+			   showon="catid!:,0[AND]title!:"
+		/>
+
 		<!-- date time //-->
-		<field name="allDayEvent" type="checkbox" layoutfield="ALLDAYEVENT"  labelclass="" class="checkbox"  label="JEV_EVENT_ALLDAY" 
-			onclick="toggleAllDayEvent();"       description="JEV_EVENT_ALLDAY_TIP"  value="1" />
-		<field name="view12Hour" type="checkbox" layoutfield="VIEW12HOUR"  labelclass="" class="checkbox"  label="TWELVE_HOUR" description="TWELVE_HOUR_TIP" value="1" />
+		<field name="allDayEvent"
+			   type="checkbox"
+			   layoutfield="ALLDAYEVENT"
+			   labelclass=""
+			   class="gsl-checkbox"
+			   label="JEV_EVENT_ALLDAY"
+			   onclick="toggleAllDayEvent();"
+			   description="JEV_EVENT_ALLDAY_TIP"
+			   value="1" />
+		<field name="view12Hour"
+			   type="checkbox"
+			   layoutfield="VIEW12HOUR"
+			   labelclass=""
+			   class="gsl-checkbox"
+			   label="TWELVE_HOUR"
+			   description="TWELVE_HOUR_TIP"
+			   value="1" />
 
-		<field name="publish_up" type="jeveventdate" default="0"  layoutfield="STARTDATE"  labelclass=""
-			onhidestart="checkDates(elem);fixRepeatDates();" onchange="checkDates(elem);"
-			   label="JEV_EVENT_STARTDATE" description="JEV_EVENT_STARTDATE_TIP" />
+		<field name="publish_up"
+			   type="jeveventdate"
+			   default="0"
+			   layoutfield="STARTDATE"
+			   labelclass=""
+			   onhidestart="checkDates(elem);fixRepeatDates();"
+			   onchange="checkDates(elem);"
+			   label="JEV_EVENT_STARTDATE"
+			   description="JEV_EVENT_STARTDATE_TIP" />
 
-		<field name="start_time" type="jeveventtime" default="0"  layoutfield="STARTTIME"  labelclass=""
-			   label="JEV_EVENT_STARTTIME" description="JEV_EVENT_STARTTIME_TIP" />
+		<field name="start_time"
+			   type="jeveventtime"
+			   default="0"
+			   layoutfield="STARTTIME"
+			   labelclass=""
+			   label="JEV_EVENT_STARTTIME"
+			   description="JEV_EVENT_STARTTIME_TIP" />
 
-		<field name="publish_down" type="jeveventdate" default="0"  layoutfield="ENDDATE"  labelclass=""
-			onhidestart="checkDates(elem);" onchange="checkDates(elem);"
-			   label="JEV_EVENT_ENDDATE" description="JEV_EVENT_ENDDATE_TIP" />
+		<field name="publish_down"
+			   type="jeveventdate"
+			   default="0"
+			   layoutfield="ENDDATE"
+			   labelclass=""
+			   onhidestart="checkDates(elem);"
+			   onchange="checkDates(elem);"
+			   label="JEV_EVENT_ENDDATE"
+			   description="JEV_EVENT_ENDDATE_TIP"
+		/>
 
-		<field name="end_time" type="jeveventtime" default="0"  layoutfield="ENDTIME"  labelclass=""
-			   label="JEV_EVENT_ENDTIME" description="JEV_EVENT_ENDTIME_TIP" />
+		<field name="end_time"
+			   type="jeveventtime"
+			   default="0"
+			   layoutfield="ENDTIME"
+			   labelclass=""
+			   label="JEV_EVENT_ENDTIME"
+			   description="JEV_EVENT_ENDTIME_TIP"
+		/>
 
-		<field name="noendtime" type="checkbox" layoutfield="JEV_EVENT_NOENDTIME"  labelclass="" class="checkbox"  label="JEV_EVENT_NOENDTIME"
-			onclick="toggleNoEndTime();"    description="JEV_EVENT_NOENDTIME_TIP" value="1" />
+		<field name="noendtime"
+			   type="checkbox"
+			   layoutfield="JEV_EVENT_NOENDTIME"
+			   labelclass=""
+			   class="gsl-checkbox"
+			   label="JEV_EVENT_NOENDTIME"
+			   onclick="toggleNoEndTime();"
+			   description="JEV_EVENT_NOENDTIME_TIP"
+			   value="1"
+		/>
 
-		<field name="tzid" type="jevtimezone" default="0"  layoutfield="TZID"  labelclass=""
-			   label="JEV_EVENT_TIMEZONE" onchange="updateRepeatWarning();" description="JEV_EVENT_TIMEZONE_TIP" />
-                
+		<field name="tzid"
+			   type="jevtimezone"
+			   default="0"
+			   layoutfield="TZID"
+			   labelclass=""
+			   label="JEV_EVENT_TIMEZONE"
+			   onchange="updateRepeatWarning();"
+			   description="JEV_EVENT_TIMEZONE_TIP" />
+
+		<field name="repeattype"
+			   type="text"
+			   default="0"
+			   labelclass=""
+		/>
+		<field name="customfields"
+			   type="text"
+			   default="0"
+			   labelclass=""
+			   showon="catid!:,0[AND]title!:"
+		/>
+
 	</fieldset>
 </form>

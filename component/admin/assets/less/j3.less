@@ -1,0 +1,162 @@
+@import "vars.less";
+/** Remove Headers from page **/
+#isisJsData, body.admin header.header {display:none;}
+
+body.@{mycomponent} {
+  .container-fluid {
+    padding: 0 0 0 0;
+  }
+
+  #system-message-container {
+    margin: 0;
+    padding: 0;
+  }
+
+  .gsl-offcanvas {
+
+    .gsl-offcanvas-bar fieldset {
+      legend {
+        text-transform: uppercase;
+        color: #fff;
+        line-height: 22px;
+        margin-bottom: 10px;
+        border-bottom: 0;
+      }
+    }
+  }
+
+  margin: 0;
+
+  /* Specific filter */
+
+  #filter_coretype {
+    label {
+      display: inline-block;
+      margin: 0;
+      float: left;
+      padding: 0 10px;
+      min-width: 80px;
+    }
+
+    input[type="radio"] {
+      float: none;
+      display: inline-block;
+      margin: 4px 5px 0 0;
+    }
+  }
+
+  /* Editing */
+
+  .form-horizontal .control-label {
+    padding: 0;
+    width: 250px;
+  }
+
+  #gslc.gsl-scope {
+    .js-stools
+    {
+      .js-stools-field-list, .js-stools-field-filter
+      {
+        margin:5px 0;
+      }
+    }
+
+    /* Search button */
+    .js-stools-btn-filter.btn-primary:not(:focus)
+    {
+      color:#fff;
+    }
+    .ysts_list_filters {
+      margin-left: -25px;
+      margin-right: 5px;
+    }
+    .js-stools-container-filters {
+      margin-left: -15px;
+      margin-right: 5px;
+    }
+
+    .js-stools-field-filter {
+      a.chzn-single {
+        padding: 0;
+        line-height: inherit;
+        border: none;
+        border-radius: 0;
+
+        &:hover {
+          text-decoration: none;
+          color: inherit;
+        }
+        span {
+          margin-right: 0;
+        }
+
+        div {
+          display: none;
+        }
+      }
+      div.chzn-drop {
+        width:auto;
+        .chzn-search {
+          input {
+            padding: 0 25px 0 5px;
+            line-height: 30px;
+            height:30px;
+          }
+        }
+        ul.chzn-results li
+        {
+          white-space: nowrap;
+        }
+      }
+      #filter_tag_chzn {
+        max-width: 100%;
+      }
+    }
+
+    /* dashboard newsfeed */
+    .ys_newsfeed
+    {
+      height: 60px;
+      /*overflow: hidden;*/
+      margin-left:0px;
+      li {
+        height: 60px;
+      }
+    }
+
+
+  }
+}
+
+/* Overriding template.css styling when using native Joomla layouts */
+#gslc.gsl-scope {
+  .icon-publish::before,
+  .icon-save::before,
+  .icon-ok::before,
+  .icon-save-new::before,
+  .icon-save-copy::before,
+  .btn-toolbar .icon-copy::before ,
+  .icon-unpublish::before,
+  .icon-not-ok::before,
+  .icon-eye-close::before,
+  .icon-ban-circle::before,
+  .icon-minus-sign::before,
+  .icon-edit::before,
+  .btn-toolbar .icon-cancel::before {
+    color: inherit;
+
+  }
+}
+
+/* Old Stuff and com_categories, com_fields */
+
+h1.page-title {
+  font-size: 1.5em;
+  line-height: 50px;
+  color: #fff;
+  padding: 0 0 0 10px;
+  margin: 0;
+}
+h1.page-title span.categories {
+  display: none;
+}

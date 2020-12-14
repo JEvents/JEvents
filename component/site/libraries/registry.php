@@ -5,7 +5,7 @@
  *
  * @version     $Id: registry.php 2484 2011-08-24 10:22:46Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-JEVENTS_COPYRIGHT GWESystems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -16,12 +16,29 @@ if (!defined("JEVREGISTRY"))
 {
 	define("JEVREGISTRY", 1);
 
-	class JevRegistry extends JRegistry
+	class JevRegistry extends \Joomla\Registry\Registry
 	{
 
-		static function &getInstance($id, $namespace = 'default')
+        static function &getInstance($id, $namespace = 'default')
 		{
-			static $instances;
+
+            $rc = new ReflectionClass('JevRegistry');
+            $rc = $rc->getParentClass();
+            if($rc->hasMethod('getInstance'))
+            {
+
+                if (empty(parent::$instances[$id]))
+                {
+                    parent::$instances[$id] = new self;
+                }
+
+                return parent::$instances[$id];
+
+                $instance =  parent::getInstance($id, $namespace);
+                return $instance;
+            }
+
+            static $instances;
 
 			if (!isset($instances))
 			{
@@ -37,8 +54,28 @@ if (!defined("JEVREGISTRY"))
 
 		}
 
-		function setReference($regpath, & $value)
+        static function &getInstanceWithReferences($id, $namespace = 'default')
+        {
+
+            static $instances;
+
+            if (!isset($instances))
+            {
+                $instances = array();
+            }
+
+            if (empty($instances[$id]))
+            {
+                $instances[$id] = new JevRegistry($namespace);
+            }
+
+            return $instances[$id];
+
+        }
+
+        function setReference($regpath, & $value)
 		{
+
 			// Explode the registry path into an array
 			$nodes = explode('.', $regpath);
 
@@ -88,6 +125,7 @@ if (!defined("JEVREGISTRY"))
 
 		function & getReference($regpath, $default = null)
 		{
+
 			$result = $default;
 
 			// Explode the registry path into an array
@@ -135,6 +173,7 @@ if (!defined("JEVREGISTRY"))
 
 		function makeNameSpace($namespace)
 		{
+
 			$this->_registry[$namespace] = array('data' => new stdClass());
 
 			return true;
