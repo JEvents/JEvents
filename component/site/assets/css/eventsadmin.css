@@ -669,6 +669,10 @@ td.ev_td_right ul.ev_ul {
     margin-left: -150px !important;
 }
 
+.jevbootstrap .action_dialogJQ.show {
+    opacity: 1;
+}
+
 .jevbootstrap .ical_dialogJQ img {
     height: 24px;
     margin-right: 1em;
