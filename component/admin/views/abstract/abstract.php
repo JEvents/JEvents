@@ -382,6 +382,8 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 			 */
 		}
 
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+
 		// Close all the tabs in Joomla > 3.0
 		$tabstartarray = array();
 		$tabstartarray0Count = 0;
@@ -392,7 +394,6 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 			$tabstartarray0Count = count($tabstartarray[0]);
 			if ($tabstartarray0Count > 0)
 			{
-				$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
 				if (GSLMSIE10 || (!$app->isClient('administrator') && !$params->get("newfrontendediting", 1)))
 				{
