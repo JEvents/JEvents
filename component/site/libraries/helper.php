@@ -860,7 +860,7 @@ class JEVHelper
 			$btn_style = $disabled ? ' style="display:none;"' : '';
 			$div_class = !$disabled ? ' class="input-group"' : '';
 
-			$task = Factory::getApplication()->input->getString("jevtask");
+			$jevtask = Factory::getApplication()->input->getString("jevtask");
 			$isedit = (strpos($jevtask, "icalevent.edit") !== false || strpos($jevtask, "icalrepeat.edit") !== false );
 
 			echo '<div class=" field-calendar">'
