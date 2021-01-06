@@ -89,16 +89,16 @@ class FormFieldJeveventtime extends FormField
 			       size="8" maxlength="8" <?php echo $test ? "disabled='disabled'" : ""; ?> value=""
 			       onchange="check12hTime(this);"/>
 			<div class="<?php echo $btngroup; ?> " id="<?php echo $partname; ?>_ampm">
-				<label for="<?php echo $partname; ?>AM" class=" <?php echo $btn; ?> <?php echo $h <= 12 ? 'gsl-button-primary' : ''; ?>">
+				<label for="<?php echo $partname; ?>AM" class=" <?php echo $btn; ?> <?php echo $h < 12 ? 'gsl-button-primary' : ''; ?>">
 					<input type="radio" name="<?php echo $partname; ?>_ampm" id="<?php echo $partname; ?>AM"
 					       class="gsl-hidden"
-					       value="none" <?php echo $h <= 12 ? 'checked="checked"' : ''; ?>
+					       value="none" <?php echo $h < 12 ? 'checked="checked"' : ''; ?>
 					       onclick="toggleAMPM('<?php echo $partname; ?>AM');" <?php echo $test ? "disabled='disabled'" : ""; ?> />
 					<?php echo Text::_('JEV_AM'); ?>
-				</label><label for="<?php echo $partname; ?>PM" class=" <?php echo $btn; ?> <?php echo $h > 12 ? 'gsl-button-primary' : ''; ?>">
+				</label><label for="<?php echo $partname; ?>PM" class=" <?php echo $btn; ?> <?php echo $h >= 12 ? 'gsl-button-primary' : ''; ?>">
 					<input type="radio" name="<?php echo $partname; ?>_ampm" id="<?php echo $partname; ?>PM"
 					       class="gsl-hidden"
-					       value="none" <?php echo $h > 12 ? 'checked="checked"' : ''; ?>
+					       value="none" <?php echo $h >= 12 ? 'checked="checked"' : ''; ?>
 					       onclick="toggleAMPM('<?php echo $partname; ?>PM');" <?php echo $test ? "disabled='disabled'" : ""; ?> />
 					<?php echo Text::_('JEV_PM'); ?>
 				</label>

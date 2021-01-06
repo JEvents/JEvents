@@ -340,6 +340,10 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 		$matchesarray   = $template->matchesarray;
 		$loadedFromFile = isset($template->fromfile);
+
+		Factory::getDocument()->addStyleDeclaration($template->params->get('customcss', ''));
+		Factory::getDocument()->addScriptDeclaration($template->params->get('customjs', ''));
+
 	}
 	else
 	{
@@ -2545,7 +2549,7 @@ if (!class_exists("InvalidHtmlException"))
 
 }
 
-if (!class_exists("Truncator"))
+if (!class_exists("Truncator") && !function_exists('ht_strlen'))
 {
 	if (function_exists('grapheme_strlen'))
 	{
