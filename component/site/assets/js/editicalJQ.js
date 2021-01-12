@@ -223,8 +223,10 @@ function set12hTime(time24h){
 	min   = parseInt(parts[1], 10);
 	if ((hour >= 12) ){
 		ampm = pm;
+		inactive_ampm = am;
 	} else {
 		ampm = am;
+		inactive_ampm = pm;
 	}
 	if (hour > 12){
 		hour = hour - 12;
@@ -235,6 +237,11 @@ function set12hTime(time24h){
 	if (min  < 10) min  = "0"+min;
 	time.value = hour+":"+min;
 	ampm.checked = true;
+	if (ampm.parentNode.classList.contains('gsl-button'))
+	{
+		ampm.parentNode.classList.add('gsl-button-primary');
+		inactive_ampm.parentNode.classList.remove('gsl-button-primary');
+	}
 }
 
 
@@ -313,6 +320,12 @@ function checkEndTime() {
 	startDate.setMinutes(starttimeparts[1]);
 
 	endtimeparts = (end_time.value=="00:00") ? [23,59] : end_time.value.split(":");
+	/*
+	if (end_time.value=="00:00" && document.adminForm.view12Hour.checked)
+	{
+		end_time.value="11:59";
+	}
+	 */
 	endDate = new Date();
 	endDate = endDate.dateFromYMD(end_date.value);
 	endDate.setHours(endtimeparts[0]);

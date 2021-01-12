@@ -302,6 +302,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		// Get the form && data
 		$this->form = $this->get('TranslateForm');
 		$this->original = $this->get("Original");
+		$this->original['contact_info'] = $this->original['contact'];
 		$this->translation = $this->get("Translation");
 		$lang = $input->getString("lang", "");
 

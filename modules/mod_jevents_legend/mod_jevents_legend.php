@@ -14,6 +14,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // record what is running - used by the filters
+JLoader::register('JevRegistry', JPATH_SITE . "/components/com_jevents/libraries/registry.php");
 $registry = JevRegistry::getInstance("jevents");
 $registry->set("jevents.activeprocess", "mod_jevents_legend");
 $registry->set("jevents.moduleid", $module->id);

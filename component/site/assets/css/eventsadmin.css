@@ -655,6 +655,7 @@ td.ev_td_right ul.ev_ul {
     position: fixed !important;
     z-index: 1050;
     text-align: left;
+    height:auto;
 }
 
 .jevbootstrap .ical_dialogJQ, .jevbootstrap .action_dialogJQ {

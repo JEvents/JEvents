@@ -1050,6 +1050,10 @@ function JEventsParseRouteNew(&$segments, $task)
 							$vars['catids'] = $segments[$slugcount];
 							unset( $segments[$slugcount]);
 						}
+						else if ($segments[$slugcount] == ":")
+						{
+							unset( $segments[$slugcount]);
+						}
 						break;
 				}
 			}
