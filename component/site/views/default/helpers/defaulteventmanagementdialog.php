@@ -116,8 +116,22 @@ function DefaultEventManagementDialog($view, $row, $mask, $bootstrap = false)
 			<div class="modal-dialog modal-sm">
 				<div class="modal-content">
 					<div class="modal-header">
+						<?php
+							$jversion = new JVersion;
+							if ($jversion->isCompatible('4.0'))
+							{
+						?>
+						<h4 class="modal-title" id="myModalLabel"><?php echo Text::_("JEV_MANAGE_EVENT"); ?></h4>
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								<?php
+							}
+							else {
+								?>
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						<h4 class="modal-title" id="myModalLabel"><?php echo Text::_("JEV_MANAGE_EVENT"); ?></h4>
+								<?php
+							}
+							?>
 					</div>
 					<div class="modal-body">
 						<?php

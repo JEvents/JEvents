@@ -29,6 +29,9 @@
         <delete dir="${p}/libraries/jevents/jevmodal/" includeemptydirs="true" verbose="true" failonerror="false" />
         <delete dir="${p}/libraries/jevents/jevbootstrap/" includeemptydirs="true" verbose="true" failonerror="false" />
         <delete dir="${p}/libraries/jevents/jevtypeahead/" includeemptydirs="true" verbose="true" failonerror="false" />
+        <delete dir="${p}/libraries/jevents/lib_jevmodal/" includeemptydirs="true" verbose="true" failonerror="false" />
+        <delete dir="${p}/libraries/jevents/lib_jevbootstrap/" includeemptydirs="true" verbose="true" failonerror="false" />
+        <delete dir="${p}/libraries/jevents/lib_jevtypeahead/" includeemptydirs="true" verbose="true" failonerror="false" />
         <delete dir="${p}/modules/mod_jevents_cal/" includeemptydirs="true" verbose="true" failonerror="false" />
         <delete dir="${p}/modules/mod_jevents_custom/" includeemptydirs="true" verbose="true" failonerror="false" />
         <delete dir="${p}/modules/mod_jevents_filter/" includeemptydirs="true" verbose="true" failonerror="false" />

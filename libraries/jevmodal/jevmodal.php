@@ -81,7 +81,8 @@ class JevModal
 
 		// UIKit or Bootstrap
 		$jinput = JFactory::getApplication()->input;
-		if (($jinput->getString("task", "") == "icalevent.edit" || $jinput->getString("task", "") == "icalrepeat.edit")
+		$task = $jinput->getString("task", $jinput->getString("jevtask", ""));
+		if (($task == "icalevent.edit" || $task == "icalrepeat.edit")
 			&& (Factory::getApplication()->isClient('administrator') || $jevparams->get("newfrontendediting", 1))
 		)
 		{

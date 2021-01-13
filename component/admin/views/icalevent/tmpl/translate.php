@@ -23,7 +23,7 @@ Factory::getDocument()->addScriptDeclaration('
 	};
 ');
 
-echo Toolbar::getInstance('toolbar')->render('toolbar');
+
 ?>
 
 <form action="<?php echo Route::_('index.php?option=com_jevents&task=icalevent.savetranslation'); ?>" method="post"
@@ -93,7 +93,7 @@ echo Toolbar::getInstance('toolbar')->render('toolbar');
 						<?php echo $this->form->getInput('contact_info'); ?>
 					</div>
 					<div class="span6">
-						<?php echo $this->form->getInput('trans_contact_info'); ?>
+						<?php echo $this->form->getInput('trans_contact'); ?>
 					</div>
 				</div>
 				<div class="row-fluid form-horizontal-desktop">
