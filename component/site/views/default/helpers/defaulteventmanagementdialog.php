@@ -30,8 +30,12 @@ function DefaultEventManagementDialog($view, $row, $mask, $bootstrap = false)
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		if ($params->get("editpopup", 0) && JEVHelper::isEventCreator())
 		{
-			JevHtmlBootstrap::modal();
-			JEVHelper::script('editpopupJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
+			//JevHtmlBootstrap::modal();
+			//JEVHelper::script('editpopupJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
+
+			JLoader::register('JevModal', JPATH_LIBRARIES . "/jevents/jevmodal/jevmodal.php");
+			JevModal::framework();
+
 			$popup  = true;
 			$popupw = $params->get("popupw", 800);
 			$popuph = $params->get("popuph", 600);
@@ -45,10 +49,12 @@ function DefaultEventManagementDialog($view, $row, $mask, $bootstrap = false)
 		$hasrepeat    = false;
 		$editImg      = HTMLHelper::image('com_jevents/icons-32/edit.png', Text::_("EDIT_EVENT"), null, true);
 		$editLink     = $row->editLink();
-		$editLink     = $popup ? "javascript:jevEditPopupNoHeader('" . $editLink . "');" : $editLink;
+		//$editLink     = $popup ? "javascript:jevEditPopupNoHeader('" . $editLink . "');" : $editLink;
+		$editLink     = $popup ? "javascript:jevModalNoHeader('myEditModal','" . $editLink . "');" : $editLink;
 		$editCopyImg  = HTMLHelper::image('com_jevents/icons-32/copy.png', Text::_("COPY_AND_EDIT_EVENT"), null, true);
 		$editCopyLink = $row->editCopyLink();
-		$editCopyLink = $popup ? "javascript:jevEditPopupNoHeader('" . $editCopyLink . "');" : $editCopyLink;
+		//$editCopyLink = $popup ? "javascript:jevEditPopupNoHeader('" . $editCopyLink . "');" : $editCopyLink;
+		$editCopyLink = $popup ? "javascript:jevModalNoHeader('myEditModal','" . $editCopyLink . "');" : $editCopyLink;
 		$deleteImg    = HTMLHelper::image('com_jevents/icons-32/discard.png', Text::_("DELETE_EVENT"), null, true);
 		$deleteLink   = $row->deleteLink();
 		if ($row->until() != $row->dtstart() || $row->count() > 1 || $row->freq() == "IRREGULAR")
@@ -58,7 +64,8 @@ function DefaultEventManagementDialog($view, $row, $mask, $bootstrap = false)
 
 			$editRepeatImg    = HTMLHelper::image('com_jevents/icons-32/edit.png', Text::_("EDIT_REPEAT"), null, true);
 			$editRepeatLink   = $row->editRepeatLink();
-			$editRepeatLink   = $popup ? "javascript:jevEditPopupNoHeader('" . $editRepeatLink . "');" : $editRepeatLink;
+			//$editRepeatLink   = $popup ? "javascript:jevEditPopupNoHeader('" . $editRepeatLink . "');" : $editRepeatLink;
+			$editRepeatLink   = $popup ? "javascript:jevModalNoHeader('myEditModal','" . $editRepeatLink . "');" : $editRepeatLink;
 			$deleteRepeatImg  = HTMLHelper::image('com_jevents/icons-32/discard.png', Text::_("DELETE_THIS_REPEAT"), null, true);
 			$deleteRepeatLink = $row->deleteRepeatLink();
 			//$deleteRepeatLink = $row->deleteRepeatLink(false);
@@ -117,7 +124,7 @@ function DefaultEventManagementDialog($view, $row, $mask, $bootstrap = false)
 				<div class="modal-content">
 					<div class="modal-header">
 						<?php
-							$jversion = new JVersion;
+							$jversion = new Joomla\CMS\Version;
 							if ($jversion->isCompatible('4.0'))
 							{
 						?>

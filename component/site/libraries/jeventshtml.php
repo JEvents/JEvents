@@ -734,7 +734,7 @@ class JEventsHTML
 		    echo $tosend;
 	    }
 
-	    public static function getUserMailtoLink($evid, $userid, $admin = false, $event)
+	    public static function getUserMailtoLink($evid, $userid, $admin = false, $event = null)
 	    {
 
 		    $db = Factory::getDbo();
@@ -858,7 +858,7 @@ class JEventsHTML
 		    return $dayname;
 	    }
 
-	    public static function getColorBar($event_id = null, $newcolor)
+	    public static function getColorBar($event_id = null, $newcolor = '')
 	    {
 		    $db = Factory::getDbo();
 

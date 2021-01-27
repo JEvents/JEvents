@@ -114,6 +114,13 @@ $landingpage = $params->get("landingpage", 'cpanel.cpanel');
 $cmd = $input->get('task', $landingpage);
 //echo $cmd;die;
 
+// Should the output come from one of the plugins instead?
+if (strpos($cmd, "plugin.") === 0 && count(explode(".", $cmd)) == 2)
+{
+	Factory::getApplication()->triggerEvent('onJEventsPluginOutput');
+	return;
+}
+
 //Time to handle view switching for our current setup for J3.7
 $view = $input->get('view', '');
 //Check the view and redirect if any match.

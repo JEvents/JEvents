@@ -49,8 +49,9 @@ class ExtViewNavTableBarIconic
 		$params      = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		if ($params->get("editpopup", 0) && JEVHelper::isEventCreator())
 		{
-			JevHtmlBootstrap::modal();
-			JEVHelper::script('editpopupJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
+			JLoader::register('JevModal', JPATH_LIBRARIES . "/jevents/jevmodal/jevmodal.php");
+			JevModal::framework();
+
 			$view->popup  = true;
 			$view->popupw = $params->get("popupw", 800);
 			$view->popuph = $params->get("popuph", 600);
@@ -70,7 +71,8 @@ class ExtViewNavTableBarIconic
 							{
 								list($year, $month, $day) = JEVHelper::getYMD();
 								$editLink     = Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.edit' . '&year=' . $year . '&month=' . $month . '&day=' . $day . '&Itemid=' . $view->Itemid, true);
-								$eventlinkadd = $view->popup ? "javascript:jevEditPopup('" . $editLink . "');" : $editLink;
+								$eventlinkadd = $view->popup ? "javascript:jevModalPopup('myEditModal','" . $editLink . "');" : $editLink;
+
 								?>
 										<td><img name="spacer" src="<?php echo $viewimages; ?>/spacer.gif"  alt="" border="0" height="25" width="10"/></td>
 										<td class="buttontext" align="center" nowrap="nowrap" valign="middle">

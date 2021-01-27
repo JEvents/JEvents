@@ -21,7 +21,11 @@ use Joomla\CMS\Form\FormHelper;
 
 // We need to get the params first
 
-HTMLHelper::_('formbehavior.chosen', '#adminForm select.chosen');
+$jversion = new Joomla\CMS\Version;
+if (!$jversion->isCompatible('4.0'))
+{
+	HTMLHelper::_('formbehavior.chosen', '#adminForm select.chosen');
+}
 
 $version = JEventsVersion::getInstance();
 

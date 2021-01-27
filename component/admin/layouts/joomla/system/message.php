@@ -14,18 +14,18 @@ use Joomla\CMS\Factory;
 // dummy output which we are hijacking to place withing our scope!
 
 $msgList = $displayData['msgList'];
-$jversion = new JVersion;
+$jversion = new Joomla\CMS\Version;
 
 // Skip Chosen in Joomla 4.x+
 if ($jversion->isCompatible('4.0'))
 {
 	include (JPATH_SITE . "/layouts/joomla/system/message.php");
-
+	$messages = "";
 }
 else
 {
-$alert = array('error' => 'alert-error', 'warning' => '', 'notice' => 'alert-info', 'message' => 'alert-success');
-ob_start();
+	$alert = array('error' => 'alert-error', 'warning' => '', 'notice' => 'alert-info', 'message' => 'alert-success');
+	ob_start();
 ?>
 <div id="system-message-container">
 	<?php if (is_array($msgList) && !empty($msgList)) : ?>
@@ -49,8 +49,9 @@ ob_start();
 	<?php endif; ?>
 </div>
 <?php
+	$messages = ob_get_clean();
 }
-$messages = ob_get_clean();
+
 $document = Factory::getDocument();
 $buffer = $document->getBuffer('component');
 

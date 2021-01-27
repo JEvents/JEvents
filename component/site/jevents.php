@@ -191,6 +191,15 @@ if (!$cmd || !is_string($cmd) || strpos($cmd, '.') == false)
 		$cmd = "month.calendar";
 }
 
+PluginHelper::importPlugin("jevents");
+
+// Should the output come from one of the plugins instead?
+if (strpos($cmd, "plugin.") === 0)
+{
+	Factory::getApplication()->triggerEvent('onJEventsPluginOutput');
+	return;
+}
+
 if (strpos($cmd, '.') != false)
 {
 	// We have a defined controller/task pair -- lets split them out

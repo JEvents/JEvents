@@ -15,15 +15,13 @@ function DefaultViewEventRowAdmin($view, $row, $manage = false)
 	$params     = ComponentHelper::getParams(JEV_COM_COMPONENT);
 	if ($params->get("editpopup", 0) && JEVHelper::isEventCreator())
 	{
-		JevHtmlBootstrap::modal();
-		JEVHelper::script('editpopupJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
+		JLoader::register('JevModal', JPATH_LIBRARIES . "/jevents/jevmodal/jevmodal.php");
+		JevModal::framework();
 		$popup  = true;
-		$popupw = $params->get("popupw", 800);
-		$popuph = $params->get("popuph", 600);
 	}
 
 	$editLink = $row->editLink(true);
-	$editLink = $popup ? "javascript:jevEditPopup('" . $editLink . "');" : $editLink;
+	$editLink = $popup ? "javascript:jevModalNoHeader('myEditModal','" . $editLink . "');" : $editLink;
 
 	$modifylink = '';
 	if (!$manage && JEVHelper::canEditEvent($row))

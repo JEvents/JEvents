@@ -68,7 +68,7 @@ $tmpl = $app->input->getCmd('tmpl', '');
                     <div class="gsl-navbar-right  gsl-background-secondary ">
                             <ul class="gsl-navbar-nav gsl-hidden">
 	                            <?php
-	                            $jversion = new JVersion;
+	                            $jversion = new Joomla\CMS\Version;
 	                            if (true || $jversion->isCompatible('4.0'))
 	                            {
 		                            ?>

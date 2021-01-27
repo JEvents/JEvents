@@ -204,20 +204,10 @@ class DefaultsModelDefault extends BaseDatabaseModel
 		$row = $this->getTable();
 
 		// Bind the form fields to the session table
-		if (!$row->bind($data))
-		{
-			$this->setError($this->_db->getErrorMsg());
-
-			return false;
-		}
+		$row->bind($data);
 
 		// Store the session table to the database
-		if (!$row->store())
-		{
-			$this->setError($this->_db->getErrorMsg());
-
-			return false;
-		}
+		$row->store();
 
 		return true;
 	}

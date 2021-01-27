@@ -607,11 +607,19 @@ function JEventsParseRoute(&$segments)
 		}
 	}
 
+	// J4 router is different and we must clean out the $segments;
+	$segments = array();
+	/*
+	if (count($vars) < count($segments) && $segments[count($segments) - 1] == ":"  )
+	{
+		unset( $segments[count($segments) - 1]);
+	}
+
 	if (count($vars) == count($segments))
 	{
 		$segments = array();
 	}
-
+	*/
 	return $vars;
 
 }
@@ -1050,10 +1058,6 @@ function JEventsParseRouteNew(&$segments, $task)
 							$vars['catids'] = $segments[$slugcount];
 							unset( $segments[$slugcount]);
 						}
-						else if ($segments[$slugcount] == ":")
-						{
-							unset( $segments[$slugcount]);
-						}
 						break;
 				}
 			}
@@ -1121,10 +1125,19 @@ function JEventsParseRouteNew(&$segments, $task)
 			break;
 	}
 
+	// J4 router is different and we must clean out the $segments;
+	$segments = array();
+	/*
+	if (count($vars) < count($segments) && $segments[count($segments) - 1] == ":"  )
+	{
+		unset( $segments[count($segments) - 1]);
+	}
+
 	if (count($vars) == count($segments))
 	{
 		$segments = array();
 	}
+	*/
 	return $vars;
 
 }

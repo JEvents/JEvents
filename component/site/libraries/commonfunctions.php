@@ -440,7 +440,7 @@ class JEV_CommonFunctions
 		$mail->send();
 	}
 
-	public static function sendAdminMail($adminName, $adminEmail, $subject = '', $title = '', $content = '', $day = '', $month = '', $year = '', $start_time = '', $end_time = '', $author = '', $live_site, $modifylink, $viewlink, $event = false, $cc = "")
+	public static function sendAdminMail($adminName, $adminEmail, $subject = '', $title = '', $content = '', $day = '', $month = '', $year = '', $start_time = '', $end_time = '', $author = '', $live_site = "", $modifylink = "", $viewlink = "", $event = false, $cc = "")
 	{
 
 		$config = new JConfig();

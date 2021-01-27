@@ -477,8 +477,8 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		if ($this->languages)
 		{
 			$translations = array();
-			JevHtmlBootstrap::modal();
-			JEVHelper::script('editpopupJQ.js','components/'.JEV_COM_COMPONENT.'/assets/js/');
+			JLoader::register('JevModal', JPATH_LIBRARIES . "/jevents/jevmodal/jevmodal.php");
+			JevModal::framework();
 
 			// Any existing translations ?  Do NOT use isset here since there is a magic __get that will return false if its not defined
 			if ($row->evdet_id) {
@@ -499,7 +499,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 						array('title' => $item->title),
 						true
 					);
-					$url  = "javascript:jevEditTranslation('".$url ."', '". Text::sprintf("JEV_TRANSLATE_EVENT_INTO" ,  addslashes($item->title),  array('jsSafe'=>true) ) . "'); ";
+					$url  = "javascript:jevModalNoHeader('myTranslationModal','".$url ."', '". Text::sprintf("JEV_TRANSLATE_EVENT_INTO" ,  addslashes($item->title),  array('jsSafe'=>true) ) . "'); ";
 					$tooltipParts = array( 	$img,  $item->title);
 					$item->link = HTMLHelper::_('tooltip', implode(' ', $tooltipParts), null, null, $text, $url, null, 'hasTooltip label label-association label-' . $item->sef .( in_array($item->lang_code, $translations)?" hastranslation":"" ));
 

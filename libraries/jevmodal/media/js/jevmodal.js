@@ -145,3 +145,8 @@ function addJevModalHtml(id) {
     }
 }
 
+
+function closeJevModalBySelector(selector)
+{
+    jQuery(selector).modal('hide');
+}

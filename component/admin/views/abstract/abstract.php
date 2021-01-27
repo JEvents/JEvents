@@ -266,7 +266,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 	/**
 	 * Loads event editing layout using template
 	 */
-	function loadEditFromTemplate($template_name = 'icalevent.edit_page', $event, $mask, $search = array(), $replace = array(), $blank = array())
+	function loadEditFromTemplate($template_name = 'icalevent.edit_page', $event = null, $mask = null, $search = array(), $replace = array(), $blank = array())
 	{
 		$app    = Factory::getApplication();
 
@@ -674,8 +674,11 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
         {
 	        if ($app->isClient('administrator') || $params->get("newfrontendediting", 1))
 	        {
-
-		        HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
+		        $jversion = new Joomla\CMS\Version;
+		        if (!$jversion->isCompatible('4.0'))
+		        {
+		        	HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
+		        }
 
 		        /*
 				JHtml::script('administrator/components/com_jevents/assets/js/gslselect.js');
@@ -691,7 +694,11 @@ SCRIPT;
 	        }
 	        else
 	        {
-		        HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
+		        $jversion = new Joomla\CMS\Version;
+		        if (!$jversion->isCompatible('4.0'))
+		        {
+			        HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
+		        }
 	        }
         }
 

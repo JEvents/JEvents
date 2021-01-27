@@ -20,6 +20,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 <select id="jevdefaults" onchange="defaultsEditorPlugin.insert('value','jevdefaults' )" ></select>
 
 <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
 defaultsEditorPlugin.node('#jevdefaults',"<?php echo Text::_("JEV_PLUGIN_SELECT",true);?>","");
 // built in group
 var optgroup = defaultsEditorPlugin.optgroup('#jevdefaults' , "<?php echo Text::_("JEV_CORE_DATA",true);?>");
@@ -81,4 +82,5 @@ foreach ($jevplugins as $jevplugin){
 	}
 }
 ?>
+    });
 </script>
