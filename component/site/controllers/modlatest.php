@@ -47,8 +47,8 @@ class ModLatestController extends Joomla\CMS\MVC\Controller\BaseController
 
 		$input = Factory::getApplication()->input;
 
-		$input->setVar("tmpl", "component");
-		$input->setVar("jEV", "flat");
+		$input->set("tmpl", "component");
+		$input->set("jEV", "flat");
 
 		// get the view
 		$this->view = $this->getView("modlatest", "feed");

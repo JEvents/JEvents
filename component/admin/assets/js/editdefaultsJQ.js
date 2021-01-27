@@ -28,7 +28,10 @@ defaultsEditorPlugin = {
         var textToInsert = '{{' + sel.val() + '}}';
 
         // insert the text using the library code
-        $result = jInsertEditorText(textToInsert, fieldName);
+        // @deprecated 4.0 Use directly Joomla.editors.instances[editor].replaceSelection(text);
+        // $result = jInsertEditorText(textToInsert, fieldName);
+        Joomla.editors.instances[fieldName].replaceSelection(textToInsert);
+
 
         // reset the selected element back to 'Select...'
         jevjq(pluginNode).selectedIndex = 0;
@@ -37,5 +40,46 @@ defaultsEditorPlugin = {
             jQuery(selel).attr('selected', false);
         });
         return false;
+    },
+
+    inject: function (fieldName, textToInsert) {
+
+        // clear the current value
+        try {
+            Joomla.editors.instances[fieldName].setValue('');
+        }
+        catch (e)
+        {
+            try {
+                document.getElementById(fieldName).value = '';
+            }
+            catch (e)
+            {
+
+            }
+        }
+        // insert the text using the library code
+        Joomla.editors.instances[fieldName].replaceSelection(textToInsert);
+        return false;
+    },
+    extract: function (fieldName) {
+
+        // insert the text using the library code
+        try {
+            return Joomla.editors.instances[fieldName].getValue();
+        }
+        catch (e)
+        {
+            try {
+                return document.getElementById(fieldName).value;
+            }
+            catch (e)
+            {
+
+            }
+        }
+        return '';
     }
+
+
 }

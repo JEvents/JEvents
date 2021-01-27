@@ -1,0 +1,89 @@
+<div id='jeviso_item{{Repeat id:RPID}}' class='jeviso_item'>
+    <div class='jfloat-event ng-scope ng-isolate-scope' itemscope='' itemtype='http://schema.org/Event'>
+        <div class='jeviso_item_image uk-height-small' uk-toggle='target: #modal-event{{Repeat id:RPID}}'>
+            {{Scaled Image:JEV_SIZEDIMAGE_1;400x300}}
+        </div>
+        <div uk-grid uk-height-match id='eventcontainer{{Repeat id:RPID}}' class='jeviso_eventsummary' uk-toggle='target: #modal-event{{Repeat id:RPID}}'>
+            <div>
+                <div class='startdate uk-height-1-1 uk-padding-small' itemprop='startDate' datetime='{{Start Date:STARTDATE;%Y-%b-%d}}' style='background-color:{{Event Colour:COLOUR}};color:{{Foreground Colour:FGCOLOUR}}'>
+                    {{Start Date:STARTDATE;<div uk-icon='icon: calendar'></div><div class='startmonth'>%b</div><div class='startday'>%d</div>}}
+                </div>
+            </div>
+            <h3 class='uk-modal-title uk-width-expand eventtitle uk-padding-small uk-text-nowrap uk-overflow-hidden' itemprop='name' title='{{Title:TITLE}}'>
+                {{Truncated Title:TRUNCATED_TITLE:24chars}}
+                <span class='eventcategory'>{{Category:CATEGORY}}</span>
+            </h3>
+        </div>
+        <!-- This is the modal -->
+        <div id='modal-event{{Repeat id:RPID}}' uk-modal='container:jev_isoitem{{Repeat id:RPID}}' class='jeviso-modal'>
+            <div class='uk-modal-dialog'>
+                <div class='uk-modal-header uk-padding-small' uk-grid>
+                    <h2 class='startdate'>{{Start Date:STARTDATE;<div class='startmonth'>%b</div><div class='startday'>%d</div>}}</h2>
+                    <h2 class='uk-modal-title uk-width-expand eventtitle'>{{Title Link:TITLE_LINK}}<span class='eventcategory'>{{Category:CATEGORY}}</span></h2>
+                    <button class='uk-modal-close-default' type='button' uk-close></button>
+                </div>
+                <div class='uk-modal-body uk-padding-small'>
+                    {{Scaled Image:JEV_SIZEDIMAGE_1;400x300#<div class='jeviso_modal_image uk-width-1-1'>%s</div>#}}
+                    <div class='eventtime uk-margin-medium-top ' uk-grid>
+                        <div uk-icon='icon: clock'></div>
+                        <div class='uk-width-expand'>
+                            <div class='eventdetaillink uk-float-right uk-button uk-button-primary'>
+                                {{Link Start:LINKSTART}} View in Calendar {{Link End:LINKEND}}
+                            </div>
+                            <div class='timelabel'>
+                                Time
+                            </div>
+                            {{Start Time:STARTTIME;%l:%M %p# %s#No Specific time}}{{End Time:ENDTIME;%l:%M %p# - %s}}
+                        </div>
+                    </div>
+                    <div class='eventdetails  uk-margin-small-top ' uk-grid>
+                        <div uk-icon='icon: info'></div>
+                        <div class='uk-width-expand'>
+                            <div class='detailslabel'>
+                                Event Details
+                            </div>
+                            {{Truncated Description:TRUNCATED_DESC:30words}}
+                        </div>
+                    </div>
+                    <div class='calendarlinks  uk-margin-small-top' uk-grid>
+                        <div uk-icon='icon: calendar'></div>
+                        <div class='uk-width-expand'>
+                            <div class='exportlabel'>Export Event to Your Calendar</div>
+                            <div>
+                                <a href='{{Save to Google:ICALGOOGLE}}' title='Save to Google Calendar'>
+                                    <span uk-icon='icon: google'></span>
+                                </a>
+                                <a href='{{Save Ical Link:ICALSAVE}}' title='Save to Calendar'>
+                                    <span uk-icon='icon: calendar'></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='location  uk-margin-small-top' uk-grid>
+                        <div uk-icon='icon: location'></div>
+                        <div class='uk-width-expand'>
+                            <div class='locationlabel'>Location</div>
+                            <div class='jfloat-venue' itemprop='location' itemscope='' itemtype='http://schema.org/EventVenue'>
+                                <link itemprop='url' href='{{Location Url:JEVLOCATION_URL}}'>
+                                <span itemprop='geo' itemscope='' itemtype='http://schema.org/GeoCoordinates'>
+                                    <meta itemprop='latitude' content='{{Latitude:JEVLOCATION_LAT}}'>
+                                    <meta itemprop='longitude' content='{{Longitude:JEVLOCATION_LON}}'>
+                                </span>
+                                <div class='jfloat-venue-name' itemprop='name' title='{{Location Title:JEVLOCATION_TITLE}}'>
+                                    {{Location Title:JEVLOCATION_TITLE}}
+                                </div>
+                                <div class='jfloat-city-state' itemprop='address' itemscope='' itemtype='http://schema.org/PostalAddress'>
+                                    <span itemprop='addressLocality'>{{Location City:JEVLOCATION_CITY}}</span>
+                                    <span itemprop='addressRegion'>{{Location State:JEVLOCATION_STATE}}</span>
+                                </div>
+                            </div>
+                            {{Location Map:JEVLOCATION_MAP}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{CUSTOMJS}}{{/CUSTOMJS}}
+{{CUSTOMCSS}}{{/CUSTOMCSS}}

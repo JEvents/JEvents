@@ -120,7 +120,7 @@ body.com_jevents {
 }
 #gslc.gsl-scope #left-col .left-nav-wrap .left-nav li > a {
   display: block;
-  min-height: 0;
+  min-height: 40px;
   padding: 0 5px 0 15px;
   line-height: 40px;
 }

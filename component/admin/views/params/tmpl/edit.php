@@ -348,6 +348,12 @@ if (count($jevplugins))
 						$lang       = Factory::getLanguage();
 						$lang->load($langfile, JPATH_SITE, null, false, true);
 					}
+					else
+					{
+						$langfile   = 'files_jevents' . $viewfile . 'layout';
+						$lang       = Factory::getLanguage();
+						$lang->load($langfile, JPATH_SITE, null, false, true);
+					}
 
 					$fieldSets = $layoutform->getFieldsets();
 					$html      = array();

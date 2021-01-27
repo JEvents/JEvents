@@ -55,6 +55,28 @@ if ($this->item->name == 'icalevent.list_block3' && $this->item->value == "" && 
 	$this->item->value = file_get_contents(JPATH_SITE . '/components/com_jevents/views/float/defaults/icalevent.list_block3.html');
 }
 
+if (strpos($this->item->name, "module.") === 0)
+{
+
+	// Get the plugin
+	if (JPluginHelper::getPlugin('editors', 'codemirror'))
+	{
+		$editor = Editor::getInstance("codemirror");
+	}
+	else
+	{
+		$editor = Editor::getInstance("none");
+	}
+}
+
+if (strpos($this->item->name, "module.") === 0
+	&& $this->item->value == ""
+	&& file_exists(dirname(__FILE__) . '/' . preg_replace("#\.[0-9]+#", "", $this->item->name) . ".html")
+)
+{
+	$this->item->value = file_get_contents(dirname(__FILE__) . '/' . preg_replace("#\.[0-9]+#", "", $this->item->name) . ".html");
+}
+
 $this->replaceLabels($this->item->value);
 
 $templateparams = new stdClass();
@@ -64,21 +86,52 @@ if (isset($this->item->params) && !empty($this->item->params)) {
 // is there custom css or js - if so push into the params
 if (strpos($this->item->value, '{{CUSTOMJS}') !== false)
 {
-	preg_match('|' . preg_quote('{{CUSTOMJS}}') . '(.+?)' . preg_quote('{{/CUSTOMJS}}') . '|s', $this->item->value, $matches);
+	preg_match('|' . preg_quote('{{CUSTOMJS}}') . '(.*?)' . preg_quote('{{/CUSTOMJS}}') . '|s', $this->item->value, $matches);
 
 	if (count($matches) == 2)
 	{
 		$templateparams->customjs = $matches[1];
 		$this->item->value = str_replace($matches[0], "",	$this->item->value);
 	}
+	else
+	{
+		$templateparams->customjs = "";
+	}
 }
+
 if (strpos($this->item->value, '{{CUSTOMCSS}') !== false)
 {
-	preg_match('|' . preg_quote('{{CUSTOMCSS}}') . '(.+?)' . preg_quote('{{/CUSTOMCSS}}') . '|s', $this->item->value, $matches);
+	preg_match('|' . preg_quote('{{CUSTOMCSS}}') . '(.*?)' . preg_quote('{{/CUSTOMCSS}}') . '|s', $this->item->value, $matches);
 
 	if (count($matches) == 2)
 	{
 		$templateparams->customcss = $matches[1];
+		$this->item->value = str_replace($matches[0], "",	$this->item->value);
+	}
+	else
+	{
+		$templateparams->customcss = "";
+	}
+}
+
+// is there custom header or footer html - if so push into the params
+if (strpos($this->item->value, '{{HTMLHEADER}') !== false)
+{
+	preg_match('|' . preg_quote('{{HTMLHEADER}}') . '(.*?)' . preg_quote('{{/HTMLHEADER}}') . '|s', $this->item->value, $matches);
+
+	if (count($matches) == 2)
+	{
+		$templateparams->htmlheader = $matches[1];
+		$this->item->value = str_replace($matches[0], "",	$this->item->value);
+	}
+}
+if (strpos($this->item->value, '{{HTMLFOOTER}') !== false)
+{
+	preg_match('|' . preg_quote('{{HTMLFOOTER}}') . '(.*?)' . preg_quote('{{/HTMLFOOTER}}') . '|s', $this->item->value, $matches);
+
+	if (count($matches) == 2)
+	{
+		$templateparams->htmlheader = $matches[1];
 		$this->item->value = str_replace($matches[0], "",	$this->item->value);
 	}
 }
@@ -104,9 +157,22 @@ $this->item->params = json_encode($templateparams);
 				</div>
 				<div class="form-group gsl-width-1-4@m">
 					<label for="category"><?php echo Text::_('JCATEGORY'); ?>:</label>
+					<!--
 					<input readonly class="inputbox form-control" type="text" id="language" size="50"
 					       maxlength="100"
 					       value="<?php echo $this->item->catid == "0" ? Text::alt('JALL', 'language') : $this->item->category_title; ?>"/>
+					<input type="hidden" name="catid" value="<?php echo $this->item->catid; ?>">
+					       //-->
+					<?php
+					$catid = $this->item->catid == "0" ? "" :  $this->item->catid;
+					$categorySelect = JEventsHTML::buildCategorySelect($catid, "", null, true, false, 0, 'catid');
+					if (strpos($categorySelect, "<select "))
+					{
+						$categorySelect = str_replace("<select ", "<select onchange='if (confirm(\"" . Text::_("JEV_YOU_WILL_LOOSE_UNSAVED_CHANGES_WHEN_CHANGING_CATEGORY_DO_YOU_WISH_TO_CONTINUE", true). "\")) {this.form.submit();}' ", $categorySelect);
+					}
+					echo $categorySelect;
+					//$catid, $args, $catidList = null, $with_unpublished = false, $require_sel = false, $catidtop = 0, $fieldname = "catid", $sectionname = JEV_COM_COMPONENT, $excludeid = false, $order = "ordering", $eventediting = false, $allowMultiCat = false
+					?>
 				</div>
 				<div class="form-group gsl-width-1-4@m">
 					<label for="name"><?php echo Text::_('NAME'); ?></label>
@@ -126,7 +192,7 @@ $this->item->params = json_encode($templateparams);
 					echo HTMLHelper::_('select.genericlist', $poptions, 'state', 'class="inputbox form-control chzn-color-state"', 'value', 'text', $this->item->state);
 					?>
 				</div>
-				<div class="form-group gsl-width-3-4@m">
+				<div class="form-group gsl-width-1-4@m">
 					<?php
 					$pattern   = "#.*([0-9]*).*#";
 					$name      = preg_replace("#\.[0-9]+#", "", $this->item->name);
@@ -153,7 +219,7 @@ $this->item->params = json_encode($templateparams);
 
 		<!-- Custom Module Form -->
 		<?php
-		if ($this->item->name != "month.calendar_tip" && $this->item->name != "icalevent.edit_page" && strpos($this->item->name, "com_jevpeople") === false && strpos($this->item->name, "com_jevlocations") === false)
+		if ($this->item->name != "month.calendar_tip" && strpos($this->item->name, "module.") === false && $this->item->name != "icalevent.edit_page" && strpos($this->item->name, "com_jevpeople") === false && strpos($this->item->name, "com_jevlocations") === false)
 		{
 			?>
 			<div class="gsl-container gsl-container-expand">
@@ -235,8 +301,36 @@ $this->item->params = json_encode($templateparams);
 		<?php
 		}
 
-		// Custom CSS and Javascript
 		$params = new Registry($this->item->params);
+
+		if (strpos($this->item->name,  "module." ) === 0 )
+		{
+			$headerhtml = $params->get("header", '');
+			$footerhtml = $params->get("footer", '');
+
+			?>
+			<div class="gsl-container gsl-container-expand">
+				<div class="gsl-grid gsl-grid small">
+					<div class="form-group gsl-width-expand@m">
+						<h3><?php echo Text::_("JEV_DEFAULTS_HTML_HEADER");?></h3>
+						<?php
+						echo $editor->display('params[header]', htmlspecialchars($headerhtml, ENT_QUOTES, 'UTF-8'), 600, 450, '70', '15', false);
+						?>
+					</div>
+				</div>
+				<div class="gsl-grid gsl-grid small">
+					<div class="form-group gsl-width-expand@m">
+						<h3><?php echo Text::_("JEV_DEFAULTS_HTML_FOOTER");?></h3>
+						<?php
+						echo $editor->display('params[footer]' , htmlspecialchars($footerhtml, ENT_QUOTES, 'UTF-8'), 600, 450, '70', '15', false);
+						?>
+					</div>
+				</div>
+			</div>
+			<?php
+		}
+
+		// Custom CSS and Javascript
 		$customcss = $params->get("customcss", '');
 		$customjs = $params->get("customjs", '');
 
@@ -259,7 +353,6 @@ $this->item->params = json_encode($templateparams);
 		<input type="hidden" name="name" value="<?php echo $this->item->name; ?>">
 		<input type="hidden" name="id" value="<?php echo $this->item->id; ?>">
 		<input type="hidden" name="language" value="<?php echo $this->item->language; ?>">
-		<input type="hidden" name="catid" value="<?php echo $this->item->catid; ?>">
 		<input type="hidden" name="boxchecked" value="0"/>
 		<input type="hidden" name="task" value="defaults.edit"/>
 		<input type="hidden" name="act" value=""/>

@@ -223,8 +223,10 @@ function set12hTime(time24h){
 	min   = parseInt(parts[1], 10);
 	if ((hour >= 12) ){
 		ampm = pm;
+		inactive_ampm = am;
 	} else {
 		ampm = am;
+		inactive_ampm = pm;
 	}
 	if (hour > 12){
 		hour = hour - 12;
@@ -235,6 +237,11 @@ function set12hTime(time24h){
 	if (min  < 10) min  = "0"+min;
 	time.value = hour+":"+min;
 	ampm.checked = true;
+	if (ampm.parentNode.classList.contains('gsl-button'))
+	{
+		ampm.parentNode.classList.add('gsl-button-primary');
+		inactive_ampm.parentNode.classList.remove('gsl-button-primary');
+	}
 }
 
 
@@ -313,6 +320,12 @@ function checkEndTime() {
 	startDate.setMinutes(starttimeparts[1]);
 
 	endtimeparts = (end_time.value=="00:00") ? [23,59] : end_time.value.split(":");
+	/*
+	if (end_time.value=="00:00" && document.adminForm.view12Hour.checked)
+	{
+		end_time.value="11:59";
+	}
+	 */
 	endDate = new Date();
 	endDate = endDate.dateFromYMD(end_date.value);
 	endDate.setHours(endtimeparts[0]);
@@ -918,12 +931,24 @@ function fixRepeatDates(checkYearDay){
 		if (parseInt(document.getElementById('evid').value)==0) {
 			bd[day].checked=false;
 			// Make sure label is highlighted
-			changeHiddenInput(bd[day]);
+			try {
+				changeHiddenInput(bd[day]);
+			}
+			catch (e)
+			{
+
+			}
 		}
 	}
 	document.getElementById('cb_wd' + startDate.getDay()).checked=true;
 	// Make sure label is highlighted
-	changeHiddenInput(document.getElementById('cb_wd' + startDate.getDay()));
+	try {
+		changeHiddenInput(document.getElementById('cb_wd' + startDate.getDay()));
+	}
+	catch (e)
+	{
+
+	}
 
 	end_date = document.getElementById("publish_down");
 	endDate = new Date();
@@ -1184,12 +1209,14 @@ function hideEmptyJevTabs() {
 		}
 		// tab link with no matching tab - hide the link
 		var tablinks = jevjq("#myEditTabs.nav-tabs li a");
+
 		if (tablinks.length){
 			tablinks.each(function(index, tablink) {
-				var href = jQuery(tablink).prop('href');
+				// use attr instead of prop here because prop messes up special characters!
+				var href = jQuery(tablink).attr('href');
 				href = href.substr(href.indexOf('#'));
-				var tab = jevjq("#myEditTabsContent "+href);
-				if (!tab.length) {
+				var tab = document.querySelector("#myEditTabsContent "+href);
+				if (!tab) {
 					tablink.innerHTML="xx";
 					jQuery(tablink).css("display","none");
 				}

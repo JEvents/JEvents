@@ -35,6 +35,11 @@ class DefaultsModelDefault extends BaseDatabaseModel
 		parent::__construct();
 		$input = Factory::getApplication()->input;
 		$id     = $input->getInt("id");
+		if ($id == 0)
+		{
+			$this->modid       = $input->getInt("modid");
+			$this->layouttype  = $input->getCmd("type", "module.latest_event");
+		}
 		$edit   = $input->getBool('edit', true);
 		if ($edit)
 		{
@@ -81,13 +86,58 @@ class DefaultsModelDefault extends BaseDatabaseModel
 		// Lets load the content if it doesn't already exist
 		if (empty($this->_data))
 		{
-			$query = 'SELECT d.* , c.title as category_title FROM #__jev_defaults as d ' .
-				'LEFT JOIN #__categories as c on c.id = d.catid' .
-				' WHERE d.id = ' . $this->_db->Quote($this->_id);
-			$this->_db->setQuery($query);
-			$this->_data = $this->_db->loadObject();
+			if ($this->_id > 0)
+			{
+				$query = 'SELECT d.* , c.title as category_title FROM #__jev_defaults as d ' .
+					'LEFT JOIN #__categories as c on c.id = d.catid' .
+					' WHERE d.id = ' . $this->_db->Quote($this->_id);
+				$this->_db->setQuery($query);
+				$this->_data = $this->_db->loadObject();
 
-			//echo $this->_db->getErrorMsg();
+				$input = Factory::getApplication()->input;
+				$catid = $input->getInt("catid", -1);
+
+				// we have changed the category in the edit page so we should find the matching layout
+				if ($catid >-1 && $this->_data && intval($this->_data->catid) !== $catid)
+				{
+					$query = 'SELECT d.* , c.title as category_title FROM #__jev_defaults as d ' .
+						'LEFT JOIN #__categories as c on c.id = d.catid' .
+						' WHERE d.catid = ' . $this->_db->Quote($catid) .
+						' AND   d.name = '  . $this->_db->Quote($this->_data->name) .
+						' AND   d.language = ' . $this->_db->Quote($this->_data->language)
+					;
+					$this->_db->setQuery($query);
+					$this->_data = $this->_db->loadObject();
+				}
+			}
+			else if ($this->modid > 0)
+			{
+				$db = Factory::getDbo();
+				$db->setQuery("SELECT * FROM #__jev_defaults as d WHERE d.catid = 0 AND d.language = '*'");
+				$defaults = $db->loadObjectList("name");
+
+				$layoutname = $this->layouttype . '.' . $this->modid;
+				if (!isset($defaults[$layoutname ]))
+				{
+					$db->setQuery("INSERT INTO  #__jev_defaults set name='$layoutname',
+						title=" . $db->Quote("JEV_TAB_LATEST_MOD") . ",
+						subject='',
+						value='',
+						state=0,
+						params='{}'");
+					$db->execute();
+					$db->setQuery("SELECT * FROM #__jev_defaults as d WHERE d.catid = 0 AND d.language = '*'");
+					$defaults = $db->loadObjectList("name");
+				}
+				else
+				{
+					$db->setQuery("UPDATE #__jev_defaults set title=" . $db->Quote("JEV_TAB_LATEST_MOD") . " WHERE name='$layoutname'");
+					$db->execute();
+				}
+				$this->_data = $defaults[ $layoutname ];
+
+			}
+
 			return (boolean) $this->_data;
 		}
 
@@ -139,7 +189,7 @@ class DefaultsModelDefault extends BaseDatabaseModel
 						$keys = array_keys(get_object_vars($oldparams));
 						foreach ($keys as $key)
 						{
-							if ($key == "modid" || $key == "modval" || $key == "customjs"  || $key == "customcss")
+							if ($key == "modid" || $key == "modval" || $key == "customjs"  || $key == "customcss" || $key == "header" || $key == "footer"  || $key == "columnsL")
 							{
 								continue;
 							}

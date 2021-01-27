@@ -111,8 +111,8 @@ $fullspan = 12;
                                 <?php echo HTMLHelper::_('grid.id', $i, $row->id); ?>
                             </td>
                             <td>
-                                        <span class="editlinktip hasTip"
-                                              title="<?php echo Text::_('JEV_Edit_Layout'); ?>::<?php echo $this->escape(Text::_($row->title)); ?>">
+                                        <span class="editlinktip hasYsPopover"
+                                              data-yspoptitle="<?php echo Text::_('JEV_Edit_Layout', true); ?>" data-yspopcontent="<?php echo $this->escape(Text::_($row->title, true)); ?>" >
                                             <a href="<?php echo $link; ?>">
                                         <?php echo $this->escape(Text::_($row->title)); ?></a>
                                         </span>

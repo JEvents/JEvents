@@ -460,16 +460,16 @@ class JEventsHTML
 		{
 			$size = count($options) > 6 ? 6 : count($options) + 1;
 			?>
-			<label class="sr-only" class='gsl-select' for="<?php echo $fieldname;?>"><?php echo Text::_('JEV_CATEGORY_SELECT_LBL'); ?></label>
+			<label class="sr-only gsl-select" for="<?php echo $fieldname;?>"><?php echo Text::_('JEV_CATEGORY_SELECT_LBL'); ?></label>
 			<select name="<?php echo $fieldname; ?>[]"  id="<?php echo $fieldname; ?>" <?php echo $args; ?> multiple="multiple" size="<?php echo $size; ?>" style="width:300px;">
 			    <?php
 		    }
 		    else
 		    {
 			    ?>
-			    <label class="sr-only" class='gsl-select' for="<?php echo $fieldname;?>"><?php echo Text::_('JEV_CATEGORY_SELECT_LBL'); ?></label>
+			    <label class="sr-only gsl-select" for="<?php echo $fieldname;?>"><?php echo Text::_('JEV_CATEGORY_SELECT_LBL'); ?></label>
 			    <select name="<?php echo $fieldname; ?>" <?php echo $args; ?>  id="<?php echo $fieldname; ?>" >
-				<option value=""><?php echo $t_first_entry; ?></option>
+				<option value="" <?php echo $catid == "" ? 'selected="true" ' : '';?> ><?php echo $t_first_entry; ?></option>
 				<?php
 			}
 			?>
