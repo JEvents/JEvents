@@ -1,7 +1,4 @@
 <?php
-
-use Joomla\CMS\HTML\HTMLHelper;
-
 /**
  * @package     Joomla.Site
  * @subpackage  Layout
@@ -11,6 +8,8 @@ use Joomla\CMS\HTML\HTMLHelper;
  */
 
 defined('JPATH_BASE') or die;
+
+use Joomla\CMS\HTML\HTMLHelper;
 
 if (GSLMSIE10)
 {
@@ -33,6 +32,10 @@ if (!$doTask && $task)
 }
 $displayData['gslicon'] = str_replace("icon-", "", $class);
 
+if (strpos($displayData['gslicon'], " ") > 0)
+{
+	$displayData['gslicon'] = explode(" ", $displayData['gslicon'])[0];
+}
 $mapping = array(
         "edit" => "file-edit",
         "new" => "plus-circle",

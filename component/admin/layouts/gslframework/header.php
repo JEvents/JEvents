@@ -181,7 +181,7 @@ $tmpl = $app->input->getCmd('tmpl', '');
             </header>
             <!--/HEADER-->
 
-	        <div id="ysts_system_messages">YSTS_SYSTEM_MESSAGES</div>
+	        <div id="ysts_system_messages"></div>
 
             <div class="gsl-content" data-gsl-height-viewport="expand: true;mode: slide">
 

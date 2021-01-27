@@ -1,7 +1,4 @@
 <?php
-
-use Joomla\CMS\HTML\HTMLHelper;
-
 /**
  * @package     Joomla.Site
  * @subpackage  Layout
@@ -11,6 +8,8 @@ use Joomla\CMS\HTML\HTMLHelper;
  */
 
 defined('JPATH_BASE') or die;
+
+use Joomla\CMS\HTML\HTMLHelper;
 
 if (GSLMSIE10)
 {
@@ -26,12 +25,16 @@ $text       = $displayData['text'];
 $doTask     = $displayData['doTask'];
 $dataTarget = isset($displayData['data-target']) ? $displayData['data-target'] : "";
 
+$displayData['gslicon'] = str_replace("icon-", "", $class);
+$class="gsl-icon";
+$gslIcon  = isset($displayData['gslicon']) ? ' gsl-icon="icon:'.$displayData['gslicon'].'"' : '';
+
 if (!empty($dataTarget))
 {
 	$dataTarget = " data-target='#" . $dataTarget . "' data-toggle='modal' ";
 }
 ?>
 <button onclick="<?php echo $doTask; ?>" class="<?php echo $btnClass; ?>" <?php echo $dataTarget;?> >
-    <span class="<?php echo $class; ?>" aria-hidden="true"></span>
+    <span class="<?php echo $class; ?>" aria-hidden="true"  <?php echo $gslIcon; ?>></span>
 	<?php echo $text; ?>
 </button>
