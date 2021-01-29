@@ -59,7 +59,7 @@ $tmpl = $app->input->getCmd('tmpl', '');
 	            if (empty($tmpl) && !$app->isClient('site'))
 	            {
 	            ?>
-                <nav class="gsl-navbar-container gsl-background-secondary ys-titlebar" gsl-navbar>
+                <nav class="gsl-navbar-container gsl-background-secondary ys-titlebar gsl-navbar"  gsl-navbar>
                     <div class="gsl-navbar-left gsl-background-secondary gsl-width-expand@m">
                         <?php
                         echo Factory::getApplication()->JComponentTitle;
@@ -145,7 +145,7 @@ $tmpl = $app->input->getCmd('tmpl', '');
 		            <?php
 	            }
 	            ?>
-                <nav class="gsl-navbar-container ys-gsl-action-buttons" gsl-navbar>
+                <nav class="gsl-navbar-container ys-gsl-action-buttons gsl-navbar" gsl-navbar>
                     <div class="gsl-navbar-left  gsl-width-expand@m">
                         <?php
                         $bar            = JToolBar::getInstance('toolbar2');

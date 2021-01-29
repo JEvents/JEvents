@@ -43,7 +43,12 @@ body.com_jevents .container-main::after {
 body.com_jevents #wrapper > .container-fluid {
   /*transform: translateZ(0);*/
 }
+body.com_jevents #wrapper #subhead {
+  display: none;
+}
 body.com_jevents #wrapper #sidebar-wrapper {
+  /* Always hide unless we implement toggle on/off */
+  display: none;
   position: fixed;
   height: 100%;
   /* J4 sidebar */
@@ -143,7 +148,12 @@ body.com_categories .container-main::after {
 body.com_categories #wrapper > .container-fluid {
   /*transform: translateZ(0);*/
 }
+body.com_categories #wrapper #subhead {
+  display: none;
+}
 body.com_categories #wrapper #sidebar-wrapper {
+  /* Always hide unless we implement toggle on/off */
+  display: none;
   position: fixed;
   height: 100%;
   /* J4 sidebar */

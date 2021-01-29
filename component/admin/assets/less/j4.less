@@ -32,8 +32,14 @@ body.@{mycomponent} {
   }
 
   /* Full sized screen */
-
+  #wrapper {
+    #subhead {
+      display:none;
+    }
+  }
   #wrapper #sidebar-wrapper {
+    /* Always hide unless we implement toggle on/off */
+    display: none;
     position: fixed;
     height: 100%;
     /* J4 sidebar */
@@ -42,6 +48,7 @@ body.@{mycomponent} {
       transition: none;/*all .3s ease;*/
     }
   }
+
 
   #gslc.gsl-scope {
     #left-col {
@@ -171,8 +178,14 @@ body.com_categories {
   }
 
   /* Full sized screen */
-
+  #wrapper {
+    #subhead {
+      display:none;
+    }
+  }
   #wrapper #sidebar-wrapper {
+    /* Always hide unless we implement toggle on/off */
+    display: none;
     position: fixed;
     height: 100%;
     /* J4 sidebar */
@@ -181,7 +194,6 @@ body.com_categories {
       transition: none;/*all .3s ease;*/
     }
   }
-
 
   #gslc.gsl-scope {
     #left-col {
