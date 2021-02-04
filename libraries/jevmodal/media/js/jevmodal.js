@@ -122,7 +122,7 @@ function launchJevModal(selector, url) {
                 jQuery(selector).data('scrollTop', scrollT);
             }
             jQuery('body').css({
-                position: 'fixed'
+              //  position: 'fixed'
             });
             if (url) {
                 jQuery(selector + ' iframe').attr("src", url);
@@ -131,7 +131,7 @@ function launchJevModal(selector, url) {
         jQuery(selector).on('hidden.bs.modal', function () {
             // scrolling issue in iOS 11.3
             jQuery('body').css({
-                position: 'static'
+              //  position: 'static'
             });
             var scrollT = jQuery(selector).data('scrollTop') || 0;
             if (scrollT > 0) {
@@ -150,7 +150,7 @@ function launchJevModal(selector, url) {
                 jQuery(selector).data('scrollTop', scrollT);
             }
             jQuery('body').css({
-                position: 'fixed'
+                //position: 'fixed'
             });
             if (url) {
                 jQuery(selector + ' iframe').attr("src", url);
@@ -159,7 +159,7 @@ function launchJevModal(selector, url) {
         jQuery(selector).on('hidden', function () {
             // scrolling issue in iOS 11.3
             jQuery('body').css({
-                position: 'static'
+               // position: 'static'
 
             });
             var scrollT = jQuery(selector).data('scrollTop') || 0;

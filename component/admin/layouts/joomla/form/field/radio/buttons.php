@@ -10,6 +10,15 @@
 // Joomla 4 onwards
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Factory;
+
+
+if (version_compare(JVERSION, "4", "gt") && Joomla\CMS\Factory::getApplication()->getInput()->getCmd('option', '') == "com_menus")
+{
+	include (JPATH_SITE . "/layouts/joomla/form/field/radio/buttons.php");
+	return;
+}
+
 extract($displayData, null);
 
 /**

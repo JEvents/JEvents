@@ -15,7 +15,7 @@
 	<fields name="params">
 
 		<fieldset name="rangedatetime" addfieldpath="/administrator/components/com_jevents/fields/">
-			<field name="relative" type="radio" class="btn-group" default='ABS'
+			<field name="relative" type="radio" class="btn-group" default='abs'
 			       label="COM_JEVENTS_DATE_RANGE_RELATIVE_LABEL" description="COM_JEVENTS_DATE_RANGE_RELATIVE_DESC">
 				<option value="abs">COM_JEVENTS_DATE_RANGE_RELATIVE_ABS</option>
 				<option value="rel">COM_JEVENTS_DATE_RANGE_RELATIVE_REL</option>

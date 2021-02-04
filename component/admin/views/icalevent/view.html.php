@@ -473,6 +473,14 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 	}
 
+	function toolbarConfirmvarButton($task = '', $msg = '', $icon = '', $iconOver = '', $alt = '', $listSelect = true, $varCheck = "")
+	{
+		$bar =  JToolBar::getInstance('toolbar');
+
+		$bar->appendButton('Jevconfirmvar', $msg, $icon, $alt, $task, $listSelect, false, $varCheck);
+
+	}
+
 	protected function translationLinks ($row) {
 		if ($this->languages)
 		{

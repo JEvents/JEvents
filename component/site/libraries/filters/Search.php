@@ -9,7 +9,7 @@
  * @link        http://www.jevents.net
  */
 
-defined('_JEXEC') or die('No Direct Access');
+defined('_VALID_MOS') or defined('_JEXEC') or die('No Direct Access');
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;

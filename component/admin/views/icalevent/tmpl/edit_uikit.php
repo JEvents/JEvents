@@ -445,39 +445,36 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
                     <?php
                 }
 				?>
-                            </div>
-                <div class="gsl-child-width-1-2@m gsl-margin-small-top  gsl-grid">
-		                        <?php
-		                        if ($this->form->getInput("priority"))
-		                        {
-			                        ?>
-                                    <div class="row jevpriority " <?php JEventsHelper::showOnRel($this->form, 'priority'); ?> >
-                                        <div class="gsl-width-1-3"  >
-					                        <?php echo $this->form->getLabel("priority"); ?>
-                                        </div>
-                                        <div class="gsl-width-expand"  >
-					                        <?php echo $this->form->getInput("priority"); ?>
-                                        </div>
-                                    </div>
-			                        <?php
-		                        }
-		                        ?>
-		                        <?php
-		                        if ($this->form->getInput("creator"))
-		                        {
-			                        ?>
-                                    <div class="row jevcreator   gsl-margin-small-top" <?php JEventsHelper::showOnRel($this->form, 'creator'); ?>>
-                                        <div class="gsl-width-1-3"  >
-					                        <?php echo $this->form->getLabel("creator"); ?>
-                                        </div>
-                                        <div class="gsl-width-expand">
-					                        <?php echo $this->form->getInput("creator"); ?>
-                                        </div>
-                                    </div>
-			                        <?php
-		                        }
-		                        ?>
-                            </div>
+                <?php
+                if ($this->form->getInput("priority"))
+                {
+                    ?>
+                    <div class="row jevpriority " <?php JEventsHelper::showOnRel($this->form, 'priority'); ?> >
+                        <div class="gsl-width-1-3"  >
+	                        <?php echo $this->form->getLabel("priority"); ?>
+                        </div>
+                        <div class="gsl-width-expand"  >
+	                        <?php echo $this->form->getInput("priority"); ?>
+                        </div>
+                    </div>
+                    <?php
+                }
+                ?>
+                <?php
+                if ($this->form->getInput("creator"))
+                {
+                    ?>
+                    <div class="row jevcreator   gsl-margin-small-top" <?php JEventsHelper::showOnRel($this->form, 'creator'); ?>>
+                        <div class="gsl-width-1-3"  >
+	                        <?php echo $this->form->getLabel("creator"); ?>
+                        </div>
+                        <div class="gsl-width-expand">
+	                        <?php echo $this->form->getInput("creator"); ?>
+                        </div>
+                    </div>
+                    <?php
+                }
+                ?>
                 <?php
 				/*
 							if ($this->form->getLabel("primarycatid"))
@@ -505,8 +502,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 				*/
 				?>
 
-                            <div class="gsl-child-width-1-2@m gsl-margin-small-top  gsl-grid">
-                                <?php
+                <?php
 				if ($this->repeatId === 0 && $this->form->getLabel("access"))
 				{
 					?>
@@ -553,13 +549,11 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 					echo $this->form->getInput("state");
 				}
                 ?>
-                            </div>
                                 <?php
 				if ($this->form->getInput("color"))
 				{
 					?>
-                            <div class=" gsl-margin-small-top gsl-child-width-1-1 gsl-grid" >
-					<div class="row jevcolour  gsl-margin-small-top" <?php JEventsHelper::showOnRel($this->form, 'color'); ?> >
+                	<div class="row jevcolour  gsl-margin-small-top" <?php JEventsHelper::showOnRel($this->form, 'color'); ?> >
                         <div class="gsl-width-1-6@m gsl-width-1-3"  >
 							<?php echo $this->form->getLabel("color"); ?>
 						</div>
@@ -567,10 +561,10 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 							<?php echo $this->form->getInput("color"); ?>
 						</div>
 					</div>
-                            </div>
 					<?php
 				}
 				?>
+                </div>
                             <?php
 
 				if ($cfg->get('timebeforedescription', 0))

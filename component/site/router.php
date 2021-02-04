@@ -586,6 +586,10 @@ function JEventsParseRoute(&$segments)
                             $task = $view . '.' . $layout;
                         }
                     }
+                    if (strpos($task, 'plugin.') === 0)
+                    {
+                    	break;
+                    }
 				    $lang = Factory::getLanguage();
 				    $lang->load("com_jevents", JPATH_ADMINISTRATOR);
 

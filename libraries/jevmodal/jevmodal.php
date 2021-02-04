@@ -40,15 +40,23 @@ class JevModal
 
 		if (!isset(static::$loaded[__METHOD__][$selector]))
 		{
-			// NEEDS TO BE DIFFERENT FOR EACH SELECTOR TO SUPPORT MULTIPLE INSTANCES ON ONE PAGE!
-			// so we also need different javascript variable names
-			$jsname = "jevmodal" . md5($selector);
 
 			// Include Modal framework
 			static::framework();
 
-			// Setup options object
-			$opt['size'] = isset($params['size']) ? $params['size'] : 'max';
+			$jsonParams = json_encode($params);
+
+			$script = <<< SCRIPT
+document.addEventListener('DOMContentLoaded', function() {
+	var targets = document.querySelectorAll('$selector');
+	targets.forEach(function(target) {
+		target.addEventListener('click', function(evt){
+			jevModalSelector(target, $jsonParams, evt);
+		}, target);
+	});
+});
+SCRIPT;
+			Factory::getDocument()->addScriptDeclaration($script);
 
 			// Set static array
 			static::$loaded[__METHOD__][$selector] = true;

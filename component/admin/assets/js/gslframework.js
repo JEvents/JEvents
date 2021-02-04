@@ -234,7 +234,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			var sidebarWrapper = document.getElementById('sidebar-wrapper');
 			if (sidebarWrapper) {
 				sidebarWrapper.classList.add('gsl-hide-sidebar');
-				document.getElementById('gslc').classList.add('gsl-hide-sidebar');
+			document.getElementById('gslc').classList.add('gsl-hide-sidebar');
 			}
 
 			let wrapper = document.getElementById('menu-collapse');
