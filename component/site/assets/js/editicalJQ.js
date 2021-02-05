@@ -455,6 +455,14 @@ function setEndDateWhenNotRepeating(elem){
 function forceValidDate(elem){
 	oldDate = new Date();
 	oldDate = oldDate.dateFromYMD(elem.val());
+	// if field is cleared then oldDate is empty
+	if (oldDate == "")
+	{
+		oldDate = new Date();
+		elem.val(oldDate.getYMD());
+		alert(invalidcorrected);
+		return;
+	}
 	newDate = oldDate.getYMD();
 	if (newDate!=elem.val()) {
 		elem.val(newDate);

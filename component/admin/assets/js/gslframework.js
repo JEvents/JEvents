@@ -579,7 +579,8 @@ window.addEventListener('load', function () {
 		let options = {};
 
 		options.container = "#gslc";
-		options.title = filter.options[0].innerText;
+		// tags filter may be empty!
+		options.title = filter.options.length > 0 ? filter.options[0].innerText : '';
 
 		gslUIkit.tooltip(filter, options);
 

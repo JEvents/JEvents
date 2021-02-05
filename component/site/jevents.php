@@ -325,6 +325,9 @@ JEVHelper::parameteriseJoomlaCache();
 //$time_end = (float) $usec + (float) $sec;
 //echo  "JEvents component pre task = ".round($time_end - $starttime, 4)."<br/>";
 
+//HTMLHelper::_('bootstrap.popover', '.hasjevtip');
+JevHtmlBootstrap::popover('.hasjevtip' , array("trigger"=>"hover focus", "placement"=>"top", "delay"=> array( "show"=> 150, "hide"=> 150 )));
+
 // Perform the Request task
 $controller->execute($task);
 
