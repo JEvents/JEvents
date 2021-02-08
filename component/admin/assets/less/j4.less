@@ -32,16 +32,23 @@ body.@{mycomponent} {
   }
 
   /* Full sized screen */
-
+  #wrapper {
+    #subhead {
+      display:none;
+    }
+  }
   #wrapper #sidebar-wrapper {
+    /* Always hide unless we implement toggle on/off */
+    display: none;
     position: fixed;
     height: 100%;
     /* J4 sidebar */
     &.gsl-hide-sidebar {
       display: none;
-      transition: all .3s ease;
+      transition: none;/*all .3s ease;*/
     }
   }
+
 
   #gslc.gsl-scope {
     #left-col {
@@ -49,7 +56,7 @@ body.@{mycomponent} {
       left: 3rem;
        */
       left: 0;
-      transition: all .3s ease;
+      transition: none;/*all .3s ease;*/
     }
 
     #right-col:not(.noleftbar) #top-head {
@@ -57,7 +64,7 @@ body.@{mycomponent} {
       left: ~"calc(50px + 3rem)";
        */
       left:50px;
-      transition: all .3s ease;
+      transition: none;/*all .3s ease;*/
     }
 
     .gsl-content, #ysts_system_messages {
@@ -65,7 +72,7 @@ body.@{mycomponent} {
       margin-left: 3rem;
        */
       margin-left: 0;
-      transition: all .3s ease;
+      transition: none;/*all .3s ease;*/
     }
 
     /* Search filters display toggle */
@@ -171,32 +178,37 @@ body.com_categories {
   }
 
   /* Full sized screen */
-
+  #wrapper {
+    #subhead {
+      display:none;
+    }
+  }
   #wrapper #sidebar-wrapper {
+    /* Always hide unless we implement toggle on/off */
+    display: none;
     position: fixed;
     height: 100%;
     /* J4 sidebar */
     &.gsl-hide-sidebar {
       display: none;
-      transition: all .3s ease;
+      transition: none;/*all .3s ease;*/
     }
   }
-
 
   #gslc.gsl-scope {
     #left-col {
       /* left: 3rem; */
-      transition: all .3s ease;
+      transition: none;/*all .3s ease;*/
     }
 
     #right-col #top-head {
      /* left: ~"calc(50px + 3rem)";*/
-      transition: all .3s ease;
+      transition: none;/*all .3s ease;*/
     }
 
     .gsl-content {
       /*margin-left: 3rem;*/
-      transition: all .3s ease;
+      transition: none;/*all .3s ease;*/
     }
   }
 
@@ -279,11 +291,14 @@ body.com_categories.view-categories {
       }
     }
   }
-
-
-
-
 }
+
+#gslc.gsl-scope {
+  .gsl-grid.hidden {
+    display:none;
+  }
+}
+
 
 @media (max-width: 960px) {
   body.@{mycomponent} {

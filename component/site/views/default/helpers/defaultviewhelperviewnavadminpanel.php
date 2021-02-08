@@ -45,7 +45,11 @@ function DefaultViewHelperViewNavAdminPanel($view)
 			{
 				// Load Bootstrap
 				JevHtmlBootstrap::framework();
-				HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
+				$jversion = new Joomla\CMS\Version;
+				if (!$jversion->isCompatible('4.0'))
+				{
+					HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
+				}
 			}
 			if ($cfg->get("bootstrapcss", 1) == 1)
 			{
@@ -70,11 +74,12 @@ function DefaultViewHelperViewNavAdminPanel($view)
 					$params   = ComponentHelper::getParams(JEV_COM_COMPONENT);
 					if ($params->get("editpopup", 0) && JEVHelper::isEventCreator())
 					{
-						//JevHtmlBootstrap::modal();
-						JEVHelper::script('editpopupJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
+						JLoader::register('JevModal', JPATH_LIBRARIES . "/jevents/jevmodal/jevmodal.php");
+						JevModal::framework();
+
 						$popup = true;
 					}
-					$eventlinkadd = $popup ? "javascript:jevEditPopup('" . $editLink . "');" : $editLink;
+					$eventlinkadd = $popup ? "javascript:jevModalNoHeader('myEditModal','" . $editLink . "');" : $editLink;
 					?>
 					<a href="<?php echo $eventlinkadd; ?>" title="<?php echo Text::_('JEV_ADDEVENT'); ?>">
 						<b><?php echo Text::_('JEV_ADDEVENT'); ?></b>
@@ -85,11 +90,13 @@ function DefaultViewHelperViewNavAdminPanel($view)
 					{
 						$importLink = Route::_('index.php?option=' . JEV_COM_COMPONENT
 							. '&task=icals.importform&tmpl=component&Itemid=' . $view->Itemid, true);
-						//JevHtmlBootstrap::modal();
-						JEVHelper::script('editpopupJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
-						$eventimport = "javascript:jevImportPopup('" . $importLink . "');";
+
+						JLoader::register('JevModal', JPATH_LIBRARIES . "/jevents/jevmodal/jevmodal.php");
+						JevModal::framework();
+
+						$eventimport = "javascript:jevModalPopup('myImportModal','" . $importLink . "', '" .  Text::_('JEV_IMPORT_ICALEVENT', true) . "');";
 						?>
-						<br/><a href="<?php echo $eventimport; ?>"
+						<br/><a href="<?php echo $eventimport; ?>;return false;"
 						        title="<?php echo Text::_('JEV_IMPORT_ICALEVENT', true); ?>">
 						<b><?php echo Text::_('JEV_IMPORT_ICALEVENT'); ?></b>
 					</a>

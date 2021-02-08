@@ -114,6 +114,15 @@ $landingpage = $params->get("landingpage", 'cpanel.cpanel');
 $cmd = $input->get('task', $landingpage);
 //echo $cmd;die;
 
+PluginHelper::importPlugin("jevents");
+
+// Should the output come from one of the plugins instead?
+if (strpos($cmd, "plugin.") === 0 && count(explode(".", $cmd)) == 2)
+{
+	Factory::getApplication()->triggerEvent('onJEventsPluginOutput');
+	return;
+}
+
 //Time to handle view switching for our current setup for J3.7
 $view = $input->get('view', '');
 //Check the view and redirect if any match.
@@ -220,7 +229,6 @@ else
 $input->set("jevtask", $cmd);
 $input->set("jevcmd", $cmd);
 
-PluginHelper::importPlugin("jevents");
 
 // Make this a config option - should not normally be needed
 //$db = Factory::getDbo();

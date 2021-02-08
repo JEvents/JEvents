@@ -21,7 +21,11 @@ HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
 HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.multiselect');
-HTMLHelper::_('formbehavior.chosen', 'select');
+$jversion = new Joomla\CMS\Version;
+if (!$jversion->isCompatible('4.0'))
+{
+	HTMLHelper::_('formbehavior.chosen', 'select');
+}
 
 $app       = Factory::getApplication();
 $user      = Factory::getUser();

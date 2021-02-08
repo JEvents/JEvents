@@ -47,7 +47,11 @@ HTMLHelper::_('behavior.keepalive');
 //HTMLHelper::_('behavior.formvalidation');
 if ($params->get("bootstrapchosen", 1))
 {
-	HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
+	$jversion = new Joomla\CMS\Version;
+	if (!$jversion->isCompatible('4.0'))
+	{
+		HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
+	}
 	// Use this as a basis for setting the primary category
 	/*
 

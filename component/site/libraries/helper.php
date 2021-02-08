@@ -1206,7 +1206,7 @@ class JEVHelper
 
 							if ($forcecheck)
 							{
-								$mparams = is_string($jevitem->params) ? new JevRegistry($jevitem->params) : $jevitem->params;
+								$mparams = is_string($jevitem->getParams()) ? new JevRegistry($jevitem->getParams()) : $jevitem->getParams();
 								$mcatids = array();
 								// New system
 								$newcats = $mparams->get("catidnew", false);

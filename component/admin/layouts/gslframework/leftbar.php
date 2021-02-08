@@ -25,10 +25,10 @@ $leftmenutrigger = $componentParams->get("leftmenutrigger", 0);
 ?>
 <aside id="left-col" class="gsl-padding-remove  gsl-background-secondary hide-label ">
 
-    <nav class="left-nav-wrap  gsl-width-auto@m"
+    <nav class="left-nav-wrap  gsl-width-auto@m gsl-navbar"
 	    <?php echo $leftmenutrigger == 2 ? "" : ('gsl-navbar="mode: ' . ($leftmenutrigger == 0 ? "hover" : "click") .'"');?>
     >
-        <div class="left-logo gsl-background-secondary"
+        <div class="left-logo gsl-background-secondary gsl-toggle"
 			<?php echo $leftmenutrigger == 2 ? "" : ('gsl-toggle="target:#left-col, #left-col .left-nav, .ysts-page-title; mode: ' . ($leftmenutrigger == 0 ? "hover" : "click") . ';cls: hide-label"') ;?>
         >
             <div>
@@ -42,7 +42,7 @@ $leftmenutrigger = $componentParams->get("leftmenutrigger", 0);
             <?php
             ob_start();
             ?>
-            <ul class="left-nav gsl-navbar-nav gsl-list hide-label gsl-background-secondary"
+            <ul class="left-nav gsl-navbar-nav gsl-list hide-label gsl-background-secondary gsl-toggle"
 	            <?php echo $leftmenutrigger == 2 ? "" : ('gsl-toggle="target:#left-col, #left-col .left-nav, .ysts-page-title; mode: ' . ($leftmenutrigger == 0 ? "hover" : "click") . ';cls: hide-label"') ;?>
             >
                 <?php

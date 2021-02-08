@@ -1,5 +1,75 @@
-function jevModalPopup(id, url, title) {
-    addJevModalHtml(id);
+function jevModalSelector(sourceElement, params, evt) {
+    if(sourceElement.getAttribute('data-jevmodal')) {
+        evt.preventDefault();
+
+        var id = 'jevModal' + Math.floor(Math.random() * Math.floor(100000));
+        addJevModalHtml(id, sourceElement);
+
+        var elementData = JSON.parse(sourceElement.getAttribute('data-jevmodal') || '{}');
+
+        var modal = document.getElementById(id);
+        var modalHeader = modal.querySelector('.modal-header ');
+        var modalBody   = modal.querySelector('.modal-body ');
+        var modalDialog = modal.querySelector('.modal-dialog ');
+        var modalTitle  = modal.querySelector('.modal-title');
+        var modalClose  = modal.querySelector('.modal-header .close');
+
+        if (typeof elementData.size !== 'size') {
+            modalDialog.classList.add(elementData.size);
+        }
+
+        if (typeof elementData.title !== 'undefined')
+        {
+            modalHeader.style.display = 'block';
+            modalTitle.innerHTML = elementData.title;
+        }
+        else
+        {
+            modalBody.style.top = '5px';
+
+            modalClose.style.marginRight = '-15px';
+            modalClose.style.marginTop = '-15px';
+            modalClose.style.Opacity =  1;
+            modalClose.style.fontSize = '30px';
+
+            modalHeader.style.height = '0px';
+            modalHeader.style.zIndex = 99;
+            modalHeader.style.border = 'none';
+
+            modalTitle.style.display = 'none';
+        }
+
+        modal.style.maxHeight = '90%';
+
+        var href = elementData.href  || sourceElement.href;
+
+        var iframe = document.querySelector('#' + id + ' iframe');
+        iframe.addEventListener('load', function () {
+            var iframe = document.querySelector('#' + id + ' iframe');
+            if(iframe.src == href) {
+                // add 20 to hide scroll bars that are not needed
+                iframe.style.height = iframe.contentWindow.document.body.scrollHeight + 20 + 'px';
+                window.setTimeout(function () {
+                    var padding = parseInt(window.getComputedStyle(modalBody).getPropertyValue('padding-top'))
+                        + parseInt(window.getComputedStyle(modalBody).getPropertyValue('padding-bottom'));
+                    modalBody.style.maxHeight = (modal.offsetHeight - modalHeader.offsetHeight - padding) + 'px';
+                    iframe.style.maxHeight = (modalBody.offsetHeight - padding) + 'px';
+
+                }, 100);
+            }
+        });
+
+        launchJevModal('#' + id, href);
+    }
+    else
+    {
+        return;
+    }
+
+}
+
+function jevModalPopup(id, url, title, sourceElement) {
+    addJevModalHtml(id, sourceElement);
 
     // see http://stackoverflow.com/questions/16152275/how-to-resize-twitter-bootstrap-modal-dynamically-based-on-the-content
     jQuery('#' + id + ' .modal-header').css({'display': 'block'});
@@ -10,7 +80,7 @@ function jevModalPopup(id, url, title) {
 }
 
 function jevModalNoHeader(id, url) {
-    addJevModalHtml(id);
+    addJevModalHtml(id, sourceElement);
 
     // see http://stackoverflow.com/questions/16152275/how-to-resize-twitter-bootstrap-modal-dynamically-based-on-the-content
     jQuery('#' + id + ' .modal-body').css({'top': '5px'});
@@ -20,7 +90,7 @@ function jevModalNoHeader(id, url) {
 }
 
 function jevModalNoTitle(id, url) {
-    addJevModalHtml(id);
+    addJevModalHtml(id, sourceElement);
 
     // see http://stackoverflow.com/questions/16152275/how-to-resize-twitter-bootstrap-modal-dynamically-based-on-the-content
     jQuery('#' + id + ' .modal-body').css({'top': '5px'});
@@ -52,7 +122,7 @@ function launchJevModal(selector, url) {
                 jQuery(selector).data('scrollTop', scrollT);
             }
             jQuery('body').css({
-                position: 'fixed'
+              //  position: 'fixed'
             });
             if (url) {
                 jQuery(selector + ' iframe').attr("src", url);
@@ -61,7 +131,7 @@ function launchJevModal(selector, url) {
         jQuery(selector).on('hidden.bs.modal', function () {
             // scrolling issue in iOS 11.3
             jQuery('body').css({
-                position: 'static'
+              //  position: 'static'
             });
             var scrollT = jQuery(selector).data('scrollTop') || 0;
             if (scrollT > 0) {
@@ -80,7 +150,7 @@ function launchJevModal(selector, url) {
                 jQuery(selector).data('scrollTop', scrollT);
             }
             jQuery('body').css({
-                position: 'fixed'
+                //position: 'fixed'
             });
             if (url) {
                 jQuery(selector + ' iframe').attr("src", url);
@@ -89,7 +159,7 @@ function launchJevModal(selector, url) {
         jQuery(selector).on('hidden', function () {
             // scrolling issue in iOS 11.3
             jQuery('body').css({
-                position: 'static'
+               // position: 'static'
 
             });
             var scrollT = jQuery(selector).data('scrollTop') || 0;
@@ -104,7 +174,7 @@ function launchJevModal(selector, url) {
     return;
 }
 
-function addJevModalHtml(id) {
+function addJevModalHtml(id, sourceElement) {
     /** Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap */
     var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
     var myModal = "";
@@ -112,14 +182,14 @@ function addJevModalHtml(id) {
     if (!jQuery("#" + id).length) {
         if (bootstrap3_enabled) {
             myModal = '<div class="modal   fade ' + modalsize + ' jevmodal" id="' + id + '" tabindex="-1" role="dialog" aria-labelledby="' + id + 'Label" aria-hidden="true" >'
-                + '<div class="modal-dialog modal-lg">'
+                + '<div class="modal-dialog ">'
                 + '<div class="modal-content">'
                 + '<div class="modal-header">'
                 + '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
                 + '<h4 class="modal-title" id="' + id + 'Label"></h4>'
                 + '</div>'
                 + '<div class="modal-body">'
-                + '<iframe src=""></iframe>'
+                + '<iframe src="" ></iframe>'
                 + '</div>'
                 + '</div>'
                 + '</div>'
@@ -127,7 +197,7 @@ function addJevModalHtml(id) {
         }
         else {
             myModal = '<div class="modal  hide fade ' + modalsize + ' jevmodal" id="' + id + '" tabindex="-1" role="dialog" aria-labelledby="' + id + 'Label" aria-hidden="true" >'
-                + '<div class="modal-dialog modal-lg">'
+                + '<div class="modal-dialog ">'
                 + '<div class="modal-content">'
                 + '<div class="modal-header">'
                 + '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
@@ -145,3 +215,8 @@ function addJevModalHtml(id) {
     }
 }
 
+
+function closeJevModalBySelector(selector)
+{
+    jQuery(selector).modal('hide');
+}

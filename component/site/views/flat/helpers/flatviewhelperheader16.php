@@ -119,7 +119,7 @@ function FlatViewHelperHeader16($view)
 						</li> <?php
 					}
 				}
-				$jversion = new JVersion;
+				$jversion = new Joomla\CMS\Version;
 				if ($cfg->get('com_email_icon_view', 1) && !$jversion->isCompatible('4.0'))
 				{
 

@@ -38,7 +38,11 @@ HTMLHelper::_('behavior.keepalive');
 //HTMLHelper::_('behavior.formvalidation');
 if ($params->get("bootstrapchosen", 1))
 {
-	HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
+	$jversion = new Joomla\CMS\Version;
+	if (!$jversion->isCompatible('4.0'))
+	{
+		HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
+	}
 	// Use this as a basis for setting the primary category
 	/*
 	$script = <<< SCRIPT
@@ -225,7 +229,7 @@ $accesslevels = "jeval".implode(" jeval", array_unique($accesslevels));
 					}
 					var form = document.adminForm;
 					var editorElement = jevjq('#jevcontent');
-					if (editorElement.length)
+					if (editorElement.length && version_compare(JVERSION, '4.0', 'lt'))
 					{
 						<?php
 						$editorcontent = $this->editor->save('jevcontent');

@@ -27,7 +27,6 @@ global $task, $catid;
 $db     = Factory::getDbo();
 
 $uEditor    = Factory::getUser()->getParam('editor',  Factory::getConfig()->get('editor', 'none'));
-
 $editor = \Joomla\CMS\Editor\Editor::getInstance($uEditor);
 
 // clean any existing cache files

@@ -21,7 +21,11 @@ use Joomla\CMS\Form\FormHelper;
 
 // We need to get the params first
 
-HTMLHelper::_('formbehavior.chosen', '#adminForm select.chosen');
+$jversion = new Joomla\CMS\Version;
+if (!$jversion->isCompatible('4.0'))
+{
+	HTMLHelper::_('formbehavior.chosen', '#adminForm select.chosen');
+}
 
 $version = JEventsVersion::getInstance();
 
@@ -43,7 +47,7 @@ $query      = $db->getQuery(true)
 	//->where('enabled = 1')
 	->where('type =' . $db->quote('plugin'))
 	->where('state IN (0,1)')
-	->where('(folder="jevents" OR element="gwejson" OR element="jevent_embed")')
+	->where('(folder="jevents" OR element="gwejson" OR element="jevent_embed"  OR element="jevuser" or element="jevcreator"  or element="jevents")')
 	->order('enabled desc, ordering asc');
 
 $jevplugins = $db->setQuery($query)->loadObjectList();

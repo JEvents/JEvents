@@ -15,7 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 defined('JPATH_BASE') or die;
 
-$jversion = new JVersion;
+$jversion = new Joomla\CMS\Version;
 if (!$jversion->isCompatible('4.0'))
 {
 	HTMLHelper::_('formbehavior.chosen', '.js-stools-field-filter select:not(#filter_tag)', null, array('inherit_select_classes' => true));
