@@ -42,7 +42,7 @@ function jevModalSelector(sourceElement, params, evt) {
         modal.style.maxHeight = '90%';
 
         var href = elementData.href  || sourceElement.href;
-
+/*
         var iframe = document.querySelector('#' + id + ' iframe');
         iframe.addEventListener('load', function () {
             var iframe = document.querySelector('#' + id + ' iframe');
@@ -58,7 +58,7 @@ function jevModalSelector(sourceElement, params, evt) {
                 }, 100);
             }
         });
-
+*/
         launchJevModal('#' + id, href);
     }
     else
@@ -109,7 +109,27 @@ function jevModalNoTitle(id, url) {
 
 function launchJevModal(selector, url) {
     // Clear the old page!
-    jQuery(selector + ' iframe').attr("src", "");
+    var iframe = document.querySelector(selector + ' iframe');
+    iframe.src = "";
+    iframe.addEventListener('load', function () {
+        var iframe = document.querySelector(selector+ ' iframe');
+        if(iframe.src.indexOf(url) >= 0) {
+            var modal = document.querySelector(selector);
+            var modalHeader = modal.querySelector('.modal-header ');
+            var modalBody   = modal.querySelector('.modal-body ');
+
+            // add 20 to hide scroll bars that are not needed
+            iframe.style.height = iframe.contentDocument.body.scrollHeight + 20 + 'px';
+            window.setTimeout(function () {
+                var padding = parseInt(window.getComputedStyle(modalBody).getPropertyValue('padding-top'))
+                    + parseInt(window.getComputedStyle(modalBody).getPropertyValue('padding-bottom'));
+                modalBody.style.maxHeight = (modal.offsetHeight - modalHeader.offsetHeight - padding) + 'px';
+                iframe.style.maxHeight = (modalBody.offsetHeight - padding) + 'px';
+
+            }, 100);
+        }
+    });
+
     /** Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap */
     var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
     if (bootstrap3_enabled) {
@@ -182,7 +202,7 @@ function addJevModalHtml(id, sourceElement) {
     if (!jQuery("#" + id).length) {
         if (bootstrap3_enabled) {
             myModal = '<div class="modal   fade ' + modalsize + ' jevmodal" id="' + id + '" tabindex="-1" role="dialog" aria-labelledby="' + id + 'Label" aria-hidden="true" >'
-                + '<div class="modal-dialog ">'
+                + '<div class="modal-dialog modal-lg modal-dialog-centered">'
                 + '<div class="modal-content">'
                 + '<div class="modal-header">'
                 + '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'

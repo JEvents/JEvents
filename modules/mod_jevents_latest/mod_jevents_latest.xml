@@ -77,7 +77,8 @@
 					<option value="0">JEV_LATEST_USE_COMPONENT_SETTINGS</option>
 					<option value="1">JEV_LATEST_USE_SETTINGS_BELOW</option>
 				</field>
-                <field name="showNavigation" type="jevboolean" class="btn-group"  default="0" label="JEV_SHOW_NAVIGATION_CLUB_ONLY" description="JEV_SHOW_NAVIGATION_CLUB_ONLY_DESC" conditional="modlatest_useLocalParam" conditions="1" />
+                <field name="showNavigation" type="jevboolean" class="btn-group"  default="0" label="JEV_SHOW_NAVIGATION_CLUB_ONLY" description="JEV_SHOW_NAVIGATION_CLUB_ONLY_DESC"
+					   showon="modlatest_useLocalParam:1" />
 				<field name="uselayouteditor"
 					   type="jevboolean"
 					   class="btn-group"
@@ -175,8 +176,7 @@
                     <option value="4">JEV_ONLY_SHOW_REPEATING_EVENTS</option>
 				</field>
 				<field name="modlatest_multiday" type="jevmultilist" default="0" label="JEV_LATEST_MULTIEVENT_DISPLAY"
-				       description="JEV_LATEST_MULTIEVENT_DISPLAY_DESC" conditional="modlatest_useLocalParam"
-				       conditions="1">
+				       description="JEV_LATEST_MULTIEVENT_DISPLAY_DESC" showon="modlatest_useLocalParam:1" >
 					<option value="0">JEV_LATEST_MULTIEVENT_DISPLAY_OPTION_0</option>
 					<option value="1">JEV_LATEST_MULTIEVENT_DISPLAY_OPTION_1</option>
 					<option value="2">JEV_LATEST_MULTIEVENT_DISPLAY_OPTION_2</option>

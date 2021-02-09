@@ -277,6 +277,7 @@ class CsvLine
 		if ($this->noendtime !== "") $ical .= "NOENDTIME:" . $this->noendtime . "\n";
 		if ($this->published !== "") $ical .= "X-STATE:" . $this->published . "\n";
 		if ($this->multiday !== "") $ical .= "MULTIDAY:" . $this->multiday . "\n";
+		if (isset($this->lockevent) && $this->lockevent !== "") $ical .= "LOCKEVENT:" . $this->lockevent . "\n";
 
 		if (count($this->cf) > 0)
 		{

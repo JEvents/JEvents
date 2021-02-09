@@ -1075,7 +1075,7 @@ SQL;
 		?>
 		<script type="text/javascript">
             try {
-                window.parent.closeJevModalBySelector('#myEditModal');
+                window.parent.closeJevModalBySelector('#myEditModal,#myDetailModal');
             }
             catch (e) {
             }
