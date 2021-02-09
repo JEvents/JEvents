@@ -48,20 +48,28 @@ $index  = Route::_("index.php");
 		<tr>
 			<td><?php echo Text::_('USER_ENABLED'); ?></td>
 			<td>
-				<fieldset class="radio btn-group">
-					<?php
-					echo HTMLHelper::_("select.booleanlist", "published", null, $this->jevuser->published);
-					?>
+				<fieldset class="radio gsl-button-group">
+					<input type="radio" id="jform_published0" name="published" value="0"
+						<?php echo !$this->jevuser->published ? 'checked="checked"' : '';?>
+					       class="gsl-button-small gsl-radio gsl-hidden">
+					<label for="jform_published0" class="gsl-button-small gsl-button gsl-button-<?php echo !$this->jevuser->published ? 'danger' : 'default';?>"><?php echo Text::_("JNO");?></label>
+					<input type="radio" id="jform_published1" name="published" value="1"
+					       <?php echo $this->jevuser->published ? 'checked="checked"' : '';?> class="gsl-button-small gsl-radio gsl-hidden">
+					<label for="jform_published1" class="gsl-button-small gsl-button  gsl-button-<?php echo $this->jevuser->published ? 'primary' : 'default';?>"><?php echo Text::_("JYES");?></label>
 				</fieldset>
 			</td>
 		</tr>
 		<tr>
 			<td><?php echo Text::_('CAN_CREATE_EVENTS'); ?></td>
 			<td>
-				<fieldset class="radio btn-group">
-					<?php
-					echo HTMLHelper::_("select.booleanlist", "cancreate", null, $this->jevuser->cancreate);
-					?>
+				<fieldset class="radio gsl-button-group">
+					<input type="radio" id="jform_cancreate0" name="cancreate" value="0"
+						<?php echo !$this->jevuser->cancreate ? 'checked="checked"' : '';?>
+						   class="gsl-button-small gsl-radio gsl-hidden">
+					<label for="jform_cancreate0" class="gsl-button-small gsl-button gsl-button-<?php echo !$this->jevuser->cancreate ? 'danger' : 'default';?>"><?php echo Text::_("JNO");?></label>
+					<input type="radio" id="jform_cancreate1" name="cancreate" value="1"
+						<?php echo $this->jevuser->cancreate ? 'checked="checked"' : '';?> class="gsl-button-small gsl-radio gsl-hidden">
+					<label for="jform_cancreate1" class="gsl-button-small gsl-button  gsl-button-<?php echo $this->jevuser->cancreate ? 'primary' : 'default';?>"><?php echo Text::_("JYES");?></label>
 				</fieldset>
 			</td>
 		</tr>
@@ -75,90 +83,126 @@ $index  = Route::_("index.php");
 		<tr>
 			<td><?php echo Text::_('CAN_PUBLISH_OWN'); ?></td>
 			<td>
-				<fieldset class="radio btn-group">
-					<?php
-					echo HTMLHelper::_("select.booleanlist", "canpublishown", null, $this->jevuser->canpublishown);
-					?>
+				<fieldset class="radio gsl-button-group">
+					<input type="radio" id="jform_canpublishown0" name="canpublishown" value="0"
+						<?php echo !$this->jevuser->canpublishown ? 'checked="checked"' : '';?>
+						   class="gsl-button-small gsl-radio gsl-hidden">
+					<label for="jform_canpublishown0" class="gsl-button-small gsl-button gsl-button-<?php echo !$this->jevuser->canpublishown ? 'danger' : 'default';?>"><?php echo Text::_("JNO");?></label>
+					<input type="radio" id="jform_canpublishown1" name="canpublishown" value="1"
+						<?php echo $this->jevuser->canpublishown ? 'checked="checked"' : '';?> class="gsl-button-small gsl-radio gsl-hidden">
+					<label for="jform_canpublishown1" class="gsl-button-small gsl-button  gsl-button-<?php echo $this->jevuser->canpublishown ? 'primary' : 'default';?>"><?php echo Text::_("JYES");?></label>
 				</fieldset>
 			</td>
 		</tr>
 		<tr>
 			<td><?php echo Text::_('CAN_DELETE_OWN_EVENTS'); ?></td>
 			<td>
-				<fieldset class="radio btn-group">
-					<?php
-					echo HTMLHelper::_("select.booleanlist", "candeleteown", null, $this->jevuser->candeleteown);
-					?>
+				<fieldset class="radio gsl-button-group">
+					<input type="radio" id="jform_candeleteown0" name="candeleteown" value="0"
+						<?php echo !$this->jevuser->candeleteown ? 'checked="checked"' : '';?>
+						   class="gsl-button-small gsl-radio gsl-hidden">
+					<label for="jform_candeleteown0" class="gsl-button-small gsl-button gsl-button-<?php echo !$this->jevuser->candeleteown ? 'danger' : 'default';?>"><?php echo Text::_("JNO");?></label>
+					<input type="radio" id="jform_candeleteown1" name="candeleteown" value="1"
+						<?php echo $this->jevuser->candeleteown ? 'checked="checked"' : '';?> class="gsl-button-small gsl-radio gsl-hidden">
+					<label for="jform_candeleteown1" class="gsl-button-small gsl-button  gsl-button-<?php echo $this->jevuser->candeleteown ? 'primary' : 'default';?>"><?php echo Text::_("JYES");?></label>
 				</fieldset>
 			</td>
 		</tr>
 		<tr>
 			<td><?php echo Text::_('CAN_EDIT_EVENTS'); ?></td>
 			<td>
-				<fieldset class="radio btn-group">
-					<?php
-					echo HTMLHelper::_("select.booleanlist", "canedit", null, $this->jevuser->canedit);
-					?>
+				<fieldset class="radio gsl-button-group">
+					<input type="radio" id="jform_canedit0" name="canedit" value="0"
+						<?php echo !$this->jevuser->canedit ? 'checked="checked"' : '';?>
+						   class="gsl-button-small gsl-radio gsl-hidden">
+					<label for="jform_canedit0" class="gsl-button-small gsl-button gsl-button-<?php echo !$this->jevuser->canedit ? 'danger' : 'default';?>"><?php echo Text::_("JNO");?></label>
+					<input type="radio" id="jform_canedit1" name="canedit" value="1"
+						<?php echo $this->jevuser->canedit ? 'checked="checked"' : '';?> class="gsl-button-small gsl-radio gsl-hidden">
+					<label for="jform_canedit1" class="gsl-button-small gsl-button  gsl-button-<?php echo $this->jevuser->canedit ? 'primary' : 'default';?>"><?php echo Text::_("JYES");?></label>
 				</fieldset>
 			</td>
 		</tr>
 		<tr>
 			<td><?php echo Text::_('CAN_PUBLISH_ALL'); ?></td>
 			<td>
-				<fieldset class="radio btn-group">
-					<?php
-					echo HTMLHelper::_("select.booleanlist", "canpublishall", null, $this->jevuser->canpublishall);
-					?>
+				<fieldset class="radio gsl-button-group">
+					<input type="radio" id="jform_canpublishall0" name="canpublishall" value="0"
+						<?php echo !$this->jevuser->canpublishall ? 'checked="checked"' : '';?>
+						   class="gsl-button-small gsl-radio gsl-hidden">
+					<label for="jform_canpublishall0" class="gsl-button-small gsl-button gsl-button-<?php echo !$this->jevuser->canpublishall ? 'danger' : 'default';?>"><?php echo Text::_("JNO");?></label>
+					<input type="radio" id="jform_canpublishall1" name="canpublishall" value="1"
+						<?php echo $this->jevuser->canpublishall ? 'checked="checked"' : '';?> class="gsl-button-small gsl-radio gsl-hidden">
+					<label for="jform_canpublishall1" class="gsl-button-small gsl-button  gsl-button-<?php echo $this->jevuser->canpublishall ? 'primary' : 'default';?>"><?php echo Text::_("JYES");?></label>
 				</fieldset>
 			</td>
 		</tr>
 		<tr>
 			<td><?php echo Text::_('CAN_DELETE_ALL_EVENTS'); ?></td>
 			<td>
-				<fieldset class="radio btn-group">
-					<?php
-					echo HTMLHelper::_("select.booleanlist", "candeleteall", null, $this->jevuser->candeleteall);
-					?>
+				<fieldset class="radio gsl-button-group">
+					<input type="radio" id="jform_candeleteall0" name="candeleteall" value="0"
+						<?php echo !$this->jevuser->candeleteall ? 'checked="checked"' : '';?>
+						   class="gsl-button-small gsl-radio gsl-hidden">
+					<label for="jform_candeleteall0" class="gsl-button-small gsl-button gsl-button-<?php echo !$this->jevuser->candeleteall ? 'danger' : 'default';?>"><?php echo Text::_("JNO");?></label>
+					<input type="radio" id="jform_candeleteall1" name="candeleteall" value="1"
+						<?php echo $this->jevuser->candeleteall ? 'checked="checked"' : '';?> class="gsl-button-small gsl-radio gsl-hidden">
+					<label for="jform_candeleteall1" class="gsl-button-small gsl-button  gsl-button-<?php echo $this->jevuser->candeleteall ? 'primary' : 'default';?>"><?php echo Text::_("JYES");?></label>
 				</fieldset>
 			</td>
 		</tr>
 		<tr>
 			<td><?php echo Text::_('CAN_UPLOAD_IMAGES'); ?></td>
 			<td>
-				<fieldset class="radio btn-group">
-					<?php
-					echo HTMLHelper::_("select.booleanlist", "canuploadimages", null, $this->jevuser->canuploadimages);
-					?>
+				<fieldset class="radio gsl-button-group">
+					<input type="radio" id="jform_canuploadimages0" name="canuploadimages" value="0"
+						<?php echo !$this->jevuser->canuploadimages ? 'checked="checked"' : '';?>
+						   class="gsl-button-small gsl-radio gsl-hidden">
+					<label for="jform_canuploadimages0" class="gsl-button-small gsl-button gsl-button-<?php echo !$this->jevuser->canuploadimages ? 'danger' : 'default';?>"><?php echo Text::_("JNO");?></label>
+					<input type="radio" id="jform_canuploadimages1" name="canuploadimages" value="1"
+						<?php echo $this->jevuser->canuploadimages ? 'checked="checked"' : '';?> class="gsl-button-small gsl-radio gsl-hidden">
+					<label for="jform_canuploadimages1" class="gsl-button-small gsl-button  gsl-button-<?php echo $this->jevuser->canuploadimages ? 'primary' : 'default';?>"><?php echo Text::_("JYES");?></label>
 				</fieldset>
 			</td>
 		</tr>
 		<tr>
 			<td><?php echo Text::_("UPLOAD_FILES"); ?></td>
 			<td>
-				<fieldset class="radio btn-group">
-					<?php
-					echo HTMLHelper::_("select.booleanlist", "canuploadmovies", null, $this->jevuser->canuploadmovies);
-					?>
+				<fieldset class="radio gsl-button-group">
+					<input type="radio" id="jform_canuploadmovies0" name="canuploadmovies" value="0"
+						<?php echo !$this->jevuser->canuploadmovies ? 'checked="checked"' : '';?>
+						   class="gsl-button-small gsl-radio gsl-hidden">
+					<label for="jform_canuploadmovies0" class="gsl-button-small gsl-button gsl-button-<?php echo !$this->jevuser->canuploadmovies ? 'danger' : 'default';?>"><?php echo Text::_("JNO");?></label>
+					<input type="radio" id="jform_canuploadmovies1" name="canuploadmovies" value="1"
+						<?php echo $this->jevuser->canuploadmovies ? 'checked="checked"' : '';?> class="gsl-button-small gsl-radio gsl-hidden">
+					<label for="jform_canuploadmovies1" class="gsl-button-small gsl-button  gsl-button-<?php echo $this->jevuser->canuploadmovies ? 'primary' : 'default';?>"><?php echo Text::_("JYES");?></label>
 				</fieldset>
 			</td>
 		</tr>
 		<tr>
 			<td><?php echo Text::_("CREATE_OWN_EXTRAS"); ?></td>
 			<td>
-				<fieldset class="radio btn-group">
-					<?php
-					echo HTMLHelper::_("select.booleanlist", "cancreateown", null, $this->jevuser->cancreateown);
-					?>
+				<fieldset class="radio gsl-button-group">
+					<input type="radio" id="jform_cancreateown0" name="cancreateown" value="0"
+						<?php echo !$this->jevuser->cancreateown ? 'checked="checked"' : '';?>
+						   class="gsl-button-small gsl-radio gsl-hidden">
+					<label for="jform_cancreateown0" class="gsl-button-small gsl-button gsl-button-<?php echo !$this->jevuser->cancreateown ? 'danger' : 'default';?>"><?php echo Text::_("JNO");?></label>
+					<input type="radio" id="jform_cancreateown1" name="cancreateown" value="1"
+						<?php echo $this->jevuser->cancreateown ? 'checked="checked"' : '';?> class="gsl-button-small gsl-radio gsl-hidden">
+					<label for="jform_cancreateown1" class="gsl-button-small gsl-button  gsl-button-<?php echo $this->jevuser->cancreateown ? 'primary' : 'default';?>"><?php echo Text::_("JYES");?></label>
 				</fieldset>
 			</td>
 		</tr>
 		<tr>
 			<td><?php echo Text::_("CREATE_GLOBAL_EXTRAS"); ?></td>
 			<td>
-				<fieldset class="radio btn-group">
-					<?php
-					echo HTMLHelper::_("select.booleanlist", "cancreateglobal", null, $this->jevuser->cancreateglobal);
-					?>
+				<fieldset class="radio gsl-button-group">
+					<input type="radio" id="jform_cancreateglobal0" name="cancreateglobal" value="0"
+						<?php echo !$this->jevuser->cancreateglobal ? 'checked="checked"' : '';?>
+						   class="gsl-button-small gsl-radio gsl-hidden">
+					<label for="jform_cancreateglobal0" class="gsl-button-small gsl-button gsl-button-<?php echo !$this->jevuser->cancreateglobal ? 'danger' : 'default';?>"><?php echo Text::_("JNO");?></label>
+					<input type="radio" id="jform_cancreateglobal1" name="cancreateglobal" value="1"
+						<?php echo $this->jevuser->cancreateglobal ? 'checked="checked"' : '';?> class="gsl-button-small gsl-radio gsl-hidden">
+					<label for="jform_cancreateglobal1" class="gsl-button-small gsl-button  gsl-button-<?php echo $this->jevuser->cancreateglobal ? 'primary' : 'default';?>"><?php echo Text::_("JYES");?></label>
 				</fieldset>
 			</td>
 		</tr>
