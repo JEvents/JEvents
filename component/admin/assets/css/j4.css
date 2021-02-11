@@ -98,8 +98,9 @@ body.com_jevents #gslc.gsl-scope .js-stools .js-stools-container-filters.js-stoo
 body.com_jevents #gslc.gsl-scope .ys_newsfeed {
   height: 80px;
   overflow: hidden;
+  padding: 20px 0 20px 20px;
 }
-body.com_jevents #gslc.gsl-scope .ys_newsfeed li {
+body.com_jevents #gslc.gsl-scope .ys_newsfeed .gsl-slider-items li {
   height: 80px;
 }
 body.com_jevents #gslc.gsl-scope.gsl-hide-sidebar #left-col {
