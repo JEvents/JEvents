@@ -68,6 +68,46 @@ function jevModalSelector(sourceElement, params, evt) {
 
 }
 
+function jevModalResize(id) {
+
+    var modal = document.getElementById(id);
+    var modalHeader = modal.querySelector('.modal-header ');
+    var modalBody   = modal.querySelector('.modal-body ');
+    var modalDialog = modal.querySelector('.modal-dialog ');
+    var modalTitle  = modal.querySelector('.modal-title');
+    var modalClose  = modal.querySelector('.modal-header .close');
+
+    var elementData = JSON.parse(modal.getAttribute('data-jevmodal') || '{}');
+
+    if (typeof elementData.size !== 'size') {
+        modalDialog.classList.add(elementData.size);
+    }
+
+    if (typeof elementData.title !== 'undefined')
+    {
+        modalHeader.style.display = 'block';
+        modalTitle.innerHTML = elementData.title;
+    }
+    else
+    {
+        modalBody.style.top = '5px';
+
+        modalClose.style.marginRight = '-15px';
+        modalClose.style.marginTop = '-15px';
+        modalClose.style.Opacity =  1;
+        modalClose.style.fontSize = '30px';
+
+        modalHeader.style.height = '0px';
+        modalHeader.style.zIndex = 99;
+        modalHeader.style.border = 'none';
+
+        modalTitle.style.display = 'none';
+    }
+
+    modal.style.maxHeight = '90%';
+
+}
+
 function jevModalPopup(id, url, title, sourceElement) {
     addJevModalHtml(id, sourceElement);
 
@@ -117,15 +157,30 @@ function launchJevModal(selector, url) {
             var modal = document.querySelector(selector);
             var modalHeader = modal.querySelector('.modal-header ');
             var modalBody   = modal.querySelector('.modal-body ');
+            var modalContent   = modal.querySelector('.modal-content ');
+            var modalDialog   = modal.querySelector('.modal-dialog ');
 
-            // add 20 to hide scroll bars that are not needed
-            iframe.style.height = iframe.contentDocument.body.scrollHeight + 20 + 'px';
             window.setTimeout(function () {
+                // add 20 to hide scroll bars that are not needed
+                console.log("width = " + iframe.contentDocument.body.scrollWidth + " vs " + iframe.contentDocument.body.offsetWidth);
+                console.log("height = " + iframe.contentDocument.body.scrollHeight + " vs " + iframe.contentDocument.body.offsetHeight);
+                var extraHeight = (iframe.contentDocument.body.scrollHeight > iframe.contentDocument.body.offsetHeight) ? 20 : 0;
+                // if extraheight is 20 then there will be a scroll bar visible
+                var extraWidth = (iframe.contentDocument.body.scrollWidth > iframe.contentDocument.body.offsetWidth || extraHeight == 20) ? 20 : 0;
+                console.log(extraHeight + " : " + extraWidth);
+                iframe.style.height = iframe.contentDocument.body.scrollHeight + extraHeight + 'px';
+                iframe.style.width = iframe.contentDocument.body.scrollWidth + extraWidth + 'px';
+
+                modalDialog.style.maxWidth  = '90%';
+                //modalDialog.style.maxHeight = '90%';
+                modalDialog.style.width = 'max-content';
+                modalContent.style.width = 'max-content';
+/*
                 var padding = parseInt(window.getComputedStyle(modalBody).getPropertyValue('padding-top'))
                     + parseInt(window.getComputedStyle(modalBody).getPropertyValue('padding-bottom'));
                 modalBody.style.maxHeight = (modal.offsetHeight - modalHeader.offsetHeight - padding) + 'px';
                 iframe.style.maxHeight = (modalBody.offsetHeight - padding) + 'px';
-
+*/
             }, 100);
         }
     });
