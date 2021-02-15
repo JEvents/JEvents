@@ -4435,6 +4435,9 @@ SCRIPT;
             // Bronze - editor button
             array("element" => "jevents", "name" => "jevents", "folder" => "editors-xtd", "type" => "plugin"),
 
+	        // Bronze - Remote Module Loaded
+	        array("element" => "mod_remoteloader", "name" => "mod_remoteloader", "type" => "module"),
+
             // Bronze - Meta tags
             array("element" => "jevmetatags", "name" => "jevmetatags", "folder" => "jevents", "type" => "plugin"),
 
