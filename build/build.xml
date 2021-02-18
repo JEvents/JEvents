@@ -79,6 +79,7 @@
 
         <filesync destinationDir="${builddir}/${genericfolder}"
                   rsyncPath="/usr/bin/rsync"
+                  verbose="false"
                   sourceDir="../${genericfolder}"
                   excludeFile="excludedfiles.build"
                   options="-rpKz --safe-links"
@@ -124,6 +125,7 @@
 
         <filesync destinationDir="${builddir}/${genericfolder}"
                   rsyncPath="/usr/bin/rsync"
+                  verbose="false"
                   sourceDir="../${genericfolder}"
                   excludeFile="excludedfiles.build"
                   options="-rpKz --safe-links"
