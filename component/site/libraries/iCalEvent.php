@@ -466,7 +466,7 @@ else $this->_detail = false;
 			$tz = iCalImport::convertWindowsTzid($tz);
 		}
 
-		$icalImport		= new iCalImport();
+		$icalImport     = new iCalImport();
 		$start          = $icalImport->unixTime($this->recurrence_id, $tz);
 		$duplicatecheck = md5($eventid . $start);
 
