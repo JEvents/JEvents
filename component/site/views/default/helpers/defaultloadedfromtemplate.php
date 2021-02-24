@@ -2485,6 +2485,7 @@ function jevSpecialDateFormatting($matches)
 			$fmt = $parts[1];
 
 			// Must get this each time otherwise modules can't set their own timezone
+			$jevparams  = ComponentHelper::getParams(JEV_COM_COMPONENT);
 			$jtz        = $jevparams->get("icaltimezonelive", "");
 			if ($jtz != "")
 			{
