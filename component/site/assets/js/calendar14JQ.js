@@ -256,7 +256,7 @@ var NewCalendar = new Class({
                 if (el.format.test('(y|Y)')) { // search for a year select
                     var years = [];
 
-                    el.getChildren().each(function (option) { // get options
+                    el.childNodes.forEach(function (option) { // get options
                         var values = this.unformat(option.value, el.format);
 
                         if (!years.contains(values[0])) {
@@ -291,7 +291,7 @@ var NewCalendar = new Class({
                     var months_start = [];
                     var months_end = [];
 
-                    el.getChildren().each(function (option) { // get options
+                    el.childNodes.forEach(function (option) { // get options
                         var values = this.unformat(option.value, el.format);
 
                         if (typeOf(values[0]) != 'number' || values[0] == years[0]) { // if it's a year / month combo for curr year, or simply a month select
@@ -1205,7 +1205,7 @@ var NewCalendar = new Class({
                 if (el.format.test('(y|Y)')) { // search for a year select
                     years = [];
 
-                    el.getChildren().each(function (option) { // get options
+                    el.childNodes.forEach(function (option) { // get options
                         var values = this.unformat(option.value, el.format);
 
                         if (!years.contains(values[0])) {
@@ -1219,7 +1219,7 @@ var NewCalendar = new Class({
                 if (el.format.test('(F|m|M|n)')) { // search for a month select
                     months = []; // 0 - 11 should be
 
-                    el.getChildren().each(function (option) { // get options
+                    el.childNodes.forEach(function (option) { // get options
                         var values = this.unformat(option.value, el.format);
 
                         if (typeOf(values[0]) != 'number' || values[0] == cal.year) { // if it's a year / month combo for curr year, or simply a month select
@@ -1235,7 +1235,7 @@ var NewCalendar = new Class({
                 if (el.format.test('(d|j)') && !el.format.test('^(d|j)$')) { // search for a day select, but NOT a days only select
                     days = []; // 1 - 31
 
-                    el.getChildren().each(function (option) { // get options
+                    el.childNodes.forEach(function (option) { // get options
                         var values = this.unformat(option.value, el.format);
 
                         // in the special case of days we dont want the value if its a days only select

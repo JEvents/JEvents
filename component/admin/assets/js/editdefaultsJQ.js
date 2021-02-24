@@ -6,16 +6,21 @@ defaultsEditorPlugin = {
         while (pluginNode.firstChild) {
             pluginNode.removeChild(pluginNode.firstChild);
         }
-
+        jevjq(pluginNode).trigger("chosen:updated");
+        jevjq(pluginNode).trigger("liszt:updated");
     },
     optgroup: function (pluginNode, label) {
         var group = jevjq("<optgroup/>", {'label': label})
         jevjq(pluginNode).append(group);
+        jevjq(pluginNode).trigger("chosen:updated");
+        jevjq(pluginNode).trigger("liszt:updated");
         return group;
     },
     node: function (parent, label, value) {
         var optnode = jevjq('<option value="' + label + ":" + value + '">' + label + '</option>');
         jevjq(parent).append(optnode);
+        jevjq(parent).trigger("chosen:updated");
+        jevjq(parent).trigger("liszt:updated");
     },
 
     insert: function (fieldName, pluginNode) {

@@ -23,7 +23,8 @@ if (0 == $this->evid)
 if (is_null($this->data))
 {
 
-	$app->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$this->Itemid", false), Text::_("JEV_SORRY_UPDATED"));
+	Factory::getApplication()->enqueueMessage(Text::_("JEV_SORRY_UPDATED"), 'warning');
+	Factory::getApplication()->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$this->Itemid", false));
 }
 
 if (array_key_exists('row', $this->data))

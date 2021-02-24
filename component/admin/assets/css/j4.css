@@ -98,8 +98,9 @@ body.com_jevents #gslc.gsl-scope .js-stools .js-stools-container-filters.js-stoo
 body.com_jevents #gslc.gsl-scope .ys_newsfeed {
   height: 80px;
   overflow: hidden;
+  padding: 20px 0 20px 20px;
 }
-body.com_jevents #gslc.gsl-scope .ys_newsfeed li {
+body.com_jevents #gslc.gsl-scope .ys_newsfeed .gsl-slider-items li {
   height: 80px;
 }
 body.com_jevents #gslc.gsl-scope.gsl-hide-sidebar #left-col {
@@ -178,13 +179,13 @@ body.com_categories #gslc.gsl-scope .gsl-content {
   transition: none;
   /*all .3s ease;*/
 }
-body.com_categories #gslc.gsl-scope.joomla-menu-open #left-col {
+body.com_categories #gslc.gsl-scope.joomla-menu-open:not(.gsl-hide-sidebar) #left-col {
   left: 18rem;
 }
-body.com_categories #gslc.gsl-scope.joomla-menu-open #right-col #top-head {
+body.com_categories #gslc.gsl-scope.joomla-menu-open:not(.gsl-hide-sidebar) #right-col #top-head {
   left: calc(50px + 18rem);
 }
-body.com_categories #gslc.gsl-scope.joomla-menu-open .gsl-content {
+body.com_categories #gslc.gsl-scope.joomla-menu-open:not(.gsl-hide-sidebar) .gsl-content {
   margin-left: 18rem;
 }
 body.com_categories #gslc.gsl-scope.no-joomla-menu #left-col {

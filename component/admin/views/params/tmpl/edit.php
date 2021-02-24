@@ -433,10 +433,64 @@ if (count($jevplugins))
 
 		if ( $hasPlugins)
 		{
-            ?>
+			// In Joomla 4 without it when the accordion is toggled uikit adds the <div> as a wrapper and causes
+			// TinyMCE to loose the content of the IFrame so we can't use uikit accordion - we must cook our own!!
+
+			// gsl-accordion="targets: > *:not(.no-accordion-icon)"
+			?>
             <li>
-                <ul class="gsl-list-divider" gsl-accordion="targets: > *:not(.no-accordion-icon)">
+                <ul class="gsl-list-divider gsl-accordion" id="jevPluginSettings" >
             <?php
+            $script = <<< SCRIPT
+document.addEventListener('DOMContentLoaded', 
+function() {
+	
+	document.querySelectorAll("#jevPluginSettings.gsl-accordion .gsl-accordion-title ").forEach(function(item) {
+		var li = item.parentNode;
+		li.addEventListener('click', function (evt) {		
+			if (!evt.target.classList.contains('gsl-accordion-title'))
+			{
+				// must not block enable/disable plugin buttons
+				return;
+			}		
+			var clickedLi = evt.target.parentNode;
+			var liContent = clickedLi.querySelector('.gsl-accordion-content');
+			//liContent.style.transition="display 2s ease"
+			evt.preventDefault();
+			
+			if (liContent.classList.contains('gsl-hidden'))
+			{
+				liContent.classList.remove('gsl-hidden');
+				li.classList.add('gsl-open');
+			}
+			else 
+			{
+				liContent.classList.add('gsl-hidden');
+				li.classList.remove('gsl-open');
+			}
+			
+			// close the others	
+			document.querySelectorAll("#jevPluginSettings.gsl-accordion .gsl-accordion-title ").forEach(function(item) {
+				var li2 = item.parentNode; 
+				if (li2 != li)
+				{
+					var li2Content = li2.querySelector('.gsl-accordion-content');
+					if (li2Content && !li2Content.classList.contains('gsl-hidden'))
+					{
+						li2Content.classList.add('gsl-hidden');
+						li2.classList.remove('gsl-open');
+					}
+				}
+			});
+			
+			//li.scrollIntoView(true);
+		});
+	});
+	
+});
+SCRIPT;
+            Factory::getDocument()->addScriptDeclaration($script);
+
 			$i = 0;
 			foreach ($jevplugins as $plugin)
 			{
@@ -451,7 +505,7 @@ if (count($jevplugins))
 					$lang->load($langfile, JPATH_ADMINISTRATOR, null, false, true);
 
 					// Now get plugin specific parameters
-					$pluginform = Form::getInstance("com_jevents.config.plugins." . $plugin->name, $config, array('control' => 'jform_plugin[' . $plugin->type . '][' . $plugin->name . ']', 'load_data' => true), true, "/extension/config/fields");
+					$pluginform = Form::getInstance("com_jevents.config.plugins." . $plugin->name . $plugin->type, $config, array('control' => 'jform_plugin[' . $plugin->type . '][' . $plugin->name . ']', 'load_data' => true), true, "/extension/config/fields");
 					$pluginparams = new JevRegistry($plugin->params);
 
 					$hasfields = false;
@@ -584,12 +638,11 @@ if (count($jevplugins))
                         <a class="gsl-accordion-title " href="#"  >
 	                        <?php echo $label; ?>
                         </a>
-                        <div class="gsl-accordion-content">
+                        <div class="gsl-accordion-content gsl-hidden">
 							<?php
 							echo implode("\n", $html);
 							?>
                         </div>
-
 						<?php
 					}
 					else
@@ -603,6 +656,7 @@ if (count($jevplugins))
 						<?php
 					}
 					?>
+
 					</li>
 					<?php
 				}
