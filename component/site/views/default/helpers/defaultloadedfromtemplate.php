@@ -1035,8 +1035,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				break;
 
 			case "{{CREATED}}":
-				$compparams = ComponentHelper::getParams(JEV_COM_COMPONENT);
-				$jtz        = $compparams->get("icaltimezonelive", "");
+				$jtz        = $jevparams->get("icaltimezonelive", "");
 				if ($jtz == "")
 				{
 					$jtz = null;
@@ -1836,6 +1835,13 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				$replace[] = $event->rp_id();
 				$blank[]   = "";
 				break;
+			case "{{TZID}}":
+				$jtz       = $jevparams->get("icaltimezonelive", "");
+				$jtz       = isset($event->_tzid) && !empty($event->_tzid) ? $event->_tzid : $jtz;
+				$search[]  = "{{TZID}}";
+				$replace[] = $jtz;
+				$blank[]   = "";
+				break;
 			case "{{EVID}}":
 				$search[]  = "{{EVID}}";
 				$replace[] = $event->ev_id();
@@ -1870,19 +1876,18 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
                     && $hasLocationOrIsOnline
                 )
 				{
-					$compparams = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
 					$lddata = array();
 					$lddata["@context"] = "https://schema.org";
 					$lddata["@type"] =  "Event";
 					$lddata["name"] =  $event->title();
-					$lddata["description"] =  $compparams->get("ldjson_striptags", 1) ?  strip_tags( $event->content() ) : $event->content();
+					$lddata["description"] =  $jevparams->get("ldjson_striptags", 1) ?  strip_tags( $event->content() ) : $event->content();
 
 					// Timezone
 					// event tzid
 					// icaltimezonelive
 					// icaltimezone
-					$jtz        = $compparams->get("icaltimezonelive", "");
+					$jtz        = $jevparams->get("icaltimezonelive", "");
 					$jtz        = isset($event->_tzid) && !empty($event->_tzid) ? $event->_tzid : $jtz;
 					if (!empty($jtz))
 					{
@@ -2480,8 +2485,7 @@ function jevSpecialDateFormatting($matches)
 			$fmt = $parts[1];
 
 			// Must get this each time otherwise modules can't set their own timezone
-			$compparams = ComponentHelper::getParams(JEV_COM_COMPONENT);
-			$jtz        = $compparams->get("icaltimezonelive", "");
+			$jtz        = $jevparams->get("icaltimezonelive", "");
 			if ($jtz != "")
 			{
 				$jtz = new DateTimeZone($jtz);
@@ -2515,7 +2519,7 @@ function jevSpecialDateFormatting($matches)
 			if (strtolower($outputtz) == "user" || strtolower($outputtz) == "usertz")
 			{
 				$user     = Factory::getUser();
-				$outputtz = $user->getParam("timezone", $compparams->get("icaltimezonelive", @date_default_timezone_get()));
+				$outputtz = $user->getParam("timezone", $jevparams->get("icaltimezonelive", @date_default_timezone_get()));
 			}
 			$outputtz = new DateTimeZone($outputtz);
 
