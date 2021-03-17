@@ -4412,6 +4412,8 @@ SCRIPT;
             array("element" => "mod_jevents_categories", "name" => "mod_jevents_categories", "type" => "module"),
             // Silver - Newsletters - some TODO
             array("element" => "tagjevents_jevents", "name" => "tagjevents_jevents", "folder" => "acymailing", "type" => "plugin"),
+	        array("element" => "jev_latestevents", "name" => "jev_latestevents", "folder" => "emailalerts", "type" => "plugin"),
+	        array("element" => "jnewsjevents", "name" => "jnewsjevents", "folder" => "jnews", "type" => "plugin"),
             // Silver - Nnotifications
             array("element" => "jevnotify", "name" => "jevnotify", "folder" => "jevents", "type" => "plugin"),
             array("element" => "mod_jevents_notify", "name" => "mod_jevents_notify", "type" => "module"),

@@ -40,7 +40,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 		{
 			?>
 			<div style="margin:0px;clear:left;">
-				<div class="row jevtimezone" <?php JEventsHelper::showOnRel($this->form, 'tzid'); ?>>
+				<div class="jevtimezone" <?php JEventsHelper::showOnRel($this->form, 'tzid'); ?>>
 					<div class="span2">
 						<?php echo $this->form->getLabel("tzid"); ?>
 					</div>

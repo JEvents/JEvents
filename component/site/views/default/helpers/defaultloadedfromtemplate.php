@@ -15,6 +15,8 @@ use Joomla\CMS\Layout\LayoutHelper;
 
 function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $template_value = false, $runplugins = true, $skipfiles = false)
 {
+	static $processedCssJs = array();
+
 	$jevparams  = ComponentHelper::getParams(JEV_COM_COMPONENT);
 	$db         = Factory::getDbo();
 	$app        = Factory::getApplication();
@@ -137,11 +139,19 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					}
 					if (isset($templateparams->customcss) && !empty($templateparams->customcss))
 					{
-						Factory::getDocument()->addStyleDeclaration($templateparams->customcss);
+						if (!in_array($templateparams->customcss, $processedCssJs))
+						{
+							$processedCssJs[] = $templateparams->customcss;
+							Factory::getDocument()->addStyleDeclaration($templateparams->customcss);
+						}
 					}
 					if (isset($templateparams->customjs) && !empty($templateparams->customjs))
 					{
-						Factory::getDocument()->addScriptDeclaration($templateparams->customjs);
+						if (!in_array($templateparams->customjs, $processedCssJs))
+						{
+							$processedCssJs[] = $templateparams->customjs;
+							Factory::getDocument()->addScriptDeclaration($templateparams->customjs);
+						}
 					}
 
 					$templates[$template_name]['*'][0]->params   = json_encode($templateparams);
@@ -341,8 +351,19 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		$matchesarray   = $template->matchesarray;
 		$loadedFromFile = isset($template->fromfile);
 
-		Factory::getDocument()->addStyleDeclaration($template->params->get('customcss', ''));
-		Factory::getDocument()->addScriptDeclaration($template->params->get('customjs', ''));
+		$customcss = $template->params->get('customcss', '');
+		if (!in_array($customcss, $processedCssJs))
+		{
+			$processedCssJs[] = $customcss;
+			Factory::getDocument()->addStyleDeclaration($customcss);
+		}
+
+		$customjs = $template->params->get('customjs', '');
+		if (!in_array($customjs, $processedCssJs))
+		{
+			$processedCssJs[] = $customjs;
+			Factory::getDocument()->addScriptDeclaration($customjs);
+		}
 
 	}
 	else
@@ -418,11 +439,19 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		}
 		if (isset($templateparams->customcss) && !empty($templateparams->customcss) )
 		{
-			Factory::getDocument()->addStyleDeclaration($templateparams->customcss);
+			if (!in_array($templateparams->customcss, $processedCssJs))
+			{
+				$processedCssJs[] = $templateparams->customcss;
+				Factory::getDocument()->addStyleDeclaration($templateparams->customcss);
+			}
 		}
 		if (isset($templateparams->customjs) && !empty($templateparams->customjs) )
 		{
-			Factory::getDocument()->addScriptDeclaration($templateparams->customjs);
+			if (!in_array($templateparams->customjs, $processedCssJs))
+			{
+				$processedCssJs[] = $templateparams->customjs;
+				Factory::getDocument()->addScriptDeclaration($templateparams->customjs);
+			}
 		}
 
 		// non greedy replacement - because of the ?

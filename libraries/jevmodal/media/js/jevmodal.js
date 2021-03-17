@@ -108,8 +108,8 @@ function jevModalResize(id) {
 
 }
 
-function jevModalPopup(id, url, title, sourceElement) {
-    addJevModalHtml(id, sourceElement);
+function jevModalPopup(id, url, title) {
+    addJevModalHtml(id);
 
     // see http://stackoverflow.com/questions/16152275/how-to-resize-twitter-bootstrap-modal-dynamically-based-on-the-content
     jQuery('#' + id + ' .modal-header').css({'display': 'block'});
@@ -120,7 +120,7 @@ function jevModalPopup(id, url, title, sourceElement) {
 }
 
 function jevModalNoHeader(id, url) {
-    addJevModalHtml(id, sourceElement);
+    addJevModalHtml(id);
 
     // see http://stackoverflow.com/questions/16152275/how-to-resize-twitter-bootstrap-modal-dynamically-based-on-the-content
     jQuery('#' + id + ' .modal-body').css({'top': '5px'});
@@ -130,7 +130,7 @@ function jevModalNoHeader(id, url) {
 }
 
 function jevModalNoTitle(id, url) {
-    addJevModalHtml(id, sourceElement);
+    addJevModalHtml(id);
 
     // see http://stackoverflow.com/questions/16152275/how-to-resize-twitter-bootstrap-modal-dynamically-based-on-the-content
     jQuery('#' + id + ' .modal-body').css({'top': '5px'});
@@ -160,28 +160,13 @@ function launchJevModal(selector, url) {
             var modalContent   = modal.querySelector('.modal-content ');
             var modalDialog   = modal.querySelector('.modal-dialog ');
 
-            window.setTimeout(function () {
-                // add 20 to hide scroll bars that are not needed
-                console.log("width = " + iframe.contentDocument.body.scrollWidth + " vs " + iframe.contentDocument.body.offsetWidth);
-                console.log("height = " + iframe.contentDocument.body.scrollHeight + " vs " + iframe.contentDocument.body.offsetHeight);
-                var extraHeight = (iframe.contentDocument.body.scrollHeight > iframe.contentDocument.body.offsetHeight) ? 20 : 0;
-                // if extraheight is 20 then there will be a scroll bar visible
-                var extraWidth = (iframe.contentDocument.body.scrollWidth > iframe.contentDocument.body.offsetWidth || extraHeight == 20) ? 20 : 0;
-                console.log(extraHeight + " : " + extraWidth);
-                iframe.style.height = iframe.contentDocument.body.scrollHeight + extraHeight + 'px';
-                iframe.style.width = iframe.contentDocument.body.scrollWidth + extraWidth + 'px';
+            window.addEventListener('resize', function() {
+                jevIframeSizing(iframe, modal, modalHeader, modalBody, modalContent, modalDialog);
+            })
 
-                modalDialog.style.maxWidth  = '90%';
-                //modalDialog.style.maxHeight = '90%';
-                modalDialog.style.width = 'max-content';
-                modalContent.style.width = 'max-content';
-/*
-                var padding = parseInt(window.getComputedStyle(modalBody).getPropertyValue('padding-top'))
-                    + parseInt(window.getComputedStyle(modalBody).getPropertyValue('padding-bottom'));
-                modalBody.style.maxHeight = (modal.offsetHeight - modalHeader.offsetHeight - padding) + 'px';
-                iframe.style.maxHeight = (modalBody.offsetHeight - padding) + 'px';
-*/
-            }, 100);
+            window.setTimeout(function () {
+                jevIframeSizing(iframe, modal, modalHeader, modalBody, modalContent, modalDialog);
+            }, 500);
         }
     });
 
@@ -249,7 +234,34 @@ function launchJevModal(selector, url) {
     return;
 }
 
-function addJevModalHtml(id, sourceElement) {
+function jevIframeSizing(iframe, modal, modalHeader, modalBody, modalContent, modalDialog) {
+    // add 20 to hide scroll bars that are not needed
+    // console.log("width = " + iframe.contentDocument.body.scrollWidth + " vs " + iframe.contentDocument.body.offsetWidth);
+    // console.log("height = " + iframe.contentDocument.body.scrollHeight + " vs " + iframe.contentDocument.body.offsetHeight);
+    var extraHeight = (iframe.contentDocument.body.scrollHeight > iframe.contentDocument.body.offsetHeight) ? 20 : 0;
+    // if extraheight is 20 then there will be a scroll bar visible
+    var extraWidth = (iframe.contentDocument.body.scrollWidth > iframe.contentDocument.body.offsetWidth || extraHeight == 20) ? 20 : 0;
+    console.log(extraHeight + " : " + extraWidth);
+    console.log('set iframe Height = ' + (iframe.contentDocument.body.scrollHeight + extraHeight) + 'px');
+    console.log('set iframe Width  = ' + (iframe.contentDocument.body.scrollWidth  + extraWidth) + 'px');
+
+    iframe.style.height = (iframe.contentDocument.body.scrollHeight + extraHeight) + 'px';
+    iframe.style.width  = (iframe.contentDocument.body.scrollWidth  + extraWidth) + 'px';
+
+    if(modalBody.offsetWidth > iframe.contentDocument.body.scrollWidth  + extraWidth)
+    {
+        iframe.style.width = (modalBody.offsetWidth - 20) + 'px';
+    }
+
+    /*
+    var padding = parseInt(window.getComputedStyle(modalBody).getPropertyValue('padding-top'))
+        + parseInt(window.getComputedStyle(modalBody).getPropertyValue('padding-bottom'));
+    modalBody.style.maxHeight = (modal.offsetHeight - modalHeader.offsetHeight - padding) + 'px';
+    iframe.style.maxHeight = (modalBody.offsetHeight - padding) + 'px';
+*/
+}
+
+function addJevModalHtml(id) {
     /** Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap */
     var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
     var myModal = "";
