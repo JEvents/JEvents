@@ -105,6 +105,11 @@ class FormFieldJevBoolean extends JFormFieldRadio
 		$renderer->setDebug($this->isDebugEnabled());
 
 		$layoutPaths = $this->getLayoutPaths();
+		// for some sites (op2bout reported) $layoutPaths from this is empty !!!
+		if (empty($layoutPaths))
+		{
+			$layoutPaths = $renderer->getDefaultIncludePaths();
+		}
 		if (!in_array(JPATH_ADMINISTRATOR . "/components/com_jevents/layouts", $layoutPaths))
 		{
 			array_unshift($layoutPaths, JPATH_ADMINISTRATOR . "/components/com_jevents/layouts");

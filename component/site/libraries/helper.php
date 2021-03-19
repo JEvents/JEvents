@@ -4302,7 +4302,31 @@ SCRIPT;
 						{
 							foreach ($sub_row as $key2 => $sub_sub_row)
 							{
-								$array[$key][$key1][$key2] = $filter->clean($sub_sub_row, 'HTML');
+								//3 Deep row check
+								if (!is_array($sub_row))
+								{
+									$array[$key][$key1][$key2] = $filter->clean($sub_sub_row, 'HTML');
+								}
+								else
+								{
+									foreach ($sub_sub_row as $key3 => $sub_sub_sub_row)
+									{
+										//4 Deep row check
+										if (!is_array($sub_row))
+										{
+											$array[$key][$key1][$key2][$key3] = $filter->clean($sub_sub_sub_row, 'HTML');
+										}
+										else
+										{
+											foreach ($sub_sub_sub_row as $key4 => $sub_sub_sub_sub_row)
+											{
+												$array[$key][$key1][$key2][$key3][$key4] = $filter->clean($sub_sub_sub_sub_row, 'HTML');
+											}
+										}
+
+									}
+								}
+
 							}
 						}
 					}

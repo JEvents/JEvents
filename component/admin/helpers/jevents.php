@@ -27,6 +27,52 @@ class JEventsHelper
 
 	public static function validateSection($context, $form = null)
 	{
+		// only called from com_fields
+		if (JFactory::getApplication()->input->getCmd('option', 'com_jevents') == "com_fields")
+		{
+			$vName      = JFactory::getApplication()->input->getCmd('view', 'fields');
+			$jversion = new JVersion;
+
+			// Must load admin language files
+			$lang = Factory::getLanguage();
+			$lang->load("com_jevents", JPATH_ADMINISTRATOR);
+
+			if (!defined("GSLMSIE10"))
+			{
+				if (isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], "MSIE") !== false || strpos($_SERVER['HTTP_USER_AGENT'], "Internet Explorer") !== false))
+				{
+					define ("GSLMSIE10" , 1);
+				}
+				else
+				{
+					define ("GSLMSIE10" , 0);
+				}
+				Factory::getApplication()->enqueueMessage(Text::_("COM_JEVENTS_JOOMLA_CUSTOM_FIELDS_INTEGRATION_WARNING"),"info");
+			}
+			if (!GSLMSIE10)
+			{
+
+				if ($jversion->isCompatible('4.0'))
+				{
+					// disable com_fields styling until we can get the toolbar buttons working!
+					//return 'site';
+					$app        = JFactory::getApplication();
+					$dispatcher = $app->bootComponent('com_fields')->getDispatcher($app);
+					$controller = $dispatcher->getController('display', 'Administrator', array('option' => 'com_fields'));
+
+					$view = $controller->getView($vName, 'html', 'Administrator');
+					$view->addTemplatePath(JPATH_ADMINISTRATOR . "/components/com_jevents/views/com_fields/$vName/tmpl/");
+				}
+				else
+				{
+					$controller = JControllerLegacy::getInstance("Fields");
+
+					$view = $controller->getView($vName, 'html', 'fieldsView');
+					$view->addTemplatePath(JPATH_ADMINISTRATOR . "/components/com_jevents/views/com_fields/$vName/tmpl/");
+				}
+			}
+		}
+
 		$vName      = Factory::getApplication()->input->getCmd('view', 'categories');
 
 		if ($context == "categories" && Factory::getApplication()->input->get('view') == "category"  && Factory::getApplication()->input->get('layout') == "edit")

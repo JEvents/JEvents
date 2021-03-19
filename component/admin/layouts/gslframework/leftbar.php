@@ -74,6 +74,33 @@ $leftmenutrigger = $componentParams->get("leftmenutrigger", 0);
                             <span data-gsl-icon="icon: <?php echo $leftIconLink->icon; ?>" class="gsl-margin-small-right"></span>
                             <span class="nav-label"><?php echo $leftIconLink->label; ?></span>
                         </a>
+	                    <?php
+	                    if (isset($leftIconLink->sublinks) && count($leftIconLink->sublinks))
+	                    {
+		                    ?>
+		                    <div class="gsl-dropdown  gsl-background-secondary" gsl-dropdown='{"mode": "click, hover", "delay-hide":100, "offset":0 ,"pos":"right-top"}'>
+			                    <ul class="gsl-padding-remove">
+				                    <?php
+				                    foreach ( $leftIconLink->sublinks as $sublink)
+				                    {
+					                    ?>
+					                    <li class="gsl-padding-remove">
+						                    <button onclick="<?php echo $sublink->onclick; ?>"
+						                            class="<?php echo $sublink->class; ?>">
+                                    <span gsl-icon="icon: <?php echo $sublink->icon; ?>"
+                                          class="<?php echo $sublink->iconclass; ?>">
+                                    </span>
+							                    <?php echo $sublink->label; ?>
+						                    </button>
+					                    </li>
+					                    <?php
+				                    }
+				                    ?>
+			                    </ul>
+		                    </div>
+		                    <?php
+	                    }
+	                    ?>
                     </li>
 	                <?php
                 }

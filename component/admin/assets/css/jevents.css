@@ -142,7 +142,8 @@ body.com_jevents {
   padding: 3px;
 }
 #gslc.gsl-scope #left-col .left-nav-wrap .left-nav.hide-label span.nav-label,
-#gslc.gsl-scope #left-col .left-nav-wrap .left-nav.hide-label .gsl-navbar-dropdown {
+#gslc.gsl-scope #left-col .left-nav-wrap .left-nav.hide-label .gsl-navbar-dropdown,
+#gslc.gsl-scope #left-col .left-nav-wrap .left-nav.hide-label .gsl-dropdown {
   display: none;
 }
 #gslc.gsl-scope #left-col .left-nav-wrap .nav-label {
@@ -933,6 +934,27 @@ body.com_jevents {
 /* Overriding template.css styling when using native Joomla layouts for com_categories */
 body.com_categories #gslc.gsl-scope form#item-form {
   margin-left: 5px;
+}
+/* com_fields */
+body.com_fields .gsl-content {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+body.com_fields .gsl-content .btn-danger {
+  background-color: #f0506e;
+  color: #fff;
+}
+body.com_fields .gsl-content .btn-success {
+  background-color: #46a546;
+  color: #fff;
+}
+body.com_fields .gsl-content span.caret {
+  vertical-align: middle;
+  margin-left: 5px;
+}
+body.com_fields #system-message-container {
+  float: none;
+  width: 100%;
 }
 @media screen and (min-width: 960px) {
   #gslc.gsl-scope #left-col {

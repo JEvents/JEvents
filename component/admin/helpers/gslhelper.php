@@ -376,6 +376,29 @@ class GslHelper
 			$iconLink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_('JEV_CUSTOM_FIELDS', true);
 			$iconLink->tooltip_detail = "";
 			$iconLinks[]              = $iconLink;
+
+			try
+			{
+				$manifestCache = json_decode($extension->manifest_cache);
+				if (version_compare($manifestCache->version,"3.7.0", "ge") || $manifestCache->version == "3.5.0RC2")
+				{
+					$iconLink->sublinks = array();
+
+					$sublink              = new stdClass();
+					$sublink->onclick     = "(function(e) { document.location='" . Route::_("index.php?option=com_fields&context=com_jevents.event") . " ';return false;})(event);";
+					$sublink->link        = "";
+					$sublink->class       = "gsl-button gsl-small gsl-button-secondary gsl-padding-remove gsl-text-left ";
+					$sublink->icon        = 'joomla';
+					$sublink->iconclass   = "gsl-margin-small-right gsl-display-inline-block";
+					$sublink->label       = JText::_('COM_JEVENTS_JOOMLA_CUSTOM_FIELDS');
+					$iconLink->sublinks[] = $sublink;
+				}
+			}
+			catch (Exception $e)
+			{
+
+			}
+
 		}
 		else
 		{
