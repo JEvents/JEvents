@@ -88,7 +88,7 @@ $user           = Factory::getUser();
 //Stop if user is not authorised to access JEvents CPanel
 if (!$authorisedonly && !$user->authorise('core.manage', 'com_jevents'))
 {
-	return;
+	throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'));
 }
 
 // Must also load frontend language files

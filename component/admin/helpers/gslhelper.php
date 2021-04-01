@@ -414,6 +414,27 @@ class GslHelper
 			$iconLinks[]              = $iconLink;
 		}
 
+		// YourSites
+		$db = Factory::getDbo();
+		$db->setQuery("SELECT enabled FROM #__extensions WHERE element = 'com_yoursites' AND type='component' ");
+		$is_enabled = $db->loadResult();
+		// Availability and access check .
+		if ($is_enabled && JFactory::getUser()->authorise('core.manage', 'com_yoursites'))
+		{
+			Factory::getLanguage()->load("com_yoursites", JPATH_ADMINISTRATOR);
+
+			$iconLink                 = new stdClass();
+			$iconLink->class          = "";
+			$iconLink->active         = $view == "yoursites";
+			$iconLink->link           = Route::_("index.php?option=com_yoursites");
+			$iconLink->icon           = "";
+			$iconLink->iconSrc        = "components/com_yoursites/assets/images/YourSitesIcon.png";
+			$iconLink->label          = Text::_('COM_YOURSITES');
+			$iconLink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_('COM_YOURSITES', true);
+			$iconLink->tooltip_detail = "";
+			$iconLinks[]              = $iconLink;
+		}
+
 		$iconLink                 = new stdClass();
 		$iconLink->class          = "returntojoomla";
 		$iconLink->active         = false;

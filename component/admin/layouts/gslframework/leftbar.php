@@ -71,8 +71,12 @@ $leftmenutrigger = $componentParams->get("leftmenutrigger", 0);
 	                ?>
                     <li class="<?php echo $leftIconLink->class . ($leftIconLink->active ? " gsl-active" : ""); ?>" <?php echo $tooltip;?> <?php echo $events;?>>
 	                    <a href="<?php echo $leftIconLink->link; ?>" target="<?php echo isset($leftIconLink->target) ? $leftIconLink->target : "_self"; ?>" <?php echo $onclick;?> >
+		                    <?php if (!empty($leftIconLink->icon)) { ?>
                             <span data-gsl-icon="icon: <?php echo $leftIconLink->icon; ?>" class="gsl-margin-small-right"></span>
-                            <span class="nav-label"><?php echo $leftIconLink->label; ?></span>
+		                    <?php } else if (!empty($leftIconLink->iconSrc)) { ?>
+			                    <span class="gsl-margin-small-right"><img src="<?php echo $leftIconLink->iconSrc; ?>" /></span>
+		                    <?php } ?>
+		                    <span class="nav-label"><?php echo $leftIconLink->label; ?></span>
                         </a>
 	                    <?php
 	                    if (isset($leftIconLink->sublinks) && count($leftIconLink->sublinks))

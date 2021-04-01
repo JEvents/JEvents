@@ -44,7 +44,7 @@ class AdminDefaultsController extends Joomla\CMS\MVC\Controller\FormController
 
 		// Make sure DB is up to date
 		$db = Factory::getDbo();
-		$db->setQuery("SELECT * FROM #__jev_defaults");
+		$db->setQuery("SELECT * FROM #__jev_defaults where catid='' AND language IN ('', '*')");
 		$defaults = $db->loadObjectList("name");
 		if (!isset($defaults['icalevent.detail_body']))
 		{

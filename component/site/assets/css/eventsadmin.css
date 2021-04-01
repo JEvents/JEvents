@@ -643,7 +643,7 @@ td.ev_td_right ul.ev_ul {
     margin-bottom: 10px;
 }
 
-.jevbootstrap div.modal {
+.jevbootstrap div.modal:not(.jeviso-modal) {
     background-clip: padding-box;
     background-color: #fff;
     border: 1px solid rgba(0, 0, 0, 0.3);
@@ -902,7 +902,7 @@ table.ev_navtable tr {
     text-align: left;
 }
 
-#myEditModal.modal {
+#myEditModal.modal:not(.jeviso-modal) {
     position: fixed;
     bottom: 5%;
     top: 5%;
@@ -926,7 +926,7 @@ table.ev_navtable tr {
     text-align: left;
 }
 
-#myEditModal.modal.fade {
+#myEditModal.modal.fade:not(.jeviso-modal) {
     top: -25%;
     -webkit-transition: opacity 0.3s linear, top 0.3s ease-out;
     -moz-transition: opacity 0.3s linear, top 0.3s ease-out;
@@ -934,7 +934,7 @@ table.ev_navtable tr {
     transition: opacity 0.3s linear, top 0.3s ease-out;
 }
 
-#myEditModal.modal.fade.in {
+#myEditModal.modal.fade.in:not(.jeviso-modal) {
     top: 5%;
 }
 
@@ -1249,7 +1249,7 @@ body.admin.com_jevents [class^="icon-"] {
     width: 280px;
 }
 
-.jevbootstrap .modal > .modal-dialog {
+.jevbootstrap .modal:not(.jeviso-modal) > .modal-dialog {
     left: 0;
     right: 0;
 }
