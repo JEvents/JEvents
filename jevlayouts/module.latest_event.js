@@ -337,6 +337,277 @@ jevpreview.push({
 	'templatebottom' : '</div></div>'
 });
 
+jevpreview.push({
+	'id': 6,
+	'name': 'Bootstrap 4 Float Popup',
+	'image': 'http://www.jevents.net/jevlayouts/latest5.png',
+	'code': "<div id='jeviso_item{{Repeat id:RPID}}' class='jeviso_item {COLUMNS}'>\n" +
+		"\t<div class='jfloat-event ng-scope ng-isolate-scope container' itemscope='' itemtype='http://schema.org/Event'>\n" +
+		"\t\t<div class='jeviso_item_image ' data-toggle='modal' data-target='#modal-event{{Repeat id:RPID}}'>\n" +
+		"\t\t\t{{Scaled Image:JEV_SIZEDIMAGE_1;400x300}}\n" +
+		"\t\t</div>\n" +
+		"\t\t<div id='eventcontainer{{Repeat id:RPID}}' class='jeviso_eventsummary row' data-toggle='modal' data-target='#modal-event{{Repeat id:RPID}}'>\n" +
+		"\t\t\t<div class='startdate col-3 p-1' itemprop='startDate' datetime='{{Start Date:STARTDATE;%Y-%b-%d}}' style='background-color:{{Event Colour:COLOUR}};color:{{Foreground Colour:FGCOLOUR}}'>\n" +
+		"\t\t\t\t{{Start Date:STARTDATE;<div class='icon-calendar'></div><div class='startmonth'>%b</div><div class='startday'>%d</div>}}\n" +
+		"\t\t\t</div>\n" +
+		"\t\t\t<div class=\" col-9\">\n" +
+		"\t\t\t\t<h3 class=' eventtitle p-1 ' itemprop='name' title='{{Title:TITLE}}'>\n" +
+		"\t\t\t\t\t{{Truncated Title:TRUNCATED_TITLE:24chars}}\n" +
+		"\t\t\t\t</h3>\n" +
+		"\t\t\t</div>\n" +
+		"\t\t</div>\n" +
+		"\t\t<!-- This is the modal -->\n" +
+		"\t\t<div id='modal-event{{Repeat id:RPID}}' class='jeviso-modal modal fade'>\n" +
+		"\t\t\t<div class='modal-dialog modal-lg'>\n" +
+		"\t\t\t\t<div class=\"modal-content container-fluid\">\n" +
+		"\t\t\t\t\t<div class='modal-header p-1 m-0 ' >\n" +
+		"\t\t\t\t\t\t<div class=\"modal-title row col-12\">\n" +
+		"\t\t\t\t\t\t\t<div class=\"col-3\">\n" +
+		"\t\t\t\t\t\t\t\t<h2 class='startdate'>{{Start Date:STARTDATE;<div class='startmonth'>%b</div><div class='startday'>%d</div>}}</h2>\n" +
+		"\t\t\t\t\t\t\t</div>\n" +
+		"\t\t\t\t\t\t\t<div class=\"col-9\">\n" +
+		"\t\t\t\t\t\t\t\t<h2 class='eventtitle'>{{Title Link:TITLE_LINK}}<span class='eventcategory d-block'>{{Category:CATEGORY}}</span></h2>\n" +
+		"\t\t\t\t\t\t\t</div>\n" +
+		"\t\t\t\t\t\t</div>\n" +
+		"\t\t\t\t\t\t<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n" +
+		"\t\t\t\t\t\t\t<span aria-hidden=\"true\">&times;</span>\n" +
+		"\t\t\t\t\t\t</button>\n" +
+		"\t\t\t\t\t</div>\n" +
+		"\t\t\t\t\t<div class='modal-body p-3 ' >\n" +
+		"\t\t\t\t\t\t{{Scaled Image:JEV_SIZEDIMAGE_1;400x300#<div class='jeviso_modal_image w-100'>%s</div>#}}\n" +
+		"\t\t\t\t\t\t<div class='eventtime m-t-1 row '>\n" +
+		"\t\t\t\t\t\t\t<div class='icon-clock col-1'></div>\n" +
+		"\t\t\t\t\t\t\t<div class='col-11'>\n" +
+		"\t\t\t\t\t\t\t\t<a href='{{Raw Link:LINK}}' class='eventdetaillink float-right btn btn-primary'>\n" +
+		"\t\t\t\t\t\t\t\t\tView in Calendar\n" +
+		"\t\t\t\t\t\t\t\t</a>\n" +
+		"\t\t\t\t\t\t\t\t<div class='timelabel'>\n" +
+		"\t\t\t\t\t\t\t\t\tTime\n" +
+		"\t\t\t\t\t\t\t\t</div>\n" +
+		"\t\t\t\t\t\t\t\t{{Start Time:STARTTIME;%l:%M %p# %s#No Specific time}}{{End Time:ENDTIME;%l:%M %p# - %s}}\n" +
+		"\t\t\t\t\t\t\t</div>\n" +
+		"\t\t\t\t\t\t</div>\n" +
+		"\t\t\t\t\t\t<div class='eventdetails  m-t-1 row' >\n" +
+		"\t\t\t\t\t\t\t<div class='icon-info col 1'></div>\n" +
+		"\t\t\t\t\t\t\t<div class=' col-11'>\n" +
+		"\t\t\t\t\t\t\t\t<div class='detailslabel'>\n" +
+		"\t\t\t\t\t\t\t\t\tEvent Details\n" +
+		"\t\t\t\t\t\t\t\t</div>\n" +
+		"\t\t\t\t\t\t\t\t{{Truncated Description:TRUNCATED_DESC:30words}}\n" +
+		"\t\t\t\t\t\t\t</div>\n" +
+		"\t\t\t\t\t\t</div>\n" +
+		"\t\t\t\t\t\t<div class='calendarlinks  m-t-1 row' >\n" +
+		"\t\t\t\t\t\t\t<div class='icon-calendar col-1'></div>\n" +
+		"\t\t\t\t\t\t\t<div class='col-11'>\n" +
+		"\t\t\t\t\t\t\t\t<div class='exportlabel'>Export Event to Your Calendar</div>\n" +
+		"\t\t\t\t\t\t\t\t<div>\n" +
+		"\t\t\t\t\t\t\t\t\t<a href='{{Save to Google:ICALGOOGLE}}' title='Save to Google Calendar'>\n" +
+		"\t\t\t\t\t\t\t\t\t\t<span class='icon-social-google'></span>\n" +
+		"\t\t\t\t\t\t\t\t\t</a>\n" +
+		"\t\t\t\t\t\t\t\t\t<a href='{{Save Ical Link:ICALSAVE}}' title='Save to Calendar'>\n" +
+		"\t\t\t\t\t\t\t\t\t\t<span class='icon-calendar'></span>\n" +
+		"\t\t\t\t\t\t\t\t\t</a>\n" +
+		"\t\t\t\t\t\t\t\t</div>\n" +
+		"\t\t\t\t\t\t\t</div>\n" +
+		"\t\t\t\t\t\t</div>\n" +
+		"\t\t\t\t\t\t<div class='location  m-t-1 row' >\n" +
+		"\t\t\t\t\t\t\t<div class='icon-location-pin col-1'></div>\n" +
+		"\t\t\t\t\t\t\t<div class='col-11'>\n" +
+		"\t\t\t\t\t\t\t\t<div class='locationlabel'>Location</div>\n" +
+		"\t\t\t\t\t\t\t\t<div class='jfloat-venue' itemprop='location' itemscope='' itemtype='http://schema.org/EventVenue'>\n" +
+		"\t\t\t\t\t\t\t\t\t<link itemprop='url' href='{{Location Url:JEVLOCATION_URL}}'>\n" +
+		"\t\t\t\t\t\t\t\t\t<span itemprop='geo' itemscope='' itemtype='http://schema.org/GeoCoordinates'>\n" +
+		"\t                                    <meta itemprop='latitude' content='{{Latitude:JEVLOCATION_LAT}}'>\n" +
+		"\t                                    <meta itemprop='longitude' content='{{Longitude:JEVLOCATION_LON}}'>\n" +
+		"\t                                </span>\n" +
+		"\t\t\t\t\t\t\t\t\t<div class='jfloat-venue-name' itemprop='name' title='{{Location Title:JEVLOCATION_TITLE}}'>\n" +
+		"\t\t\t\t\t\t\t\t\t\t{{Location Title:JEVLOCATION_TITLE}}\n" +
+		"\t\t\t\t\t\t\t\t\t</div>\n" +
+		"\t\t\t\t\t\t\t\t\t<div class='jfloat-city-state' itemprop='address' itemscope='' itemtype='http://schema.org/PostalAddress'>\n" +
+		"\t\t\t\t\t\t\t\t\t\t<span itemprop='addressLocality'>{{Location City:JEVLOCATION_CITY}}</span>\n" +
+		"\t\t\t\t\t\t\t\t\t\t<span itemprop='addressRegion'>{{Location State:JEVLOCATION_STATE}}</span>\n" +
+		"\t\t\t\t\t\t\t\t\t</div>\n" +
+		"\t\t\t\t\t\t\t\t</div>\n" +
+		"\t\t\t\t\t\t\t</div>\n" +
+		"\t\t\t\t\t\t</div>\n" +
+		"\t\t\t\t\t</div>\n" +
+		"\t\t\t\t</div>\n" +
+		"\t\t\t</div>\n" +
+		"\t\t</div>\n" +
+		"\t</div>\n" +
+		"</div>\n",
+	'css': ".jeviso_itemcontainer:after {\n" +
+		"    content: '';\n" +
+		"    display: block;\n" +
+		"    clear: both;\n" +
+		"}\n" +
+		"#jeviso_module .jeviso_item  .jfloat-event {\n" +
+		"    max-width: 100%;\n" +
+		"    width: 100%;\n" +
+		"    box-sizing: border-box;\n" +
+		"    border-radius: 3px;\n" +
+		"    cursor: pointer;\n" +
+		"    border: 1px solid #f0f0f1;\n" +
+		"    display: inline-block;\n" +
+		"    margin-right: 1%;\n" +
+		"    margin-bottom: 10px;\n" +
+		"}\n" +
+		"#jeviso_module .jeviso_itemcontainer .jeviso_item .jfloat-event:hover {\n" +
+		"    box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.4);\n" +
+		"}\n" +
+		"\n" +
+		"#jeviso_module .jeviso_item .jeviso_item_image img {\n" +
+		"    max-width: 100%;\n" +
+		"    border-radius: 3px;\n" +
+		"}\n" +
+		"#jeviso_module .jeviso_item .jeviso_item_title {\n" +
+		"    padding: 5px;\n" +
+		"}\n" +
+		"#jeviso_module .jeviso_item .jeviso_item_date {\n" +
+		"    padding: 5px;\n" +
+		"}\n" +
+		"#jeviso_module .jeviso_item .jeviso_item_body {\n" +
+		"    word-wrap: break-word;\n" +
+		"    padding: 5px;\n" +
+		"}\n" +
+		"#jeviso_module .jeviso_item .jeviso_item_footer {\n" +
+		"    width: 100%;\n" +
+		"    max-width: 100%;\n" +
+		"}\n" +
+		"#jeviso_module .jeviso_item .jeviso_item_footer .jeviso_item_catcolor {\n" +
+		"    border-left-width: 10px;\n" +
+		"    border-left-style: solid;\n" +
+		"    display: inline-block;\n" +
+		"    padding-left: 2px;\n" +
+		"    text-align: left;\n" +
+		"    width: 35%;\n" +
+		"}\n" +
+		"#jeviso_module .jeviso_item .jeviso_item_footer .jeviso_item_rmlink {\n" +
+		"    display: inline-block;\n" +
+		"    text-align: right;\n" +
+		"    width: 55%;\n" +
+		"}\n" +
+		".uk-button-primary > .ev_link_row,\n" +
+		".uk-button-primary > .ev_link_row:hover {\n" +
+		"   color:inherit;\n" +
+		"}\n" +
+		"#jeviso-modal {\n" +
+		"cursor:auto;\n" +
+		"}\n" +
+		".jeviso_modal_image > img {\n" +
+		"  margin: 0 auto;\n" +
+		"  display:block;\n" +
+		"}\n" +
+		"/* Float module specific */\n" +
+		"#jeviso_module .jeviso_itemcontainer .jeviso_item .jeviso_item_image img {\n" +
+		"    width: 100%;\n" +
+		"    max-width: 100%;\n" +
+		"    border-top-right-radius: 3px;\n" +
+		"    border-top-left-radius: 3px;\n" +
+		"}\n" +
+		"#jeviso_module .jeviso_itemcontainer .jeviso_item {\n" +
+		"}\n" +
+		"#jeviso_module .jeviso_itemcontainer .jeviso_item .jeviso_item_image {\n" +
+		"   height:300px;\n" +
+		"    overflow: hidden;\n" +
+		"    position: relative;\n" +
+		"    border-bottom-right-radius: 0;\n" +
+		"    border-bottom-left-radius: 0;\n" +
+		"}\n" +
+		"#jeviso_module .jeviso_itemcontainer .jeviso_item .jeviso_item_image img {\n" +
+		"    position: absolute;\n" +
+		"    top: -50%;\n" +
+		"    bottom: -50%;\n" +
+		"    width: 100%;\n" +
+		"    margin: auto;\n" +
+		"    height: auto;\n" +
+		"}\n" +
+		"#jeviso_module .jeviso_itemcontainer .jeviso_item.listv {\n" +
+		"    width: 100%;\n" +
+		"}\n" +
+		"#jeviso_module .jeviso_itemcontainer .jeviso_item.listv .noleftpadding {\n" +
+		"    padding-left: 0;\n" +
+		"}\n" +
+		"#jeviso_module .jeviso_itemcontainer .jeviso_item h3.eventtitle {\n" +
+		"    font-size: 1.3rem !important;\n" +
+		"    font-weight: bold;\n" +
+		"    text-overflow: ellipsis;\n" +
+		"}\n" +
+		"#jeviso_module .jeviso_itemcontainer .jeviso_item h3.eventtitle .eventcategory {\n" +
+		"    display: block;\n" +
+		"    font-size: 1.0rem !important;\n" +
+		"    margin-top: 10px;\n" +
+		"    font-weight: normal;\n" +
+		"    text-overflow: ellipsis;\n" +
+		"}\n" +
+		"#jeviso_module .jeviso_itemcontainer .jeviso_item div.startdate {\n" +
+		"    text-align: center;\n" +
+		"}\n" +
+		".jeviso_modal {\n" +
+		"    cursor: initial;\n" +
+		"}\n" +
+		".jeviso_modal .modal-dialog {\n" +
+		"    width: 800px;\n" +
+		"}\n" +
+		".jeviso_modal .modal-dialog .modal-header {\n" +
+		"    margin: 0;\n" +
+		"}\n" +
+		"\n" +
+		".jeviso_modal .modal-dialog .eventtime,\n" +
+		".jeviso_modal .modal-dialog .eventdetails,\n" +
+		".jeviso_modal .modal-dialog .calendarlinks {\n" +
+		"    padding-bottom: 5px;\n" +
+		"    border-bottom: 1px solid #e5e5e5;\n" +
+		"    margin-bottom: 5px;\n" +
+		"}\n" +
+		".jeviso_modal .modal-dialog .startdate {\n" +
+		"    font-size: 1.5rem !important;\n" +
+		"    padding-left: 10px;\n" +
+		"    text-align: center;\n" +
+		"}\n" +
+		".jeviso_modal .modal-dialog .startdate .startmonth {\n" +
+		"    height: 40px;\n" +
+		"    line-height: 40px;\n" +
+		"}\n" +
+		".jeviso_modal .modal-dialog .startdate .startday {\n" +
+		"    height: 25px;\n" +
+		"    line-height: 25px;\n" +
+		"}\n" +
+		".jeviso_modal .modal-dialog .modal-title {\n" +
+		"    padding-left: 40px;\n" +
+		"    text-overflow: ellipsis;\n" +
+		"}\n" +
+		".jeviso_modal .modal-dialog .modal-title a {\n" +
+		"    font-size: 1.5rem !important;\n" +
+		"    height: 40px;\n" +
+		"    line-height: 40px;\n" +
+		"}\n" +
+		".jeviso_modal .modal-dialog .modal-title .eventcategory {\n" +
+		"    display: block;\n" +
+		"    height: 25px;\n" +
+		"    line-height: 25px;\n" +
+		"    font-size: 1.3rem !important;\n" +
+		"    opacity: 0.6;\n" +
+		"    text-overflow: ellipsis;\n" +
+		"}",
+	'js': "function jevModalsToBody(selector)\n" +
+		"{\n" +
+		"         let modals = jQuery(selector);\n" +
+		"          modals.appendTo('body');\n" +
+		"}\n" +
+		"\n" +
+		"document.addEventListener('DOMContentLoaded', function () {\n" +
+		"         jevModalsToBody('.mod_events_latest_data .jeviso-modal.modal');\n" +
+		"    jQuery('.mod_events_latest_data').on('jevisomoreevents', function () {\n" +
+		"         jevModalsToBody('.mod_events_latest_data .jeviso-modal.modal');\n" +
+		"    });\n" +
+		"});\n",
+	'info': 'Boostrap 4 based theme that combines with Float Theme to show event image. date, time, title and location with popup details in modal.  <strong>This layout requires the Silver Member Float Theme, Standard Images and Managed Locations Addons to work together with a Bootstrap 4 based template.</strong>',
+	'templatetop' : "    <div id=\"jeviso_module\" class=\"jeviso_day \">\n" +
+		"        <div class=\"jeviso_itemcontainer row\" itemscope itemtype=\"http://schema.org/Event\">\n",
+	'templatebottom' : '</div></div>'
+});
+
 function loadJevPreview(target, csstarget, jstarget, ttop, tbot) {
 	jQuery(document).ready(function ($) {
 		// Setup click action on default option (which is translated)
