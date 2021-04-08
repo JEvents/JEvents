@@ -29,6 +29,16 @@ if (version_compare(phpversion(), '5.0.0', '<') === true)
 
 	return;
 }
+
+if (isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], "MSIE") !== false || strpos($_SERVER['HTTP_USER_AGENT'], "Internet Explorer") !== false))
+{
+	define ("GSLMSIE10" , 1);
+}
+else
+{
+	define ("GSLMSIE10" , 0);
+}
+
 // remove metadata.xml if its there.
 jimport('joomla.filesystem.file');
 if (File::exists(JPATH_COMPONENT_SITE . '/' . "metadata.xml"))
@@ -247,15 +257,6 @@ else
 	throw new Exception('Invalid Controller Class - ' . $controllerClass, 500);
 
 	return false;
-}
-
-if (isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], "MSIE") !== false || strpos($_SERVER['HTTP_USER_AGENT'], "Internet Explorer") !== false))
-{
-	define ("GSLMSIE10" , 1);
-}
-else
-{
-	define ("GSLMSIE10" , 0);
 }
 
 // record what is running - used by the filters
