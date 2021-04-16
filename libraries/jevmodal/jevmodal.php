@@ -40,15 +40,72 @@ class JevModal
 
 		if (!isset(static::$loaded[__METHOD__][$selector]))
 		{
+
+			// Include Modal framework
+			static::framework();
+
+			$jsonParams = json_encode($params);
+
+			$script = <<< SCRIPT
+document.addEventListener('DOMContentLoaded', function() {
+	var targets = document.querySelectorAll('$selector');
+	targets.forEach(function(target) {
+		target.addEventListener('click', function(evt){
+			jevModalSelector(target, $jsonParams, evt);
+		}, target);
+	});
+});
+SCRIPT;
+			Factory::getDocument()->addScriptDeclaration($script);
+
+			// Set static array
+			static::$loaded[__METHOD__][$selector] = true;
+		}
+
+		return;
+	}
+
+
+	/**
+	 * Add javascript support for Bootstrap modal
+	 *
+	 * @param   string $selector   The selector for the modal element.
+	 * @param   array  $params     An array of options for the modal element.
+	 *                             Options for the tooltip can be:
+	 *                             - size     string,  Values can be "max" or "h,w" for height and width values
+	 *
+	 * @return  void
+	 *
+	 * @since   3.0
+	 */
+	public static function bootstrapModal($selector = '.jevmodal', $params = array())
+	{
+
+		if (!isset(static::$loaded[__METHOD__][$selector]))
+		{
 			// NEEDS TO BE DIFFERENT FOR EACH SELECTOR TO SUPPORT MULTIPLE INSTANCES ON ONE PAGE!
 			// so we also need different javascript variable names
 			$jsname = "jevmodal" . md5($selector);
 
 			// Include Modal framework
-			static::framework();
+			static::framework(null, true);
 
 			// Setup options object
 			$opt['size'] = isset($params['size']) ? $params['size'] : 'max';
+
+			$jsonParams = json_encode($params);
+
+			$script = <<< SCRIPT
+document.addEventListener('DOMContentLoaded', function() {
+	var targets = document.querySelectorAll('$selector');
+	targets.forEach(function(target) {
+		target.addEventListener('click', function(evt){
+			jevModalSelector(target, $jsonParams, evt);
+		}, target);
+	});
+});
+SCRIPT;
+			Factory::getDocument()->addScriptDeclaration($script);
 
 			// Set static array
 			static::$loaded[__METHOD__][$selector] = true;
@@ -68,7 +125,7 @@ class JevModal
 	 *
 	 * @since   3.0
 	 */
-	public static function framework($debug = null)
+	public static function framework($debug = null, $forceBoostrap = false)
 	{
 
 		// Only load once
@@ -81,7 +138,8 @@ class JevModal
 
 		// UIKit or Bootstrap
 		$jinput = JFactory::getApplication()->input;
-		if (($jinput->getString("task", "") == "icalevent.edit" || $jinput->getString("task", "") == "icalrepeat.edit")
+		$task = $jinput->getString("task", $jinput->getString("jevtask", ""));
+		if (!$forceBoostrap && ($task == "icalevent.edit" || $task == "icalrepeat.edit")
 			&& (Factory::getApplication()->isClient('administrator') || $jevparams->get("newfrontendediting", 1))
 		)
 		{

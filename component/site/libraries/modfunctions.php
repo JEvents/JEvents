@@ -220,7 +220,7 @@ function findAppropriateMenuID(&$catidsOut, &$modcatids, &$catidList, $modparams
 	$possibleset = array();
 	foreach ($menuitems as $testparms)
 	{
-		$test   = new JevRegistry($testparms->params);
+		$test   = new JevRegistry($testparms->getParams());
 		$c      = 0;
 		$catids = array();
 		// New system

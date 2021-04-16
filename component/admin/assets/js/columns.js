@@ -24,8 +24,8 @@ function setupColumnChoices() {
             var uls = jQuery("#columnmatches");
             if (uls) {
                 uls.append("<div id='column" + id + "'>"
-                    + "<div class='sortablehandle' style='width:200px;display:inline-block;'>" + text + "</div>"
-                    + "<input type='text' value='" + text + "' style=margin-left:20px;' />"
+                    + "<div class='sortablehandle' style='width:45%;display:inline-block;'>" + text + "</div>"
+                    + "<input type='text' value='" + text + "' style=margin-left:5%;width:45%; />"
                     + "</div>");
                 setupColumnLis();
             }

@@ -63,3 +63,9 @@ function addJevModalHtml_uikit(id) {
     }
 }
 
+function closeJevModalBySelector(selector)
+{
+    document.querySelectorAll(selector).forEach(function(modalItem)  {
+        gslUIkit.modal(modalItem).hide();
+    });
+}

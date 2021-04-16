@@ -1006,7 +1006,8 @@ WHERE ics.ics_id is null
 
 		if (!JEVHelper::isAdminUser())
 		{
-			$app->redirect("index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.cpanel", "Not Authorised - must be admin");
+			Factory::getApplication()->enqueueMessage( "Not Authorised - must be admin", 'warning');
+			Factory::getApplication()->redirect("index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.cpanel");
 			return;
 		}
 

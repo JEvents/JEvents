@@ -25,10 +25,15 @@
         <delete dir="${p}/media/${component}/css/" includeemptydirs="true" verbose="true" failonerror="false" />
         <delete dir="${p}/media/${component}/js/" includeemptydirs="true" verbose="true" failonerror="false" />
         <delete dir="${p}/media/${component}/images/" includeemptydirs="true" verbose="true" failonerror="false" />
+        <delete dir="${p}/media/${component}/lib_jevmodal/" includeemptydirs="true" verbose="true" failonerror="false" />
+        <delete dir="${p}/media/${component}/lib_jevtypeahead/" includeemptydirs="true" verbose="true" failonerror="false" />
         <delete dir="${p}/libraries/googl/" includeemptydirs="true" verbose="true" failonerror="false" />
         <delete dir="${p}/libraries/jevents/jevmodal/" includeemptydirs="true" verbose="true" failonerror="false" />
+        <delete dir="${p}/libraries/jevents/lib_jevmodal/" includeemptydirs="true" verbose="true" failonerror="false" />
         <delete dir="${p}/libraries/jevents/jevbootstrap/" includeemptydirs="true" verbose="true" failonerror="false" />
+        <delete dir="${p}/libraries/jevents/lib_jevbootstrap/" includeemptydirs="true" verbose="true" failonerror="false" />
         <delete dir="${p}/libraries/jevents/jevtypeahead/" includeemptydirs="true" verbose="true" failonerror="false" />
+        <delete dir="${p}/libraries/jevents/lib_jevtypeahead/" includeemptydirs="true" verbose="true" failonerror="false" />
         <delete dir="${p}/modules/mod_jevents_cal/" includeemptydirs="true" verbose="true" failonerror="false" />
         <delete dir="${p}/modules/mod_jevents_custom/" includeemptydirs="true" verbose="true" failonerror="false" />
         <delete dir="${p}/modules/mod_jevents_filter/" includeemptydirs="true" verbose="true" failonerror="false" />
@@ -42,15 +47,23 @@
         <symlink target="${rootPath}/component/media/js" link="${p}/media/${component}/js" overwrite="true" />
         <symlink target="${rootPath}/component/media/css" link="${p}/media/${component}/css" overwrite="true" />
         <symlink target="${rootPath}/component/media/images" link="${p}/media/${component}/images" overwrite="true" />
+        <!-- plugins //-->
         <symlink target="${rootPath}/plugins/finder/jevents" link="${p}/plugins/finder/jevents" overwrite="true" />
         <symlink target="${rootPath}/plugins/search/" link="${p}/plugins/search/eventsearch" overwrite="true" />
         <symlink target="${rootPath}/plugins/installer" link="${p}/plugins/installer/jeventsinstaller" overwrite="true" />
         <symlink target="${rootPath}/plugins/jevents" link="${p}/plugins/content/jevents" overwrite="true" />
         <symlink target="${rootPath}/plugins/gwejson" link="${p}/plugins/system/gwejson" overwrite="true" />
+        <!-- libraries //-->
         <symlink target="${rootPath}/libraries/googl" link="${p}/libraries/googl" overwrite="true" />
+
         <symlink target="${rootPath}/libraries/jevmodal" link="${p}/libraries/jevents/jevmodal" overwrite="true" />
-        <symlink target="${rootPath}/libraries/bootstrap" link="${p}/libraries/jevents/bootstrap" overwrite="true" />
-        <symlink target="${rootPath}/libraries/jevtypeahead" link="${p}/libraries/jevents/jevtypeahead" overwrite="true" />
+        <!--
+        <symlink target="${rootPath}/libraries/jevbootstrap" link="${p}/libraries/jevents/jevbootstrap" overwrite="true" />
+        //-->
+        <symlink target="${rootPath}/libraries/jevtypeahead" link="${p}/libraries/jevents/jevtypeahead" overwrite="true" />        <!-- library media files //-->
+        <symlink target="${rootPath}/libraries/jevmodal/media" link="${p}/media/${component}/lib_jevmodal" overwrite="true" />
+        <symlink target="${rootPath}/libraries/jevtypeahead/media" link="${p}/media/${component}/lib_jevtypeahead" overwrite="true" />
+        <!-- modules -->
         <symlink target="${rootPath}/modules/mod_jevents_cal" link="${p}/modules/mod_jevents_cal" overwrite="true" />
         <symlink target="${rootPath}/modules/mod_jevents_custom" link="${p}/modules/mod_jevents_custom" overwrite="true" />
         <symlink target="${rootPath}/modules/mod_jevents_filter" link="${p}/modules/mod_jevents_filter" overwrite="true" />

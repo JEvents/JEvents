@@ -62,23 +62,24 @@ jevpreview.push({
 		'            </div>\n' +
 		'            <h3 class=\'uk-modal-title uk-width-expand eventtitle uk-padding-small uk-text-nowrap uk-overflow-hidden\' itemprop=\'name\' title=\'{{Title:TITLE}}\'>\n' +
 		'                {{Truncated Title:TRUNCATED_TITLE:24chars}}\n' +
+		'                <span class=\'eventcategory\'>{{Category:CATEGORY}}</span>\n' +
 		'            </h3>\n' +
 		'        </div>\n' +
 		'        <!-- This is the modal -->\n' +
-		'        <div id=\'modal-event{{Repeat id:RPID}}\' uk-modal=\'container:#jev_isoitem{{Repeat id:RPID}}\' class=\'jeviso-modal\'>\n' +
+		'        <div id=\'modal-event{{Repeat id:RPID}}\' uk-modal=\'container:jev_isoitem{{Repeat id:RPID}}\' class=\'jeviso-modal\'>\n' +
 		'            <div class=\'uk-modal-dialog\'>\n' +
-		'                <div class=\'uk-modal-header uk-padding-small uk-margin-remove\' uk-grid>\n' +
+		'                <div class=\'uk-modal-header uk-padding-small\' uk-grid>\n' +
 		'                    <h2 class=\'startdate\'>{{Start Date:STARTDATE;<div class=\'startmonth\'>%b</div><div class=\'startday\'>%d</div>}}</h2>\n' +
-		'                    <h2 class=\'uk-modal-title uk-width-expand eventtitle\'>{{Title Link:TITLE_LINK}}<span class=\'eventcategory uk-display-block\'>{{Category:CATEGORY}}</span></h2>\n' +
+		'                    <h2 class=\'uk-modal-title uk-width-expand eventtitle\'>{{Title Link:TITLE_LINK}}<span class=\'eventcategory\'>{{Category:CATEGORY}}</span></h2>\n' +
 		'                    <button class=\'uk-modal-close-default\' type=\'button\' uk-close></button>\n' +
 		'                </div>\n' +
-		'                <div class=\'uk-modal-body uk-padding-small\' >\n' +
+		'                <div class=\'uk-modal-body uk-padding-small\' uk-grid>\n' +
 		'                    {{Scaled Image:JEV_SIZEDIMAGE_1;400x300#<div class=\'jeviso_modal_image uk-width-1-1\'>%s</div>#}}\n' +
-		'                    <div class=\'eventtime uk-margin-small-top \' uk-grid>\n' +
+		'                    <div class=\'eventtime uk-margin-medium-top \' uk-grid>\n' +
 		'                        <div uk-icon=\'icon: clock\'></div>\n' +
 		'                        <div class=\'uk-width-expand\'>\n' +
 		'                            <div class=\'eventdetaillink uk-float-right uk-button uk-button-primary\'>\n' +
-		'                              {{Link Start:LINKSTART}} View in Calendar {{Link End:LINKEND}}\n' +
+		'                                {{Link Start:LINKSTART}} View in Calendar {{Link End:LINKEND}}\n' +
 		'                            </div>\n' +
 		'                            <div class=\'timelabel\'>\n' +
 		'                                Time\n' +
@@ -134,15 +135,14 @@ jevpreview.push({
 		'        </div>\n' +
 		'    </div>\n' +
 		'</div>\n' +
-		'',
+		'\n',
 	'css': '.jeviso_itemcontainer:after {\n' +
-		'    content: \'\';\n' +
+		'    content: "";\n' +
 		'    display: block;\n' +
 		'    clear: both;\n' +
 		'}\n' +
 		'#jeviso_module .jeviso_item  .jfloat-event {\n' +
 		'    max-width: 100%;\n' +
-		'    width: 100%;\n' +
 		'    box-sizing: border-box;\n' +
 		'    border-radius: 3px;\n' +
 		'    cursor: pointer;\n' +
@@ -186,16 +186,12 @@ jevpreview.push({
 		'    text-align: right;\n' +
 		'    width: 55%;\n' +
 		'}\n' +
-		'.uk-button-primary > .ev_link_row,\n' +
-		'.uk-button-primary > .ev_link_row:hover {\n' +
-		'   color:inherit;\n' +
-		'}\n' +
-		'#jeviso-modal {\n' +
-		'cursor:auto;\n' +
-		'}\n' +
-		'.jeviso_modal_image > img {\n' +
-		'  margin: 0 auto;\n' +
-		'  display:block;\n' +
+		'\n' +
+		'/* Media Queries */\n' +
+		'@media (max-width: 762px) {\n' +
+		'    #jeviso_module .jeviso_item {\n' +
+		'    width: 45.5%;\n' +
+		'    }\n' +
 		'}\n' +
 		'/* Float module specific */\n' +
 		'#jeviso_module .jeviso_itemcontainer .jeviso_item .jeviso_item_image img {\n' +
@@ -289,7 +285,9 @@ jevpreview.push({
 		'    font-size: 1.3rem !important;\n' +
 		'    opacity: 0.6;\n' +
 		'    text-overflow: ellipsis;\n' +
-		'}',
+		'}\n' +
+		'\n' +
+		'\n',
 	'js': 'document.addEventListener(\'DOMContentLoaded\', function () {\n' +
 		'\n' +
 		'    jQuery(\'div.jeviso_container\').on(\'jevisolist\', function () {\n' +
@@ -297,16 +295,16 @@ jevpreview.push({
 		'\n' +
 		'        if (w > 960) {\n' +
 		'            jQuery(\'.jfloat-event\').addClass(\'uk-height-small\');\n' +
-		'            jQuery(\'.jfloat-event .jeviso_item_image\').addClass(\'uk-float-right\');\n' +
-		'            jQuery(\'.jfloat-event .jeviso_eventsummary, .jfloat-event .jeviso_item_image\').addClass(\'uk-width-1-2@m\');\n' +
+		'            jQuery(\'.jfloat-event .jeviso_item_image\').addClass("uk-float-right");\n' +
+		'            jQuery(\'.jfloat-event .jeviso_eventsummary, .jfloat-event .jeviso_item_image\').addClass("uk-width-1-2@m");\n' +
 		'            jQuery(\'.jfloat-event .jeviso_eventsummary\').addClass(\'uk-height-1-1\');\n' +
 		'            jQuery(\'.jfloat-event .uk-first-column\').addClass(\'noleftpadding\');\n' +
 		'        }\n' +
 		'    });\n' +
 		'    jQuery(\'div.jeviso_container\').on(\'jevisogrid\', function () {\n' +
 		'        jQuery(\'.jfloat-event\').removeClass(\'uk-height-small\');\n' +
-		'        jQuery(\'.jfloat-event .jeviso_item_image\').removeClass(\'uk-float-right\');\n' +
-		'        jQuery(\'.jfloat-event .jeviso_eventsummary, .jfloat-event .jeviso_item_image\').removeClass(\'uk-width-1-2@m\');\n' +
+		'        jQuery(\'.jfloat-event .jeviso_item_image\').removeClass("uk-float-right");\n' +
+		'        jQuery(\'.jfloat-event .jeviso_eventsummary, .jfloat-event .jeviso_item_image\').removeClass("uk-width-1-2@m");\n' +
 		'        jQuery(\'.jfloat-event .jeviso_eventsummary\').removeClass(\'uk-height-1-1\');\n' +
 		'        jQuery(\'.jfloat-event .uk-first-column\').removeClass(\'noleftpadding\');\n' +
 		'    });\n' +
@@ -315,22 +313,21 @@ jevpreview.push({
 		'            var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);\n' +
 		'            if (w > 960) {\n' +
 		'                jQuery(\'.jfloat-event\').addClass(\'uk-height-small\');\n' +
-		'                jQuery(\'.jfloat-event .jeviso_item_image\').addClass(\'uk-float-right\');\n' +
-		'                jQuery(\'.jfloat-event .jeviso_eventsummary, .jfloat-event .jeviso_item_image\').addClass(\'uk-width-1-2@m\');\n' +
+		'                jQuery(\'.jfloat-event .jeviso_item_image\').addClass("uk-float-right");\n' +
+		'                jQuery(\'.jfloat-event .jeviso_eventsummary, .jfloat-event .jeviso_item_image\').addClass("uk-width-1-2@m");\n' +
 		'                jQuery(\'.jfloat-event .jeviso_eventsummary\').addClass(\'uk-height-1-1\');\n' +
 		'                jQuery(\'.jfloat-event .uk-first-column\').addClass(\'noleftpadding\');\n' +
 		'            }\n' +
 		'            else {\n' +
 		'                jQuery(\'.jfloat-event\').removeClass(\'uk-height-small\');\n' +
-		'                jQuery(\'.jfloat-event .jeviso_item_image\').removeClass(\'uk-float-right\');\n' +
-		'                jQuery(\'.jfloat-event .jeviso_eventsummary, .jfloat-event .jeviso_item_image\').removeClass(\'uk-width-1-2@m\');\n' +
+		'                jQuery(\'.jfloat-event .jeviso_item_image\').removeClass("uk-float-right");\n' +
+		'                jQuery(\'.jfloat-event .jeviso_eventsummary, .jfloat-event .jeviso_item_image\').removeClass("uk-width-1-2@m");\n' +
 		'                jQuery(\'.jfloat-event .jeviso_eventsummary\').removeClass(\'uk-height-1-1\');\n' +
 		'                jQuery(\'.jfloat-event .uk-first-column\').removeClass(\'noleftpadding\');\n' +
 		'            }\n' +
 		'        }\n' +
 		'    });\n' +
-		'});\n' +
-		'',
+		'});\n',
 	'info': 'UIKit 3 based theme that combines with Float Theme to show event image. date, time, title and location with popup details in modal.  <strong>This layout requires the Silver Member Float Theme, Standard Images and Managed Locations Addons to work together with a UIKit 3 based template.</strong>',
 	'templatetop' : '    <div id="jeviso_module" class="jeviso_day">\n' +
 		'        <div class="jeviso_itemcontainer {COLUMNS+1}@xl {COLUMNS}@l {COLUMNS-1}@m {COLUMNS-2}@s uk-grid" itemscope itemtype="http://schema.org/Event">\n',
@@ -365,7 +362,7 @@ function loadJevPreview(target, csstarget, jstarget, ttop, tbot) {
 				info = "<img src='" + item.image + "' style='margin:0px 10px 10px 10px;'/><br/>";
 			}
 			info += "<div>" + item.info + "</div>";
-			var elem = jQuery('<li role="presentation"><a  role="menuitem" tabindex="-1" href="#" class="dropdownpopover" data-title="\n' + item.name + '" data-content="\n' + info + '">\n' + item.name + '</a></li>');
+			var elem = jQuery('<li role="presentation"><a  role="menuitem" tabindex="-1" href="#" class="dropdownpopover" data-title="' + item.name + '" data-content="' + info + '">' + item.name + '</a></li>');
 			var dropdowntarget = jQuery("#dropdownUL_" + target);
 			elem.appendTo(dropdowntarget);
 			elem.on('click', function (event) {
@@ -398,7 +395,7 @@ function loadJevPreview(target, csstarget, jstarget, ttop, tbot) {
 				window.scrollTo(0,0);
 			});
 		});
-		jQuery("#" + csstarget + ',#\n' + jstarget).on('change', function (event) {
+		jQuery("#" + csstarget + ',#' + jstarget).on('change', function (event) {
 			currentCode = jQuery("#" + target).val();
 			currentCSS = jQuery("#" + csstarget).val();
 			currentJS = jQuery("#" + jstarget).val();

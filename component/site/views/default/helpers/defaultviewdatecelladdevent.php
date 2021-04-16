@@ -20,7 +20,10 @@ function DefaultViewDatecellAddEvent($view, $year, $month, $day)
 
 		if ($view->popup)
 		{
-			$eventlinkadd = "javascript:jevEditPopup('" . $editLink . "')";
+			JLoader::register('JevModal', JPATH_LIBRARIES . "/jevents/jevmodal/jevmodal.php");
+			JevModal::framework();
+
+			$eventlinkadd = "javascript:jevModalNoHeader('myEditModal','" . $editLink . "');";
 			?>
 			<a href="<?php echo $eventlinkadd; ?>" title="<?php echo Text::_('JEV_ADDEVENT'); ?>" class="addjevent"
 			   id="add<?php echo $year . $month . $day; ?>"> <!-- data-toggle="modal" data-target="#myEditModal"> //-->

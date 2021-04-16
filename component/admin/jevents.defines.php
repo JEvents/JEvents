@@ -78,8 +78,3 @@ JLoader::register('JToolbarButtonJev', JEV_ADMINPATH . "libraries/jevtoolbarbutt
 JLoader::register('JToolbarButtonJevlink', JEV_ADMINPATH . "libraries/jevtoolbarbuttons.php");
 JLoader::register('JToolbarButtonJevconfirm', JEV_ADMINPATH . "libraries/jevtoolbarbuttons.php");
 
-//Joomla 2.5
-//JLoader::register('JButtonJev', JEV_ADMINPATH . "libraries/jevbuttons.php");
-//JLoader::register('JButtonJevlink', JEV_ADMINPATH . "libraries/jevbuttons.php");
-//JLoader::register('JButtonJevconfirm', JEV_ADMINPATH . "libraries/jevbuttons.php");
-

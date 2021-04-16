@@ -111,7 +111,11 @@ JevHtmlBootstrap::framework();
 $params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 if ($params->get("bootstrapchosen", 1))
 {
-	HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
+	$jversion = new Joomla\CMS\Version;
+	if (!$jversion->isCompatible('4.0'))
+	{
+		HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
+	}
 }
 if ($params->get("bootstrapcss", 1)==1)
 {

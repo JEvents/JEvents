@@ -31,7 +31,8 @@ class AdminDefaultsController extends Joomla\CMS\MVC\Controller\FormController
 
 		if (!JEVHelper::isAdminUser())
 		{
-			Factory::getApplication()->redirect("index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.cpanel", "Not Authorised - must be admin");
+			Factory::getApplication()->enqueueMessage("Not Authorised - must be admin", 'warning');
+			Factory::getApplication()->redirect("index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.cpanel");
 
 			return;
 		}
@@ -629,7 +630,8 @@ function edit($key = null, $urlVar = null)
 			if ($model = $this->getModel("default", "defaultsModel"))
 			{
 				//TODO find a work around for getting post array with input.
-				if ($model->store($input->getArray(array(), null, 'RAW')))
+				$data = $input->getArray(array(), null, 'RAW');
+				if ($model->store($data))
 				{
 					if ($input->getCmd("task") == "defaults.apply")
 					{

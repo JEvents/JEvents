@@ -16,7 +16,11 @@ use Joomla\CMS\Editor\Editor;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
-HTMLHelper::_('formbehavior.chosen', 'select');
+$jversion = new Joomla\CMS\Version;
+if (!$jversion->isCompatible('4.0'))
+{
+	HTMLHelper::_('formbehavior.chosen', 'select');
+}
 jimport('joomla.filesystem.file');
 
 if ($this->item->name == "month.calendar_cell" || $this->item->name == "month.calendar_tip" || $this->item->name == "icalevent.edit_page"  || $this->item->name == "icalevent.list_block3")
@@ -96,11 +100,9 @@ if (strpos($this->item->value, '{{CUSTOMJS}') !== false)
 	else
 	{
 		$templateparams->customjs = "";
-	}}
-else
-{
-	$templateparams->customjs = "";
+	}
 }
+
 if (strpos($this->item->value, '{{CUSTOMCSS}') !== false)
 {
 	preg_match('|' . preg_quote('{{CUSTOMCSS}}') . '(.*?)' . preg_quote('{{/CUSTOMCSS}}') . '|s', $this->item->value, $matches);
@@ -115,10 +117,7 @@ if (strpos($this->item->value, '{{CUSTOMCSS}') !== false)
 		$templateparams->customcss = "";
 	}
 }
-else
-{
-	$templateparams->customcss = "";
-}
+
 // is there custom header or footer html - if so push into the params
 if (strpos($this->item->value, '{{HTMLHEADER}') !== false)
 {

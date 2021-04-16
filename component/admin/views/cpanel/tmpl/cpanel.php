@@ -144,8 +144,8 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
                         </div>
                     </div>
 	                <?php } ?>
-                    <div class="gsl-card-body" gsl-slider="autoplay:true; autoplay-interval:5000; pause-on-hover:true">
-                        <ul class="ys_newsfeed gsl-slider-items gsl-grid gsl-child-width-1-1" style="width: calc(100% + 20px);">
+                    <div class="gsl-card-body gsl-slider ys_newsfeed" gsl-slider="autoplay:true; autoplay-interval:5000; pause-on-hover:true">
+                        <ul class=" gsl-slider-items gsl-grid gsl-child-width-1-1" style="width: calc(100% + 20px);">
 							<?php for ($i = 0, $max = min(count($feed), 3); $i < $max; $i++) { ?>
 								<?php
 								$uri  = $feed[$i]->uri || !$feed[$i]->isPermaLink ? trim($feed[$i]->uri) : trim($feed[$i]->guid);
