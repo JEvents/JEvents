@@ -154,6 +154,7 @@ function launchJevModal(selector, url) {
     iframe.addEventListener('load', function () {
         var iframe = document.querySelector(selector+ ' iframe');
         if(iframe.src.indexOf(url) >= 0) {
+
             var modal = document.querySelector(selector);
             var modalHeader = modal.querySelector('.modal-header ');
             var modalBody   = modal.querySelector('.modal-body ');
@@ -170,64 +171,37 @@ function launchJevModal(selector, url) {
         }
     });
 
-    /** Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap */
-    var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
-    if (bootstrap3_enabled) {
-        jQuery(selector).off('shown.bs.modal');
-        jQuery(selector).on('shown.bs.modal', function () {
-            //jQuery(selector+' iframe').attr("src","about:blank");
-            // scrolling issue in iOS 11.3
-            var scrollT = jQuery(window).scrollTop();
-            if (scrollT > 0) {
-                jQuery(selector).data('scrollTop', scrollT);
-            }
-            jQuery('body').css({
-              //  position: 'fixed'
-            });
-            if (url) {
-                jQuery(selector + ' iframe').attr("src", url);
-            }
-        });
-        jQuery(selector).on('hidden.bs.modal', function () {
-            // scrolling issue in iOS 11.3
-            jQuery('body').css({
-              //  position: 'static'
-            });
-            var scrollT = jQuery(selector).data('scrollTop') || 0;
-            if (scrollT > 0) {
-                jQuery(window).scrollTop(scrollT);
-            }
-        });
-    }
-    else {
-        jQuery(selector).off('shown');
-        jQuery(selector).on('shown', function () {
-            //jQuery(selector+' iframe').attr("src","about:blank");
-            // scrolling issue in iOS 11.3
-            var scrollT = jQuery(window).scrollTop();
+    jQuery(selector).off('show shown.bs.modal');
+    jQuery(selector).on('show shown.bs.modal', function () {
+        var modal = document.querySelector(selector);
+        if (modal.classList.contains('fade'))
+        {
+            modal.classList.remove('fade');
+        }
 
-            if (scrollT > 0) {
-                jQuery(selector).data('scrollTop', scrollT);
-            }
-            jQuery('body').css({
-                //position: 'fixed'
-            });
-            if (url) {
-                jQuery(selector + ' iframe').attr("src", url);
-            }
+        //jQuery(selector+' iframe').attr("src","about:blank");
+        // scrolling issue in iOS 11.3
+        var scrollT = jQuery(window).scrollTop();
+        if (scrollT > 0) {
+            jQuery(selector).data('scrollTop', scrollT);
+        }
+        jQuery('body').css({
+          //  position: 'fixed'
         });
-        jQuery(selector).on('hidden', function () {
-            // scrolling issue in iOS 11.3
-            jQuery('body').css({
-               // position: 'static'
-
-            });
-            var scrollT = jQuery(selector).data('scrollTop') || 0;
-            if (scrollT > 0) {
-                jQuery(window).scrollTop(scrollT);
-            }
+        if (url) {
+            jQuery(selector + ' iframe').attr("src", url);
+        }
+    });
+    jQuery(selector).on('hide hidden.bs.modal', function () {
+        // scrolling issue in iOS 11.3
+        jQuery('body').css({
+          //  position: 'static'
         });
-    }
+        var scrollT = jQuery(selector).data('scrollTop') || 0;
+        if (scrollT > 0) {
+            jQuery(window).scrollTop(scrollT);
+        }
+    });
     jQuery(selector)
         .modal({backdrop: true, show: true, keyboard: true, remote: ''})   // initialized with no keyboard
     ;

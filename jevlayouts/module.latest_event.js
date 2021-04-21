@@ -343,7 +343,7 @@ jevpreview.push({
 	'image': 'http://www.jevents.net/jevlayouts/latest5.png',
 	'code': "<div id='jeviso_item{{Repeat id:RPID}}' class='jeviso_item {COLUMNS}'>\n" +
 		"\t<div class='jfloat-event ng-scope ng-isolate-scope container' itemscope='' itemtype='http://schema.org/Event'>\n" +
-		"\t\t<div class='jeviso_item_image ' data-toggle='modal' data-target='#modal-event{{Repeat id:RPID}}'>\n" +
+		"\t\t<div class='jeviso_item_image row' data-toggle='modal' data-target='#modal-event{{Repeat id:RPID}}'>\n" +
 		"\t\t\t{{Scaled Image:JEV_SIZEDIMAGE_1;400x300}}\n" +
 		"\t\t</div>\n" +
 		"\t\t<div id='eventcontainer{{Repeat id:RPID}}' class='jeviso_eventsummary row' data-toggle='modal' data-target='#modal-event{{Repeat id:RPID}}'>\n" +
@@ -375,7 +375,7 @@ jevpreview.push({
 		"\t\t\t\t\t</div>\n" +
 		"\t\t\t\t\t<div class='modal-body p-3 ' >\n" +
 		"\t\t\t\t\t\t{{Scaled Image:JEV_SIZEDIMAGE_1;400x300#<div class='jeviso_modal_image w-100'>%s</div>#}}\n" +
-		"\t\t\t\t\t\t<div class='eventtime m-t-1 row '>\n" +
+		"\t\t\t\t\t\t<div class='eventtime m-1 row '>\n" +
 		"\t\t\t\t\t\t\t<div class='icon-clock col-1'></div>\n" +
 		"\t\t\t\t\t\t\t<div class='col-11'>\n" +
 		"\t\t\t\t\t\t\t\t<a href='{{Raw Link:LINK}}' class='eventdetaillink float-right btn btn-primary'>\n" +
@@ -387,8 +387,8 @@ jevpreview.push({
 		"\t\t\t\t\t\t\t\t{{Start Time:STARTTIME;%l:%M %p# %s#No Specific time}}{{End Time:ENDTIME;%l:%M %p# - %s}}\n" +
 		"\t\t\t\t\t\t\t</div>\n" +
 		"\t\t\t\t\t\t</div>\n" +
-		"\t\t\t\t\t\t<div class='eventdetails  m-t-1 row' >\n" +
-		"\t\t\t\t\t\t\t<div class='icon-info col 1'></div>\n" +
+		"\t\t\t\t\t\t<div class='eventdetails  m-1 row' >\n" +
+		"\t\t\t\t\t\t\t<div class='icon-info col-1'></div>\n" +
 		"\t\t\t\t\t\t\t<div class=' col-11'>\n" +
 		"\t\t\t\t\t\t\t\t<div class='detailslabel'>\n" +
 		"\t\t\t\t\t\t\t\t\tEvent Details\n" +
@@ -396,7 +396,7 @@ jevpreview.push({
 		"\t\t\t\t\t\t\t\t{{Truncated Description:TRUNCATED_DESC:30words}}\n" +
 		"\t\t\t\t\t\t\t</div>\n" +
 		"\t\t\t\t\t\t</div>\n" +
-		"\t\t\t\t\t\t<div class='calendarlinks  m-t-1 row' >\n" +
+		"\t\t\t\t\t\t<div class='calendarlinks  m-1 row' >\n" +
 		"\t\t\t\t\t\t\t<div class='icon-calendar col-1'></div>\n" +
 		"\t\t\t\t\t\t\t<div class='col-11'>\n" +
 		"\t\t\t\t\t\t\t\t<div class='exportlabel'>Export Event to Your Calendar</div>\n" +
@@ -410,7 +410,7 @@ jevpreview.push({
 		"\t\t\t\t\t\t\t\t</div>\n" +
 		"\t\t\t\t\t\t\t</div>\n" +
 		"\t\t\t\t\t\t</div>\n" +
-		"\t\t\t\t\t\t<div class='location  m-t-1 row' >\n" +
+		"\t\t\t\t\t\t<div class='location  m-1 row' >\n" +
 		"\t\t\t\t\t\t\t<div class='icon-location-pin col-1'></div>\n" +
 		"\t\t\t\t\t\t\t<div class='col-11'>\n" +
 		"\t\t\t\t\t\t\t\t<div class='locationlabel'>Location</div>\n" +

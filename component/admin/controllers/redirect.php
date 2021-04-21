@@ -56,7 +56,15 @@ class AdminRedirectController extends Joomla\CMS\MVC\Controller\AdminController
 			}
 			else
 			{
-				$app->redirect(Route::_('index.php?option=' . $task, false));
+				if (ComponentHelper::isEnabled($task))
+				{
+					$app->redirect(Route::_('index.php?option=' . $task, false));
+				}
+				else
+				{
+					$app->enqueueMessage(Text::sprintf("COM_JEVENTS_DISABLED_OPTION_DESC_WITH_LINK", "https://www.jevents.net/join-club-jevents"), 'warning');
+					$app->redirect(Route::_('index.php?option=com_jevents', false));
+				}
 			}
 		}
 

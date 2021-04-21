@@ -566,13 +566,13 @@ function toggleAllDayEvent()
 		}
 	}
 	else {
-            var was24h = starttime.value=="00:00" && endtime.value=="23:59";
+        var was24h = starttime.value=="00:00" && endtime.value=="23:59";
 		// set 24h fields
 		hide_start.disabled=false;
 		hide_start12.disabled=false;
 		if (was24h) {
-                    starttime.value="08:00";
-                }
+            starttime.value="08:00";
+        }
 		starttime.disabled=false;
 
 		sam.disabled=false;
@@ -583,9 +583,9 @@ function toggleAllDayEvent()
 		if (!noendchecked){
 			hide_end.disabled=false;
 			hide_end12.disabled=false;
-        		if (was24h) {
-                            endtime.value="17:00";
-                        }
+			if (was24h) {
+                endtime.value="17:00";
+            }
 			endtime.disabled=false;
 			var sd = temp.getYMD();
 			temp = temp.dateFromYMD(enddate.value);
@@ -1259,6 +1259,10 @@ function selectIrregularDate() {
 	repeatDate  = repeatDate.dateFromYMD(jQuery("#irregular").val());
 	repeatDate = repeatDate.getFullYear()+"-"+(repeatDate.getMonth()+1)+"-"+repeatDate.getDate();
 
+	if (jQuery("#irregularDates option[value='" + repeatDate + "']").length)
+	{
+		return;
+	}
 	var option = jQuery("<option>", {
 		"value" : repeatDate,
 		"text" : jQuery("#irregular").val(),

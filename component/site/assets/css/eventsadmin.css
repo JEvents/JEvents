@@ -1172,6 +1172,15 @@ table.ev_navtable tr {
 span.hastranslation {
     background-color: #55aa55;
 }
+.rsvp-translations.item-associations li span.hastranslation a {
+    color:#fff;
+}
+span.hasnotranslation {
+    background-color: #aa5f55;
+}
+.rsvp-translations.item-associations li span.hasnotranslation a {
+    color:#fff;
+}
 
 /* colour picker */
 div#jevents .jevcolour .minicolors-theme-bootstrap .minicolors-input {
@@ -1183,7 +1192,17 @@ div#jevents .jevcolour .minicolors-theme-bootstrap .minicolors-input {
     width: 65px;
 }
 
+/* Event editing irregular dates */
+#irregularDates {
+    min-width:120px;
+}
+div#byirregular strong
+{
+    display:block;
+    margin-top:5px;
+}
 /* Event editing rounded grey boxes */
+ */
 .roundedgrey {
         opacity: 1;
 }

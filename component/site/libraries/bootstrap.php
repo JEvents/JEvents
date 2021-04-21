@@ -142,7 +142,8 @@ class JevHtmlBootstrap
 		{
 			$hide = "
 (function($) {
-    var oldHide = $.fn.popover.Constructor.prototype.hide;
+	
+    var oldHide = $.fn.popover.Constructor.prototype.hide || false;
 
     $.fn.popover.Constructor.prototype.hide = function() {
         // Bootstrap 4         
@@ -172,7 +173,10 @@ class JevHtmlBootstrap
 	            return;
 	        }
         }
-        oldHide.call(this, arguments);
+        if ( oldHide )
+        {
+            oldHide.call(this, arguments);
+        }
     };
 
 })(jQuery);";
