@@ -30,11 +30,11 @@ if (version_compare(phpversion(), '5.0.0', '<') === true)
 	return;
 }
 
-if (!class_exists('GSLMSIE10') && isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], "MSIE") !== false || strpos($_SERVER['HTTP_USER_AGENT'], "Internet Explorer") !== false))
+if (!defined('GSLMSIE10') && isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], "MSIE") !== false || strpos($_SERVER['HTTP_USER_AGENT'], "Internet Explorer") !== false))
 {
 	define ("GSLMSIE10" , 1);
 }
-else if(!class_exists('GSLMSIE10'))
+else if(!defined('GSLMSIE10'))
 {
 	define ("GSLMSIE10" , 0);
 }
