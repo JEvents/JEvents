@@ -271,6 +271,27 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 		$app    = Factory::getApplication();
 
 		$db = Factory::getDbo();
+
+		static $allcatids;
+		if (!isset($allcatids))
+		{
+			$query = $db->getQuery(true);
+
+			$query->select('a.id, a.parent_id');
+			$query->from('#__categories AS a');
+			$query->where('a.parent_id > 0');
+
+			// Filter on extension.
+			$query->where('a.extension = "com_jevents"');
+			$query->where('a.published = 1');
+			$query->where('a.language in (' . $db->quote(Factory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
+			$query->order('a.lft');
+
+			$db->setQuery($query);
+			$allcatids = $db->loadObjectList('id');
+		}
+
+
 		// find published template
 		static $templates;
 		static $fieldNameArray;

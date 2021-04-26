@@ -1173,6 +1173,10 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 			$db->setQuery($query);
 			$eventdetailid = $db->loadResult();
 
+			$query = "SELECT * FROM #__jevents_rrule WHERE eventid=$data->eventid";
+			$db->setQuery($query);
+			$rrule = $db->loadObject();
+
 			// only remove the detail id if its different for this repetition i.e. not the global one!
 			if ($eventdetailid != $data->eventdetail_id)
 			{

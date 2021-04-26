@@ -912,6 +912,9 @@ body.com_jevents {
 #gslc.gsl-scope #left-col ul.left-nav .notinstalled {
   opacity: 0.25;
 }
+#gslc.gsl-scope #left-col .left-nav img {
+  max-width: 20px;
+}
 #gslc.gsl-scope .adminlist.table-striped {
   width: 100%;
   margin: 0;

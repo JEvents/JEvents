@@ -39,8 +39,10 @@ class GslHelper
 			HTMLHelper::stylesheet('components/com_jevents/assets/css/j3.css', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false));
 		}
 
+		//HTMLHelper::script('media/com_jevents/js/requireWorkaround1.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
 		HTMLHelper::script('media/com_jevents/js/uikit.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
 		HTMLHelper::script('media/com_jevents/js/uikit-icons.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
+		//HTMLHelper::script('media/com_jevents/js/requireWorkaround2.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
 		HTMLHelper::script('components/com_jevents/assets/js/gslframework.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
 		HTMLHelper::script('components/com_jevents/assets/js/jevents.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
 	}
@@ -429,7 +431,7 @@ class GslHelper
 			$iconLink->link           = Route::_("index.php?option=com_yoursites");
 			$iconLink->icon           = "";
 			$iconLink->iconSrc        = "components/com_yoursites/assets/images/YourSitesIcon.png";
-			$iconLink->label          = Text::_('COM_YOURSITES');
+			$iconLink->label          = strip_tags(Text::_('COM_YOURSITES'));
 			$iconLink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_('COM_YOURSITES', true);
 			$iconLink->tooltip_detail = "";
 			$iconLinks[]              = $iconLink;
