@@ -30,17 +30,18 @@ if (version_compare(phpversion(), '5.0.0', '<') === true)
 	return;
 }
 
-if (isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], "MSIE") !== false || strpos($_SERVER['HTTP_USER_AGENT'], "Internet Explorer") !== false))
+if (!defined('GSLMSIE10') && isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], "MSIE") !== false || strpos($_SERVER['HTTP_USER_AGENT'], "Internet Explorer") !== false))
 {
 	define ("GSLMSIE10" , 1);
 }
-else
+else if(!defined('GSLMSIE10'))
 {
 	define ("GSLMSIE10" , 0);
 }
 
 // remove metadata.xml if its there.
 jimport('joomla.filesystem.file');
+
 if (File::exists(JPATH_COMPONENT_SITE . '/' . "metadata.xml"))
 {
 	File::delete(JPATH_COMPONENT_SITE . '/' . "metadata.xml");
