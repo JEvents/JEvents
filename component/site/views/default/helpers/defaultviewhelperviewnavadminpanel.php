@@ -96,7 +96,7 @@ function DefaultViewHelperViewNavAdminPanel($view)
 
 						$eventimport = "javascript:jevModalPopup('myImportModal','" . $importLink . "', '" .  Text::_('JEV_IMPORT_ICALEVENT', true) . "');";
 						?>
-						<br/><a href="<?php echo $eventimport; ?>;return false;"
+						<br/><a href="<?php echo $eventimport; ?>"
 						        title="<?php echo Text::_('JEV_IMPORT_ICALEVENT', true); ?>">
 						<b><?php echo Text::_('JEV_IMPORT_ICALEVENT'); ?></b>
 					</a>
