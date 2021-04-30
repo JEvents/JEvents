@@ -217,8 +217,8 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 			if ($params->get("dayselect", 0))
 			{
 				?>
-				<label for='IRREGULARBTN' class="btn radio">
-					<input type="radio" name="freq" id="IRREGULARBTN" value="IRREGULAR"
+				<label for='IRREGULAR' class="btn radio">
+					<input type="radio" name="freq" id="IRREGULAR" value="IRREGULAR"
 					       onclick="toggleFreq('IRREGULAR');" <?php if ($this->row->freq() == "IRREGULAR") echo 'checked="checked"'; ?>/>
 					<?php echo Text::_('IRREGULAR'); ?>
 				</label>

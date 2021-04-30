@@ -109,6 +109,10 @@ class JevHtmlBootstrap
 			return;
 		}
 
+		JHtml::_('jquery.framework');
+		JHtml::_('bootstrap.framework');
+		JHtmlBootstrap::loadCss();
+
 		$opt['animation'] = isset($params['animation']) ? $params['animation'] : false;
 		$opt['html']      = isset($params['html']) ? $params['html'] : true;
 		$opt['placement'] = isset($params['placement']) ? $params['placement'] : false;

@@ -22,7 +22,7 @@ if (!$jversion->isCompatible('4.0'))
 }
 else
 {
-	JHtml::script('administrator/components/com_jevents/assets/js/gslselect.js');
+	HTMLHelper::script('media/com_jevents/js/gslselect.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
 }
 
 $data = $displayData;

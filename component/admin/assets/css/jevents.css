@@ -23,6 +23,12 @@ body.com_jevents {
   /*
  * Divider override UIkit default - default in 3.3.7 leaves top list item squashed - especially in narrow screen mode
  */
+  /*
+  .gsl-button.gsl-button-small {
+    line-height: 25px;
+    font-size: 0.8rem;
+  }
+*/
   /* -- Top navigation -- */
   /* Smaller Header */
   /* Left bar */
@@ -51,9 +57,10 @@ body.com_jevents {
 #gslc.gsl-scope .gsl-list-divider > li {
   padding-top: 10px;
 }
-#gslc.gsl-scope .gsl-button.gsl-button-small {
-  line-height: 25px;
-  font-size: 0.8rem;
+#gslc.gsl-scope .gsl-button-mini {
+  padding: 0 5px;
+  line-height: 20px;
+  font-size: 0.65rem;
 }
 #gslc.gsl-scope #top-head {
   z-index: 9;
@@ -899,10 +906,12 @@ body.com_jevents {
 }
 #gslc.gsl-scope div#jevents #adminForm {
   /* Buttons in forms */
+  /*
+      label.gsl-button-small {
+        padding-left: 15px;
+      }
+       */
   /* select and input in event editing */
-}
-#gslc.gsl-scope div#jevents #adminForm label.gsl-button-small {
-  padding-left: 15px;
 }
 #gslc.gsl-scope div#jevents #adminForm select,
 #gslc.gsl-scope div#jevents #adminForm input {
@@ -991,24 +1000,28 @@ body.com_fields #system-message-container {
   #gslc.gsl-scope .gsl-content {
     /* filters */
   }
+  #gslc.gsl-scope .gsl-content .gsl-grid {
+    /*
+        .gsl-button, input {
+          padding: 0 15px;
+          line-height: 28px;
+          font-size: 0.875rem;
+          height: 28px;
+        }
+        .gsl-select {
+          padding: 0 10px 0 0;
+          line-height: 28px;
+          height: 28px;
+          font-size: 0.875rem;
+
+          &:not([multiple]):not([size]) {
+             background-image:none;
+          }
+        }
+*/
+  }
   #gslc.gsl-scope .gsl-content .gsl-grid .js-stools-field-list {
     padding-left: 15px;
-  }
-  #gslc.gsl-scope .gsl-content .gsl-grid .gsl-button,
-  #gslc.gsl-scope .gsl-content .gsl-grid input {
-    padding: 0 15px;
-    line-height: 28px;
-    font-size: 0.875rem;
-    height: 28px;
-  }
-  #gslc.gsl-scope .gsl-content .gsl-grid .gsl-select {
-    padding: 0 10px 0 0;
-    line-height: 28px;
-    height: 28px;
-    font-size: 0.875rem;
-  }
-  #gslc.gsl-scope .gsl-content .gsl-grid .gsl-select:not([multiple]):not([size]) {
-    /* background-image:none;*/
   }
   #gslc.gsl-scope .gsl-content .js-stools-container-filters {
     margin: 10px 0 0 0;
@@ -1026,14 +1039,16 @@ body.com_fields #system-message-container {
 @media (max-width: 960px) {
   #gslc.gsl-scope {
     /*
+    .gsl-button {
+      padding: 0 15px;
+      line-height: 28px;
+      font-size: 0.875rem;
+    }
+*/
+    /*
    * Params editing fixes
    * Divider override UIkit default - default in 3.3.7 leaves top list item squashed - narrow screen mode
    */
-  }
-  #gslc.gsl-scope .gsl-button {
-    padding: 0 15px;
-    line-height: 28px;
-    font-size: 0.875rem;
   }
   #gslc.gsl-scope #left-col {
     position: fixed;

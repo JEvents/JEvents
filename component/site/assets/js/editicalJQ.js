@@ -1244,6 +1244,7 @@ function hideEmptyJevTabs() {
 				}
 			});
 		}
+
 	}
 
 function selectIrregularDate() {
@@ -1257,18 +1258,25 @@ function selectIrregularDate() {
 
 	var repeatDate = new Date();
 	repeatDate  = repeatDate.dateFromYMD(jQuery("#irregular").val());
-	repeatDate = repeatDate.getFullYear()+"-"+(repeatDate.getMonth()+1)+"-"+repeatDate.getDate();
+	var m = repeatDate.getMonth()+1;
+	var d = repeatDate.getDate();
+	repeatDate = repeatDate.getFullYear()+"-" + (m < 10 ? '0' : '') + m + "-" + (d < 10 ? '0' : '') + d;
 
-	if (jQuery("#irregularDates option[value='" + repeatDate + "']").length)
+	var selectElem = jQuery("#irregularDates");
+	var option = jQuery("#irregularDates option[value='" + repeatDate + "']");
+	if (option.length)
 	{
+		option[0].selected = !option[0].selected;
+		var event = new Event('change');
+		selectElem[0].dispatchEvent(event);
+
 		return;
 	}
-	var option = jQuery("<option>", {
+	option = jQuery("<option>", {
 		"value" : repeatDate,
 		"text" : jQuery("#irregular").val(),
 		"selected" : true
 	});
-	var selectElem = jQuery("#irregularDates");
 	selectElem.append(option);
 	//selectElem.chosen();
 	selectElem.trigger("chosen:updated");

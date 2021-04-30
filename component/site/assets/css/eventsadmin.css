@@ -502,14 +502,14 @@ table.settings_level label#jform_com_difficulty-lbl {
 /** End of hiding links from print views **/
 
 /* Rockettheme workarounds */
-#jevents #adminForm label {
+#jevents #adminForm label:not('.gsl-button') {
     width: auto;
     font-weight: bold;
     padding-left: 0;
 }
 
 /* Rockettheme messes up padding on chosen radio/checkbox replacements so need padding left 15px */
-#jevents #adminForm .controls label {
+#jevents #adminForm .controls label:not('.gsl-button') {
     padding-left: 15px;
 }
 
@@ -1196,13 +1196,15 @@ div#jevents .jevcolour .minicolors-theme-bootstrap .minicolors-input {
 #irregularDates {
     min-width:120px;
 }
+#irregularDates_chzn {
+    min-width: 240px;
+}
 div#byirregular strong
 {
     display:block;
     margin-top:5px;
 }
 /* Event editing rounded grey boxes */
- */
 .roundedgrey {
         opacity: 1;
 }

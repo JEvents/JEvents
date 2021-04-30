@@ -50,7 +50,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 	<div id="jevents" <?php
 	echo (!Factory::getApplication()->isClient('administrator') && $params->get("darktemplate", 0)) ? "class='jeventsdark $accesslevels'" : "class='$accesslevels' ";
 	?> >
-		<form action="<?php echo $action; ?>" method="post" name="adminForm" enctype='multipart/form-data'
+		<form action="<?php echo $action; ?>" method="post" name="adminForm" enctype='multipart/form-data' class="gsl-form-horizontal"
 		      id="adminForm" >
 			<?php
 			ob_start();
@@ -370,7 +370,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
                     <?php
 				}
 				?>
-				<div class="row jevtitle gsl-child-width-1-1 gsl-grid" <?php JEventsHelper::showOnRel($this->form, 'title'); ?> >
+				<div class="row jevtitle" <?php JEventsHelper::showOnRel($this->form, 'title'); ?> >
 					<div class="gsl-width-1-6@m gsl-width-1-3"  >
 						<?php echo $this->form->getLabel("title"); ?>
 					</div>

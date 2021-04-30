@@ -828,8 +828,9 @@ class iCalRRule extends Joomla\CMS\Table\Table
 				break;
 			case "IRREGULAR":
 				$processedDates = array();
-				// current date is ALWAYS a repeat
-				$processedDates[] = $dtstart;
+				// current date is ALWAYS a repeat - catch as midnight and actual start time
+				$processedDates[] = JevDate::strtotime($startYear . "-" . $startMonth . "-" . $startDay);
+				$processedDates[] = JevDate::strtotime($startYear . "-" . $startMonth . "-" . $startDay . " " . intval($startHour) . ":" . intval($startMin));
 				$this->_makeRepeat($dtstart, $dtend);
 				if (is_string($this->irregulardates) && $this->irregulardates != "")
 				{
@@ -840,7 +841,7 @@ class iCalRRule extends Joomla\CMS\Table\Table
 
 							if (!is_int($item))
 							{
-								$item = JevDate::strtotime($item . " 00:00:00");
+								$item = JevDate::strtotime($item . " " . $item->startHour . ":" . $item->startMinute);
 							}
 						});
 					}
@@ -855,7 +856,7 @@ class iCalRRule extends Joomla\CMS\Table\Table
 					// avoid duplicate values
 					if (in_array($irregulardate, $processedDates))
 					{
-						//continue;
+						continue;
 					}
 					$processedDates[] = $irregulardate;
 					// find the start and end times of the initial event

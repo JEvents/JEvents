@@ -247,7 +247,13 @@ class GslHelper
 			$iconLink->label          = Text::_('COM_JEVLOCATIONS');
 			$iconLink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_('COM_JEVLOCATIONS', true);
 			$iconLink->tooltip_detail = "";
+			if (file_exists(JPATH_ADMINISTRATOR . "/components/com_jevlocations/helpers/gslmenuhelper.php"))
+			{
+				include_once JPATH_ADMINISTRATOR . "/components/com_jevlocations/helpers/gslmenuhelper.php";
+				$iconLink->sublinks = GslLocationsMenuHelper::getLeftIconSubLinks($leftmenutrigger);
+			}
 			$iconLinks[]              = $iconLink;
+
 		}
 		else
 		{
@@ -279,7 +285,13 @@ class GslHelper
 			$iconLink->label          = Text::_('COM_JEVENTSTAGS');
 			$iconLink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_('COM_JEVENTSTAGS', true);
 			$iconLink->tooltip_detail = "";
+			if (file_exists(JPATH_ADMINISTRATOR . "/components/com_jeventstags/helpers/gslmenuhelper.php"))
+			{
+				include_once JPATH_ADMINISTRATOR . "/components/com_jeventstags/helpers/gslmenuhelper.php";
+				$iconLink->sublinks = GslTagsMenuHelper::getLeftIconSubLinks($leftmenutrigger);
+			}
 			$iconLinks[]              = $iconLink;
+
 		}
 		else
 		{
@@ -311,7 +323,14 @@ class GslHelper
 			$iconLink->label          = Text::_('COM_JEVPEOPLE');
 			$iconLink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_('COM_JEVPEOPLE', true);
 			$iconLink->tooltip_detail = "";
+
+			if (file_exists(JPATH_ADMINISTRATOR . "/components/com_jevpeople/helpers/gslmenuhelper.php"))
+			{
+				include_once JPATH_ADMINISTRATOR . "/components/com_jevpeople/helpers/gslmenuhelper.php";
+				$iconLink->sublinks = GslPeopleMenuHelper::getLeftIconSubLinks($leftmenutrigger);
+			}
 			$iconLinks[]              = $iconLink;
+
 		}
 		else
 		{
@@ -343,7 +362,13 @@ class GslHelper
 			$iconLink->label          = Text::_('COM_RSVPPRO');
 			$iconLink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_('COM_RSVPPRO', true);
 			$iconLink->tooltip_detail = "";
+			if (file_exists(JPATH_ADMINISTRATOR . "/components/com_rsvppro/helpers/gslmenuhelper.php"))
+			{
+				include_once JPATH_ADMINISTRATOR . "/components/com_rsvppro/helpers/gslmenuhelper.php";
+				$iconLink->sublinks = GslRsvpproMenuHelper::getLeftIconSubLinks($leftmenutrigger);
+			}
 			$iconLinks[]              = $iconLink;
+
 		}
 		else
 		{
