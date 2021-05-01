@@ -183,6 +183,6 @@ $tmpl = $app->input->getCmd('tmpl', '');
 
 	        <div id="ysts_system_messages"></div>
 
-            <div class="gsl-content" data-gsl-height-viewport="expand: true;mode: slide">
+            <div class="gsl-content  <?php echo Factory::getApplication()->isClient('administrator') ? "gsl-backend" : "gsl-frontend";?>" data-gsl-height-viewport="expand: true;mode: slide">
 
 

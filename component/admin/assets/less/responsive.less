@@ -50,14 +50,14 @@
 
 @media (max-width: 1250px) {
   #gslc.gsl-scope {
-    .gsl-content {
+    .gsl-content.gsl-backend {
       /* filters */
 
       .gsl-grid {
         .js-stools-field-list {
           padding-left: 15px;
         }
-/*
+
         .gsl-button, input {
           padding: 0 15px;
           line-height: 28px;
@@ -71,10 +71,10 @@
           font-size: 0.875rem;
 
           &:not([multiple]):not([size]) {
-             background-image:none;
+          /*   background-image:none;*/
           }
         }
-*/
+
       }
 
       .js-stools-container-filters {
@@ -99,14 +99,13 @@
 @media (max-width: 960px) {
 
   #gslc.gsl-scope {
-
-/*
-    .gsl-button {
-      padding: 0 15px;
-      line-height: 28px;
-      font-size: 0.875rem;
+    .gsl-content.gsl-backend {
+      .gsl-button {
+        padding: 0 15px;
+        line-height: 28px;
+        font-size: 0.875rem;
+      }
     }
-*/
     #left-col {
       position: fixed;
       width: 100%;

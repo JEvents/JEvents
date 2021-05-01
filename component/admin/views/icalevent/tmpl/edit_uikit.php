@@ -577,10 +577,13 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 					echo $output;
 					$this->blanktags[] = "";
 				}
+				// put extra divs around label for editor so that tooltip appears in the correct place!
 				?>
 				<div class="row jev_description gsl-margin-small-top gsl-child-width-1-1 gsl-grid" <?php JEventsHelper::showOnRel($this->form, 'jevcontent'); ?>>
 					<div>
+						<div class="gsl-width-1-6@m gsl-width-1-3"  >
 						<?php echo $this->form->getLabel("jevcontent"); ?>
+						</div>
 					</div>
 					<div id='jeveditor'  class="gsl-margin-small-top">
 						<?php

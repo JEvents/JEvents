@@ -1267,7 +1267,7 @@ function selectIrregularDate() {
 	if (option.length)
 	{
 		option[0].selected = !option[0].selected;
-		var event = new Event('change');
+		var event = new Event('gslchange');
 		selectElem[0].dispatchEvent(event);
 
 		return;

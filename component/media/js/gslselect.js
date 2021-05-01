@@ -11,7 +11,7 @@
 function gslselect(selector) {
 
     let selectElements = typeof selector == 'string' ? document.querySelectorAll(selector) : new Array(selector);
-    
+
     selectElements.forEach (
         function(selectElement) {
 
@@ -81,7 +81,8 @@ function gslselect(selector) {
 
                 initialValue.style.padding    = '5px 0';
                 initialValue.style.lineHeight = '25px';
-            } else {
+            }
+            else {
                 if (typeof selectedOption !== 'undefined') {
                     initialValue = document.createTextNode(selectedOption.getAttribute('data-content') || selectedOption.text);
                     style = selectedOption.getAttribute('style') || '';
@@ -158,197 +159,10 @@ function gslselect(selector) {
             dropDownNav.classList.add('gsl-nav');
             dropDownNav.classList.add('gsl-dropdown-nav');
 
-            selectElement.querySelectorAll('option').forEach(
+            selectElement.childNodes.forEach(
                 function (option)
                 {
-                    let text = (option.getAttribute('data-content') || option.text);
-                    let style = option.getAttribute('style') || '';
-                    let optionReplacement = document.createElement('li');
-                    optionReplacement.classList.add('gsl-box-shadow-hover-medium');
-
-                    let optionLink = document.createElement('a', {href: '#'});
-                    optionLink.innerHTML = text;
-                    if (style !== '')
-                    {
-                        optionLink.setAttribute('style',  style );
-                    }
-                    optionLink.setAttribute('data-value', option.value);
-                    optionLink.setAttribute('data-index', option.index);
-                    optionReplacement.appendChild(optionLink);
-
-                    optionLink.classList.add('gsl-si-' + option.index);
-
-                    if (option.selected &&  !option.disabled) {
-                        optionReplacement.classList.add("gsl-active");
-                        optionLink.setAttribute('data-selected', "true");
-                        optionLink.classList.add('gsl-text-bold');
-
-                        if (selectElement.multiple) {
-                            let icon = document.createElement('span', {});
-                            icon.setAttribute('gsl-icon', "icon: close;ratio: 0.5");
-                            icon.classList.add('gsl-border-rounded');
-                            icon.classList.add('gsl-box-shadow-small');
-                            icon.classList.add('gsl-margin-small-left');
-
-                            optionLink.appendChild(icon);
-                        }
-                    }
-                    else
-                    {
-                        optionLink.setAttribute('data-selected', "false");
-                    }
-
-                    dropDownNav.appendChild(optionReplacement);
-
-                    if (option.disabled) {
-                        optionReplacement.classList.add("gsl-disabled");
-                        optionLink.classList.add('gsl-text-muted');
-                        optionLink.classList.add('gsl-text-italic');
-                        return;
-                    }
-
-                    // clicking the item in the dropdown list
-                    optionLink.addEventListener('click', function ()
-                    {
-                        if (selectElement.multiple) {
-                            optionLink.setAttribute('data-selected', optionLink.getAttribute('data-selected') == "false" ? "true" : "false");
-
-                            initialValue = document.createElement('div');
-                            dropDownNav.parentNode.querySelectorAll('a').forEach(function(link) {
-                                if (link.getAttribute('data-selected') == "true") {
-                                    if (selectElement.options[link.getAttribute('data-index')].disabled)
-                                    {
-                                        selectElement.options[link.getAttribute('data-index')].selected = false;
-                                        link.classList.remove('gsl-text-bold');
-                                        link.parentNode.classList.remove("gsl-active");
-                                        link.setAttribute('data-selected', "false");
-                                        if (link.querySelector('span'))
-                                        {
-                                            link.removeChild(link.querySelector('span'));
-                                        }
-
-                                    }
-                                    else {
-                                        initialValue.appendChild(document.createTextNode(link.innerHTML));
-                                        selectElement.options[link.getAttribute('data-index')].selected = true;
-                                        link.classList.add('gsl-text-bold');
-                                        link.parentNode.classList.add("gsl-active");
-                                        link.setAttribute('data-selected', "true");
-
-                                        let multiSelected = document.createElement('div', {});
-                                        multiSelected.classList.add('gsl-button');
-                                        multiSelected.classList.add('gsl-button-default');
-                                        multiSelected.classList.add('gsl-button-xsmall');
-                                        multiSelected.style.marginRight = '2px';
-                                        multiSelected.appendChild(document.createTextNode(optionLink.getAttribute('data-content') || optionLink.text))
-                                        multiSelected.setAttribute('data-value', optionLink.value);
-                                        multiSelected.setAttribute('data-index', optionLink.index);
-
-                                        if (!link.querySelector('span')) {
-                                            let icon = document.createElement('span', {});
-                                            icon.setAttribute('gsl-icon', "icon: close;ratio: 0.5");
-                                            icon.classList.add('gsl-border-rounded');
-                                            icon.classList.add('gsl-box-shadow-small');
-                                            icon.classList.add('gsl-margin-small-left');
-                                            link.appendChild(icon);
-                                        }
-
-                                    }
-                                } else
-                                {
-                                    selectElement.options[link.getAttribute('data-index')].selected = false;
-                                    link.classList.remove('gsl-text-bold');
-                                    link.parentNode.classList.remove("gsl-active");
-                                    link.setAttribute('data-selected', "false");
-
-                                    if (link.querySelector('span'))
-                                    {
-                                        link.removeChild(link.querySelector('span'));
-                                    }
-                                }
-                            });
-
-                            initialValue = document.createElement('div');
-                            //initialValue.classList.add('gsl-button-group');
-                            // why checked and not selected I don't know!
-                            let checkedOptions = selectElement.querySelectorAll('option:checked');
-                            initialValue = document.createElement('div');
-                            checkedOptions.forEach(function (checkedOption) {
-                                let multiSelected = document.createElement('div', {});
-                                multiSelected.classList.add('gsl-button');
-                                multiSelected.classList.add('gsl-button-default');
-                                multiSelected.classList.add('gsl-button-xsmall');
-                                multiSelected.style.marginRight = '2px';
-                                multiSelected.appendChild(document.createTextNode(checkedOption.getAttribute('data-content') || checkedOption.text))
-                                multiSelected.setAttribute('data-value', checkedOption.value);
-                                multiSelected.setAttribute('data-index', checkedOption.index);
-
-                                // unselect item
-                                multiSelected.addEventListener('click', function (e) {
-                                    selectElement.options[multiSelected.getAttribute('data-index')].selected = false;
-                                    let link = multiSelected.parentNode.parentNode.parentNode.querySelector('a.gsl-si-' + multiSelected.getAttribute('data-index'));
-                                    link.classList.remove('gsl-text-bold');
-                                    link.parentNode.classList.remove("gsl-active");
-                                    link.setAttribute('data-selected', "false");
-                                    multiSelected.parentElement.removeChild(multiSelected);
-
-                                    let event = new Event('change');
-                                    selectElement.dispatchEvent(event);
-                                    selectElement.style.display = 'block';
-                                });
-
-                                let icon = document.createElement('span', {});
-                                icon.setAttribute('gsl-icon', "icon: close;ratio: 0.5");
-                                icon.classList.add('gsl-border-rounded');
-                                icon.classList.add('gsl-box-shadow-small');
-                                icon.classList.add('gsl-margin-small-left');
-                                multiSelected.appendChild(icon);
-
-                                initialValue.appendChild(multiSelected);
-                                //initialValue.appendChild(document.createTextNode(checkedOption.getAttribute('data-content') || checkedOption.text));
-                            });
-
-                            if (checkedOptions.length == 0 && selectElement.getAttribute('data-placeholder'))
-                            {
-                                initialValue.appendChild(document.createTextNode(selectElement.getAttribute('data-placeholder')));
-                            }
-
-                            initialValue.style.padding    = '5px 0';
-                            initialValue.style.lineHeight ='25px';
-                        }
-                        else
-                        {
-                            // remove all existing icons
-                            dropDownNav.parentNode.querySelectorAll('a').forEach(function(link) {
-                                link.classList.remove('gsl-text-bold');
-                                link.parentNode.classList.remove('gsl-active');
-                                link.setAttribute('data-selected', "false");
-                            })
-
-                            optionLink.setAttribute('data-selected', "false");
-                            initialValue = document.createTextNode(optionLink.innerHTML)
-                            selectElement.value = optionLink.getAttribute('data-value');
-
-                            optionLink.classList.add('gsl-text-bold');
-                            optionLink.parentNode.classList.remove('gsl-active');
-                            optionLink.setAttribute('data-selected', "false");
-
-                        }
-
-                        filter.setAttribute('style', optionLink.getAttribute('style'));
-                        filter.innerHTML = "";
-                        filter.appendChild(initialValue);
-
-                        gslUIkit.dropdown(dropDownDiv).hide(0);
-
-                        if (selectElement.options[optionLink.getAttribute('data-index')].disabled) {
-                            return;
-                        }
-
-                        let event = new Event('change');
-                        selectElement.dispatchEvent(event);
-                        selectElement.style.display = 'block';
-                    });
+                     gslselectSetupOptions(option, dropDownNav, dropDownDiv, selectElement, filter, 0);
                 }
             );
             dropDownDiv.appendChild(dropDownNav);
@@ -390,13 +204,13 @@ function gslselect(selector) {
 
             if (!selectElement.getAttribute('gslChange')) {
                 selectElement.setAttribute('gslChange', true);
-                selectElement.addEventListener('change', function () {
+                selectElement.addEventListener('gslchange', function () {
                     let dropDownDiv = selectElement.nextElementSibling;
 
                     let options = selectElement.querySelectorAll('option');
                     options.forEach(function (option) {
                         // find the relevant replacement item
-                        let matchedLink = dropDownDiv.querySelector("a[data-value='" + option.value + "']");
+                        let matchedLink = dropDownDiv.querySelector("a[data-value='" + option.value.replace(/'/g, "&#39;") + "']");
                         let event = new MouseEvent('click');
                         if (matchedLink && matchedLink.getAttribute('data-selected') == 'true' && option.selected == false)
                         {
@@ -412,8 +226,222 @@ function gslselect(selector) {
 
         }
     );
-};
+}
+
+function gslselectSetupOptions(node, dropDownNav, dropDownDiv, selectElement, filter, depth)
+{
+    if (node.nodeType !== 1)
+    {
+        return;
+    }
+    let text = node.nodeName.toUpperCase() == 'OPTION' ? ((node.getAttribute('data-content') || node.text)) : node.getAttribute('label');
+    text = "  - ".repeat(depth) + text;
+
+    let style = node.getAttribute('style') || '';
+    let optionReplacement = document.createElement('li');
+    optionReplacement.classList.add('gsl-box-shadow-hover-medium');
+
+    let optionLink = document.createElement('a', {href: '#'});
+    optionLink.innerHTML = text;
+    if (style !== '')
+    {
+        optionLink.setAttribute('style',  style );
+    }
+    optionLink.setAttribute('data-value', node.value);
+    optionLink.setAttribute('data-index', node.index);
+    optionReplacement.appendChild(optionLink);
+
+    optionLink.classList.add('gsl-si-' + node.index);
+
+    if (node.nodeName.toUpperCase() == 'OPTION' && node.selected &&  !node.disabled) {
+        optionReplacement.classList.add("gsl-active");
+        optionLink.setAttribute('data-selected', "true");
+        optionLink.classList.add('gsl-text-bold');
+
+        if (selectElement.multiple) {
+            let icon = document.createElement('span', {});
+            icon.setAttribute('gsl-icon', "icon: close;ratio: 0.5");
+            icon.classList.add('gsl-border-rounded');
+            icon.classList.add('gsl-box-shadow-small');
+            icon.classList.add('gsl-margin-small-left');
+
+            optionLink.appendChild(icon);
+        }
+    }
+    else
+    {
+        optionLink.setAttribute('data-selected', "false");
+    }
+
+    dropDownNav.appendChild(optionReplacement);
+
+    if (node.nodeName.toUpperCase() == 'OPTGROUP')
+    {
+        optionReplacement.classList.add("gsl-disabled");
+        optionLink.classList.add('gsl-text-bold');
+        optionLink.classList.add('gsl-text-italic');
+        optionLink.classList.add('gsl-text-emphasis');
+        node.childNodes.forEach(
+        function (option)
+        {
+            gslselectSetupOptions(option, dropDownNav, dropDownDiv, selectElement, filter, depth + 1);
+        }
+    );
+        return;
+    }
+    else if (node.disabled ) {
+        optionReplacement.classList.add("gsl-disabled");
+        optionLink.classList.add('gsl-text-muted');
+        optionLink.classList.add('gsl-text-italic');
+        return;
+    }
+
+    // clicking the item in the dropdown list
+    optionLink.addEventListener('click', function ()
+    {
+        if (selectElement.multiple) {
+            optionLink.setAttribute('data-selected', optionLink.getAttribute('data-selected') == "false" ? "true" : "false");
+
+            initialValue = document.createElement('div');
+            dropDownNav.parentNode.querySelectorAll('a').forEach(function(link) {
+                if (link.getAttribute('data-selected') == "true") {
+                    if (selectElement.options[link.getAttribute('data-index')].disabled)
+                    {
+                        selectElement.options[link.getAttribute('data-index')].selected = false;
+                        link.classList.remove('gsl-text-bold');
+                        link.parentNode.classList.remove("gsl-active");
+                        link.setAttribute('data-selected', "false");
+                        if (link.querySelector('span'))
+                        {
+                            link.removeChild(link.querySelector('span'));
+                        }
+
+                    }
+                    else {
+                        initialValue.appendChild(document.createTextNode(link.innerHTML));
+                        selectElement.options[link.getAttribute('data-index')].selected = true;
+                        link.classList.add('gsl-text-bold');
+                        link.parentNode.classList.add("gsl-active");
+                        link.setAttribute('data-selected', "true");
+
+                        let multiSelected = document.createElement('div', {});
+                        multiSelected.classList.add('gsl-button');
+                        multiSelected.classList.add('gsl-button-default');
+                        multiSelected.classList.add('gsl-button-xsmall');
+                        multiSelected.style.marginRight = '2px';
+                        multiSelected.appendChild(document.createTextNode(optionLink.getAttribute('data-content') || optionLink.text))
+                        multiSelected.setAttribute('data-value', optionLink.value);
+                        multiSelected.setAttribute('data-index', optionLink.index);
+
+                        if (!link.querySelector('span')) {
+                            let icon = document.createElement('span', {});
+                            icon.setAttribute('gsl-icon', "icon: close;ratio: 0.5");
+                            icon.classList.add('gsl-border-rounded');
+                            icon.classList.add('gsl-box-shadow-small');
+                            icon.classList.add('gsl-margin-small-left');
+                            link.appendChild(icon);
+                        }
+
+                    }
+                } else
+                {
+                    selectElement.options[link.getAttribute('data-index')].selected = false;
+                    link.classList.remove('gsl-text-bold');
+                    link.parentNode.classList.remove("gsl-active");
+                    link.setAttribute('data-selected', "false");
+
+                    if (link.querySelector('span'))
+                    {
+                        link.removeChild(link.querySelector('span'));
+                    }
+                }
+            });
+
+            initialValue = document.createElement('div');
+            //initialValue.classList.add('gsl-button-group');
+            // why checked and not selected I don't know!
+            let checkedOptions = selectElement.querySelectorAll('option:checked');
+            initialValue = document.createElement('div');
+            checkedOptions.forEach(function (checkedOption) {
+                let multiSelected = document.createElement('div', {});
+                multiSelected.classList.add('gsl-button');
+                multiSelected.classList.add('gsl-button-default');
+                multiSelected.classList.add('gsl-button-xsmall');
+                multiSelected.style.marginRight = '2px';
+                multiSelected.appendChild(document.createTextNode(checkedOption.getAttribute('data-content') || checkedOption.text))
+                multiSelected.setAttribute('data-value', checkedOption.value);
+                multiSelected.setAttribute('data-index', checkedOption.index);
+
+                // unselect item
+                multiSelected.addEventListener('click', function (e) {
+                    selectElement.options[multiSelected.getAttribute('data-index')].selected = false;
+                    let link = multiSelected.parentNode.parentNode.parentNode.querySelector('a.gsl-si-' + multiSelected.getAttribute('data-index'));
+                    link.classList.remove('gsl-text-bold');
+                    link.parentNode.classList.remove("gsl-active");
+                    link.setAttribute('data-selected', "false");
+                    multiSelected.parentElement.removeChild(multiSelected);
+
+                    let event = new Event('change');
+                    selectElement.dispatchEvent(event);
+                    selectElement.style.display = 'block';
+                });
+
+                let icon = document.createElement('span', {});
+                icon.setAttribute('gsl-icon', "icon: close;ratio: 0.5");
+                icon.classList.add('gsl-border-rounded');
+                icon.classList.add('gsl-box-shadow-small');
+                icon.classList.add('gsl-margin-small-left');
+                multiSelected.appendChild(icon);
+
+                initialValue.appendChild(multiSelected);
+                //initialValue.appendChild(document.createTextNode(checkedOption.getAttribute('data-content') || checkedOption.text));
+            });
+
+            if (checkedOptions.length == 0 && selectElement.getAttribute('data-placeholder'))
+            {
+                initialValue.appendChild(document.createTextNode(selectElement.getAttribute('data-placeholder')));
+            }
+
+            initialValue.style.padding    = '5px 0';
+            initialValue.style.lineHeight ='25px';
+        }
+        else
+        {
+            // remove all existing icons
+            dropDownNav.parentNode.querySelectorAll('a').forEach(function(link) {
+                link.classList.remove('gsl-text-bold');
+                link.parentNode.classList.remove('gsl-active');
+                link.setAttribute('data-selected', "false");
+            })
+
+            optionLink.setAttribute('data-selected', "false");
+            initialValue = document.createTextNode(optionLink.innerHTML)
+            selectElement.value = optionLink.getAttribute('data-value');
+
+            optionLink.classList.add('gsl-text-bold');
+            optionLink.parentNode.classList.remove('gsl-active');
+            optionLink.setAttribute('data-selected', "false");
+
+        }
+
+        filter.setAttribute('style', optionLink.getAttribute('style'));
+        filter.innerHTML = "";
+        filter.appendChild(initialValue);
+
+        gslUIkit.dropdown(dropDownDiv).hide(0);
+
+        if (selectElement.options[optionLink.getAttribute('data-index')].disabled) {
+            return;
+        }
+
+        let event = new Event('change');
+        selectElement.dispatchEvent(event);
+        selectElement.style.display = 'block';
+    });
+
+}
+
 
 document.addEventListener('DOMContentLoaded', function () {
-    gslselect('.js-stools-field-filter select:not(#filter_tag2)');
+    gslselect('.js-stools-field-filter select:not(#filter_tag2):not(.gsl-hidden)');
 })

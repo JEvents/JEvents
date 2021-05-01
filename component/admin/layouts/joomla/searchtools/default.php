@@ -18,7 +18,8 @@ defined('JPATH_BASE') or die;
 $jversion = new Joomla\CMS\Version;
 if (!$jversion->isCompatible('4.0'))
 {
-	HTMLHelper::_('formbehavior.chosen', '.js-stools-field-filter select:not(#filter_tag)', null, array('inherit_select_classes' => true));
+	HTMLHelper::script('media/com_jevents/js/gslselect.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
+	//HTMLHelper::_('formbehavior.chosen', '.js-stools-field-filter select:not(#filter_tag)', null, array('inherit_select_classes' => true));
 }
 else
 {

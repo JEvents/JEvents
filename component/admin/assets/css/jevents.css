@@ -997,36 +997,32 @@ body.com_fields #system-message-container {
   }
 }
 @media (max-width: 1250px) {
-  #gslc.gsl-scope .gsl-content {
+  #gslc.gsl-scope .gsl-content.gsl-backend {
     /* filters */
   }
-  #gslc.gsl-scope .gsl-content .gsl-grid {
-    /*
-        .gsl-button, input {
-          padding: 0 15px;
-          line-height: 28px;
-          font-size: 0.875rem;
-          height: 28px;
-        }
-        .gsl-select {
-          padding: 0 10px 0 0;
-          line-height: 28px;
-          height: 28px;
-          font-size: 0.875rem;
-
-          &:not([multiple]):not([size]) {
-             background-image:none;
-          }
-        }
-*/
-  }
-  #gslc.gsl-scope .gsl-content .gsl-grid .js-stools-field-list {
+  #gslc.gsl-scope .gsl-content.gsl-backend .gsl-grid .js-stools-field-list {
     padding-left: 15px;
   }
-  #gslc.gsl-scope .gsl-content .js-stools-container-filters {
+  #gslc.gsl-scope .gsl-content.gsl-backend .gsl-grid .gsl-button,
+  #gslc.gsl-scope .gsl-content.gsl-backend .gsl-grid input {
+    padding: 0 15px;
+    line-height: 28px;
+    font-size: 0.875rem;
+    height: 28px;
+  }
+  #gslc.gsl-scope .gsl-content.gsl-backend .gsl-grid .gsl-select {
+    padding: 0 10px 0 0;
+    line-height: 28px;
+    height: 28px;
+    font-size: 0.875rem;
+  }
+  #gslc.gsl-scope .gsl-content.gsl-backend .gsl-grid .gsl-select:not([multiple]):not([size]) {
+    /*   background-image:none;*/
+  }
+  #gslc.gsl-scope .gsl-content.gsl-backend .js-stools-container-filters {
     margin: 10px 0 0 0;
   }
-  #gslc.gsl-scope .gsl-content .js-stools-container-filters .js-stools-field-filter {
+  #gslc.gsl-scope .gsl-content.gsl-backend .js-stools-container-filters .js-stools-field-filter {
     padding-left: 5px;
     margin-top: 5px;
   }
@@ -1039,16 +1035,14 @@ body.com_fields #system-message-container {
 @media (max-width: 960px) {
   #gslc.gsl-scope {
     /*
-    .gsl-button {
-      padding: 0 15px;
-      line-height: 28px;
-      font-size: 0.875rem;
-    }
-*/
-    /*
    * Params editing fixes
    * Divider override UIkit default - default in 3.3.7 leaves top list item squashed - narrow screen mode
    */
+  }
+  #gslc.gsl-scope .gsl-content.gsl-backend .gsl-button {
+    padding: 0 15px;
+    line-height: 28px;
+    font-size: 0.875rem;
   }
   #gslc.gsl-scope #left-col {
     position: fixed;
