@@ -641,7 +641,7 @@ body.com_jevents {
 }
 /* Search toolbar */
 .gsl-scope #ysts-main-container .js-stools {
-  margin: 0 3px;
+  box-sizing: content-box;
   /* Joomla search bar reveal sets this to inline-block! */
 }
 .gsl-scope #ysts-main-container .js-stools .js-stools-container-filters-visible {

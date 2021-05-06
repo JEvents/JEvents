@@ -1294,7 +1294,9 @@ body.admin.com_jevents [class^="icon-"] {
 .jevbootstrap .jev-button-group input{
 	display: none;
 }
-
+.jevbootstrap .jev-button-group label.btn {
+    display: inline-block;
+}
 .jevbootstrap .jev-button-group input:checked + label,
 .jevbootstrap .jev-button-group input:checked + label:active {
     color: #ffffff;

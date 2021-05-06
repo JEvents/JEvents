@@ -15,10 +15,13 @@ function gslselect(selector) {
     selectElements.forEach (
         function(selectElement) {
 
+            let currentInlineDiv = selectElement.nextElementSibling;
+            if (currentInlineDiv && currentInlineDiv.classList.contains('gslSelectReplacement')) {
+                currentInlineDiv.parentNode.removeChild(currentInlineDiv);
+            }
+
             selectElement.hidden = true;
             selectElement.classList.add('gsl-hidden');
-
-            let selectedOption = selectElement.options[selectElement.selectedIndex || 0];
 
             let initialValue = document.createTextNode("");
 
@@ -83,13 +86,13 @@ function gslselect(selector) {
                 initialValue.style.lineHeight = '25px';
             }
             else {
+                let selectedOption = selectElement.options[selectElement.selectedIndex || 0];
+
                 if (typeof selectedOption !== 'undefined') {
                     initialValue = document.createTextNode(selectedOption.getAttribute('data-content') || selectedOption.text);
                     style = selectedOption.getAttribute('style') || '';
                 }
             }
-
-            selectElement.querySelectorAll('option:checked')
 
             let inlineDiv = document.createElement('div', {});
             inlineDiv.classList.add('gsl-inline');
@@ -172,6 +175,7 @@ function gslselect(selector) {
             });
 
             // Use Try/Catch for browsers with no support
+/*
             try {
                 let observer = new MutationObserver(mutationRecords => {
                     // Use traditional 'for loops' for IE 11
@@ -199,9 +203,10 @@ function gslselect(selector) {
             {
 
             }
-
+*/
+            inlineDiv.classList.add('gslSelectReplacement');
             selectElement.insertAdjacentElement('afterend', inlineDiv);
-
+/*
             if (!selectElement.getAttribute('gslChange')) {
                 selectElement.setAttribute('gslChange', true);
                 selectElement.addEventListener('gslchange', function () {
@@ -223,7 +228,7 @@ function gslselect(selector) {
                     });
                 });
             }
-
+*/
         }
     );
 }
@@ -235,7 +240,7 @@ function gslselectSetupOptions(node, dropDownNav, dropDownDiv, selectElement, fi
         return;
     }
     let text = node.nodeName.toUpperCase() == 'OPTION' ? ((node.getAttribute('data-content') || node.text)) : node.getAttribute('label');
-    text = "  - ".repeat(depth) + text;
+    text = " - ".repeat(depth) + text;
 
     let style = node.getAttribute('style') || '';
     let optionReplacement = document.createElement('li');
@@ -436,7 +441,7 @@ function gslselectSetupOptions(node, dropDownNav, dropDownDiv, selectElement, fi
 
         let event = new Event('change');
         selectElement.dispatchEvent(event);
-        selectElement.style.display = 'block';
+       // selectElement.style.display = 'block!important';
     });
 
 }

@@ -74,37 +74,76 @@ class FormFieldJeveventtime extends FormField
 		{
 			$test = $event->alldayevent() || $event->noendtime();
 		}
-		$btngroup  = "gsl-button-group";
-		$btn       = "gsl-button gsl-button-small gsl-button-default";
-		$timevalue = $event->$time24function();
-		list($h, $m) = explode(":", $timevalue);
-		?>
-		<div id="<?php echo $partname; ?>_24h_area" class="jev_inline">
-			<input class="inputbox" type="text" name="<?php echo $partname; ?>_time" id="<?php echo $name; ?>"
-			       size="8" <?php echo $test ? "disabled='disabled'" : ""; ?> maxlength="8"
-			       value="<?php echo $event->$time24function(); ?>" onchange="checkTime(this);"/>
-		</div>
-		<div id="<?php echo $partname; ?>_12h_area" class="jev_inline">
-			<input class="inputbox" type="text" name="<?php echo $partname; ?>_12h" id="<?php echo $partname; ?>_12h"
-			       size="8" maxlength="8" <?php echo $test ? "disabled='disabled'" : ""; ?> value=""
-			       onchange="check12hTime(this);"/>
-			<div class="<?php echo $btngroup; ?> " id="<?php echo $partname; ?>_ampm">
-				<label for="<?php echo $partname; ?>AM" class=" <?php echo $btn; ?> <?php echo $h < 12 ? 'gsl-button-primary' : ''; ?>">
-					<input type="radio" name="<?php echo $partname; ?>_ampm" id="<?php echo $partname; ?>AM"
-					       class="gsl-hidden"
-					       value="none" <?php echo $h < 12 ? 'checked="checked"' : ''; ?>
-					       onclick="toggleAMPM('<?php echo $partname; ?>AM');" <?php echo $test ? "disabled='disabled'" : ""; ?> />
-					<?php echo Text::_('JEV_AM'); ?>
-				</label><label for="<?php echo $partname; ?>PM" class=" <?php echo $btn; ?> <?php echo $h >= 12 ? 'gsl-button-primary' : ''; ?>">
-					<input type="radio" name="<?php echo $partname; ?>_ampm" id="<?php echo $partname; ?>PM"
-					       class="gsl-hidden"
-					       value="none" <?php echo $h >= 12 ? 'checked="checked"' : ''; ?>
-					       onclick="toggleAMPM('<?php echo $partname; ?>PM');" <?php echo $test ? "disabled='disabled'" : ""; ?> />
-					<?php echo Text::_('JEV_PM'); ?>
-				</label>
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+		if (!GSLMSIE10 && $params->get("newfrontendediting", 1))
+		{
+
+			$btngroup  = "gsl-button-group";
+			$btn       = "gsl-button gsl-button-small gsl-button-default";
+			$timevalue = $event->$time24function();
+			list($h, $m) = explode(":", $timevalue);
+			?>
+			<div id="<?php echo $partname; ?>_24h_area" class="jev_inline">
+				<input class="inputbox" type="text" name="<?php echo $partname; ?>_time" id="<?php echo $name; ?>"
+				       size="8" <?php echo $test ? "disabled='disabled'" : ""; ?> maxlength="8"
+				       value="<?php echo $event->$time24function(); ?>" onchange="checkTime(this);"/>
 			</div>
-		</div>
-		<?php
+			<div id="<?php echo $partname; ?>_12h_area" class="jev_inline">
+				<input class="inputbox" type="text" name="<?php echo $partname; ?>_12h" id="<?php echo $partname; ?>_12h"
+				       size="8" maxlength="8" <?php echo $test ? "disabled='disabled'" : ""; ?> value=""
+				       onchange="check12hTime(this);"/>
+				<div class="<?php echo $btngroup; ?> " id="<?php echo $partname; ?>_ampm">
+					<label for="<?php echo $partname; ?>AM" class=" <?php echo $btn; ?> <?php echo $h < 12 ? 'gsl-button-primary' : ''; ?>">
+						<input type="radio" name="<?php echo $partname; ?>_ampm" id="<?php echo $partname; ?>AM"
+						       class="gsl-hidden"
+						       value="none" <?php echo $h < 12 ? 'checked="checked"' : ''; ?>
+						       onclick="toggleAMPM('<?php echo $partname; ?>AM');" <?php echo $test ? "disabled='disabled'" : ""; ?> />
+						<?php echo Text::_('JEV_AM'); ?>
+					</label><label for="<?php echo $partname; ?>PM" class=" <?php echo $btn; ?> <?php echo $h >= 12 ? 'gsl-button-primary' : ''; ?>">
+						<input type="radio" name="<?php echo $partname; ?>_ampm" id="<?php echo $partname; ?>PM"
+						       class="gsl-hidden"
+						       value="none" <?php echo $h >= 12 ? 'checked="checked"' : ''; ?>
+						       onclick="toggleAMPM('<?php echo $partname; ?>PM');" <?php echo $test ? "disabled='disabled'" : ""; ?> />
+						<?php echo Text::_('JEV_PM'); ?>
+					</label>
+				</div>
+			</div>
+			<?php
+		}
+		else
+		{
+			$btngroup  = ComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1) ? "btn-group" : "";
+			$btn       = ComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1) ? "btn" : "";
+			$timevalue = $event->$time24function();
+			list($h, $m) = explode(":", $timevalue);
+			?>
+			<div id="<?php echo $partname; ?>_24h_area" class="jev_inline">
+				<input class="inputbox" type="text" name="<?php echo $partname; ?>_time" id="<?php echo $name; ?>"
+				       size="8" <?php echo $test ? "disabled='disabled'" : ""; ?> maxlength="8"
+				       value="<?php echo $event->$time24function(); ?>" onchange="checkTime(this);"/>
+			</div>
+			<div id="<?php echo $partname; ?>_12h_area" class="jev_inline">
+				<input class="inputbox" type="text" name="<?php echo $partname; ?>_12h" id="<?php echo $partname; ?>_12h"
+				       size="8" maxlength="8" <?php echo $test ? "disabled='disabled'" : ""; ?> value=""
+				       onchange="check12hTime(this);"/>
+				<div class="radio <?php echo $btngroup; ?> " id="<?php echo $partname; ?>_ampm">
+					<label for="<?php echo $partname; ?>AM" class="radio <?php echo $btn; ?>">
+						<input type="radio" name="<?php echo $partname; ?>_ampm" id="<?php echo $partname; ?>AM"
+						       value="none" <?php echo $h <= 12 ? 'checked="checked"' : ''; ?>
+						       onclick="toggleAMPM('<?php echo $partname; ?>AM');" <?php echo $test ? "disabled='disabled'" : ""; ?> />
+						<?php echo Text::_('JEV_AM'); ?>
+					</label>
+					<label for="<?php echo $partname; ?>PM" class="radio <?php echo $btn; ?>">
+						<input type="radio" name="<?php echo $partname; ?>_ampm" id="<?php echo $partname; ?>PM"
+						       value="none" <?php echo $h > 12 ? 'checked="checked"' : ''; ?>
+						       onclick="toggleAMPM('<?php echo $partname; ?>PM');" <?php echo $test ? "disabled='disabled'" : ""; ?> />
+						<?php echo Text::_('JEV_PM'); ?>
+					</label>
+				</div>
+			</div>
+			<?php
+
+		}
 		$html = ob_get_clean();
 
 		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");

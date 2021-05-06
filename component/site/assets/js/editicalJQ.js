@@ -1248,6 +1248,12 @@ function hideEmptyJevTabs() {
 	}
 
 function selectIrregularDate() {
+	// only respond to calendar date selections
+	if (!calendarDateClicked)
+	{
+		return;
+	}
+
 	var calpopup = document.querySelector(".irregularDateSelector .js-calendar");
 
 	// Trap month to month movement!
@@ -1263,13 +1269,21 @@ function selectIrregularDate() {
 	repeatDate = repeatDate.getFullYear()+"-" + (m < 10 ? '0' : '') + m + "-" + (d < 10 ? '0' : '') + d;
 
 	var selectElem = jQuery("#irregularDates");
+
 	var option = jQuery("#irregularDates option[value='" + repeatDate + "']");
 	if (option.length)
 	{
 		option[0].selected = !option[0].selected;
+		try {
+			// form replacement
+			gslselect("#irregularDates");
+		}
+		catch (e) { }
+		/*
+		option[0].selected = !option[0].selected;
 		var event = new Event('gslchange');
 		selectElem[0].dispatchEvent(event);
-
+		*/
 		return;
 	}
 	option = jQuery("<option>", {
@@ -1278,6 +1292,11 @@ function selectIrregularDate() {
 		"selected" : true
 	});
 	selectElem.append(option);
+	try {
+		// form replacement
+		gslselect("#irregularDates");
+	}
+	catch (e) { }
 	//selectElem.chosen();
 	selectElem.trigger("chosen:updated");
 	selectElem.trigger("liszt:updated");

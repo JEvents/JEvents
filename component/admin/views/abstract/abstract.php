@@ -701,7 +701,8 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
         }
         else if ($app->isClient('administrator') || $params->get("newfrontendediting", 1))
         {
-			HTMLHelper::script('media/com_jevents/js/gslselect.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
+	        HTMLHelper::script('media/com_jevents/js/gslselect.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
+	        //HTMLHelper::script('media/com_jevents/js/gslselect.js', array('version' => JEventsHelper::JEvents_Version(false) . base64_encode(rand(0,99999)), 'relative' => false), array('defer' => true));
 
 			$script = <<< SCRIPT
 			document.addEventListener('DOMContentLoaded', function () {

@@ -740,8 +740,14 @@ class JEVHelper
 		}
 
 
+		if (!empty($onchange))
+		{
+			Factory::getDocument()->addScriptDeclaration("document.addEventListener('DOMContentLoaded',function (){document.getElementById('" . $fieldid . "').addEventListener('change', function(){" . $onchange . "});});");
+			$onchange = "";
+
+		}
 		// Build the attributes array.
-		empty($onchange) ? null : $attribs['onchange'] = $onchange;
+		//empty($onchange) ? null : $attribs['onchange'] = $onchange;
 
 		$name = $fieldname;
 
