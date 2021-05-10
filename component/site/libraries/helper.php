@@ -689,7 +689,7 @@ class JEVHelper
 	 * @static
 	 */
 	public static
-	function loadElectricCalendar($fieldname, $fieldid, $value, $minyear, $maxyear, $onhidestart = "", $onchange = "", $format = 'Y-m-d', $attribs = array(), $showtime = false)
+	function loadElectricCalendar($fieldname, $fieldid, $value, $minyear, $maxyear, $onhidestart = "", $onchange = "", $format = 'Y-m-d', $attribs = array(), $showtime = false, $showDefaultDateValue = true)
 	{
 
 		$document           = Factory::getDocument();
@@ -702,41 +702,46 @@ class JEVHelper
 
 		if ($showtime)
 		{
-			if (empty($value))
+			if ($showDefaultDateValue)
 			{
-				$value = date($format);
-			}
-
-			$datetime = date_create_from_format($format, $value);
-			// This is probably because we have mysql formatted value
-			if (!$datetime)
-			{
-				$datetime = date_create_from_format('Y-m-d', $value);
-				if (!$datetime)
+				if (empty($value))
 				{
 					$value = date($format);
-					$datetime = date_create_from_format($format, $value);
 				}
+
+				$datetime = date_create_from_format($format, $value);
+				// This is probably because we have mysql formatted value
+				if (!$datetime)
+				{
+					$datetime = date_create_from_format('Y-m-d', $value);
+					if (!$datetime)
+					{
+						$value    = date($format);
+						$datetime = date_create_from_format($format, $value);
+					}
+				}
+
+				$value = $datetime->format("Y-m-d H:i");
 			}
-
-			$value = $datetime->format("Y-m-d H:i");
-
 			// switch back to strftime format to use Joomla calendar tool
 			$format = str_replace(array("Y", "m", "d", "H", "h", "i", "a"), array("%Y", "%m", "%d", "%H", "%I", "%M", "%P"), $format);
 
 		}
 		else
 		{
-			if ($value == "")
+			if ($showDefaultDateValue)
 			{
-				$value = strftime("%Y-%m-%d");
+
+				if ($value == "")
+				{
+					$value = strftime("%Y-%m-%d");
+				}
+				list ($yearpart, $monthpart, $daypart) = explode("-", $value);
+				$value = str_replace(array("Y", "m", "d"), array($yearpart, $monthpart, $daypart), $format);
+				$value  = $yearpart . "-" . $monthpart . "-" . $daypart;
 			}
-			list ($yearpart, $monthpart, $daypart) = explode("-", $value);
-			$value = str_replace(array("Y", "m", "d"), array($yearpart, $monthpart, $daypart), $format);
 			// switch back to strftime format to use Joomla calendar tool
 			$format = str_replace(array("Y", "m", "d"), array("%Y", "%m", "%d"), $format);
-			$value = $yearpart . "-" . $monthpart . "-" . $daypart;
-
 		}
 
 
