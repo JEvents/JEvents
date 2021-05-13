@@ -140,7 +140,7 @@ SCRIPT;
 		$jinput = JFactory::getApplication()->input;
 		$task = $jinput->getString("task", $jinput->getString("jevtask", ""));
 		if (!$forceBoostrap && ($task == "icalevent.edit" || $task == "icalrepeat.edit")
-			&& (Factory::getApplication()->isClient('administrator') || $jevparams->get("newfrontendediting", 1))
+			&& (Factory::getApplication()->isClient('administrator') || $jevparams->get("newfrontendediting", 1) == 1)
 		)
 		{
 			HTMLHelper::script('com_jevents/lib_jevmodal/jevmodal_uikit.js', array('framework' => false, 'relative' => true, 'pathOnly' => false, 'detectBrowser' => false, 'detectDebug' => true));

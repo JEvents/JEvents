@@ -21,7 +21,7 @@ use Joomla\CMS\Component\ComponentHelper;
 
 $app    = Factory::getApplication();
 $params = ComponentHelper::getParams(JEV_COM_COMPONENT);
-if ($app->isClient('administrator') || $params->get("newfrontendediting", 1))
+if ($app->isClient('administrator') || $params->get("newfrontendediting", 1) == 1)
 {
 	$editPage = $this->loadTemplate('uikit');
 	//$editPage = str_replace("hasPopover", "hasYsPopover", $editPage);

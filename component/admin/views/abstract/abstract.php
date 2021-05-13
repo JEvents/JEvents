@@ -416,7 +416,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 			if ($tabstartarray0Count > 0)
 			{
 
-				if (GSLMSIE10 || (!$app->isClient('administrator') && !$params->get("newfrontendediting", 1)))
+				if (GSLMSIE10 || (!$app->isClient('administrator') && $params->get("newfrontendediting", 1) != 1))
 				{
 					//We get and add all the tabs
 					$tabreplace = '<ul class="nav nav-tabs" id="myEditTabs">';
@@ -459,7 +459,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 			}
 		}
 		// Create the tabs content
-		if (GSLMSIE10  || (!$app->isClient('administrator') && !$params->get("newfrontendediting", 1)))
+		if (GSLMSIE10  || (!$app->isClient('administrator') && $params->get("newfrontendediting", 1) != 1))
 		{
 			if ($tabstartarray0Count > 0 && isset($tabstartarray[0]))
 			{
@@ -699,7 +699,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 		        HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
 	        }
         }
-        else if ($app->isClient('administrator') || $params->get("newfrontendediting", 1))
+        else if ($app->isClient('administrator') || $params->get("newfrontendediting", 1) == 1)
         {
 	        HTMLHelper::script('media/com_jevents/js/gslselect.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
 	        //HTMLHelper::script('media/com_jevents/js/gslselect.js', array('version' => JEventsHelper::JEvents_Version(false) . base64_encode(rand(0,99999)), 'relative' => false), array('defer' => true));

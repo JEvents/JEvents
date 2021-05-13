@@ -51,7 +51,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 
 		JEVHelper::script('editicalJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
-		if (!GSLMSIE10 && $params->get("newfrontendediting", 1))
+		if (!GSLMSIE10 && $params->get("newfrontendediting", 1) == 1)
 		{
 			JEVHelper::script('editicalGSL.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 		}
@@ -86,7 +86,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		if (!$params->get("newfrontendediting", 1))
+		if ($params->get("newfrontendediting", 1) != 1)
 		{
 			$this->_adminStart();
 		}
@@ -108,7 +108,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 		}
 
 		parent::displaytemplate($tpl);
-		if (!$params->get("newfrontendediting", 1))
+		if ($params->get("newfrontendediting", 1) != 1)
 		{
     		$this->_adminEnd();
 		}

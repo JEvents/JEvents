@@ -18,7 +18,7 @@ if (!isset($this->jevviewdone))
     </h1>
     <?php endif;
 
-	if ($params->get("newfrontendediting", 1))
+	if ($params->get("newfrontendediting", 1) == 1 )
 	{
 		echo LayoutHelper::render('gslframework.header', null, JPATH_COMPONENT_ADMINISTRATOR . "/layouts");
 	}
@@ -37,7 +37,7 @@ if (!isset($this->jevviewdone))
 
 	$this->loadModules("jevposteditevent");
 
-	if ($params->get("newfrontendediting", 1))
+	if ($params->get("newfrontendediting", 1) == 1)
 	{
 		echo LayoutHelper::render('gslframework.footer', null, JPATH_COMPONENT_ADMINISTRATOR . "/layouts");
 	}

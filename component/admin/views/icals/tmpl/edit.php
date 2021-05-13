@@ -17,7 +17,7 @@ use Joomla\CMS\Component\ComponentHelper;
 
 $app    = Factory::getApplication();
 $params = ComponentHelper::getParams(JEV_COM_COMPONENT);
-if ($app->isClient('administrator') || $params->get("newfrontendediting", 1))
+if ($app->isClient('administrator') || $params->get("newfrontendediting", 1) == 1)
 {
 	echo $this->loadTemplate('uikit');
 	return;

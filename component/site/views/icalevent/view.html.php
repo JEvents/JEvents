@@ -70,7 +70,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 
 		JEVHelper::script('editicalJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
-		if (!GSLMSIE10 && $params->get("newfrontendediting", 1))
+		if (!GSLMSIE10 && $params->get("newfrontendediting", 1) == 1)
 		{
 			JEVHelper::script('editicalGSL.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 		}
@@ -157,7 +157,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		// I pass in the rp_id so that I can return to the repeat I was viewing before editing
 		$this->rp_id = $input->getInt("rp_id", 0);
 
-		if (!$params->get("newfrontendediting", 1))
+		if ($params->get("newfrontendediting", 1) != 1)
 		{
 			$this->_adminStart();
 		}
@@ -180,7 +180,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 
 		parent::displaytemplate($tpl);
 
-		if (!$params->get("newfrontendediting", 1))
+		if ($params->get("newfrontendediting", 1) != 1)
 		{
     		$this->_adminEnd();
 		}

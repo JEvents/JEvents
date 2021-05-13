@@ -75,7 +75,7 @@ class FormFieldJeveventtime extends FormField
 			$test = $event->alldayevent() || $event->noendtime();
 		}
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
-		if (!GSLMSIE10 && $params->get("newfrontendediting", 1))
+		if (!GSLMSIE10 && $params->get("newfrontendediting", 1) == 1)
 		{
 
 			$btngroup  = "gsl-button-group";

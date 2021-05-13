@@ -302,8 +302,20 @@ Default should be set by the custom field
 
 
 	<fieldset name="JEV_EVENT_EDITING" difficulty="1">
-		<field name="newfrontendediting" type="jevboolean" class="gsl-button-group" default="1" menu="hide"
-			   label="JEV_USE_NEW_FRONTEND_EDITING_FORMATTING" description="JEV_USE_NEW_FRONTEND_EDITING_FORMATTING_DESC" difficulty="1"/>
+		<field name="newfrontendediting"
+			   type="list"
+			   class="gsl-button-group"
+			   default="1"
+			   menu="hide"
+			   label="JEV_FRONTEND_EDITING_FRAMEWORK"
+			   description="JEV_FRONTEND_EDITING_FRAMEWORK_DESC"
+			   difficulty="1">
+			<option value="B2">JEV_FRONTEND_EDITING_OLD_VERSION</option>
+			<option value="1">JEV_FRONTEND_EDITING_JEVENTS_UIKIT3</option>
+			<!--<option value="U3">JEV_FRONTEND_EDITING_UIKIT3</option>//-->
+			<option value="B3">JEV_FRONTEND_EDITING_BOOTSTRAP3</option>
+			<option value="B4">JEV_FRONTEND_EDITING_BOOTSTRAP4</option>
+		</field>
 
 		<field name="enableshowon" type="jevboolean" class="gsl-button-group" default="0" menu="hide"
 		   label="COM_JEVENT_ENABLE_SHOWON_EDITING" description="COM_JEVENT_ENABLE_SHOWON_EDITING_DESC" difficulty="1"/>

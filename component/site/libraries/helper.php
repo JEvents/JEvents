@@ -895,7 +895,7 @@ class JEVHelper
 			data-time-24="' . $timeformat . '" 
 			' . (!empty($minYear) ? ' data-min-year="' . $minYear . '"' : "") . '
 			' . (!empty($maxYear) ? ' data-max-year="' . $maxYear . '"' : "") . ' >'
-				. (($app->isClient('administrator') || ($params->get("newfrontendediting", 1) && $isedit)) ? '<span class="gsl-icon" gsl-icon="icon: calendar"></span>' : '<span class="icon-calendar"></span>')
+				. (($app->isClient('administrator') || ($params->get("newfrontendediting", 1) == 1 && $isedit)) ? '<span class="gsl-icon" gsl-icon="icon: calendar"></span>' : '<span class="icon-calendar"></span>')
 				. '</button>'
 				. '</span>'
 				. '</div>'
