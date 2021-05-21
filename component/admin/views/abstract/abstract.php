@@ -358,6 +358,16 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 		if (count($matchesarray) == 0)
 			return;
 
+		// Create the tabs content
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+		if (GSLMSIE10  || (!$app->isClient('administrator') && !$params->get("newfrontendediting", 1)))
+		{
+		}
+		else
+		{
+			// replace bootstrap span styling!
+			$template_value = str_replace(array('span2', 'span10'), array('gsl-width-1-6', 'gsl-width-5-6'), $template_value);
+		}
 
 		// now replace the fields
 
@@ -1032,7 +1042,7 @@ SCRIPT;
 				$showon .= str_replace("data-showon-gsl", "data-showon-2gsl" , $showon);
 			}
 			?>
-			<div class=" gsl-margin-remove-top gsl-child-width-1-1 gsl-grid  jevplugin_<?php echo $key; ?>" <?php echo $showon; ?>>
+			<div class=" gsl-margin-small-top gsl-child-width-1-1 gsl-grid  jevplugin_<?php echo $key; ?>" <?php echo $showon; ?>>
                 <div class="gsl-width-1-6@m gsl-width-1-3">
 				    <label class="control-label "><?php echo $this->customfields[$key]["label"]; ?></label>
                 </div>

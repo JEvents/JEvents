@@ -747,7 +747,7 @@ class JEVHelper
 
 		if (!empty($onchange))
 		{
-			Factory::getDocument()->addScriptDeclaration("document.addEventListener('DOMContentLoaded',function (){document.getElementById('" . $fieldid . "').addEventListener('change', function(){" . $onchange . "});});");
+			Factory::getDocument()->addScriptDeclaration("document.addEventListener('DOMContentLoaded',function (){if(document.getElementById('" . $fieldid . "')) document.getElementById('" . $fieldid . "').addEventListener('change', function(){" . $onchange . "});});");
 			$onchange = "";
 
 		}
