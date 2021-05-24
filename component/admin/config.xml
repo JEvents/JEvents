@@ -199,6 +199,15 @@
 				conditional="enable_gsed" conditions="1"
 		/>
 
+		<field
+				name="sevd_imagesize"
+				type="jevtext"
+				default="1920x1920"
+				label="STRUCTURED_EVENT_DATA_IMAGE_SIZE_LABEL"
+				description="STRUCTURED_EVENT_DATA_IMAGE_SIZE_DESC"
+				conditional="enable_gsed" conditions="1"
+		/>
+
         <field
                 name="sevd_defaultimage"
                 type="jevtext"
