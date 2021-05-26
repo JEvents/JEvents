@@ -15,6 +15,11 @@ function gslselect(selector) {
     selectElements.forEach (
         function(selectElement) {
 
+            if (selectElement.hasAttribute('hidden') || selectElement.getComputedStyle(elem,'display') == 'none')
+            {
+                return;
+            }
+
             let currentInlineDiv = selectElement.nextElementSibling;
             if (currentInlineDiv && currentInlineDiv.classList.contains('gslSelectReplacement')) {
                 currentInlineDiv.parentNode.removeChild(currentInlineDiv);
