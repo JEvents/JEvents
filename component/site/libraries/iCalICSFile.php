@@ -392,7 +392,10 @@ RAWTEXT;
 					$vevent->state = $this->state;
 				}
 
-				$vevent->lockevent = 0;
+				if (!isset($vevent->lockevent))
+				{
+					$vevent->lockevent = 0;
+				}
 
 				// if the event is locked then skip this row
 				if ($matchingEvent && $matchingEvent->lockevent)
@@ -547,42 +550,50 @@ RAWTEXT;
 				$todelete = array();
 				foreach ($existingevents as $event)
 				{
+					// DO NOT DELETE LOCKED EVENTS
+					if ($event->lockevent)
+					{
+						continue;
+					}
 					$todelete[] = $event->ev_id;
 				}
-				$veventidstring = implode(",", $todelete);
-
-				$query = "SELECT DISTINCT (eventdetail_id) FROM #__jevents_repetition WHERE eventid IN ($veventidstring)";
-				$db->setQuery($query);
-				$detailids      = $db->loadColumn();
-				$detailidstring = implode(",", $detailids);
-
-				$query = "DELETE FROM #__jevents_rrule WHERE eventid IN ($veventidstring)";
-				$db->setQuery($query);
-				$db->execute();
-
-				$query = "DELETE FROM #__jevents_repetition WHERE eventid IN ($veventidstring)";
-				$db->setQuery($query);
-				$db->execute();
-
-				$query = "DELETE FROM #__jevents_exception WHERE eventid IN ($veventidstring)";
-				$db->setQuery($query);
-				$db->execute();
-
-				if (StringHelper::strlen($detailidstring) > 0)
+				if (count($todelete))
 				{
-					$query = "DELETE FROM #__jevents_vevdetail WHERE evdet_id IN ($detailidstring)";
+					$veventidstring = implode(",", $todelete);
+
+					$query = "SELECT DISTINCT (eventdetail_id) FROM #__jevents_repetition WHERE eventid IN ($veventidstring)";
+					$db->setQuery($query);
+					$detailids      = $db->loadColumn();
+					$detailidstring = implode(",", $detailids);
+
+					$query = "DELETE FROM #__jevents_rrule WHERE eventid IN ($veventidstring)";
 					$db->setQuery($query);
 					$db->execute();
-				}
 
-				$query = "DELETE FROM #__jevents_vevent WHERE ev_id IN ($veventidstring)";
-				$db->setQuery($query);
-				$db->execute();
+					$query = "DELETE FROM #__jevents_repetition WHERE eventid IN ($veventidstring)";
+					$db->setQuery($query);
+					$db->execute();
 
-				$ex_count = count($existingevents);
-				if ($guest !== 1)
-				{
-					Factory::getApplication()->enqueueMessage(Text::plural('COM_JEVENTS_MANAGE_CALENDARS_ICAL_IMPORT_DELETED_EVENTS', $ex_count));
+					$query = "DELETE FROM #__jevents_exception WHERE eventid IN ($veventidstring)";
+					$db->setQuery($query);
+					$db->execute();
+
+					if (StringHelper::strlen($detailidstring) > 0)
+					{
+						$query = "DELETE FROM #__jevents_vevdetail WHERE evdet_id IN ($detailidstring)";
+						$db->setQuery($query);
+						$db->execute();
+					}
+
+					$query = "DELETE FROM #__jevents_vevent WHERE ev_id IN ($veventidstring)";
+					$db->setQuery($query);
+					$db->execute();
+
+					$ex_count = count($existingevents);
+					if ($guest !== 1)
+					{
+						Factory::getApplication()->enqueueMessage(Text::plural('COM_JEVENTS_MANAGE_CALENDARS_ICAL_IMPORT_DELETED_EVENTS', $ex_count));
+					}
 				}
 			}
 		}

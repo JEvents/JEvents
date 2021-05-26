@@ -1,7 +1,5 @@
 <?php
 
-use Joomla\CMS\HTML\HTMLHelper;
-
 /**
  * @package     Joomla.Site
  * @subpackage  Layout
@@ -13,7 +11,9 @@ use Joomla\CMS\HTML\HTMLHelper;
 // Joomla 3.x only
 defined('JPATH_BASE') or die;
 
-if (GSLMSIE10)
+use Joomla\CMS\HTML\HTMLHelper;
+
+if (!defined('GSLMSIE10') || GSLMSIE10)
 {
 	include (JPATH_SITE . "/layouts/joomla/form/field/" .  basename(__FILE__));
 	return;

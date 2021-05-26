@@ -231,8 +231,11 @@ document.addEventListener('DOMContentLoaded', function () {
 		});
 		 */
 		document.querySelector('#right-col > .gsl-content').addEventListener('mouseover', () => {
-			document.getElementById('sidebar-wrapper').classList.add('gsl-hide-sidebar');
+			var sidebarWrapper = document.getElementById('sidebar-wrapper');
+			if (sidebarWrapper) {
+				sidebarWrapper.classList.add('gsl-hide-sidebar');
 			document.getElementById('gslc').classList.add('gsl-hide-sidebar');
+			}
 
 			let wrapper = document.getElementById('menu-collapse');
 			if (wrapper && document.getElementById('menu-collapse-icon').classList.contains('fa-toggle-on'))
@@ -395,6 +398,10 @@ function ys_setuptooltip(selector) {
 		options.container = "#gslc";
 		options.title = title;
 
+		if (hoveritem.hasAttribute('title')) {
+			hoveritem.removeAttribute('title');
+		}
+
 		gslUIkit.tooltip(hoveritem, options);
 	});
 }
@@ -406,8 +413,8 @@ function ys_setuppopover(selector)
 	var hoveritems = document.querySelectorAll(selector);
 	hoveritems.forEach(function (hoveritem) {
 
-		let title = hoveritem.getAttribute('data-yspoptitle') || hoveritem.getAttribute('title');
-		let body = hoveritem.getAttribute('data-yspopcontent') || '';
+		let title = hoveritem.getAttribute('data-yspoptitle') || hoveritem.getAttribute('data-original-title') || hoveritem.getAttribute('title');
+		let body = hoveritem.getAttribute('data-yspopcontent') || hoveritem.getAttribute('data-content') || '';
 		let options = hoveritem.getAttribute('data-yspopoptions') || '{"mode" : "click, hover", "offset" : 20,"delayHide" : 200, "pos" : "top"}';
 		//options = '{ "offset" : 20,"delay" : 20, "pos" : "top", "duration" : 200}';
 		options = JSON.parse(options);
@@ -423,6 +430,9 @@ function ys_setuppopover(selector)
 			(body != '' ? '<div class="ys-popover-body">' + body + '</div>' : '') +
 			'</div>';
 		options.title = phtml;
+		if (hoveritem.hasAttribute('title')) {
+			hoveritem.removeAttribute('title');
+		}
 
 		gslUIkit.tooltip(hoveritem, options);
 	});
@@ -576,7 +586,8 @@ window.addEventListener('load', function () {
 		let options = {};
 
 		options.container = "#gslc";
-		options.title = filter.options[0].innerText;
+		// tags filter may be empty!
+		options.title = filter.options.length > 0 ? filter.options[0].innerText : '';
 
 		gslUIkit.tooltip(filter, options);
 

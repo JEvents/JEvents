@@ -140,53 +140,23 @@ class jevStartdateFilter extends jevFilter
 		$options[]          = HTMLHelper::_('select.option', '-1', Text::_('BEFORE'));
 		$filterList["html"] .= HTMLHelper::_('select.genericlist', $options, $this->filterType . '_fvs0', 'onchange="form.submit()" class="inputbox" size="1" ', 'value', 'text', $this->filter_values[0]);
 
-		//$filterList["html"] .=  HTMLHelper::calendar($this->filter_values[1],$this->filterType.'_fvs1', $this->filterType.'_fvs1', '%Y-%m-%d',array('size'=>'12','maxlength'=>'10','onchange'=>'form.submit()'));
+		//$filterList["html"] .=  HTMLHelper::calendar($this->filter_values[1],$this->filterType.'_fvs1', $this->filterType.'_fvs1', '%Y-%m-%d',
+		//array('size'=>'12','maxlength'=>'10','onchange'=>'form.submit()'));
 
 		$params   = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		$minyear  = JEVHelper::getMinYear();
 		$maxyear  = JEVHelper::getMaxYear();
 		$document = Factory::getDocument();
 
-		$calendar = 'calendar14.js';
+		$inputdateformat = $params->get("com_editdateformat", "d.m.Y");
+		ob_start();
+		JEVHelper::loadElectricCalendar($this->filterType . '_fvs1', $this->filterType . '_fvs1', $this->filter_values[1],
+			$minyear, $maxyear, '', "jQuery('#" . $this->filterType . "_fvs1').parents('form').submit();", "Y-m-d",
+			array( "maxlength"=>"10", "size"=>"12"),
+			false);
+		$filterList["html"] .= "<div style='display:inline-block;'>" . ob_get_clean() . "</div>";
 
-		JEVHelper::script($calendar, "components/" . JEV_COM_COMPONENT . "/assets/js/", true);
-		JEVHelper::stylesheet("dashboard.css", "components/" . JEV_COM_COMPONENT . "/assets/css/", true);
-		$document->addScriptDeclaration('document.addEventLister("DOMContentLoaded", function() {
-				new NewCalendar({ ' . $this->filterType . '_fvs1 :  "Y-m-d"},{
-					direction:0, 
-					classes: ["dashboard"],
-					draggable:true,
-					navigation:2,
-					tweak:{x:0,y:-75},
-					offset:1,
-					range:{min:' . $minyear . ',max:' . $maxyear . '},
-					months:["' . Text::_("JEV_JANUARY") . '",
-					"' . Text::_("JEV_FEBRUARY") . '",
-					"' . Text::_("JEV_MARCH") . '",
-					"' . Text::_("JEV_APRIL") . '",
-					"' . Text::_("JEV_MAY") . '",
-					"' . Text::_("JEV_JUNE") . '",
-					"' . Text::_("JEV_JULY") . '",
-					"' . Text::_("JEV_AUGUST") . '",
-					"' . Text::_("JEV_SEPTEMBER") . '",
-					"' . Text::_("JEV_OCTOBER") . '",
-					"' . Text::_("JEV_NOVEMBER") . '",
-					"' . Text::_("JEV_DECEMBER") . '"
-					],
-					days :["' . Text::_("JEV_SUNDAY") . '",
-					"' . Text::_("JEV_MONDAY") . '",
-					"' . Text::_("JEV_TUESDAY") . '",
-					"' . Text::_("JEV_WEDNESDAY") . '",
-					"' . Text::_("JEV_THURSDAY") . '",
-					"' . Text::_("JEV_FRIDAY") . '",
-					"' . Text::_("JEV_SATURDAY") . '"
-					], 
-					onHideComplete : function () { $("' . $this->filterType . '_fvs1").form.submit()},					
-				});
-			});');
-
-
-		$filterList["html"] .= '<input type="text" name="' . $this->filterType . '_fvs1" id="' . $this->filterType . '_fvs1" value="' . $this->filter_values[1] . '" maxlength="10" size="12"  />';
+		//$filterList["html"] .= '<input type="text" name="' . $this->filterType . '_fvs1" id="' . $this->filterType . '_fvs1" value="' . $this->filter_values[1] . '" maxlength="10" size="12"  />';
 
 		$filterList["html"] .= "<input type='hidden' name='" . $this->filterType . "_fvs2' value='1'/>";
 

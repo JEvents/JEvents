@@ -22,7 +22,7 @@ $user = Factory::getUser();
 
 $input = Factory::getApplication()->input;
 
-
+$editor = $input->getString('editor');
 $document       = Factory::getDocument();
 $document->addStyleDeclaration("body, input, select, table {font-size:11px;}
 	table.filters, table.filters tr,table.filters td {border-width:0px!important;font-size:11px;}
@@ -58,7 +58,7 @@ $function = $input->getCmd('function', 'jSelectEvent');
 			<tr class="row<?php echo $k; ?>">
 				<td width="30%">
 					<a href="#select"
-					   onclick="return window.parent.<?php echo $function; ?>('<?php echo $link; ?>','<?php echo addslashes(htmlspecialchars($repeat->title())); ?>' , (jQuery('#Itemid').length?jQuery('#Itemid').val():0) , <?php echo $repeat->ev_id(); ?>, <?php echo $repeat->rp_id(); ?>)"
+					   onclick="return window.parent.<?php echo $function; ?>('<?php echo $link; ?>','<?php echo addslashes(htmlspecialchars($repeat->title())); ?>' , (jQuery('#Itemid').length?jQuery('#Itemid').val():0) , <?php echo $repeat->ev_id(); ?>, <?php echo $repeat->rp_id(); ?>, '<?php echo $editor; ?>')"
 					   title="<?php echo Text::_('JEV_SELECT_Repeat'); ?>"><?php echo $row->title(); ?></a></td>
 				<td width="40%">
 					<?php

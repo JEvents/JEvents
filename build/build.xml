@@ -79,6 +79,7 @@
 
         <filesync destinationDir="${builddir}/${genericfolder}"
                   rsyncPath="/usr/bin/rsync"
+                  verbose="false"
                   sourceDir="../${genericfolder}"
                   excludeFile="excludedfiles.build"
                   options="-rpKz --safe-links"
@@ -124,6 +125,7 @@
 
         <filesync destinationDir="${builddir}/${genericfolder}"
                   rsyncPath="/usr/bin/rsync"
+                  verbose="false"
                   sourceDir="../${genericfolder}"
                   excludeFile="excludedfiles.build"
                   options="-rpKz --safe-links"
@@ -214,6 +216,10 @@
                 <exclude name="js/components/**"></exclude>
             </fileset>
         </copy>
+
+        <!-- remove the requirejs and node module handling!    -->
+        <exec command="find '${rootdir}/component/media/' -type f \( -iname 'uikit*.js' \)  -exec sed -ri 's/typeof exports ===/typeof GSL_exports_GSL ===/' '{}' +;" />
+        <exec command="find '${rootdir}/component/media/' -type f \( -iname 'uikit*.js' \)  -exec sed -ri 's/typeof define ===/typeof GSL_define_GSL ===/' '{}' +;" />
 
         <!-- replace colours with CSS variables -->
         <!-- primary -->

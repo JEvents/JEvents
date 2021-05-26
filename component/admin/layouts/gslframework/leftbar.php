@@ -25,10 +25,10 @@ $leftmenutrigger = $componentParams->get("leftmenutrigger", 0);
 ?>
 <aside id="left-col" class="gsl-padding-remove  gsl-background-secondary hide-label ">
 
-    <nav class="left-nav-wrap  gsl-width-auto@m"
+    <nav class="left-nav-wrap  gsl-width-auto@m gsl-navbar"
 	    <?php echo $leftmenutrigger == 2 ? "" : ('gsl-navbar="mode: ' . ($leftmenutrigger == 0 ? "hover" : "click") .'"');?>
     >
-        <div class="left-logo gsl-background-secondary"
+        <div class="left-logo gsl-background-secondary gsl-toggle"
 			<?php echo $leftmenutrigger == 2 ? "" : ('gsl-toggle="target:#left-col, #left-col .left-nav, .ysts-page-title; mode: ' . ($leftmenutrigger == 0 ? "hover" : "click") . ';cls: hide-label"') ;?>
         >
             <div>
@@ -42,7 +42,7 @@ $leftmenutrigger = $componentParams->get("leftmenutrigger", 0);
             <?php
             ob_start();
             ?>
-            <ul class="left-nav gsl-navbar-nav gsl-list hide-label gsl-background-secondary"
+            <ul class="left-nav gsl-navbar-nav gsl-list hide-label gsl-background-secondary gsl-toggle"
 	            <?php echo $leftmenutrigger == 2 ? "" : ('gsl-toggle="target:#left-col, #left-col .left-nav, .ysts-page-title; mode: ' . ($leftmenutrigger == 0 ? "hover" : "click") . ';cls: hide-label"') ;?>
             >
                 <?php
@@ -71,9 +71,40 @@ $leftmenutrigger = $componentParams->get("leftmenutrigger", 0);
 	                ?>
                     <li class="<?php echo $leftIconLink->class . ($leftIconLink->active ? " gsl-active" : ""); ?>" <?php echo $tooltip;?> <?php echo $events;?>>
 	                    <a href="<?php echo $leftIconLink->link; ?>" target="<?php echo isset($leftIconLink->target) ? $leftIconLink->target : "_self"; ?>" <?php echo $onclick;?> >
+		                    <?php if (!empty($leftIconLink->icon)) { ?>
                             <span data-gsl-icon="icon: <?php echo $leftIconLink->icon; ?>" class="gsl-margin-small-right"></span>
-                            <span class="nav-label"><?php echo $leftIconLink->label; ?></span>
+		                    <?php } else if (!empty($leftIconLink->iconSrc)) { ?>
+			                    <span class="gsl-margin-small-right"><img src="<?php echo $leftIconLink->iconSrc; ?>" /></span>
+		                    <?php } ?>
+		                    <span class="nav-label"><?php echo $leftIconLink->label; ?></span>
                         </a>
+	                    <?php
+	                    if (isset($leftIconLink->sublinks) && count($leftIconLink->sublinks))
+	                    {
+		                    ?>
+		                    <div class="gsl-dropdown  gsl-background-secondary" gsl-dropdown='{"mode": "click, hover", "delay-hide":100, "offset":0 ,"pos":"right-top"}'>
+			                    <ul class="gsl-padding-remove">
+				                    <?php
+				                    foreach ( $leftIconLink->sublinks as $sublink)
+				                    {
+					                    ?>
+					                    <li class="gsl-padding-remove">
+						                    <button onclick="<?php echo $sublink->onclick; ?>"
+						                            class="<?php echo $sublink->class; ?>">
+                                    <span gsl-icon="icon: <?php echo $sublink->icon; ?>"
+                                          class="<?php echo $sublink->iconclass; ?>">
+                                    </span>
+							                    <?php echo $sublink->label; ?>
+						                    </button>
+					                    </li>
+					                    <?php
+				                    }
+				                    ?>
+			                    </ul>
+		                    </div>
+		                    <?php
+	                    }
+	                    ?>
                     </li>
 	                <?php
                 }

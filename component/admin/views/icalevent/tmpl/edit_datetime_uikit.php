@@ -40,11 +40,11 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 		{
 			?>
 			<div style="margin:0px;clear:left;">
-				<div class="row jevtimezone" <?php JEventsHelper::showOnRel($this->form, 'tzid'); ?>>
-					<div class="span2">
+				<div class="jevtimezone" <?php JEventsHelper::showOnRel($this->form, 'tzid'); ?>>
+					<div class="gsl-width-1-6">
 						<?php echo $this->form->getLabel("tzid"); ?>
 					</div>
-					<div class="span10">
+					<div class="gsl-width-5-6">
 						<?php echo $this->form->getInput("tzid"); ?>
 					</div>
 				</div>
@@ -213,8 +213,8 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 			if ($params->get("dayselect", 0))
 			{
 				?>
-                <label for='IRREGULARBTN' class="gsl-button gsl-button-small gsl-button-default <?php echo $freq ==  "IRREGULAR" ? ' gsl-button-primary' : ''; ?>">
-					<input type="radio" name="freq" id="IRREGULARBTN" value="IRREGULAR" class="gsl-hidden"
+                <label for='IRREGULAR' class="gsl-button gsl-button-small gsl-button-default <?php echo $freq ==  "IRREGULAR" ? ' gsl-button-primary' : ''; ?>">
+					<input type="radio" name="freq" id="IRREGULAR" value="IRREGULAR" class="gsl-hidden"
 					       onclick="toggleFreq('IRREGULAR');" <?php if ($freq ==  "IRREGULAR") echo 'checked="checked"'; ?>/>
 					<?php echo Text::_('IRREGULAR'); ?>
 				</label>
@@ -368,7 +368,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 					?>
 				</div>
 				<select id="irregularDates" name="irregularDates[]" multiple="multiple" size="5"
-				        onchange="updateRepeatWarning()">
+				        onchange="updateRepeatWarning();" >
 					<?php
 					sort($this->row->_irregulardates);
 					array_unique($this->row->_irregulardates);

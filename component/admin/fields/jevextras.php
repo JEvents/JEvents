@@ -125,6 +125,10 @@ SCRIPT;
 			$res = Factory::getApplication()->triggerEvent('onEditMenuItem', array(&$this->data, &$this->value, $this->type, $this->name, $this->id, $this->form));
 		}
 
+		Factory::getDocument()->addStyleDeclaration('
+		.control-group .controls, .control-group .controls > *,
+		.control-group .controls .control-input, .control-group .controls .control-input > * {max-width:100%;}
+		');
 		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
 		JEVHelper::ConditionalFields($this->element, $this->form->getName());
 

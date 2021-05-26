@@ -9,6 +9,7 @@
  */
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Factory;
 /*
   if (defined('_SC_START')){
   list ($usec, $sec) = explode(" ", microtime());
@@ -30,15 +31,29 @@ class PlgSystemGwejson extends JPlugin
 	{
 		parent::__construct($subject, $config);
 
-		$input = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 		$task  = $input->get('task', $input->get('typeaheadtask', '', 'cmd'), 'cmd');
 
 		if ($task != "gwejson")
 		{
 			return true;
 		}
+		/*
+		 *  In Joomla 4
+		 *
+		 * We need
+		 * Factory::getApplication()->loadDocument();
+		 * because
+		 * Factory::getApplication()->getDocument();
+		 * can return a null e.g. from modules loaded by removeLoader module
+		 *
+		 */
+		if (version_compare(JVERSION, "4", "gt"))
+		{
+			Factory::getApplication()->loadDocument();
+		}
 		// Some plugins set the document type too early which messes up our ouput.
-		$this->doc = JFactory::getDocument();
+		$this->doc = Factory::getDocument();
 	}
 
 	/**
@@ -51,7 +66,7 @@ class PlgSystemGwejson extends JPlugin
 	function onAfterInitialise()
 	{
 
-		$input = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 		$task  = $input->get('task', $input->get('typeaheadtask', '', 'cmd'), 'cmd');
 		// in frontend SEF
 		if ($task != "gwejson")
@@ -120,7 +135,7 @@ class PlgSystemGwejson extends JPlugin
 		}
 		if (!JFile::exists($path . $file . ".php"))
 		{
-			PlgSystemGwejson::throwerror("Opps we could not find the file: " . $path . $file . ".php");
+			PlgSystemGwejson::throwerror("Whoops we could not find the action file");
 
 			return true;
 		}

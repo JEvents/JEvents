@@ -180,7 +180,8 @@ class AdminIcaleventController extends Joomla\CMS\MVC\Controller\AdminController
 				if (!$vevent)
 				{
 					$Itemid = $input->getInt("Itemid");
-					$app->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$Itemid", false), Text::_("JEV_SORRY_UPDATED"));
+					Factory::getApplication()->enqueueMessage(Text::_("JEV_SORRY_UPDATED"), 'warning');
+					Factory::getApplication()->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$this->Itemid", false));
 				}
 
 				$row = new jIcalEventDB($vevent);
@@ -204,6 +205,85 @@ class AdminIcaleventController extends Joomla\CMS\MVC\Controller\AdminController
 				return false;
 			}
 
+
+		}
+		else if ($input->getInt('directCreate', 0))
+		{
+			$vevent = new iCalEvent($db);
+
+			$vevent->set("freq", "NONE");
+			$vevent->set("description", "");
+			$vevent->set("summary", "");
+			$vevent->set("access", "1");
+			list($year, $month, $day) = JEVHelper::getYMD();
+
+			$params           = ComponentHelper::getParams(JEV_COM_COMPONENT);
+			$defaultstarttime = $params->get("defaultstarttime", "08:00");
+			$defaultendtime   = $params->get("defaultendtime", "17:00");
+			list($starthour, $startmin) = explode(":", $defaultstarttime);
+			list($endhour, $endmin) = explode(":", $defaultendtime);
+
+			$vevent->set("dtstart", JevDate::mktime((int) $starthour, $startmin, 0, $month, $day, $year));
+			$vevent->set("dtend", JevDate::mktime((int) $endhour, $endmin, 0, $month, $day, $year));
+
+			$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+			$input = Factory::getApplication()->input;
+			$array  = !$params->get('allowraw', 0) ? JEVHelper::arrayFiltered($input->getArray(array(), null, 'RAW')) : $input->getArray(array(), null, 'RAW');
+
+			if (!isset($array['extra_info']))
+			{
+				$array['extra_info'] = "";
+			}
+			if (!isset($array['jevcontent']))
+			{
+				$array['jevcontent'] = "";
+			}
+			// Should we allow raw content through unfiltered
+			if ($params->get("allowraw", 0))
+			{
+				$array['jevcontent'] = $input->post->get("jevcontent", "", RAW);
+				$array['extra_info'] = $input->post->get("extra_info", "", RAW);
+			}
+			// Convert nl2br if there is no HTML
+			if (strip_tags($array['jevcontent']) == $array['jevcontent'])
+			{
+				$array['jevcontent'] = nl2br($array['jevcontent']);
+			}
+			if (strip_tags($array['extra_info']) == $array['extra_info'])
+			{
+				$array['extra_info'] = nl2br($array['extra_info']);
+			}
+
+			if (!isset($array['freq']))
+			{
+				$array['freq']      = "none";
+				$array['count']     = 1;
+				$array['rinterval'] = 1;
+			}
+			$rrule = SaveIcalEvent::generateRRule($array);
+
+			// Use dry run code to generate data
+			$vevent = SaveIcalEvent::save($array, $this->queryModel, $rrule, true);
+			foreach (get_object_vars($vevent->_detail) as $key => $val)
+			{
+				if (strpos($key, "_") !== 0)
+				{
+					$vevent->$key = $val;
+				}
+			}
+			foreach (get_object_vars($vevent->rrule) as $key => $val)
+			{
+				if (strpos($key, "_") !== 0)
+				{
+					$vevent->$key = $val;
+				}
+			}
+			$row = new jIcalEventDB($vevent);
+			// add in a reference to the custom field data so that the plugins can use it
+			if (isset($vevent->_detail->_customFields))
+			{
+				$row->_customFields = $vevent->_detail->_customFields;
+			}
 
 		}
 		else
@@ -468,7 +548,8 @@ SQL;
 			if (!$vevent)
 			{
 				$Itemid = $input->getInt("Itemid");
-				$app->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$Itemid", false), Text::_("JEV_SORRY_UPDATED"));
+				Factory::getApplication()->enqueueMessage(Text::_("JEV_SORRY_UPDATED"), 'warning');
+				Factory::getApplication()->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$this->Itemid", false));
 			}
 
 			$row = new jIcalEventDB($vevent);
@@ -529,7 +610,8 @@ SQL;
 			if (!$vevent)
 			{
 				$Itemid = $input->getInt("Itemid");
-				$app->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$Itemid", false), Text::_("JEV_SORRY_UPDATED"));
+				Factory::getApplication()->enqueueMessage(Text::_("JEV_SORRY_UPDATED"), 'warning');
+				Factory::getApplication()->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$this->Itemid", false));
 			}
 
 			$row = new jIcalEventDB($vevent);
@@ -599,7 +681,9 @@ SQL;
 			if (!$vevent)
 			{
 				$Itemid = $input->getInt("Itemid");
-				$app->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$Itemid", false), Text::_("JEV_SORRY_UPDATED"));
+				Factory::getApplication()->enqueueMessage(Text::_("JEV_SORRY_UPDATED"), 'warning');
+				Factory::getApplication()->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$this->Itemid", false));
+
 			}
 
 			$row = new jIcalEventDB($vevent);
@@ -1075,7 +1159,7 @@ SQL;
 		?>
 		<script type="text/javascript">
             try {
-                window.parent.jQuery('#myEditModal').modal('hide');
+                window.parent.closeJevModalBySelector('#myEditModal,#myDetailModal');
             }
             catch (e) {
             }

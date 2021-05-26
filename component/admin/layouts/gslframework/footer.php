@@ -27,7 +27,7 @@ echo GslHelper::renderVersion();
     </div>
 
     <!-- OFFCANVAS -->
-    <div id="offcanvas-left-panel" data-gsl-offcanvas="flip: false; overlay: true; container: #gslc;" class="gsl-hidden">
+    <div id="offcanvas-left-panel" class="gsl-offcanvas"  data-gsl-offcanvas="flip: false; overlay: true; container: #gslc;" class="gsl-hidden">
         <div class="gsl-offcanvas-bar gsl-offcanvas-bar-animation gsl-offcanvas-slide">
             <button class="gsl-offcanvas-close gsl-close gsl-icon" type="button" data-gsl-close></button>
             <div class="offcanvas-content"></div>

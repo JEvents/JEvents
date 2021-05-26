@@ -174,7 +174,7 @@ class JEventsModelicalrepeat extends ListModel
 			$limitstart = 0;
 		}
 
-		$query = "SELECT ev.*, rpt.*, rr.*, det.*"
+		$query = "SELECT ev.*, rpt.*, rr.*, det.*, exc.exception_type"
 			. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
 			. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
 			. "\n , HOUR(rpt.startrepeat) as hup, MINUTE(rpt.startrepeat ) as minup, SECOND(rpt.startrepeat ) as sup"
@@ -182,6 +182,7 @@ class JEventsModelicalrepeat extends ListModel
 			. "\n FROM #__jevents_vevent as ev"
 			. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid"
 			. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
+			. "\n LEFT JOIN #__jevents_exception as exc ON rpt.rp_id = exc.rp_id"
 			. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 			. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
 			. "\n WHERE ev.ev_id=" . $id

@@ -1,0 +1,144 @@
+{{Message:MESSAGE}}
+<div class="adminform">
+
+	{{Tab Start:TABSTART#JEV_TAB_COMMON}}
+	<div class="row jevtitle gsl-grid">
+		<div class="gsl-width-1-5">
+			{{Title Label:TITLE_LBL}}
+		</div>
+		<div class="gsl-width-4-5">
+			{{Title:TITLE}}
+		</div>
+	</div>
+	<div class="row jevpriority {{Priority:PRIORITY# #jev_none}}  gsl-grid">
+		<div class="gsl-width-1-5">
+			{{Priority Label:PRIORITY_LBL}}
+		</div>
+		{{Priority:PRIORITY#
+		<div class="gsl-width-4-5">%s</div>
+		}}
+	</div>
+	<div class="row jevcreator {{Creator:CREATOR# #jev_none}} gsl-grid">
+		<div class="gsl-width-1-5">
+			{{Creator label:CREATOR_LBL}}
+		</div>
+		<div class="gsl-width-4-5">
+			{{Creator:CREATOR}}
+		</div>
+	</div>
+	<div class="row jevical {{Calendar label:ICAL_LBL# #jev_none}} gsl-grid">
+		<div class="gsl-width-1-5">
+			{{Calendar label:ICAL_LBL}}
+		</div>
+		<div class="gsl-width-4-5">
+			{{Calendar:ICAL}}
+		</div>
+	</div>
+	<div class="row jevlock {{Lock Event:LOCK##jev_none}} gsl-grid">
+		<div class="gsl-width-1-5">
+			{{Lock Event label:LOCK_LBL}}
+		</div>
+		<div class="gsl-width-4-5">
+			{{Lock Event:LOCK}}
+		</div>
+	</div>
+	<div class="row jevcategory {{Category:CATEGORY# #jev_none}} gsl-grid">
+		<div class="gsl-width-1-5">
+			{{Category label:CATEGORY_LBL}}
+		</div>
+		<div class="gsl-width-4-5">
+			{{Category:CATEGORY}}
+		</div>
+	</div>
+	<div class="row jevaccess {{Access:ACCESS# #jev_none}} gsl-grid">
+		<div class="gsl-width-1-5">
+			{{Access label:ACCESS_LBL}}
+		</div>
+		<div class="gsl-width-4-5">
+			{{Access:ACCESS}}
+		</div>
+	</div>
+	<div class="row jevstate {{Published State:STATE# #jev_none}} gsl-grid">
+		<div class="gsl-width-1-5">
+			{{State label:STATE_LBL}}
+		</div>
+		<div class="gsl-width-4-5">
+			{{State:STATE}}
+		</div>
+	</div>
+	<div class="row jevcolour {{Event Colour:COLOUR# #jev_none}} gsl-grid">
+		<div class="gsl-width-1-5">
+			{{Colour label:COLOUR_LBL}}
+		</div>
+		<div class="gsl-width-4-5">
+			{{Event Colour:COLOUR}}
+		</div>
+	</div>
+
+	<div class="row jev_description" id='jeveditor'>
+		<div>
+			{{Description label:DESCRIPTION_LBL}}
+		</div>
+		<div>
+			{{Description:DESCRIPTION}}
+		</div>
+	</div>
+
+	<div class="row jeveditlocation gsl-grid" id="jeveditlocation">
+		<div class="gsl-width-1-5">
+			{{LOCATION label:LOCN_LBL}}
+		</div>
+		<div class="gsl-width-4-5">
+			{{Location:LOCN}}
+		</div>
+	</div>
+
+	<div class="row jev_contact gsl-grid">
+		<div class="gsl-width-1-5">
+			{{Contact label:CONTACT_LBL}}
+		</div>
+		<div class="gsl-width-4-5">
+			{{Contact:CONTACT}}
+		</div>
+	</div>
+
+	<div class="row jev_extrainfo gsl-grid">
+		<div class="gsl-width-1-5">
+			{{Extra label:EXTRA_LBL}}
+		</div>
+		<div class="gsl-width-4-5">
+			{{Extra:EXTRA}}
+		</div>
+	</div>
+
+	<div class="gsl-grid" {{Custom joomlauser2 showon:customfield_joomlauser2_showon}} >
+		<div class="gsl-width-1-5">
+			Example of single custom field : {{Custom joomlauser2 label:customfield_joomlauser2_lbl}}
+		</div>
+		<div class="gsl-width-4-5">
+			{{Custom joomlauser2:customfield_joomlauser2}}
+		</div>
+	</div>
+
+	{{Custom Fields:CUSTOMFIELDS}}
+
+	{{Tab Start:TABSTART#JEV_TAB_CALENDAR}}
+	{{Calendar tab content:CALTAB}}
+
+	{{Tab Start:TABSTART#Custom Fields Tab One}}
+	{{Tab 1:CUSTOM_1}}
+
+	{{Tab Start:TABSTART#Custom Fields Tab Two}}
+	{{Tab 2:CUSTOM_2}}
+
+	{{Tab Start:TABSTART#JEV_ATTENDANCE}}
+	{{Attendance Tab:JEV_ATTENDANCE}}
+
+	{{Tab Start:TABSTART#JEV_INVITATION_OPTIONS}}
+	{{Invitations Tab:JEV_INVITATION_OPTIONS}}
+
+	{{Tab Start:TABSTART#JEV_REMINDER_OPTIONS}}
+	{{Reminder Tab:JEV_REMINDER_OPTIONS}}
+
+	{{End Tabs:TABSEND}}
+</div>

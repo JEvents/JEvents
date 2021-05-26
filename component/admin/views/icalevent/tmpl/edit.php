@@ -23,7 +23,9 @@ $app    = Factory::getApplication();
 $params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 if ($app->isClient('administrator') || $params->get("newfrontendediting", 1))
 {
-	echo $this->loadTemplate('uikit');
+	$editPage = $this->loadTemplate('uikit');
+	//$editPage = str_replace("hasPopover", "hasYsPopover", $editPage);
+	echo $editPage;
 	return;
 }
 
@@ -47,7 +49,11 @@ HTMLHelper::_('behavior.keepalive');
 //HTMLHelper::_('behavior.formvalidation');
 if ($params->get("bootstrapchosen", 1))
 {
-	HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
+	$jversion = new Joomla\CMS\Version;
+	if (!$jversion->isCompatible('4.0'))
+	{
+		HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
+	}
 	// Use this as a basis for setting the primary category
 	/*
 

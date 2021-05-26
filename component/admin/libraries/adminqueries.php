@@ -121,7 +121,8 @@ class JEventsAdminDBModel extends JEventsDBModel
 						if ($isedit && $app->isClient('site'))
 						{
 							$Itemid = $input->getInt("Itemid");
-							$app->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$Itemid", false), Text::_("JEV_SORRY_CANT_EDIT_FROM_THAT_MENU_ITEM"));
+							$app->enqueueMessage(Text::_("JEV_SORRY_CANT_EDIT_FROM_THAT_MENU_ITEM"), 'warning');
+							$app->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$Itemid", false));
 						}
 
 						return null;
