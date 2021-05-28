@@ -308,9 +308,15 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 		$query->select('*')
 		    ->from($db->quoteName('#__jevents_repetition', 'rp'))
 		    ->where($db->quoteName('eventid') . ' = ' . $evid);
-		echo $query->dump();
 		$db->setQuery($query);
 		$repeats = $db->loadObjectList();
+
+		$query  = $db->getQuery(true);
+		$query->select('*')
+			->from($db->quoteName('#__jevents_vevent', 'ev'))
+			->where($db->quoteName('ev_id') . ' = ' . $evid);
+		$db->setQuery($query);
+		$event = $db->loadObject();
 
 		$start          = strtotime('now');
 		$irregularDates = array();
@@ -327,6 +333,9 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
         }
 
 		// Add in our new date for additional repeat
+		$repeatToInsert = $repeats[count($repeats) -1];
+		$start          = strtotime($repeatToInsert->startrepeat . '+1 hour');
+		$start          = JevDate::strftime('%Y-%m-%d %H:%M:%S', $start);
 		$irregularDates[]   =  $start;
 
 		// Set Irregular Rules
@@ -344,12 +353,13 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
             // Now to insert the the additional repeat
             $repeatToInsert = $repeats[count($repeats) -1];
 
-            $start          = strtotime($repeatToInsert->startrepeat . '+1 hour');
-            $end            = strtotime($repeatToInsert->endrepeat . '+2 hour');
+            $start          = strtotime($repeatToInsert->startrepeat . '+1 day');
+            $end            = strtotime($repeatToInsert->endrepeat . '+2 day');
             $repeatToInsert->rp_id          = '';
             $repeatToInsert->duplicatecheck = md5($repeatToInsert->eventid . $start);
             $repeatToInsert->startrepeat    = JevDate::strftime('%Y-%m-%d %H:%M:%S', $start);
             $repeatToInsert->endrepeat      = JevDate::strftime('%Y-%m-%d %H:%M:%S', $end);
+	        $repeatToInsert->eventdetail_id = $event->detail_id;
 
             $insertResult = Factory::getDbo()->insertObject('#__jevents_repetition', $repeatToInsert);
 
@@ -764,7 +774,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 
 	// experimentaal code disabled for the time being
 
-	private function targetMenu($itemid = 0, $name)
+	private function targetMenu($itemid = 0, $name = "")
 	{
 
 		$db = Factory::getDbo();
@@ -1091,7 +1101,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 		?>
 		<script type="text/javascript">
             try {
-                window.parent.jQuery('#myEditModal').modal('hide');
+                window.parent.closeJevModalBySelector('#myEditModal,#myDetailModal');
             }
             catch (e) {
             }
@@ -1162,6 +1172,10 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 			$query = "SELECT detail_id FROM #__jevents_vevent WHERE ev_id=$data->eventid";
 			$db->setQuery($query);
 			$eventdetailid = $db->loadResult();
+
+			$query = "SELECT * FROM #__jevents_rrule WHERE eventid=$data->eventid";
+			$db->setQuery($query);
+			$rrule = $db->loadObject();
 
 			// only remove the detail id if its different for this repetition i.e. not the global one!
 			if ($eventdetailid != $data->eventdetail_id)

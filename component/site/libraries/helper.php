@@ -24,10 +24,9 @@ use Joomla\String\StringHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Utilities\ArrayHelper;
 
 jimport('joomla.access.access');
-
-use Joomla\Utilities\ArrayHelper;
 
 /** Should already be defined within JEvents, however it does no harm and resolves issue with pop-up details */
 include_once(JPATH_SITE . "/components/com_jevents/jevents.defines.php");
@@ -690,7 +689,7 @@ class JEVHelper
 	 * @static
 	 */
 	public static
-	function loadElectricCalendar($fieldname, $fieldid, $value, $minyear, $maxyear, $onhidestart = "", $onchange = "", $format = 'Y-m-d', $attribs = array(), $showtime = false)
+	function loadElectricCalendar($fieldname, $fieldid, $value, $minyear, $maxyear, $onhidestart = "", $onchange = "", $format = 'Y-m-d', $attribs = array(), $showtime = false, $showDefaultDateValue = true)
 	{
 
 		$document           = Factory::getDocument();
@@ -703,46 +702,57 @@ class JEVHelper
 
 		if ($showtime)
 		{
-			if (empty($value))
+			if ($showDefaultDateValue)
 			{
-				$value = date($format);
-			}
-
-			$datetime = date_create_from_format($format, $value);
-			// This is probably because we have mysql formatted value
-			if (!$datetime)
-			{
-				$datetime = date_create_from_format('Y-m-d', $value);
-				if (!$datetime)
+				if (empty($value))
 				{
 					$value = date($format);
-					$datetime = date_create_from_format($format, $value);
 				}
+
+				$datetime = date_create_from_format($format, $value);
+				// This is probably because we have mysql formatted value
+				if (!$datetime)
+				{
+					$datetime = date_create_from_format('Y-m-d', $value);
+					if (!$datetime)
+					{
+						$value    = date($format);
+						$datetime = date_create_from_format($format, $value);
+					}
+				}
+
+				$value = $datetime->format("Y-m-d H:i");
 			}
-
-			$value = $datetime->format("Y-m-d H:i");
-
 			// switch back to strftime format to use Joomla calendar tool
 			$format = str_replace(array("Y", "m", "d", "H", "h", "i", "a"), array("%Y", "%m", "%d", "%H", "%I", "%M", "%P"), $format);
 
 		}
 		else
 		{
-			if ($value == "")
+			if ($showDefaultDateValue)
 			{
-				$value = strftime("%Y-%m-%d");
+
+				if ($value == "")
+				{
+					$value = strftime("%Y-%m-%d");
+				}
+				list ($yearpart, $monthpart, $daypart) = explode("-", $value);
+				$value = str_replace(array("Y", "m", "d"), array($yearpart, $monthpart, $daypart), $format);
+				$value  = $yearpart . "-" . $monthpart . "-" . $daypart;
 			}
-			list ($yearpart, $monthpart, $daypart) = explode("-", $value);
-			$value = str_replace(array("Y", "m", "d"), array($yearpart, $monthpart, $daypart), $format);
 			// switch back to strftime format to use Joomla calendar tool
 			$format = str_replace(array("Y", "m", "d"), array("%Y", "%m", "%d"), $format);
-			$value = $yearpart . "-" . $monthpart . "-" . $daypart;
-
 		}
 
 
+		if (!empty($onchange))
+		{
+			Factory::getDocument()->addScriptDeclaration("document.addEventListener('DOMContentLoaded',function (){if(document.getElementById('" . $fieldid . "')) document.getElementById('" . $fieldid . "').addEventListener('change', function(){" . $onchange . "});});");
+			$onchange = "";
+
+		}
 		// Build the attributes array.
-		empty($onchange) ? null : $attribs['onchange'] = $onchange;
+		//empty($onchange) ? null : $attribs['onchange'] = $onchange;
 
 		$name = $fieldname;
 
@@ -1206,7 +1216,7 @@ class JEVHelper
 
 							if ($forcecheck)
 							{
-								$mparams = is_string($jevitem->params) ? new JevRegistry($jevitem->params) : $jevitem->params;
+								$mparams = is_string($jevitem->getParams()) ? new JevRegistry($jevitem->getParams()) : $jevitem->getParams();
 								$mcatids = array();
 								// New system
 								$newcats = $mparams->get("catidnew", false);
@@ -4303,7 +4313,31 @@ SCRIPT;
 						{
 							foreach ($sub_row as $key2 => $sub_sub_row)
 							{
-								$array[$key][$key1][$key2] = $filter->clean($sub_sub_row, 'HTML');
+								//3 Deep row check
+								if (!is_array($sub_row))
+								{
+									$array[$key][$key1][$key2] = $filter->clean($sub_sub_row, 'HTML');
+								}
+								else
+								{
+									foreach ($sub_sub_row as $key3 => $sub_sub_sub_row)
+									{
+										//4 Deep row check
+										if (!is_array($sub_row))
+										{
+											$array[$key][$key1][$key2][$key3] = $filter->clean($sub_sub_sub_row, 'HTML');
+										}
+										else
+										{
+											foreach ($sub_sub_sub_row as $key4 => $sub_sub_sub_sub_row)
+											{
+												$array[$key][$key1][$key2][$key3][$key4] = $filter->clean($sub_sub_sub_sub_row, 'HTML');
+											}
+										}
+
+									}
+								}
+
 							}
 						}
 					}
@@ -4413,6 +4447,8 @@ SCRIPT;
             array("element" => "mod_jevents_categories", "name" => "mod_jevents_categories", "type" => "module"),
             // Silver - Newsletters - some TODO
             array("element" => "tagjevents_jevents", "name" => "tagjevents_jevents", "folder" => "acymailing", "type" => "plugin"),
+	        array("element" => "jev_latestevents", "name" => "jev_latestevents", "folder" => "emailalerts", "type" => "plugin"),
+	        array("element" => "jnewsjevents", "name" => "jnewsjevents", "folder" => "jnews", "type" => "plugin"),
             // Silver - Nnotifications
             array("element" => "jevnotify", "name" => "jevnotify", "folder" => "jevents", "type" => "plugin"),
             array("element" => "mod_jevents_notify", "name" => "mod_jevents_notify", "type" => "module"),
@@ -4435,6 +4471,9 @@ SCRIPT;
 
             // Bronze - editor button
             array("element" => "jevents", "name" => "jevents", "folder" => "editors-xtd", "type" => "plugin"),
+
+	        // Bronze - Remote Module Loaded
+	        array("element" => "mod_remoteloader", "name" => "mod_remoteloader", "type" => "module"),
 
             // Bronze - Meta tags
             array("element" => "jevmetatags", "name" => "jevmetatags", "folder" => "jevents", "type" => "plugin"),

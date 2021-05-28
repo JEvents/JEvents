@@ -31,7 +31,8 @@ class AdminDefaultsController extends Joomla\CMS\MVC\Controller\FormController
 
 		if (!JEVHelper::isAdminUser())
 		{
-			Factory::getApplication()->redirect("index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.cpanel", "Not Authorised - must be admin");
+			Factory::getApplication()->enqueueMessage("Not Authorised - must be admin", 'warning');
+			Factory::getApplication()->redirect("index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.cpanel");
 
 			return;
 		}
@@ -43,7 +44,7 @@ class AdminDefaultsController extends Joomla\CMS\MVC\Controller\FormController
 
 		// Make sure DB is up to date
 		$db = Factory::getDbo();
-		$db->setQuery("SELECT * FROM #__jev_defaults");
+		$db->setQuery("SELECT * FROM #__jev_defaults where catid='' AND language IN ('', '*')");
 		$defaults = $db->loadObjectList("name");
 		if (!isset($defaults['icalevent.detail_body']))
 		{

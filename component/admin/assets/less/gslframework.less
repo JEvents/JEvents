@@ -39,10 +39,16 @@ body, body.@{mycomponent}
   .gsl-list-divider > li{
     padding-top: 10px;
   }
-
+/*
   .gsl-button.gsl-button-small {
     line-height: 25px;
     font-size: 0.8rem;
+  }
+*/
+  .gsl-button-mini {
+      padding: 0 5px;
+      line-height: 20px;
+      font-size: 0.65rem;
   }
 
   /* -- Top navigation -- */
@@ -74,7 +80,7 @@ body, body.@{mycomponent}
   #left-col {
     position: relative;
     left: 0;
-    top: 30px;
+    top: 0;
     /* overflow-x: hidden; safari */
 
     z-index: 1000;
@@ -147,7 +153,8 @@ body, body.@{mycomponent}
       }
 
       .left-nav.hide-label span.nav-label,
-      .left-nav.hide-label .gsl-navbar-dropdown {
+      .left-nav.hide-label .gsl-navbar-dropdown,
+      .left-nav.hide-label .gsl-dropdown {
         display: none;
       }
 
@@ -697,6 +704,7 @@ body, body.@{mycomponent}
     #top-head {
         position:fixed;
         right:0;
+        /* top : 0; */
         left:@leftColumn;
         /* So that they are above the search filter */
         z-index:100;
@@ -773,7 +781,8 @@ body, body.@{mycomponent}
 }
 /* Search toolbar */
 .gsl-scope  #ysts-main-container .js-stools {
-  margin: 0 3px;
+
+  box-sizing: content-box;
 
   /* Joomla search bar reveal sets this to inline-block! */
   .js-stools-container-filters-visible {

@@ -59,7 +59,7 @@ $tmpl = $app->input->getCmd('tmpl', '');
 	            if (empty($tmpl) && !$app->isClient('site'))
 	            {
 	            ?>
-                <nav class="gsl-navbar-container gsl-background-secondary ys-titlebar" gsl-navbar>
+                <nav class="gsl-navbar-container gsl-background-secondary ys-titlebar gsl-navbar"  gsl-navbar>
                     <div class="gsl-navbar-left gsl-background-secondary gsl-width-expand@m">
                         <?php
                         echo Factory::getApplication()->JComponentTitle;
@@ -68,7 +68,7 @@ $tmpl = $app->input->getCmd('tmpl', '');
                     <div class="gsl-navbar-right  gsl-background-secondary ">
                             <ul class="gsl-navbar-nav gsl-hidden">
 	                            <?php
-	                            $jversion = new JVersion;
+	                            $jversion = new Joomla\CMS\Version;
 	                            if (true || $jversion->isCompatible('4.0'))
 	                            {
 		                            ?>
@@ -145,7 +145,7 @@ $tmpl = $app->input->getCmd('tmpl', '');
 		            <?php
 	            }
 	            ?>
-                <nav class="gsl-navbar-container ys-gsl-action-buttons" gsl-navbar>
+                <nav class="gsl-navbar-container ys-gsl-action-buttons gsl-navbar" gsl-navbar>
                     <div class="gsl-navbar-left  gsl-width-expand@m">
                         <?php
                         $bar            = JToolBar::getInstance('toolbar2');
@@ -181,8 +181,8 @@ $tmpl = $app->input->getCmd('tmpl', '');
             </header>
             <!--/HEADER-->
 
-	        <div id="ysts_system_messages">YSTS_SYSTEM_MESSAGES</div>
+	        <div id="ysts_system_messages"></div>
 
-            <div class="gsl-content" data-gsl-height-viewport="expand: true;mode: slide">
+            <div class="gsl-content  <?php echo Factory::getApplication()->isClient('administrator') ? "gsl-backend" : "gsl-frontend";?>" data-gsl-height-viewport="expand: true;mode: slide">
 
 

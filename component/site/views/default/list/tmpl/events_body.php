@@ -52,10 +52,15 @@ foreach ($infields as $infield)
 				$i = 0;
 				foreach ($titles as $title)
 				{
+					if ($i > 0 && $titles[$i] == $titles[$i-1])
+					{
+						$i++;
+						continue;
+					}
 					?>
-					<th data-resizable-column-id="<?php echo $titles[$i];
-					$i++; ?>">
+					<th data-resizable-column-id="<?php echo $titles[$i];?>">
 						<?php
+						$i++;
 						echo $title;
 						?>
 					</th>
@@ -74,17 +79,44 @@ foreach ($infields as $infield)
 
 			$template = "<tr $style>";
 
+			$i = 0;
+			$closed = true;
 			foreach ($cols as $col)
 			{
 				$bgStyle = '';
 
-				if($col === 'COLOUR'){
-					$bgStyle = "style='background-color:{{xx:$col}}'";
-					$template .= "<td class='eventlist_col' $bgStyle> </td>";
-				} else {
-					$template .= "<td class='eventlist_col' $bgStyle>{{xx:$col}}</td>";
+				if ($i > 0 && $titles[$i] == $titles[$i-1])
+				{
+					$template .= "{{xx:$col}}";
+					$closed = false;
+					$i ++;
+					continue;
 				}
+
+				if (!$closed)
+				{
+					$template .= "</td>";
+					$closed = true;
+				}
+
+				if ($col === 'COLOUR')
+				{
+					$bgStyle  = "style='background-color:{{xx:$col}}'";
+					$template .= "<td class='eventlist_col' $bgStyle> ";
+				}
+				else
+				{
+					$template .= "<td class='eventlist_col' $bgStyle>{{xx:$col}}";
+				}
+				$closed = false;
+
+				$i ++;
 			}
+			if (!$closed)
+			{
+				$template .= "</td>";
+			}
+
 			$template .= "</tr>";
 
 			$num_events = count($data['rows']);

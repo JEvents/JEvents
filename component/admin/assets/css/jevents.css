@@ -23,6 +23,12 @@ body.com_jevents {
   /*
  * Divider override UIkit default - default in 3.3.7 leaves top list item squashed - especially in narrow screen mode
  */
+  /*
+  .gsl-button.gsl-button-small {
+    line-height: 25px;
+    font-size: 0.8rem;
+  }
+*/
   /* -- Top navigation -- */
   /* Smaller Header */
   /* Left bar */
@@ -51,9 +57,10 @@ body.com_jevents {
 #gslc.gsl-scope .gsl-list-divider > li {
   padding-top: 10px;
 }
-#gslc.gsl-scope .gsl-button.gsl-button-small {
-  line-height: 25px;
-  font-size: 0.8rem;
+#gslc.gsl-scope .gsl-button-mini {
+  padding: 0 5px;
+  line-height: 20px;
+  font-size: 0.65rem;
 }
 #gslc.gsl-scope #top-head {
   z-index: 9;
@@ -77,7 +84,7 @@ body.com_jevents {
 #gslc.gsl-scope #left-col {
   position: relative;
   left: 0;
-  top: 30px;
+  top: 0;
   /* overflow-x: hidden; safari */
   z-index: 1000;
   transition: height 0.3s ease-out;
@@ -142,7 +149,8 @@ body.com_jevents {
   padding: 3px;
 }
 #gslc.gsl-scope #left-col .left-nav-wrap .left-nav.hide-label span.nav-label,
-#gslc.gsl-scope #left-col .left-nav-wrap .left-nav.hide-label .gsl-navbar-dropdown {
+#gslc.gsl-scope #left-col .left-nav-wrap .left-nav.hide-label .gsl-navbar-dropdown,
+#gslc.gsl-scope #left-col .left-nav-wrap .left-nav.hide-label .gsl-dropdown {
   display: none;
 }
 #gslc.gsl-scope #left-col .left-nav-wrap .nav-label {
@@ -574,6 +582,7 @@ body.com_jevents {
 #gslc.gsl-scope #right-col #top-head {
   position: fixed;
   right: 0;
+  /* top : 0; */
   left: 50px;
   /* So that they are above the search filter */
   z-index: 100;
@@ -632,7 +641,7 @@ body.com_jevents {
 }
 /* Search toolbar */
 .gsl-scope #ysts-main-container .js-stools {
-  margin: 0 3px;
+  box-sizing: content-box;
   /* Joomla search bar reveal sets this to inline-block! */
 }
 .gsl-scope #ysts-main-container .js-stools .js-stools-container-filters-visible {
@@ -897,17 +906,23 @@ body.com_jevents {
 }
 #gslc.gsl-scope div#jevents #adminForm {
   /* Buttons in forms */
+  /*
+      label.gsl-button-small {
+        padding-left: 15px;
+      }
+       */
   /* select and input in event editing */
-}
-#gslc.gsl-scope div#jevents #adminForm label.gsl-button-small {
-  padding-left: 15px;
 }
 #gslc.gsl-scope div#jevents #adminForm select,
 #gslc.gsl-scope div#jevents #adminForm input {
   max-width: 100%;
+  margin-bottom: 0;
 }
 #gslc.gsl-scope #left-col ul.left-nav .notinstalled {
   opacity: 0.25;
+}
+#gslc.gsl-scope #left-col .left-nav img {
+  max-width: 20px;
 }
 #gslc.gsl-scope .adminlist.table-striped {
   width: 100%;
@@ -931,6 +946,27 @@ body.com_jevents {
 /* Overriding template.css styling when using native Joomla layouts for com_categories */
 body.com_categories #gslc.gsl-scope form#item-form {
   margin-left: 5px;
+}
+/* com_fields */
+body.com_fields .gsl-content {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+body.com_fields .gsl-content .btn-danger {
+  background-color: #f0506e;
+  color: #fff;
+}
+body.com_fields .gsl-content .btn-success {
+  background-color: #46a546;
+  color: #fff;
+}
+body.com_fields .gsl-content span.caret {
+  vertical-align: middle;
+  margin-left: 5px;
+}
+body.com_fields #system-message-container {
+  float: none;
+  width: 100%;
 }
 @media screen and (min-width: 960px) {
   #gslc.gsl-scope #left-col {
@@ -961,32 +997,32 @@ body.com_categories #gslc.gsl-scope form#item-form {
   }
 }
 @media (max-width: 1250px) {
-  #gslc.gsl-scope .gsl-content {
+  #gslc.gsl-scope .gsl-content.gsl-backend {
     /* filters */
   }
-  #gslc.gsl-scope .gsl-content .gsl-grid .js-stools-field-list {
+  #gslc.gsl-scope .gsl-content.gsl-backend .gsl-grid .js-stools-field-list {
     padding-left: 15px;
   }
-  #gslc.gsl-scope .gsl-content .gsl-grid .gsl-button,
-  #gslc.gsl-scope .gsl-content .gsl-grid input {
+  #gslc.gsl-scope .gsl-content.gsl-backend .gsl-grid .gsl-button,
+  #gslc.gsl-scope .gsl-content.gsl-backend .gsl-grid input {
     padding: 0 15px;
     line-height: 28px;
     font-size: 0.875rem;
     height: 28px;
   }
-  #gslc.gsl-scope .gsl-content .gsl-grid .gsl-select {
+  #gslc.gsl-scope .gsl-content.gsl-backend .gsl-grid .gsl-select {
     padding: 0 10px 0 0;
     line-height: 28px;
     height: 28px;
     font-size: 0.875rem;
   }
-  #gslc.gsl-scope .gsl-content .gsl-grid .gsl-select:not([multiple]):not([size]) {
-    /* background-image:none;*/
+  #gslc.gsl-scope .gsl-content.gsl-backend .gsl-grid .gsl-select:not([multiple]):not([size]) {
+    /*   background-image:none;*/
   }
-  #gslc.gsl-scope .gsl-content .js-stools-container-filters {
+  #gslc.gsl-scope .gsl-content.gsl-backend .js-stools-container-filters {
     margin: 10px 0 0 0;
   }
-  #gslc.gsl-scope .gsl-content .js-stools-container-filters .js-stools-field-filter {
+  #gslc.gsl-scope .gsl-content.gsl-backend .js-stools-container-filters .js-stools-field-filter {
     padding-left: 5px;
     margin-top: 5px;
   }
@@ -1003,7 +1039,7 @@ body.com_categories #gslc.gsl-scope form#item-form {
    * Divider override UIkit default - default in 3.3.7 leaves top list item squashed - narrow screen mode
    */
   }
-  #gslc.gsl-scope .gsl-button {
+  #gslc.gsl-scope .gsl-content.gsl-backend .gsl-button {
     padding: 0 15px;
     line-height: 28px;
     font-size: 0.875rem;

@@ -465,7 +465,9 @@ else $this->_detail = false;
 			$tz = str_replace("TZID=", "", $tz);
 			$tz = iCalImport::convertWindowsTzid($tz);
 		}
-		$start          = iCalImport::unixTime($this->recurrence_id, $tz);
+
+		$icalImport     = new iCalImport();
+		$start          = $icalImport->unixTime($this->recurrence_id, $tz);
 		$duplicatecheck = md5($eventid . $start);
 
 		// find the existing repetition in order to get the detailid

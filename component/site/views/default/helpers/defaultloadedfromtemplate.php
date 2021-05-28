@@ -15,6 +15,8 @@ use Joomla\CMS\Layout\LayoutHelper;
 
 function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $template_value = false, $runplugins = true, $skipfiles = false)
 {
+	static $processedCssJs = array();
+
 	$jevparams  = ComponentHelper::getParams(JEV_COM_COMPONENT);
 	$db         = Factory::getDbo();
 	$app        = Factory::getApplication();
@@ -137,11 +139,19 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					}
 					if (isset($templateparams->customcss) && !empty($templateparams->customcss))
 					{
-						Factory::getDocument()->addStyleDeclaration($templateparams->customcss);
+						if (!in_array($templateparams->customcss, $processedCssJs))
+						{
+							$processedCssJs[] = $templateparams->customcss;
+							Factory::getDocument()->addStyleDeclaration($templateparams->customcss);
+						}
 					}
 					if (isset($templateparams->customjs) && !empty($templateparams->customjs))
 					{
-						Factory::getDocument()->addScriptDeclaration($templateparams->customjs);
+						if (!in_array($templateparams->customjs, $processedCssJs))
+						{
+							$processedCssJs[] = $templateparams->customjs;
+							Factory::getDocument()->addScriptDeclaration($templateparams->customjs);
+						}
 					}
 
 					$templates[$template_name]['*'][0]->params   = json_encode($templateparams);
@@ -341,8 +351,19 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		$matchesarray   = $template->matchesarray;
 		$loadedFromFile = isset($template->fromfile);
 
-		Factory::getDocument()->addStyleDeclaration($template->params->get('customcss', ''));
-		Factory::getDocument()->addScriptDeclaration($template->params->get('customjs', ''));
+		$customcss = $template->params->get('customcss', '');
+		if (!in_array($customcss, $processedCssJs))
+		{
+			$processedCssJs[] = $customcss;
+			Factory::getDocument()->addStyleDeclaration($customcss);
+		}
+
+		$customjs = $template->params->get('customjs', '');
+		if (!in_array($customjs, $processedCssJs))
+		{
+			$processedCssJs[] = $customjs;
+			Factory::getDocument()->addScriptDeclaration($customjs);
+		}
 
 	}
 	else
@@ -418,11 +439,19 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		}
 		if (isset($templateparams->customcss) && !empty($templateparams->customcss) )
 		{
-			Factory::getDocument()->addStyleDeclaration($templateparams->customcss);
+			if (!in_array($templateparams->customcss, $processedCssJs))
+			{
+				$processedCssJs[] = $templateparams->customcss;
+				Factory::getDocument()->addStyleDeclaration($templateparams->customcss);
+			}
 		}
 		if (isset($templateparams->customjs) && !empty($templateparams->customjs) )
 		{
-			Factory::getDocument()->addScriptDeclaration($templateparams->customjs);
+			if (!in_array($templateparams->customjs, $processedCssJs))
+			{
+				$processedCssJs[] = $templateparams->customjs;
+				Factory::getDocument()->addScriptDeclaration($templateparams->customjs);
+			}
 		}
 
 		// non greedy replacement - because of the ?
@@ -1006,8 +1035,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				break;
 
 			case "{{CREATED}}":
-				$compparams = ComponentHelper::getParams(JEV_COM_COMPONENT);
-				$jtz        = $compparams->get("icaltimezonelive", "");
+				$jtz        = $jevparams->get("icaltimezonelive", "");
 				if ($jtz == "")
 				{
 					$jtz = null;
@@ -1807,6 +1835,13 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				$replace[] = $event->rp_id();
 				$blank[]   = "";
 				break;
+			case "{{TZID}}":
+				$jtz       = $jevparams->get("icaltimezonelive", "");
+				$jtz       = isset($event->_tzid) && !empty($event->_tzid) ? $event->_tzid : $jtz;
+				$search[]  = "{{TZID}}";
+				$replace[] = $jtz;
+				$blank[]   = "";
+				break;
 			case "{{EVID}}":
 				$search[]  = "{{EVID}}";
 				$replace[] = $event->ev_id();
@@ -1841,19 +1876,18 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
                     && $hasLocationOrIsOnline
                 )
 				{
-					$compparams = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
 					$lddata = array();
 					$lddata["@context"] = "https://schema.org";
 					$lddata["@type"] =  "Event";
 					$lddata["name"] =  $event->title();
-					$lddata["description"] =  $compparams->get("ldjson_striptags", 1) ?  strip_tags( $event->content() ) : $event->content();
+					$lddata["description"] =  $jevparams->get("ldjson_striptags", 1) ?  strip_tags( $event->content() ) : $event->content();
 
 					// Timezone
 					// event tzid
 					// icaltimezonelive
 					// icaltimezone
-					$jtz        = $compparams->get("icaltimezonelive", "");
+					$jtz        = $jevparams->get("icaltimezonelive", "");
 					$jtz        = isset($event->_tzid) && !empty($event->_tzid) ? $event->_tzid : $jtz;
 					if (!empty($jtz))
 					{
@@ -2451,8 +2485,8 @@ function jevSpecialDateFormatting($matches)
 			$fmt = $parts[1];
 
 			// Must get this each time otherwise modules can't set their own timezone
-			$compparams = ComponentHelper::getParams(JEV_COM_COMPONENT);
-			$jtz        = $compparams->get("icaltimezonelive", "");
+			$jevparams  = ComponentHelper::getParams(JEV_COM_COMPONENT);
+			$jtz        = $jevparams->get("icaltimezonelive", "");
 			if ($jtz != "")
 			{
 				$jtz = new DateTimeZone($jtz);
@@ -2486,7 +2520,7 @@ function jevSpecialDateFormatting($matches)
 			if (strtolower($outputtz) == "user" || strtolower($outputtz) == "usertz")
 			{
 				$user     = Factory::getUser();
-				$outputtz = $user->getParam("timezone", $compparams->get("icaltimezonelive", @date_default_timezone_get()));
+				$outputtz = $user->getParam("timezone", $jevparams->get("icaltimezonelive", @date_default_timezone_get()));
 			}
 			$outputtz = new DateTimeZone($outputtz);
 

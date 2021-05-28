@@ -999,7 +999,8 @@ class JEventsDataModel
 					$link    = 'index.php?option=' . $comuser . '&view=login&return=' . base64_encode($link);
 					$link    = Route::_($link);
 
-					$app->redirect($link, Text::_('JEV_LOGIN_TO_VIEWEVENT'));
+					$app->enqueueMessage(Text::_("JEV_LOGIN_TO_VIEWEVENT"), 'warning');
+					$app->redirect($link);
 
 					return null;
 				}
