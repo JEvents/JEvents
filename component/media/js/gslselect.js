@@ -15,7 +15,7 @@ function gslselect(selector) {
     selectElements.forEach (
         function(selectElement) {
 
-            if (selectElement.hasAttribute('hidden') || selectElement.getComputedStyle(elem,'display') == 'none')
+            if (selectElement.hasAttribute('hidden') || window.getComputedStyle(selectElement,'display') == 'none')
             {
                 return;
             }
