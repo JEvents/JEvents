@@ -180,7 +180,8 @@ class AdminIcaleventController extends Joomla\CMS\MVC\Controller\AdminController
 				if (!$vevent)
 				{
 					$Itemid = $input->getInt("Itemid");
-					$app->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$Itemid", false), Text::_("JEV_SORRY_UPDATED"));
+					Factory::getApplication()->enqueueMessage(Text::_("JEV_SORRY_UPDATED"), 'warning');
+					Factory::getApplication()->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$this->Itemid", false));
 				}
 
 				$row = new jIcalEventDB($vevent);
@@ -468,7 +469,8 @@ SQL;
 			if (!$vevent)
 			{
 				$Itemid = $input->getInt("Itemid");
-				$app->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$Itemid", false), Text::_("JEV_SORRY_UPDATED"));
+				Factory::getApplication()->enqueueMessage(Text::_("JEV_SORRY_UPDATED"), 'warning');
+				Factory::getApplication()->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$this->Itemid", false));
 			}
 
 			$row = new jIcalEventDB($vevent);
@@ -529,7 +531,8 @@ SQL;
 			if (!$vevent)
 			{
 				$Itemid = $input->getInt("Itemid");
-				$app->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$Itemid", false), Text::_("JEV_SORRY_UPDATED"));
+				Factory::getApplication()->enqueueMessage(Text::_("JEV_SORRY_UPDATED"), 'warning');
+				Factory::getApplication()->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$this->Itemid", false));
 			}
 
 			$row = new jIcalEventDB($vevent);
@@ -599,7 +602,9 @@ SQL;
 			if (!$vevent)
 			{
 				$Itemid = $input->getInt("Itemid");
-				$app->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$Itemid", false), Text::_("JEV_SORRY_UPDATED"));
+				Factory::getApplication()->enqueueMessage(Text::_("JEV_SORRY_UPDATED"), 'warning');
+				Factory::getApplication()->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$this->Itemid", false));
+
 			}
 
 			$row = new jIcalEventDB($vevent);
@@ -1075,7 +1080,7 @@ SQL;
 		?>
 		<script type="text/javascript">
             try {
-                window.parent.jQuery('#myEditModal').modal('hide');
+                window.parent.closeJevModalBySelector('#myEditModal,#myDetailModal');
             }
             catch (e) {
             }

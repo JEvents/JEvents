@@ -302,6 +302,9 @@ foreach ($this->data as $buffer){
 				case "MULTIDAY":
 					$dataLine->setMultiday($data[$order]);
 					break;
+				case "lockevent":
+					$dataLine->lockevent = $data[$order];
+					break;
 				default:
 					$dataLine->customField($data[$order], $col);
 					break;

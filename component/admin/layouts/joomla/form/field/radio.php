@@ -1,7 +1,5 @@
 <?php
 
-use Joomla\CMS\HTML\HTMLHelper;
-
 /**
  * @package     Joomla.Site
  * @subpackage  Layout
@@ -12,6 +10,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 // Joomla 3.x only
 defined('JPATH_BASE') or die;
+
+use Joomla\CMS\HTML\HTMLHelper;
 
 if (GSLMSIE10)
 {

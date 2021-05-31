@@ -314,3 +314,104 @@ class ToolbarButtonJevconfirm extends ToolbarButton
 }
 
 class_alias("ToolbarButtonJevconfirm", "JToolbarButtonJevconfirm");
+
+class ToolbarButtonJevconfirmvar extends ToolbarButtonJevconfirm
+{
+	/**
+	 * Button type
+	 *
+	 * @access    protected
+	 * @var        string
+	 */
+	var $_name = 'Jevconfirm';
+
+	/**
+	 * Fetch the HTML for the button
+	 *
+	 * @param   string  $type     Unused string.
+	 * @param   string  $msgvar   Message to render as a javascript variable!
+	 * @param   string  $name     Name to be used as apart of the id
+	 * @param   string  $text     Button text
+	 * @param   string  $task     The task associated with the button
+	 * @param   boolean $list     True to allow use of lists
+	 * @param   boolean $hideMenu True to hide the menu on click
+	 *
+	 * @return  string   HTML string for the button
+	 *
+	 * @since   3.0
+	 */
+	public function fetchButton($type = 'Confirmvar', $msgvar = '', $name = '', $text = '', $task = '', $list = true, $hideMenu = false, $btnClass = false, $tooltiptitle = "", $tooltipcontent = "")
+	{
+		// Store all data to the options array for use with JLayout
+		$options           = array();
+		$options['text']   = \JText::_($text);
+		$options['msgvar'] = $msgvar;
+
+		// We want to make sure carriage returns in the message are respected
+		//$options['msg'] = str_replace("\\\\n" , "\n", $options['msg']);
+
+		$options['class']  = $this->fetchIconClass($name);
+		$options['gsl-icon']  = $name;
+		$options['doTask'] = $this->getButtonCommand($options['msgvar'], $name, $task, $list);
+
+		$options['btnClass'] = 'btn btn-small button-' . $name;
+
+		// Add name as class too
+		$options['btnClass'] .= " " . str_replace(array(".", "(", ")") , "", $task);
+
+		if ($btnClass)
+		{
+			$options['btnClass'] .= " " . $btnClass;
+		}
+
+		$tooltip = '';
+		if ($tooltiptitle && $tooltipcontent)
+		{
+			$tooltip = ' data-yspoptitle = "' . \JText::_($tooltiptitle, true) . '"'
+				. '  data-yspopcontent = "' . \JText::_($tooltipcontent, true) . '" '
+				. ' data-yspopoptions= \'{"mode" : "hover", "offset" : 20,"delayHide" : 200, "pos" : "right"}\'';
+
+			$options['btnClass'] .= " hasYsPopover";
+		}
+		$options['tooltip'] = $tooltip;
+
+		// Instantiate a new JLayoutFile instance and render the layout
+		$layout = new FileLayout('joomla.toolbar.confirmvar');
+
+		$output =  $layout->render($options);
+
+		return $output;
+
+	}
+
+	protected function getButtonCommand($msgvar, $name, $task, $list)
+	{
+		\JText::script('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST');
+
+		$msgvar = str_replace("\\n", "<br>", $msgvar);
+		$msgvar = str_replace("\n", "<br>", $msgvar);
+
+		if (strpos($task, ".") !== false)
+		{
+			//$cmd = "let msg = " . $msgvar . "; if (confirm(msg.replace(/\\\\n/g, '\\n'))) { Joomla.submitbutton('" . $task . "'); }";
+			$cmd = "let msg = " . $msgvar . "; if (msg.length == 0) { Joomla.submitbutton('" . $task . "');return false; };gslUIkit.modal.confirm(msg.replace(/\\n/g, '<br>')).then(() => { Joomla.submitbutton('" . $task . "'); }, () => {try { event.stopPropagation();} catch (e) {}; return false;})";
+		}
+		else
+		{
+			// Javascript !
+			//$cmd = "let msg = " . $msgvar . "; if (confirm(msg.replace(/\\\\n/g, '\\n'))) { " . $task . "; }";
+			$cmd = "let msg = " . $msgvar . "; gslUIkit.modal.confirm(msg.replace(/\\n/g, '<br>')).then( () => { " . $task . "; }, () => {try { event.stopPropagation();} catch (e) {}; return false;})";
+		}
+
+		if ($list)
+		{
+			$alert = "alert(Joomla.JText._('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST'));";
+			$cmd   = "if (document.adminForm.boxchecked.value == 0) { " . $alert . " } else { " . $cmd . " }";
+		}
+
+		return $cmd;
+	}
+
+}
+
+class_alias("ToolbarButtonJevconfirmvar", "JToolbarButtonJevconfirmvar");

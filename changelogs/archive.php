@@ -2,7 +2,154 @@
 ob_start();
 ?>
 	<ul>
-		<li>JEvents 3.4.57
+		<li>JEvents 3.6.11
+			<ul>
+				<li>Force popup edit options dialog to have opacity of 1 when shown</li>
+				<li>Allow filtering event editing layouts by category</li>
+				<li>Editing event using custom layout in some circumstances $params was not declared.</li>
+				<li>Fix for display of child categories in legend module if root parent is is not 1 or 0 due to a bad historic site migration</li>
+			</ul>
+		</li>
+		<li>JEvents 3.6.10
+			<ul>
+				<li>$app was not declared for isClient call when editing events with a custom layout for event editing with no tabs</li>
+				<li>Fix for calendar icon in frontend event filters</li>
+				<li>Escape commas in location field in iCal export</li>
+			</ul>
+		</li>
+		<li>JEvents 3.6.9
+			<ul>
+				<li>When editing events with a custom layout make sure conditional custom fields still work with showon.</li>
+				<li>Use min-height on left menu icons to cope with some bad backend template CSS</li>
+				<li>Better tooltips for links to&nbsp; translate events</li>
+				<li>Allow changing to category when editing layouts to make more intuitive</li>
+				<li>Support stripping HTML tags from LD-JSON structured data</li>
+				<li>Allow editing latest events module output in the layout editor</li>
+				<li>Fix setting Alias on creating new categories if alias has not been set. i.e. Importing Events.</li>
+				<li>Added AutoIncremental Fix on installation update</li>
+				<li>Quick catch for null test event - when primary key has changed usually.</li>
+				<li>Fix for tooltips style when editing JEvents config</li>
+				<li>Add support for organiser, event status and online event details in LD-JSON Structured Data</li>
+				<li>Fix for double domain appearing in LD-JSON structured data image paths</li>
+				<li>Fix for showon of custom fields using block instead of flex display</li>
+				<li>Disable showon animation which could cause chosen select elements to appear behind other page elements</li>
+				<li>Fix for dynamic saving of user group permissions in JEvents config.xml</li>
+				<li>New option to allow auto-printing from print button in event detail view</li>
+			</ul>
+		</li>
+		<li>JEvents 3.6.8
+			<ul>
+				<li>Fix for custom css and js changes in layouts not being saved</li>
+				<li>Added coloured support to state icon for calendars and custom layouts.</li>
+				<li>JEvents config layout problems in some languages caused by double underscore in config.xml description attribute</li>
+				<li>Only use UIkit modal in event/repeat editing when in the frontend.</li>
+				<li>Fix for dynamic saving of user group permissions in JEvents config.xml</li>
+				<li>New option to allow auto-printing from print button in event detail view</li>
+				<li>Fix for showon of custom fields using block instead of flex display</li>
+				<li>Disable showon animation which could cause chosen select elements to appear behind other page elements</li>
+			</ul>
+		</li>
+		<li>&nbsp;JEvents 3.6.7
+			<ul>
+				<li>Make dynamic field appearance in event editing off by default - can be configured to on in JEvents config</li>
+				<li>Update installation landing page</li>
+				<li>Fix use of ArrayHelper</li>
+				<li>Fix typo in $app-&gt;input for trashing / changing category state.</li>
+				<li>Implement our own equivalent of Chosen in UIkit style - always used in J4</li>
+				<li>Fix for search button styling</li>
+				<li>Fix for missing JEventsHelper declaration when editing location categories</li>
+				<li>Fix for required core event fields not showing * in labels</li>
+				<li>Show on fixes for editing events</li>
+				<li>Use UIkit based modals when frontend uses new editing style</li>
+			</ul>
+		</li>
+		<li>JEvents 3.6.6&nbsp;
+			<ul>
+				<li>New configuration option to control the behaviour of the left menu in the backend of JEvents</li>
+				<li>New configuration option to enable the fields to appear one or two at a time in the event creation pages to guide the user through the event creation process</li>
+				<li>New configurable placeholder/hint for event title to be used then revealing fields dynaimcally in event creation pages</li>
+				<li>Fix for iCal export when specific years are selected</li>
+				<li>Fix to showon handling when event title has quotes or double quotes in them</li>
+				<li>Fix for php notice in event legen module</li>
+			</ul>
+		</li>
+		<li>JEvents 3.6.5
+			<ul>
+				<li>Fix JevRegistry functions for Joomla 4</li>
+				<li>Fix popup event selection</li>
+				<li>Router fix for iCal Event Export and event search</li>
+				<li>Better explantion of cause when failing to delete an event</li>
+				<li>Fix for incorrect check before deleting event which could lead to some event being impossible to delete in the backend</li>
+				<li>Fix for touch screen behaviour of left menu bar in backend</li>
+				<li>Remove stray BOM text from non-JEvents plugins that can interfere with backend layouts</li>
+				<li>Catch problem with some event repeats with multi-categories not being editable because of catids being a string instead of an array</li>
+				<li>Fix router problems with 404 errors when JEvents is the home menu item<br>Resolve php 7.4 notice</li>
+				<li>Fix club theme radio button styling</li>
+				<li>Fix filter module reset (some residual mootools javascript was missed)</li>
+				<li>Relieve some flickering of left menu by not using uikit-navbar for left navigation</li>
+				<li>New config option for left menu to allow response to click instead of hover or even not show the revealing labels at all</li>
+				<li>Catch corrupted old event with missing repeates during delete to allow them to be deleted without a 403 error</li>
+				<li>Hide showon elements by default before JS takes over to reveal as needed</li>
+				<li>Fix iCal export when specific catid or year values are selected</li>
+				<li>Fix calendar icon for date picker in old version of event editing</li>
+				<li>Make sure php 7 is used before upgrading to JEvents 3.6+</li>
+				<li>Added Today and Tomorrow support for event outputs</li>
+				<li>Added Creator first and last name display values</li>
+				<li>Added 'Alias' for default created category</li>
+				<li>Fixed default joomla access level for fields</li>
+			</ul>
+		</li>
+		<li>JEvents 3.6.4
+			<ul>
+				<li>correct string replacement in bulid process to stop "com august" appearing in language strings</li>
+				<li>only hide the main page header in the backend</li>
+				<li>Correct use of showon for date fields in event creation</li>
+				<li>Allow JEvents to show 404 error when its the home menu item</li>
+				<li>Correct JevRegistry so that in Joomla 3.9 JRegistry::getInstance will get the same class as JevRegistry::getInstance - fixes filtering of events using JEvents club addons prior to release of version 3.6.x of club addons</li>
+				<li>Events List view- explicitly select the correct repeat from the group by query</li>
+				<li>fixDtStart was breaking the start date output for some latest events module repeats</li>
+				<li>Allow iCalExport to use secure webcals:// URL type</li>
+				<li>Correct date formatting for output of all day events</li>
+				<li>Restore menu page heading for event editing in new formatted editing</li>
+			</ul>
+		</li>
+		<li>JEvents 3.6.3
+			<ul>
+				<li>Disable tooltips on left menu</li>
+				<li>Fix active tab on customised event editing pages</li>
+				<li>Disabled showon on customised event editing pages</li>
+				<li>Load Mootools when editing menu item until new club addons can be released</li>
+				<li>Move css and js files to frontend so they can be used in frontend for editing behind htauth protection</li>
+				<li>Create our own version of showon which is delayed by 100 milliseconds to help avoid chosen issues</li>
+			</ul>
+		</li>
+		<li>JEvents 3.6.2
+			<ul>
+				<li>Fix for auto-refresh setting being lost for calendars</li>
+				<li>Google chrome radio field presentation - was vertical instead of horizontal</li>
+				<li>Extra Info field name correction</li>
+				<li>Reveal fields in event edit now working when using single category event setting</li>
+				<li>field reveal should be based on catid and title in case we only have one category</li>
+				<li>Fix for Chrome issues with chosen being triggered AFTER showon</li>
+			</ul>
+			JEvents 3.6.1
+			<ul>
+				<li>Fix for missing icomoon font in some frontend templates</li>
+				<li>Styling to category selector in frontend was truncated in some templates</li>
+				<li>Remove use of JError (caused problem in Joomla 4)</li>
+				<li>Missing $filter declaration in saving repeats in backend</li>
+				<li>Stray . after calendar icon in frontend editing</li>
+				<li>Missing edit_datetime_uikit.php in frontend repeat editing</li>
+				<li>Suppress warning for events where ALL the repeats have been edited.</li>
+				<li>Use JSON ENCODE as array for chart labels to avoid escaping problems</li>
+			</ul>
+		</li>
+		<li>JEvents 3.6.0
+			<ul>
+				<li>New Style in backend and optionally when editing events in the frontend</li>
+				<li>Ground work for Joomla 4.x support</li>
+
+				<li>JEvents 3.4.57
 			<ul>
 				<li>Fixes isssue with foreArrayToInteger warning.</li>
 			</ul>

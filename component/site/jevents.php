@@ -191,6 +191,15 @@ if (!$cmd || !is_string($cmd) || strpos($cmd, '.') == false)
 		$cmd = "month.calendar";
 }
 
+PluginHelper::importPlugin("jevents");
+
+// Should the output come from one of the plugins instead?
+if (strpos($cmd, "plugin.") === 0)
+{
+	Factory::getApplication()->triggerEvent('onJEventsPluginOutput');
+	return;
+}
+
 if (strpos($cmd, '.') != false)
 {
 	// We have a defined controller/task pair -- lets split them out
@@ -315,6 +324,9 @@ JEVHelper::parameteriseJoomlaCache();
 //list ($usec, $sec) = explode(" ", microtime());
 //$time_end = (float) $usec + (float) $sec;
 //echo  "JEvents component pre task = ".round($time_end - $starttime, 4)."<br/>";
+
+//HTMLHelper::_('bootstrap.popover', '.hasjevtip');
+JevHtmlBootstrap::popover('.hasjevtip' , array("trigger"=>"hover focus", "placement"=>"top", "delay"=> array( "show"=> 150, "hide"=> 150 )));
 
 // Perform the Request task
 $controller->execute($task);

@@ -1,7 +1,4 @@
 <?php
-
-use Joomla\CMS\Language\Text;
-
 /**
  * @package     Joomla.Site
  * @subpackage  Layout
@@ -11,6 +8,8 @@ use Joomla\CMS\Language\Text;
  */
 
 defined('JPATH_BASE') or die;
+
+use Joomla\CMS\Language\Text;
 
 if (GSLMSIE10)
 {

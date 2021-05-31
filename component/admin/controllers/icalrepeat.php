@@ -764,7 +764,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 
 	// experimentaal code disabled for the time being
 
-	private function targetMenu($itemid = 0, $name)
+	private function targetMenu($itemid = 0, $name = "")
 	{
 
 		$db = Factory::getDbo();
@@ -1091,7 +1091,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 		?>
 		<script type="text/javascript">
             try {
-                window.parent.jQuery('#myEditModal').modal('hide');
+                window.parent.closeJevModalBySelector('#myEditModal,#myDetailModal');
             }
             catch (e) {
             }

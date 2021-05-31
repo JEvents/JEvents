@@ -24,10 +24,9 @@ use Joomla\String\StringHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Utilities\ArrayHelper;
 
 jimport('joomla.access.access');
-
-use Joomla\Utilities\ArrayHelper;
 
 /** Should already be defined within JEvents, however it does no harm and resolves issue with pop-up details */
 include_once(JPATH_SITE . "/components/com_jevents/jevents.defines.php");
@@ -1206,7 +1205,7 @@ class JEVHelper
 
 							if ($forcecheck)
 							{
-								$mparams = is_string($jevitem->params) ? new JevRegistry($jevitem->params) : $jevitem->params;
+								$mparams = is_string($jevitem->getParams()) ? new JevRegistry($jevitem->getParams()) : $jevitem->getParams();
 								$mcatids = array();
 								// New system
 								$newcats = $mparams->get("catidnew", false);
@@ -4413,6 +4412,8 @@ SCRIPT;
             array("element" => "mod_jevents_categories", "name" => "mod_jevents_categories", "type" => "module"),
             // Silver - Newsletters - some TODO
             array("element" => "tagjevents_jevents", "name" => "tagjevents_jevents", "folder" => "acymailing", "type" => "plugin"),
+	        array("element" => "jev_latestevents", "name" => "jev_latestevents", "folder" => "emailalerts", "type" => "plugin"),
+	        array("element" => "jnewsjevents", "name" => "jnewsjevents", "folder" => "jnews", "type" => "plugin"),
             // Silver - Nnotifications
             array("element" => "jevnotify", "name" => "jevnotify", "folder" => "jevents", "type" => "plugin"),
             array("element" => "mod_jevents_notify", "name" => "mod_jevents_notify", "type" => "module"),
@@ -4435,6 +4436,9 @@ SCRIPT;
 
             // Bronze - editor button
             array("element" => "jevents", "name" => "jevents", "folder" => "editors-xtd", "type" => "plugin"),
+
+	        // Bronze - Remote Module Loaded
+	        array("element" => "mod_remoteloader", "name" => "mod_remoteloader", "type" => "module"),
 
             // Bronze - Meta tags
             array("element" => "jevmetatags", "name" => "jevmetatags", "folder" => "jevents", "type" => "plugin"),
