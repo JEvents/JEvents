@@ -1,6 +1,6 @@
 <?php
 $changelog["package_jevents"]["3.6.14"] = array();
-$changelog["package_jevents"]["3.6.14"]["date"] = "2020-03-17";
+$changelog["package_jevents"]["3.6.14"]["date"] = "2020-05-26";
 $changelog["package_jevents"]["3.6.14"]["features"] = array();
 $changelog["package_jevents"]["3.6.14"]["features"][]="Use gslselect replacement instead of chosen where possible in event editing";
 $changelog["package_jevents"]["3.6.14"]["features"][]="Added TZID as an custom layout field";
@@ -18,8 +18,8 @@ $changelog["package_jevents"]["3.6.14"]["bugfixes"][]="Add custom repeat now add
 $changelog["package_jevents"]["3.6.14"]["bugfixes"][]="Work to support bootstrap 4 float theme and not to block bootstrap 4 modals";
 $changelog["package_jevents"]["3.6.14"]["bugfixes"][]="Trap for situation where someone has deleted some default layouts";
 $changelog["package_jevents"]["3.6.14"]["bugfixes"][]="Fix for boolean params not showing on some sites in the main config";
-
-
+$changelog["package_jevents"]["3.6.14"]["bugfixes"][]="Fix for EXTRA INFO field not appearing in customised event editing layouts";
+$changelog["package_jevents"]["3.6.14"]["bugfixes"][]="Set new default custom edit page to reflect new GSL Styling";
 
 
 

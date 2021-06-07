@@ -111,7 +111,7 @@ class JevHtmlBootstrap
 
 		JHtml::_('jquery.framework');
 		JHtml::_('bootstrap.framework');
-		JHtmlBootstrap::loadCss();
+		JevHtmlBootstrap::loadCss();
 
 		$opt['animation'] = isset($params['animation']) ? $params['animation'] : false;
 		$opt['html']      = isset($params['html']) ? $params['html'] : true;

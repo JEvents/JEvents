@@ -405,7 +405,9 @@ ob_start();
 		{
 		?>
         var freq = "<?php echo strtoupper($this->row->freq()); ?>";
-        document.getElementById(freq).checked = true;
+		if (document.getElementById(freq)) {
+           document.getElementById(freq).checked = true;
+		}
         toggleFreq(freq, true);
         var by = "<?php
 			if ($this->row->byyearday(true) != "")

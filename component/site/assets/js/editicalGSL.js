@@ -238,6 +238,11 @@ function editicalGslStyling(container) {
 
 		var inputs = container.querySelectorAll('select:not(.gsl-select)');
 		inputs.forEach (function(elem){
+
+			if (elem.hasAttribute('hidden') || window.getComputedStyle(elem,'display') == 'none')
+			{
+				return;
+			}
 			elem.classList.add('gsl-select');
 			//elem.classList.add('gsl-form-width-medium');
 			elem.classList.add('gsl-width-medium');
