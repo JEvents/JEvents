@@ -55,7 +55,20 @@ class JFormFieldJEVInfo extends JFormFieldSpacer
 	function getInput()
 	{
 
-		// Must load admin language files
+        $app    = Factory::getApplication();
+        $input = $app->input;
+
+        // Trap to stop the config from being editing from the categories page
+        // Updated to redirect to the correct edit page, Joomla 3.x Config actually loads this page when configuration components.
+        // Only do the redirect in the backend since in the frontend module editing uses com_config (go figure!!!)
+        if ($input->getString("option") == "com_config" && $app->isClient('administrator'))
+        {
+            $redirect_url = "index.php?option=com_jevents&task=params.edit"; // get rid of any ampersands
+            $app->redirect($redirect_url); //redirect
+            exit();
+        }
+
+        // Must load admin language files
 		$lang = Factory::getLanguage();
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
