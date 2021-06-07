@@ -1942,7 +1942,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 						try
 						{
-							$lddata["image"] = plgJEventsjevfiles::getSizedImageUrl($event, $imageurl, "1920x1920", $imgpluginparams);
+							$lddata["image"] = plgJEventsjevfiles::getSizedImageUrl($event, $imageurl, $jevparams->get('sevd_imagesize', '1920x1920'), $imgpluginparams);
 						}
 						catch (Exception $e)
                         {
