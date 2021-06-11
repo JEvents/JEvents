@@ -17,7 +17,11 @@ function gslselect(selector) {
 
             if (selectElement.hasAttribute('hidden') || window.getComputedStyle(selectElement,'display') == 'none')
             {
-                return;
+                let optioncount = selectElement.getAttribute('data-optioncount');
+                // if unchanged number of options then skip this!
+                if (optioncount == selectElement.querySelectorAll('option, optgroup').length) {
+                    return;
+                }
             }
 
             let currentInlineDiv = selectElement.nextElementSibling;
@@ -211,6 +215,9 @@ function gslselect(selector) {
 */
             inlineDiv.classList.add('gslSelectReplacement');
             selectElement.insertAdjacentElement('afterend', inlineDiv);
+
+            // Keep track of how many child Nodes there are so we can see if this has changed
+            selectElement.setAttribute('data-optioncount', selectElement.querySelectorAll('option, optgroup').length);
 /*
             if (!selectElement.getAttribute('gslChange')) {
                 selectElement.setAttribute('gslChange', true);

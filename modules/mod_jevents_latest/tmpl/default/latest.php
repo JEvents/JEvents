@@ -237,7 +237,7 @@ class DefaultModLatestView
 
 	}
 
-	public static function _sortEventsByDate(&$a, &$b)
+	public static function _sortEventsByDate($a, $b)
 	{
 
 		$adate = $a->_startrepeat;
@@ -250,7 +250,7 @@ class DefaultModLatestView
 		return strcmp($adate, $bdate);
 	}
 
-	public static function _sortEventsByCreationDate(&$a, &$b)
+	public static function _sortEventsByCreationDate($a, $b)
 	{
 
 		$adate = $a->created();
@@ -264,7 +264,7 @@ class DefaultModLatestView
 	// this could go to a data model class
 	// for the time being put it here so the different views can inherit from this 'base' class
 
-	public static function _sortEventsByModificationDate(&$a, &$b)
+	public static function _sortEventsByModificationDate($a, $b)
 	{
 
 		$adate = $a->modified();
@@ -275,7 +275,7 @@ class DefaultModLatestView
 
 	}
 
-	public static function _sortEventsByHits(&$a, &$b)
+	public static function _sortEventsByHits($a, $b)
 	{
 
 		$ah = $a->hits();
@@ -289,7 +289,7 @@ class DefaultModLatestView
 
 	}
 
-	public static function _sortEventsByTime(&$a, &$b)
+	public static function _sortEventsByTime($a, $b)
 	{
 
 		// this custom sort compare function compares the start times of events that are referenced by the a & b vars

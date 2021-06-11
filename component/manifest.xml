@@ -63,7 +63,7 @@
 			<menu link="option=com_jevents&amp;task=icals.list"  img="" alt="JEV_ADMIN_ICAL_SUBSCRIPTIONS">JEV_ADMIN_ICAL_SUBSCRIPTIONS</menu>
 			<menu link="option=com_jevents&amp;task=defaults.list"  img="" alt="JEV_LAYOUT_DEFAULTS">JEV_LAYOUT_DEFAULTS</menu>
 			<menu link="option=com_jevents&amp;task=params.edit"  img="" alt="COM_JEVENTS_CONFIGURATION">COM_JEVENTS_CONFIGURATION</menu>
-
+			<menu link="option=com_jevents&amp;task=plugin.jev_customfields.overview"  img="" alt="JEV_FIELD_CUSTOMFIELDS">JEV_FIELD_CUSTOMFIELDS</menu>
 			<menu link="option=com_jevents&amp;task=redirect.com_jevlocations"  img="" alt="COM_JEVENTS_LOCATIONS">COM_JEVENTS_LOCATIONS</menu>
 			<menu link="option=com_jevents&amp;task=redirect.com_jevpeople"  img="" alt="COM_JEVENTS_PEOPLE">COM_JEVENTS_PEOPLE</menu>
 			<menu link="option=com_jevents&amp;task=redirect.com_rsvppro"  img="" alt="COM_JEVENTS_RSVPPRO">COM_JEVENTS_RSVPPRO</menu>
