@@ -22,13 +22,21 @@ $precedingMonth = $this->datamodel->getPrecedingMonth($this->data);
 	<div class="jev_toprow jev_monthv">
 	    <div class="jev_header2">
 			<div class="previousmonth" >
-		      	<?php echo "<a href='".$precedingMonth["link"]."' title='".$precedingMonth['name']."' style='text-decoration:none;'>".$precedingMonth['name']."</a>";?>
+		      	<?php
+		      	if (is_array($precedingMonth)) {
+		      	     echo "<a href='".$precedingMonth["link"]."' title='".$precedingMonth['name']."' style='text-decoration:none;'>".$precedingMonth['name']."</a>";
+		      	}
+		      	?>
 			</div>
 			<div class="currentmonth">
 				<?php echo $this->data['fieldsetText']; ?>
 			</div>
 			<div class="nextmonth">
-		      	<?php echo "<a href='".$followingMonth["link"]."' title='".$followingMonth['name']."' style='text-decoration:none;'>".$followingMonth['name']."</a>";?>
+		      	<?php
+		      	if (is_array($followingMonth)) {
+		      	    echo "<a href='".$followingMonth["link"]."' title='".$followingMonth['name']."' style='text-decoration:none;'>".$followingMonth['name']."</a>";
+		      	}
+		      	?>
 			</div>
 			
 		</div>

@@ -13,6 +13,11 @@
       width: ~"calc(100% - @{leftColumn})";
 
     }
+
+    /* irregular date selections select:multiple doesn't set a height */
+    .gsl-select {
+      min-height:40px;
+    }
   }
 
   /* Not within #gslc.gsl-scope - its too tight and js can't change the widths! */
