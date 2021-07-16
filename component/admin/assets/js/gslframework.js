@@ -267,7 +267,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 
 	// Hide toggled left-menu if in click mode
-	document.querySelector('#right-col > .gsl-content').addEventListener('mouseover', () => {
+	document.querySelector('#right-col > .gsl-content, #right-col > #top-head').addEventListener('mouseover', () => {
 		if (document.getElementById('left-col') && document.getElementById('left-col') && !document.getElementById('left-col').classList.contains('hide-label')) {
 			var elements = document.querySelectorAll('#left-col, #left-col .left-nav, .ysts-page-title');
 			elements.forEach(function(element)
@@ -329,6 +329,27 @@ document.addEventListener('DOMContentLoaded', function () {
 	for (let i = 0; i < inputNodes.length; i++) {
 		inputNodes[i].addEventListener('change', function() {
 			changeHiddenInput(this);
+		});
+	}
+
+	// repeatable fields
+	let repeatables = document.getElementById('jevents').querySelectorAll('div.subform-repeatable');
+	for (let r = 0; r < repeatables.length; r++)
+	{
+		jQuery(repeatables[r]).on('subform-row-add', function (event, row) {
+			if (typeof row !== 'undefined')
+			{
+				if (typeof editicalGslStyling == 'function')
+				{
+					editicalGslStyling(row);
+				}
+				let inputNodes = row.querySelectorAll('input.gsl-hidden');
+				for (let i = 0; i < inputNodes.length; i++) {
+					inputNodes[i].addEventListener('change', function() {
+						changeHiddenInput(this);
+					});
+				}
+			}
 		});
 	}
 

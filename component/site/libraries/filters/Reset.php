@@ -46,4 +46,14 @@ class jevResetFilter extends jevFilter
 
 	}
 
+	function _createfilterHtmlUIkit()
+	{
+
+		$reset["title"] = "";
+		$reset["html"]  = "<input type='hidden' name='filter_reset' id='filter_reset' value='0' /><input class='uk-button uk-button-small uk-button-danger' type='button' value='" . Text::_('RESET') . "' onclick='jQuery(\"input[name=filter_reset]\").each(function(idx,el){el.value=1;});form.submit()' />";
+
+		return $reset;
+
+	}
+
 }

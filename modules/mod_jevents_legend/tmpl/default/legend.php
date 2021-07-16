@@ -28,7 +28,7 @@ class DefaultModLegendView
 	var $myItemid = 0;
 	var $myTask = null;
 
-	function __construct(&$params = null, $modid)
+	function __construct(&$params = null, $modid = 0)
 	{
 
 		$this->_modid = $modid;

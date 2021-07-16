@@ -574,7 +574,7 @@ class JEventsHTML
 			    $tosend .= ''
 				    . '<input type="checkbox" id="cb_wd' . $d . '" name="' . $name . '[]" value="'
 				    . $d . '" ' . $args . $checked . ' onclick="updateRepeatWarning();" class="gsl-hidden " data-activeclass="primary"/>'
-				    . '<label for="cb_wd' . $d . '" class="gsl-button gsl-button-small ' . (empty($checked) ? "gsl-button-default" : "gsl-button-primary") .'">'
+				    . '<label for="cb_wd' . $d . '" class="gsl-button gsl-button-small ' . (empty($checked) ? "gsl-button-default" : "gsl-button-default  gsl-button-primary") .'">'
 				    . $day_name[$d]
 				    . '</label>' . "\n"
 			    ;

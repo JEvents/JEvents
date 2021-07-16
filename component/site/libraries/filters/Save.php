@@ -65,4 +65,33 @@ $filter["html"] = "<textarea name='filtername' id='filtername' rows='1' placehol
 
 	}
 
+	function _createfilterHtmlUIkit()
+	{
+
+		// Only save filters for non-guests
+		if (Factory::getUser()->id == 0)
+		{
+			return false;
+		}
+
+		$app          = Factory::getApplication();
+		$activeModule = isset($app->activeModule) ? $app->activeModule : false;
+		$activemodid  = (isset($activeModule) ? $activeModule->id : 0);
+
+		$value           = Factory::getApplication()->input->getString("filtername", "");
+		$value           = htmlspecialchars($value);
+		$filter["title"] = Text::_("JEV_SAVE_FILTER");
+		$filter["html"]  = '<input type="text" class="uk-input uk-form-width-medium" name="filtername" id="filtername" value="' . $value . '" placeholder="' . Text::_("JEV_SAVE_FILTER_AS") . '" />';
+		$filter["html"]  .= '<input type="hidden" name="modid" id="modid" value="' . $activemodid . '"  />';
+
+		/*
+$filter["html"] = "<textarea name='filtername' id='filtername' rows='1' placeholder='".Text::_("JEV_SAVE_FILTER_AS")."' >"
+				. $value
+				. "</textarea>";
+		*/
+
+		return $filter;
+
+	}
+
 }

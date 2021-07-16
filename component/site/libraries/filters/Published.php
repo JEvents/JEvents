@@ -138,4 +138,18 @@ class jevPublishedFilter extends jevFilter
 		return $filterList;
 	}
 
+	function _createfilterHtmlUIkit()
+	{
+
+		$filterList          = array();
+		$filterList["title"] = $this->filterLabel;
+		$options             = array();
+		$options[]           = HTMLHelper::_('select.option', "-1", $this->allLabel, "value", "yesno");
+		$options[]           = HTMLHelper::_('select.option', "0", $this->noLabel, "value", "yesno");
+		$options[]           = HTMLHelper::_('select.option', "1", $this->yesLabel, "value", "yesno");
+		$filterList["html"]  = HTMLHelper::_('select.genericlist', $options, $this->filterType . '_fv', 'class="uk-select uk-form-width-medium" aria-label="' . $this->filterLabelEscaped . '"  onchange="form.submit();"', 'value', 'yesno', $this->filter_value);
+
+		return $filterList;
+	}
+
 }

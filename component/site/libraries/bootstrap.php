@@ -188,7 +188,12 @@ SCRIPT
 		{
 			$hide = "
 (function($) {
-	
+	if (typeof $.fn.popover == 'undefined')
+	{
+		// bootstrap popovers not used or loaded
+		return;
+	}
+
     var oldHide = $.fn.popover.Constructor.prototype.hide || false;
 
     $.fn.popover.Constructor.prototype.hide = function() {
