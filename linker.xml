@@ -200,7 +200,7 @@
         <copy file="${rootPath}/plugins/installer/language/en-GB/en-GB.plg_installer_jeventsinstaller.ini" todir="${p}/administrator/language/en-GB/" overwrite="true" />
         <copy file="${rootPath}/plugins/installer/language/en-GB/en-GB.plg_installer_jeventsinstaller.sys.ini" todir="${p}/administrator/language/en-GB/" overwrite="true" />
         <copy file="${rootPath}/plugins/jevents/language/en-GB/en-GB.plg_content_jevents.ini" todir="${p}/administrator/language/en-GB/" overwrite="true" />
-        <copy file="${rootPath}/plugins/jevents/language/en-GB/en-GB.plg_content_jevents.sys.ini" todir="${p}/administrator/languageen-GB//" overwrite="true" />
+        <copy file="${rootPath}/plugins/jevents/language/en-GB/en-GB.plg_content_jevents.sys.ini" todir="${p}/administrator/languageen-GB/" overwrite="true" />
         <copy file="${rootPath}/plugins/search/language/en-GB/en-GB.plg_search_eventsearch.ini" todir="${p}/administrator/language/en-GB/" overwrite="true" />
         <copy file="${rootPath}/plugins/search/language/en-GB/en-GB.plg_search_eventsearch.ini" todir="${p}/administrator/language/en-GB/" overwrite="true" />
     </target>
