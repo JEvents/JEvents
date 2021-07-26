@@ -14,36 +14,7 @@
         <echo>Current Path: ${rootPath}</echo>
         <echo>Target Path: ${p}</echo>
 
-<<<<<<< HEAD
         <phingcall target="deleteall" />
-=======
-        <!-- Delete folders, but don't worry if it fails as it could be a symbolic link -->
-        <delete dir="${p}/administrator/components/${component}/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/components/${component}/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/plugins/finder/jevents/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/plugins/system/gwejson/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/plugins/search/eventsearch/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/plugins/installer/jeventsinstaller/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/plugins/content/jevents/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/media/${component}/css/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/media/${component}/js/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/media/${component}/images/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/media/${component}/lib_jevmodal/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/media/${component}/lib_jevtypeahead/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/libraries/googl/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/libraries/jevents/jevmodal/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/libraries/jevents/lib_jevmodal/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/libraries/jevents/jevbootstrap/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/libraries/jevents/lib_jevbootstrap/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/libraries/jevents/jevtypeahead/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/libraries/jevents/lib_jevtypeahead/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/modules/mod_jevents_cal/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/modules/mod_jevents_custom/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/modules/mod_jevents_filter/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/modules/mod_jevents_latest/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/modules/mod_jevents_legend/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/modules/mod_jevents_switchview/" includeemptydirs="true" verbose="true" failonerror="false" />
->>>>>>> master
 
         <!-- Create System Links -->
         <symlink target="${rootPath}/component/admin" link="${p}/administrator/components/${component}"  overwrite="true" />
