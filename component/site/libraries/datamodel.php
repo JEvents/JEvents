@@ -672,7 +672,7 @@ class JEventsDataModel
 
 		$data     = array();
 		$indate   = JevDate::mktime(0, 0, 0, $month, $day, $year);
-		$startday = $cfg->get('com_starday', 0);
+		$startday = $cfg->get('com_starday', 1);
 		$numday   = ((date('w', $indate) - $startday + 7) % 7);
 
 		$week_start = JevDate::mktime(0, 0, 0, $month, ($day - $numday), $year);
@@ -999,7 +999,8 @@ class JEventsDataModel
 					$link    = 'index.php?option=' . $comuser . '&view=login&return=' . base64_encode($link);
 					$link    = Route::_($link);
 
-					$app->redirect($link, Text::_('JEV_LOGIN_TO_VIEWEVENT'));
+					$app->enqueueMessage(Text::_("JEV_LOGIN_TO_VIEWEVENT"), 'warning');
+					$app->redirect($link);
 
 					return null;
 				}

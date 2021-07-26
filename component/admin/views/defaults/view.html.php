@@ -114,10 +114,6 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		JToolbarHelper::save("defaults.save");
 		JToolbarHelper::cancel("defaults.cancel");
 
-
-
-
-
 		// Get data from the model
 		$item  = $this->get('Data');
 
@@ -225,10 +221,17 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 					$tooltipParts = array($img, addslashes($item->title));
 					$item->link   = HTMLHelper::_('tooltip', implode(' ', $tooltipParts), null, null, $text, $url, null, 'hasTooltip label label-association label-' . $item->sef . ($hasTranslation ? " hastranslation" : ""));
 					?>
+
 					<li>
-						<?php
-						echo $item->link;
-						?>
+						<span
+								class="editlinktip hasYsPopover <?php echo ' label label-association label-' . $item->sef . ($hasTranslation ? " hastranslation" : "");?>"
+						      data-yspoptitle="<?php echo Text::_('JEV_TRANSLATE_LAYOUT', array('jsSafe'=>true)); ?>"
+						      data-yspopcontent="<?php echo Text::sprintf('JEV_TRANSLATE_LAYOUT_INTO', addslashes($item->title) . " " . htmlspecialchars($img), array('jsSafe'=>true)); ?>"
+						>
+							<a href="<?php echo $url;?>" >
+								<?php echo $text;?>
+							</a>
+						</span>
 					</li>
 				<?php endforeach; ?>
 			</ul>

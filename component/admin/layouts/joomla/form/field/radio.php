@@ -1,7 +1,5 @@
 <?php
 
-use Joomla\CMS\HTML\HTMLHelper;
-
 /**
  * @package     Joomla.Site
  * @subpackage  Layout
@@ -13,7 +11,9 @@ use Joomla\CMS\HTML\HTMLHelper;
 // Joomla 3.x only
 defined('JPATH_BASE') or die;
 
-if (GSLMSIE10)
+use Joomla\CMS\HTML\HTMLHelper;
+
+if (!defined('GSLMSIE10') || GSLMSIE10)
 {
 	include (JPATH_SITE . "/layouts/joomla/form/field/" .  basename(__FILE__));
 	return;
@@ -64,7 +64,7 @@ HTMLHelper::_('script', 'system/html5fallback.js', array('version' => 'auto', 'r
 $format = '<input type="radio" id="%1$s" name="%2$s" value="%3$s" %4$s />';
 $alt    = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $name);
 ?>
-<fieldset id="<?php echo $id; ?>" class="<?php echo trim($class . ' gsl-button-group ' . ($readonly || $disabled ? ' disabled' : '') . ($readonly ? ' readonly' : '')); ?>"
+<div id="<?php echo $id; ?>" class="<?php echo trim($class . ' gsl-button-group ' . ($readonly || $disabled ? ' disabled' : '') . ($readonly ? ' readonly' : '')); ?>"
 	<?php echo $disabled ? 'disabled' : ''; ?>
 	<?php echo $readonly || $disabled ? 'style="pointer-events: none"' : '' ?>
 	<?php echo $required ? 'required aria-required="true"' : ''; ?>
@@ -106,4 +106,4 @@ $alt    = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $name);
 			</label>
 		<?php endforeach; ?>
 	<?php endif; ?>
-</fieldset>
+</div>

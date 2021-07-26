@@ -221,7 +221,7 @@ class JEventsHTML
 	 * @param boolean $require_sel		First entry: true = Choose one category, false = All categories
 	 * @param int $catidtop				Top level category ancestor
 	 */
-	public static function buildCategorySelect($catid, $args, $catidList = null, $with_unpublished = false, $require_sel = false, $catidtop = 0, $fieldname = "catid", $sectionname = JEV_COM_COMPONENT, $excludeid = false, $order = "ordering", $eventediting = false, $allowMultiCat = false)
+	public static function buildCategorySelect($catid, $args, $catidList = null, $with_unpublished = false, $require_sel = false, $catidtop = 0, $fieldname = "catid", $sectionname = JEV_COM_COMPONENT, $excludeid = false, $order = "ordering", $eventediting = false, $allowMultiCat = false, $skipgslclass = false)
 	{
 		// need to declare this because of bug in Joomla HTMLHelper::_('select.options', on content pages - it loade the WRONG CLASS!
 		//include_once(JPATH_SITE . "/libraries/cms/html/category.php");
@@ -298,6 +298,14 @@ class JEventsHTML
 		}
 
 		// Needs to be ordered so that selected values appear first when editing an event with sortable multiple categories
+		$params = ComponentHelper::getParams($input->getCmd("option", "com_jevents"));
+		if ($allowMultiCat || ($eventediting && $params->get("multicategory", 0)))
+		{
+			if (is_string($catid) && !empty($catid))
+			{
+				$catid = explode(",", $catid);
+			}
+		}
 		if (is_array($catid) && $eventediting)
 		{
             for ($c = 0; $c < count($catid); $c ++)
@@ -443,6 +451,8 @@ class JEventsHTML
 			$catid = current($options)->value;
 		}
 
+		$gslclass = $skipgslclass ? '' : 'gsl-select';
+
 		// sort categories alphabetically
 		// usort($options, function($a, $b) { return strcmp($a->text,$b->text);});
 		// should we offer multi-choice categories?
@@ -452,16 +462,16 @@ class JEventsHTML
 		{
 			$size = count($options) > 6 ? 6 : count($options) + 1;
 			?>
-			<label class="sr-only" class='gsl-select' for="<?php echo $fieldname;?>"><?php echo Text::_('JEV_CATEGORY_SELECT_LBL'); ?></label>
-			<select name="<?php echo $fieldname; ?>[]"  id="<?php echo $fieldname; ?>" <?php echo $args; ?> multiple="multiple" size="<?php echo $size; ?>" style="width:300px;">
+			<label class="sr-only " for="<?php echo $fieldname;?>"><?php echo Text::_('JEV_CATEGORY_SELECT_LBL'); ?></label>
+			<select name="<?php echo $fieldname; ?>[]"  id="<?php echo $fieldname; ?>" <?php echo $args; ?> multiple="multiple" class="<?php echo $gslclass;?>" size="<?php echo $size; ?>" style="width:300px;">
 			    <?php
 		    }
 		    else
 		    {
 			    ?>
-			    <label class="sr-only" class='gsl-select' for="<?php echo $fieldname;?>"><?php echo Text::_('JEV_CATEGORY_SELECT_LBL'); ?></label>
-			    <select name="<?php echo $fieldname; ?>" <?php echo $args; ?>  id="<?php echo $fieldname; ?>" >
-				<option value=""><?php echo $t_first_entry; ?></option>
+			    <label class="sr-only " for="<?php echo $fieldname;?>"><?php echo Text::_('JEV_CATEGORY_SELECT_LBL'); ?></label>
+			    <select name="<?php echo $fieldname; ?>" class="<?php echo $gslclass;?>"  <?php echo $args; ?>  id="<?php echo $fieldname; ?>" >
+				<option value="" <?php echo $catid == "" ? 'selected="true" ' : '';?> ><?php echo $t_first_entry; ?></option>
 				<?php
 			}
 			?>
@@ -726,7 +736,7 @@ class JEventsHTML
 		    echo $tosend;
 	    }
 
-	    public static function getUserMailtoLink($evid, $userid, $admin = false, $event)
+	    public static function getUserMailtoLink($evid, $userid, $admin = false, $event = null)
 	    {
 
 		    $db = Factory::getDbo();
@@ -850,7 +860,7 @@ class JEventsHTML
 		    return $dayname;
 	    }
 
-	    public static function getColorBar($event_id = null, $newcolor)
+	    public static function getColorBar($event_id = null, $newcolor = '')
 	    {
 		    $db = Factory::getDbo();
 
@@ -1185,7 +1195,22 @@ class JEventsHTML
 	    {
 		    $assetGroups = HTMLHelper::_('access.assetgroups');
 		    // only offer access levels the user has access to
+            $access  = (int) $access;
+            if($access === 0) {
+                // Set default config value
+                $config         = Factory::getConfig();
+                $access          = (int) $config->get('access', 1); // 1 = public.
+            }
+
 		    $user = Factory::getUser();
+
+		    $access  = (int) $access;
+            if($access === 0) {
+                // Set default config value
+                $config         = Factory::getConfig();
+                $access          = (int) $config->get('access', 1); // 1 = public.
+            }
+
 		    if (!$user->get("isRoot", 0))
 		    {
 			    $viewlevels = $user->getAuthorisedViewLevels();

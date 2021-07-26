@@ -7,7 +7,7 @@
 			   default=""
 			   size="40"
 			   layoutfield="TITLE"
-			   placeholder="JEV_EVENT_TITLE"
+			   placeholder="JEV_EVENT_TITLE_PLACEHOLDER"
 			   maxlength="255"
 			   class="inputbox"
 			   label="JEV_EVENT_TITLE"
@@ -26,7 +26,7 @@
 			   layoutfield="PRIMARYCATEGORY"
 			   label="JEV_EVENT_PRIMARY_CATEGORY"
 			   description="JEV_EVENT_PRIMARY_CATEGORY_TIP"
-			   showon="catid!:0"
+			   showon="catid!:,0[AND]title!:"
 		/>
 		<field name="priority"
 			   type="jeveventpriorities"
@@ -34,7 +34,7 @@
 			   layoutfield="PRIORITY"
 			   label="JEV_EVENT_PRIORITY"
 			   description="JEV_EVENT_PRIORITY_TIP"
-			   showon="catid!:0"
+			   showon="catid!:,0[AND]title!:"
 		/>
 		<field name="creator"
 			   type="jeveventcreator"
@@ -42,7 +42,7 @@
 			   layoutfield="CREATOR"
 			   label="JEV_EVENT_CREATOR"
 			   description="JEV_EVENT_CREATOR_TIP"
-			   showon="catid!:0"
+			   showon="catid!:,0[AND]title!:"
 		/>
 		<!--
 		conditional="title" conditions="fred" />
@@ -68,7 +68,7 @@
 			   labelclass="accesslevel"
 			   label="JEV_EVENT_ACCESSLEVEL"
 			   description="JEV_EVENT_ACCESSLEVEL_TIP"
-			   showon="catid!:0"
+			   showon="catid!:,0[AND]title!:"
 		/>
 		<field name="state"
 			   type="jeveventpublished"
@@ -77,7 +77,7 @@
 			   labelclass="jevpublished"
 			   label="JEV_EVENT_STATE"
 			   description="JEV_EVENT_STATE_TIP"
-			   showon="catid!:0"
+			   showon="catid!:,0[AND]title!:"
 		/>
 
 		<field name="jevcontent"
@@ -86,11 +86,11 @@
 			   filter="JComponentHelper::filterText"
 			   width="100%"
 			   height="250"
-		       layoutfield="DESCRIPTION"
+			   layoutfield="DESCRIPTION"
 			   labelclass="jeveditor"
 			   label="JEV_EVENT_ACTIVITY"
 			   description="JEV_EVENT_ACTIVITY_TIP"
-			   showon="catid!:0"
+			   showon="catid!:,0[AND]title!:"
 		/>
 		<field name="location"
 			   type="jeveventlocation"
@@ -99,7 +99,7 @@
 			   labelclass=""
 			   label="JEV_EVENT_ADRESSE"
 			   description="JEV_EVENT_ADRESSE_TIP"
-			   showon="catid!:0"
+			   showon="catid!:,0[AND]title!:"
 		/>
 		<field name="geolon"
 			   type="text"
@@ -108,7 +108,7 @@
 			   labelclass=""
 			   label="JEV_FIELD_GEOLON"
 			   description="JEV_FIELD_GEOLON"
-			   showon="catid!:0"
+			   showon="catid!:,0[AND]title!:"
 		/>
 		<field name="geolat"
 			   type="text"
@@ -117,7 +117,7 @@
 			   labelclass=""
 			   label="JEV_FIELD_GEOLAT"
 			   description="JEV_FIELD_GEOLAT"
-			   showon="catid!:0"
+			   showon="catid!:,0[AND]title!:"
 		/>
 
 		<field name="color"
@@ -127,7 +127,7 @@
 			   label="JEV_EVENT_COLOR"
 			   size="30"
 			   description="JEV_EVENT_COLOR_TIP"
-			   showon="catid!:0"
+			   showon="catid!:,0[AND]title!:"
 		/>
 
 		<field
@@ -136,7 +136,7 @@
 				label="JTAG"
 				description="JTAG_DESC"
 				multiple="true"
-				showon="catid!:0"
+				showon="catid!:,0[AND]title!:"
 		/>
 
 		<field name="contact_info"
@@ -146,11 +146,11 @@
 			   maxlength="120"
 			   layoutfield="CONTACT"
 			   class="inputbox"
-		       label="JEV_EVENT_CONTACT"
+			   label="JEV_EVENT_CONTACT"
 			   description="JEV_EVENT_CONTACT_TIP"
-			   showon="catid!:0"
+			   showon="catid!:,0[AND]title!:"
 		/>
-		<field name="extrainfo"
+		<field name="extra_info"
 			   type="textarea"
 			   default=""
 			   rows="5"
@@ -159,7 +159,7 @@
 			   class="text_area"
 			   label="JEV_EVENT_EXTRA"
 			   description="JEV_EVENT_EXTRA_TIP"
-			   showon="catid!:0"
+			   showon="catid!:,0[AND]title!:"
 		/>
 
 		<!-- date time //-->
@@ -167,16 +167,16 @@
 			   type="checkbox"
 			   layoutfield="ALLDAYEVENT"
 			   labelclass=""
-			   class="checkbox"
+			   class="gsl-checkbox"
 			   label="JEV_EVENT_ALLDAY"
-		       onclick="toggleAllDayEvent();"
+			   onclick="toggleAllDayEvent();"
 			   description="JEV_EVENT_ALLDAY_TIP"
 			   value="1" />
 		<field name="view12Hour"
 			   type="checkbox"
 			   layoutfield="VIEW12HOUR"
 			   labelclass=""
-			   class="checkbox"
+			   class="gsl-checkbox"
 			   label="TWELVE_HOUR"
 			   description="TWELVE_HOUR_TIP"
 			   value="1" />
@@ -186,9 +186,9 @@
 			   default="0"
 			   layoutfield="STARTDATE"
 			   labelclass=""
-		       onhidestart="checkDates(elem);fixRepeatDates();"
+			   onhidestart="checkDates(elem);fixRepeatDates();"
 			   onchange="checkDates(elem);"
-		       label="JEV_EVENT_STARTDATE"
+			   label="JEV_EVENT_STARTDATE"
 			   description="JEV_EVENT_STARTDATE_TIP" />
 
 		<field name="start_time"
@@ -196,7 +196,7 @@
 			   default="0"
 			   layoutfield="STARTTIME"
 			   labelclass=""
-		       label="JEV_EVENT_STARTTIME"
+			   label="JEV_EVENT_STARTTIME"
 			   description="JEV_EVENT_STARTTIME_TIP" />
 
 		<field name="publish_down"
@@ -204,11 +204,10 @@
 			   default="0"
 			   layoutfield="ENDDATE"
 			   labelclass=""
-		       onhidestart="checkDates(elem);"
+			   onhidestart="checkDates(elem);"
 			   onchange="checkDates(elem);"
-		       label="JEV_EVENT_ENDDATE"
+			   label="JEV_EVENT_ENDDATE"
 			   description="JEV_EVENT_ENDDATE_TIP"
-			   showon="publish_up!:CURRENT_DATE"
 		/>
 
 		<field name="end_time"
@@ -216,21 +215,19 @@
 			   default="0"
 			   layoutfield="ENDTIME"
 			   labelclass=""
-		       label="JEV_EVENT_ENDTIME"
+			   label="JEV_EVENT_ENDTIME"
 			   description="JEV_EVENT_ENDTIME_TIP"
-			   showon="publish_up!:CURRENT_DATE"
 		/>
 
 		<field name="noendtime"
 			   type="checkbox"
 			   layoutfield="JEV_EVENT_NOENDTIME"
 			   labelclass=""
-			   class="checkbox"
+			   class="gsl-checkbox"
 			   label="JEV_EVENT_NOENDTIME"
-		       onclick="toggleNoEndTime();"
+			   onclick="toggleNoEndTime();"
 			   description="JEV_EVENT_NOENDTIME_TIP"
 			   value="1"
-			   showon="publish_up!:CURRENT_DATE"
 		/>
 
 		<field name="tzid"
@@ -238,7 +235,7 @@
 			   default="0"
 			   layoutfield="TZID"
 			   labelclass=""
-		       label="JEV_EVENT_TIMEZONE"
+			   label="JEV_EVENT_TIMEZONE"
 			   onchange="updateRepeatWarning();"
 			   description="JEV_EVENT_TIMEZONE_TIP" />
 
@@ -246,13 +243,12 @@
 			   type="text"
 			   default="0"
 			   labelclass=""
-			   showon="publish_up!:CURRENT_DATE"
 		/>
 		<field name="customfields"
 			   type="text"
 			   default="0"
 			   labelclass=""
-			   showon="catid!:0"
+			   showon="catid!:,0[AND]title!:"
 		/>
 
 	</fieldset>

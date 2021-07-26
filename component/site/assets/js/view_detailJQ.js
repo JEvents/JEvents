@@ -27,22 +27,18 @@ function jevSetupAddLink() {
         , "td.cal_daysnoevents"
         , "td.cal_dayshasevents"];
 
-    for (var ci = 0; ci < classes.length; ci++) {
-        tds = jevjq(classes[ci]);
-        tds.each(function (index) {
-            element = jevjq(this);
-            element.on('mouseover', function () {
-                jevjq(this).addClass('showjevadd');
-            });
-            element.on('mouseout', function () {
-                jevjq(this).removeClass('showjevadd');
-            });
+    document.querySelectorAll(classes.join(',')).forEach(function (element) {
+        element.addEventListener('mouseover', function (evt) {
+            this.classList.add('showjevadd');
         });
-    }
+        element.addEventListener('mouseout', function (evt) {
+            this.classList.remove('showjevadd');
+        });
+    });
 
 }
 
-jevjq(document).on('ready', function () {
+document.addEventListener('DOMContentLoaded', function () {
     jevSetupAddLink();
     var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
     // move dialog to main body because some template wrap it in a relative positioned element - wrapped to ensure our namespaced bootstrap picks it up!

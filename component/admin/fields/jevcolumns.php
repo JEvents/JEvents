@@ -93,6 +93,10 @@ class JFormFieldJevcolumns extends JFormFieldText
 		$collist[] = array(Text::_("JEV_ACCESS_LEVEL", true), "ACCESS");
 		$collist[] = array(Text::_("JEV_EVENT_PRIORITY", true), "PRIORITY");
 		$collist[] = array(Text::_("JEV_FIELD_ICALBUTTON", true), "ICALBUTTON");
+		$collist[] = array(JText::_("JEV_FIELD_TODAY",true), "TODAY");
+		$collist[] = array(JText::_("JEV_FIELD_TOMORROW",true), "TOMORROW");
+		$collist[] = array(JText::_("JEV_FIELD_CREATOR_NAME_BEFORE_FIRST_SPACE",true), "CREATOR_DISPLAY_AFTER_FIRST_SPACE");
+		$collist[] = array(JText::_("JEV_FIELD_CREATOR_NAME_AFTER_FIRST_SPACE",true), "CREATOR_DISPLAY_BEFORE_FIRST_SPACE");
 
 		// get list of enabled plugins
 		$jevplugins = PluginHelper::getPlugin("jevents");
@@ -148,9 +152,17 @@ class JFormFieldJevcolumns extends JFormFieldText
 			}
 		}
 
-		$input = '<div style="clear:left"></div><table><tr valign="top">
+		if (version_compare(JVERSION, "4", "gt"))
+		{
+			$input = '<div style="clear:left"></div><div style="font-weight:bold" >' . Text::_("JEV_CLICK_TO_ADD_COLUMN")
+				. '</div><div id="columnchoices" style="margin-top:10px;padding:5px;min-width:45%;height:150px;border:solid 1px #cccccc;overflow-y:auto" >';
+		}
+		else
+		{
+			$input = '<div style="clear:left"></div><table><tr valign="top">
 			<td><div style="font-weight:bold" >' . Text::_("JEV_CLICK_TO_ADD_COLUMN") . '</div>
-			<div id="columnchoices" style="margin-top:10px;padding:5px;min-width:200px;height:150px;border:solid 1px #ccc;overflow-y:auto" >';
+			<div id="columnchoices" style="margin-top:10px;padding:5px;min-width:45%;height:150px;border:solid 1px #ccc;overflow-y:auto" >';
+		}
 		foreach ($collist as $col)
 		{
 			if (count($col) < 3)
@@ -176,23 +188,45 @@ class JFormFieldJevcolumns extends JFormFieldText
 				}
 			}
 		}
-		$input    .= '</div></td>
+		if (version_compare(JVERSION, "4", "gt"))
+		{
+		$input .= '</div>
+		<div  style="font-weight:bold;margin-left:20px;">' . Text::_("JEV_COLUMNS_DRAG_TO_REORDER_OR_CLICK_TO_REMOVE") . '</div>
+			<div id="columnmatches" style="margin:10px 0px 0px 20px;padding-top:5px;min-width:250px;">';
+		$input .= '<div id="columnmatches_heading" style="clear:left;">'
+			. '<div style="width:45%;display:inline-block;font-weight:bold">' . Text::_("JEV_COLUMNS_SELECTED_FIELD_NAME") . "</div>"
+			. '<div style="width:45%;display:inline-block;font-weight:bold;margin-left:20px;">' . Text::_("JEV_COLUMNS_SELECTED_FIELD_LABEL") . "</div>"
+			. "</div>";
+	}
+	else
+		{
+			$input .= '</div></td>
 		<td><div  style="font-weight:bold;margin-left:20px;">' . Text::_("JEV_COLUMNS_DRAG_TO_REORDER_OR_CLICK_TO_REMOVE") . '</div>
 			<div id="columnmatches" style="margin:10px 0px 0px 20px;padding-top:5px;min-width:250px;">';
-		$input    .= '<div id="columnmatches_heading" style="clear:left;">'
-			. '<div style="width:200px;display:inline-block;font-weight:bold">' . Text::_("JEV_COLUMNS_SELECTED_FIELD_NAME") . "</div>"
-			. '<div style="width:200px;display:inline-block;font-weight:bold;margin-left:20px;">' . Text::_("JEV_COLUMNS_SELECTED_FIELD_LABEL") . "</div>"
-			. "</div>";
+			$input .= '<div id="columnmatches_heading" style="clear:left;">'
+				. '<div style="width:45%;display:inline-block;font-weight:bold">' . Text::_("JEV_COLUMNS_SELECTED_FIELD_NAME") . "</div>"
+				. '<div style="width:45%;display:inline-block;font-weight:bold;margin-left:20px;">' . Text::_("JEV_COLUMNS_SELECTED_FIELD_LABEL") . "</div>"
+				. "</div>";
+		}
 		$invalues = array();
 		foreach ($invalue as $col)
 		{
-			$input      .= '<div id="column' . $col . '" style="clear:left;"><div style="width:200px;display:inline-block;" class="sortablehandle">' . $indexedgroups[$col]->fieldlabel . "</div><input type='text' value='" . $indexedgroups[$col]->label . "' style='margin-left:20px;' /></div>";
+			$input      .= '<div id="column' . $col . '" style="clear:left;"><div style="width:45%;display:inline-block;" class="sortablehandle">' . $indexedgroups[$col]->fieldlabel . "</div>"
+						."<input type='text' value='" . $indexedgroups[$col]->label . "' style='margin-left:5%;width:45%;' /></div>";
 			$invalues[] = $indexedgroups[$col]->raw;
 		}
 		$invalues = implode("||", $invalues);
 
-		$input .= '</div></td>
+		if (version_compare(JVERSION, "4", "gt"))
+		{
+			$input .= '</div>';
+		}
+		else
+		{
+			$input .= '</div></td>
 		</tr></table>';
+
+		}
 		$input .= '<textarea style="display:block;margin-top:10px;"  name="' . $this->name . '"  id="jevcolumns">' . $invalues . '</textarea>';
 		$input .= '<div style="clear:left"></div>';
 

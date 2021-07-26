@@ -13,8 +13,12 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.html.html.bootstrap');
 // We need to get the params first
 
-//HTMLHelper::_('formbehavior.chosen', '#adminForm select:not(.notchosen)');
-HTMLHelper::_('formbehavior.chosen', '#adminForm select.chosen');
+// Skip Chosen in Joomla 4.x+
+$jversion = new Joomla\CMS\Version;
+if (!$jversion->isCompatible('4.0'))
+{
+	HTMLHelper::_('formbehavior.chosen', '#adminForm select.chosen');
+}
 
 use Joomla\Registry\Registry;
 use Joomla\CMS\Language\Text;

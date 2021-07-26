@@ -9,8 +9,13 @@
  */
 
 document.addEventListener('DOMContentLoaded', function () {
-	if (document.querySelectorAll) {
-		let elems = document.querySelectorAll('#gslc .btn-group, #gslc .btn-group-ysts');
+	editicalGslStyling(document.getElementById('jevents'));
+});
+
+function editicalGslStyling(container) {
+
+	if (typeof container !== 'undefined' && document.querySelectorAll) {
+		let elems = container.querySelectorAll(' .btn-group,  .btn-group-ysts');
 		for (let e = 0; e < elems.length; e++) {
 			elems[e].classList.remove('btn-group');
 			elems[e].classList.remove('radio');
@@ -32,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
 				label.classList.add('gsl-button-small');
 
 				let activeClass = false;
-				let input = document.getElementById(label.getAttribute('for'));
+				let input = container.querySelector('#' + label.getAttribute('for'));
 				if (input) {
 
 					if (label.classList.contains('btn-danger')) {
@@ -41,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
 					}
 					if (label.classList.contains('btn-success')) {
 						label.classList.remove('btn-success');
-						input.setAttribute('data-activeclass', 'success');
+						input.setAttribute('data-activeclass', 'primary');
 					}
 					if (label.classList.contains('btn-warning')) {
 						label.classList.remove('btn-warning');
@@ -53,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
 						if (input.checked || label.classList.contains('active')) {
 							if (activeClass) {
 								label.classList.add('gsl-button-' + activeClass);
-							} else if (this.value == 0) {
+							} else if (input.value == 0) {
 								label.classList.add('gsl-button-danger');
 							} else {
 								label.classList.add('gsl-button-primary');
@@ -71,11 +76,48 @@ document.addEventListener('DOMContentLoaded', function () {
 
 				label.classList.remove('active');
 			}
+
+			let buttons = elems[e].querySelectorAll(".btn, .btn-mini, button");
+			for (let l = 0; l < buttons.length; l++) {
+				let button = buttons[l];
+				button.classList.remove('btn');
+				button.classList.remove('btn-mini');
+				button.classList.remove('button');
+				button.classList.add('gsl-button');
+				if (button.closest('.subform-repeatable'))
+				{
+					button.classList.add('gsl-button-mini');
+				}
+				else {
+					button.classList.add('gsl-button-small');
+				}
+
+				if (button.classList.contains('btn-danger')) {
+					button.classList.remove('btn-danger');
+					button.classList.add('gsl-button-primary');
+				}
+				else if (button.classList.contains('btn-success')) {
+					button.classList.remove('btn-success');
+					button.classList.add('gsl-button-primary');
+				}
+				else if (button.classList.contains('btn-primary')) {
+					button.classList.remove('btn-primary');
+					button.classList.add('gsl-button-primary');
+				}
+				else if (button.classList.contains('btn-warning')) {
+					button.classList.remove('btn-warning');
+					button.classList.add('gsl-button-danger');
+				}
+				else {
+					button.classList.add('gsl-button-default');
+				}
+			}
 		}
 
-		elems = document.querySelectorAll('#gslc .checkbox-group');
+		elems = container.querySelectorAll(' .checkbox-group, .checkboxes');
 		for (let e = 0; e < elems.length; e++) {
 			elems[e].classList.remove('checkbox-group');
+			elems[e].classList.remove('checkboxes');
 			elems[e].classList.remove('checkbox');
 			elems[e].classList.add('gsl-button-group');
 
@@ -87,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			for (let i = 0; i < inputs.length; i++) {
 				inputs[i].classList.add('gsl-hidden');
 			}
-			let labels = elems[e].querySelectorAll("label.btn");
+			let labels = elems[e].querySelectorAll("label");
 			for (let l = 0; l < labels.length; l++) {
 				let label = labels[l];
 				label.classList.remove('btn');
@@ -96,13 +138,13 @@ document.addEventListener('DOMContentLoaded', function () {
 				label.classList.add('gsl-button-small');
 
 				let activeClass = false;
-				let input = document.getElementById(label.getAttribute('for'));
+				let input = container.querySelector('#' + label.getAttribute('for'));
 				if (input) {
 					activeClass = input.getAttribute('data-activeclass');
 					if (input.checked || label.classList.contains('active')) {
 						if (activeClass) {
 							label.classList.add('gsl-button-' + activeClass);
-						} else if (this.value == 0) {
+						} else if (input.value == 0) {
 							label.classList.add('gsl-button-danger');
 						} else {
 							label.classList.add('gsl-button-primary');
@@ -119,19 +161,145 @@ document.addEventListener('DOMContentLoaded', function () {
 				label.classList.remove('active');
 			}
 		}
+
+		elems = container.querySelectorAll(" i[class^='icon-']");
+		for (let e = 0; e < elems.length; e++) {
+			if (elems[e].classList.contains('icon-user'))
+			{
+				elems[e].classList.remove('icon-user');
+				elems[e].classList.add('gsl-icon');
+				elems[e].classList.add('gsl-margin-small-right');
+				elems[e].setAttribute('data-gsl-icon' , 'icon:user;ratio:0.7');
+			}
+		}
+
+		// general cleanup
+		let cleanups = ['input-group', 'input-group-append', 'input-append', 'row', , 'controls'];
+		for (let c = 0; c < cleanups.length;c++) {
+			elems = container.querySelectorAll("." + cleanups[c]);
+			for (let e = 0; e < elems.length; e++) {
+				elems[e].classList.remove(cleanups[c]);
+			}
+		}
+
+		elems = container.querySelectorAll('.control-label');
+		for (let e = 0; e < elems.length; e++) {
+			elems[e].classList.remove('control-label');
+			elems[e].classList.add('gsl-form-label');
+		}
+
+		elems = container.querySelectorAll('.control-group');
+		for (let e = 0; e < elems.length; e++) {
+			elems[e].classList.remove('control-group');
+			elems[e].classList.add('gsl-margin-small-bottom');
+		}
+
+		var inputs = container.querySelectorAll('button:not(.gsl-button)');
+
+		inputs.forEach (function(elem){
+
+			elem.classList.add('gsl-button');
+			elem.classList.add('gsl-button-small');
+			elem.classList.remove('button2-left')
+
+			if (elem.classList.contains('btn-danger')) {
+				elem.classList.remove('btn-danger');
+				elem.classList.add('gsl-button-danger');
+			}
+			else if (elem.classList.contains('btn-primary')) {
+				elem.classList.remove('btn-primary');
+				elem.classList.add('gsl-button-primary');
+			}
+			else if (elem.classList.contains('btn-success')) {
+				elem.classList.remove('btn-success');
+				elem.classList.add('gsl-button-primary');
+			}
+			else if (elem.classList.contains('btn-warning')) {
+				elem.classList.remove('btn-warning');
+				elem.classList.add('gsl-button-danger');
+			}
+			else
+			{
+				elem.classList.add('gsl-button-primary');
+			}
+
+		})
+
+		var inputs = container.querySelectorAll('.button2-left a:not(.gsl-button)');
+		inputs.forEach (function(elem) {
+			var group = elem.closest('.button2-left');
+			group.classList.remove('button2-left');
+			group.classList.add('gsl-button-group');
+			elem.classList.add('gsl-button');
+			elem.classList.add('gsl-button-small');
+			elem.classList.add('gsl-button-default');
+			elem.classList.add('gsl-margin-small-right');
+		})
+
+		var inputs = container.querySelectorAll('select:not(.gsl-select)');
+		inputs.forEach (function(elem){
+
+			if (elem.hasAttribute('hidden') || window.getComputedStyle(elem,'display') == 'none')
+			{
+				return;
+			}
+			elem.classList.add('gsl-select');
+			//elem.classList.add('gsl-form-width-medium');
+			elem.classList.add('gsl-width-medium');
+			elem.classList.remove('inputbox')
+			if (elem.getAttribute('size') == 1) {
+				elem.removeAttribute('size');
+			}
+
+		})
+
+		inputs = container.querySelectorAll('input[type="text"]:not(.gsl-input):not(.minicolors)');
+		inputs.forEach (function(elem){
+			elem.classList.add('gsl-input');
+			//elem.classList.add('gsl-form-width-medium');
+			elem.classList.add('gsl-width-medium');
+			elem.classList.remove('inputbox')
+			elem.classList.remove('input-medium')
+			elem.removeAttribute('size');
+		})
+
+		inputs = container.querySelectorAll('textarea:not(.gsl-textarea)');
+		inputs.forEach (function(elem){
+			elem.classList.add('gsl-textarea');
+			//elem.classList.add('gsl-form-width-medium');
+			elem.classList.add('gsl-width-medium');
+		})
+
+		/* field calendar height match */
+		let fieldcalendars = container.querySelectorAll('.field-calendar, .bootstrap-timepicker');
+		fieldcalendars.forEach (function(fieldcalendar){
+			let input = fieldcalendar.querySelector('input');
+			let button = fieldcalendar.querySelector('button');
+			if (input && button)
+			{
+				// can't use offset height its zero when not displayed
+				button.style.height = window.getComputedStyle(input).getPropertyValue('height');
+			}
+		});
+		// To review
+		/*
+		sr-only
+		watch out for editor textareas being messed up
+		*/
+
 	}
-});
+};
 
 /* Make core showon trigger fields work on keyup events as well as change events */
 window.addEventListener('load', function() {
 	if (document.querySelectorAll) {
 
-		let showonFields = document.getElementById('jevents').querySelectorAll('[data-showon]');
+		let showonFields = document.getElementById('jevents').querySelectorAll('[data-showon-gsl]');
 
 		// Setup each 'showon' field onkeypress to mimic onchange
 		for (let is = 0; is < showonFields.length; is++) {
 			let target = showonFields[is];
-			let jsondata = JSON.parse(target.getAttribute('data-showon')) || [],
+			let jsondata = JSON.parse(target.getAttribute('data-showon-gsl')) || [],
 				fields = [];
 
 			if (typeof jsondata['AND'] !== 'undefined') {
@@ -186,5 +354,17 @@ window.addEventListener('load', function() {
 				}
 			}
 		}
+
+		// repeatable fields
+		let repeatables = document.getElementById('jevents').querySelectorAll('div.subform-repeatable');
+		for (let r = 0; r < repeatables.length; r++)
+		{
+			jQuery(repeatables[r]).on('subform-row-add', function (event) {
+				editicalGslStyling(repeatables[r]);
+			});
+		}
+
 	}
 });
+
+

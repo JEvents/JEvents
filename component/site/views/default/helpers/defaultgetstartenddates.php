@@ -103,6 +103,8 @@ function Defaultgetstartenddates($view)
 		$enddate = $value->toFormat("%Y-%m-%d");
 	}
 
+	$usedates = $params->get('usedates', 'both');
+
 	return array($startdate, $enddate);
 
 }

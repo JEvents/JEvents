@@ -15,6 +15,7 @@ defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * HTML View class for the component
@@ -38,11 +39,11 @@ class AdminParamsViewParams extends JEventsAbstractView
 
 		JToolbarHelper::apply('params.apply');
 		JToolbarHelper::save('params.save');
-		JToolbarHelper::cancel('cpanel.cpanel');
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+		$landingpage = $params->get("landingpage", 'cpanel.cpanel');
+		JToolbarHelper::cancel($landingpage);
 
 		$model = $this->getModel();
-
-
 
 		jimport('joomla.form.form');
 
@@ -50,7 +51,10 @@ class AdminParamsViewParams extends JEventsAbstractView
 		\Joomla\CMS\Form\Form::addFormPath(JPATH_ADMINISTRATOR . '/components/' . JEV_COM_COMPONENT);
 
 		// Get the form.
+		// Some plugins called by the form can wreck the layout by outputting things here like &#65279; !!
+		ob_start();
 		$modelForm = $model->getForm();
+		$junk = ob_get_clean();
 
 		$component = $this->get('Component');
 		// Bind the form to the data.
@@ -77,7 +81,9 @@ class AdminParamsViewParams extends JEventsAbstractView
 
 		// Set toolbar items for the page
 		JToolbarHelper::title(Text::_('DB_SETUP'), 'jevents');
-		JToolbarHelper::cancel('cpanel.cpanel');
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+		$landingpage = $params->get("landingpage", 'cpanel.cpanel');
+		JToolbarHelper::cancel($landingpage);
 
 	}
 }

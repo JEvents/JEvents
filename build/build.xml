@@ -55,9 +55,55 @@
     <!-- ============================================  -->
     <target name="sedreplace" description="Replace version and date values in files !! ">
         <xmlproperty file="../package/pkg_jevents.xml" />
-        <exec command="find ${builddir}/${sedfolder}/ -type f \( -iname '*.php' -o -iname '*.js' -o -iname '*.xml'  -o -iname '*.css' \) -exec sed -i 's/JEVENTS_VERSION/${extension.version}/' '{}' +;" />
-        <exec command="find ${builddir}/${sedfolder}/ -type f \( -iname '*.php' -o -iname '*.js' -o -iname '*.xml'  -o -iname '*.css' \) -exec sed -i 's/JEVENTS_DATE/${extension.creationDate}/' '{}' +;" />
-        <exec command="find ${builddir}/${sedfolder}/ -type f \( -iname '*.php' -o -iname '*.js' -o -iname '*.xml'  -o -iname '*.css' \) -exec sed -i 's/JEVENTS_COPYRIGHT/${extension.copyrightYear}/' '{}' +;" />
+        <exec command="find ${builddir}/${sedfolder}/ -type f \( -iname '*.php' -o -iname '*.js' -o -iname '*.xml'  -o -iname '*.css' -o -iname '*.ini' \) -exec sed -i 's/\bJEVENTS_VERSION\b/${extension.version}/' '{}' +;" />
+        <exec command="find ${builddir}/${sedfolder}/ -type f \( -iname '*.php' -o -iname '*.js' -o -iname '*.xml'  -o -iname '*.css' -o -iname '*.ini' \) -exec sed -i 's/\bJEVENTS_DATE\b/${extension.creationDate}/' '{}' +;" />
+        <exec command="find ${builddir}/${sedfolder}/ -type f \( -iname '*.php' -o -iname '*.js' -o -iname '*.xml'  -o -iname '*.css' -o -iname '*.ini' \) -exec sed -i 's/\bJEVENTS_COPYRIGHT\b/${extension.copyrightYear}/' '{}' +;" />
+    </target>
+
+    <!-- ==================================================  -->
+    <!-- Target: JEvents Generic Folder    -->
+    <!-- ==================================================  -->
+    <target name="build-component" description="Build JEvents Component ">
+        <echo msg="Building Generic Folder ${genericname} : ../${genericfolder}"/>
+        <!--
+        <copy todir="${builddir}/${genericfolder}">
+            <fileset dir="../${genericfolder}">
+                <include name="**"></include>
+                <exclude name="**/.svn/**"></exclude>
+                <excludesfile name="excludedfiles.build"></excludesfile>
+            </fileset>
+        </copy>
+
+        Using rsync and safe-links ignores softlinks outside of the current tree!
+        -->
+
+        <filesync destinationDir="${builddir}/${genericfolder}"
+                  rsyncPath="/usr/bin/rsync"
+                  verbose="false"
+                  sourceDir="../${genericfolder}"
+                  excludeFile="excludedfiles.build"
+                  options="-rpKz --safe-links"
+        />
+
+        <!-- copy backend css files to the frontend -->
+        <copy file="../${genericfolder}/admin/assets/js/gslframework.js" todir="${builddir}/${genericfolder}/component/site/assets/js/" />
+        <copy file="../${genericfolder}/admin/assets/js/jevents.js" todir="${builddir}/${genericfolder}/component/site/assets/js/" />
+        <copy file="../${genericfolder}/admin/assets/css/j3.css" todir="${builddir}/${genericfolder}/component/site/assets/css/" />
+        <copy file="../${genericfolder}/admin/assets/css/j4.css" todir="${builddir}/${genericfolder}/component/site/assets/css/" />
+        <copy file="../${genericfolder}/admin/assets/css/jevents.css" todir="${builddir}/${genericfolder}/component/site/assets/css/" />
+
+        <phingcall target="sedreplace">
+            <property name="name" value="${genericfolder}" />
+        </phingcall>
+
+        <fileset dir="${builddir}/${genericfolder}" id="pluginZip">
+            <include name="**"/>
+            <excludesfile name="excludedfiles.build"></excludesfile>
+            <exclude name="**/jevcustom.css"></exclude>
+        </fileset>
+        <zip ignorelinks="true" destfile="${builddir}/${zipfile}">
+            <fileset refid="pluginZip"/>
+        </zip>
     </target>
 
     <!-- ==================================================  -->
@@ -79,6 +125,7 @@
 
         <filesync destinationDir="${builddir}/${genericfolder}"
                   rsyncPath="/usr/bin/rsync"
+                  verbose="false"
                   sourceDir="../${genericfolder}"
                   excludeFile="excludedfiles.build"
                   options="-rpKz --safe-links"
@@ -91,6 +138,7 @@
         <fileset dir="${builddir}/${genericfolder}" id="pluginZip">
             <include name="**"/>
             <excludesfile name="excludedfiles.build"></excludesfile>
+            <exclude name="**/jevcustom.css"></exclude>
         </fileset>
         <zip ignorelinks="true" destfile="${builddir}/${zipfile}">
             <fileset refid="pluginZip"/>
@@ -102,7 +150,7 @@
     <!-- ============================================  -->
     <target name="compileless" description="Compile Less files !! ">
         <exec passthru="true" command="lessc --verbose ${rootdir}/component/admin/assets/less/j3.less      ${rootdir}/component/admin/assets/css/j3.css" />
-        <exec passthru="true" command="lessc --verbose ${rootdir}/component/admin/assets/less/j4.less      ${rootdir}/component/admin/assets/css/j4.css" />
+        <exec passthru="true" command="lessc --verbose ${rootdir}/component/admin//assets/less/j4.less      ${rootdir}/component/admin/assets/css/j4.css" />
         <exec passthru="true" command="lessc --verbose ${rootdir}/component/admin/assets/less/rsvppro.less ${rootdir}/component/admin/assets/css/rsvppro.css" />
     </target>
 
@@ -126,6 +174,7 @@
                 <delete file="${uikitdir}/dist/css/uikit-core.css" failonerror="false" />
                 <delete file="${uikitdir}/dist/css/uikit-rtl.css" failonerror="false" />
                 <delete file="${uikitdir}/dist/css/uikit.css" failonerror="false" />
+                <delete file="${uikitdir}/dist/css/uikit.gsl.css" failonerror="false" />
                 <delete file="${uikitdir}/dist/css/uikit.gsl.min.css" failonerror="false" />
             </then>
         </if>
@@ -168,6 +217,10 @@
             </fileset>
         </copy>
 
+        <!-- remove the requirejs and node module handling!    -->
+        <exec command="find '${rootdir}/component/media/' -type f \( -iname 'uikit*.js' \)  -exec sed -ri 's/typeof exports ===/typeof GSL_exports_GSL ===/' '{}' +;" />
+        <exec command="find '${rootdir}/component/media/' -type f \( -iname 'uikit*.js' \)  -exec sed -ri 's/typeof define ===/typeof GSL_define_GSL ===/' '{}' +;" />
+
         <!-- replace colours with CSS variables -->
         <!-- primary -->
         <!-- primary hover -->
@@ -200,7 +253,7 @@
     <target name="build-jevents" description="Build JEvents">
         <echo msg="Building JEvents ..." />
 
-        <phingcall target="build-generic">
+        <phingcall target="build-component">
             <property name="genericname" value="Core JEvents Component" />
             <property name="genericfolder" value="component" />
             <property name="zipfile" value="com_jevents.zip" />
@@ -339,7 +392,7 @@
                 <exclude name="**/.svn/**"></exclude>
             </fileset>
         </copy>
-        <xmlproperty file="${builddir}/package/pkg_jevents.xml" />
+        <xmlproperty file="${rootdir}/package/pkg_jevents.xml" />
 
         <reflexive>
             <fileset dir="${builddir}/package">

@@ -125,8 +125,13 @@ class ICalsController extends AdminIcalsController
 		$input  = $app->input;
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		$years = $input->getCmd('years', 'NONE');
-		$cats  = $input->getCmd('catids', 0);
+		$years = $input->getString('years', '0');
+		$years = explode(",", $years);
+		$years = JEVHelper::forceIntegerArray($years, true);
+
+		$cats  = $input->getString('catids', '0');
+		$cats = explode(",", $cats);
+		$cats = JEVHelper::forceIntegerArray($cats, true);
 
 		// validate the key
 		$icalkey = $params->get("icalkey", "secret phrase");
@@ -220,7 +225,9 @@ class ICalsController extends AdminIcalsController
 		}
 		else if ($years != "NONE")
 		{
-			$years = explode(",", $input->getCmd('years', ''));
+			// already fetched and sanitised
+			$years = explode(",", $years);
+
 			if (!is_array($years) || count($years) == 0)
 			{
 				list($y, $m, $d) = JEVHelper::getYMD();
@@ -568,7 +575,7 @@ class ICalsController extends AdminIcalsController
 		<script type="text/javascript">
             window.alert("<?php echo Text::sprintf("JEV_EVENTS_IMPORTED", $count); ?>");
             try {
-                window.parent.jQuery('#myImportModal').modal('hide');
+                window.parent.closeJevModalBySelector('#myImportModal');
             }
             catch (e) {
             }

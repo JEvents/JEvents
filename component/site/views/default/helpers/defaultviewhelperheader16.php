@@ -92,6 +92,7 @@ function DefaultViewHelperHeader16($view)
 						. ($view->day ? '&day=' . $view->day : '')
 						. $view->datamodel->getItemidLink()
 						. $view->datamodel->getCatidsOutLink()
+						. '&print=1'
 						. '&pop=1'
 						. '&tmpl=component';
 					$print_link = Route::_($print_link);
@@ -117,7 +118,8 @@ function DefaultViewHelperHeader16($view)
 						</li> <?php
 					}
 				}
-				if ($cfg->get('com_email_icon_view', 1))
+				$jversion = new Joomla\CMS\Version;
+				if ($cfg->get('com_email_icon_view', 1) && !$jversion->isCompatible('4.0'))
 				{
 
 					$task = $input->getString('jevtask', '');

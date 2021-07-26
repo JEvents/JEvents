@@ -84,7 +84,7 @@ class DefaultsModelDefaults extends BaseDatabaseModel
 			// Currently no option to customise event editing by category
 			if ($filter_catid != "0" && $filter_catid != "")
 			{
-				$query->where('def.name <> "icalevent.edit_page"');
+			//	$query->where('def.name <> "icalevent.edit_page"');
 			}
 
 

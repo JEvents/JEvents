@@ -11,6 +11,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\String\StringHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * HTML View class for the component frontend
@@ -160,7 +161,7 @@ class DefaultModLegendView
 			$catidsGP = explode($separator, $catidsIn);
 		else
 			$catidsGP = array();
-		\Joomla\Utilities\ArrayHelper::toInteger($catidsGP);
+		$catidsGP = ArrayHelper::toInteger($catidsGP);
 		$catidsGPList = implode(",", $catidsGP);
 
 		// This produces a full tree of categories
@@ -319,6 +320,16 @@ class DefaultModLegendView
 	{
 
 		$treeroot = version_compare(JVERSION, '1.6.0', '>=') ? 1 : 0;
+		// For some sites recovered from backups or migrated the root may not be 1 or 0
+		foreach ($dataset as $id => &$node)
+		{
+			if ($node->level == 1)
+			{
+				$treeroot = $node->parent_id;
+				break;
+			}
+		}
+
 		$tree     = array();
 		foreach ($dataset as $id => &$node)
 		{

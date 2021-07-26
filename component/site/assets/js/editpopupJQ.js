@@ -79,7 +79,7 @@ function jevEditPopupNoTitle(url) {
 
 function launchModal(selector, url) {
     /** Clear the old page! */
-    jQuery(selector + ' iframe').attr("src", "about:blank");
+    jQuery(selector + ' iframe').attr("src", "");
     /** Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap */
     var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
     if (bootstrap3_enabled) {
@@ -91,18 +91,12 @@ function launchModal(selector, url) {
             if (scrollT > 0) {
                 jQuery(selector).data('scrollTop', scroll);
             }
-            jQuery('body').css({
-                position: 'fixed'
-            });
             if (url) {
                 jQuery(selector + ' iframe').attr("src", url);
             }
         });
         jQuery(selector).on('hidden.bs.modal', function () {
             /* scrolling issue in iOS 11.3*/
-            jQuery('body').css({
-                position: 'static'
-            });
             var scrollT = jQuery(selector).data('scrollTop') || 0;
             if (scroll > 0) {
                 jQuery(window).scrollTop(scrollT);
@@ -119,7 +113,7 @@ function launchModal(selector, url) {
                 jQuery(selector).data('scrollTop', scrollT);
             }
             jQuery('body').css({
-                position: 'fixed'
+                 // position: 'fixed'
             });
             if (url) {
                 jQuery(selector + ' iframe').attr("src", url);
@@ -129,7 +123,6 @@ function launchModal(selector, url) {
             /* scrolling issue in iOS 11.3*/
             jQuery('body').css({
                 position: 'static'
-
             });
             var scrollT = jQuery(selector).data('scrollTop') || 0;
             if (scrollT > 0) {

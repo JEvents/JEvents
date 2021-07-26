@@ -15,7 +15,7 @@
 	<fields name="params">
 
 		<fieldset name="rangedatetime" addfieldpath="/administrator/components/com_jevents/fields/">
-			<field name="relative" type="radio" class="btn-group" default='ABS'
+			<field name="relative" type="radio" class="btn-group" default='abs'
 			       label="COM_JEVENTS_DATE_RANGE_RELATIVE_LABEL" description="COM_JEVENTS_DATE_RANGE_RELATIVE_DESC">
 				<option value="abs">COM_JEVENTS_DATE_RANGE_RELATIVE_ABS</option>
 				<option value="rel">COM_JEVENTS_DATE_RANGE_RELATIVE_REL</option>
@@ -51,7 +51,7 @@
 			<field name="dataorder" type="list" default="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC"  label="JEV_DATA_ORDER" description="JEV_DATA_ORDER_DESC">
 				<option value="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC" >JEV_STARTDATE_INCREASING</option>
 				<option value="rpt.startrepeat desc, rpt.endrepeat desc, det.summary ASC" >JEV_STARTDATE_DECREASING</option>
-				<option value="det.summary ASC, rpt.startrepeat desc, rpt.endrepeat desc " >JEV_ALPHABETICAL</option>
+				<option value="det.summary ASC, rpt.startrepeat asc, rpt.endrepeat asc " >JEV_ALPHABETICAL</option>
 				<option value="ev.created DESC" >JEV_MOST_RECENT</option>
 				<option value="ev.created ASC" >JEV_MOST_RECENT_ASC</option>
 				<option value="det.modified DESC" >JEV_MOST_RECENT_MODIFIED_DESC</option>
@@ -68,7 +68,7 @@
 
 			<field name="com_calViewName" type="jevview" default="" label="JEV_VIEWNAME"
 			       description="JEV_TIP_VIEWNAME"/>
-			<field name="darktemplate" type="jevboolean" class="btn-group" default="" label="JEV_DARK_TEMPLATE"
+			<field name="darktemplate" type="jevboolean" class="btn-group" default="0" label="JEV_DARK_TEMPLATE"
 			       description="JEV_DARK_TEMPLATE_DESC"/>
 
 			<field name="com_calUseIconic" type="list" default="1" label="JEV_ICONIC_NAVBAR" description=""

@@ -69,7 +69,8 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		$document->addScriptDeclaration($editStrings);
 
 		JEVHelper::script('editicalJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
-		if (!GSLMSIE10)
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+		if (!GSLMSIE10 && $params->get("newfrontendediting", 1))
 		{
 			JEVHelper::script('editicalGSL.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 		}
@@ -175,7 +176,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 			JEVHelper::stylesheet('jevcustom.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
 		}
 
-		$this->setupEditForm();
+        $this->setupEditForm();
 
 		parent::displaytemplate($tpl);
 

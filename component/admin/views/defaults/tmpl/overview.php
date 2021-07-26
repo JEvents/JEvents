@@ -12,6 +12,13 @@ HtmlHelper::_('bootstrap.tooltip');
 $mainspan = 10;
 $fullspan = 12;
 
+$jversion = new Joomla\CMS\Version;
+if (!$jversion->isCompatible('4.0'))
+{
+	//HTMLHelper::_('formbehavior.chosen', 'select');
+	HTMLHelper::script('media/com_jevents/js/gslselect.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
+}
+
 ?>
 <?php if (!empty($this->sidebar)) : ?>
 	<div id="j-sidebar-container" class="span2">
@@ -111,8 +118,8 @@ $fullspan = 12;
                                 <?php echo HTMLHelper::_('grid.id', $i, $row->id); ?>
                             </td>
                             <td>
-                                        <span class="editlinktip hasTip"
-                                              title="<?php echo Text::_('JEV_Edit_Layout'); ?>::<?php echo $this->escape(Text::_($row->title)); ?>">
+                                        <span class="editlinktip hasYsPopover"
+                                              data-yspoptitle="<?php echo Text::_('JEV_Edit_Layout', true); ?>" data-yspopcontent="<?php echo $this->escape(Text::_($row->title, true)); ?>" >
                                             <a href="<?php echo $link; ?>">
                                         <?php echo $this->escape(Text::_($row->title)); ?></a>
                                         </span>
@@ -149,7 +156,7 @@ $fullspan = 12;
 
                             <td class="center">
                                 <?php
-                                $img = $row->state ? "<i gsl-icon='icon:check'></i>" : "<i gsl-icon='icon:close'></i>";
+                                $img = $row->state ? "<i gsl-icon='icon:check' class='gsl-text-success'></i>" : "<i gsl-icon='icon:close' class='gsl-text-danger'></i>";
                                 ?>
                                 <a href="javascript: void(0);"
                                    onclick="return Joomla.listItemTask('cb<?php echo $i; ?>','<?php echo $row->state ? 'defaults.unpublish' : 'defaults.publish'; ?>')"><?php echo $img; ?></a>

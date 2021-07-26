@@ -58,7 +58,7 @@ class ModlatestViewModlatest extends AdminICalRepeatViewICalRepeat
 		$doc = Factory::getDocument();
 		if ($doc->getType() != 'feed')
 		{
-			JError::raiseError('E999', 'Fatal error, document type: "' . $doc->getType() . '" not supported.');
+			throw new Exception('Fatal error, document type: "' . $doc->getType() . '" not supported.', 403);
 		}
 
 		if ($modid > 0)

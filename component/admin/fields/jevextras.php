@@ -16,6 +16,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
@@ -51,6 +52,16 @@ class FormFieldJevextras extends FormField
 		$this->data      = array();
 		$this->labeldata = array();
 
+		// Some plugins use JSON.encode (a MooTools alias for JSON.stringify) so we need to define it here
+        if (version_compare(JVERSION,'3.999.999',"<")) {
+            HTMLHelper::_('behavior.framework', true);
+            $script = <<< SCRIPT
+JSON.encode = function(obj){
+    return JSON.stringify(obj);
+};
+SCRIPT;
+//        JFactory::getDocument()->addScriptDeclaration($script);
+        }
 	}
 
 	public
@@ -114,6 +125,10 @@ class FormFieldJevextras extends FormField
 			$res = Factory::getApplication()->triggerEvent('onEditMenuItem', array(&$this->data, &$this->value, $this->type, $this->name, $this->id, $this->form));
 		}
 
+		Factory::getDocument()->addStyleDeclaration('
+		.control-group .controls, .control-group .controls > *,
+		.control-group .controls .control-input, .control-group .controls .control-input > * {max-width:100%;}
+		');
 		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
 		JEVHelper::ConditionalFields($this->element, $this->form->getName());
 

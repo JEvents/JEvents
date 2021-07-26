@@ -27,11 +27,11 @@ class Pkg_JeventsInstallerScript
 	public function preflight($type, $parent)
 	{
 
-		define('JEVENTS_MINIMUM_PHP', '5.6.0');
+		define('JEVENTS_MINIMUM_PHP', '7.0.0');
 
 		if (version_compare(PHP_VERSION, JEVENTS_MINIMUM_PHP, '<'))
 		{
-			Jerror::raiseWarning(null, Text::sprintf("COM_JEVENTS_PHP_VERSION_WARNING", PHP_VERSION));
+			Factory::getApplication()->enqueueMessage(Text::sprintf("COM_JEVENTS_PHP_VERSION_WARNING", PHP_VERSION), 'warning');
 		}
 
 		// Joomla! broke the update call, so we have to create a workaround check.
@@ -44,7 +44,7 @@ class Pkg_JeventsInstallerScript
 			$this->hasJEventsInst = 0;
 			if (version_compare(JVERSION, '3.8.0', '<'))
 			{
-				Jerror::raiseWarning(null, 'Warning! You are running a very insecure version of Joomla! <br/>Please update Joomla! to at least 3.8.0 before installing JEvents. This will also prevent issues with JEvents');
+				Factory::getApplication()->enqueueMessage('Warning! You are running a very insecure version of Joomla! <br/>Please update Joomla! to at least 3.8.0 before installing JEvents. This will also prevent issues with JEvents', 'warning');
 
 				return false;
 			}
@@ -56,7 +56,7 @@ class Pkg_JeventsInstallerScript
 			$this->hasJEventsInst = 1;
 			if (version_compare(JVERSION, '3.8.0', '<'))
 			{
-				Jerror::raiseWarning(null, 'This version of JEvents is designed for Joomla 3.8.0 and later.<br/>Please update Joomla! before upgrading JEvents to this version');
+				Factory::getApplication()->enqueueMessage('This version of JEvents is designed for Joomla 3.8.0 and later.<br/>Please update Joomla! before upgrading JEvents to this version', 'warning');
 
 				return false;
 			}
@@ -166,6 +166,15 @@ class Pkg_JeventsInstallerScript
 		echo "<div class='jev_install'>
 				<div class='jev_logo'><a href='index.php?option=com_jevents' ><img src='https://www.jevents.net/logo/$logo' /></a></div>
 				<div class='version'><h2 class='gsl-h2'>" . $inst_text . ": ADD_VERSION </h2></div>
+				<h3>Exciting New Styling & Joomla 4 Support</h3>
+				<p>JEvents 3.6 brings you</p>
+				<ul>
+					<li>A new backend theme (with new configuration options)</li>
+					<li>A new dashboard that gives you an overview and graphical summary of your events (you can choose this or the events list as your landing page)</li>
+					<li>A new, more modern, interface for event creation/editing (with new configuration options)</li>
+					<li>Joomla 4.0 support</li>
+				</ul>
+				<p>Please see our latest <a href='https://www.jevents.net/blog/jevents-3-6-exciting-new-styling-featured' target='_blank'>blog post</a> for more information about these features and how they can be configured.</p>
 				<div class='installed'>
 					<ul>
 						<li><a href='index.php?option=com_jevents' >JEvents Core Component</a></li>
@@ -186,7 +195,6 @@ class Pkg_JeventsInstallerScript
 						<li><a href='https://www.jevents.net/docs/jevents' alt='JEvents Documentation'><img src='components/com_jevents/assets/images/documentation.jpg' alt='JEvents Documentation' /><br/>Documentation</a></li>
 					</ul>
 				</div>";
-
 
 		if ($this->hasJEventsInst == 0)
 		{

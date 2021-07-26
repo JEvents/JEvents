@@ -19,6 +19,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
 
+ob_start();
+
 $input = Factory::getApplication()->input;
 
 if (version_compare(phpversion(), '5.0.0', '<') === true)
@@ -27,8 +29,19 @@ if (version_compare(phpversion(), '5.0.0', '<') === true)
 
 	return;
 }
+
+if (!defined('GSLMSIE10') && isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], "MSIE") !== false || strpos($_SERVER['HTTP_USER_AGENT'], "Internet Explorer") !== false))
+{
+	define ("GSLMSIE10" , 1);
+}
+else if(!defined('GSLMSIE10'))
+{
+	define ("GSLMSIE10" , 0);
+}
+
 // remove metadata.xml if its there.
 jimport('joomla.filesystem.file');
+
 if (File::exists(JPATH_COMPONENT_SITE . '/' . "metadata.xml"))
 {
 	File::delete(JPATH_COMPONENT_SITE . '/' . "metadata.xml");
@@ -86,7 +99,7 @@ $user           = Factory::getUser();
 //Stop if user is not authorised to access JEvents CPanel
 if (!$authorisedonly && !$user->authorise('core.manage', 'com_jevents'))
 {
-	return;
+	throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'));
 }
 
 // Must also load frontend language files
@@ -107,9 +120,19 @@ if (!version_compare(JVERSION, '1.6.0', ">="))
 	$lang->load(JEV_COM_COMPONENT, JPATH_SITE . '/' . "templates" . '/' . $template);
 }
 
+$landingpage = $params->get("landingpage", 'cpanel.cpanel');
 // Split task into command and task
-$cmd = $input->get('task', 'cpanel.show');
+$cmd = $input->get('task', $landingpage);
 //echo $cmd;die;
+
+PluginHelper::importPlugin("jevents");
+
+// Should the output come from one of the plugins instead?
+if (strpos($cmd, "plugin.") === 0 && count(explode(".", $cmd)) == 2)
+{
+	Factory::getApplication()->triggerEvent('onJEventsPluginOutput');
+	return;
+}
 
 //Time to handle view switching for our current setup for J3.7
 $view = $input->get('view', '');
@@ -117,18 +140,22 @@ $view = $input->get('view', '');
 if ($view === 'customcss')
 {
 //	Factory::getApplication()->redirect('index.php?option=com_jevents&task=cpanel.custom_css');
-	if ($cmd === 'cpanel.show' || strpos($cmd, '.') === 0)
+	if ($cmd === $landingpage || strpos($cmd, '.') === 0)
 	{
 		$cmd = $view;
 	}
 	$controllerName = 'CustomCss';
 }
-if($view === 'import') {
-	if ($cmd === 'cpanel.show' || strpos($cmd, '.') === 0)
+else if($view === 'import') {
+	if ($cmd === $landingpage || strpos($cmd, '.') === 0)
 	{
 		$cmd = $view;
 	}
 	$controllerName = 'Import';
+}
+else if($view === 'cpanel' && ($cmd === $landingpage || strpos($cmd, '.') === 0))
+{
+	$cmd = 'cpanel.show';
 }
 
 if ($view === 'supportinfo')
@@ -213,7 +240,6 @@ else
 $input->set("jevtask", $cmd);
 $input->set("jevcmd", $cmd);
 
-PluginHelper::importPlugin("jevents");
 
 // Make this a config option - should not normally be needed
 //$db = Factory::getDbo();
@@ -234,15 +260,6 @@ else
 	return false;
 }
 
-if (isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], "MSIE") !== false || strpos($_SERVER['HTTP_USER_AGENT'], "Internet Explorer") !== false))
-{
-	define ("GSLMSIE10" , 1);
-}
-else
-{
-	define ("GSLMSIE10" , 0);
-}
-
 // record what is running - used by the filters
 $registry = JevRegistry::getInstance("jevents");
 $registry->set("jevents.activeprocess", "administrator");
@@ -250,5 +267,28 @@ $registry->set("jevents.activeprocess", "administrator");
 // Perform the Request task
 $controller->execute($task);
 
+$output = ob_get_clean();
+// remove &#65279; non breaking white space and other joiners that may break the layout
+$output = preg_replace('/[\x{200B}-\x{200D}\x{FEFF}]/u', '', $output);
+echo $output;
+
+// I could also try this in the footer file - but it doesn't work there in com_categories even with an event listener:(
+/*
+?>
+	<script defer>
+        var bomsearch = document.evaluate( '//*[contains(text(), "\uFEFF")]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null );
+        if (bomsearch.singleNodeValue)
+        {
+            for (var n=0; n<bomsearch.singleNodeValue.childNodes.length; n++)
+            {
+                if (bomsearch.singleNodeValue.childNodes[n].nodeType = 3)
+                {
+                    bomsearch.singleNodeValue.childNodes[n].nodeValue = bomsearch.singleNodeValue.childNodes[n].textContent.replace("\uFEFF", "");
+                }
+            }
+        }
+	</script>
+<?php
+*/
 // Redirect if set by the controller
 $controller->redirect();

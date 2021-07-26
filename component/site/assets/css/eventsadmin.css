@@ -203,6 +203,13 @@ fieldset.checkboxes li {
     min-height: 40px;
 }
 
+/* showon initial style for event editing */
+/* Initial showon hidden */
+#jevents .adminform [data-showon-gsl]:not([data-showon-gsl=""]), #jevents .adminform [data-showon]:not([data-showon=""])
+{
+    display:none;
+}
+
 #jevents .jevbootstrap .adminform #myEditTabsContent .row, #jevents .jevbootstrap .adminform div, adminform .row {
     margin-left: 0;
     padding-bottom: 10px;
@@ -232,12 +239,6 @@ td.r2, span.r2 {
     padding-right: 5px;
 }
 
-div#jevents .adminform input, div#jevents .adminformtextarea, div#jevents .adminforminputbox,
-div#jevents .adminform#rinterval, div#jevents .adminform#count, div#jevents .adminform#until {
-    padding: 4px 5px;
-    width: auto;
-    margin-bottom: 0;
-}
 
 div#jevents .adminformselect {
     padding: 3px 5px;
@@ -501,14 +502,14 @@ table.settings_level label#jform_com_difficulty-lbl {
 /** End of hiding links from print views **/
 
 /* Rockettheme workarounds */
-#jevents #adminForm label {
+#jevents #adminForm label:not('.gsl-button') {
     width: auto;
     font-weight: bold;
     padding-left: 0;
 }
 
 /* Rockettheme messes up padding on chosen radio/checkbox replacements so need padding left 15px */
-#jevents #adminForm .controls label {
+#jevents #adminForm .controls label:not('.gsl-button') {
     padding-left: 15px;
 }
 
@@ -642,7 +643,7 @@ td.ev_td_right ul.ev_ul {
     margin-bottom: 10px;
 }
 
-.jevbootstrap div.modal {
+.jevbootstrap div.modal:not(.jeviso-modal) {
     background-clip: padding-box;
     background-color: #fff;
     border: 1px solid rgba(0, 0, 0, 0.3);
@@ -654,6 +655,7 @@ td.ev_td_right ul.ev_ul {
     position: fixed !important;
     z-index: 1050;
     text-align: left;
+    height:auto;
 }
 
 .jevbootstrap .ical_dialogJQ, .jevbootstrap .action_dialogJQ {
@@ -666,6 +668,10 @@ td.ev_td_right ul.ev_ul {
     bottom: auto !important;
     padding-right: 0 !important;
     margin-left: -150px !important;
+}
+
+.jevbootstrap .action_dialogJQ.show {
+    opacity: 1;
 }
 
 .jevbootstrap .ical_dialogJQ img {
@@ -896,7 +902,7 @@ table.ev_navtable tr {
     text-align: left;
 }
 
-#myEditModal.modal {
+#myEditModal.modal:not(.jeviso-modal) {
     position: fixed;
     bottom: 5%;
     top: 5%;
@@ -920,7 +926,7 @@ table.ev_navtable tr {
     text-align: left;
 }
 
-#myEditModal.modal.fade {
+#myEditModal.modal.fade:not(.jeviso-modal) {
     top: -25%;
     -webkit-transition: opacity 0.3s linear, top 0.3s ease-out;
     -moz-transition: opacity 0.3s linear, top 0.3s ease-out;
@@ -928,7 +934,7 @@ table.ev_navtable tr {
     transition: opacity 0.3s linear, top 0.3s ease-out;
 }
 
-#myEditModal.modal.fade.in {
+#myEditModal.modal.fade.in:not(.jeviso-modal) {
     top: 5%;
 }
 
@@ -1166,6 +1172,15 @@ table.ev_navtable tr {
 span.hastranslation {
     background-color: #55aa55;
 }
+.rsvp-translations.item-associations li span.hastranslation a {
+    color:#fff;
+}
+span.hasnotranslation {
+    background-color: #aa5f55;
+}
+.rsvp-translations.item-associations li span.hasnotranslation a {
+    color:#fff;
+}
 
 /* colour picker */
 div#jevents .jevcolour .minicolors-theme-bootstrap .minicolors-input {
@@ -1177,6 +1192,18 @@ div#jevents .jevcolour .minicolors-theme-bootstrap .minicolors-input {
     width: 65px;
 }
 
+/* Event editing irregular dates */
+#irregularDates {
+    min-width:120px;
+}
+#irregularDates_chzn {
+    min-width: 240px;
+}
+div#byirregular strong
+{
+    display:block;
+    margin-top:5px;
+}
 /* Event editing rounded grey boxes */
 .roundedgrey {
         opacity: 1;
@@ -1243,7 +1270,7 @@ body.admin.com_jevents [class^="icon-"] {
     width: 280px;
 }
 
-.jevbootstrap .modal > .modal-dialog {
+.jevbootstrap .modal:not(.jeviso-modal) > .modal-dialog {
     left: 0;
     right: 0;
 }
@@ -1267,7 +1294,9 @@ body.admin.com_jevents [class^="icon-"] {
 .jevbootstrap .jev-button-group input{
 	display: none;
 }
-
+.jevbootstrap .jev-button-group label.btn {
+    display: inline-block;
+}
 .jevbootstrap .jev-button-group input:checked + label,
 .jevbootstrap .jev-button-group input:checked + label:active {
     color: #ffffff;

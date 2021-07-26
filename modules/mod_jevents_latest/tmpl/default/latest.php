@@ -117,7 +117,7 @@ class DefaultModLatestView
 		}
 
 		// get params exclusive to component
-		$this->com_starday       = intval($jevents_config->get('com_starday', 0));
+		$this->com_starday       = intval($jevents_config->get('com_starday', 1));
 		$this->com_calUseStdTime = intval($jevents_config->get('com_calUseStdTime', 1));
 		if ($this->com_calUseStdTime)
 		{
@@ -180,9 +180,39 @@ class DefaultModLatestView
 			JEVHelper::stylesheet('jevcustom.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
 		}
 
-		if ($myparam->get("modlatest_customcss", false))
+		include_once(JPATH_SITE . "/components/com_jevents/views/default/helpers/defaultloadedfromtemplate.php");
+
+		$compparams                       = ComponentHelper::getParams("com_jevents");
+		$this->floatmoduleuseformatstring = $compparams->get("floatmoduleuseformatstring", 0);
+
+		if ($this->modparams->get("uselayouteditor", 0))
 		{
-			Factory::getDocument()->addStyleDeclaration($myparam->get("modlatest_customcss", false));
+			$this->template = DefaultLoadedFromTemplate(false, 'module.latest_event.' . $this->_modid, null, 0, false, true, $this->floatmoduleuseformatstring);
+			if (!$this->template)
+			{
+				$this->template = DefaultLoadedFromTemplate(false, 'module.latest_event', null, 0, false, true, $this->floatmoduleuseformatstring);
+			}
+		}
+		else
+		{
+			$this->template = false;
+		}
+
+		$this->jeventsUIkit = $compparams->get("floatuikit", 0);
+		if (is_array($this->template) && isset($this->template[0]))
+		{
+			JFactory::getDocument()->addScriptDeclaration($this->template[0]->params->get('customjs', ''));
+			$css = $this->template[0]->params->get('customcss', '');
+			if ($this->jeventsUIkit)
+			{
+				$css = str_replace('uk-', 'gsl-', $css);
+			}
+			JFactory::getDocument()->addStyleDeclaration($css);
+		}
+		else if ($myparam->get("modlatest_customcss", false))
+		{
+			$css = $myparam->get("modlatest_customcss", false);
+			Factory::getDocument()->addStyleDeclaration($css);
 		}
 
 		if ($this->dispMode > 8)
@@ -298,7 +328,7 @@ class DefaultModLatestView
 		$k = 0;
 		if (isset($this->eventsByRelDay) && count($this->eventsByRelDay))
 		{
-			$content .= $this->modparams->get("modlatest_templatetop") || $this->modparams->get("modlatest_templatebottom") ? $this->modparams->get("modlatest_templatetop") : '<table class="mod_events_latest_table jevbootstrap" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
+			$content .= $this->getModuleHeader('<table class="mod_events_latest_table jevbootstrap" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">');
 
 			// Now to display these events, we just start at the smallest index of the $this->eventsByRelDay array
 			// and work our way up.
@@ -322,6 +352,11 @@ class DefaultModLatestView
 				// get all of the events for this day
 				foreach ($daysEvents as $dayEvent)
 				{
+
+					if ($this->processTemplate($content, $dayEvent))
+					{
+						continue;
+					}
 
 					$eventcontent = "";
 
@@ -382,7 +417,7 @@ class DefaultModLatestView
 				$k++;
 				$k %= 2;
 			} // end of foreach
-			$content .= $this->modparams->get("modlatest_templatebottom") ? $this->modparams->get("modlatest_templatebottom") : "</table>\n";
+			$content .= $this->getModuleFooter("</table>\n");
 		}
 		else if ($this->modparams->get("modlatest_NoEvents", 1))
 		{
@@ -450,6 +485,7 @@ class DefaultModLatestView
 		}
 		$shownEventIds = $app->getUserState("jevents.moduleid" . $this->_modid . ".shownEventIds", array());
 		$page          = (int) $app->getUserState("jevents.moduleid" . $this->_modid . ".page", 0);
+		$direction     = (int) $app->getUserState("jevents.moduleid" . $this->_modid . ".direction", 1);
 
 		// RSS situation overrides maxecents
 		$limit = intval($limit);
@@ -922,9 +958,6 @@ $t_datenowSQL = $t_datenow->toMysql();
 			}
 		}
 
-		$page      = (int) $app->getUserState("jevents.moduleid" . $this->_modid . ".page", 0);
-		$direction = (int) $app->getUserState("jevents.moduleid" . $this->_modid . ".direction", 1);
-
 		if (isset($this->eventsByRelDay) && count($this->eventsByRelDay))
 		{
 			$lastEventDate  = false;
@@ -933,6 +966,15 @@ $t_datenowSQL = $t_datenow->toMysql();
 			{
 				$shownEventIds[$page] = array();
 			}
+			$allShownEventIds = array_reduce($shownEventIds, function ($combined, $pageIds)
+			{
+				if (!isset($combined))
+				{
+					$combined = array();
+				}
+				$combined = array_merge($combined, $pageIds);
+				return $combined;
+			});
 			foreach ($this->eventsByRelDay as $relDay => $daysEvents)
 			{
 
@@ -946,7 +988,7 @@ $t_datenowSQL = $t_datenow->toMysql();
 						$firstEventDate = $dayEvent->startrepeat;
 						$firstEventId   = $dayEvent->rp_id;
 					}
-					if (!in_array($dayEvent->rp_id, $shownEventIds))
+					if (!in_array($dayEvent->rp_id, $allShownEventIds))
 					{
 						$shownEventIds[$page][] = $dayEvent->rp_id;
 					}
@@ -1069,7 +1111,8 @@ SCRIPT;
 			'createdByUserName', 'createdByUserEmail', 'createdByUserEmailLink',
 			'eventDate', 'endDate', 'startDate', 'title', 'category', 'calendar',
 			'contact', 'addressInfo', 'location', 'extraInfo',
-			'countdown', 'categoryimage', 'duration', 'siteroot', 'sitebase', 'allCategoriesColoured', 'allCategorieSlugs'
+			'countdown', 'categoryimage', 'duration', 'siteroot', 'sitebase', 'allCategoriesColoured', 'allCategorieSlugs',
+			'today', 'tomorrow'
 		);
 		$keywords_or = implode('|', $keywords);
 		$whsp        = '[\t ]*'; // white space
@@ -1135,7 +1178,9 @@ SCRIPT;
 		$app        = Factory::getApplication();
 
 		// RSVP Pro plugin may have reset publish_up/publish_down - these now need to be restored
-		$dayEvent->fixDtstart(true);
+        if (isset($dayEvent->_olddtstart)) {
+            $dayEvent->fixDtstart(true);
+        }
 
 		// get the title and start time
 		$startDate = JevDate::strtotime($dayEvent->publish_up());
@@ -1173,7 +1218,7 @@ SCRIPT;
 				{
 					if ($this->com_calUseStdTime)
 					{
-						$time_fmt = $dayEvent->alldayevent() ? '' : IS_WIN ? ' @%I:%M%p' : ' @%l:%M%p';
+						$time_fmt = $dayEvent->alldayevent() ? '' : (IS_WIN ? ' @%I:%M%p' : ' @%l:%M%p');
 					}
 					else
 					{
@@ -1250,6 +1295,17 @@ SCRIPT;
 
 				if (!$this->disableDateStyle)
 					$content .= "</span>";
+				break;
+
+			case 'today' :
+				if($dayEvent->getUnixStartDate() === strtotime(date( 'Y-m-d'))) {
+					$content .= JText::_('JEV_EVENT_TODAY');
+				}
+				break;
+			case 'tomorrow' :
+				if($dayEvent->getUnixStartDate() === strtotime(date( 'Y-m-d') . '+1 day')) {
+					$content .= JText::_('JEV_EVENT_TOMORROW');
+				}
 				break;
 
 			case 'title':
@@ -1683,7 +1739,7 @@ SCRIPT;
 										ob_start();
 										// false at the end to stop it running through the plugins
 										$part = "{{Dummy Label:" . implode("#", $formattedparts) . "}}";
-										DefaultLoadedFromTemplate(false, false, $dayEvent, 0, $part, false);
+										DefaultLoadedFromTemplate(false, false, $dayEvent, 0, $part, false, true, $this->floatmoduleuseformatstring);
 										$newpart = ob_get_clean();
 										if ($newpart != $part)
 										{
@@ -1795,6 +1851,49 @@ SCRIPT;
 		}
 
 		return $content;
+	}
+
+	public function getModuleHeader($default = "")
+	{
+		if (is_array($this->template) && isset($this->template[0]))
+		{
+			return $this->template[0]->params->get('header', $default);
+		}
+		else
+		{
+			return $this->modparams->get("modlatest_templatetop") ? $this->modparams->get("modlatest_templatetop") : $default;
+		}
+	}
+
+	public function getModuleFooter($default = "")
+	{
+		if (is_array($this->template) && isset($this->template[0]))
+		{
+			return $this->template[0]->params->get('footer', $default);
+		}
+		else
+		{
+			return $this->modparams->get("modlatest_templatebottom") ? $this->modparams->get("modlatest_templatebottom") : $default;
+		}
+	}
+
+	public function  processTemplate(&$content, $dayEvent)
+	{
+		if (is_array($this->template) && isset($this->template[0]))
+		{
+			ob_start();
+			$eventtemplate = DefaultLoadedFromTemplate(false, 'module.latest_event.' . $this->_modid, $dayEvent, 0, false, true, $this->floatmoduleuseformatstring);
+			if (!$eventtemplate)
+			{
+				DefaultLoadedFromTemplate(false, 'module.latest_event', $dayEvent, 0, false, true, true);
+			}
+			$eventcontent = ob_get_clean();
+
+			$content .= $eventcontent;
+			return true;
+		}
+		return false;
+
 	}
 
 }

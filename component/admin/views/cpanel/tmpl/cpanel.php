@@ -72,7 +72,7 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
             </div>
             <div>
                 <span class="gsl-text-small">
-                   <span gsl-icon="icon:users" class="gsl-margin-small-right gsl-text-primary"></span>
+                   <span gsl-icon="icon: users;" class="gsl-margin-small-right gsl-text-primary"></span>
                    <?php echo Text::_("COM_JEVENTS_UPCOMING_REGISTRATIONS");?>
                 </span>
                 <?php if (PluginHelper::isEnabled("jevents", "jevrsvppro")) { ?>
@@ -144,15 +144,15 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
                         </div>
                     </div>
 	                <?php } ?>
-                    <div class="gsl-card-body" gsl-slider="autoplay:true; autoplay-interval:5000; pause-on-hover:true">
-                        <ul class="ys_newsfeed gsl-slider-items gsl-grid gsl-child-width-1-1" style="width: calc(100% + 20px);">
+                    <div class="gsl-card-body gsl-slider ys_newsfeed" gsl-slider="autoplay:true; autoplay-interval:5000; pause-on-hover:true">
+                        <ul class=" gsl-slider-items gsl-grid gsl-child-width-1-1" style="width: calc(100% + 20px);">
 							<?php for ($i = 0, $max = min(count($feed), 3); $i < $max; $i++) { ?>
 								<?php
 								$uri  = $feed[$i]->uri || !$feed[$i]->isPermaLink ? trim($feed[$i]->uri) : trim($feed[$i]->guid);
 								$uri  = !$uri || stripos($uri, 'http') !== 0 ? $rssurl : $uri;
 								$text = $feed[$i]->content !== '' ? trim($feed[$i]->content) : '';
 								?>
-                                <li style="padding:0 20px 0 10px">
+                                <li style="padding:0 20px 0 10px;">
 									<?php if (!empty($uri)) : ?>
                                         <span class="feed-link">
 						<a href="<?php echo htmlspecialchars($uri, ENT_COMPAT, 'UTF-8'); ?>" target="_blank">
@@ -262,7 +262,7 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		new Chart(document.getElementById('chart1'), {
 			type: 'pie',
 			data: {
-				labels: ['<?php echo  implode("', '", $this->eventsByCat); ?>'],
+				labels: <?php echo  json_encode($this->eventsByCat);?>,
 				datasets: [
 					{
 						backgroundColor: ['<?php echo  implode("', '", $this->eventsByCatColours); ?>'],
@@ -327,7 +327,7 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		new Chart(document.getElementById('chart3'), {
 			type: 'bar',
 			data: {
-				labels: ['<?php echo  implode("', '", $this->attendeeCountsByEvent['title']); ?>'],
+				labels: <?php echo  json_encode($this->attendeeCountsByEvent['title']);?>,
 				datasets: [
 					{
 						backgroundColor: "#39f",

@@ -23,13 +23,18 @@ $app    = Factory::getApplication();
 $params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 if ($app->isClient('administrator') || $params->get("newfrontendediting", 1))
 {
-	echo $this->loadTemplate('uikit');
+	$editPage = $this->loadTemplate('uikit');
+	//$editPage = str_replace("hasPopover", "hasYsPopover", $editPage);
+	echo $editPage;
 	return;
 }
 
 if (defined("EDITING_JEVENT"))
 	return;
 define("EDITING_JEVENT", 1);
+
+// needed for sortable category IDs
+HTMLHelper::script('media/com_jevents/js/Sortable.js', array('version' => JeventsHelper::JEvents_Version(false), 'relative' => false));
 
 
 $input  = $app->input;
@@ -44,7 +49,11 @@ HTMLHelper::_('behavior.keepalive');
 //HTMLHelper::_('behavior.formvalidation');
 if ($params->get("bootstrapchosen", 1))
 {
-	HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
+	$jversion = new Joomla\CMS\Version;
+	if (!$jversion->isCompatible('4.0'))
+	{
+		HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
+	}
 	// Use this as a basis for setting the primary category
 	/*
 
@@ -625,7 +634,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 						<?php echo $this->form->getInput("contact_info"); ?>
 					</div>
 				</div>
-				<div class="row jev_extrainfo" <?php JEventsHelper::showOnRel($this->form, 'extrainfo'); ?>>
+				<div class="row jev_extrainfo" <?php JEventsHelper::showOnRel($this->form, 'extra_info'); ?>>
 					<div class="span2">
 						<?php echo $this->form->getLabel("extra_info"); ?>
 					</div>

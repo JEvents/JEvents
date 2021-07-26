@@ -259,7 +259,7 @@ class ModCalController extends Joomla\CMS\MVC\Controller\BaseController
 		$this->minical_nextyear = $this->modparams->get('minical_nextyear', 1);
 
 		// get params exclusive to component
-		$this->com_starday = intval($jevents_config->get('com_starday', 0));
+		$this->com_starday = intval($jevents_config->get('com_starday', 1));
 
 		// make config object (module or component) current
 		if (intval($this->modparams->get('modcal_useLocalParam', 0)) == 1)

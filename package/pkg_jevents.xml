@@ -2,12 +2,12 @@
 <extension type="package" version="2.5" method="upgrade">
 	<name>JEV_PACKAGE_TITLE</name>
 	<packagename>jevents</packagename>
-	<version>3.6.0dev</version>
+	<version>3.6.15</version>
 	<url>http://www.jevents.net</url>
-	<creationDate>April 2020</creationDate>
+	<creationDate>May 2021</creationDate>
 	<author>GWE Systems Ltd</author>
-	<copyright>(C) 2012-2020 GWE Systems Ltd</copyright>
-	<copyrightYear>2020</copyrightYear>
+	<copyright>(C) 2012-JEVENTS_COPYRIGHT GWE Systems Ltd</copyright>
+	<copyrightYear>2021</copyrightYear>
 	<authorEmail></authorEmail>
 	<authorUrl>www.gwesystems.com</authorUrl>
 	<packager>GWE Systems Ltd</packager>
@@ -37,6 +37,6 @@
 		<file type="library" id="jevtypeahead">jevtypeahead.zip</file>
 	</files>
 	<updateservers>
-		<server type="extension" name="JEvents Updates">https://www.jevents.net/updates/-/pkg_jevents-update-3.5.xml</server>
+		<server type="extension" name="JEvents Updates">https://www.jevents.net/newupdates/package_jevents.xml</server>
 	</updateservers>
 </extension>

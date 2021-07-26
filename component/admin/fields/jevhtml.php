@@ -1,8 +1,5 @@
 <?php
 
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Form\Field\EditorField;
-
 /**
  * JEvents Locations Component for Joomla 1.5.x
  *
@@ -17,16 +14,9 @@ use Joomla\CMS\Form\Field\EditorField;
 
 defined('JPATH_BASE') or die;
 
-
-if (version_compare(JVERSION, "3.8.0", 'ge'))
-{
-	\Joomla\CMS\Form\FormHelper::loadFieldClass('editor');
-}
-else if (file_exists(JPATH_SITE . "/libraries/joomla/form/fields/editor.php"))
-{
-	include_once(JPATH_SITE . "/libraries/joomla/form/fields/editor.php");
-}
-jimport('joomla.html.editor');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\Field\EditorField;
+use Joomla\CMS\Form\FormHelper;
 
 class JFormFieldJevhtml extends EditorField
 {

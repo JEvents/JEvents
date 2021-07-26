@@ -68,13 +68,24 @@ class jIcalEventDB extends jEventCal
 		if (isset($vevent->irregulardates) && is_string($vevent->irregulardates) && $vevent->irregulardates != "")
 		{
 			$this->_irregulardates = @json_decode(str_replace("'", '"', trim($vevent->irregulardates, '"')));
+			if (is_null($this->_irregulardates))
+			{
+				$this->_irregulardates = explode("," , $vevent->irregulardates);
+			}
 			if (is_array($this->_irregulardates))
 			{
 				array_walk($this->_irregulardates, function (& $item, $index) {
 
 					if (!is_int($item))
 					{
-						$item = JevDate::strtotime($item . " 00:00:00");
+						if (strpos($item, ":") && strlen($item) > 10)
+						{
+							$item = JevDate::strtotime($item );
+						}
+						else
+						{
+							$item = JevDate::strtotime($item . " 00:00:00");
+						}
 					}
 				});
 			}
@@ -1151,11 +1162,14 @@ class jIcalEventDB extends jEventCal
 
 	function fixDtstart($reset = false)
 	{
-		if ($reset && isset($this->_olddtstart)){
-			$this->dtstart($this->_olddtstart);
-			$this->dtend($this->_olddtend);
-			$this->_publish_up = $this->_oldpu;
-			$this->_publish_down =$this->_oldpd;
+		if ($reset){
+		    // Only do this if called from RSVP to modify timezones
+            if (isset($this->_olddtstart)) {
+                $this->dtstart($this->_olddtstart);
+                $this->dtend($this->_olddtend);
+                $this->_publish_up = $this->_oldpu;
+                $this->_publish_down = $this->_oldpd;
+            }
 			return;
 		}
 
@@ -1209,7 +1223,7 @@ class jIcalEventDB extends jEventCal
 							$this->dtstart($repeat->getUnixStartTime());
 							$this->dtend($repeat->getUnixEndTime());
 
-							Factory::getApplication()->enqueueMessage(Text::_('JEV_PLEASE_CHECK_START_AND_END_TIMES_FOR_THIS_EVENT'));
+							//Factory::getApplication()->enqueueMessage(Text::_('JEV_PLEASE_CHECK_START_AND_END_TIMES_FOR_THIS_EVENT') . " : " .$this->title() . " : problem 1");
 						}
 						else
 						{
@@ -1234,7 +1248,7 @@ class jIcalEventDB extends jEventCal
 							{
 								// In this scenario we have no idea what the time should be unfortunately
 
-								Factory::getApplication()->enqueueMessage(Text::_('JEV_PLEASE_CHECK_START_AND_END_TIMES_FOR_THIS_EVENT'));
+								Factory::getApplication()->enqueueMessage(Text::_('JEV_PLEASE_CHECK_START_AND_END_TIMES_FOR_THIS_EVENT') . " : " .$this->title() . " : problem 2");
 
 								// switch timezone back
 								date_default_timezone_set($timezone);

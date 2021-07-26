@@ -5,3 +5,4 @@
 *.css text eol=lf
 *.js text eol=lf
 *.ini text eol=lf
+*.symlink

@@ -31,7 +31,8 @@ class AdminDefaultsController extends Joomla\CMS\MVC\Controller\FormController
 
 		if (!JEVHelper::isAdminUser())
 		{
-			Factory::getApplication()->redirect("index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.cpanel", "Not Authorised - must be admin");
+			Factory::getApplication()->enqueueMessage("Not Authorised - must be admin", 'warning');
+			Factory::getApplication()->redirect("index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.cpanel");
 
 			return;
 		}
@@ -43,7 +44,7 @@ class AdminDefaultsController extends Joomla\CMS\MVC\Controller\FormController
 
 		// Make sure DB is up to date
 		$db = Factory::getDbo();
-		$db->setQuery("SELECT * FROM #__jev_defaults");
+		$db->setQuery("SELECT * FROM #__jev_defaults where catid='' AND language IN ('', '*')");
 		$defaults = $db->loadObjectList("name");
 		if (!isset($defaults['icalevent.detail_body']))
 		{
@@ -122,6 +123,22 @@ class AdminDefaultsController extends Joomla\CMS\MVC\Controller\FormController
 		else
 		{
 			$db->setQuery("UPDATE #__jev_defaults set title=" . $db->Quote("JEV_EVENT_MONTH_CALENDAR_TIP") . " WHERE name='month.calendar_tip'");
+			$db->execute();
+		}
+
+		if (!isset($defaults['module.latest_event']))
+		{
+			$db->setQuery("INSERT INTO  #__jev_defaults set name='module.latest_event',
+						title=" . $db->Quote("JEV_TAB_LATEST_MOD") . ",
+						subject='',
+						value='',
+						state=0,
+						params='{}'");
+			$db->execute();
+		}
+		else
+		{
+			$db->setQuery("UPDATE #__jev_defaults set title=" . $db->Quote("JEV_TAB_LATEST_MOD") . " WHERE name='module.latest_event'");
 			$db->execute();
 		}
 
@@ -613,7 +630,8 @@ function edit($key = null, $urlVar = null)
 			if ($model = $this->getModel("default", "defaultsModel"))
 			{
 				//TODO find a work around for getting post array with input.
-				if ($model->store($input->getArray(array(), null, 'RAW')))
+				$data = $input->getArray(array(), null, 'RAW');
+				if ($model->store($data))
 				{
 					if ($input->getCmd("task") == "defaults.apply")
 					{

@@ -15,6 +15,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Router\Route;
 
 HTMLHelper::_('behavior.multiselect');
 //HTMLHelper::_('behavior.modal', 'a.modal');
@@ -47,6 +48,7 @@ $user = Factory::getUser();
                             <?php echo HTMLHelper::_('grid.checkall'); ?>
                         </th>
                         <th class="title" width="30%" nowrap="nowrap"><?php echo Text::_('JEV_ICAL_SUMMARY'); ?></th>
+	                    <th width="4%" nowrap="nowrap"><?php echo Text::_('ICAL_EVENTS'); ?></th>
                         <th width="10%" nowrap="nowrap"><?php echo Text::_('JEV_ICAL_TYPE'); ?></th>
                         <th width="10%" nowrap="nowrap"><?php echo Text::_('JEV_CATEGORY_NAME'); ?></th>
                         <th width="10%" nowrap="nowrap"><?php echo Text::_('JEV_ADMIN_REFRESH'); ?></th>
@@ -74,6 +76,10 @@ $user = Factory::getUser();
                                 <a href="#edit" onclick="return Joomla.listItemTask('cb<?php echo $i; ?>','icals.edit')"
                                    title="<?php echo Text::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->label; ?></a>
                             </td>
+	                        <td>
+		                        <a href="<?php echo Route::_("index.php?option=com_jevents&task=icalevent.list&filter[icsFile]=" . $row->ics_id,false);?>"
+		                           title="<?php echo Text::_('COM_JEVENTS_SEARCH_FILTER'); ?>"><span class="gsl-icon" gsl-icon="icon:calendar;"></span></a>
+	                        </td>
                             <td align="center">
                                 <?php
                                 $types           = array("Remote", "Uploaded File", "Native");
@@ -99,7 +105,7 @@ $user = Factory::getUser();
                             </td>
                             <td align="center">
                                 <?php
-                                $img = $row->state ? "<i gsl-icon='icon:check'></i>" : "<i gsl-icon='icon:close'></i>";
+                                $img = $row->state ? "<i gsl-icon='icon:check' class='gsl-text-success'></i>" : "<i gsl-icon='icon:close' class='gsl-text-danger'></i>";
                                 ?>
                                 <a href="javascript: void(0);"
                                    onclick="return Joomla.listItemTask('cb<?php echo $i; ?>','<?php echo $row->state ? 'icals.unpublish' : 'icals.publish'; ?>')">

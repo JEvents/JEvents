@@ -32,7 +32,7 @@
 		       description="JEV_EVENT_ACTIVITY_TIP"/>
 		<field name="trans_location" type="text" default="" layoutfield="LOCN" labelclass="control-label "
 		       label="JEV_EVENT_ADRESSE" description="JEV_EVENT_ADRESSE_TIP"/>
-		<field name="trans_contact_info" type="text" default="" size="60" maxlength="120" layoutfield="CONTACT"
+		<field name="trans_contact" type="text" default="" size="60" maxlength="120" layoutfield="CONTACT"
 		       labelclass="control-label" class="inputbox" label="JEV_EVENT_CONTACT"
 		       description="JEV_EVENT_CONTACT_TIP"/>
 		<field name="trans_extra_info" type="textarea" default="" rows="5" cols="60" layoutfield="EXTRA"

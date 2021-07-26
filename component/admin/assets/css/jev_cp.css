@@ -16,7 +16,7 @@ div#sidebar.sidebar {clear:both;}
     border-right: 1px solid #DDD;
 }
 
-.adminlist tr:last-child {
+.adminlist > tr:last-child {
     border-bottom: 1px solid #DDD;
     border-right: 1px solid #DDD;
     border-left: 1px solid #DDD;

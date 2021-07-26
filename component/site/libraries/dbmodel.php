@@ -18,6 +18,7 @@ use Joomla\CMS\Factory;
 use Joomla\String\StringHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Utilities\ArrayHelper;
 
 // load language constants
 JEVHelper::loadLanguage('front');
@@ -54,7 +55,7 @@ class JEventsDBModel
 			$catids = $this->datamodel->catids;
 		}
 
-		\Joomla\Utilities\ArrayHelper::toInteger($catids);
+		$catids = ArrayHelper::toInteger($catids);
 		$catidList = implode(",", $catids);
 
 		$cfg         = JEVConfig::getInstance();
@@ -370,7 +371,7 @@ class JEventsDBModel
 
 		if (is_array($catidList))
 		{
-			\Joomla\Utilities\ArrayHelper::toInteger($catidList);
+			$catidList = ArrayHelper::toInteger($catidList);
 			$catidListIndex = implode(", ", $catidList);
 		}
 		else
@@ -1819,7 +1820,7 @@ class JEventsDBModel
 				// future events
 				foreach ($rows1 as $val)
 				{
-					if (!in_array($val->rp_id(), $repeats))
+					if (!is_bool($val) && !in_array($val->rp_id(), $repeats))
 					{
 						$repeats[] = $val->rp_id();
 						$rows[]    = $val;
@@ -1885,22 +1886,31 @@ class JEventsDBModel
 		$ignoreRepeatIds = "";
 		if (count($shownEventIds) > 0)
 		{
-			$ignoreRepeatIds = array();
-			foreach ($shownEventIds as $shownpage => $shownids)
+			// Already done this page so only pick up these repeat ids!
+			if (isset($shownEventIds[$page]) && count($shownEventIds[$page]) > 0)
 			{
-				if ($shownpage == $page)
-				{
-					continue;
-				}
-				$ignoreRepeatIds = array_merge($ignoreRepeatIds, $shownids);
-			}
-			if (!count($ignoreRepeatIds))
-			{
-				$ignoreRepeatIds = "";
+				// To be clean it should be in a different method by hei ho!
+				$ignoreRepeatIds = " rpt.rp_id IN (" . implode(",", $shownEventIds[$page]) . ")";
 			}
 			else
 			{
-				$ignoreRepeatIds = " rpt.rp_id NOT IN (" . implode(",", $ignoreRepeatIds) . ")";
+				$ignoreRepeatIds = array();
+				foreach ($shownEventIds as $shownpage => $shownids)
+				{
+					if ($shownpage == $page)
+					{
+						continue;
+					}
+					$ignoreRepeatIds = array_merge($ignoreRepeatIds, $shownids);
+				}
+				if (!count($ignoreRepeatIds))
+				{
+					$ignoreRepeatIds = "";
+				}
+				else
+				{
+					$ignoreRepeatIds = " rpt.rp_id NOT IN (" . implode(",", $ignoreRepeatIds) . ")";
+				}
 			}
 		}
 
@@ -3268,188 +3278,174 @@ class JEventsDBModel
 	}
 
 	function listIcalEventsByRange($startdate, $enddate, $limitstart, $limit, $showrepeats = true, $order = "rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC", $filters = false, $extrafields = "", $extratables = "", $count = false)
-	{
+    {
 
-		$app    = Factory::getApplication();
-		$input  = $app->input;
-		list($year, $month, $day) = explode('-', $startdate);
-		list($thisyear, $thismonth, $thisday) = JEVHelper::getYMD();
+        $app = Factory::getApplication();
+        $input = $app->input;
+        list($year, $month, $day) = explode('-', $startdate);
+        list($thisyear, $thismonth, $thisday) = JEVHelper::getYMD();
 
-		//$startdate 	= $this->cfg->get("showyearpast",1)?JevDate::mktime( 0, 0, 0, intval($month),intval($day),intval($year) ):JevDate::mktime( 0, 0, 0, $thismonth,$thisday, $thisyear );
-		$startdate = JevDate::mktime(0, 0, 0, intval($month), intval($day), intval($year));
+        //$startdate 	= $this->cfg->get("showyearpast",1)?JevDate::mktime( 0, 0, 0, intval($month),intval($day),intval($year) ):JevDate::mktime( 0, 0, 0, $thismonth,$thisday, $thisyear );
+        $startdate = JevDate::mktime(0, 0, 0, intval($month), intval($day), intval($year));
 
-		$startdate = JevDate::strftime('%Y-%m-%d', $startdate);
+        $startdate = JevDate::strftime('%Y-%m-%d', $startdate);
 
-		if (StringHelper::strlen($startdate) == 10)
-			$startdate .= " 00:00:00";
-		if (StringHelper::strlen($enddate) == 10)
-			$enddate .= " 23:59:59";
+        if (StringHelper::strlen($startdate) == 10)
+            $startdate .= " 00:00:00";
+        if (StringHelper::strlen($enddate) == 10)
+            $enddate .= " 23:59:59";
 
-		// This code is used by the iCals code with a spoofed user so check if this is what is happening
-		if ($input->getString("jevtask", "") == "icals.export")
-		{
-			$registry = JevRegistry::getInstance("jevents");
-			$user     = $registry->get("jevents.icaluser", false);
-			if (!$user)
-				$user = Factory::getUser();
-		}
-		// remote module loader uses this too
-		else if ($input->getInt("rau"))
-		{
-			$registry = JevRegistry::getInstance("jevents");
-			$user     = $registry->get("jevents.icaluser", false);
-			if (!$user)
-				$user = Factory::getUser();
-		}
-		else
-		{
-			$user = Factory::getUser();
-		}
-		$db      = Factory::getDbo();
-		$lang    = Factory::getLanguage();
-		$langtag = $lang->getTag();
+        // This code is used by the iCals code with a spoofed user so check if this is what is happening
+        if ($input->getString("jevtask", "") == "icals.export") {
+            $registry = JevRegistry::getInstance("jevents");
+            $user = $registry->get("jevents.icaluser", false);
+            if (!$user)
+                $user = Factory::getUser();
+        } // remote module loader uses this too
+        else if ($input->getInt("rau")) {
+            $registry = JevRegistry::getInstance("jevents");
+            $user = $registry->get("jevents.icaluser", false);
+            if (!$user)
+                $user = Factory::getUser();
+        } else {
+            $user = Factory::getUser();
+        }
+        $db = Factory::getDbo();
+        $lang = Factory::getLanguage();
+        $langtag = $lang->getTag();
 
-		// process the new plugins
-		// get extra data and conditionality from plugins
-		$extrawhere  = array();
-		$extrawhere2 = array();
-		$extrajoin   = array();
-		$extrajoin2  = array();
-		$extrafields = "";  // must have comma prefix
-		$needsgroup  = false;
+        // process the new plugins
+        // get extra data and conditionality from plugins
+        $extrawhere = array();
+        $extrawhere2 = array();
+        $extrajoin = array();
+        $extrajoin2 = array();
+        $extrafields = "";  // must have comma prefix
+        $needsgroup = false;
 
-		if (!$filters)
-		{
-			$filters = jevFilterProcessing::getInstance(array("published", "justmine", "category", "search", "repeating"));
-			$filters->setWhereJoin($extrawhere, $extrajoin);
-			$needsgroup = $filters->needsGroupBy();
+        if (!$filters) {
+            $filters = jevFilterProcessing::getInstance(array("published", "justmine", "category", "search", "repeating"));
+            $filters->setWhereJoin($extrawhere, $extrajoin);
+            $needsgroup = $filters->needsGroupBy();
 
-			$app->triggerEvent('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
-		}
-		else
-		{
-			$filters->setWhereJoin($extrawhere, $extrajoin);
-		}
+            $app->triggerEvent('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
+        } else {
+            $filters->setWhereJoin($extrawhere, $extrajoin);
+        }
 
-		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
-		$params   = ComponentHelper::getParams("com_jevents");
-		if ($params->get("multicategory", 0))
-		{
-			$extrajoin[]  = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
-			$extrajoin2[] = "\n #__jevents_catmap as catmap ON catmap2.evid = rpt2.eventid";
-			$extrajoin[]  = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
-			$extrafields  .= ", GROUP_CONCAT(DISTINCT catmapcat.id ORDER BY catmapcat.lft ASC SEPARATOR ',' ) as catids";
-			// accessibleCategoryList handles access checks on category
-			//$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
-			if ($this->subquery)
-			{
-				$extrawhere2[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
-			}
-			else
-			{
-				$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
-			}
-			$needsgroup = true;
-			$catwhere   = "\n WHERE 1 ";
-		}
+        $catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
+        $params = ComponentHelper::getParams("com_jevents");
+        if ($params->get("multicategory", 0)) {
+            $extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
+            $extrajoin2[] = "\n #__jevents_catmap as catmap ON catmap2.evid = rpt2.eventid";
+            $extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
+            $extrafields .= ", GROUP_CONCAT(DISTINCT catmapcat.id ORDER BY catmapcat.lft ASC SEPARATOR ',' ) as catids";
+            // accessibleCategoryList handles access checks on category
+            //$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
+            if ($this->subquery) {
+                $extrawhere2[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
+            } else {
+                $extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
+            }
+            $needsgroup = true;
+            $catwhere = "\n WHERE 1 ";
+        }
 
-		$extrajoin   = (count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '');
-		$extrawhere  = (count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '');
-		$extrajoin2  = (count($extrajoin2) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin2) : '');
-		$extrawhere2 = (count($extrawhere2) ? ' AND ' . implode(' AND ', $extrawhere2) : '');
+        $extrajoin = (count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '');
+        $extrawhere = (count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '');
+        $extrajoin2 = (count($extrajoin2) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin2) : '');
+        $extrawhere2 = (count($extrawhere2) ? ' AND ' . implode(' AND ', $extrawhere2) : '');
 
-		// Do we want to only use start or end dates in the range?
-		$usedates = $params->get("usedates", "both");
-		if ($usedates == "both")
-		{
-			$daterange = "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$enddate'";
-			// Must suppress multiday events that have already started
-			$multidate  = "\n AND NOT (rpt.startrepeat < '$startdate' AND det.multiday=0) ";
-			$daterange2 = "\n rpt2.endrepeat >= '$startdate' AND rpt2.startrepeat <= '$enddate'";
-			$multidate2 = "\n AND NOT (rpt2.startrepeat < '$startdate' AND det2.multiday=0) ";
-			$daterange2 = "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
-				. "\n INNER JOIN #__jevents_vevdetail as det2  ON det2.evdet_id = rpt2.eventdetail_id"
-				. "\n WHERE  $daterange2 "
-				. $multidate2
-				. ")";
-		}
-		else if ($usedates == "start")
-		{
-			$daterange = "\n AND rpt.endrepeat >= '$startdate' ";
-			// Must suppress multiday events that have already started
-			$multidate  = "\n AND NOT (rpt.startrepeat < '$startdate' AND det.multiday=0) ";
-			$daterange2 = "\n rpt2.endrepeat >= '$startdate' ";
-			$multidate2 = "\n AND NOT (rpt2.startrepeat < '$startdate' AND det2.multiday=0) ";
-			$daterange2 = "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
-				. "\n INNER JOIN #__jevents_vevdetail as det2  ON det2.evdet_id = rpt2.eventdetail_id"
-				. "\n WHERE  $daterange2 "
-				. $multidate2
-				. ")";
-		}
-		else if ($usedates == "end")
-		{
-			$daterange = "\n AND rpt.startrepeat <= '$enddate' ";
-			// Must suppress multiday events that haven't already ended
-			$multidate  = "\n AND NOT (rpt.endrepeat > '$enddate' AND det.multiday=0) ";
-			$daterange2 = "\n rpt2.startrepeat <= '$enddate' ";
-			$multidate2 = "\n AND NOT (rpt2.endrepeat > '$enddate' AND det2.multiday=0) ";
-			$daterange2 = "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
-				. "\n INNER JOIN #__jevents_vevdetail as det2  ON det2.evdet_id = rpt2.eventdetail_id"
-				. "\n WHERE  $daterange2 "
-				. $multidate2
-				. ")";
-		}
-		// This version picks the details from the details table
-		if ($count)
-		{
-			if (!$showrepeats)
-			{
-				$query = "SELECT count(distinct ev.ev_id)";
-			}
-			else
-			{
-				$query = "SELECT count(distinct rpt.rp_id)";
-			}
-		}
-		else
-		{
-			$query = "SELECT ev.*, rpt.*, rr.*, det.*, ev.state as published, ev.created as created $extrafields"
-				. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
-				. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
-				. "\n , HOUR(rpt.startrepeat) as hup, MINUTE(rpt.startrepeat ) as minup, SECOND(rpt.startrepeat ) as sup"
-				. "\n , HOUR(rpt.endrepeat  ) as hdn, MINUTE(rpt.endrepeat   ) as mindn, SECOND(rpt.endrepeat   ) as sdn";
-		}
-		if (!$showrepeats && !$count)
-		{
-			// suggest an index to ensure the group by gets the correct row
-			$query .= "\n FROM #__jevents_repetition as rpt  use INDEX (eventstart)";
-		}
-		else
-		{
-			$query .= "\n FROM #__jevents_repetition as rpt ";
-		}
-		$query .= "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
-			. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
-			. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-			. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
-			. $extrajoin
-			. $catwhere
-			. ($this->subquery ? $daterange2 : $daterange)
-			. ($this->subquery ? "" : $multidate)
-			. $extrawhere
-			. $extrawhere2
-			. "\n AND ev.access IN (" . JEVHelper::getAid($user) . ")"
-			. "  AND icsf.state=1 AND icsf.access IN (" . JEVHelper::getAid($user) . ")";
-		if (!$showrepeats && !$count)
-		{
-			$query .= "\n GROUP BY ev.ev_id";
-		}
-		else if ($needsgroup && !$count)
-		{
-			$query .= "\n GROUP BY rpt.rp_id";
-		}
+        // Do we want to only use start or end dates in the range?
+        $usedates = $params->get("usedates", "both");
+        if ($usedates == "both") {
+            $daterange = "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$enddate'";
+            // Must suppress multiday events that have already started
+            $multidate = "\n AND NOT (rpt.startrepeat < '$startdate' AND det.multiday=0) ";
+            $daterange2 = "\n rpt2.endrepeat >= '$startdate' AND rpt2.startrepeat <= '$enddate'";
+            $multidate2 = "\n AND NOT (rpt2.startrepeat < '$startdate' AND det2.multiday=0) ";
+            $daterange2 = "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
+                . "\n INNER JOIN #__jevents_vevdetail as det2  ON det2.evdet_id = rpt2.eventdetail_id"
+                . "\n WHERE  $daterange2 "
+                . $multidate2
+                . ")";
+        } else if ($usedates == "start") {
+            $daterange = "\n AND rpt.endrepeat >= '$startdate' ";
+            // Must suppress multiday events that have already started
+            $multidate = "\n AND NOT (rpt.startrepeat < '$startdate' AND det.multiday=0) ";
+            $daterange2 = "\n rpt2.endrepeat >= '$startdate' ";
+            $multidate2 = "\n AND NOT (rpt2.startrepeat < '$startdate' AND det2.multiday=0) ";
+            $daterange2 = "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
+                . "\n INNER JOIN #__jevents_vevdetail as det2  ON det2.evdet_id = rpt2.eventdetail_id"
+                . "\n WHERE  $daterange2 "
+                . $multidate2
+                . ")";
+        } else if ($usedates == "end") {
+            $daterange = "\n AND rpt.startrepeat <= '$enddate' ";
+            // Must suppress multiday events that haven't already ended
+            $multidate = "\n AND NOT (rpt.endrepeat > '$enddate' AND det.multiday=0) ";
+            $daterange2 = "\n rpt2.startrepeat <= '$enddate' ";
+            $multidate2 = "\n AND NOT (rpt2.endrepeat > '$enddate' AND det2.multiday=0) ";
+            $daterange2 = "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
+                . "\n INNER JOIN #__jevents_vevdetail as det2  ON det2.evdet_id = rpt2.eventdetail_id"
+                . "\n WHERE  $daterange2 "
+                . $multidate2
+                . ")";
+        }
+        // This version picks the details from the details table
+        if ($count) {
+            if (!$showrepeats) {
+                $query = "SELECT count(distinct ev.ev_id)";
+            } else {
+                $query = "SELECT count(distinct rpt.rp_id)";
+            }
+        } else {
+            $query = "SELECT ev.*, rpt.*, rr.*, det.*, ev.state as published, ev.created as created $extrafields"
+                . "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
+                . "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
+                . "\n , HOUR(rpt.startrepeat) as hup, MINUTE(rpt.startrepeat ) as minup, SECOND(rpt.startrepeat ) as sup"
+                . "\n , HOUR(rpt.endrepeat  ) as hdn, MINUTE(rpt.endrepeat   ) as mindn, SECOND(rpt.endrepeat   ) as sdn";
+        }
+        if (!$showrepeats && !$count) {
+            $fullselect = $query;
 
-		if ($order != "")
+            // suggest an index to ensure the group by gets the correct row
+            $query .= "\n FROM #__jevents_repetition as rpt  use INDEX (eventstart)";
+        } else {
+            $query .= "\n FROM #__jevents_repetition as rpt ";
+        }
+        $query .= "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
+            . "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
+            . "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
+            . "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+            . $extrajoin
+            . $catwhere
+            . ($this->subquery ? $daterange2 : $daterange)
+            . ($this->subquery ? "" : $multidate)
+            . $extrawhere
+            . $extrawhere2
+            . "\n AND ev.access IN (" . JEVHelper::getAid($user) . ")"
+            . "  AND icsf.state=1 AND icsf.access IN (" . JEVHelper::getAid($user) . ")";
+
+        if (!$showrepeats && !$count) {
+            $minselect = "SELECT MIN(rpt.rp_id) as minrpt ";
+
+            $subquery = str_replace($fullselect, $minselect, $query);
+
+            $db->setQuery("$subquery GROUP BY ev.ev_id");
+            $rpids = $db->loadColumn();
+            $rpids = is_array($rpids) ? $rpids : array(0);
+            $rpids[] = -1;
+
+            $query = substr($query, 0, strpos($query, "WHERE "));
+            $query .= "\n WHERE rpt.rp_id IN (" . implode(",", $rpids) . " ) GROUP BY rpt.rp_id";
+
+           // $query .= "\n GROUP BY ev.ev_id";
+        } else if ($needsgroup && !$count) {
+            $query .= "\n GROUP BY rpt.rp_id";
+        }
+
+        if ($order != "")
 		{
 			$query .= " ORDER BY " . $order;
 		}
@@ -3611,6 +3607,8 @@ class JEventsDBModel
 		}
 		else
 		{
+			//$app    = Factory::getApplication();
+			//$app->enqueueMessage($query, 'warning');
 			$row = null;
 		}
 

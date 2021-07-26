@@ -70,6 +70,12 @@ class MonthController extends Joomla\CMS\MVC\Controller\BaseController
 		$useCache   = intval($cfg->get('com_cache', 0)) && $joomlaconf->get('caching', 1);
 		$user       = Factory::getUser();
 
+		// MaxDisplay of 0 should mean show all - but not being respected in some views so put in a silly value to counter the problem
+		if ($cfg->get('com_calMaxDisplay',5) == 0)
+		{
+			$cfg->set('com_calMaxDisplay',99999);
+		}
+
 		if ($user->get('id') || !$useCache)
 		{
 			$this->view->display();

@@ -36,7 +36,8 @@ class AdminParamsController extends AdminController
 
 		if (!JEVHelper::isAdminUser())
 		{
-			Factory::getApplication()->redirect("index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.cpanel", "Not Authorised - must be admin");
+			Factory::getApplication()->enqueueMessage(Text::_("Not Authorised - must be admin"), 'warning');
+			Factory::getApplication()->redirect("index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.cpanel");
 
 			return;
 		}
@@ -204,8 +205,7 @@ class AdminParamsController extends AdminController
 			// Push up to three validation messages out to the user.
 			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
 			{
-				//TODO setup a correct exception handling as JError is deprecated.
-				if (JError::isError($errors[$i]))
+				if ($errors[$i] instanceof Exception)
 				{
 					$app->enqueueMessage($errors[$i]->getMessage(), 'notice');
 				}
@@ -288,7 +288,7 @@ class AdminParamsController extends AdminController
 				$this->redirect();
 				break;
 			default:
-				$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=cpanel.cpanel", Text::_('CONFIG_SAVED'));
+				$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT, Text::_('CONFIG_SAVED'));
 				$this->redirect();
 				break;
 		}

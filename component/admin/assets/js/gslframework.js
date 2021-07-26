@@ -1,6 +1,6 @@
 /**
  * @version    CVS: JEVENTS_VERSION
- * @package    com_yoursites
+ * @package    com_jevents
  * @author     Geraint Edwards
  * @copyright  2017--JEVENTS_COPYRIGHT GWESystems Ltd
  * @license    GNU General Public License version 3 or later; see LICENSE.txt
@@ -231,8 +231,11 @@ document.addEventListener('DOMContentLoaded', function () {
 		});
 		 */
 		document.querySelector('#right-col > .gsl-content').addEventListener('mouseover', () => {
-			document.getElementById('sidebar-wrapper').classList.add('gsl-hide-sidebar');
+			var sidebarWrapper = document.getElementById('sidebar-wrapper');
+			if (sidebarWrapper) {
+				sidebarWrapper.classList.add('gsl-hide-sidebar');
 			document.getElementById('gslc').classList.add('gsl-hide-sidebar');
+			}
 
 			let wrapper = document.getElementById('menu-collapse');
 			if (wrapper && document.getElementById('menu-collapse-icon').classList.contains('fa-toggle-on'))
@@ -257,11 +260,29 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 	else {
 		// Clean up ISIS stuff etc.
-		let joomlaelements = document.querySelectorAll('#isisJsData, header.header, .btn.btn-subhead');
+		let joomlaelements = document.querySelectorAll('#isisJsData, body.admin header.header, .btn.btn-subhead, .subhead-collapse .subhead');
 		for (let j = 0; j < joomlaelements.length; j++) {
 			joomlaelements[j].remove();
 		}
 	}
+
+	// Hide toggled left-menu if in click mode
+	document.querySelector('#right-col > .gsl-content').addEventListener('mouseover', () => {
+		if (document.getElementById('left-col') && document.getElementById('left-col') && !document.getElementById('left-col').classList.contains('hide-label')) {
+			var elements = document.querySelectorAll('#left-col, #left-col .left-nav, .ysts-page-title');
+			elements.forEach(function(element)
+			{
+				if (element.classList.contains('hide-label'))
+				{
+					element.classList.remove('hide-label');
+				}
+				else
+				{
+					element.classList.add('hide-label');
+				}
+			})
+		}
+	});
 
 	ystsPositionElements()
 
@@ -301,7 +322,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 
 	// Process tooltips
-	ys_tooltip(".hasYsTooltip");
+	ys_setuptooltip(".hasYsTooltip");
 
 	// toggle radio buttons and check box highlighting
 	let inputNodes = document.querySelectorAll('input.gsl-hidden');
@@ -377,6 +398,10 @@ function ys_setuptooltip(selector) {
 		options.container = "#gslc";
 		options.title = title;
 
+		if (hoveritem.hasAttribute('title')) {
+			hoveritem.removeAttribute('title');
+		}
+
 		gslUIkit.tooltip(hoveritem, options);
 	});
 }
@@ -388,8 +413,8 @@ function ys_setuppopover(selector)
 	var hoveritems = document.querySelectorAll(selector);
 	hoveritems.forEach(function (hoveritem) {
 
-		let title = hoveritem.getAttribute('data-yspoptitle') || hoveritem.getAttribute('title');
-		let body = hoveritem.getAttribute('data-yspopcontent') || '';
+		let title = hoveritem.getAttribute('data-yspoptitle') || hoveritem.getAttribute('data-original-title') || hoveritem.getAttribute('title');
+		let body = hoveritem.getAttribute('data-yspopcontent') || hoveritem.getAttribute('data-content') || '';
 		let options = hoveritem.getAttribute('data-yspopoptions') || '{"mode" : "click, hover", "offset" : 20,"delayHide" : 200, "pos" : "top"}';
 		//options = '{ "offset" : 20,"delay" : 20, "pos" : "top", "duration" : 200}';
 		options = JSON.parse(options);
@@ -405,6 +430,9 @@ function ys_setuppopover(selector)
 			(body != '' ? '<div class="ys-popover-body">' + body + '</div>' : '') +
 			'</div>';
 		options.title = phtml;
+		if (hoveritem.hasAttribute('title')) {
+			hoveritem.removeAttribute('title');
+		}
 
 		gslUIkit.tooltip(hoveritem, options);
 	});
@@ -558,7 +586,8 @@ window.addEventListener('load', function () {
 		let options = {};
 
 		options.container = "#gslc";
-		options.title = filter.options[0].innerText;
+		// tags filter may be empty!
+		options.title = filter.options.length > 0 ? filter.options[0].innerText : '';
 
 		gslUIkit.tooltip(filter, options);
 
@@ -703,4 +732,10 @@ document.addEventListener('DOMContentLoaded', function () {
 		sidebar.parentNode.removeChild(sidebar);
 	}
 
+/*
+I could merge in font-awesome icons this way
+	gslUIkit.util.ready(function () {
+		gslUIkit.icon.add('fa-users', '<span class="fas fa-users fa-fw" aria-hidden="true"></span>');
+	});
+*/
 });

@@ -302,6 +302,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		// Get the form && data
 		$this->form = $this->get('TranslateForm');
 		$this->original = $this->get("Original");
+		$this->original['contact_info'] = $this->original['contact'];
 		$this->translation = $this->get("Translation");
 		$lang = $input->getString("lang", "");
 
@@ -472,12 +473,20 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 	}
 
+	function toolbarConfirmvarButton($task = '', $msg = '', $icon = '', $iconOver = '', $alt = '', $listSelect = true, $varCheck = "")
+	{
+		$bar =  JToolBar::getInstance('toolbar');
+
+		$bar->appendButton('Jevconfirmvar', $msg, $icon, $alt, $task, $listSelect, false, $varCheck);
+
+	}
+
 	protected function translationLinks ($row) {
 		if ($this->languages)
 		{
 			$translations = array();
-			JevHtmlBootstrap::modal();
-			JEVHelper::script('editpopupJQ.js','components/'.JEV_COM_COMPONENT.'/assets/js/');
+			JLoader::register('JevModal', JPATH_LIBRARIES . "/jevents/jevmodal/jevmodal.php");
+			JevModal::framework();
 
 			// Any existing translations ?  Do NOT use isset here since there is a magic __get that will return false if its not defined
 			if ($row->evdet_id) {
@@ -498,13 +507,24 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 						array('title' => $item->title),
 						true
 					);
-					$url  = "javascript:jevEditTranslation('".$url ."', '". Text::sprintf("JEV_TRANSLATE_EVENT_TO" ,  addslashes($item->title),  array('jsSafe'=>true) ) . "'); ";
+					$url  = "javascript:jevModalNoHeader('myTranslationModal','".$url ."', '". Text::sprintf("JEV_TRANSLATE_EVENT_INTO" ,  addslashes($item->title),  array('jsSafe'=>true) ) . "'); ";
 					$tooltipParts = array( 	$img,  $item->title);
 					$item->link = HTMLHelper::_('tooltip', implode(' ', $tooltipParts), null, null, $text, $url, null, 'hasTooltip label label-association label-' . $item->sef .( in_array($item->lang_code, $translations)?" hastranslation":"" ));
+
+					$hasTranslation = in_array($item->lang_code, $translations);
 					?>
 					<li>
+						<span
+								class="editlinktip hasYsPopover <?php echo ' label label-association label-' . $item->sef . ($hasTranslation ? " hastranslation" : "");?>"
+								data-yspoptitle="<?php echo Text::_('JEV_TRANSLATE_EVENT', array('jsSafe'=>true)); ?>"
+								data-yspopcontent="<?php echo Text::sprintf('JEV_TRANSLATE_EVENT_INTO', addslashes($item->title) . " " . htmlspecialchars($img), array('jsSafe'=>true)); ?>"
+						>
+							<a href="<?php echo $url;?>" >
+								<?php echo $text;?>
+							</a>
+						</span>
 						<?php
-						echo $item->link;
+						//echo $item->link;
 						?>
 					</li>
 				<?php endforeach; ?>
@@ -512,5 +532,6 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			<?php
 		}
 	}
+
 
 }

@@ -18,6 +18,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Layout\FileLayout;
 
 FormHelper::loadFieldClass('radio');
 
@@ -72,21 +73,10 @@ class FormFieldJevBoolean extends JFormFieldRadio
 		$value  = (int) $this->value;
 		if ($value == -1)
 		{
-			if (version_compare(JVERSION, '3.0.0', "<"))
+			$default30 = (string) $this->element["default30"];
+			if ($default30 != "")
 			{
-				$default25 = (string) $this->element["default25"];
-				if ($default25 != "")
-				{
-					$this->value = $this->default = intval($default25);
-				}
-			}
-			else if (version_compare(JVERSION, '3.0.0', ">="))
-			{
-				$default30 = (string) $this->element["default30"];
-				if ($default30 != "")
-				{
-					$this->value = $this->default = intval($default30);
-				}
+				$this->value = $this->default = intval($default30);
 			}
 		}
 		if (!$params->get("bootstrapchosen", 1))
@@ -99,6 +89,41 @@ class FormFieldJevBoolean extends JFormFieldRadio
 	}
 
 
+	/**
+	 * Get the renderer
+	 *
+	 * @param   string  $layoutId  Id to load
+	 *
+	 * @return  FileLayout
+	 *
+	 * @since   3.5
+	 */
+	protected function getRenderer($layoutId = 'default')
+	{
+		$renderer = new FileLayout($layoutId);
+
+		$renderer->setDebug($this->isDebugEnabled());
+
+		$layoutPaths = $this->getLayoutPaths();
+		// for some sites (op2bout reported) $layoutPaths from this is empty !!!
+		if (empty($layoutPaths))
+		{
+			$layoutPaths = $renderer->getDefaultIncludePaths();
+		}
+		if (!in_array(JPATH_ADMINISTRATOR . "/components/com_jevents/layouts", $layoutPaths))
+		{
+			array_unshift($layoutPaths, JPATH_ADMINISTRATOR . "/components/com_jevents/layouts");
+		}
+
+		if ($layoutPaths)
+		{
+			$renderer->setIncludePaths($layoutPaths);
+		}
+
+		return $renderer;
+	}
+	
+	
 	/**
 	 * Method to attach a Form object to the field.
 	 *

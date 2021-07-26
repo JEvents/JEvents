@@ -96,7 +96,8 @@ var jevConditional = {
                 } else if (hiddencontrol.prop("tagName") == "SPAN") {
                     hiddencontrol.css("display", "inline");
                 } else {
-                    hiddencontrol.css("display", "block");
+                    //hiddencontrol.css("display", "block");
+                    hiddencontrol.prop('hidden', false);
                 }
                 conditionmet = true;
             }
@@ -109,7 +110,8 @@ var jevConditional = {
                 hiddencontrol.css("display", "inline");
             }
             else {
-                hiddencontrol.css("display", "block");
+                //hiddencontrol.css("display", "block");
+                hiddencontrol.prop('hidden', false);
             }
             conditionmet = true;
         }
@@ -131,7 +133,8 @@ var jevConditional = {
             else {
                 eventsno.val(fielddefault);
             }
-            hiddencontrol.css("display", "none");
+            //hiddencontrol.css("display", "none");
+            hiddencontrol.prop('hidden', true);
         }
 
         try {

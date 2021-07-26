@@ -13,8 +13,10 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Layout\LayoutHelper;
 
-function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $template_value = false, $runplugins = true)
+function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $template_value = false, $runplugins = true, $skipfiles = false)
 {
+	static $processedCssJs = array();
+
 	$jevparams  = ComponentHelper::getParams(JEV_COM_COMPONENT);
 	$db         = Factory::getDbo();
 	$app        = Factory::getApplication();
@@ -72,11 +74,18 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				}
 			}
 
-			if (!isset($templates[$template_name]['*'][0]))
+			if (!isset($templates[$template_name]['*'][0]) && !$skipfiles)
 			{
 				try
 				{
-					$viewname = $view->getViewName();
+					if ($view !== false)
+					{
+						$viewname = $view->getViewName();
+					}
+					else
+					{
+						$viewname = "default";
+					}
 				}
 				catch (Exception $e)
 				{
@@ -109,32 +118,40 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					$templateparams = new stdClass();
 					// is there custom css or js - if so push into the params
 					if (strpos($templates[$template_name]['*'][0]->value, '{{CUSTOMJS}') !== false)
-                    {
-	                    preg_match('|' . preg_quote('{{CUSTOMJS}}') . '(.+?)' . preg_quote('{{/CUSTOMJS}}') . '|s', $templates[$template_name]['*'][0]->value, $matches);
+					{
+						preg_match('|' . preg_quote('{{CUSTOMJS}}') . '(.+?)' . preg_quote('{{/CUSTOMJS}}') . '|s', $templates[$template_name]['*'][0]->value, $matches);
 
-	                    if (count($matches) == 2)
-	                    {
-		                    $templateparams->customjs = $matches[1];
-		                    $templates[$template_name]['*'][0]->value = str_replace($matches[0], "",	$templates[$template_name]['*'][0]->value);
-	                    }
-                    }
+						if (count($matches) == 2)
+						{
+							$templateparams->customjs                 = $matches[1];
+							$templates[$template_name]['*'][0]->value = str_replace($matches[0], "", $templates[$template_name]['*'][0]->value);
+						}
+					}
 					if (strpos($templates[$template_name]['*'][0]->value, '{{CUSTOMCSS}') !== false)
 					{
 						preg_match('|' . preg_quote('{{CUSTOMCSS}}') . '(.+?)' . preg_quote('{{/CUSTOMCSS}}') . '|s', $templates[$template_name]['*'][0]->value, $matches);
 
 						if (count($matches) == 2)
 						{
-							$templateparams->customcss = $matches[1];
-							$templates[$template_name]['*'][0]->value = str_replace($matches[0], "",	$templates[$template_name]['*'][0]->value);
+							$templateparams->customcss                = $matches[1];
+							$templates[$template_name]['*'][0]->value = str_replace($matches[0], "", $templates[$template_name]['*'][0]->value);
 						}
 					}
-					if (isset($templateparams->customcss) && !empty($templateparams->customcss) )
+					if (isset($templateparams->customcss) && !empty($templateparams->customcss))
 					{
-						Factory::getDocument()->addStyleDeclaration($templateparams->customcss);
+						if (!in_array($templateparams->customcss, $processedCssJs))
+						{
+							$processedCssJs[] = $templateparams->customcss;
+							Factory::getDocument()->addStyleDeclaration($templateparams->customcss);
+						}
 					}
-					if (isset($templateparams->customjs) && !empty($templateparams->customjs) )
+					if (isset($templateparams->customjs) && !empty($templateparams->customjs))
 					{
-						Factory::getDocument()->addScriptDeclaration($templateparams->customjs);
+						if (!in_array($templateparams->customjs, $processedCssJs))
+						{
+							$processedCssJs[] = $templateparams->customjs;
+							Factory::getDocument()->addScriptDeclaration($templateparams->customjs);
+						}
 					}
 
 					$templates[$template_name]['*'][0]->params   = json_encode($templateparams);
@@ -179,19 +196,30 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				$templates[$template_name] = null;
 			}
 
+			$hasLocationOrIsOnline = false;
+			$onlineevent = $jevparams->get("sevd_onlineeventfield", 0);
+			if ($onlineevent !== 0 && isset($event->customfields) && isset($event->customfields[$onlineevent]) && !empty($event->customfields[$onlineevent]['value']))
+			{
+				$hasLocationOrIsOnline = true;
+			}
+			if (isset($event->_jevlocation)
+				&& !empty($event->_jevlocation))
+			{
+				$hasLocationOrIsOnline = true;
+			}
+
 			$matched = false;
 			foreach (array_keys($templates[$template_name]) as $catid)
 			{
 				if ($templates[$template_name][$catid]->value != "")
 				{
-                    // Add structured data output
+					// Add structured data output
 					if ($template_name === "icalevent.detail_body"
-                        && $jevparams->get("enable_gsed", 0)
-                        && $jevparams->get("sevd_imagename", 0)
+						&& $jevparams->get("enable_gsed", 0)
+						&& $jevparams->get("sevd_imagename", 0)
 						&& $jevparams->get("permatarget", 0)
-						&& isset($event->_jevlocation)
-						&& !empty($event->_jevlocation)
-                    )
+						&& $hasLocationOrIsOnline
+					)
 					{
 						$templates[$template_name][$catid]->value .= "<script type='application/ld+json'>{{Structured Data:LDJSON}}</script>";
 					}
@@ -248,7 +276,12 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			return false;
 		}
 
-		$catids   = ($event->catids() && count($event->catids())) ? $event->catids() : array($event->catid());
+		if ($event === null)
+		{
+			return $templates[$template_name];
+		}
+
+		$catids = ($event->catids() && count($event->catids())) ? $event->catids() : array($event->catid());
 		$catids[] = 0;
 
 		// find the overlap
@@ -317,6 +350,21 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 		$matchesarray   = $template->matchesarray;
 		$loadedFromFile = isset($template->fromfile);
+
+		$customcss = $template->params->get('customcss', '');
+		if (!in_array($customcss, $processedCssJs))
+		{
+			$processedCssJs[] = $customcss;
+			Factory::getDocument()->addStyleDeclaration($customcss);
+		}
+
+		$customjs = $template->params->get('customjs', '');
+		if (!in_array($customjs, $processedCssJs))
+		{
+			$processedCssJs[] = $customjs;
+			Factory::getDocument()->addScriptDeclaration($customjs);
+		}
+
 	}
 	else
 	{
@@ -391,11 +439,19 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		}
 		if (isset($templateparams->customcss) && !empty($templateparams->customcss) )
 		{
-			Factory::getDocument()->addStyleDeclaration($templateparams->customcss);
+			if (!in_array($templateparams->customcss, $processedCssJs))
+			{
+				$processedCssJs[] = $templateparams->customcss;
+				Factory::getDocument()->addStyleDeclaration($templateparams->customcss);
+			}
 		}
 		if (isset($templateparams->customjs) && !empty($templateparams->customjs) )
 		{
-			Factory::getDocument()->addScriptDeclaration($templateparams->customjs);
+			if (!in_array($templateparams->customjs, $processedCssJs))
+			{
+				$processedCssJs[] = $templateparams->customjs;
+				Factory::getDocument()->addScriptDeclaration($templateparams->customjs);
+			}
 		}
 
 		// non greedy replacement - because of the ?
@@ -979,8 +1035,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				break;
 
 			case "{{CREATED}}":
-				$compparams = ComponentHelper::getParams(JEV_COM_COMPONENT);
-				$jtz        = $compparams->get("icaltimezonelive", "");
+				$jtz        = $jevparams->get("icaltimezonelive", "");
 				if ($jtz == "")
 				{
 					$jtz = null;
@@ -1039,6 +1094,19 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					$search[]  = "{{JEVENDED}}";
 					$replace[] = $event->publish_down() < $now ? Text::_("JEV_EVENT_ENDED") : "";
 					$blank[]   = "";
+				}
+				break;
+
+			case "{{TODAY}}" :
+			case "{{TOMORROW}}" :
+				if(strtotime($event->startDate()) === strtotime(date( 'Y-m-d'))) {
+					$search[]   = '{{TODAY}}';
+					$replace[]  = JText::_('JEV_EVENT_TODAY');
+				}
+
+				if(strtotime($event->startDate()) === strtotime(date( 'Y-m-d') . '+1 day')) {
+					$search[]   = '{{TOMORROW}}';
+					$replace[]  = JText::_('JEV_EVENT_TOMORROW');
 				}
 				break;
 
@@ -1612,6 +1680,43 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
                 $search[]   = "{{CREATOR_ID}}";
                 $replace[]  = $event->created_by();
                 break;
+			case "{{CREATOR_DISPLAY_BEFORE_FIRST_SPACE}}":
+				$search[] = "{{CREATOR_DISPLAY_BEFORE_FIRST_SPACE}}";
+				if ($jevparams->get("com_byview", 1))
+				{
+					$value      = JFactory::getUser($event->created_by())->name;
+					$expParts   = explode(' ', $value);
+					$newValue   = $expParts[0];
+					$replace[]  = $newValue;
+				}
+				else
+				{
+					$replace[] = "";
+				}
+				$blank[] = "";
+				break;
+			case "{{CREATOR_DISPLAY_AFTER_FIRST_SPACE}}":
+				$search[] = "{{CREATOR_DISPLAY_AFTER_FIRST_SPACE}}";
+				if ($jevparams->get("com_byview", 1))
+				{
+					$value      = JFactory::getUser($event->created_by())->name;
+					$expParts   = explode(' ', $value);
+					$newValue   = $expParts[0];
+					$replace[]  = $newValue;
+					if(count($expParts) > 1) {
+						$newValue  = $expParts[1];
+						$replace[]  = $newValue;
+					} else {
+						$newValue  = $expParts[0];
+						$replace[]  = $newValue;
+					}
+				}
+				else
+				{
+					$replace[] = "";
+				}
+				$blank[] = "";
+				break;
 			case "{{HITS}}":
 				$search[] = "{{HITS}}";
 				if ($jevparams->get("com_hitsview", 1) || $template_name != "icalevent.detail_body")
@@ -1730,6 +1835,13 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				$replace[] = $event->rp_id();
 				$blank[]   = "";
 				break;
+			case "{{TZID}}":
+				$jtz       = $jevparams->get("icaltimezonelive", "");
+				$jtz       = isset($event->_tzid) && !empty($event->_tzid) ? $event->_tzid : $jtz;
+				$search[]  = "{{TZID}}";
+				$replace[] = $jtz;
+				$blank[]   = "";
+				break;
 			case "{{EVID}}":
 				$search[]  = "{{EVID}}";
 				$replace[] = $event->ev_id();
@@ -1761,23 +1873,56 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
                     && $jevparams->get("enable_gsed", 0)
                     && $jevparams->get("sevd_imagename", 0)
 					&& $jevparams->get("permatarget", 0)
-                    && isset($event->_jevlocation)
-                    && !empty($event->_jevlocation)
+                    && $hasLocationOrIsOnline
                 )
 				{
+
 					$lddata = array();
 					$lddata["@context"] = "https://schema.org";
 					$lddata["@type"] =  "Event";
 					$lddata["name"] =  $event->title();
-					$lddata["description"] =  $event->content();
-					$lddata["startDate"] = $event->alldayevent() ?
-						JEventsHTML::getDateFormat($event->yup(), $event->mup(), $event->dup(), "%Y-%m-%d")  :
-						JEventsHTML::getDateFormat($event->yup(), $event->mup(), $event->dup(), "%Y-%m-%d") . "T" . sprintf('%02d:%02d:00', $event->hup(), $event->minup()) ;
-					if (true || $event->endDate() > $event->startDate())
+					$lddata["description"] =  $jevparams->get("ldjson_striptags", 1) ?  strip_tags( $event->content() ) : $event->content();
+
+					// Timezone
+					// event tzid
+					// icaltimezonelive
+					// icaltimezone
+					$jtz        = $jevparams->get("icaltimezonelive", "");
+					$jtz        = isset($event->_tzid) && !empty($event->_tzid) ? $event->_tzid : $jtz;
+					if (!empty($jtz))
 					{
-						$lddata["endDate"] = ($event->noendtime() || $event->alldayevent()) ?
-						    JEventsHTML::getDateFormat($event->ydn(), $event->mdn(), $event->ddn(), "%Y-%m-%d")  :
-							JEventsHTML::getDateFormat($event->ydn(), $event->mdn(), $event->ddn(), "%Y-%m-%d") . "T" . sprintf('%02d:%02d:00', $event->hdn(), $event->mindn()) ;
+						$jtz = new DateTimeZone($jtz);
+					}
+					else
+					{
+						$jtz = new DateTimeZone(@date_default_timezone_get());
+					}
+
+					if ($event->alldayevent())
+					{
+						$lddata["startDate"] = JEventsHTML::getDateFormat($event->yup(), $event->mup(), $event->dup(), "%Y-%m-%d") ;
+					}
+					else
+					{
+						$startDate = JEventsHTML::getDateFormat($event->yup(), $event->mup(), $event->dup(), "%Y-%m-%d") . "T" . sprintf('%02d:%02d:00', $event->hup(), $event->minup());
+						$indate  = new DateTime($startDate, $jtz);
+						$offset = $indate->format('P');
+						$lddata["startDate"] = $startDate . $offset;
+					}
+
+					if ($event->getUnixEndTime() > $event->getUnixStartTime())
+					{
+						if ($event->noendtime() || $event->alldayevent())
+						{
+							$lddata["endDate"] = JEventsHTML::getDateFormat($event->ydn(), $event->mdn(), $event->ddn(), "%Y-%m-%d");
+						}
+						else
+						{
+							$endDate = JEventsHTML::getDateFormat($event->ydn(), $event->mdn(), $event->ddn(), "%Y-%m-%d") . "T" . sprintf('%02d:%02d:00', $event->hdn(), $event->mindn()) ;
+							$indate  = new DateTime($endDate, $jtz);
+							$offset = $indate->format('P');
+							$lddata["endDate"] = $endDate . $offset;
+						}
 					}
 
 					$imageurl = "_imageurl" . $jevparams->get("sevd_imagename", 0);
@@ -1803,12 +1948,13 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
                         {
                             // for sites that haven't upgraded standard images
 	                        $lddata["image"] = $event->$imageurl;
+	                        if (strpos($lddata["image"], "/") === 0)
+	                        {
+		                        $lddata["image"] = substr($lddata["image"], 1);
+	                        }
+	                        // no need to add host details to call to getSizedImage Url
+	                        $lddata["image"] = array(JURI::root(false)  . $lddata["image"]);
                         }
-						if (strpos($lddata["image"], "/") === 0)
-						{
-							$lddata["image"] = substr($lddata["image"], 1);
-						}
-						$lddata["image"] = array(JURI::root(false)  . $lddata["image"]);
 
 						if ($resetparams)
                         {
@@ -1850,6 +1996,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	                        $loc["address"] = $address;
 
 	                        $lddata["location"] = $loc;
+	                        $lddata["eventAttendanceMode"] = "https://schema.org/OfflineEventAttendanceMode";
                         }
                     }
 
@@ -1867,7 +2014,69 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
                                 break;
                             }
                         }
+	                    foreach ($event->_jevpeople as $person)
+	                    {
+		                    if ($person->type_id == $jevparams->get("sevd_organizertype", -1))
+		                    {
+			                    $pdata = array();
+			                    $pdata["@type"] = "Organization";
+			                    $pdata["name"] = $person->title;
+			                    if (isset($person->www) && !empty($person->www))
+			                    {
+				                    $pdata["url"] = $person->www;
+			                    }
+
+			                    $lddata["organizer"] = $pdata;
+			                    break;
+		                    }
+	                    }
                     }
+
+					$onlineevent = $jevparams->get("sevd_onlineeventfield", 0);
+                    if ($onlineevent !== 0 && isset($event->customfields) && isset($event->customfields[$onlineevent]) && !empty($event->customfields[$onlineevent]['value']))
+                    {
+                    	if (isset($lddata["location"]))
+	                    {
+		                    $lddata["location"] = array($lddata["location"]);
+
+		                    $loc = array();
+		                    $loc["@type"] = "VirtualLocation";
+		                    $loc["url"] = $event->customfields[$onlineevent]['value'];
+
+		                    $lddata["location"][] = $loc;
+
+		                    $lddata["eventAttendanceMode"] = "https://schema.org/MixedEventAttendanceMode";
+	                    }
+                    	else
+	                    {
+		                    $lddata["eventAttendanceMode"] = "https://schema.org/OnlineEventAttendanceMode";
+		                    $loc = array();
+		                    $loc["@type"] = "VirtualLocation";
+		                    $loc["url"] = $event->customfields[$onlineevent]['value'];
+
+		                    $lddata["location"] = $loc;
+	                    }
+
+                    }
+
+					$eventstatus = $jevparams->get("sevd_eventstatus", 0);
+					if ($eventstatus !== 0 && isset($event->customfields) && isset($event->customfields[$eventstatus]) && !empty($event->customfields[$eventstatus]['rawvalue']))
+					{
+						$eventStatus = array(
+							1 => "EventScheduled",
+							2 => "EventCancelled",
+							3 => "EventMovedOnline",
+							4 => "EventPostponed",
+							5 => "EventRescheduled"
+						);
+
+						$lddata["eventStatus"] = array();
+						$statuses = explode(",", $eventStatus[$event->customfields[$eventstatus]['rawvalue']]);
+						foreach ($statuses as $status)
+						{
+							$lddata["eventStatus"][] = "https://schema.org/" . trim($status);
+						}
+					}
 
                     // TODO RSVP Pro
                     /*
@@ -2205,109 +2414,30 @@ function jevSpecialHandling($matches)
 
 function jevStripDateFormatting($matches)
 {
-	if (count($matches) == 1 && StringHelper::strpos($matches[0], ";") > 0)
-	{
-		global $tempreplace, $tempevent, $tempsearch, $tempblank;
-		$parts = explode(";", $matches[0]);
-		if (count($parts) == 2)
-		{
-			$fmt = str_replace(array("}}", "}"), "", $parts[1]);
-			if (strpos($fmt, "#") !== false)
-			{
-				$fmtparts = explode("#", $fmt);
-				if ($tempreplace == $tempblank)
-				{
-					if (count($fmtparts) == 3)
-					{
-						$fmt = $fmtparts[2];
-					}
-					else
-						return "";
-				}
-				else if (count($fmtparts) >= 2)
-				{
-					$fmt = sprintf($fmtparts[1], $fmtparts[0]);
-				}
-			}
-			//return strftime($fmt, strtotime(strip_tags($tempreplace)));
-			if (!is_int($tempreplace))
-			{
-				$tempreplace = strtotime(strip_tags($tempreplace));
-			}
-			if (strpos($fmt, "%") === false)
-			{
-				return date($fmt, $tempreplace);
-			}
+    if (count($matches) == 1 && JString::strpos($matches[0], ";") > 0)
+    {
+        global $tempreplace, $tempevent, $tempsearch, $tempblank;
+        $parts = explode(";", $matches[0]);
+        if (count($parts) == 2)
+        {
+            $fmt = str_replace(array("}}", "}"), "", $parts[1]);
+            if (strpos($fmt, "#") !== false)
+            {
+                $fmtparts = explode("#", $fmt);
+                // remove the time format
+                if (count($fmtparts) == 2)
+                {
+                    return "";
+                }
+                else
+                {
+                    return $fmtparts[2];
+                }
+            }
+        }
+    }
 
-			return JEV_CommonFunctions::jev_strftime($fmt, $tempreplace);
-		}
-		// TZ specified
-		else if (count($parts) == 3)
-		{
-			$fmt = $parts[1];
-
-			// Must get this each time otherwise modules can't set their own timezone
-			$compparams = ComponentHelper::getParams(JEV_COM_COMPONENT);
-			$jtz        = $compparams->get("icaltimezonelive", "");
-			if ($jtz != "")
-			{
-				$jtz = new DateTimeZone($jtz);
-			}
-			else
-			{
-				$jtz = new DateTimeZone(@date_default_timezone_get());
-			}
-			$outputtz = str_replace(array("}}", "}"), "", $parts[2]);
-
-			if (strpos($outputtz, "#") !== false)
-			{
-				$outputtzparts = explode("#", $outputtz);
-				$outputtz      = $outputtzparts[0];
-				if ($tempreplace == $tempblank)
-				{
-					if (count($outputtzparts) == 3)
-					{
-						$fmt = $outputtzparts[2];
-					}
-					else
-						return "";
-				}
-				else if (count($outputtzparts) >= 2)
-				{
-					$fmt = sprintf($outputtzparts[1], $fmt);
-				}
-			}
-
-
-			if (strtolower($outputtz) == "user" || strtolower($outputtz) == "usertz")
-			{
-				$user     = Factory::getUser();
-				$outputtz = $user->getParam("timezone", $compparams->get("icaltimezonelive", @date_default_timezone_get()));
-			}
-			$outputtz = new DateTimeZone($outputtz);
-
-			if (is_integer($tempreplace))
-			{
-				$tempreplace = JEV_CommonFunctions::jev_strftime("%Y-%m-%d %H:%M:%S", $tempreplace);
-			}
-			$indate  = new DateTime($tempreplace, $jtz);
-			$offset1 = $indate->getOffset();
-
-			// set the new timezone
-			$indate->setTimezone($outputtz);
-			$offset2 = $indate->getOffset();
-
-			$indate = $indate->getTimestamp() + $offset2 - $offset1;
-
-			return JEV_CommonFunctions::jev_strftime($fmt, intval($indate));
-		}
-		else
-		{
-			return $matches[0];
-		}
-	}
-	else if (count($matches) == 1)
-		return $matches[0];
+    return $matches[0];
 }
 
 function jevSpecialDateFormatting($matches)
@@ -2355,8 +2485,8 @@ function jevSpecialDateFormatting($matches)
 			$fmt = $parts[1];
 
 			// Must get this each time otherwise modules can't set their own timezone
-			$compparams = ComponentHelper::getParams(JEV_COM_COMPONENT);
-			$jtz        = $compparams->get("icaltimezonelive", "");
+			$jevparams  = ComponentHelper::getParams(JEV_COM_COMPONENT);
+			$jtz        = $jevparams->get("icaltimezonelive", "");
 			if ($jtz != "")
 			{
 				$jtz = new DateTimeZone($jtz);
@@ -2390,7 +2520,7 @@ function jevSpecialDateFormatting($matches)
 			if (strtolower($outputtz) == "user" || strtolower($outputtz) == "usertz")
 			{
 				$user     = Factory::getUser();
-				$outputtz = $user->getParam("timezone", $compparams->get("icaltimezonelive", @date_default_timezone_get()));
+				$outputtz = $user->getParam("timezone", $jevparams->get("icaltimezonelive", @date_default_timezone_get()));
 			}
 			$outputtz = new DateTimeZone($outputtz);
 
@@ -2453,7 +2583,7 @@ if (!class_exists("InvalidHtmlException"))
 
 }
 
-if (!class_exists("Truncator"))
+if (!class_exists("Truncator") && !function_exists('ht_strlen'))
 {
 	if (function_exists('grapheme_strlen'))
 	{

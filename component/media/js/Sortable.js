@@ -20,7 +20,8 @@
 		/* jshint sub:true */
 		window["Sortable"] = factory();
 	}
-})(function sortableFactory() {
+})
+(function sortableFactory() {
 	"use strict";
 
 	if (typeof window === "undefined" || !window.document) {

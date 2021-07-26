@@ -53,6 +53,17 @@ class AdminCpanelController extends AdminController
 		if ($rsvpproplugin && $rsvpplugin)
 		{
 			$app->enqueueMessage(Text::_("JEV_INSTALLED_RSVP_AND_RSVPPRO_INCOMPATIBLE"), "ERROR");
+			$db = Factory::getDbo();
+			$query = $db->getQuery(true)
+				->update('#__extensions')
+				->set('enabled = 0')
+				->where('enabled = 1')
+				->where('type = ' . $db->quote('plugin'))
+				->where('folder = ' . $db->quote('jevents'))
+				->where('element = ' . $db->quote('jevrsvp'))
+				->where('state IN (0,1)');
+			$db->setQuery($query);
+			$db->execute();
 		}
 
 		// Add one category by default if none exist already
@@ -64,7 +75,7 @@ class AdminCpanelController extends AdminController
 		{
 			JLoader::register('JEventsCategory', JEV_ADMINPATH . "/libraries/categoryClass.php");
 			$cat = new JEventsCategory($db);
-			$cat->bind(array("title" => Text::_('DEFAULT'), "published" => 1, "color" => "#CCCCFF", "access" => 1));
+			$cat->bind(array("title" => Text::_('DEFAULT'), "alias" => "default", "published" => 1, "color" => "#CCCCFF", "access" => 1));
 			$cat->store();
 			$catid = $cat->id;
 		}
@@ -140,7 +151,8 @@ class AdminCpanelController extends AdminController
 		$nativeCals      = $this->dataModel->queryModel->getNativeIcalendars();
 		if (is_null($nativeCals) || count($nativeCals) == 0)
 		{
-			JError::raiseWarning("100", Text::_('CALENDARS_NOT_SETUP_PROPERLY'));
+
+			Factory::getApplication()->enqueueMessage(Text::_("CALENDARS_NOT_SETUP_PROPERLY"), 'warning');
 		}
 
 		/*
@@ -994,7 +1006,8 @@ WHERE ics.ics_id is null
 
 		if (!JEVHelper::isAdminUser())
 		{
-			$app->redirect("index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.cpanel", "Not Authorised - must be admin");
+			Factory::getApplication()->enqueueMessage( "Not Authorised - must be admin", 'warning');
+			Factory::getApplication()->redirect("index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.cpanel");
 			return;
 		}
 
@@ -1088,7 +1101,7 @@ WHERE ics.ics_id is null
 					{
 						$updateLanguagePackMessage = Text::sprintf('JEV_UPDATE_LANGUAGE_PACKAGE', $language['name']);
 					}
-					JError::raiseNotice("100", $updateLanguagePackMessage);
+					Factory::getApplication()->enqueueMessage($updateLanguagePackMessage, 'notice');
 				}
 			}
 		}

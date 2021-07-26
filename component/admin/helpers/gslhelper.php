@@ -1,7 +1,7 @@
 <?php
 /**
  * @version    CVS: JEVENTS_VERSION
- * @package    com_yoursites
+ * @package    com_jevents
  * @author     Geraint Edwards <yoursites@gwesystems.com>
  * @copyright  2016-JEVENTS_COPYRIGHT GWESystems Ltd
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
@@ -19,28 +19,32 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Layout\LayoutHelper;
 
+JLoader::register('JEventsHelper', JPATH_ADMINISTRATOR . "/components/com_jevents/helpers/jevents.php");
+
 class GslHelper
 {
 	public static function loadAssets()
 	{
 		$document = Factory::getDocument();
 
-		HTMLHelper::stylesheet('media/com_jevents/css/uikit.css', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false));
-		HTMLHelper::stylesheet('administrator/components/com_jevents/assets/css/jevents.css', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false));
+		HTMLHelper::stylesheet('media/com_jevents/css/uikit.gsl.css', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false));
+		HTMLHelper::stylesheet('components/com_jevents/assets/css/jevents.css', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false));
 		$jversion = new Version;
 		if ($jversion->isCompatible('4.0'))
 		{
-			HTMLHelper::stylesheet('administrator/components/com_jevents/assets/css/j4.css', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false));
+			HTMLHelper::stylesheet('components/com_jevents/assets/css/j4.css', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false));
 		}
 		else
 		{
-			HTMLHelper::stylesheet('administrator/components/com_jevents/assets/css/j3.css', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false));
+			HTMLHelper::stylesheet('components/com_jevents/assets/css/j3.css', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false));
 		}
 
+		//HTMLHelper::script('media/com_jevents/js/requireWorkaround1.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
 		HTMLHelper::script('media/com_jevents/js/uikit.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
 		HTMLHelper::script('media/com_jevents/js/uikit-icons.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
-		HTMLHelper::script('administrator/components/com_jevents/assets/js/gslframework.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
-		HTMLHelper::script('administrator/components/com_jevents/assets/js/jevents.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
+		//HTMLHelper::script('media/com_jevents/js/requireWorkaround2.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
+		HTMLHelper::script('components/com_jevents/assets/js/gslframework.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
+		HTMLHelper::script('components/com_jevents/assets/js/jevents.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
 	}
 
 	public static function renderModal()
@@ -106,13 +110,17 @@ class GslHelper
 
 	static public function configLink()
 	{
-		return Uri::base() . 'index.php?option=com_jevents&task=params.edit';
+		return Uri::base() . 'index.php?option=com_jevents&task=params.edit&component=com_jevents&view=component';
 	}
 
 	static public function cpanelIconLink()
 	{
+		$option = Factory::getApplication()->input->getCmd('option', 'com_jevents');
+		$componentParams = ComponentHelper::getParams($option);
+		$leftmenutrigger = $componentParams->get("leftmenutrigger", 0);
+		$onclick = $leftmenutrigger == 2 ? "" : 'onclick="if((window.getComputedStyle(this.querySelector(\'.nav-label\')).getPropertyValue(\'display\')==\'none\' && window.innerWidth <= 960) || window.getComputedStyle(this.querySelector(\'.nav-label\')).getPropertyValue(\'display\')!==\'none\') {document.location=this.href;}return false;"';
 		?>
-        <a href="<?php echo Route::_("index.php?option=com_jevents&view=cpanel"); ?>" class="">
+        <a href="<?php echo Route::_("index.php?option=com_jevents&view=cpanel"); ?>" class="" <?php echo $onclick;?> >
             <img src="<?php echo Uri::base(); ?>components/com_jevents/assets/images/logo.png"
                  alt="JEvents Logo">
             <span class="nav-label"><?php echo Text::_('JEVENTS_DASHBOARD'); ?></span>
@@ -140,6 +148,8 @@ class GslHelper
 
 		$params = ComponentHelper::getParams("com_jevents");
 
+		$leftmenutrigger = (int) $params->get("leftmenutrigger", 0);
+
 		$iconLinks = array();
 
 		$iconLink                 = new stdClass();
@@ -148,7 +158,7 @@ class GslHelper
 		$iconLink->link           = Route::_("index.php?option=com_jevents&task=icalevent.list");
 		$iconLink->icon           = "calendar";
 		$iconLink->label          = Text::_('JEV_ADMIN_ICAL_EVENTS');
-		$iconLink->tooltip        = Text::_("JEV_INSTAL_MANAGE", true);
+		$iconLink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_("JEV_INSTAL_MANAGE", true);
 		$iconLink->tooltip_detail = "";
 		$iconLinks[]              = $iconLink;
 
@@ -158,7 +168,7 @@ class GslHelper
 		$iconLink->link           = Route::_("index.php?option=com_categories&view=categories&extension=com_jevents");
 		$iconLink->icon           = "album";
 		$iconLink->label          = Text::_('JEV_INSTAL_CATS');
-		$iconLink->tooltip        = Text::_("JEV_INSTAL_CATS", true);
+		$iconLink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_("JEV_INSTAL_CATS", true);
 		$iconLink->tooltip_detail = "";
 		$iconLinks[]              = $iconLink;
 
@@ -170,7 +180,7 @@ class GslHelper
 			$iconLink->link           = Route::_("index.php?option=com_jevents&task=icals.list");
 			$iconLink->icon           = "calendars";
 			$iconLink->label          = Text::_('JEV_ADMIN_ICAL_SUBSCRIPTIONS');
-			$iconLink->tooltip        = Text::_('JEV_ADMIN_ICAL_SUBSCRIPTIONS', true);
+			$iconLink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_('JEV_ADMIN_ICAL_SUBSCRIPTIONS', true);
 			$iconLink->tooltip_detail = "";
 			$iconLinks[]              = $iconLink;
 
@@ -183,7 +193,7 @@ class GslHelper
 				$iconLink->link           = Route::_("index.php?option=com_jevents&task=user.list");
 				$iconLink->icon           = "users";
 				$iconLink->label          = Text::_('JEV_MANAGE_USERS');
-				$iconLink->tooltip        = Text::_('JEV_MANAGE_USERS', true);
+				$iconLink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_('JEV_MANAGE_USERS', true);
 				$iconLink->tooltip_detail = "";
 				$iconLinks[]              = $iconLink;
 			}
@@ -195,7 +205,7 @@ class GslHelper
 		$iconLink->link           = Route::_("index.php?option=com_jevents&task=defaults.list");
 		$iconLink->icon           = "file-edit";
 		$iconLink->label          = Text::_('JEV_LAYOUT_DEFAULTS');
-		$iconLink->tooltip        = Text::_('JEV_LAYOUT_DEFAULTS', true);
+		$iconLink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_('JEV_LAYOUT_DEFAULTS', true);
 		$iconLink->tooltip_detail = "";
 		$iconLinks[]              = $iconLink;
 
@@ -205,7 +215,7 @@ class GslHelper
 		$iconLink->link           = Route::_("index.php?option=com_jevents&task=cpanel.support");
 		$iconLink->icon           = "file-text";
 		$iconLink->label          = Text::_('SUPPORT_INFO');
-		$iconLink->tooltip        = Text::_('SUPPORT_INFO', true);
+		$iconLink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_('SUPPORT_INFO', true);
 		$iconLink->tooltip_detail = "";
 		$iconLinks[]              = $iconLink;
 
@@ -215,7 +225,7 @@ class GslHelper
 		$iconLink->link           = Route::_("index.php?option=com_jevents&view=customcss");
 		$iconLink->icon           = "paint-bucket";
 		$iconLink->label          = Text::_('JEV_CUSTOM_CSS');
-		$iconLink->tooltip        = Text::_('JEV_CUSTOM_CSS', true);
+		$iconLink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_('JEV_CUSTOM_CSS', true);
 		$iconLink->tooltip_detail = "";
 		$iconLinks[]              = $iconLink;
 
@@ -235,9 +245,15 @@ class GslHelper
 			$iconLink->link           = Route::_("index.php?option=com_jevlocations");
 			$iconLink->icon           = "location";
 			$iconLink->label          = Text::_('COM_JEVLOCATIONS');
-			$iconLink->tooltip        = Text::_('COM_JEVLOCATIONS', true);
+			$iconLink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_('COM_JEVLOCATIONS', true);
 			$iconLink->tooltip_detail = "";
+			if (file_exists(JPATH_ADMINISTRATOR . "/components/com_jevlocations/helpers/gslmenuhelper.php"))
+			{
+				include_once JPATH_ADMINISTRATOR . "/components/com_jevlocations/helpers/gslmenuhelper.php";
+				$iconLink->sublinks = GslLocationsMenuHelper::getLeftIconSubLinks($leftmenutrigger);
+			}
 			$iconLinks[]              = $iconLink;
+
 		}
 		else
 		{
@@ -267,9 +283,15 @@ class GslHelper
 			$iconLink->link           = Route::_("index.php?option=com_jeventstags");
 			$iconLink->icon           = "hashtag";
 			$iconLink->label          = Text::_('COM_JEVENTSTAGS');
-			$iconLink->tooltip        = Text::_('COM_JEVENTSTAGS', true);
+			$iconLink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_('COM_JEVENTSTAGS', true);
 			$iconLink->tooltip_detail = "";
+			if (file_exists(JPATH_ADMINISTRATOR . "/components/com_jeventstags/helpers/gslmenuhelper.php"))
+			{
+				include_once JPATH_ADMINISTRATOR . "/components/com_jeventstags/helpers/gslmenuhelper.php";
+				$iconLink->sublinks = GslTagsMenuHelper::getLeftIconSubLinks($leftmenutrigger);
+			}
 			$iconLinks[]              = $iconLink;
+
 		}
 		else
 		{
@@ -277,7 +299,7 @@ class GslHelper
 			$iconLink->class          = "notinstalled";
 			$iconLink->active         = $view == "jeventstags";
 			$iconLink->link           = "https://www.jevents.net/join-club-jevents";
-			$iconLink->icon           = "location";
+			$iconLink->icon           = "hashtag";
 			$iconLink->label          = Text::_('COM_JEVENTS_TAGS');
 			$iconLink->tooltip        = Text::_("COM_JEVENTS_DISABLED_OPTION", true);
 			$iconLink->tooltip_detail = Text::_("COM_JEVENTS_DISABLED_OPTION_DESC", true);
@@ -299,9 +321,16 @@ class GslHelper
 			$iconLink->link           = Route::_("index.php?option=com_jevpeople");
 			$iconLink->icon           = "user";
 			$iconLink->label          = Text::_('COM_JEVPEOPLE');
-			$iconLink->tooltip        = Text::_('COM_JEVPEOPLE', true);
+			$iconLink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_('COM_JEVPEOPLE', true);
 			$iconLink->tooltip_detail = "";
+
+			if (file_exists(JPATH_ADMINISTRATOR . "/components/com_jevpeople/helpers/gslmenuhelper.php"))
+			{
+				include_once JPATH_ADMINISTRATOR . "/components/com_jevpeople/helpers/gslmenuhelper.php";
+				$iconLink->sublinks = GslPeopleMenuHelper::getLeftIconSubLinks($leftmenutrigger);
+			}
 			$iconLinks[]              = $iconLink;
+
 		}
 		else
 		{
@@ -309,7 +338,7 @@ class GslHelper
 			$iconLink->class          = "notinstalled";
 			$iconLink->active         = $view == "jevpeople";
 			$iconLink->link           = "https://www.jevents.net/join-club-jevents";
-			$iconLink->icon           = "location";
+			$iconLink->icon           = "user";
 			$iconLink->label          = Text::_('COM_JEVENTS_PEOPLE');
 			$iconLink->tooltip        = Text::_("COM_JEVENTS_DISABLED_OPTION", true);
 			$iconLink->tooltip_detail = Text::_("COM_JEVENTS_DISABLED_OPTION_DESC", true);
@@ -331,9 +360,15 @@ class GslHelper
 			$iconLink->link           = Route::_("index.php?option=com_rsvppro");
 			$iconLink->icon           = "cart";
 			$iconLink->label          = Text::_('COM_RSVPPRO');
-			$iconLink->tooltip        = Text::_('COM_RSVPPRO', true);
+			$iconLink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_('COM_RSVPPRO', true);
 			$iconLink->tooltip_detail = "";
+			if (file_exists(JPATH_ADMINISTRATOR . "/components/com_rsvppro/helpers/gslmenuhelper.php"))
+			{
+				include_once JPATH_ADMINISTRATOR . "/components/com_rsvppro/helpers/gslmenuhelper.php";
+				$iconLink->sublinks = GslRsvpproMenuHelper::getLeftIconSubLinks($leftmenutrigger);
+			}
 			$iconLinks[]              = $iconLink;
+
 		}
 		else
 		{
@@ -365,9 +400,32 @@ class GslHelper
 			$iconLink->link           = Route::_("index.php?option=com_jevents&task=plugin.jev_customfields.overview");
 			$iconLink->icon           = "code";
 			$iconLink->label          = Text::_('JEV_CUSTOM_FIELDS');
-			$iconLink->tooltip        = Text::_('JEV_CUSTOM_FIELDS', true);
+			$iconLink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_('JEV_CUSTOM_FIELDS', true);
 			$iconLink->tooltip_detail = "";
 			$iconLinks[]              = $iconLink;
+
+			try
+			{
+				$manifestCache = json_decode($extension->manifest_cache);
+				if (version_compare($manifestCache->version,"3.7.0", "ge") || $manifestCache->version == "3.5.0RC2")
+				{
+					$iconLink->sublinks = array();
+
+					$sublink              = new stdClass();
+					$sublink->onclick     = "(function(e) { document.location='" . Route::_("index.php?option=com_fields&context=com_jevents.event") . " ';return false;})(event);";
+					$sublink->link        = "";
+					$sublink->class       = "gsl-button gsl-small gsl-button-secondary gsl-padding-remove gsl-text-left ";
+					$sublink->icon        = 'joomla';
+					$sublink->iconclass   = "gsl-margin-small-right gsl-display-inline-block";
+					$sublink->label       = JText::_('COM_JEVENTS_JOOMLA_CUSTOM_FIELDS');
+					$iconLink->sublinks[] = $sublink;
+				}
+			}
+			catch (Exception $e)
+			{
+
+			}
+
 		}
 		else
 		{
@@ -380,6 +438,27 @@ class GslHelper
 			$iconLink->tooltip        = Text::_("COM_JEVENTS_DISABLED_OPTION", true);
 			$iconLink->tooltip_detail = Text::_("COM_JEVENTS_DISABLED_OPTION_DESC", true);
 			$iconLink->target         = "_blank";
+			$iconLinks[]              = $iconLink;
+		}
+
+		// YourSites
+		$db = Factory::getDbo();
+		$db->setQuery("SELECT enabled FROM #__extensions WHERE element = 'com_yoursites' AND type='component' ");
+		$is_enabled = $db->loadResult();
+		// Availability and access check .
+		if ($is_enabled && JFactory::getUser()->authorise('core.manage', 'com_yoursites'))
+		{
+			Factory::getLanguage()->load("com_yoursites", JPATH_ADMINISTRATOR);
+
+			$iconLink                 = new stdClass();
+			$iconLink->class          = "";
+			$iconLink->active         = $view == "yoursites";
+			$iconLink->link           = Route::_("index.php?option=com_yoursites");
+			$iconLink->icon           = "";
+			$iconLink->iconSrc        = "components/com_yoursites/assets/images/YourSitesIcon.png";
+			$iconLink->label          = strip_tags(Text::_('COM_YOURSITES'));
+			$iconLink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_('COM_YOURSITES', true);
+			$iconLink->tooltip_detail = "";
 			$iconLinks[]              = $iconLink;
 		}
 

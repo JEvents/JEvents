@@ -76,6 +76,11 @@ class JEventsCategory extends Joomla\CMS\Table\Category
 
 		$cfg         = JEVConfig::getInstance();
 		$array['id'] = isset($array['id']) ? intval($array['id']) : 0;
+
+		if(empty($array['alias'])) {
+			$array['alias'] = JFilterOutput::stringURLSafe($array['title']);
+		}
+
 		parent::bind($array);
 
 		$params = new JevRegistry($this->params);
@@ -101,6 +106,7 @@ class JEventsCategory extends Joomla\CMS\Table\Category
 			$image = array_key_exists("image", $array) ? intval($array['image']) : "";
 			$params->set("image", $image);
 		}
+
 		$this->params = (string) $params;
 
 		// Fill in the gaps

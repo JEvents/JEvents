@@ -12,6 +12,8 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 /**
  * Class for objects containing lines of converted CSV file to iCal format
  *
@@ -250,8 +252,14 @@ class CsvLine
 			date_default_timezone_set($prevTimezone);
 		}
 
+		$input = Factory::getApplication()->input;
+
+		// Do not overwrite published state during ical refresh
+		if ($input->get("task") === "icals.reload" || $input->get("task") === "icals.reloadall")
+		{
+		}
 		// Check if published is set and if so, are they authorised.
-		if ((!isset($this->published) && JEVHelper::isEventPublisher()) || JEVHelper::isEventPublisher())
+		else if ((!isset($this->published) && JEVHelper::isEventPublisher()) || JEVHelper::isEventPublisher())
 		{
 			$this->published = 1;
 		}
@@ -272,11 +280,12 @@ class CsvLine
 		if ($this->description !== "") $ical .= "DESCRIPTION:" . $this->description . "\n";
 		if ($this->contact !== "") $ical .= "CONTACT:" . $this->contact . "\n";
 		if ($this->extraInfo !== "") $ical .= "X-EXTRAINFO:" . $this->extraInfo . "\n";
-		if ($this->color !== "") $ical .= "X-COLOR:".$this->color."\n";
+		if (isset($this->color) && $this->color !== "") $ical .= "X-COLOR:".$this->color."\n";
 		if ($this->rrule !== "") $ical .= "RRULE:" . $this->rrule . "\n";
 		if ($this->noendtime !== "") $ical .= "NOENDTIME:" . $this->noendtime . "\n";
-		if ($this->published !== "") $ical .= "X-STATE:" . $this->published . "\n";
+		if ($this->published !== "" && !is_null($this->published)) $ical .= "X-STATE:" . $this->published . "\n";
 		if ($this->multiday !== "") $ical .= "MULTIDAY:" . $this->multiday . "\n";
+		if (isset($this->lockevent) && $this->lockevent !== "") $ical .= "LOCKEVENT:" . $this->lockevent . "\n";
 
 		if (count($this->cf) > 0)
 		{

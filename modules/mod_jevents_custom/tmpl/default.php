@@ -16,6 +16,8 @@ if (isset($moddata))
 		{
 			PluginHelper::importPlugin('content');
 
+			JLoader::register('JevRegistry', JPATH_SITE . "/components/com_jevents/libraries/registry.php");
+
 			$eventdata       = new stdClass();
 			$eventdata->text = $md;
 			$params          = new JevRegistry(null);

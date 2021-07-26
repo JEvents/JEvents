@@ -17,10 +17,23 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\String\StringHelper;
+use Joomla\CMS\Form\FormHelper;
 
 // We need to get the params first
 
-HTMLHelper::_('formbehavior.chosen', '#adminForm select.chosen');
+$jversion = new Joomla\CMS\Version;
+if (!$jversion->isCompatible('4.0'))
+{
+	HTMLHelper::script('media/com_jevents/js/gslselect.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
+	$script = <<< SCRIPT
+			document.addEventListener('DOMContentLoaded', function () {
+				gslselect('#adminForm select:not(.gsl-hidden)');
+			})
+SCRIPT;
+	Factory::getDocument()->addScriptDeclaration($script);
+
+	//HTMLHelper::_('formbehavior.chosen', '#adminForm select.chosen');
+}
 
 $version = JEventsVersion::getInstance();
 
@@ -42,7 +55,7 @@ $query      = $db->getQuery(true)
 	//->where('enabled = 1')
 	->where('type =' . $db->quote('plugin'))
 	->where('state IN (0,1)')
-	->where('(folder="jevents" OR element="gwejson" OR element="jevent_embed")')
+	->where('(folder="jevents" OR element="gwejson" OR element="jevent_embed"  OR element="jevuser" or element="jevcreator"  or element="jevents")')
 	->order('enabled desc, ordering asc');
 
 $jevplugins = $db->setQuery($query)->loadObjectList();
@@ -179,12 +192,12 @@ if (count($jevplugins))
 
 			$html = array();
 
-			$html[] = '<table class="paramlist admintable" >';
+			$html[] = '<div class="gsl-width-1-1" >';
 
 			if (isset($fieldSet->description) && !empty($fieldSet->description))
 			{
 				$desc   = Text::_($fieldSet->description);
-				$html[] = '<tr><td class="paramlist_description" colspan="2">' . $desc . '</td></tr>';
+				$html[] = '<div  class="gsl-width-1-1 gsl-card gsl-card-default" >' . $desc . '</div>';
 			}
 
 			foreach ($this->form->getFieldset($name) as $field)
@@ -217,36 +230,46 @@ if (count($jevplugins))
 				$class = isset($field->class) ? $field->class : "";
 
 				$difficultyClass = "difficulty" . $this->form->getFieldAttribute($field->fieldname, "difficulty");
-				if ($this->component->params->get("com_difficulty", 1) < $this->form->getFieldAttribute($field->fieldname, "difficulty"))
+				if ($this->component->params->get("com_difficulty", 1) < $this->form->getFieldAttribute($field->fieldname, "difficulty1"))
 				{
 					$difficultyClass .= " hiddenDifficulty";
 				}
 
 				if (StringHelper::strlen($class) > 0)
 				{
-					$class = " class='$class $difficultyClass'";
+					$class = " class='gsl-grid $class $difficultyClass'";
 				}
 				else
 				{
-					$class = " class=' $difficultyClass'";
+					$class = " class='gsl-grid  $difficultyClass'";
 				}
 
-				$html[] = "<tr $class>";
-				if (strtolower($field->type) == "note")
+				$showon = "";
+				if ($field && $field->showon)
+				{
+					HTMLHelper::_('jquery.framework');
+					JEVHelper::script('showon.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
+
+					$showon  = ' data-showon-gsl=\'' .
+						json_encode(FormHelper::parseShowOnConditions($field->showon, $field->formControl, $field->group)) . '\'';
+				}
+				$html[] = "<div $class " . $showon . " >";
+				if (strtolower($field->type) == "note" || strtolower($field->type) == "jevinfo")
                 {
-	                $html[] = '<td class="paramlist_value" colspan="2">' . $field->label . "<div>" . $field->input . '<br></div></td>';
+	                $html[] = '<div class="gsl-width-1-1" >' . $field->label . "<div>" . $field->input . '<br></div></div>';
                 }
 				else if (!isset($field->label) || $field->label == "")
 				{
-					$html[] = '<td class="paramlist_key"><span class="editlinktip">' . $field->label . '</span></td>';
-					$html[] = '<td class="paramlist_value">' . $field->input . '</td>';
+					$html[] = '<div class="gsl-width-1-2"><span class="editlinktip">' . $field->label . '</span></div>';
+					$html[] = '<div class="gsl-width-1-2">' . $field->input . '</div>';
 				}
 				else
 				{
-					$html[] = '<td class="paramlist_value" colspan="2">' . $field->input . '</td>';
+					$html[] = '<div class="gsl-width-1-1" >' . $field->input . '</div>';
 				}
+				$label = $field->label;
 
-				$html[] = '</tr>';
+				$html[] = '</div>';
 			}
 
 			if ($name == "JEV_PERMISSIONS")
@@ -260,14 +283,14 @@ if (count($jevplugins))
 					{
 						$class = " class='$class'";
 					}
-					$html[] = "<tr $class>";
-					$html[] = '<td class="paramlist_value" colspan="2">' . $field->input . '</td>';
+					$html[] = "<div $class>";
+					$html[] = '<div class="gsl-width-1-1" >' . $field->input . '</div>';
 
-					$html[] = '</tr>';
+					$html[] = '</div>';
 				}
 			}
 
-			$html[] = '</table>';
+			$html[] = '</div>';
 
 			echo implode("\n", $html);
 			?>
@@ -337,19 +360,27 @@ if (count($jevplugins))
 						$lang       = Factory::getLanguage();
 						$lang->load($langfile, JPATH_SITE, null, false, true);
 					}
+					else
+					{
+						$langfile   = 'files_jevents' . $viewfile . 'layout';
+						$lang       = Factory::getLanguage();
+						$lang->load($langfile, JPATH_SITE, null, false, true);
+					}
 
 					$fieldSets = $layoutform->getFieldsets();
 					$html      = array();
 					$hasconfig = false;
 					foreach ($fieldSets as $name => $fieldSet)
 					{
-						$html[] = '<div class="paramlist admintable form-horizontal" >';
+						$html[] = '<div class="gsl-width-1-1" >';
 
 						if (isset($fieldSet->description) && !empty($fieldSet->description))
 						{
 							$desc   = Text::_($fieldSet->description);
-							$html[] = '<div class="paramlist_description" colspan="2">' . $desc . '</div>';
+							$html[] = '<div  class="gsl-width-1-1 gsl-card gsl-card-default" >' . $desc . '</div>';
 						}
+
+						$html[] = '<div class="paramlist admintable form-horizontal" >';
 
 						foreach ($layoutform->getFieldset($name) as $field)
 						{
@@ -378,29 +409,10 @@ if (count($jevplugins))
 							$fieldhtml = str_replace(array('class="span10', 'class=" span10'), 'class="gsl-width-expand gsl-margin-small-bottom  ', $fieldhtml );
 
 							// Needed to deal with early execution of initTemplate in backend
-							$fieldhtml = str_replace('gsl-button-group', 'gsl-button-group-ysts',$fieldhtml );
+							//$fieldhtml = str_replace('gsl-button-group', 'gsl-button-group-ysts',$fieldhtml );
 
 							$html[] = $fieldhtml;
 
-							/*
-$class = isset($field->class) ? $field->class : "";
-
-if (StringHelper::strlen($class) > 0)
-{
-	$class = " class='$class'";
-}
-$html[] = "<tr $class>";
-if (!isset($field->label) || $field->label == "")
-{
-	$html[] = '<td class="paramlist_key"><span class="editlinktip">' . $field->label . '</span></td>';
-	$html[] = '<td class="paramlist_value">' . $field->input . '</td>';
-}
-else
-{
-	$html[] = '<td class="paramlist_value" colspan="2">' . $field->input . '</td>';
-}
-$html[] = '</tr>';
-							 */
 						}
 						$html[] = '</div>';
 					}
@@ -429,19 +441,70 @@ $html[] = '</tr>';
 
 		if ( $hasPlugins)
 		{
-            ?>
+			// In Joomla 4 without it when the accordion is toggled uikit adds the <div> as a wrapper and causes
+			// TinyMCE to loose the content of the IFrame so we can't use uikit accordion - we must cook our own!!
+
+			// gsl-accordion="targets: > *:not(.no-accordion-icon)"
+			?>
             <li>
-                <ul class="gsl-list-divider" gsl-accordion>
+                <ul class="gsl-list-divider gsl-accordion" id="jevPluginSettings" >
             <?php
+            $script = <<< SCRIPT
+document.addEventListener('DOMContentLoaded', 
+function() {
+	
+	document.querySelectorAll("#jevPluginSettings.gsl-accordion .gsl-accordion-title ").forEach(function(item) {
+		var li = item.parentNode;
+		li.addEventListener('click', function (evt) {		
+			if (!evt.target.classList.contains('gsl-accordion-title'))
+			{
+				// must not block enable/disable plugin buttons
+				return;
+			}		
+			var clickedLi = evt.target.parentNode;
+			var liContent = clickedLi.querySelector('.gsl-accordion-content');
+			//liContent.style.transition="display 2s ease"
+			evt.preventDefault();
+			
+			if (liContent.classList.contains('gsl-hidden'))
+			{
+				liContent.classList.remove('gsl-hidden');
+				li.classList.add('gsl-open');
+			}
+			else 
+			{
+				liContent.classList.add('gsl-hidden');
+				li.classList.remove('gsl-open');
+			}
+			
+			// close the others	
+			document.querySelectorAll("#jevPluginSettings.gsl-accordion .gsl-accordion-title ").forEach(function(item) {
+				var li2 = item.parentNode; 
+				if (li2 != li)
+				{
+					var li2Content = li2.querySelector('.gsl-accordion-content');
+					if (li2Content && !li2Content.classList.contains('gsl-hidden'))
+					{
+						li2Content.classList.add('gsl-hidden');
+						li2.classList.remove('gsl-open');
+					}
+				}
+			});
+			
+			//li.scrollIntoView(true);
+		});
+	});
+	
+});
+SCRIPT;
+            Factory::getDocument()->addScriptDeclaration($script);
+
 			$i = 0;
 			foreach ($jevplugins as $plugin)
 			{
 				$config = JPATH_SITE . "/plugins/" . $plugin->type . "/" . $plugin->name . "/" . $plugin->name . ".xml";
 				if (file_exists($config))
 				{
-					?>
-					<li class="gsl-card gsl-card-default gsl-card-hover" style="position:relative">
-					<?php
 					// Load language file
 					$lang     = Factory::getLanguage();
 					$langfile = "plg_" . $plugin->type . "_" . $plugin->name . ".sys";
@@ -450,13 +513,8 @@ $html[] = '</tr>';
 					$lang->load($langfile, JPATH_ADMINISTRATOR, null, false, true);
 
 					// Now get plugin specific parameters
-					$pluginform = Form::getInstance("com_jevents.config.plugins." . $plugin->name, $config, array('control' => 'jform_plugin[' . $plugin->type . '][' . $plugin->name . ']', 'load_data' => true), true, "/extension/config/fields");
+					$pluginform = Form::getInstance("com_jevents.config.plugins." . $plugin->name . $plugin->type, $config, array('control' => 'jform_plugin[' . $plugin->type . '][' . $plugin->name . ']', 'load_data' => true), true, "/extension/config/fields");
 					$pluginparams = new JevRegistry($plugin->params);
-
-					// Load the whole XML config file to get the plugin name in plain english
-					$xml = new SimpleXMLElement($config, 0, true);
-					// TODO Consider adding enabled/disabled method here for plugins inclusing unpublished ones!
-					// TODO handle unpublished plugins too
 
 					$hasfields = false;
 					$fieldSets = $pluginform->getFieldsets();
@@ -467,6 +525,16 @@ $html[] = '</tr>';
 							$hasfields = true;
 						}
 					}
+
+					?>
+					<li class="gsl-card gsl-card-default gsl-card-hover <?php echo !$hasfields ? "no-accordion-icon" : "";?>" style="position:relative">
+					<?php
+
+					// Load the whole XML config file to get the plugin name in plain english
+					$xml = new SimpleXMLElement($config, 0, true);
+					// TODO Consider adding enabled/disabled method here for plugins inclusing unpublished ones!
+					// TODO handle unpublished plugins too
+
 					$safedesc = Text::_($xml->description, true);
 					$safename = Text::_($xml->name, true);
 
@@ -532,7 +600,7 @@ $html[] = '</tr>';
 							if (isset($fieldSet->description) && !empty($fieldSet->description))
 							{
 								$desc   = Text::_($fieldSet->description);
-								$html[] = '<div class="paramlist_description" colspan="2">' . $desc . '</div>';
+								$html[] = '<div class="paramlist_description" >' . $desc . '</div>';
 							}
 
 							foreach ($pluginform->getFieldset($name) as $field)
@@ -578,12 +646,11 @@ $html[] = '</tr>';
                         <a class="gsl-accordion-title " href="#"  >
 	                        <?php echo $label; ?>
                         </a>
-                        <div class="gsl-accordion-content">
+                        <div class="gsl-accordion-content gsl-hidden">
 							<?php
 							echo implode("\n", $html);
 							?>
                         </div>
-
 						<?php
 					}
 					else
@@ -591,12 +658,13 @@ $html[] = '</tr>';
 
 						?>
 						<?php echo $labelextra; ?>
-						<div class="gsl-accordion-title "  >
+						<div class="gsl-accordion-title no-accordion-icon" >
 							<?php echo $label; ?>
 						</div>
 						<?php
 					}
 					?>
+
 					</li>
 					<?php
 				}

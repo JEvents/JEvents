@@ -9,10 +9,7 @@
  */
 defined('JPATH_BASE') or die;
 
-use Joomla\CMS\Plugin\CMSPlugin;
-use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Factory;
-
 /*
   if (defined('_SC_START')){
   list ($usec, $sec) = explode(" ", microtime());
@@ -27,12 +24,11 @@ use Joomla\CMS\Factory;
  *
  * @since  2.5
  */
-class PlgSystemGwejson extends CMSPlugin
+class PlgSystemGwejson extends JPlugin
 {
 
 	public function __construct(&$subject, $config)
 	{
-
 		parent::__construct($subject, $config);
 
 		$input = Factory::getApplication()->input;
@@ -41,6 +37,20 @@ class PlgSystemGwejson extends CMSPlugin
 		if ($task != "gwejson")
 		{
 			return true;
+		}
+		/*
+		 *  In Joomla 4
+		 *
+		 * We need
+		 * Factory::getApplication()->loadDocument();
+		 * because
+		 * Factory::getApplication()->getDocument();
+		 * can return a null e.g. from modules loaded by removeLoader module
+		 *
+		 */
+		if (version_compare(JVERSION, "4", "gt"))
+		{
+			Factory::getApplication()->loadDocument();
 		}
 		// Some plugins set the document type too early which messes up our ouput.
 		$this->doc = Factory::getDocument();
@@ -75,8 +85,7 @@ class PlgSystemGwejson extends CMSPlugin
 			$file = "gwejson_" . $file;
 		}
 
-		$path = $input->getCmd('path', 'site');
-		if (empty($path)) {$path = 'site';} // Additional check, we have had some systems returning empty values on jinput instead of the default value.
+		$path  = $input->get('path', 'site', 'cmd');
 		$paths = array("site" => JPATH_SITE, "admin" => JPATH_ADMINISTRATOR, "plugin" => JPATH_SITE . "/plugins", "module" => JPATH_SITE . "/modules", "library" => JPATH_LIBRARIES);
 		if (!in_array($path, array_keys($paths)))
 		{
@@ -120,13 +129,13 @@ class PlgSystemGwejson extends CMSPlugin
 		jimport('joomla.filesystem.file');
 		// Check for a custom version of the file first!
 		$custom_file = str_replace("gwejson_", "gwejson_custom_", $file);
-		if (File::exists($path . $custom_file . ".php"))
+		if (JFile::exists($path . $custom_file . ".php"))
 		{
 			$file = $custom_file;
 		}
-		if (!File::exists($path . $file . ".php"))
+		if (!JFile::exists($path . $file . ".php"))
 		{
-			PlgSystemGwejson::throwerror("Opps we could not find the file: " . $path . $file . ".php");
+			PlgSystemGwejson::throwerror("Whoops we could not find the action file");
 
 			return true;
 		}
@@ -135,7 +144,7 @@ class PlgSystemGwejson extends CMSPlugin
 
 		if (!function_exists("gwejson_skiptoken") || !gwejson_skiptoken())
 		{
-			$token = \Joomla\CMS\Session\Session::getFormToken();
+			$token = JSession::getFormToken();;
 			if ($token != $input->get('token', '', 'string'))
 			{
 				if ($input->get('json', '', 'raw'))
@@ -258,7 +267,6 @@ class PlgSystemGwejson extends CMSPlugin
 
 	public static function throwerror($msg)
 	{
-
 		$data = new stdClass();
 		//"document.getElementById('products').innerHTML='There was an error - no valid argument'");
 		$data->error  = "alert('" . $msg . "')";
@@ -271,4 +279,16 @@ class PlgSystemGwejson extends CMSPlugin
 		echo json_encode($data);
 		exit();
 	}
+
+	/*
+	// Mechanism to inject theme specific config options into module and menu item config
+	// Problem is that the fields are not dynamically loaded when you change the theme
+	public function onContentPrepareForm($form, $data)
+	{
+		if ($form->name === "com_modules.module" && isset($data->module) && $data->module === "mod_jevents_latest")
+		{
+
+		}
+	}
+	*/
 }
