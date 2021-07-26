@@ -15,7 +15,6 @@ use Joomla\CMS\Layout\LayoutHelper;
 
 function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $template_value = false, $runplugins = true, $skipfiles = false)
 {
-
 	static $processedCssJs = array();
 
 	$jevparams  = ComponentHelper::getParams(JEV_COM_COMPONENT);
@@ -461,9 +460,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		$matchesarray = array();
 		preg_match_all('|{{.*?}}|', $template_value, $matchesarray);
 	}
-	if ($template_value == "") {
+	if ($template_value == "") 
 		return;
-	}
 	if (count($matchesarray) == 0)
 		return;
 
@@ -733,9 +731,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$bgcolor[4] . $bgcolor[5]);
                 elseif (strlen($bgcolor) == 3)
 					list($r, $g, $b) = array($bgcolor[0] . $bgcolor[0], $bgcolor[1] . $bgcolor[1], $bgcolor[2] . $bgcolor[2]);
-				else {
+				else 
 					return false;
-				}
 
 				$r         = hexdec($r);
 				$g         = hexdec($g);
@@ -2323,7 +2320,6 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	$app->triggerEvent('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
 	$template_value = $tmprow->text;
 	$template_value = str_replace("@£@", "@", $template_value);
-
 
 	echo $template_value;
 
