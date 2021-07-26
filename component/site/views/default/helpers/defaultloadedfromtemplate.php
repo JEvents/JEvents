@@ -15,7 +15,6 @@ use Joomla\CMS\Layout\LayoutHelper;
 
 function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $template_value = false, $runplugins = true, $skipfiles = false)
 {
-	ob_start();
 
 	static $processedCssJs = array();
 
@@ -161,7 +160,6 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				}
 				else
 				{
-					ob_end_clean();
 					return false;
 				}
 			}
@@ -276,13 +274,11 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 		if (is_null($templates[$template_name]))
 		{
-			ob_end_clean();
 			return false;
 		}
 
 		if ($event === null)
 		{
-			ob_end_clean();
 			return $templates[$template_name];
 		}
 
@@ -331,7 +327,6 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		{
 			if (!isset($templates[$template_name][0]) || $templates[$template_name][0]->value == "")
 			{
-				ob_end_clean();
 				return false;
 			}
 		}
@@ -348,7 +343,6 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		}
 		if (!$template)
 		{
-			ob_end_clean();
 			return false;
 		}
 
@@ -468,11 +462,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		preg_match_all('|{{.*?}}|', $template_value, $matchesarray);
 	}
 	if ($template_value == "") {
-		ob_end_clean();
 		return;
 	}
 	if (count($matchesarray) == 0)
-		ob_end_clean();
 		return;
 
 // now replace the fields
@@ -742,7 +734,6 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
                 elseif (strlen($bgcolor) == 3)
 					list($r, $g, $b) = array($bgcolor[0] . $bgcolor[0], $bgcolor[1] . $bgcolor[1], $bgcolor[2] . $bgcolor[2]);
 				else {
-					ob_end_clean();
 					return false;
 				}
 
@@ -2326,12 +2317,13 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	$tmprow         = new stdClass();
 	$tmprow->text   = $template_value;
 	$tmprow->event  = $event;
+    ob_start();
 	PluginHelper::importPlugin('content');
+    ob_end_clean();
 	$app->triggerEvent('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
 	$template_value = $tmprow->text;
 	$template_value = str_replace("@£@", "@", $template_value);
-	
-	ob_end_clean();
+
 
 	echo $template_value;
 
