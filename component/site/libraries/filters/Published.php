@@ -81,7 +81,7 @@ class jevPublishedFilter extends jevFilter
 			if ($this->filter_value==-1)
 			{
 				// Do not show other user's trashed events show all of your own
-				return "ev.state <> -1 OR ev.created_by = " . $user->id;
+				return "(ev.state <> -1 OR ev.created_by = " . $user->id . ")";
 			}
 			else
 			{
