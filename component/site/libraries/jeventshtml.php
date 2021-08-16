@@ -289,7 +289,7 @@ class JEventsHTML
 			$count = count($options);
 			for ($o = 0; $o < $count; $o++)
 			{
-				if (!in_array($options[$o]->value, $cats))
+				if (array_key_exists($o, $options) && !in_array($options[$o]->value, $cats))
 				{
 					unset($options[$o]);
 				}
