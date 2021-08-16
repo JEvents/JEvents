@@ -2314,7 +2314,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	$tmprow         = new stdClass();
 	$tmprow->text   = $template_value;
 	$tmprow->event  = $event;
+	ob_start();
 	PluginHelper::importPlugin('content');
+	ob_end_clean();
 	$app->triggerEvent('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
 	$template_value = $tmprow->text;
 	$template_value = str_replace("@£@", "@", $template_value);
