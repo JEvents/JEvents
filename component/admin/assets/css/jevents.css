@@ -1182,3 +1182,7 @@ body.com_fields #system-message-container {
     margin-top: 0;
   }
 }
+/* JCE Media file uploader fix */
+#jevents .field-media-wrapper .wf-media-upload-button {
+    position:relative;
+}
