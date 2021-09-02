@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		joomla4 = true;
 
 		//let joomlaelements = document.querySelectorAll('#sidebar-wrapper.sidebar-wrapper.sidebar-menu, #subhead.subhead ');
-		let joomlaelements = document.querySelectorAll('#subhead.subhead');
+		let joomlaelements = document.querySelectorAll('#subhead.subhead, #subhead-container.subhead');
 		for (let j = 0; j < joomlaelements.length; j++) {
 			joomlaelements[j].style.display = 'none';
 		}
