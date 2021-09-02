@@ -1137,21 +1137,21 @@ class jIcalEventDB extends jEventCal
 			if ($show == "both")
 			{
 				$user = JEVHelper::getUser($this->_created_by);
-				if ($user->id > 0) $this->_creatorname = $user->username . "(" . $user->name . ")";
+				if ($user && $user->id > 0) $this->_creatorname = $user->username . "(" . $user->name . ")";
 				else if (isset($this->_anonname)) $this->_creatorname = $this->_anonname . "<br/>(" . $this->_anonemail . ")";
 				else  $this->_creatorname = "";
 			}
 			else if ($show == "name")
 			{
 				$user = JEVHelper::getUser($this->_created_by);
-				if ($user->id > 0) $this->_creatorname = $user->name;
+				if ($user && $user->id > 0) $this->_creatorname = $user->name;
 				else if (isset($this->_anonname)) $this->_creatorname = $this->_anonname . "<br/>(" . $this->_anonemail . ")";
 				else  $this->_creatorname = "";
 			}
 			else if ($show == "username")
 			{
 				$user = JEVHelper::getUser($this->_created_by);
-				if ($user->id > 0) $this->_creatorname = " . $user->username . ";
+				if ($user && $user->id > 0) $this->_creatorname = " . $user->username . ";
 				else if (isset($this->_anonname)) $this->_creatorname = $this->_anonname . "<br/>(" . $this->_anonemail . ")";
 				else  $this->_creatorname = "";
 			}

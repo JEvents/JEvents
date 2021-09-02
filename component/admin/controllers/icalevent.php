@@ -1822,7 +1822,7 @@ SQL;
 
 	}
 
-	private function targetMenu($itemid = 0, $name)
+	private function targetMenu($itemid = 0, $name = '')
 	{
 
 		$db = Factory::getDbo();
