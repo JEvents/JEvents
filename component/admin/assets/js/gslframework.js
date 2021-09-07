@@ -7,7 +7,7 @@
  */
 
 'use strict';
-let j3 = true;
+j3 = typeof j3 == "undefined" ? true : j3;
 
 // Polyfills
 // from:https://github.com/jserz/js_piece/blob/master/DOM/ChildNode/remove()/remove().md

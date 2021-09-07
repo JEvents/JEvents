@@ -454,6 +454,13 @@ function setEndDateWhenNotRepeating(elem){
 
 function forceValidDate(elem){
 	oldDate = new Date();
+
+	// Joomla 4 bug - always adding 00:00:00 time to date field!
+	if (elem.val().indexOf(" 00:00:00") > 0)
+	{
+		elem.val(elem.val().replace(" 00:00:00", ""));
+	}
+
 	oldDate = oldDate.dateFromYMD(elem.val());
 	// if field is cleared then oldDate is empty
 	if (oldDate == "")
@@ -1143,27 +1150,28 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	// Fix JoomlaCalendar too
-	JoomlaCalendar.prototype._handleDayMouseDownOLD = JoomlaCalendar.prototype._handleDayMouseDown;
-	JoomlaCalendar.prototype._handleDayMouseDown = function (ev) {
-		var el = ev.currentTarget;
-		if (typeof el.navtype !== "undefined" && (el.navtype === -2 || el.navtype === -1 || el.navtype === 1 || el.navtype === 2)) {
-			calendarDateClicked = false;
-		}
-		this._handleDayMouseDownOLD(ev);
-		calendarDateClicked = true;
-	};
-	// Method to close/hide the calendar
-	JoomlaCalendar.prototype.closeOLD = JoomlaCalendar.prototype.close;
-	JoomlaCalendar.prototype.close = function () {
-		calendarDateClicked = true;
-		this.closeOLD();
-	};
-	JoomlaCalendar.prototype.showOLD = JoomlaCalendar.prototype.show;
-	JoomlaCalendar.prototype.show = function () {
-		calendarDateClicked = true;
-		this.showOLD();
-	};
-
+	if (j3) {
+		JoomlaCalendar.prototype._handleDayMouseDownOLD = JoomlaCalendar.prototype._handleDayMouseDown;
+		JoomlaCalendar.prototype._handleDayMouseDown = function (ev) {
+			var el = ev.currentTarget;
+			if (typeof el.navtype !== "undefined" && (el.navtype === -2 || el.navtype === -1 || el.navtype === 1 || el.navtype === 2)) {
+				calendarDateClicked = false;
+			}
+			this._handleDayMouseDownOLD(ev);
+			calendarDateClicked = true;
+		};
+		// Method to close/hide the calendar
+		JoomlaCalendar.prototype.closeOLD = JoomlaCalendar.prototype.close;
+		JoomlaCalendar.prototype.close = function () {
+			calendarDateClicked = true;
+			this.closeOLD();
+		};
+		JoomlaCalendar.prototype.showOLD = JoomlaCalendar.prototype.show;
+		JoomlaCalendar.prototype.show = function () {
+			calendarDateClicked = true;
+			this.showOLD();
+		};
+	}
 	if (jevjq('#view12Hour')){
 		jevjq('#view12Hour').on('click', function(){toggleView12Hour();});
 	}

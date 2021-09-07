@@ -692,6 +692,47 @@ class JEVHelper
 	function loadElectricCalendar($fieldname, $fieldid, $value, $minyear, $maxyear, $onhidestart = "", $onchange = "", $format = 'Y-m-d', $attribs = array(), $showtime = false, $showDefaultDateValue = true)
 	{
 
+		if (version_compare(JVERSION, '4.0.0', '>='))
+		{
+			$document           = Factory::getDocument();
+			$component          = "com_jevents";
+			$params             = ComponentHelper::getParams($component);
+			$forcepopupcalendar = $params->get("forcepopupcalendar", 1);
+			$offset             = $params->get("com_starday", 1);
+
+			if ($value == "")
+			{
+				$value = strftime("%Y-%m-%d");
+			}
+
+			list ($yearpart, $monthpart, $daypart) = explode("-", $value);
+			$value = str_replace(array("Y", "m", "d"), array($yearpart, $monthpart, $daypart), $format);
+
+			// Build the attributes array.
+			empty($onchange) ? null : $attributes['onchange'] = $onchange;
+			//$attributes['onselect']="function{this.hide();}";
+			/*
+			empty($this->size)      ? null : $attributes['size'] = $this->size;
+			empty($this->maxlength) ? null : $attributes['maxlength'] = $this->maxlength;
+			empty($this->class)     ? null : $attributes['class'] = $this->class;
+			!$this->readonly        ? null : $attributes['readonly'] = 'readonly';
+			!$this->disabled        ? null : $attributes['disabled'] = 'disabled';
+			empty($hint)            ? null : $attributes['placeholder'] = $hint;
+			$this->autocomplete     ? null : $attributes['autocomplete'] = 'off';
+			!$this->autofocus       ? null : $attributes['autofocus'] = '';
+
+			if ($this->required)
+			{
+				$attributes['required'] = '';
+				$attributes['aria-required'] = 'true';
+			}
+	*/
+			// switch back to strftime format to use Joomla calendar tool
+			$format = str_replace(array("Y", "m", "d"), array("%Y", "%m", "%d"), $format);
+
+			echo HTMLHelper::_('calendar', $yearpart . "-" . $monthpart . "-" . $daypart, $fieldname, $fieldid, $format, $attributes);
+			return;
+		}
 		$document           = Factory::getDocument();
 		$component          = "com_jevents";
 		$params             = ComponentHelper::getParams($component);

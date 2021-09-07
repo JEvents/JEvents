@@ -589,6 +589,15 @@ RAWTEXT;
 					$db->setQuery($query);
 					$db->execute();
 
+					$query = "DELETE FROM #__jevents_catmap WHERE evid NOT IN (SELECT ev_id FROM #__jevents_vevent)";
+					$db->setQuery($query);
+					$db->execute();
+
+					// clean up plugin data
+					PluginHelper::importPlugin("jevents");
+					// I also need to clean out associated custom data
+					$res = Factory::getApplication()->triggerEvent('onCleanCustomDetails', $detailids);
+
 					$ex_count = count($existingevents);
 					if ($guest !== 1)
 					{
