@@ -136,6 +136,7 @@ class JevHtmlBootstrap
 		$uikitopt['delayHide'] = 20000;
 		$uikitopt['offset'] = 20;
 		$uikitopt['cls'] = 'uk-active';
+        $uikitopt['clsPos'] = isset($params['clsPos']) ? $params['clsPos']: 'uk-tooltip';
 		$uikitopt['mode'] = isset($params['trigger']) ? str_replace(" ", ",", $params['trigger']) : 'hover';
 		$uikitopt['container'] = isset($params['container']) ? $params['container'] : 'body';
 		$uikitoptions = json_encode($uikitopt);
@@ -161,7 +162,7 @@ document.addEventListener('DOMContentLoaded', function()
 						let options = hoveritem.getAttribute('data-yspopoptions') || '$uikitoptions';
 						options = JSON.parse(options);
 						
-						let phtml = '<div class="ys-popover-block">' +
+						let phtml = '<div class="ys-popover-block  uk-background-default">' +
 						(title != '' ? '<div class="ys-popover-title">' + title + '</div>' : '') +
 						(body != '' ? '<div class="ys-popover-body">' + body + '</div>' : '') +
 						'</div>';
@@ -170,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function()
 							hoveritem.removeAttribute('title');
 						}
 				
-						UIkit.tooltip(hoveritem, options);
+						UIkit.toxoltip(hoveritem, options);
 					});
 	
 			}
