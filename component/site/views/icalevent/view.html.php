@@ -18,6 +18,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\String\StringHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Uri\Uri;
 
 if (File::exists(JPATH_ADMINISTRATOR . '/includes/toolbar.php')) {
     require_once(JPATH_ADMINISTRATOR . '/includes/toolbar.php');
@@ -131,10 +132,15 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 
 		$evedrd = 'icalevent.edit_cancel';
 
-		//Set previous page
-		$session = Factory::getSession();
-		$input   = new \Joomla\Input\Input($_SERVER);
-		$session->set('jev_referrer', $input->getString('HTTP_REFERER', null), 'extref');
+        //Set previous page
+        $session = Factory::getSession();
+        $input   = new \Joomla\Input\Input($_SERVER);
+        $referer = $input->getString('HTTP_REFERER', null);
+        $current = Uri::getInstance();
+        $current = $current->toString(array('scheme', 'host', 'port', 'path', 'query'));
+        if ($referer && $referer !== $current) {
+            $session->set('jev_referrer', $referer, 'extref');
+        }
 
 		if ($params->get("editpopup", 0))
 		{
