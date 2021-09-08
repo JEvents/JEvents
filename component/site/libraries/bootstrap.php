@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function()
 							hoveritem.removeAttribute('title');
 						}
 				
-						UIkit.toxoltip(hoveritem, options);
+						UIkit.tooltip(hoveritem, options);
 					});
 	
 			}
