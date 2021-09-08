@@ -27,7 +27,7 @@ $jversion = new Version;
 if ($jversion->isCompatible('4.0'))
 {
 	$document = Factory::getDocument();
-	$document->addScriptDeclaration("j3 = false;");
+	$document->addScriptDeclaration("j3php = false;");
 }
 
 // Load component specific data
