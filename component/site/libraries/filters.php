@@ -319,6 +319,46 @@ class jevFilterProcessing
 		return $this->filterHTML;
 	}
 
+	function getFilterHtmlUIkit($allowAutoSubmit = true)
+	{
+
+		if (isset($this->filterHTML))
+		{
+			return $this->filterHTML;
+		}
+
+		$this->filterHTML = array();
+		foreach ($this->filters as $filter)
+		{
+			if (method_exists($filter, "createfilterHTML"))
+			{
+				$filterHTML = $filter->createfilterHtmlUIkit($allowAutoSubmit);
+			}
+			else
+			{
+				$filterHTML = $filter->_createfilterHtmlUIkit();
+			}
+			if (!is_array($filterHTML))
+			{
+				continue;
+			}
+			if (array_key_exists("merge", $filterHTML))
+			{
+				$this->filterHTML = array_merge($this->filterHTML, $filterHTML["merge"]);
+			}
+			else
+			{
+				if (!isset($filterHTML["title"]) || !isset($filterHTML["html"]) || ($filterHTML["title"] == "" && $filterHTML["html"] == ""))
+				{
+					continue;
+				}
+				$this->filterHTML[] = $filterHTML;
+			}
+		}
+
+		return $this->filterHTML;
+	}
+
 	function getFilterReset()
 	{
 
@@ -537,6 +577,12 @@ class jevFilter
 		return 'elems = document.getElementsByName("' . $this->filterType . '_fv");if (elems.length>0) {elems[0].value="' . $this->filterNullValue . '"};';
 	}
 
+	function _createfilterHtmlUIkit()
+	{
+
+		return "";
+	}
+
 }
 
 class jevBooleanFilter extends jevFilter
@@ -576,6 +622,20 @@ class jevBooleanFilter extends jevFilter
 		$options[]           = HTMLHelper::_('select.option', "0", $this->noLabel, "value", "yesno");
 		$options[]           = HTMLHelper::_('select.option', "1", $this->yesLabel, "value", "yesno");
 		$filterList["html"]  = HTMLHelper::_('select.genericlist', $options, $this->filterType . '_fv', 'class="inputbox" size="1" onchange="form.submit();"', 'value', 'yesno', $this->filter_value);
+
+		return $filterList;
+	}
+
+	public function _createfilterHtmlUIkit()
+	{
+
+		$filterList          = array();
+		$filterList["title"] = $this->filterLabel;
+		$options             = array();
+		$options[]           = HTMLHelper::_('select.option', "-1", $this->bothLabel, "value", "yesno");
+		$options[]           = HTMLHelper::_('select.option', "0", $this->noLabel, "value", "yesno");
+		$options[]           = HTMLHelper::_('select.option', "1", $this->yesLabel, "value", "yesno");
+		$filterList["html"]  = HTMLHelper::_('select.genericlist', $options, $this->filterType . '_fv', 'class="uk-select uk-form-width-medium" size="1" onchange="form.submit();"', 'value', 'yesno', $this->filter_value);
 
 		return $filterList;
 	}
@@ -625,6 +685,21 @@ class jevTitleFilter extends jevFilter
 		$filterList          = array();
 		$filterList["title"] = "Content Title";
 		$filterList["html"]  = '<input type="text" name="' . $this->filterType . '_fv" value="' . $this->filter_value . '" class="text_area" onchange="form.submit();" />';
+
+		return $filterList;
+
+	}
+
+	public function _createfilterHhtmlUIkit()
+	{
+
+		if (!$this->filterField) return "";
+
+
+		if (!$this->filterField) return "";
+		$filterList          = array();
+		$filterList["title"] = "Content Title";
+		$filterList["html"]  = '<input type="text" name="' . $this->filterType . '_fv" value="' . $this->filter_value . '" class="uk-input uk-form-width-medium" onchange="form.submit();" />';
 
 		return $filterList;
 

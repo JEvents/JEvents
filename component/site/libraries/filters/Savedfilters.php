@@ -72,8 +72,8 @@ class jevSavedfiltersFilter extends jevFilter
 				$base = Route::_($base);
 				*/
 
-				$filter["html"] .= '<div class="saved_filter_buttons"><a href="' . $base . '" class="btn" >' . $fltr->name . ' </a>';
-				$filter["html"] .= '<button id="saved_filter_buttons_img" class="btn" type="button" onclick="jQuery(\'#deletefilter\').val(' . $fltr->fid . ');form.submit();" ><span class="icon-trash"></span></button>';
+				$filter["html"] .= '<div class="saved_filter_buttons uk-button-group"><a href="' . $base . '" class="uk-button uk-button-small uk-button-primary" >' . $fltr->name . ' </a>';
+				$filter["html"] .= '<button id="saved_filter_buttons_img" class="uk-button uk-button-small uk-button-danger" type="button" onclick="jQuery(\'#deletefilter\').val(' . $fltr->fid . ');form.submit();" ><span class="uk-icon" data-uk-icon="icon:trash"></span></button>';
 				$filter["html"] .= '</div>';
 			}
 			$filter["html"] .= "</br/>";

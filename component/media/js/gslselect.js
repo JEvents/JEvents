@@ -17,7 +17,11 @@ function gslselect(selector) {
 
             if (selectElement.hasAttribute('hidden') || window.getComputedStyle(selectElement,'display') == 'none')
             {
-                return;
+                let optioncount = selectElement.getAttribute('data-optioncount');
+                // if unchanged number of options then skip this!
+                if (optioncount == selectElement.querySelectorAll('option, optgroup').length) {
+                    return;
+                }
             }
 
             let currentInlineDiv = selectElement.nextElementSibling;
@@ -211,6 +215,9 @@ function gslselect(selector) {
 */
             inlineDiv.classList.add('gslSelectReplacement');
             selectElement.insertAdjacentElement('afterend', inlineDiv);
+
+            // Keep track of how many child Nodes there are so we can see if this has changed
+            selectElement.setAttribute('data-optioncount', selectElement.querySelectorAll('option, optgroup').length);
 /*
             if (!selectElement.getAttribute('gslChange')) {
                 selectElement.setAttribute('gslChange', true);
@@ -257,11 +264,11 @@ function gslselectSetupOptions(node, dropDownNav, dropDownDiv, selectElement, fi
     {
         optionLink.setAttribute('style',  style );
     }
-    optionLink.setAttribute('data-value', node.value);
-    optionLink.setAttribute('data-index', node.index);
+    optionLink.setAttribute('data-value', node.value || '');
+    optionLink.setAttribute('data-index', node.index || -1);
     optionReplacement.appendChild(optionLink);
 
-    optionLink.classList.add('gsl-si-' + node.index);
+    optionLink.classList.add('gsl-si-' + (node.index || -1));
 
     if (node.nodeName.toUpperCase() == 'OPTION' && node.selected &&  !node.disabled) {
         optionReplacement.classList.add("gsl-active");
@@ -314,6 +321,11 @@ function gslselectSetupOptions(node, dropDownNav, dropDownDiv, selectElement, fi
 
             initialValue = document.createElement('div');
             dropDownNav.parentNode.querySelectorAll('a').forEach(function(link) {
+                // if its an optgroup then there are no index attributes set!
+                if (link.getAttribute('data-index') == '-1') {
+                    return;
+                }
+
                 if (link.getAttribute('data-selected') == "true") {
                     if (selectElement.options[link.getAttribute('data-index')].disabled)
                     {
@@ -360,8 +372,7 @@ function gslselectSetupOptions(node, dropDownNav, dropDownDiv, selectElement, fi
                     link.parentNode.classList.remove("gsl-active");
                     link.setAttribute('data-selected', "false");
 
-                    if (link.querySelector('span'))
-                    {
+                    if (link.querySelector('span')) {
                         link.removeChild(link.querySelector('span'));
                     }
                 }

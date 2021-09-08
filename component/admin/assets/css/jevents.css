@@ -968,7 +968,15 @@ body.com_fields #system-message-container {
   float: none;
   width: 100%;
 }
+/* Fix wf-media-upload positioning */
+#jevents .wf-media-upload-button {
+  display: inline-block;
+  position: relative;
+}
 @media screen and (min-width: 960px) {
+  #gslc.gsl-scope {
+    /* irregular date selections select:multiple doesn't set a height */
+  }
   #gslc.gsl-scope #left-col {
     bottom: 0;
   }
@@ -976,6 +984,9 @@ body.com_fields #system-message-container {
     /* equal to left-col width */
     margin-left: 50px;
     width: calc(100% - 50px);
+  }
+  #gslc.gsl-scope .gsl-select {
+    min-height: 40px;
   }
   /* Not within #gslc.gsl-scope - its too tight and js can't change the widths! */
   .gsl-scope #offcanvas-left-panel .gsl-offcanvas-bar {
@@ -1170,4 +1181,8 @@ body.com_fields #system-message-container {
   #gslc.gsl-scope #right-col #ysts_system_messages {
     margin-top: 0;
   }
+}
+/* JCE Media file uploader fix */
+#jevents .field-media-wrapper .wf-media-upload-button {
+    position:relative;
 }

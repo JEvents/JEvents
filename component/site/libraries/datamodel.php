@@ -1428,7 +1428,7 @@ class JEventsDataModel
 	 *
 	 * @return boolean
 	 */
-	function _sortEventsByTime(&$a, &$b)
+	function _sortEventsByTime($a, $b)
 	{
 
 		// this custom sort compare function compares the start times of events that are referenced by the a & b vars

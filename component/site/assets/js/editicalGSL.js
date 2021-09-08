@@ -28,7 +28,8 @@ function editicalGslStyling(container) {
 			for (let i = 0; i < inputs.length; i++) {
 				inputs[i].classList.add('gsl-hidden');
 			}
-			let labels = elems[e].querySelectorAll("label.btn");
+			// don't restrict to label.btn since jticketing and others don't put btn as class for label in their plugin!!
+			let labels = elems[e].querySelectorAll("label");
 			for (let l = 0; l < labels.length; l++) {
 				let label = labels[l];
 				label.classList.remove('btn');
@@ -94,7 +95,7 @@ function editicalGslStyling(container) {
 
 				if (button.classList.contains('btn-danger')) {
 					button.classList.remove('btn-danger');
-					button.classList.add('gsl-button-primary');
+					button.classList.add('gsl-button-danger');
 				}
 				else if (button.classList.contains('btn-success')) {
 					button.classList.remove('btn-success');
@@ -162,7 +163,7 @@ function editicalGslStyling(container) {
 			}
 		}
 
-		elems = container.querySelectorAll(" i[class^='icon-']");
+		elems = container.querySelectorAll("i[class^='icon-'], span[class^='icon-']");
 		for (let e = 0; e < elems.length; e++) {
 			if (elems[e].classList.contains('icon-user'))
 			{
@@ -170,6 +171,26 @@ function editicalGslStyling(container) {
 				elems[e].classList.add('gsl-icon');
 				elems[e].classList.add('gsl-margin-small-right');
 				elems[e].setAttribute('data-gsl-icon' , 'icon:user;ratio:0.7');
+			}
+			else if (elems[e].classList.contains('icon-calendar'))
+			{
+				elems[e].classList.remove('icon-calendar');
+				elems[e].classList.add('gsl-icon');
+				elems[e].setAttribute('data-gsl-icon' , 'icon:calendar;');
+			}
+			// repeatable fields
+			else if (elems[e].classList.contains('icon-plus'))
+			{
+				elems[e].classList.remove('icon-plus');
+				elems[e].classList.add('gsl-icon');
+				elems[e].setAttribute('data-gsl-icon' , 'icon:plus;ratio:0.7');
+			}
+			// repeatable fields
+			else if (elems[e].classList.contains('icon-minus'))
+			{
+				elems[e].classList.remove('icon-minus');
+				elems[e].classList.add('gsl-icon');
+				elems[e].setAttribute('data-gsl-icon' , 'icon:minus;ratio:0.7');
 			}
 		}
 

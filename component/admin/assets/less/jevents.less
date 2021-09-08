@@ -3,7 +3,7 @@
 @import "vars.less";
 //@import "j3.less"; // Joomla Overrides
 //@import "j4.less"; // Joomla Overrides
-@import "gslframework.less"; // Generla gslframework css file
+@import "gslframework.less"; // General gslframework css file
 
 /* JEvents Specific CSS */
 /* Put responsive.less at the bottom so it can override other values */
@@ -73,7 +73,6 @@ body.com_categories {
     form#item-form {
       margin-left: 5px;
     }
-
   }
 }
 
@@ -100,5 +99,8 @@ body.com_fields  #system-message-container {
   float:none;
   width:100%;
 }
+
+/* Fix wf-media-upload positioning */
+#jevents .wf-media-upload-button {display:inline-block;position:relative;}
 
 @import "responsive.less";

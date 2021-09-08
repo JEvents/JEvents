@@ -113,7 +113,7 @@ class jevStartdateFilter extends jevFilter
 		return $filter;
 	}
 
-	function _createfilterHTML()
+	function _createfilterHTML($class = "inputbox")
 	{
 
 		if (!$this->filterField) return "";
@@ -138,7 +138,7 @@ class jevStartdateFilter extends jevFilter
 		$options[]          = HTMLHelper::_('select.option', '0', Text::_('WHEN'));
 		$options[]          = HTMLHelper::_('select.option', '1', Text::_('On_or_after'));
 		$options[]          = HTMLHelper::_('select.option', '-1', Text::_('BEFORE'));
-		$filterList["html"] .= HTMLHelper::_('select.genericlist', $options, $this->filterType . '_fvs0', 'onchange="form.submit()" class="inputbox" size="1" ', 'value', 'text', $this->filter_values[0]);
+		$filterList["html"] .= HTMLHelper::_('select.genericlist', $options, $this->filterType . '_fvs0', 'onchange="form.submit()" class="' . $class . '" size="1" ', 'value', 'text', $this->filter_values[0]);
 
 		//$filterList["html"] .=  HTMLHelper::calendar($this->filter_values[1],$this->filterType.'_fvs1', $this->filterType.'_fvs1', '%Y-%m-%d',
 		//array('size'=>'12','maxlength'=>'10','onchange'=>'form.submit()'));

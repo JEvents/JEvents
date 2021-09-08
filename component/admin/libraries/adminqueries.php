@@ -303,7 +303,7 @@ class JEventsAdminDBModel extends JEventsDBModel
 
 	}
 
-	// Used in Dashboard
+	// Used in RSVP Pro Dashboard
 	function getSingleSessionCounts()
 	{
 		$db                   = Factory::getDbo();
@@ -312,11 +312,30 @@ class JEventsAdminDBModel extends JEventsDBModel
 		$t_datenow            = JEVHelper::getNow();
 		$t_datenowSQL         = $t_datenow->toSql();
 
-		$query  = "SELECT count(rpt.rp_id) as count, rpt.endrepeat > '$t_datenowSQL' as future, rpt.endrepeat < '$t_datenowSQL' as past"
+		$jevparams =  ComponentHelper::getParams(JEV_COM_COMPONENT);
+		$where = array();
+		$join = array();
+
+		if ($jevparams->get("multicategory",0)){
+			$where[]= "ev.catid IN ("
+				. " SELECT catmap.catid FROM #__jevents_catmap as catmap"
+				. " LEFT JOIN #__categories AS catmapcat ON catmap.catid = catmapcat.id"
+				. " WHERE catmapcat.access IN (" . JEVHelper::getAid($user) . ")"
+				. " )";
+		}
+
+		$where[] = "(atd.allrepeats=1 and atd.allowregistration>0 )";
+		$where[] = "ev.ev_id IS NOT NULL";
+
+		$query  = "SELECT count(distinct ev.ev_id) as count, "
+			. "(atd.regclose > ".$db->quote($t_datenowSQL).") as future, "
+			. "(atd.regclose <= ".$db->quote($t_datenowSQL).") as past "
 			. "\n FROM #__jevents_vevent as ev"
 			. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
-			// . "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
+			. "\n LEFT JOIN #__jev_attendance AS atd ON atd.ev_id = ev.ev_id"
+			. ( count( $join) ? "\n LEFT JOIN  " . implode( ' LEFT JOIN ', $join) : '' )
 			. "\n WHERE ev.catid IN(" . $accessibleCategories . ")"
+			. ( count( $where ) ? "\n AND " . implode( ' AND ', $where ) : '' )
 			. "\n AND ev.access  IN ( " . JEVHelper::getAid($user) . ") "
 			. "\n AND ev.state = 1 "
 			. " \n GROUP BY future, past";
@@ -344,7 +363,7 @@ class JEventsAdminDBModel extends JEventsDBModel
 
 	}
 
-	// Used in Dashboard
+	// Used in RSVP Pro Dashboard
 	function getRepeatingSessionCounts()
 	{
 		$db                   = Factory::getDbo();
@@ -353,11 +372,30 @@ class JEventsAdminDBModel extends JEventsDBModel
 		$t_datenow            = JEVHelper::getNow();
 		$t_datenowSQL         = $t_datenow->toSql();
 
-		$query  = "SELECT count(rpt.rp_id) as count, rpt.endrepeat > '$t_datenowSQL' as future, rpt.endrepeat < '$t_datenowSQL' as past"
+		$jevparams =  ComponentHelper::getParams(JEV_COM_COMPONENT);
+		$where = array();
+		$join = array();
+
+		if ($jevparams->get("multicategory",0)){
+			$where[]= "ev.catid IN ("
+				. " SELECT catmap.catid FROM #__jevents_catmap as catmap"
+				. " LEFT JOIN #__categories AS catmapcat ON catmap.catid = catmapcat.id"
+				. " WHERE catmapcat.access IN (" . JEVHelper::getAid($user) . ")"
+				. " )";
+		}
+
+		$where[] = "(atd.allrepeats=0 and atd.allowregistration>0 )";
+		$where[] = "ev.ev_id IS NOT NULL";
+
+		$query  = "SELECT count(distinct rpt.rp_id) as count, "
+			. "(rpt.startrepeat > ".$db->quote($t_datenowSQL).") as future, "
+			. "(rpt.startrepeat <= ".$db->quote($t_datenowSQL).") as past "
 			. "\n FROM #__jevents_vevent as ev"
 			. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
-			// . "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
+			. "\n LEFT JOIN #__jev_attendance AS atd ON atd.ev_id = ev.ev_id"
+			. ( count( $join) ? "\n LEFT JOIN  " . implode( ' LEFT JOIN ', $join) : '' )
 			. "\n WHERE ev.catid IN(" . $accessibleCategories . ")"
+			. ( count( $where ) ? "\n AND " . implode( ' AND ', $where ) : '' )
 			. "\n AND ev.access  IN ( " . JEVHelper::getAid($user) . ") "
 			. "\n AND ev.state = 1 "
 			. " \n GROUP BY future, past";

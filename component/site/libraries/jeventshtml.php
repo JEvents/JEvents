@@ -289,7 +289,7 @@ class JEventsHTML
 			$count = count($options);
 			for ($o = 0; $o < $count; $o++)
 			{
-				if (!in_array($options[$o]->value, $cats))
+				if (array_key_exists($o, $options) && !in_array($options[$o]->value, $cats))
 				{
 					unset($options[$o]);
 				}
@@ -574,7 +574,7 @@ class JEventsHTML
 			    $tosend .= ''
 				    . '<input type="checkbox" id="cb_wd' . $d . '" name="' . $name . '[]" value="'
 				    . $d . '" ' . $args . $checked . ' onclick="updateRepeatWarning();" class="gsl-hidden " data-activeclass="primary"/>'
-				    . '<label for="cb_wd' . $d . '" class="gsl-button gsl-button-small ' . (empty($checked) ? "gsl-button-default" : "gsl-button-primary") .'">'
+				    . '<label for="cb_wd' . $d . '" class="gsl-button gsl-button-small ' . (empty($checked) ? "gsl-button-default" : "gsl-button-default  gsl-button-primary") .'">'
 				    . $day_name[$d]
 				    . '</label>' . "\n"
 			    ;

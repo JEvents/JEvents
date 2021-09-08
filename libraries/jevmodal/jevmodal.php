@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	targets.forEach(function(target) {
 		target.addEventListener('click', function(evt){
 			jevModalSelector(target, $jsonParams, evt);
+			return false;
 		}, target);
 	});
 });
@@ -101,6 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	targets.forEach(function(target) {
 		target.addEventListener('click', function(evt){
 			jevModalSelector(target, $jsonParams, evt);
+			return false;
 		}, target);
 	});
 });

@@ -129,24 +129,71 @@ class JevHtmlBootstrap
 
 		$options = json_encode($opt); //HTMLHelper::getJSObject($opt);
 
-		// Attach the popover to the document
+		$uikitopt = array();
+		$uikitopt['title'] = isset($params['title']) ? $params['title'] : '';
+		$uikitopt['pos']   = isset($params['placement']) ? $params['placement'] : 'top';
+		$uikitopt['delay'] = isset($params['delay']['show']) ? $params['delay']['show'] : 0;
+		$uikitopt['delayHide'] = 20000;
+		$uikitopt['offset'] = 20;
+		$uikitopt['cls'] = 'uk-active';
+		$uikitopt['mode'] = isset($params['trigger']) ? str_replace(" ", ",", $params['trigger']) : 'hover';
+		$uikitopt['container'] = isset($params['container']) ? $params['container'] : 'body';
+		$uikitoptions = json_encode($uikitopt);
+
 		Factory::getDocument()->addScriptDeclaration(
-			"jQuery(document).ready(function()
-			{
-				if (" . $options . ".mouseonly && 'ontouchstart' in document.documentElement) {
-					return;
-				}
-				if (jQuery('$selector').length){
-					jQuery('" . $selector . "').popover(" . $options . ");
-				}
-			});");
+<<< SCRIPT
+document.addEventListener('DOMContentLoaded', function()
+{
+	if ($options.mouseonly && 'ontouchstart' in document.documentElement) {
+		return;
+	}
+	if (jQuery('$selector').length){
+		try {
+			ys_setuppopover('$selector', $uikitoptions);
+		}
+		catch (e) {
+			try {
+				// Fall back to native uikit
+					var hoveritems = document.querySelectorAll('$selector');
+					hoveritems.forEach(function (hoveritem) {
+						let title = hoveritem.getAttribute('data-yspoptitle') || hoveritem.getAttribute('data-original-title') || hoveritem.getAttribute('title');
+						let body = hoveritem.getAttribute('data-yspopcontent') || hoveritem.getAttribute('data-content') || '';
+						let options = hoveritem.getAttribute('data-yspopoptions') || '$uikitoptions';
+						options = JSON.parse(options);
+						
+						let phtml = '<div class="ys-popover-block">' +
+						(title != '' ? '<div class="ys-popover-title">' + title + '</div>' : '') +
+						(body != '' ? '<div class="ys-popover-body">' + body + '</div>' : '') +
+						'</div>';
+						options.title = phtml;
+						if (hoveritem.hasAttribute('title')) {
+							hoveritem.removeAttribute('title');
+						}
+				
+						UIkit.tooltip(hoveritem, options);
+					});
+	
+			}
+			catch (e2) {
+				jQuery('$selector').popover($options);
+			}
+		}
+	}
+});
+SCRIPT
+		);
 
 		static $hide = false;
 		if (!$hide)
 		{
 			$hide = "
 (function($) {
-	
+	if (typeof $.fn.popover == 'undefined')
+	{
+		// bootstrap popovers not used or loaded
+		return;
+	}
+
     var oldHide = $.fn.popover.Constructor.prototype.hide || false;
 
     $.fn.popover.Constructor.prototype.hide = function() {
