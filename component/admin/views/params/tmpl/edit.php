@@ -80,12 +80,10 @@ if (count($jevplugins))
 				if ($field->fieldname == "com_difficulty")
 				{
 					?>
-					<table class="settings_level">
-						<tr class=" difficulty1 gsl-grid">
-							<td class="gsl-width-auto"><span class="editlinktip"><?php echo $field->label;?></span></td>
-							<td class="gsl-width-expand"><?php echo $field->input;?></td>
-						</tr>
-					</table>
+					<div class="settings_level difficulty1 gsl-grid">
+						<div class="gsl-width-auto"><span class="editlinktip"><?php echo $field->label;?></span></div>
+						<div class="gsl-width-expand"><?php echo $field->input;?></div>
+					</div>
 					<?php
 				}
 			}

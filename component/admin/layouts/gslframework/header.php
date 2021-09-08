@@ -76,7 +76,7 @@ $tmpl = $app->input->getCmd('tmpl', '');
                                         data-yspoptitle="<?php echo Text::_('COM_JEVENTS_RETURN_TO_JOOMLA', true); ?>"
                                         data-yspopcontent="<?php echo Text::_('COM_JEVENTS_RETURN_TO_JOOMLA_TOOLTIP', true); ?>"
                                     >
-                                        <a href="<?php echo JURI::root() . 'index.php'; ?>"
+                                        <a href="<?php echo Juri::base() . 'index.php'; ?>"
                                            data-gsl-icon="icon: joomla"
                                            title="<?php Text::_('COM_JEVENTS_RETURN_TO_JOOMLA'); ?>"
                                            class="gsl-icon"

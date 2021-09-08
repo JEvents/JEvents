@@ -42,7 +42,7 @@ class Pkg_JeventsInstallerScript
 		if (!$is_enabled)
 		{
 			$this->hasJEventsInst = 0;
-			if (version_compare(JVERSION, '3.8.0', '<'))
+			if (version_compare(JVERSION, '3.9.0', '<'))
 			{
 				Factory::getApplication()->enqueueMessage('Warning! You are running a very insecure version of Joomla! <br/>Please update Joomla! to at least 3.8.0 before installing JEvents. This will also prevent issues with JEvents', 'warning');
 
@@ -54,7 +54,7 @@ class Pkg_JeventsInstallerScript
 		else
 		{
 			$this->hasJEventsInst = 1;
-			if (version_compare(JVERSION, '3.8.0', '<'))
+			if (version_compare(JVERSION, '3.9.0', '<'))
 			{
 				Factory::getApplication()->enqueueMessage('This version of JEvents is designed for Joomla 3.8.0 and later.<br/>Please update Joomla! before upgrading JEvents to this version', 'warning');
 

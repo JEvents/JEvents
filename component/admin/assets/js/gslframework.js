@@ -7,7 +7,7 @@
  */
 
 'use strict';
-let j3 = true;
+j3 = typeof j3 == "undefined" ? true : j3;
 
 // Polyfills
 // from:https://github.com/jserz/js_piece/blob/master/DOM/ChildNode/remove()/remove().md
@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		joomla4 = true;
 
 		//let joomlaelements = document.querySelectorAll('#sidebar-wrapper.sidebar-wrapper.sidebar-menu, #subhead.subhead ');
-		let joomlaelements = document.querySelectorAll('#subhead.subhead');
+		let joomlaelements = document.querySelectorAll('#subhead.subhead, #subhead-container.subhead');
 		for (let j = 0; j < joomlaelements.length; j++) {
 			joomlaelements[j].style.display = 'none';
 		}

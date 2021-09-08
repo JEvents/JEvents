@@ -57,7 +57,9 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 
 	function edit($tpl = null)
 	{
-
+		// Ensure jQuery is loaded untill fully removed.
+		HTMLHelper::_('jquery.framework');
+		
 		$app    = Factory::getApplication();
 		$input  = $app->input;
 
