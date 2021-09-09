@@ -9,10 +9,23 @@
     <property name="component" value="com_jevents"/>
     <property name="rootPath" value="${URI.base}"/>
 
+    <property name="uikitdir" value="../uikit" override="true" />
+    <if>
+        <not>
+            <available file='${uikitdir}/package.json' type='file' property="nouikit"/>
+        </not>
+        <then>
+            <property name="uikitdir" value="../../bitbucket/uikit" override="true" />
+        </then>
+    </if>
+
+    <resolvepath propertyName="uikitdir" file="${uikitdir}" />
+
     <target name="link" description="Build all targets !! ">
 
         <echo>Current Path: ${rootPath}</echo>
         <echo>Target Path: ${p}</echo>
+        <echo msg="uikit directory set to ${uikitdir}" />
 
         <phingcall target="deleteall" />
 
@@ -76,8 +89,9 @@
         <symlink target="${rootPath}/plugins/jevents/language/en-GB/en-GB.plg_content_jevents.sys.ini" link="${p}/administrator/language/en-GB/en-GB.plg_content_jevents.sys.ini" overwrite="true" />
         <symlink target="${rootPath}/plugins/search/language/en-GB/en-GB.plg_search_eventsearch.ini" link="${p}/administrator/language/en-GB/en-GB.plg_search_eventsearch.ini" overwrite="true" />
         <symlink target="${rootPath}/plugins/search/language/en-GB/en-GB.plg_search_eventsearch.ini" link="${p}/administrator/language/en-GB/en-GB.plg_search_eventsearch.sys.ini" overwrite="true" />
-
-    </target>
+ 
+       <phingcall target="copyassets" />
+</target>
 
     <target name="deleteall">
         <!-- Delete folders and files, even if symlinks -->
@@ -211,11 +225,13 @@
         <copy file="${rootPath}/plugins/jevents/language/en-GB/en-GB.plg_content_jevents.sys.ini" todir="${p}/administrator/languageen-GB/" overwrite="true" />
         <copy file="${rootPath}/plugins/search/language/en-GB/en-GB.plg_search_eventsearch.ini" todir="${p}/administrator/language/en-GB/" overwrite="true" />
         <copy file="${rootPath}/plugins/search/language/en-GB/en-GB.plg_search_eventsearch.ini" todir="${p}/administrator/language/en-GB/" overwrite="true" />
+
+        <phingcall target="copyassets" />
+        <phingcall target="delassets" />
     </target>
 
     <target name="copydir">
         <!-- First make the directory in case it doesn't exist -->
-        <echo>Copy Directory from: ${from}, to: ${to}</echo>
         <mkdir dir="${to}" />
         <copy todir="${to}">
             <fileset dir="${from}">
@@ -224,6 +240,55 @@
                 <exclude name="**/*.zip"></exclude>
             </fileset>
         </copy>
+    </target>
+
+    <target name="copyfile">
+        <copy file="${from}${name}" tofile="${to}" overwrite="true" />
+    </target>
+
+   <property name="uikitfiles" value="
+        /css/uikit.css,
+        /css/uikit-core.css,
+        /css/uikit.css,
+        /css/uikit.gsl.css,
+        /css/uikit.gsl.min.css,
+        /js/uikit.js,
+        /js/uikit.min.js,
+        /js/uikit-core.js,
+        /js/uikit-core.min.js,
+        /js/uikit-icons.js,
+        /js/uikit-icons.min.js,
+        " />
+<!--        /css/uikit-rtl.css, -->
+
+    <target name="copyassets"> 
+        <!-- JEvents build process copies the admin assets to the site assets folder, we need to do the same on link & unlink -->
+        <!-- copy backend css files to the frontend -->
+        <copy file="${rootPath}/component/admin/assets/js/gslframework.js" todir="${p}/components/${component}/assets/js/" />
+        <copy file="${rootPath}/component/admin/assets/js/jevents.js" todir="${p}/components/${component}/assets/js/" />
+        <copy file="${rootPath}/component/admin/assets/css/j3.css" todir="${p}/components/${component}/assets/css/" />
+        <copy file="${rootPath}/component/admin/assets/css/j4.css" todir="${p}/components/${component}/assets/css/" />
+        <copy file="${rootPath}/component/admin/assets/css/jevents.css" todir="${p}/components/${component}/assets/css/" />
+        <!-- copy the uikit css & js -->
+        <property name="from" value="${uikitdir}/dist" />
+        <foreach param="name" target="copyfile" >
+        <property name="to" value="${p}/media/${component}${name}" />
+            <filelist dir="/" files="${uikitfiles}" />
+        </foreach>
+     </target>
+
+    <target name="delassets"> 
+        <!-- during unlink we need to remove the assets that were copied by the link from admin to site of repo -->
+        <phingcall target="deleteitem"><property name="filename" value="${rootPath}/component/site/assets/js/gslframework.js"/></phingcall>
+        <phingcall target="deleteitem"><property name="filename" value="${rootPath}/component/site/assets/js/jevents.js"/></phingcall>
+        <phingcall target="deleteitem"><property name="filename" value="${rootPath}/component/site/assets/css/j3.css"/></phingcall>
+        <phingcall target="deleteitem"><property name="filename" value="${rootPath}/component/site/assets/css/j4.css" /></phingcall>
+        <phingcall target="deleteitem"><property name="filename" value="${rootPath}/component/site/assets/css/jevents.css" /></phingcall>
+        <!-- delete the uikit css & js repo media -->
+        <foreach param="name" target="deleteitem" >
+            <property name="filename" value="${rootPath}/component/media${name}" />
+            <filelist dir="/" files="${uikitfiles}" />
+        </foreach>
     </target>
 
 </project>
