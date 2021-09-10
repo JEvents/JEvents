@@ -9,7 +9,7 @@
 'use strict';
 var j3 = true;
 j3 = typeof j3php == "undefined" ? j3 : j3php;
-
+//alert('j3 is ' + j3 + ' from js');
 
 // Polyfills
 // from:https://github.com/jserz/js_piece/blob/master/DOM/ChildNode/remove()/remove().md
