@@ -242,8 +242,12 @@ class ICalEventController extends AdminIcaleventController
 		$session = Factory::getSession();
 		$params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		$fallback = $params->get("editreturnto", "day.listevents");
-		$ref = $session->get('jev_referrer', $fallback, 'extref');
+		$ref = $session->get('jev_referer', $fallback, 'extref');
 
+		if ($ref == $fallback)
+		{
+			$ref = JRoute::_("index.php?option=com_jevents&task=" . $fallback);
+		}
 		$this->setRedirect($ref);
 		$this->redirect();
 

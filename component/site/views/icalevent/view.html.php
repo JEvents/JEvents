@@ -141,8 +141,13 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
         $current = Uri::getInstance();
         $current = $current->toString(array('scheme', 'host', 'port', 'path', 'query'));
         if ($referer && $referer !== $current) {
-            $session->set('jev_referrer', $referer, 'extref');
+            $session->set('jev_referer', $referer, 'extref');
         }
+		else {
+			$session->set('jev_referer', '', 'extref');
+		}
+		$ref = $session->get('jev_referer', 'blank', 'extref');
+		//echo "ref = $ref $referer $current<br>";
 
 		if ($params->get("editpopup", 0))
 		{
