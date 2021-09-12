@@ -127,7 +127,7 @@ SCRIPT;
 	 *
 	 * @since   3.0
 	 */
-	public static function framework($debug = null, $forceBoostrap = false)
+	public static function framework($debug = null, $forceBoostrap = false, $forceUIkit = false)
 	{
 
 		// Only load once
@@ -147,6 +147,10 @@ SCRIPT;
 		{
 			HTMLHelper::script('com_jevents/lib_jevmodal/jevmodal_uikit.js', array('framework' => false, 'relative' => true, 'pathOnly' => false, 'detectBrowser' => false, 'detectDebug' => true));
 		}
+		else if ($forceUIkit)
+        {
+            HTMLHelper::script('com_jevents/lib_jevmodal/jevmodal_uikit.js', array('framework' => false, 'relative' => true, 'pathOnly' => false, 'detectBrowser' => false, 'detectDebug' => true));
+        }
 		else
 		{
 			// Load jQuery

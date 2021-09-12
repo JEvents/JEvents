@@ -135,7 +135,10 @@ class JevHtmlBootstrap
 		$uikitopt['delay'] = isset($params['delay']['show']) ? $params['delay']['show'] : 0;
 		$uikitopt['delayHide'] = 20000;
 		$uikitopt['offset'] = 20;
-		$uikitopt['cls'] = 'uk-active';
+		$uikitopt['animation'] = 'uk-animation-fade';
+		$uikitopt['duration'] = 100;
+		$uikitopt['cls'] = 'uk-active uk-card uk-card-default uk-padding-remove  uk-background-default';
+        $uikitopt['clsPos'] = isset($params['clsPos']) ? $params['clsPos']: 'uk-tooltip';
 		$uikitopt['mode'] = isset($params['trigger']) ? str_replace(" ", ",", $params['trigger']) : 'hover';
 		$uikitopt['container'] = isset($params['container']) ? $params['container'] : 'body';
 		$uikitoptions = json_encode($uikitopt);
@@ -160,12 +163,18 @@ document.addEventListener('DOMContentLoaded', function()
 						let body = hoveritem.getAttribute('data-yspopcontent') || hoveritem.getAttribute('data-content') || '';
 						let options = hoveritem.getAttribute('data-yspopoptions') || '$uikitoptions';
 						options = JSON.parse(options);
-						
-						let phtml = '<div class="ys-popover-block">' +
-						(title != '' ? '<div class="ys-popover-title">' + title + '</div>' : '') +
-						(body != '' ? '<div class="ys-popover-body">' + body + '</div>' : '') +
+						/*
+						var phtml = '<div class="uk-card uk-card-default uk-padding-remove uk-background-default" style="width:max-content;border-top-left-radius: 5px;border-top-right-radius: 5px;">' +
+						(title != '' ? '<div class="uk-text-emphasis">' + title + '</div>' : '') +
+						(body != '' ? '<div class="uk-card-body uk-text-secondary uk-padding-small" style="width:max-content">' + body + '</div>' : '') +
 						'</div>';
+						*/						
+						var phtml = '' +
+						(title != '' ? title.replace("jevtt_title", "uk-card-title uk-text-emphasis uk-padding-small").replace(/color:#(.*);/,'color:#$1!important;')  : '') +
+						(body != '' ?  body.replace("jevtt_text", "uk-card-body uk-padding-small uk-text-secondary  uk-background-default")  : '') +
+						'';
 						options.title = phtml;
+						
 						if (hoveritem.hasAttribute('title')) {
 							hoveritem.removeAttribute('title');
 						}
