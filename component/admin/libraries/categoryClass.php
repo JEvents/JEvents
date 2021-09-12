@@ -55,6 +55,7 @@ class JEventsCategory extends Joomla\CMS\Table\Category
 				}
 				$v->level -= 1;
 				$pt       = $v->parent;
+				if (array_key_exists($pt, $children) === false) continue;
 				$list     = @$children[$pt] ? $children[$pt] : array();
 				array_push($list, $v);
 				$children[$pt] = $list;

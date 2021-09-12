@@ -217,7 +217,6 @@ START;
 		{
 			$content .= "<tr style='height:$rowheight;'>\n";
 			// the week column
-			//list($week,$link) = each($data['weeks']);
 			$week    = array_keys($data['weeks'])[$w];
 			$link    = $data['weeks'][$week];
 			$content .= '<td class="extcal_weekcell">';
