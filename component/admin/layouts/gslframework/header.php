@@ -24,9 +24,9 @@ use Joomla\CMS\Factory;
 
 // Skip Chosen in Joomla 4.x+
 $jversion = new Version;
+$document = Factory::getDocument();
 if ($jversion->isCompatible('4.0'))
 {
-	$document = Factory::getDocument();
 	$script = <<< SCRIPT
 var j3php = false;
 //alert('j3php is false from php');

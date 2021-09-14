@@ -430,11 +430,6 @@ public function getCal($modid = 0)
 		for ($w = 0; $w < 6 && $dn < $datacount; $w++)
 		{
 			$content .= "<tr>\n";
-			/*
-			echo "<td width='2%' class='cal_td_weeklink'>";
-			list($week,$link) = each($data['weeks']);
-			echo "<a href='".$link."'>$week</a></td>\n";
-			*/
 			for ($d = 0; $d < 7 && $dn < $datacount; $d++)
 			{
 				$currentDay = $data["dates"][$dn];
