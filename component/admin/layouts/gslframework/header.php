@@ -24,10 +24,20 @@ use Joomla\CMS\Factory;
 
 // Skip Chosen in Joomla 4.x+
 $jversion = new Version;
+$document = Factory::getDocument();
 if ($jversion->isCompatible('4.0'))
 {
-	$document = Factory::getDocument();
-	$document->addScriptDeclaration("j3 = false;");
+	$script = <<< SCRIPT
+var j3php = false;
+//alert('j3php is false from php');
+if (typeof j3 != "undefined") 
+{
+  j3 = false;
+  //alert('j3 is false from php');
+}
+SCRIPT;
+
+	$document->addScriptDeclaration($script);
 }
 
 // Load component specific data

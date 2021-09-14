@@ -52,9 +52,9 @@ class jIcalEventDB extends jEventCal
 		//include_once(JPATH_SITE."/components/$compname/libraries/iCalImport.php");
 		//$this->vevent = iCalEvent::iCalEventFromDB($array);
 
-		$this->_access = @$vevent->access;
-		$this->_content = @$vevent->description;
-		$this->_title   = @$vevent->summary;
+		$this->_access = property_exists($vevent, 'access') ? $vevent->access : 0;
+		$this->_content = property_exists($vevent, 'description') ? $vevent->description : ''; 
+		$this->_title   = property_exists($vevent, 'summary') ? $vevent->summary : ''; 
 		//TODO move start repeat to descendent class where it belongs
 		if (isset($this->_startrepeat))
 		{
