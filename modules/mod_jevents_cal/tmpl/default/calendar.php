@@ -570,8 +570,10 @@ public function getCal($modid = 0)
 public function getAjaxCal($modid, $month, $year)
 	{
 
+        //TODO check usage of this function and us
 		// capture module id so that we can use it for ajax type navigation
-        $modid  = $modid != 0 ? $this->_modid : 0;
+        $this->_modid   = $modid != 0 ? $modid : 0;
+
 		$user   = Factory::getUser();
 		$db     = Factory::getDbo();
 
