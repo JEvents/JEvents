@@ -1,0 +1,7 @@
+{
+    "defaults": {
+        "less": ["@import('../assets/less/example.less')"],
+        "custom_less": "",
+        "style": ""
+    }
+}

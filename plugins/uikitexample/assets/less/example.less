@@ -1,0 +1,99 @@
+//
+// Component: Example
+//
+// ========================================================================
+
+
+// Variables
+// ========================================================================
+
+//
+// New
+//
+
+@example-title-padding-vertical:             0;
+@example-title-padding-horizontal:           0;
+@example-title-background-color:             transparent;
+
+@example-icon-margin-left:                   10px;
+@example-icon-color:                         @global-color;
+
+@internal-example-icon-close-image:          "../../images/backgrounds/example-close.svg";
+@internal-example-icon-open-image:           "../../images/backgrounds/example-open.svg";
+
+@example-item-border-color:                  @global-color;
+@example-item-border-width:                  @global-border-width;
+@example-item-border:                        fade(@global-border, 10%);
+
+// Component
+// ========================================================================
+
+.hook-example() {}
+
+
+// Item
+// ========================================================================
+
+.hook-example-item() {}
+
+
+// Title
+// ========================================================================
+
+.hook-example-title() {
+    padding: @example-title-padding-vertical @example-title-padding-horizontal;
+    background: @example-title-background;
+    overflow: hidden;
+
+    &::before {
+        content: "";
+        width: (@example-title-line-height * 1em);
+        height: (@example-title-line-height * 1em);
+        margin-left: @example-icon-margin-left;
+        float: right;
+        .svg-fill(@internal-example-icon-close-image, "#000", @example-icon-color);
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+    }
+
+    .uk-open > &::before { .svg-fill(@internal-example-icon-open-image, "#000", @example-icon-color); }
+
+}
+
+.hook-example-title() when not (@base-link-text-decoration = none) {
+    text-decoration: none;
+}
+
+.hook-example-title-hover() {}
+
+
+// Content
+// ========================================================================
+
+.hook-example-content() {}
+
+
+// Miscellaneous
+// ========================================================================
+
+.hook-example-misc() {}
+
+
+// Inverse
+// ========================================================================
+
+@inverse-example-title-background:           transparent;
+@inverse-example-icon-color:                 @inverse-global-color;
+
+.hook-inverse-example-item() {}
+
+.hook-inverse-example-title() { background-color: @inverse-example-title-background; }
+.hook-inverse-example-title-hover() {}
+
+.hook-inverse() {
+
+    .uk-example-title::before { .svg-fill(@internal-example-icon-close-image, "#000", @inverse-example-icon-color); }
+
+    .uk-open > .uk-example-title::before { .svg-fill(@internal-example-icon-open-image, "#000", @inverse-example-icon-color); }
+
+}
