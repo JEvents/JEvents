@@ -148,7 +148,7 @@ class iCalICSFile extends Joomla\CMS\Table\Table
 		return $temp;
 	}
 
-	public function editICalendar($icsid, $catid, $access = 0, $state = 1, $label = "")
+	public static function editICalendar($icsid, $catid, $access = 0, $state = 1, $label = "")
 	{
 
 		$db   = Factory::getDbo();

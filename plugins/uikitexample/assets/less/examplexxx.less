@@ -1,0 +1,99 @@
+//
+// Component: Examplexxx
+//
+// ========================================================================
+
+
+// Variables
+// ========================================================================
+
+//
+// New
+//
+
+@examplexxx-title-padding-vertical:             0;
+@examplexxx-title-padding-horizontal:           0;
+@examplexxx-title-background-color:             transparent;
+
+@examplexxx-icon-margin-left:                   10px;
+@examplexxx-icon-color:                         @global-color;
+
+@internal-examplexxx-icon-close-image:          "../../images/backgrounds/examplexxx-close.svg";
+@internal-examplexxx-icon-open-image:           "../../images/backgrounds/examplexxx-open.svg";
+
+@examplexxx-item-border-color:                  @global-color;
+@examplexxx-item-border-width:                  @global-border-width;
+@examplexxx-item-border:                        fade(@global-border, 10%);
+
+// Component
+// ========================================================================
+
+.hook-examplexxx() {}
+
+
+// Item
+// ========================================================================
+
+.hook-examplexxx-item() {}
+
+
+// Title
+// ========================================================================
+
+.hook-examplexxx-title() {
+    padding: @examplexxx-title-padding-vertical @examplexxx-title-padding-horizontal;
+    background: @examplexxx-title-background;
+    overflow: hidden;
+
+    &::before {
+        content: "";
+        width: (@examplexxx-title-line-height * 1em);
+        height: (@examplexxx-title-line-height * 1em);
+        margin-left: @examplexxx-icon-margin-left;
+        float: right;
+        .svg-fill(@internal-examplexxx-icon-close-image, "#000", @examplexxx-icon-color);
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+    }
+
+    .uk-open > &::before { .svg-fill(@internal-examplexxx-icon-open-image, "#000", @examplexxx-icon-color); }
+
+}
+
+.hook-examplexxx-title() when not (@base-link-text-decoration = none) {
+    text-decoration: none;
+}
+
+.hook-examplexxx-title-hover() {}
+
+
+// Content
+// ========================================================================
+
+.hook-examplexxx-content() {}
+
+
+// Miscellaneous
+// ========================================================================
+
+.hook-examplexxx-misc() {}
+
+
+// Inverse
+// ========================================================================
+
+@inverse-examplexxx-title-background:           transparent;
+@inverse-examplexxx-icon-color:                 @inverse-global-color;
+
+.hook-inverse-examplexxx-item() {}
+
+.hook-inverse-examplexxx-title() { background-color: @inverse-examplexxx-title-background; }
+.hook-inverse-examplexxx-title-hover() {}
+
+.hook-inverse() {
+
+    .uk-examplexxx-title::before { .svg-fill(@internal-examplexxx-icon-close-image, "#000", @inverse-examplexxx-icon-color); }
+
+    .uk-open > .uk-examplexxx-title::before { .svg-fill(@internal-examplexxx-icon-open-image, "#000", @inverse-examplexxx-icon-color); }
+
+}
