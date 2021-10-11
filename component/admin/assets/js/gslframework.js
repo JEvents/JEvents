@@ -731,17 +731,17 @@ window.addEventListener('load', function() {
 document.addEventListener('DOMContentLoaded', function () {
 	let msgel = document.getElementById("system-message-container");
 
+	// Not in Joomla 4 +
 	let newmsgel = document.getElementById("ysts_system_messages");
-	if (msgel && msgel.parentNode && msgel.parentNode.id != "ysts_system_messages")
-	{
-		newmsgel.innerHTML = "";
-		newmsgel.appendChild(msgel);
+	if (newmsgel) {
+		if (msgel && msgel.parentNode && msgel.parentNode.id != "ysts_system_messages") {
+			newmsgel.innerHTML = "";
+			newmsgel.appendChild(msgel);
+		}
+		if (!msgel) {
+			newmsgel.innerHTML = "&nbsp;";
+		}
 	}
-	if (!msgel && newmsgel)
-	{
-		newmsgel.innerHTML = "&nbsp;";
-	}
-
 
 	let maincontainer = document.getElementById("j-main-container");
 	if (maincontainer) {

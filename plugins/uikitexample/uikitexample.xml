@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" version="3.0" group="system" method="upgrade">
+	<name>UIKit Example Module</name>
+	<version>1.0.0</version>
+	<files>
+		<filename plugin="uikitexample">uikitexample.php</filename>
+		<filename>index.html</filename>
+		<filename>bootstrap.php</filename>
+		<folder>assets</folder>
+		<folder>config</folder>
+		<folder>src</folder>
+	</files>
+</extension>
