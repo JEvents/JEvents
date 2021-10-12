@@ -21,6 +21,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 // Skip Chosen in Joomla 4.x+
 $jversion = new Version;
@@ -37,6 +38,10 @@ if (typeof j3 != "undefined")
 }
 SCRIPT;
 
+	if (ComponentHelper::getParams(JEV_COM_COMPONENT)->get("j4sidebar", 0))
+	{
+		$script .= "document.addEventListener('DOMContentLoaded',function() {document.querySelector('body').classList.add('with-joomla-sidebar');});\n";
+	}
 	$document->addScriptDeclaration($script);
 }
 

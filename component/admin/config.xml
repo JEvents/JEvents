@@ -46,6 +46,10 @@
 			<option value="2">JEV_NO_LEFT_MENU_LABELS</option>
 		</field>
 
+		<field name="j4sidebar" type="jevboolean" class="gsl-button-group"  default="0" label="JEV_BACKEND_J4_SHOW_SIDEBAR"
+			   description="JEV_BACKEND_J4_SHOW_SIDEBAR_DESC" difficulty="1">
+		</field>
+
 		<field name="com_calViewName" type="jevview" default="flat" except="float" menu="hide" label="JEV_VIEWNAME"
 		       description="JEV_TIP_VIEWNAME" difficulty="1"/>
 		<field name="darktemplate" type="jevboolean" class="gsl-button-group" default="0" menu="hide" label="JEV_DARK_TEMPLATE"

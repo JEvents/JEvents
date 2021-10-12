@@ -156,7 +156,13 @@ document.addEventListener('DOMContentLoaded', function()
 		}
 		catch (e) {
 			try {
-				// Fall back to native uikit
+				// Do not use this for YooTheme Pro templates otherwise you get strange behaviour!
+				if (document.getElementById('jevents').closest('.tm-page'))
+				{
+					jQuery('$selector').popover($options);
+				}
+				else {
+					// Fall back to native uikit
 					var hoveritems = document.querySelectorAll('$selector');
 					hoveritems.forEach(function (hoveritem) {
 						let title = hoveritem.getAttribute('data-yspoptitle') || hoveritem.getAttribute('data-original-title') || hoveritem.getAttribute('title');
@@ -181,6 +187,7 @@ document.addEventListener('DOMContentLoaded', function()
 				
 						UIkit.tooltip(hoveritem, options);
 					});
+				}
 	
 			}
 			catch (e2) {
