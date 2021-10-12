@@ -1,6 +1,6 @@
 @import "vars.less";
 /** Joomla 4 **/
-header.header {display:none;}
+body:not(.with-joomla-sidebar) header.header {display:none;}
 
 body.@{mycomponent} {
   .container-fluid {
@@ -12,10 +12,26 @@ body.@{mycomponent} {
     content:none;
   }
 
-  header.header {
+  &:not(.with-joomla-sidebar) header.header {
     display: none;
   }
 
+  &.with-joomla-sidebar  header.header {
+    .header-inside {
+      height:0;
+      min-height:0;
+    }
+    .header-title, .header-items {
+      .header-item {
+        display: none !important;
+      }
+    }
+    .header-title {
+      .logo, .ysts-page-title {
+        display:none;
+      }
+    }
+  }
   button.navbar-toggler.toggler-toolbar {
     display:none;
   }
@@ -27,8 +43,8 @@ body.@{mycomponent} {
 
   /* See if we can get fixed positioning working as sticky */
 
-  #wrapper > .container-fluid {
-    /*transform: translateZ(0);*/
+  &.with-joomla-sidebar #wrapper > .container-fluid {
+    transform: translateZ(0);
   }
 
   /* Full sized screen */
@@ -37,7 +53,7 @@ body.@{mycomponent} {
       display:none;
     }
   }
-  #wrapper #sidebar-wrapper {
+  &:not(.with-joomla-sidebar) #wrapper #sidebar-wrapper {
     /* Always hide unless we implement toggle on/off */
     display: none;
     position: fixed;
@@ -163,8 +179,29 @@ body.com_categories {
     content:none;
   }
 
-  header.header {
+  &:not(.with-joomla-sidebar) header.header {
     display: none;
+  }
+
+  &.with-joomla-sidebar  header.header {
+    .header-inside {
+      height:0;
+      min-height:0;
+    }
+    .header-title, .header-items {
+      .header-item {
+        display: none !important;
+      }
+    }
+    .header-title {
+      .logo, .page-title {
+        display:none;
+      }
+    }
+  }
+
+  button.navbar-toggler.toggler-toolbar {
+    display:none;
   }
 
   .container-main::after {
@@ -174,8 +211,8 @@ body.com_categories {
 
   /* See if we can get fixed positioning working as sticky */
 
-  #wrapper > .container-fluid {
-    /*transform: translateZ(0);*/
+  &.with-joomla-sidebar #wrapper > .container-fluid {
+    transform: translateZ(0);
   }
 
   /* Full sized screen */
@@ -314,4 +351,16 @@ body.com_categories.view-categories {
   }
 
 }
+
+@media (max-width: 575.98px) {
+
+  body.@{mycomponent}, body.com_categories {
+    &.with-joomla-sidebar header.header {
+      .header-title, .header-items {
+        min-height: 54px;
+      }
+    }
+  }
+}
+
 /** end Joomla 4**/
