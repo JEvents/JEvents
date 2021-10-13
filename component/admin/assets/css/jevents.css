@@ -65,12 +65,18 @@ body.com_jevents {
 #gslc.gsl-scope #top-head {
   z-index: 9;
 }
-#gslc.gsl-scope #top-head h1.ysts-page-title {
+#gslc.gsl-scope #top-head h1.ysts-page-title,
+#gslc.gsl-scope #top-head h1.page-title {
   font-size: 1.5em;
   line-height: 50px;
   color: #fff;
   padding: 0 0 0 10px;
   margin: 0;
+  /* Icon for com_categories */
+}
+#gslc.gsl-scope #top-head h1.ysts-page-title span,
+#gslc.gsl-scope #top-head h1.page-title span {
+  display: none;
 }
 #gslc.gsl-scope .gsl-navbar-nav > li > a,
 #gslc.gsl-scope .gsl-navbar-item,
@@ -1181,8 +1187,4 @@ body.com_fields #system-message-container {
   #gslc.gsl-scope #right-col #ysts_system_messages {
     margin-top: 0;
   }
-}
-/* JCE Media file uploader fix */
-#jevents .field-media-wrapper .wf-media-upload-button {
-    position:relative;
 }
