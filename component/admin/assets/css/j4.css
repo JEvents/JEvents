@@ -2,8 +2,9 @@
 body:not(.with-joomla-sidebar) header.header {
   display: none;
 }
-body.com_jevents {
-  /* See if we can get fixed positioning working as sticky */
+body.com_jevents,
+body.com_categories,
+body.com_fields {
   /* Full sized screen */
   /*
   #gslc.gsl-scope.joomla-menu-open {
@@ -21,60 +22,123 @@ body.com_jevents {
   }
 */
 }
-body.com_jevents .container-fluid {
+body.com_jevents .container-fluid,
+body.com_categories .container-fluid,
+body.com_fields .container-fluid {
   padding: 0 0 0 0;
 }
-body.com_jevents #wrapper #content {
+body.com_jevents #wrapper #content,
+body.com_categories #wrapper #content,
+body.com_fields #wrapper #content {
   padding: 0;
 }
-body.com_jevents .gsl-navbar-nav a[target="_blank"]::before {
+body.com_jevents .gsl-navbar-nav a[target="_blank"]::before,
+body.com_categories .gsl-navbar-nav a[target="_blank"]::before,
+body.com_fields .gsl-navbar-nav a[target="_blank"]::before {
   content: none;
 }
-body.com_jevents:not(.with-joomla-sidebar) header.header {
+body.com_jevents:not(.with-joomla-sidebar) header.header,
+body.com_categories:not(.with-joomla-sidebar) header.header,
+body.com_fields:not(.with-joomla-sidebar) header.header {
   display: none;
 }
-body.com_jevents.with-joomla-sidebar header.header .header-inside {
+body.com_jevents.with-joomla-sidebar,
+body.com_categories.with-joomla-sidebar,
+body.com_fields.with-joomla-sidebar {
+  /* See if we can get fixed positioning working as sticky */
+}
+body.com_jevents.with-joomla-sidebar #gslc.gsl-scope,
+body.com_categories.with-joomla-sidebar #gslc.gsl-scope,
+body.com_fields.with-joomla-sidebar #gslc.gsl-scope {
+  /* transform: translateZ(0);*/
+}
+body.com_jevents.with-joomla-sidebar #wrapper > .container-fluid,
+body.com_categories.with-joomla-sidebar #wrapper > .container-fluid,
+body.com_fields.with-joomla-sidebar #wrapper > .container-fluid {
+  /* transform: translateZ(0);*/
+}
+body.com_jevents.with-joomla-sidebar #gslc.gsl-scope.gsl-hide-sidebar #right-col:not(.noleftbar),
+body.com_categories.with-joomla-sidebar #gslc.gsl-scope.gsl-hide-sidebar #right-col:not(.noleftbar),
+body.com_fields.with-joomla-sidebar #gslc.gsl-scope.gsl-hide-sidebar #right-col:not(.noleftbar) {
+  margin-left: 0px;
+}
+body.com_jevents.with-joomla-sidebar #gslc.gsl-scope.gsl-hide-sidebar #right-col:not(.noleftbar) #top-head,
+body.com_categories.with-joomla-sidebar #gslc.gsl-scope.gsl-hide-sidebar #right-col:not(.noleftbar) #top-head,
+body.com_fields.with-joomla-sidebar #gslc.gsl-scope.gsl-hide-sidebar #right-col:not(.noleftbar) #top-head {
+  position: sticky;
+  top: 0;
+}
+body.com_jevents.with-joomla-sidebar #gslc.gsl-scope #left-col,
+body.com_categories.with-joomla-sidebar #gslc.gsl-scope #left-col,
+body.com_fields.with-joomla-sidebar #gslc.gsl-scope #left-col {
+  position: sticky;
+}
+body.com_jevents.with-joomla-sidebar header.header .header-inside,
+body.com_categories.with-joomla-sidebar header.header .header-inside,
+body.com_fields.with-joomla-sidebar header.header .header-inside {
   height: 0;
   min-height: 0;
 }
 body.com_jevents.with-joomla-sidebar header.header .header-title .header-item,
-body.com_jevents.with-joomla-sidebar header.header .header-items .header-item {
+body.com_categories.with-joomla-sidebar header.header .header-title .header-item,
+body.com_fields.with-joomla-sidebar header.header .header-title .header-item,
+body.com_jevents.with-joomla-sidebar header.header .header-items .header-item,
+body.com_categories.with-joomla-sidebar header.header .header-items .header-item,
+body.com_fields.with-joomla-sidebar header.header .header-items .header-item {
   display: none !important;
 }
 body.com_jevents.with-joomla-sidebar header.header .header-title .logo,
-body.com_jevents.with-joomla-sidebar header.header .header-title .ysts-page-title {
+body.com_categories.with-joomla-sidebar header.header .header-title .logo,
+body.com_fields.with-joomla-sidebar header.header .header-title .logo,
+body.com_jevents.with-joomla-sidebar header.header .header-title .ysts-page-title,
+body.com_categories.with-joomla-sidebar header.header .header-title .ysts-page-title,
+body.com_fields.with-joomla-sidebar header.header .header-title .ysts-page-title,
+body.com_jevents.with-joomla-sidebar header.header .header-title .page-title,
+body.com_categories.with-joomla-sidebar header.header .header-title .page-title,
+body.com_fields.with-joomla-sidebar header.header .header-title .page-title {
   display: none;
 }
-body.com_jevents button.navbar-toggler.toggler-toolbar {
+body.com_jevents button.navbar-toggler.toggler-toolbar,
+body.com_categories button.navbar-toggler.toggler-toolbar,
+body.com_fields button.navbar-toggler.toggler-toolbar {
   display: none;
 }
-body.com_jevents .container-main::after {
+body.com_jevents .container-main::after,
+body.com_categories .container-main::after,
+body.com_fields .container-main::after {
   /* For when scrolling right a long way! */
   background-color: var(--globalbackground);
 }
-body.com_jevents.with-joomla-sidebar #wrapper > .container-fluid {
-  transform: translateZ(0);
-}
-body.com_jevents #wrapper #subhead {
+body.com_jevents #wrapper #subhead,
+body.com_categories #wrapper #subhead,
+body.com_fields #wrapper #subhead {
   display: none;
 }
-body.com_jevents:not(.with-joomla-sidebar) #wrapper #sidebar-wrapper {
+body.com_jevents:not(.with-joomla-sidebar) #wrapper #sidebar-wrapper,
+body.com_categories:not(.with-joomla-sidebar) #wrapper #sidebar-wrapper,
+body.com_fields:not(.with-joomla-sidebar) #wrapper #sidebar-wrapper {
   /* Always hide unless we implement toggle on/off */
   display: none;
   position: fixed;
   height: 100%;
   /* J4 sidebar */
 }
-body.com_jevents:not(.with-joomla-sidebar) #wrapper #sidebar-wrapper.gsl-hide-sidebar {
+body.com_jevents:not(.with-joomla-sidebar) #wrapper #sidebar-wrapper.gsl-hide-sidebar,
+body.com_categories:not(.with-joomla-sidebar) #wrapper #sidebar-wrapper.gsl-hide-sidebar,
+body.com_fields:not(.with-joomla-sidebar) #wrapper #sidebar-wrapper.gsl-hide-sidebar {
   display: none;
   transition: none;
   /*all .3s ease;*/
 }
-body.com_jevents #gslc.gsl-scope {
+body.com_jevents #gslc.gsl-scope,
+body.com_categories #gslc.gsl-scope,
+body.com_fields #gslc.gsl-scope {
   /* Search filters display toggle */
   /* dashboard newsfeed */
 }
-body.com_jevents #gslc.gsl-scope #left-col {
+body.com_jevents #gslc.gsl-scope #left-col,
+body.com_categories #gslc.gsl-scope #left-col,
+body.com_fields #gslc.gsl-scope #left-col {
   /* 3rem for J4 sidebar
       left: 3rem;
        */
@@ -82,7 +146,9 @@ body.com_jevents #gslc.gsl-scope #left-col {
   transition: none;
   /*all .3s ease;*/
 }
-body.com_jevents #gslc.gsl-scope #right-col:not(.noleftbar) #top-head {
+body.com_jevents #gslc.gsl-scope #right-col:not(.noleftbar) #top-head,
+body.com_categories #gslc.gsl-scope #right-col:not(.noleftbar) #top-head,
+body.com_fields #gslc.gsl-scope #right-col:not(.noleftbar) #top-head {
   /* 3rem for J4 sidebar
       left: ~"calc(50px + 3rem)";
        */
@@ -91,7 +157,11 @@ body.com_jevents #gslc.gsl-scope #right-col:not(.noleftbar) #top-head {
   /*all .3s ease;*/
 }
 body.com_jevents #gslc.gsl-scope .gsl-content,
-body.com_jevents #gslc.gsl-scope #ysts_system_messages {
+body.com_categories #gslc.gsl-scope .gsl-content,
+body.com_fields #gslc.gsl-scope .gsl-content,
+body.com_jevents #gslc.gsl-scope #ysts_system_messages,
+body.com_categories #gslc.gsl-scope #ysts_system_messages,
+body.com_fields #gslc.gsl-scope #ysts_system_messages {
   /* 3rem for J4 sidebar
       margin-left: 3rem;
        */
@@ -99,144 +169,67 @@ body.com_jevents #gslc.gsl-scope #ysts_system_messages {
   transition: none;
   /*all .3s ease;*/
 }
-body.com_jevents #gslc.gsl-scope .js-stools .js-stools-container-filters {
+body.com_jevents #gslc.gsl-scope .js-stools .js-stools-container-filters,
+body.com_categories #gslc.gsl-scope .js-stools .js-stools-container-filters,
+body.com_fields #gslc.gsl-scope .js-stools .js-stools-container-filters {
   display: none;
 }
-body.com_jevents #gslc.gsl-scope .js-stools .js-stools-container-filters.js-stools-container-filters-visible {
+body.com_jevents #gslc.gsl-scope .js-stools .js-stools-container-filters.js-stools-container-filters-visible,
+body.com_categories #gslc.gsl-scope .js-stools .js-stools-container-filters.js-stools-container-filters-visible,
+body.com_fields #gslc.gsl-scope .js-stools .js-stools-container-filters.js-stools-container-filters-visible {
   display: flex;
   background-color: transparent;
   margin: 0 0 20px 10px;
 }
-body.com_jevents #gslc.gsl-scope .ys_newsfeed {
+body.com_jevents #gslc.gsl-scope .ys_newsfeed,
+body.com_categories #gslc.gsl-scope .ys_newsfeed,
+body.com_fields #gslc.gsl-scope .ys_newsfeed {
   height: 80px;
   overflow: hidden;
   padding: 20px 0 20px 20px;
 }
-body.com_jevents #gslc.gsl-scope .ys_newsfeed .gsl-slider-items li {
+body.com_jevents #gslc.gsl-scope .ys_newsfeed .gsl-slider-items li,
+body.com_categories #gslc.gsl-scope .ys_newsfeed .gsl-slider-items li,
+body.com_fields #gslc.gsl-scope .ys_newsfeed .gsl-slider-items li {
   height: 80px;
 }
-body.com_jevents #gslc.gsl-scope.gsl-hide-sidebar #left-col {
+body.com_jevents #gslc.gsl-scope.gsl-hide-sidebar #left-col,
+body.com_categories #gslc.gsl-scope.gsl-hide-sidebar #left-col,
+body.com_fields #gslc.gsl-scope.gsl-hide-sidebar #left-col {
   left: 0;
 }
-body.com_jevents #gslc.gsl-scope.gsl-hide-sidebar #right-col:not(.noleftbar) #top-head {
+body.com_jevents #gslc.gsl-scope.gsl-hide-sidebar #right-col:not(.noleftbar) #top-head,
+body.com_categories #gslc.gsl-scope.gsl-hide-sidebar #right-col:not(.noleftbar) #top-head,
+body.com_fields #gslc.gsl-scope.gsl-hide-sidebar #right-col:not(.noleftbar) #top-head {
   left: 50px;
 }
 body.com_jevents #gslc.gsl-scope.gsl-hide-sidebar .gsl-content,
-body.com_jevents #gslc.gsl-scope.gsl-hide-sidebar #ysts_system_messages {
+body.com_categories #gslc.gsl-scope.gsl-hide-sidebar .gsl-content,
+body.com_fields #gslc.gsl-scope.gsl-hide-sidebar .gsl-content,
+body.com_jevents #gslc.gsl-scope.gsl-hide-sidebar #ysts_system_messages,
+body.com_categories #gslc.gsl-scope.gsl-hide-sidebar #ysts_system_messages,
+body.com_fields #gslc.gsl-scope.gsl-hide-sidebar #ysts_system_messages {
   margin-left: 0;
 }
-body.com_jevents #gslc.gsl-scope:not(.gsl-hide-sidebar) .left-nav span.nav-label {
+body.com_jevents #gslc.gsl-scope:not(.gsl-hide-sidebar) .left-nav span.nav-label,
+body.com_categories #gslc.gsl-scope:not(.gsl-hide-sidebar) .left-nav span.nav-label,
+body.com_fields #gslc.gsl-scope:not(.gsl-hide-sidebar) .left-nav span.nav-label {
   display: none;
 }
-body.com_jevents #gslc.gsl-scope.no-joomla-menu #left-col {
+body.com_jevents #gslc.gsl-scope.no-joomla-menu #left-col,
+body.com_categories #gslc.gsl-scope.no-joomla-menu #left-col,
+body.com_fields #gslc.gsl-scope.no-joomla-menu #left-col {
   left: 0;
 }
-body.com_jevents #gslc.gsl-scope.no-joomla-menu #right-col:not(.noleftbar) #top-head {
+body.com_jevents #gslc.gsl-scope.no-joomla-menu #right-col:not(.noleftbar) #top-head,
+body.com_categories #gslc.gsl-scope.no-joomla-menu #right-col:not(.noleftbar) #top-head,
+body.com_fields #gslc.gsl-scope.no-joomla-menu #right-col:not(.noleftbar) #top-head {
   left: 50px;
 }
-body.com_jevents #gslc.gsl-scope.no-joomla-menu .gsl-content {
+body.com_jevents #gslc.gsl-scope.no-joomla-menu .gsl-content,
+body.com_categories #gslc.gsl-scope.no-joomla-menu .gsl-content,
+body.com_fields #gslc.gsl-scope.no-joomla-menu .gsl-content {
   margin-left: 0;
-}
-body.com_categories {
-  /* See if we can get fixed positioning working as sticky */
-  /* Full sized screen */
-  /* Old Stuff and com_categories, com_fields */
-}
-body.com_categories .container-fluid {
-  padding: 0 0 0 0;
-}
-body.com_categories #wrapper #content {
-  padding: 0;
-}
-body.com_categories .gsl-navbar-nav a[target="_blank"]::before {
-  content: none;
-}
-body.com_categories:not(.with-joomla-sidebar) header.header {
-  display: none;
-}
-body.com_categories.with-joomla-sidebar header.header .header-inside {
-  height: 0;
-  min-height: 0;
-}
-body.com_categories.with-joomla-sidebar header.header .header-title .header-item,
-body.com_categories.with-joomla-sidebar header.header .header-items .header-item {
-  display: none !important;
-}
-body.com_categories.with-joomla-sidebar header.header .header-title .logo,
-body.com_categories.with-joomla-sidebar header.header .header-title .page-title {
-  display: none;
-}
-body.com_categories button.navbar-toggler.toggler-toolbar {
-  display: none;
-}
-body.com_categories .container-main::after {
-  /* For when scrolling right a long way! */
-  background-color: var(--globalbackground);
-}
-body.com_categories.with-joomla-sidebar #wrapper > .container-fluid {
-  transform: translateZ(0);
-}
-body.com_categories #wrapper #subhead {
-  display: none;
-}
-body.com_categories:not(.with-joomla-sidebar) #wrapper #sidebar-wrapper {
-  /* Always hide unless we implement toggle on/off */
-  display: none;
-  position: fixed;
-  height: 100%;
-  /* J4 sidebar */
-}
-body.com_categories:not(.with-joomla-sidebar) #wrapper #sidebar-wrapper.gsl-hide-sidebar {
-  display: none;
-  transition: none;
-  /*all .3s ease;*/
-}
-body.com_categories #gslc.gsl-scope #left-col {
-  /* left: 3rem; */
-  transition: none;
-  /*all .3s ease;*/
-}
-body.com_categories #gslc.gsl-scope #right-col #top-head {
-  /* left: ~"calc(50px + 3rem)";*/
-  transition: none;
-  /*all .3s ease;*/
-}
-body.com_categories #gslc.gsl-scope .gsl-content {
-  /*margin-left: 3rem;*/
-  transition: none;
-  /*all .3s ease;*/
-}
-body.com_categories #gslc.gsl-scope.joomla-menu-open:not(.gsl-hide-sidebar) #left-col {
-  left: 18rem;
-}
-body.com_categories #gslc.gsl-scope.joomla-menu-open:not(.gsl-hide-sidebar) #right-col #top-head {
-  left: calc(50px + 18rem);
-}
-body.com_categories #gslc.gsl-scope.joomla-menu-open:not(.gsl-hide-sidebar) .gsl-content {
-  margin-left: 18rem;
-}
-body.com_categories #gslc.gsl-scope.no-joomla-menu #left-col {
-  left: 0;
-}
-body.com_categories #gslc.gsl-scope.no-joomla-menu #right-col #top-head {
-  /* left: 50px;*/
-}
-body.com_categories #gslc.gsl-scope.no-joomla-menu .gsl-content {
-  margin-left: 0;
-}
-body.com_categories h1.page-title {
-  font-size: 1.5em;
-  line-height: 50px;
-  color: #fff;
-  padding: 0 0 0 10px;
-  margin: 0;
-}
-body.com_categories h1.page-title span.fields,
-body.com_categories h1.page-title span.categories,
-body.com_categories h1.page-title span.category-edit,
-body.com_categories h1.page-title span.category-add,
-body.com_categories h1.page-title img {
-  display: none;
 }
 body.com_categories.view-categories {
   /* Full sized screen */
@@ -267,7 +260,9 @@ body.com_categories.view-categories #gslc.gsl-scope:not(.gsl-hide-sidebar) .left
   display: none;
 }
 @media (max-width: 960px) {
-  body.com_jevents #gslc.gsl-scope.gsl-hide-sidebar #right-col:not(.noleftbar) #top-head {
+  body.com_jevents #gslc.gsl-scope.gsl-hide-sidebar #right-col:not(.noleftbar) #top-head,
+  body.com_categories #gslc.gsl-scope.gsl-hide-sidebar #right-col:not(.noleftbar) #top-head,
+  body.com_fields #gslc.gsl-scope.gsl-hide-sidebar #right-col:not(.noleftbar) #top-head {
     /* 3rem for J4 sidebar
         left: ~"calc(50px + 3rem)";
          */
@@ -277,8 +272,10 @@ body.com_categories.view-categories #gslc.gsl-scope:not(.gsl-hide-sidebar) .left
 @media (max-width: 575.98px) {
   body.com_jevents.with-joomla-sidebar header.header .header-title,
   body.com_categories.with-joomla-sidebar header.header .header-title,
+  body.com_fields.with-joomla-sidebar header.header .header-title,
   body.com_jevents.with-joomla-sidebar header.header .header-items,
-  body.com_categories.with-joomla-sidebar header.header .header-items {
+  body.com_categories.with-joomla-sidebar header.header .header-items,
+  body.com_fields.with-joomla-sidebar header.header .header-items {
     min-height: 54px;
   }
 }

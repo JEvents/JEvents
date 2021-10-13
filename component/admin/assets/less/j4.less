@@ -1,8 +1,10 @@
 @import "vars.less";
 /** Joomla 4 **/
-body:not(.with-joomla-sidebar) header.header {display:none;}
+body:not(.with-joomla-sidebar) header.header {
+  display:none;
+}
 
-body.@{mycomponent} {
+body.@{mycomponent}, body.com_categories, body.com_fields {
   .container-fluid {
     padding: 0 0 0 0;
   }
@@ -16,22 +18,52 @@ body.@{mycomponent} {
     display: none;
   }
 
-  &.with-joomla-sidebar  header.header {
-    .header-inside {
-      height:0;
-      min-height:0;
+  &.with-joomla-sidebar {
+    /* See if we can get fixed positioning working as sticky */
+    #gslc.gsl-scope {
+     /* transform: translateZ(0);*/
     }
-    .header-title, .header-items {
-      .header-item {
-        display: none !important;
+    #wrapper {
+      &.open {
+      }
+      &.closed {
+      }
+      > .container-fluid {
+        /* transform: translateZ(0);*/
       }
     }
-    .header-title {
-      .logo, .ysts-page-title {
-        display:none;
+
+    #gslc.gsl-scope {
+      &.gsl-hide-sidebar #right-col:not(.noleftbar) {
+        margin-left: 0px;
+
+        #top-head {
+          position: sticky;
+          top: 0;
+        }
+      }
+      #left-col {
+        position: sticky;
+      }
+    }
+    header.header {
+     .header-inside {
+        height:0;
+        min-height:0;
+      }
+      .header-title, .header-items {
+        .header-item {
+          display: none !important;
+        }
+      }
+      .header-title {
+        .logo, .ysts-page-title, .page-title {
+          display:none;
+        }
       }
     }
   }
+
   button.navbar-toggler.toggler-toolbar {
     display:none;
   }
@@ -39,12 +71,6 @@ body.@{mycomponent} {
   .container-main::after {
     /* For when scrolling right a long way! */
     background-color: var(--globalbackground);
-  }
-
-  /* See if we can get fixed positioning working as sticky */
-
-  &.with-joomla-sidebar #wrapper > .container-fluid {
-    transform: translateZ(0);
   }
 
   /* Full sized screen */
@@ -169,130 +195,6 @@ body.@{mycomponent} {
 
 }
 
-body.com_categories {
-  .container-fluid {
-    padding: 0 0 0 0;
-  }
-  #wrapper #content { padding:0;}
-
-  .gsl-navbar-nav a[target="_blank"]::before {
-    content:none;
-  }
-
-  &:not(.with-joomla-sidebar) header.header {
-    display: none;
-  }
-
-  &.with-joomla-sidebar  header.header {
-    .header-inside {
-      height:0;
-      min-height:0;
-    }
-    .header-title, .header-items {
-      .header-item {
-        display: none !important;
-      }
-    }
-    .header-title {
-      .logo, .page-title {
-        display:none;
-      }
-    }
-  }
-
-  button.navbar-toggler.toggler-toolbar {
-    display:none;
-  }
-
-  .container-main::after {
-    /* For when scrolling right a long way! */
-    background-color: var(--globalbackground);
-  }
-
-  /* See if we can get fixed positioning working as sticky */
-
-  &.with-joomla-sidebar #wrapper > .container-fluid {
-    transform: translateZ(0);
-  }
-
-  /* Full sized screen */
-  #wrapper {
-    #subhead {
-      display:none;
-    }
-  }
-  &:not(.with-joomla-sidebar) #wrapper #sidebar-wrapper {
-    /* Always hide unless we implement toggle on/off */
-    display: none;
-    position: fixed;
-    height: 100%;
-    /* J4 sidebar */
-    &.gsl-hide-sidebar {
-      display: none;
-      transition: none;/*all .3s ease;*/
-    }
-  }
-
-  #gslc.gsl-scope {
-    #left-col {
-      /* left: 3rem; */
-      transition: none;/*all .3s ease;*/
-    }
-
-    #right-col #top-head {
-     /* left: ~"calc(50px + 3rem)";*/
-      transition: none;/*all .3s ease;*/
-    }
-
-    .gsl-content {
-      /*margin-left: 3rem;*/
-      transition: none;/*all .3s ease;*/
-    }
-  }
-
-  #gslc.gsl-scope.joomla-menu-open:not(.gsl-hide-sidebar) {
-    #left-col {
-      left: 18rem;
-    }
-
-    #right-col #top-head {
-      left: ~"calc(50px + 18rem)";
-    }
-
-    .gsl-content {
-      margin-left: 18rem;
-    }
-  }
-
-  #gslc.gsl-scope.no-joomla-menu {
-    #left-col {
-      left: 0;
-    }
-
-    #right-col #top-head {
-     /* left: 50px;*/
-    }
-
-    .gsl-content {
-      margin-left: 0;
-    }
-  }
-  /* Old Stuff and com_categories, com_fields */
-  h1.page-title {
-    font-size: 1.5em;
-    line-height: 50px;
-    color: #fff;
-    padding: 0 0 0 10px;
-    margin: 0;
-  }
-  h1.page-title {
-    span.fields, span.categories, span.category-edit, span.category-add, img {
-      display: none;
-    }
-  }
-
-}
-
 body.com_categories.view-categories {
   /* Full sized screen */
   #gslc.gsl-scope {
@@ -339,7 +241,7 @@ body.com_categories.view-categories {
 
 
 @media (max-width: 960px) {
-  body.@{mycomponent} {
+  body.@{mycomponent}, body.com_categories, body.com_fields {
     #gslc.gsl-scope.gsl-hide-sidebar {
       #right-col:not(.noleftbar)  #top-head {
         /* 3rem for J4 sidebar
@@ -354,7 +256,7 @@ body.com_categories.view-categories {
 
 @media (max-width: 575.98px) {
 
-  body.@{mycomponent}, body.com_categories {
+  body.@{mycomponent}, body.com_categories, body.com_fields {
     &.with-joomla-sidebar header.header {
       .header-title, .header-items {
         min-height: 54px;
