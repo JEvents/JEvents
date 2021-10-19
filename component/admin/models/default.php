@@ -201,13 +201,22 @@ class DefaultsModelDefault extends BaseDatabaseModel
 			}
 		}
 
+		if ($data["catid"] == "")
+		{
+			$data["catid"] = 0;
+		}
 		$row = $this->getTable();
 
 		// Bind the form fields to the session table
 		$row->bind($data);
 
 		// Store the session table to the database
-		$row->store();
+		if (!$row->store())
+		{
+			echo $row->getError();
+			exit();
+			return false;
+		}
 
 		return true;
 	}

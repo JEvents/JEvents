@@ -21,7 +21,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 
 ?>
 <label><?php echo Text::_("JEV_PLUGIN_INSTRUCTIONS",true);?></label>
-<select id="jevdefaults" onchange="defaultsEditorPlugin.insert('value','jevdefaults' )" ></select>
+<select id="jevdefaults" class="gsl-select" onchange="defaultsEditorPlugin.insert('value','jevdefaults' )" ></select>
 
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function() {
