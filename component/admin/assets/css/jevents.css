@@ -634,6 +634,9 @@ body.com_jevents {
 #gslc.gsl-scope .gsl-lightbox {
   z-index: 9999;
 }
+#gslc.gsl-scope .gsl-dropdown.gsl-open {
+  width: max-content;
+}
 /* action toolbar styling */
 .gsl-scope .ystoolbar_wrapper.gsl-button-group .gsl-dropdown .gsl-button {
   text-align: left;
