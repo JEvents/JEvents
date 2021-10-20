@@ -562,17 +562,15 @@ public function getCal($modid = 0)
 		return "";
 	} // function getSpecificCal
 
-public function getAjaxCal($modid = 0, $month, $year)
+public function getAjaxCal($modid, $month, $year)
 	{
 
+        //TODO check usage of this function and us
 		// capture module id so that we can use it for ajax type navigation
-		if ($modid != 0)
-		{
-			$this->_modid = $modid;
-		}
-		$user = Factory::getUser();
+        $this->_modid   = $modid != 0 ? $modid : 0;
 
-		$db = Factory::getDbo();
+		$user   = Factory::getUser();
+		$db     = Factory::getDbo();
 
 		static $isloaded_css = false;
 		// this will get the viewname based on which classes have been implemented
