@@ -143,6 +143,9 @@ class JevHtmlBootstrap
 		$uikitopt['container'] = isset($params['container']) ? $params['container'] : 'body';
 		$uikitoptions = json_encode($uikitopt);
 
+		$jevparams = ComponentHelper::getParams('com_jevents');
+		$toolTipType = $jevparams->get('tooltiptype', 'bootstrap');
+
 		Factory::getDocument()->addScriptDeclaration(
 <<< SCRIPT
 document.addEventListener('DOMContentLoaded', function()
@@ -155,44 +158,38 @@ document.addEventListener('DOMContentLoaded', function()
 			ys_setuppopover('$selector', $uikitoptions);
 		}
 		catch (e) {
-			try {
-				// Do not use this for YooTheme Pro templates otherwise you get strange behaviour!
-				if (document.getElementById('jevents').closest('.tm-page'))
-				{
-					jQuery('$selector').popover($options);
-				}
-				else {
-					// Fall back to native uikit
-					var hoveritems = document.querySelectorAll('$selector');
-					hoveritems.forEach(function (hoveritem) {
-						let title = hoveritem.getAttribute('data-yspoptitle') || hoveritem.getAttribute('data-original-title') || hoveritem.getAttribute('title');
-						let body = hoveritem.getAttribute('data-yspopcontent') || hoveritem.getAttribute('data-content') || '';
-						let options = hoveritem.getAttribute('data-yspopoptions') || '$uikitoptions';
-						options = JSON.parse(options);
-						/*
-						var phtml = '<div class="uk-card uk-card-default uk-padding-remove uk-background-default" style="width:max-content;border-top-left-radius: 5px;border-top-right-radius: 5px;">' +
-						(title != '' ? '<div class="uk-text-emphasis">' + title + '</div>' : '') +
-						(body != '' ? '<div class="uk-card-body uk-text-secondary uk-padding-small" style="width:max-content">' + body + '</div>' : '') +
-						'</div>';
-						*/						
-						var phtml = '' +
-						(title != '' ? title.replace("jevtt_title", "uk-card-title uk-text-emphasis uk-padding-small").replace(/color:#(.*);/,'color:#$1!important;')  : '') +
-						(body != '' ?  body.replace("jevtt_text", "uk-card-body uk-padding-small uk-text-secondary  uk-background-default")  : '') +
-						'';
-						options.title = phtml;
-						
-						if (hoveritem.hasAttribute('title')) {
-							hoveritem.removeAttribute('title');
-						}
-				
-						UIkit.tooltip(hoveritem, options);
-					});
-				}
-	
-			}
-			catch (e2) {
+			if ('$toolTipType' != "uikit") {
+			// Do not use this for YooTheme Pro templates otherwise you get strange behaviour!
 				jQuery('$selector').popover($options);
 			}
+			else 
+			{
+				// Fall back to native uikit
+				var hoveritems = document.querySelectorAll('$selector');
+				hoveritems.forEach(function (hoveritem) {
+					let title = hoveritem.getAttribute('data-yspoptitle') || hoveritem.getAttribute('data-original-title') || hoveritem.getAttribute('title');
+					let body = hoveritem.getAttribute('data-yspopcontent') || hoveritem.getAttribute('data-content') || '';
+					let options = hoveritem.getAttribute('data-yspopoptions') || '$uikitoptions';
+					options = JSON.parse(options);
+					/*
+					var phtml = '<div class="uk-card uk-card-default uk-padding-remove uk-background-default" style="width:max-content;border-top-left-radius: 5px;border-top-right-radius: 5px;">' +
+					(title != '' ? '<div class="uk-text-emphasis">' + title + '</div>' : '') +
+					(body != '' ? '<div class="uk-card-body uk-text-secondary uk-padding-small" style="width:max-content">' + body + '</div>' : '') +
+					'</div>';
+					*/						
+					var phtml = '' +
+					(title != '' ? title.replace("jevtt_title", "uk-card-title uk-text-emphasis uk-padding-small").replace(/color:#(.*);/,'color:#$1!important;')  : '') +
+					(body != '' ?  body.replace("jevtt_text", "uk-card-body uk-padding-small uk-text-secondary  uk-background-default")  : '') +
+					'';
+					options.title = phtml;
+					
+					if (hoveritem.hasAttribute('title')) {
+						hoveritem.removeAttribute('title');
+					}
+			
+					UIkit.tooltip(hoveritem, options);
+				});
+			}	
 		}
 	}
 });

@@ -19,6 +19,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 
+JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
 JLoader::register('JEventsHelper', JPATH_ADMINISTRATOR . "/components/com_jevents/helpers/jevents.php");
 
 class GslJEventsMenuHelper

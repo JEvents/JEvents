@@ -6,7 +6,15 @@
  * @copyright   Copyright (C) 2014-JEVENTS_COPYRIGHT GWESystems Ltd. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
-JLoader::register('CategoryHelperAssociation', JPATH_ADMINISTRATOR . '/components/com_categories/helpers/association.php');
+if (file_exists(JPATH_ADMINISTRATOR . '/components/com_categories/helpers/association.php'))
+{
+	JLoader::register('CategoryHelperAssociation', JPATH_ADMINISTRATOR . '/components/com_categories/helpers/association.php');
+}
+else
+{
+// Joomla 4
+	class_alias("Joomla\Component\Categories\Administrator\Helper\CategoryAssociationHelper", "CategoryHelperAssociation");
+}
 
 defined('_JEXEC') or die;
 

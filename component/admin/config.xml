@@ -536,6 +536,7 @@ Default should be set by the custom field
 		       description="JEV_TOOLTIPTYPE_TIP" difficulty="2" conditional="com_enableToolTip" conditions="1">
 			<option value="joomla">JEV_MOOTOOLS</option>
 			<option value="bootstrap">JEV_BOOTSTRAP</option>
+			<option value="uikit">JEV_UIKIT</option>
 		</field>
 
 		<field name="com_calTTBackground" type="jevboolean" class="gsl-button-group jevp_tooltip" default="1" menu="hide"
