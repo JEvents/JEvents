@@ -57,7 +57,7 @@ jevpreview.push({
 	'id': 5,
 	'name': 'UIKit Float Popup',
 	'image': 'http://www.jevents.net/jevlayouts/latest5.png',
-	'code': '<div id=\'jeviso_item${RPID}\' class=\'jeviso_item\'>\n' +
+	'code': '<div id=\'jeviso_item${RPID}\' class=\'jeviso_item w4 style3\'>\n' +
 		'    <div class=\'jfloat-event ng-scope ng-isolate-scope\' itemscope=\'\' itemtype=\'http://schema.org/Event\'>\n' +
 		'        <div class=\'jeviso_item_image uk-height-small\' uk-toggle=\'target: #modal-event${RPID}\'>\n' +
 		'            ${JEV_SIZEDIMAGE_1;400x300}\n' +
@@ -239,58 +239,172 @@ jevpreview.push({
 		'	margin-top: 10px;\n' +
 		'	font-weight: normal;\n' +
 		'	text-overflow: ellipsis;\n' +
+		'    overflow-x: hidden;\n' +
 		'}\n' +
 		'#jeviso_module .jeviso_container .jeviso_item.style3 div.startdate {\n' +
 		'	text-align: center;\n' +
 		'}\n' +
-		'.style3-modal {\n' +
+		'.jeviso-modal {\n' +
 		'	cursor: initial;\n' +
 		'}\n' +
-		'.style3-modal .uk-modal-dialog {\n' +
+		'.jeviso-modal .uk-modal-dialog {\n' +
 		'	width: 800px;\n' +
 		'}\n' +
-		'.style3-modal .uk-modal-dialog .uk-modal-header {\n' +
+		'.jeviso-modal .uk-modal-dialog .uk-modal-header {\n' +
 		'	margin: 0;\n' +
 		'}\n' +
-		'.style3-modal .uk-modal-dialog .uk-button-primary a {\n' +
+		'.jeviso-modal .uk-modal-dialog .uk-button-primary a {\n' +
 		'	color: #fff;\n' +
 		'}\n' +
-		'.style3-modal .uk-modal-dialog .eventtime,\n' +
-		'.style3-modal .uk-modal-dialog .eventdetails,\n' +
-		'.style3-modal .uk-modal-dialog .calendarlinks {\n' +
+		'.jeviso-modal .uk-modal-dialog .eventtime,\n' +
+		'.jeviso-modal .uk-modal-dialog .eventdetails,\n' +
+		'.jeviso-modal .uk-modal-dialog .calendarlinks {\n' +
 		'	padding-bottom: 5px;\n' +
 		'	margin-bottom: 5px;\n' +
 		'}\n' +
-		'.style3-modal .uk-modal-dialog .startdate {\n' +
+		'.jeviso-modal .uk-modal-dialog .startdate {\n' +
 		'	font-size: 1.5rem !important;\n' +
 		'	padding-left: 10px;\n' +
 		'	text-align: center;\n' +
 		'}\n' +
-		'.style3-modal .uk-modal-dialog .startdate .startmonth {\n' +
+		'.jeviso-modal .uk-modal-dialog .startdate .startmonth {\n' +
 		'   height: 40px;\n' +
 		'	line-height: 40px;\n' +
 		'}\n' +
-		'.style3-modal .uk-modal-dialog .startdate .startday {\n' +
+		'.jeviso-modal .uk-modal-dialog .startdate .startday {\n' +
 		'	height: 25px;\n' +
 		'	line-height: 25px;\n' +
 		'}\n' +
-		'.style3-modal .uk-modal-dialog .uk-modal-title {\n' +
+		'.jeviso-modal .uk-modal-dialog .uk-modal-title {\n' +
 		'	padding-left: 40px;\n' +
 		'	text-overflow: ellipsis;\n' +
 		'}\n' +
-		'.style3-modal .uk-modal-dialog .uk-modal-title a {\n' +
+		'.jeviso-modal .uk-modal-dialog .uk-modal-title a {\n' +
 		'	font-size: 1.5rem !important;\n' +
 		'	height: 40px;\n' +
 		'	line-height: 40px;\n' +
 		'}\n' +
-		'.style3-modal .uk-modal-dialog .uk-modal-title .eventcategory {\n' +
+		'.jeviso-modal .uk-modal-dialog .uk-modal-title .eventcategory {\n' +
 		'	display: block;\n' +
 		'	height: 25px;\n' +
 		'	line-height: 25px;\n' +
 		'	font-size: 1.3rem !important;\n' +
 		'	opacity: 0.6;\n' +
 		'	text-overflow: ellipsis;\n' +
-		'}',
+		'}\n' +
+		'#jeviso_module .jeviso_container .jeviso_gutter {\n' +
+		'	width: 0% !important;\n' +
+		'}\n' +
+		'#jeviso_module .jeviso_container .jeviso_item.w1 {\n' +
+		'	width: 10%;\n' +
+		'}\n' +
+		'#jeviso_module .jeviso_container .jeviso_item.w2 {\n' +
+		'	width: 49%;\n' +
+		'	margin-right: 2%;\n' +
+		'	margin-bottom: 2%;\n' +
+		'}\n' +
+		'#jeviso_module .jeviso_container .jeviso_item.w2:nth-child(2n) {\n' +
+		'	margin-right: 0%;\n' +
+		'}\n' +
+		'@media (max-width: 479px) {\n' +
+		'	#jeviso_module .jeviso_container .jeviso_item.w2 {\n' +
+		'		width: 100%;\n' +
+		'		margin-right: 0%;\n' +
+		'	}\n' +
+		'}\n' +
+		'#jeviso_module .jeviso_container .jeviso_item.w3 {\n' +
+		'	width: 32%;\n' +
+		'	margin-right: 2%;\n' +
+		'	margin-bottom: 2%;\n' +
+		'}\n' +
+		'#jeviso_module .jeviso_container .jeviso_item.w3:nth-child(3n) {\n' +
+		'	margin-right: 0%;\n' +
+		'}\n' +
+		'@media (min-width: 480px) and (max-width: 768px) {\n' +
+		'	#jeviso_module .jeviso_container .jeviso_item.w3 {\n' +
+		'		width: 49%;\n' +
+		'		margin-right: 2%;\n' +
+		'		margin-bottom: 2%;\n' +
+		'	}\n' +
+		'	#jeviso_module .jeviso_container .jeviso_item.w3:nth-child(2n) {\n' +
+		'		margin-right: 0%;\n' +
+		'	}\n' +
+		'}\n' +
+		'@media (max-width: 479px) {\n' +
+		'	#jeviso_module .jeviso_container .jeviso_item.w3 {\n' +
+		'		width: 100%;\n' +
+		'		margin-right: 0%;\n' +
+		'	}\n' +
+		'}\n' +
+		'#jeviso_module .jeviso_container .jeviso_item.w4 {\n' +
+		'	width: 23.5%;\n' +
+		'	margin-right: 2%;\n' +
+		'	margin-bottom: 2%;\n' +
+		'}\n' +
+		'#jeviso_module .jeviso_container .jeviso_item.w4:nth-child(4n) {\n' +
+		'	margin-right: 0%;\n' +
+		'}\n' +
+		'@media (min-width: 480px) and (max-width: 768px) {\n' +
+		'	#jeviso_module .jeviso_container .jeviso_item.w4 {\n' +
+		'		width: 49%;\n' +
+		'		margin-right: 2%;\n' +
+		'		margin-bottom: 2%;\n' +
+		'	}\n' +
+		'	#jeviso_module .jeviso_container .jeviso_item.w4:nth-child(2n) {\n' +
+		'		margin-right: 0%;\n' +
+		'	}\n' +
+		'}\n' +
+		'@media (max-width: 479px) {\n' +
+		'	#jeviso_module .jeviso_container .jeviso_item.w4 {\n' +
+		'		width: 100%;\n' +
+		'		margin-right: 0%;\n' +
+		'	}\n' +
+		'}\n' +
+		'#jeviso_module .jeviso_container .jeviso_item.w5 {\n' +
+		'	width: 18.4%;\n' +
+		'	margin-right: 2%;\n' +
+		'	margin-bottom: 2%;\n' +
+		'}\n' +
+		'#jeviso_module .jeviso_container .jeviso_item.w5:nth-child(5n) {\n' +
+		'	margin-right: 0%;\n' +
+		'}\n' +
+		'@media (min-width: 920px) and (max-width: 1120px) {\n' +
+		'	#jeviso_module .jeviso_container .jeviso_item.w5 {\n' +
+		'		width: 23.5%;\n' +
+		'		margin-right: 2%;\n' +
+		'		margin-bottom: 2%;\n' +
+		'	}\n' +
+		'	#jeviso_module .jeviso_container .jeviso_item.w5:nth-child(4n) {\n' +
+		'		margin-right: 0%;\n' +
+		'	}\n' +
+		'}\n' +
+		'@media (min-width: 691px) and (max-width: 919px) {\n' +
+		'	#jeviso_module .jeviso_container .jeviso_item.w5 {\n' +
+		'		width: 32%;\n' +
+		'		margin-right: 2%;\n' +
+		'		margin-bottom: 2%;\n' +
+		'}\n' +
+		'	#jeviso_module .jeviso_container .jeviso_item.w5:nth-child(3n) {\n' +
+		'		margin-right: 0%;\n' +
+		'	}\n' +
+		'}\n' +
+		'@media (min-width: 480px) and (max-width: 690px) {\n' +
+		'	#jeviso_module .jeviso_container .jeviso_item.w5 {\n' +
+		'		width: 49%;\n' +
+		'		margin-right: 2%;\n' +
+		'		margin-bottom: 2%;\n' +
+		'}\n' +
+		'	#jeviso_module .jeviso_container .jeviso_item.w5:nth-child(2n) {\n' +
+		'		margin-right: 0%;\n' +
+		'	}\n' +
+		'}\n' +
+		'@media (max-width: 479px) {\n' +
+		'	#jeviso_module .jeviso_container .jeviso_item.w5 {\n' +
+		'		width: 100%;\n' +
+		'		margin-right: 0%;\n' +
+		'	}\n' +
+		'}\n' +
+	'',
 	'info': 'UIKit 3 based theme that combines with Float Theme to show event image. date, time, title and location with popup details in modal.  <strong>This layout requires the Silver Member Float Theme, Standard Images and Managed Locations Addons to work together with a UIKit 3 based template.</strong>',
 	'ignorebr': true,
 	'inccss': false,

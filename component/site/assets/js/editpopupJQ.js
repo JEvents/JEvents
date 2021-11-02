@@ -130,7 +130,14 @@ function launchModal(selector, url) {
             }
         });
     }
-    jQuery(selector).modal({backdrop: true, show: true, keyboard: true, remote: ''});
+    // Joomla 4 changes
+    try {
+        var myModal = new bootstrap.Modal(document.querySelector(selector), {backdrop: true, show: true, keyboard: true, remote: ''});
+        myModal.show();
+    }
+    catch (e) {
+        jQuery(selector).modal({backdrop: true, show: true, keyboard: true, remote: ''});
+    }
     /** initialized with no keyboard */
     /** reloads parent page on close!
      ** jQuery(selector).on('hidden.bs.modal', function (e) { location.reload();}); */
@@ -146,7 +153,7 @@ function addEditModalHtml() {
                 + '<div class="modal-dialog modal-lg">'
                 + '<div class="modal-content">'
                 + '<div class="modal-header">'
-                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+                + '<button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
                 + '<h4 class="modal-title" id="myModalLabel"></h4>'
                 + '</div>'
                 + '<div class="modal-body">'
@@ -162,7 +169,7 @@ function addEditModalHtml() {
                 + '<div class="modal-dialog modal-lg">'
                 + '<div class="modal-content">'
                 + '<div class="modal-header">'
-                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+                + '<button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
                 + '<h4 class="modal-title" id="myModalLabel"></h4>'
                 + '</div>'
                 + '<div class="modal-body">'
@@ -207,7 +214,7 @@ function addImportPopupHtml() {
                 + '<div class="modal-dialog modal-sm">'
                 + '<div class="modal-content">'
                 + '<div class="modal-header">'
-                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+                + '<button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
                 + '<h4 class="modal-title" id="exampleModalLabel">' + Joomla.JText._("JEV_IMPORT_ICALEVENT") + '</h4>'
                 + '</div>'
                 + '<div class="modal-body">'
@@ -223,7 +230,7 @@ function addImportPopupHtml() {
                 + '<div class="modal-dialog modal-sm">'
                 + '<div class="modal-content">'
                 + '<div class="modal-header">'
-                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+                + '<button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
                 + '<h4 class="modal-title" id="exampleModalLabel">' + Joomla.JText._("JEV_IMPORT_ICALEVENT") + '</h4>'
                 + '</div>'
                 + '<div class="modal-body">'

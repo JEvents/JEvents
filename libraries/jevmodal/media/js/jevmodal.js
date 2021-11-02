@@ -203,7 +203,7 @@ function launchJevModal(selector, url) {
         }
     });
     jQuery(selector)
-        .modal({backdrop: true, show: true, keyboard: true, remote: ''})   // initialized with no keyboard
+        .modal(JSON.stringify({backdrop: true, show: true, keyboard: true, remote: ''}))   // initialized with no keyboard
     ;
     return;
 }
@@ -246,7 +246,7 @@ function addJevModalHtml(id) {
                 + '<div class="modal-dialog modal-lg modal-dialog-centered">'
                 + '<div class="modal-content">'
                 + '<div class="modal-header">'
-                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+                + '<button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
                 + '<h4 class="modal-title" id="' + id + 'Label"></h4>'
                 + '</div>'
                 + '<div class="modal-body">'
@@ -261,7 +261,7 @@ function addJevModalHtml(id) {
                 + '<div class="modal-dialog ">'
                 + '<div class="modal-content">'
                 + '<div class="modal-header">'
-                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+                + '<button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
                 + '<h4 class="modal-title" id="' + id + 'Label"></h4>'
                 + '</div>'
                 + '<div class="modal-body">'

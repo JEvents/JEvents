@@ -15,8 +15,16 @@ function Defaultgetstartenddates($view)
 	$Itemid = $input->getInt("Itemid", 0);
 	// This causes the filter module to reset
 	$filters          = jevFilterProcessing::getInstance(array());
-	$activeFilterMenu = Factory::getApplication()->getUserState('active_filter_menu ', $Itemid);
-	if ($input->getInt('filter_reset', 0) || ($activeFilterMenu > 0 && $activeFilterMenu != $Itemid))
+	$activeFilterMenu = $app->getUserState('active_filter_menu ', $Itemid);
+
+	// When switching between view types then we must reset the date range!
+	$oldTask = $app->getUserState('jevents_float_task', false);
+	$jevtask = $input->getCmd('jevtask', 'month.calendar');
+
+	//echo "oldTask = $oldTask jevtask = $jevtask<br>";
+	$app->setUserState('jevents_float_task', $jevtask);
+
+	if ($input->getInt('filter_reset', 0) || ($activeFilterMenu > 0 && $activeFilterMenu != $Itemid) || ($oldTask && $oldTask !== $jevtask))
 	{
 		// if actively filtering then do not reset
 		if (!$input->getString("startdate", 0) || $input->getInt('filter_reset', 0))

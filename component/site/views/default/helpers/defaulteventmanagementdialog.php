@@ -130,12 +130,12 @@ function DefaultEventManagementDialog($view, $row, $mask, $bootstrap = false)
 							{
 						?>
 						<h4 class="modal-title" id="myModalLabel"><?php echo Text::_("JEV_MANAGE_EVENT"); ?></h4>
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
 								<?php
 							}
 							else {
 								?>
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
 						<h4 class="modal-title" id="myModalLabel"><?php echo Text::_("JEV_MANAGE_EVENT"); ?></h4>
 								<?php
 							}
@@ -206,7 +206,7 @@ function DefaultEventManagementDialog($view, $row, $mask, $bootstrap = false)
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default"
-						        data-dismiss="modal"><?php echo Text::_("JEV_CLOSE"); ?></button>
+						        data-dismiss="modal" data-bs-dismiss="modal" ><?php echo Text::_("JEV_CLOSE"); ?></button>
 					</div>
 				</div>
 			</div>

@@ -237,6 +237,7 @@ jevpreview.push({
 		'    margin-top: 10px;\n' +
 		'    font-weight: normal;\n' +
 		'    text-overflow: ellipsis;\n' +
+		'    overflow-x: hidden;\n' +
 		'}\n' +
 		'#jeviso_module .jeviso_itemcontainer .jeviso_item div.startdate {\n' +
 		'    text-align: center;\n' +
@@ -289,7 +290,120 @@ jevpreview.push({
 		'    font-size: 1.3rem !important;\n' +
 		'    opacity: 0.6;\n' +
 		'    text-overflow: ellipsis;\n' +
-		'}',
+		'}\n' +
+		'#jeviso_module .jeviso_container .jeviso_gutter {\n' +
+		'	width: 0% !important;\n' +
+		'}\n' +
+		'#jeviso_module .jeviso_container .jeviso_item.w1 {\n' +
+		'	width: 10%;\n' +
+		'}\n' +
+		'#jeviso_module .jeviso_container .jeviso_item.w2 {\n' +
+		'	width: 49%;\n' +
+		'	margin-right: 2%;\n' +
+		'	margin-bottom: 2%;\n' +
+		'}\n' +
+		'#jeviso_module .jeviso_container .jeviso_item.w2:nth-child(2n) {\n' +
+		'	margin-right: 0%;\n' +
+		'}\n' +
+		'@media (max-width: 479px) {\n' +
+		'	#jeviso_module .jeviso_container .jeviso_item.w2 {\n' +
+		'		width: 100%;\n' +
+		'		margin-right: 0%;\n' +
+		'	}\n' +
+		'}\n' +
+		'#jeviso_module .jeviso_container .jeviso_item.w3 {\n' +
+		'	width: 32%;\n' +
+		'	margin-right: 2%;\n' +
+		'	margin-bottom: 2%;\n' +
+		'}\n' +
+		'#jeviso_module .jeviso_container .jeviso_item.w3:nth-child(3n) {\n' +
+		'	margin-right: 0%;\n' +
+		'}\n' +
+		'@media (min-width: 480px) and (max-width: 768px) {\n' +
+		'	#jeviso_module .jeviso_container .jeviso_item.w3 {\n' +
+		'		width: 49%;\n' +
+		'		margin-right: 2%;\n' +
+		'		margin-bottom: 2%;\n' +
+		'	}\n' +
+		'	#jeviso_module .jeviso_container .jeviso_item.w3:nth-child(2n) {\n' +
+		'		margin-right: 0%;\n' +
+		'	}\n' +
+		'}\n' +
+		'@media (max-width: 479px) {\n' +
+		'	#jeviso_module .jeviso_container .jeviso_item.w3 {\n' +
+		'		width: 100%;\n' +
+		'		margin-right: 0%;\n' +
+		'}\n' +
+		'}\n' +
+		'#jeviso_module .jeviso_container .jeviso_item.w4 {\n' +
+		'	width: 23.5%;\n' +
+		'	margin-right: 2%;\n' +
+		'	margin-bottom: 2%;\n' +
+		'}\n' +
+		'#jeviso_module .jeviso_container .jeviso_item.w4:nth-child(4n) {\n' +
+		'	margin-right: 0%;\n' +
+		'}\n' +
+		'@media (min-width: 480px) and (max-width: 768px) {\n' +
+		'	#jeviso_module .jeviso_container .jeviso_item.w4 {\n' +
+		'		width: 49%;\n' +
+		'		margin-right: 2%;\n' +
+		'		margin-bottom: 2%;\n' +
+		'	}\n' +
+		'	#jeviso_module .jeviso_container .jeviso_item.w4:nth-child(2n) {\n' +
+		'		margin-right: 0%;\n' +
+		'	}\n' +
+		'}\n' +
+		'@media (max-width: 479px) {\n' +
+		'	#jeviso_module .jeviso_container .jeviso_item.w4 {\n' +
+		'		width: 100%;\n' +
+		'		margin-right: 0%;\n' +
+		'	}\n' +
+		'}\n' +
+		'#jeviso_module .jeviso_container .jeviso_item.w5 {\n' +
+		'	width: 18.4%;\n' +
+		'	margin-right: 2%;\n' +
+		'	margin-bottom: 2%;\n' +
+		'}\n' +
+		'#jeviso_module .jeviso_container .jeviso_item.w5:nth-child(5n) {\n' +
+		'	margin-right: 0%;\n' +
+		'}\n' +
+		'@media (min-width: 920px) and (max-width: 1120px) {\n' +
+		'	#jeviso_module .jeviso_container .jeviso_item.w5 {\n' +
+		'		width: 23.5%;\n' +
+		'		margin-right: 2%;\n' +
+		'		margin-bottom: 2%;\n' +
+		'	}\n' +
+		'	#jeviso_module .jeviso_container .jeviso_item.w5:nth-child(4n) {\n' +
+		'		margin-right: 0%;\n' +
+		'	}\n' +
+		'}\n' +
+		'@media (min-width: 691px) and (max-width: 919px) {\n' +
+		'	#jeviso_module .jeviso_container .jeviso_item.w5 {\n' +
+		'		width: 32%;\n' +
+		'		margin-right: 2%;\n' +
+		'		margin-bottom: 2%;\n' +
+		'}\n' +
+		'	#jeviso_module .jeviso_container .jeviso_item.w5:nth-child(3n) {\n' +
+		'		margin-right: 0%;\n' +
+		'	}\n' +
+		'}\n' +
+		'@media (min-width: 480px) and (max-width: 690px) {\n' +
+		'	#jeviso_module .jeviso_container .jeviso_item.w5 {\n' +
+		'		width: 49%;\n' +
+		'		margin-right: 2%;\n' +
+		'		margin-bottom: 2%;\n' +
+		'}\n' +
+		'	#jeviso_module .jeviso_container .jeviso_item.w5:nth-child(2n) {\n' +
+		'		margin-right: 0%;\n' +
+		'	}\n' +
+		'}\n' +
+		'@media (max-width: 479px) {\n' +
+		'	#jeviso_module .jeviso_container .jeviso_item.w5 {\n' +
+		'		width: 100%;\n' +
+		'		margin-right: 0%;\n' +
+			'	}\n' +
+		'}\n' +
+	'',
 	'js': 'document.addEventListener(\'DOMContentLoaded\', function () {\n' +
 		'\n' +
 		'    jQuery(\'div.jeviso_container\').on(\'jevisolist\', function () {\n' +
@@ -369,7 +483,7 @@ jevpreview.push({
 		"\t\t\t\t\t\t\t\t<h2 class='eventtitle'>{{Title Link:TITLE_LINK}}<span class='eventcategory d-block'>{{Category:CATEGORY}}</span></h2>\n" +
 		"\t\t\t\t\t\t\t</div>\n" +
 		"\t\t\t\t\t\t</div>\n" +
-		"\t\t\t\t\t\t<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n" +
+		"\t\t\t\t\t\t<button type=\"button\" class=\"close\" data-dismiss=\"modal\" data-bs-dismiss=\"modal\" aria-label=\"Close\">\n" +
 		"\t\t\t\t\t\t\t<span aria-hidden=\"true\">&times;</span>\n" +
 		"\t\t\t\t\t\t</button>\n" +
 		"\t\t\t\t\t</div>\n" +
