@@ -32,6 +32,7 @@ $gslIcon  = isset($displayData['gslicon']) ? ' gsl-icon="icon:'.$displayData['gs
 if (!empty($dataTarget))
 {
 	$dataTarget = " data-target='#" . $dataTarget . "' data-toggle='modal' ";
+	$dataTarget .= " data-bs-target='#" . $dataTarget . "' data-bs-toggle='modal' ";
 }
 ?>
 <button onclick="<?php echo $doTask; ?>" class="<?php echo $btnClass; ?>" <?php echo $dataTarget;?> >

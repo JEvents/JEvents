@@ -122,7 +122,7 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 			<div class="modal-dialog modal-sm">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
 						<h4 class="modal-title" id="myModalLabel"><?php echo Text::_("JEV_SAVE"); ?></h4>
 					</div>
 					<div class="modal-body">
@@ -163,7 +163,7 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default"
-						        data-dismiss="modal"><?php echo Text::_("JEV_CLOSE"); ?></button>
+						        data-dismiss="modal" data-bs-dismiss="modal" ><?php echo Text::_("JEV_CLOSE"); ?></button>
 					</div>
 
 				</div>
