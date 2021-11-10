@@ -457,10 +457,10 @@ jevpreview.push({
 	'image': 'http://www.jevents.net/jevlayouts/latest5.png',
 	'code': "<div id='jeviso_item{{Repeat id:RPID}}' class='jeviso_item {COLUMNS}'>\n" +
 		"\t<div class='jfloat-event ng-scope ng-isolate-scope container' itemscope='' itemtype='http://schema.org/Event'>\n" +
-		"\t\t<div class='jeviso_item_image row' data-toggle='modal' data-target='#modal-event{{Repeat id:RPID}}'>\n" +
+		"\t\t<div class='jeviso_item_image row' data-toggle='modal' data-target='#modal-event{{Repeat id:RPID}}'  data-bs-toggle='modal' data-bs-target='#modal-event{{Repeat id:RPID}}'>\n" +
 		"\t\t\t{{Scaled Image:JEV_SIZEDIMAGE_1;400x300}}\n" +
 		"\t\t</div>\n" +
-		"\t\t<div id='eventcontainer{{Repeat id:RPID}}' class='jeviso_eventsummary row' data-toggle='modal' data-target='#modal-event{{Repeat id:RPID}}'>\n" +
+		"\t\t<div id='eventcontainer{{Repeat id:RPID}}' class='jeviso_eventsummary row' data-toggle='modal' data-target='#modal-event{{Repeat id:RPID}}' data-bs-toggle='modal' data-bs-target='#modal-event{{Repeat id:RPID}}'>\n" +
 		"\t\t\t<div class='startdate col-3 p-1' itemprop='startDate' datetime='{{Start Date:STARTDATE;%Y-%b-%d}}' style='background-color:{{Event Colour:COLOUR}};color:{{Foreground Colour:FGCOLOUR}}'>\n" +
 		"\t\t\t\t{{Start Date:STARTDATE;<div class='icon-calendar'></div><div class='startmonth'>%b</div><div class='startday'>%d</div>}}\n" +
 		"\t\t\t</div>\n" +
