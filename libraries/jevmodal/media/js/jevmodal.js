@@ -1,3 +1,6 @@
+var j3 = true;
+j3 = typeof j3php == "undefined" ? j3 : j3php;
+
 function jevModalSelector(sourceElement, params, evt) {
     if(sourceElement.getAttribute('data-jevmodal')) {
         evt.preventDefault();
@@ -202,9 +205,13 @@ function launchJevModal(selector, url) {
             jQuery(window).scrollTop(scrollT);
         }
     });
-    jQuery(selector)
-        .modal(JSON.stringify({backdrop: true, show: true, keyboard: true, remote: ''}))   // initialized with no keyboard
-    ;
+
+    if(j3) {
+        jQuery(selector).modal({backdrop: true, show: true, keyboard: true, remote: ''}) // initialized with no keyboard
+    } else {
+        jQuery(selector).modal(JSON.stringify({backdrop: true, show: true, keyboard: true, remote: ''}))   // initialized with no keyboard
+    }
+
     return;
 }
 
