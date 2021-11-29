@@ -73,3 +73,16 @@ jQuery(document).on('ready', function () {
         // jQuery("<style>" ).prop("type" , "text/css").html(" .jev-click-to-open {display:none;}").appendTo("head");
     }
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    var tips = document.querySelectorAll('.hasjevtip');
+    tips.forEach(function (el)
+    {
+        var dataAttr = el.getAttribute('data-content');
+        var dataTitleAttr = el.getAttribute('data-bs-original-title');
+        if (dataAttr)
+        {
+            el.setAttribute('data-bs-original-title', (dataTitleAttr ? dataTitleAttr : '' ) + dataAttr);
+        }
+    })
+});

@@ -206,10 +206,13 @@ function launchJevModal(selector, url) {
         }
     });
 
-    if(j3) {
+    // Joomla 4 changes
+    try {
+        var myModal = new bootstrap.Modal(document.querySelector(selector), {backdrop: true, show: true, keyboard: true, remote: ''});
+        myModal.show();
+    }
+    catch (e) {
         jQuery(selector).modal({backdrop: true, show: true, keyboard: true, remote: ''}) // initialized with no keyboard
-    } else {
-        jQuery(selector).modal(JSON.stringify({backdrop: true, show: true, keyboard: true, remote: ''}))   // initialized with no keyboard
     }
 
     return;
@@ -245,12 +248,20 @@ function jevIframeSizing(iframe, modal, modalHeader, modalBody, modalContent, mo
 function addJevModalHtml(id) {
     /** Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap */
     var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
+    if (!bootstrap3_enabled) {
+        try {
+            var bsVersion = window.bootstrap.Tooltip.VERSION.substr(0,1);
+            bootstrap3_enabled = bsVersion >= 4;
+        } catch (e) {
+        }
+    }
+
     var myModal = "";
     var modalsize = 'jevmodal-full';
-    if (!jQuery("#" + id).length) {
+    if (!document.getElementById(id)) {
         if (bootstrap3_enabled) {
             myModal = '<div class="modal   fade ' + modalsize + ' jevmodal" id="' + id + '" tabindex="-1" role="dialog" aria-labelledby="' + id + 'Label" aria-hidden="true" >'
-                + '<div class="modal-dialog modal-lg modal-dialog-centered">'
+                + '<div class="modal-dialog modal-lg modal-xl modal-dialog-centered">'
                 + '<div class="modal-content">'
                 + '<div class="modal-header">'
                 + '<button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
@@ -286,5 +297,13 @@ function addJevModalHtml(id) {
 
 function closeJevModalBySelector(selector)
 {
-    jQuery(selector).modal('hide');
+    // Joomla 4 changes
+    try {
+        var myModalEl = document.querySelector(selector)
+        var modal = bootstrap.Modal.getInstance(myModalEl)
+        modal.close();
+    }
+    catch (e) {
+        jQuery(selector).modal('hide');
+    }
 }

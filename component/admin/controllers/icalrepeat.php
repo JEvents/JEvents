@@ -1101,7 +1101,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 		?>
 		<script type="text/javascript">
             try {
-                window.parent.closeJevModalBySelector('#myEditModal,#myDetailModal');
+                window.parent.closeJevModalBySelector('#myEditModal,#myDetailModal,#myTranslationModal');
             }
             catch (e) {
             }

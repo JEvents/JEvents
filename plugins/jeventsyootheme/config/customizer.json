@@ -110,38 +110,21 @@
         },
         "styler": {
             "components": {
-                "example": {
-                    "name": "Example",
+                "jevents": {
+                    "name": "JEvents Yootheme",
                     "groups": {
-                        "item": "@example-item-*",
-                        "title": "@example-title-*",
-                        "icon": "@example-icon-*",
-                        "content": "@example-content-*"
+                        "navbar": "@jevents-navbar-*",
+                        "title": "@jevents-title-*",
+                        "card": "@jevents-card-*"
                     },
-                    "hover": ".uk-example",
-                    "inspect": ".uk-example, .uk-example-title, .uk-example-title > *, .uk-example-content, .uk-example-content > *"
+                    "hover": "[class*='jevents-']",
+                    "inspect": "[class*='jevents'], [class*='jevents'] > *"
                 },
-                "examplexxx": {
-                    "name": "Examplexxx",
+                "inverse": {
                     "groups": {
-                        "item": "@examplexxx-item-*",
-                        "title": "@examplexxx-title-*",
-                        "icon": "@examplexxx-icon-*",
-                        "content": "@examplexxx-content-*"
-                    },
-                    "hover": ".uk-examplexxx",
-                    "inspect": ".uk-examplexxx, .uk-examplexxx-title, .uk-examplexxx-title > *, .uk-examplexxx-content, .uk-examplexxx-content > *"
-                },
-                "my-component": {
-                    "name": "My Component",
-                    "groups": {
-                        "title": "@my-component-title-*",
-                        "card": "@my-component-card-*"
-                    },
-                    "hover": "[class*='my-component-']",
-                    "inspect": "[class*='my-component'], [class*='my-component'] > *"
+                        "jevents-navbar": "@inverse-jevents-navbar-*"
+                    }
                 }
-
             }
         }
     }

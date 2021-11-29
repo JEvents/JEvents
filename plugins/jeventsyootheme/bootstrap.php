@@ -11,7 +11,7 @@ return [
 	'theme' => [
 		'styles' => [
 			'components' => [
-				'my-component' => Path::get('./assets/less/my-component.less'),
+				'jevents' => Path::get('./assets/less/jevents.less')
 			],
 		],
 	],
