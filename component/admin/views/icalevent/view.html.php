@@ -295,6 +295,11 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		$input  = $app->input;
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
+		if (!GSLMSIE10)
+		{
+			JEVHelper::script('editicalGSL.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
+		}
+
 		$uEditor    = Factory::getUser()->getParam('editor',  Factory::getConfig()->get('editor', 'none'));
 
 		$this->editor = \Joomla\CMS\Editor\Editor::getInstance($uEditor);
@@ -509,20 +514,19 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 					);
 					$url  = "javascript:jevModalNoHeader('myTranslationModal','".$url ."', '". Text::sprintf("JEV_TRANSLATE_EVENT_INTO" ,  addslashes($item->title),  array('jsSafe'=>true) ) . "'); ";
 					$tooltipParts = array( 	$img,  $item->title);
-					$item->link = HTMLHelper::_('tooltip', implode(' ', $tooltipParts), null, null, $text, $url, null, 'hasTooltip label label-association label-' . $item->sef .( in_array($item->lang_code, $translations)?" hastranslation":"" ));
+					$item->link = HTMLHelper::_('tooltip', implode(' ', $tooltipParts), null, null, $text, $url, null, 'hasTooltip label label-association label-' . $item->sef );
 
 					$hasTranslation = in_array($item->lang_code, $translations);
 					?>
 					<li>
-						<span
-								class="editlinktip hasYsPopover <?php echo ' label label-association label-' . $item->sef . ($hasTranslation ? " hastranslation" : "");?>"
+						<button
+								class="editlinktip gsl-button gsl-button-small hasYsPopover <?php echo ( $hasTranslation?" gsl-button-success":" gsl-button-primary" ) .' label label-association label-' . $item->sef ;?>"
 								data-yspoptitle="<?php echo Text::_('JEV_TRANSLATE_EVENT', array('jsSafe'=>true)); ?>"
 								data-yspopcontent="<?php echo Text::sprintf('JEV_TRANSLATE_EVENT_INTO', addslashes($item->title) . " " . htmlspecialchars($img), array('jsSafe'=>true)); ?>"
+								onclick="<?php $url;?>"
 						>
-							<a href="<?php echo $url;?>" >
-								<?php echo $text;?>
-							</a>
-						</span>
+							<?php echo $text;?>
+						</button>
 						<?php
 						//echo $item->link;
 						?>

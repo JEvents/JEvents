@@ -6,22 +6,34 @@ use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
 
 HTMLHelper::_('behavior.formvalidator');
-$jversion = new Joomla\CMS\Version;
-if (!$jversion->isCompatible('4.0'))
-{
-	HTMLHelper::_('formbehavior.chosen', 'select');
-}
 
 $app = Factory::getApplication();
+$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+if ($app->isClient('administrator') || $params->get("newfrontendediting", 1))
+{
+	$translatePage = $this->loadTemplate('uikit');
+	echo $translatePage;
+	return;
+}
+
+$j4 = true;
+$rowclass = "row";
+if (version_compare(JVERSION, '4.0', 'lt'))
+{
+	HTMLHelper::_('formbehavior.chosen', 'select');
+	$j4 = false;
+	$rowclass = "row-fluid";
+}
 
 Factory::getDocument()->addScriptDeclaration('
 	Joomla.submitbutton = function(task)
 	{
 		if (task == "translate.cancel" || document.formvalidator.isValid(document.getElementById("translate-form")))
 		{
-			' . $this->form->getField("trans_description")->save() . '
+			' . (!$j4 ? $this->form->getField("trans_description")->save()  : '') . '
 			Joomla.submitform(task, document.getElementById("translate-form"));
 		}
 	};
@@ -34,82 +46,82 @@ Factory::getDocument()->addScriptDeclaration('
       name="adminForm" id="translate-form" class="form-validate">
 
 	<div class="form-horizontal">
-		<div class="row-fluid">
+		<div class="<?php echo $rowclass;?>">
 			<div class="span12">
-				<div class="row-fluid form-horizontal-desktop">
-					<div class="span6">
+				<div class="<?php echo $rowclass;?> form-horizontal-desktop">
+					<div class="span6 col-6">
 						<?php echo $this->form->renderField('evdet_id'); ?>
 						<?php echo $this->form->renderField('ev_id'); ?>
 					</div>
-					<div class="span6">
+					<div class="span6  col-6">
 						<?php echo $this->form->renderField('language'); ?>
 						<?php echo $this->form->renderField('trans_language'); ?>
 						<?php echo $this->form->renderField('trans_evdet_id'); ?>
 						<?php echo $this->form->renderField('trans_translation_id'); ?>
 					</div>
 				</div>
-				<div class="row-fluid form-horizontal-desktop">
+				<div class="<?php echo $rowclass;?> form-horizontal-desktop">
 					<div class="span12">
 						<?php echo $this->form->getLabel('summary'); ?>
 					</div>
 				</div>
-				<div class="row-fluid form-horizontal-desktop">
-					<div class="span6">
+				<div class="<?php echo $rowclass;?> form-horizontal-desktop">
+					<div class="span6  col-6">
 						<?php echo $this->form->getInput('summary'); ?>
 					</div>
-					<div class="span6">
+					<div class="span6  col-6">
 						<?php echo $this->form->getInput('trans_summary'); ?>
 					</div>
 				</div>
-				<div class="row-fluid form-horizontal-desktop">
+				<div class="<?php echo $rowclass;?> form-horizontal-desktop">
 					<div class="span12">
 						<?php echo $this->form->getLabel('description'); ?>
 					</div>
 				</div>
-				<div class="row-fluid form-horizontal-desktop">
-					<div class="span6">
+				<div class="<?php echo $rowclass;?> form-horizontal-desktop">
+					<div class="span6  col-6">
 						<?php echo $this->form->getInput('description'); ?>
 					</div>
-					<div class="span6">
+					<div class="span6  col-6">
 						<?php echo $this->form->getInput('trans_description'); ?>
 					</div>
 				</div>
-				<div class="row-fluid form-horizontal-desktop">
+				<div class="<?php echo $rowclass;?> form-horizontal-desktop">
 					<div class="span12">
 						<?php echo $this->form->getLabel('location'); ?>
 					</div>
 				</div>
-				<div class="row-fluid form-horizontal-desktop">
-					<div class="span6">
+				<div class="<?php echo $rowclass;?> form-horizontal-desktop">
+					<div class="span6  col-6">
 						<?php echo $this->form->getInput('location'); ?>
 					</div>
-					<div class="span6">
+					<div class="span6  col-6">
 						<?php echo $this->form->getInput('trans_location'); ?>
 					</div>
 				</div>
-				<div class="row-fluid form-horizontal-desktop">
+				<div class="<?php echo $rowclass;?> form-horizontal-desktop">
 					<div class="span12">
 						<?php echo $this->form->getLabel('contact_info'); ?>
 					</div>
 				</div>
-				<div class="row-fluid form-horizontal-desktop">
-					<div class="span6">
+				<div class="<?php echo $rowclass;?> form-horizontal-desktop">
+					<div class="span6  col-6">
 						<?php echo $this->form->getInput('contact_info'); ?>
 					</div>
-					<div class="span6">
+					<div class="span6  col-6">
 						<?php echo $this->form->getInput('trans_contact'); ?>
 					</div>
 				</div>
-				<div class="row-fluid form-horizontal-desktop">
+				<div class="<?php echo $rowclass;?> form-horizontal-desktop">
 					<div class="span12">
 						<?php echo $this->form->getLabel('extra_info'); ?>
 					</div>
 				</div>
-				<div class="row-fluid form-horizontal-desktop">
-					<div class="span6">
+				<div class="<?php echo $rowclass;?> form-horizontal-desktop">
+					<div class="span6  col-6">
 						<?php echo $this->form->getInput('extra_info'); ?>
 					</div>
-					<div class="span6">
+					<div class="span6  col-6">
 						<?php echo $this->form->getInput('trans_extra_info'); ?>
 					</div>
 				</div>
@@ -118,7 +130,7 @@ Factory::getDocument()->addScriptDeclaration('
 					foreach ($this->row->customfieldTranslations as $fieldid => $translation)
 					{
 						?>
-						<div class="row-fluid form-horizontal-desktop">
+						<div class="<?php echo $rowclass;?> form-horizontal-desktop">
 							<div class="span12">
 								<label title="" class="control-label hasTooltip"
 								       for="<?php "cf" . $fieldid . "translation"; ?>"
@@ -127,11 +139,11 @@ Factory::getDocument()->addScriptDeclaration('
 								</label>
 							</div>
 						</div>
-						<div class="row-fluid form-horizontal-desktop">
-							<div class="span6">
+						<div class="<?php echo $rowclass;?> form-horizontal-desktop">
+							<div class="span6  col-6">
 								<?php echo $translation->original; ?>
 							</div>
-							<div class="span6">
+							<div class="span6  col-6">
 								<?php echo $translation->translation; ?>
 							</div>
 						</div>

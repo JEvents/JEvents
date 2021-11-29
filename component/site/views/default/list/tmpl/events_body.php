@@ -10,8 +10,8 @@ JevHtmlBootstrap::framework();
 
 JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
 
-HTMLHelper::stylesheet("com_jevents/bootstrap.css", array(), true);
-HTMLHelper::stylesheet("com_jevents/bootstrap-responsive.css", array(), true);
+HTMLHelper::stylesheet("com_jevents/bootstrap.css", array(), array());
+HTMLHelper::stylesheet("com_jevents/bootstrap-responsive.css", array(), array());
 HTMLHelper::stylesheet("components/com_jevents/assets/css/jquery.resizableColumns.css");
 JEVHelper::script("components/com_jevents/assets/js/store.min.js");
 //JEVHelper::script("components/com_jevents/assets/js/jquery.resizableColumns.min.js");

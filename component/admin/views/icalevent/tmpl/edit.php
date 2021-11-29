@@ -245,30 +245,33 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
                     var form = document.adminForm;
                     var editorElement = jevjq('#jevcontent');
                     if (editorElement.length) {
-						<?php
-						$editorcontent = $this->editor->save('jevcontent');
-						echo $editorcontent . "\n";
-						// Tiny MCE has changed what onSave method does so we need to use onGetContent
-						$getContent = $this->editor->getContent('jevcontent');
-						if ($getContent){
-						?>
-                        // tinyMCE chooses a random editor so we have to specify the one we want
-                        if (typeof tinyMCE != 'undefined') {
-                            try {
-                                tinyMCE.EditorManager.setActive(tinyMCE.get("jevcontent"));
-                            }
-                            catch (e) {
-                            }
-                        }
-						<?php
-						echo "var getContent =" . $getContent . "\n";
-						?>
-                        try {
-                            jevjq('#jevcontent').html(getContent);
-                        }
-                        catch (e) {
-                        }
-						<?php
+					<?php
+						if (version_compare(JVERSION, '4.0', 'lt'))
+						{
+							$editorcontent = $this->editor->save('jevcontent');
+							echo $editorcontent . "\n";
+							// Tiny MCE has changed what onSave method does so we need to use onGetContent
+							$getContent = $this->editor->getContent('jevcontent');
+							if ($getContent){
+							?>
+	                        // tinyMCE chooses a random editor so we have to specify the one we want
+	                        if (typeof tinyMCE != 'undefined') {
+	                            try {
+	                                tinyMCE.EditorManager.setActive(tinyMCE.get("jevcontent"));
+	                            }
+	                            catch (e) {
+	                            }
+	                        }
+							<?php
+							echo "var getContent =" . $getContent . "\n";
+							?>
+	                        try {
+	                            jevjq('#jevcontent').html(getContent);
+	                        }
+	                        catch (e) {
+	                        }
+							<?php
+							}
 						}
 						?>
                     }
@@ -298,7 +301,10 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
                         if (editorElement.length) {
 							<?php
 							// in case editor is toggled off - needed for TinyMCE
-							echo $this->editor->save('jevcontent');
+							if (version_compare(JVERSION, '4.0', 'lt'))
+							{
+								echo $this->editor->save('jevcontent');
+							}
 							?>
                         }
 						<?php

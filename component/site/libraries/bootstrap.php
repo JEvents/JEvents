@@ -99,6 +99,7 @@ class JevHtmlBootstrap
 	{
 		if (version_compare(JVERSION, '4', 'ge'))
 		{
+			// For Joomla 4 we need to change the data attritute
 			HTMLHelper::_('bootstrap.popover', $selector, $params);
 			return;
 		}

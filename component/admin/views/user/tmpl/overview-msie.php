@@ -341,7 +341,9 @@ $fullspan = 12;
 			foreach ($editorFields as $editor)
 			{
 				// Where editor[0] = your areaname and editor[1] = the field name
-				echo $wysiwygeditor->save($editor[1]);
+				if (version_compare(JVERSION, '4.0', 'lt')) {
+					echo $wysiwygeditor->save($editor[1]);
+				}
 			}
 		}
 		?>

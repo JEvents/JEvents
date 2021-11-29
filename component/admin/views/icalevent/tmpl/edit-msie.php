@@ -284,8 +284,11 @@ $accesslevels = "jeval".implode(" jeval", array_unique($accesslevels));
 						if (editorElement.length)
 						{
 							<?php
-							// in case editor is toggled off - needed for TinyMCE
-							echo $this->editor->save('jevcontent');
+							if (version_compare(JVERSION, '4.0', 'lt'))
+							{
+								// in case editor is toggled off - needed for TinyMCE
+								echo $this->editor->save('jevcontent');
+							}
 							?>
 						}
 						<?php

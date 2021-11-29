@@ -300,7 +300,14 @@ class JEventsDBModel
 		$query .= " ORDER BY ev.created DESC , rpt.startrepeat ASC ";
 		//echo str_replace("#__", 'jos_', $query);
 		$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
-		$rows  = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+		if (version_compare(JVERSION, '4.0.0', 'ge'))
+		{
+			$rows = $cache->get(array($this, '_cachedlistIcalEvents'), array($query, $langtag));
+		}
+		else
+		{
+			$rows = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+		}
 
 		// make sure we have the first repeat in each instance
 		// do not use foreach incase time limit plugin removes one of the repeats
@@ -885,7 +892,14 @@ class JEventsDBModel
 		$query .= " ORDER BY det.modified DESC , rpt.startrepeat ASC ";
 		//echo str_replace("#__", 'jos_', $query);
 		$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
-		$rows  = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+		if (version_compare(JVERSION, '4.0.0', 'ge'))
+		{
+			$rows = $cache->get(array($this, '_cachedlistIcalEvents'), array($query, $langtag));
+		}
+		else
+		{
+			$rows = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+		}
 
 		// make sure we have the first repeat in each instance
 		// do not use foreach incase time limit plugin removes one of the repeats
@@ -1131,7 +1145,14 @@ class JEventsDBModel
 		$query .= " LIMIT " . $limit;
 
 		$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
-		$rows  = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+		if (version_compare(JVERSION, '4.0.0', 'ge'))
+		{
+			$rows = $cache->get(array($this, '_cachedlistIcalEvents'), array($query, $langtag));
+		}
+		else
+		{
+			$rows = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+		}
 
 		$app->triggerEvent('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
 
@@ -1373,7 +1394,14 @@ class JEventsDBModel
 				$query .= " LIMIT " . $limit;
 
 				$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
-				$rows1 = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+				if (version_compare(JVERSION, '4.0.0', 'ge'))
+				{
+					$rows1 = $cache->get(array($this, '_cachedlistIcalEvents'), array($query, $langtag));
+				}
+				else
+				{
+					$rows1 = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+				}
 			}
 
 			// Before now (only if not past only == future events)
@@ -1421,7 +1449,15 @@ class JEventsDBModel
 				$query .= " LIMIT " . $limit;
 
 				$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
-				$rows2 = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+
+				if (version_compare(JVERSION, '4.0.0', 'ge'))
+				{
+					$rows2 = $cache->get(array($this, '_cachedlistIcalEvents'), array($query, $langtag));
+				}
+				else
+				{
+					$rows2 = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+				}
 			}
 
 			$rows3 = array();
@@ -1473,7 +1509,15 @@ class JEventsDBModel
 				$query .= " LIMIT " . $limit;
 
 				$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
-				$rows3 = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+
+				if (version_compare(JVERSION, '4.0.0', 'ge'))
+				{
+					$rows3 = $cache->get(array($this, '_cachedlistIcalEvents'), array($query, $langtag));
+				}
+				else
+				{
+					$rows3 = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+				}
 			}
 
 			// ensure specific event is not used more than once
@@ -1674,7 +1718,15 @@ class JEventsDBModel
 					// This limit will always be enough
 					//$query .= " LIMIT " . $limit;
 					$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
-					$rows  = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+
+					if (version_compare(JVERSION, '4.0.0', 'ge'))
+					{
+						$rows = $cache->get(array($this, '_cachedlistIcalEvents'), array($query, $langtag));
+					}
+					else
+					{
+						$rows = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+					}
 				}
 				//list ($usec, $sec) = explode(" ", microtime());
 				//$time_end = (float) $usec + (float) $sec;
@@ -1725,7 +1777,14 @@ class JEventsDBModel
 					$query .= " LIMIT " . $limit;
 
 					$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
-					$rows1 = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+					if (version_compare(JVERSION, '4.0.0', 'ge'))
+					{
+						$rows1 = $cache->get(array($this, '_cachedlistIcalEvents'), array($query, $langtag));
+					}
+					else
+					{
+						$rows1 = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+					}
 				}
 
 				// Before now (only if not past only == future events)
@@ -1768,7 +1827,15 @@ class JEventsDBModel
 					$query .= " LIMIT " . $limit;
 
 					$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
-					$rows2 = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+
+					if (version_compare(JVERSION, '4.0.0', 'ge'))
+					{
+						$rows2 = $cache->get(array($this, '_cachedlistIcalEvents'), array($query, $langtag));
+					}
+					else
+					{
+						$rows2 = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+					}
 				}
 
 				$rows3 = array();
@@ -1810,7 +1877,15 @@ class JEventsDBModel
 					$query .= " LIMIT " . $limit;
 
 					$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
-					$rows3 = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+
+					if (version_compare(JVERSION, '4.0.0', 'ge'))
+					{
+						$rows3 = $cache->get(array($this, '_cachedlistIcalEvents'), array($query, $langtag));
+					}
+					else
+					{
+						$rows3 = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+					}
 				}
 
 
@@ -2134,7 +2209,15 @@ class JEventsDBModel
 				$query .= " LIMIT " . $limit;
 
 				$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
-				$rows1 = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+
+				if (version_compare(JVERSION, '4.0.0', 'ge'))
+				{
+					$rows1 = $cache->get(array($this, '_cachedlistIcalEvents'), array($query, $langtag));
+				}
+				else
+				{
+					$rows1 = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+				}
 			}
 
 			// Before now (only if not past only == future events)
@@ -2181,7 +2264,15 @@ class JEventsDBModel
 				$query .= " LIMIT " . $limit;
 
 				$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
-				$rows2 = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+
+				if (version_compare(JVERSION, '4.0.0', 'ge'))
+				{
+					$rows2 = $cache->get(array($this, '_cachedlistIcalEvents'), array($query, $langtag));
+				}
+				else
+				{
+					$rows2 = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+				}
 			}
 
 			$rows3 = array();
@@ -2232,7 +2323,15 @@ class JEventsDBModel
 				$query .= " LIMIT " . $limit;
 
 				$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
-				$rows3 = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+
+				if (version_compare(JVERSION, '4.0.0', 'ge'))
+				{
+					$rows3 = $cache->get(array($this, '_cachedlistIcalEvents'), array($query, $langtag));
+				}
+				else
+				{
+					$rows3 = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+				}
 			}
 
 			// ensure specific event is not used more than once
@@ -2428,7 +2527,15 @@ class JEventsDBModel
 					// This limit will always be enough
 					//$query .= " LIMIT " . $limit;
 					$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
-					$rows  = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+
+					if (version_compare(JVERSION, '4.0.0', 'ge'))
+					{
+						$rows = $cache->get(array($this, '_cachedlistIcalEvents'), array($query, $langtag));
+					}
+					else
+					{
+						$rows = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+					}
 				}
 				//list ($usec, $sec) = explode(" ", microtime());
 				//$time_end = (float) $usec + (float) $sec;
@@ -2478,7 +2585,15 @@ class JEventsDBModel
 					$query .= " LIMIT " . $limit;
 
 					$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
-					$rows1 = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+
+					if (version_compare(JVERSION, '4.0.0', 'ge'))
+					{
+						$rows1 = $cache->get(array($this, '_cachedlistIcalEvents'), array($query, $langtag));
+					}
+					else
+					{
+						$rows1 = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+					}
 				}
 
 				// Before now (only if not past only == future events)
@@ -2520,7 +2635,15 @@ class JEventsDBModel
 					$query .= " LIMIT " . $limit;
 
 					$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
-					$rows2 = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+
+					if (version_compare(JVERSION, '4.0.0', 'ge'))
+					{
+						$rows2 = $cache->get(array($this, '_cachedlistIcalEvents'), array($query, $langtag));
+					}
+					else
+					{
+						$rows2 = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+					}
 				}
 
 				$rows3 = array();
@@ -2561,7 +2684,15 @@ class JEventsDBModel
 					$query .= " LIMIT " . $limit;
 
 					$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
-					$rows3 = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+
+					if (version_compare(JVERSION, '4.0.0', 'ge'))
+					{
+						$rows3 = $cache->get(array($this, '_cachedlistIcalEvents'), array($query, $langtag));
+					}
+					else
+					{
+						$rows3 = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+					}
 				}
 
 
@@ -2800,7 +2931,16 @@ class JEventsDBModel
 				// skip this cache now we have the onDisplayCustomFieldsMultiRow cache
 				$rows = $this->_cachedlistIcalEvents($query, $langtag);
 				//$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
-				//$rows = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
+				/*
+				if (version_compare(JVERSION, '4.0.0', 'ge'))
+				{
+					$rows = $cache->get(array($this, '_cachedlistIcalEvents'), array($query, $langtag));
+				}
+				else
+				{
+					$rows = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+				}
+				*/
 			}
 			else
 			{
@@ -2900,7 +3040,7 @@ class JEventsDBModel
 
 	}
 
-	function _cachedlistIcalEvents($query, $langtag, $count = false)
+	function _cachedlistIcalEvents($query, $langtag = "", $count = false)
 	{
 
 		$debuginfo = false;
@@ -3260,7 +3400,14 @@ class JEventsDBModel
 
 		$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
 
-		$rows = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag, $count);
+		if (version_compare(JVERSION, '4.0.0', 'ge'))
+		{
+			$rows = $cache->get(array($this, '_cachedlistIcalEvents'), array($query, $langtag, $count));
+		}
+		else
+		{
+			$rows = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag, $count);
+		}
 
 		if (!$count)
 		{
@@ -3466,7 +3613,14 @@ class JEventsDBModel
 
 		$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
 
-		$rows = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag, $count);
+	    if (version_compare(JVERSION, '4.0.0', 'ge'))
+	    {
+		    $rows = $cache->get(array($this, '_cachedlistIcalEvents'), array($query, $langtag, $count));
+	    }
+	    else
+	    {
+		    $rows = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag, $count);
+	    }
 
 		$app->triggerEvent('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
 
@@ -4254,7 +4408,14 @@ class JEventsDBModel
 		$lang    = Factory::getLanguage();
 		$langtag = $lang->getTag();
 
-		$rows = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+		if (version_compare(JVERSION, '4.0.0', 'ge'))
+		{
+			$rows = $cache->get(array($this, '_cachedlistIcalEvents'), array($query, $langtag));
+		}
+		else
+		{
+			$rows = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
+		}
 
 		$app->triggerEvent('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
 

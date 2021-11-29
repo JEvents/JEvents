@@ -13,7 +13,7 @@ class StylerListener
 
 		// Add entry to styler in global group
 		//$config->add('customizer.sections.styler.components.global.groups', ['william' => "@global-tertiary-*"]);
-
+/*
 		$config->add('customizer.sections.styler.components', [
 				"dynamiclegend" => [
 					"name"    => "Dynamic Legend",
@@ -48,7 +48,7 @@ class StylerListener
 				]
 			]
 		);
-
+*/
 		/*
 		$config->add('customizer.sections.styler.components', [
 				"example" => [

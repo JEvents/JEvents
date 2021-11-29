@@ -444,8 +444,8 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 		}
 
 		$data["LOCATION"]    = $input->getString("location", "");
-		$data["GEOLON"]      = $input->getString("geolon", "");
-		$data["GEOLAT"]      = $input->getString("geolat", "");
+		$data["GEOLON"]      = $input->getFloat("geolon", 0);
+		$data["GEOLAT"]      = $input->getFloat("geolat", 0);
 		$data["allDayEvent"] = $input->get("allDayEvent", "off");
 		if ($data["allDayEvent"] == 1)
 		{
@@ -1101,7 +1101,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 		?>
 		<script type="text/javascript">
             try {
-                window.parent.closeJevModalBySelector('#myEditModal,#myDetailModal');
+                window.parent.closeJevModalBySelector('#myEditModal,#myDetailModal,#myTranslationModal');
             }
             catch (e) {
             }
