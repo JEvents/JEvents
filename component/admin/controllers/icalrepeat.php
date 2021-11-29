@@ -444,8 +444,8 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 		}
 
 		$data["LOCATION"]    = $input->getString("location", "");
-		$data["GEOLON"]      = $input->getInt("geolon", 0);
-		$data["GEOLAT"]      = $input->getInt("geolat", 0);
+		$data["GEOLON"]      = $input->getFloat("geolon", 0);
+		$data["GEOLAT"]      = $input->getFloat("geolat", 0);
 		$data["allDayEvent"] = $input->get("allDayEvent", "off");
 		if ($data["allDayEvent"] == 1)
 		{
