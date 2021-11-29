@@ -335,24 +335,24 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 
 	// repeatable fields
-	let repeatables = document.getElementById('jevents').querySelectorAll('div.subform-repeatable');
-	for (let r = 0; r < repeatables.length; r++)
-	{
-		jQuery(repeatables[r]).on('subform-row-add', function (event, row) {
-			if (typeof row !== 'undefined')
-			{
-				if (typeof editicalGslStyling == 'function')
-				{
-					editicalGslStyling(row);
+	let jevContainer	= document.getElementById('jevents');
+	if (jevContainer !== null) {
+		let repeatables = jevContainer.querySelectorAll('div.subform-repeatable');
+		for (let r = 0; r < repeatables.length; r++) {
+			jQuery(repeatables[r]).on('subform-row-add', function (event, row) {
+				if (typeof row !== 'undefined') {
+					if (typeof editicalGslStyling == 'function') {
+						editicalGslStyling(row);
+					}
+					let inputNodes = row.querySelectorAll('input.gsl-hidden');
+					for (let i = 0; i < inputNodes.length; i++) {
+						inputNodes[i].addEventListener('change', function () {
+							changeHiddenInput(this);
+						});
+					}
 				}
-				let inputNodes = row.querySelectorAll('input.gsl-hidden');
-				for (let i = 0; i < inputNodes.length; i++) {
-					inputNodes[i].addEventListener('change', function() {
-						changeHiddenInput(this);
-					});
-				}
-			}
-		});
+			});
+		}
 	}
 
 
