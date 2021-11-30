@@ -512,7 +512,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 						array('title' => $item->title),
 						true
 					);
-					$url  = "javascript:jevModalNoHeader('myTranslationModal','".$url ."', '". Text::sprintf("JEV_TRANSLATE_EVENT_INTO" ,  addslashes($item->title),  array('jsSafe'=>true) ) . "'); ";
+					$url  = "jevModalNoHeader('myTranslationModal','".$url ."', '". Text::sprintf("JEV_TRANSLATE_EVENT_INTO" ,  addslashes($item->title),  array('jsSafe'=>true) ) . "'); return false;";
 					$tooltipParts = array( 	$img,  $item->title);
 					$item->link = HTMLHelper::_('tooltip', implode(' ', $tooltipParts), null, null, $text, $url, null, 'hasTooltip label label-association label-' . $item->sef );
 
@@ -523,7 +523,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 								class="editlinktip gsl-button gsl-button-small hasYsPopover <?php echo ( $hasTranslation?" gsl-button-success":" gsl-button-primary" ) .' label label-association label-' . $item->sef ;?>"
 								data-yspoptitle="<?php echo Text::_('JEV_TRANSLATE_EVENT', array('jsSafe'=>true)); ?>"
 								data-yspopcontent="<?php echo Text::sprintf('JEV_TRANSLATE_EVENT_INTO', addslashes($item->title) . " " . htmlspecialchars($img), array('jsSafe'=>true)); ?>"
-								onclick="<?php $url;?>"
+								onclick="<?php echo $url;?>"
 						>
 							<?php echo $text;?>
 						</button>
