@@ -877,10 +877,10 @@ class iCalRRule extends Joomla\CMS\Table\Table
 	/**
 	 * Creates a repeat if not an exception date returns 1 anyway
 	 *
-	 * @param unknown_type $start
-	 * @param unknown_type $end
+	 * @param (int) $start
+	 * @param (int) $end
 	 *
-	 * @return unknown
+	 * @return bool
 	 */
 	public function _makeRepeat($start, $end)
 	{
