@@ -707,7 +707,7 @@ class JEVHelper
 
 			list ($yearpart, $monthpart, $daypart) = explode("-", $value);
 			$value = str_replace(array("Y", "m", "d"), array($yearpart, $monthpart, $daypart), $format);
-
+			$attributes = $attribs;
 			// Build the attributes array.
 			empty($onchange) ? null : $attributes['onchange'] = $onchange;
 			empty($onchange) ? null : $attributes['onChange'] = $onchange;
@@ -731,7 +731,7 @@ class JEVHelper
 			// switch back to strftime format to use Joomla calendar tool
 			$format = str_replace(array("Y", "m", "d"), array("%Y", "%m", "%d"), $format);
 
-			echo HTMLHelper::_('calendar', $yearpart . "-" . $monthpart . "-" . $daypart, $fieldname, $fieldid, $format, $attribs);
+			echo HTMLHelper::_('calendar', $yearpart . "-" . $monthpart . "-" . $daypart, $fieldname, $fieldid, $format, $attributes);
 			return;
 		}
 		$document           = Factory::getDocument();
