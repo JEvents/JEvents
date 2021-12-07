@@ -707,9 +707,10 @@ class JEVHelper
 
 			list ($yearpart, $monthpart, $daypart) = explode("-", $value);
 			$value = str_replace(array("Y", "m", "d"), array($yearpart, $monthpart, $daypart), $format);
-
+			$attributes = $attribs;
 			// Build the attributes array.
 			empty($onchange) ? null : $attributes['onchange'] = $onchange;
+			empty($onchange) ? null : $attributes['onChange'] = $onchange;
 			//$attributes['onselect']="function{this.hide();}";
 			/*
 			empty($this->size)      ? null : $attributes['size'] = $this->size;
