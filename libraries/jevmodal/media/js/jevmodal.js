@@ -30,11 +30,12 @@ function jevModalSelector(sourceElement, params, evt) {
         {
             modalBody.style.top = '5px';
 
-            modalClose.style.marginRight = '-15px';
-            modalClose.style.marginTop = '-15px';
-            modalClose.style.Opacity =  1;
-            modalClose.style.fontSize = '30px';
-
+            if (modalClose) {
+                modalClose.style.marginRight = '-15px';
+                modalClose.style.marginTop = '-15px';
+                modalClose.style.Opacity = 1;
+                modalClose.style.fontSize = '30px';
+            }
             modalHeader.style.height = '0px';
             modalHeader.style.zIndex = 99;
             modalHeader.style.border = 'none';
@@ -95,10 +96,12 @@ function jevModalResize(id) {
     {
         modalBody.style.top = '5px';
 
-        modalClose.style.marginRight = '-15px';
-        modalClose.style.marginTop = '-15px';
-        modalClose.style.Opacity =  1;
-        modalClose.style.fontSize = '30px';
+        if (modalClose) {
+            modalClose.style.marginRight = '-15px';
+            modalClose.style.marginTop = '-15px';
+            modalClose.style.Opacity =  1;
+            modalClose.style.fontSize = '30px';
+        }
 
         modalHeader.style.height = '0px';
         modalHeader.style.zIndex = 99;
@@ -247,11 +250,13 @@ function jevIframeSizing(iframe, modal, modalHeader, modalBody, modalContent, mo
 
 function addJevModalHtml(id) {
     /** Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap */
+    var bootstrap5 = false;
     var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
     if (!bootstrap3_enabled) {
         try {
             var bsVersion = window.bootstrap.Tooltip.VERSION.substr(0,1);
             bootstrap3_enabled = bsVersion >= 4;
+            bootstrap5 = bsVersion >= 5;
         } catch (e) {
         }
     }
@@ -259,7 +264,22 @@ function addJevModalHtml(id) {
     var myModal = "";
     var modalsize = 'jevmodal-full';
     if (!document.getElementById(id)) {
-        if (bootstrap3_enabled) {
+        if (bootstrap5) {
+            myModal = '<div class="modal  ' + modalsize + ' jevmodal" id="' + id + '" tabindex="-1" role="dialog" aria-labelledby="' + id + 'Label" aria-hidden="true" >'
+                + '<div class="modal-dialog modal-lg modal-xl modal-dialog-centered">'
+                + '<div class="modal-content">'
+                + '<div class="modal-header">'
+                + '<h4 class="modal-title" id="' + id + 'Label"></h4>'
+                + '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>'
+                + '</div>'
+                + '<div class="modal-body">'
+                + '<iframe src="" ></iframe>'
+                + '</div>'
+                + '</div>'
+                + '</div>'
+                + '</div>';
+        }
+        else if (bootstrap3_enabled) {
             myModal = '<div class="modal   fade ' + modalsize + ' jevmodal" id="' + id + '" tabindex="-1" role="dialog" aria-labelledby="' + id + 'Label" aria-hidden="true" >'
                 + '<div class="modal-dialog modal-lg modal-xl modal-dialog-centered">'
                 + '<div class="modal-content">'
