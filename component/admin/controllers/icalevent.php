@@ -241,8 +241,8 @@ class AdminIcaleventController extends Joomla\CMS\MVC\Controller\AdminController
 			// Should we allow raw content through unfiltered
 			if ($params->get("allowraw", 0))
 			{
-				$array['jevcontent'] = $input->post->get("jevcontent", "", RAW);
-				$array['extra_info'] = $input->post->get("extra_info", "", RAW);
+				$array['jevcontent'] = $input->post->get("jevcontent", "", 'RAW');
+				$array['extra_info'] = $input->post->get("extra_info", "", 'RAW');
 			}
 			// Convert nl2br if there is no HTML
 			if (strip_tags($array['jevcontent']) == $array['jevcontent'])
@@ -895,8 +895,8 @@ SQL;
 		// Should we allow raw content through unfiltered
 		if ($params->get("allowraw", 0))
 		{
-			$array['jevcontent'] = $input->post->get("jevcontent", "", RAW);
-			$array['extra_info'] = $input->post->get("extra_info", "", RAW);
+			$array['jevcontent'] = $input->post->get("jevcontent", "", 'RAW');
+			$array['extra_info'] = $input->post->get("extra_info", "", 'RAW');
 		}
 		// Convert nl2br if there is no HTML
 		if (strip_tags($array['jevcontent']) == $array['jevcontent'])
