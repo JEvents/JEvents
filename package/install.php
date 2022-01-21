@@ -276,6 +276,13 @@ class Pkg_JeventsInstallerScript
 			$app->enqueueMessage("<div class='jev_logo'><img src='https://www.jevents.net/logo/JeventsTransparent3.png' /></div>" . Text::_('JEV_INST_VERSION_UPRG') . " :: ADD_VERSION", 'message');
 		}
 
+		if (version_compare(JVERSION, '4.0', 'ge'))
+		{
+			$query = "UPDATE #__modules SET published=1, position='cpanel-jevents' WHERE client_id=1 and module='mod_jevents_dashboard'";
+			$db->setQuery($query);
+			$db->execute();
+		}
+
 	}
 
 	public function install($parent)
