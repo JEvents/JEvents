@@ -127,7 +127,7 @@ $fullspan = 12;
 						</td>
 
 						<?php
-						$img = $row->published ? "<i class='gsl-text-danger' gsl-icon='icon:check'></i>" : "<i class='gsl-text-success' gsl-icon='icon:close'></i>";
+						$img = $row->published ? "<i class='gsl-text-success' gsl-icon='icon:check'></i>" : "<i class='gsl-text-danger' gsl-icon='icon:close'></i>";
 
 						$href = '';
 						if ($row->published >= 0)
@@ -145,7 +145,7 @@ $fullspan = 12;
 						<td align="center"><?php echo $href; ?></td>
 
 						<?php
-						$img = $row->cancreate ? "<i class='gsl-text-danger' gsl-icon='icon:check'></i>" : "<i class='gsl-text-success' gsl-icon='icon:close'></i>";
+						$img = $row->cancreate ? "<i class='gsl-text-success' gsl-icon='icon:check'></i>" : "<i class='gsl-text-danger' gsl-icon='icon:close'></i>";
 
 						$href = '';
 						if ($row->cancreate >= 0)
@@ -165,7 +165,7 @@ $fullspan = 12;
 						<td align="center"><?php echo $row->eventslimit; ?></td>
 
 						<?php
-						$img = $row->canpublishown ? "<i class='gsl-text-danger' gsl-icon='icon:check'></i>" : "<i class='gsl-text-success' gsl-icon='icon:close'></i>";
+						$img = $row->canpublishown ? "<i class='gsl-text-success' gsl-icon='icon:check'></i>" : "<i class='gsl-text-danger' gsl-icon='icon:close'></i>";
 
 						$href = '';
 						if ($row->canpublishown >= 0)
@@ -183,7 +183,7 @@ $fullspan = 12;
 						<td align="center"><?php echo $href; ?></td>
 
 						<?php
-						$img = $row->candeleteown ? "<i class='gsl-text-danger' gsl-icon='icon:check'></i>" : "<i class='gsl-text-success' gsl-icon='icon:close'></i>";
+						$img = $row->candeleteown ? "<i class='gsl-text-success' gsl-icon='icon:check'></i>" : "<i class='gsl-text-danger' gsl-icon='icon:close'></i>";
 
 						$href = '';
 						if ($row->candeleteown >= 0)
@@ -201,7 +201,7 @@ $fullspan = 12;
 						<td align="center"><?php echo $href; ?></td>
 
 						<?php
-						$img = $row->canedit ? "<i class='gsl-text-danger' gsl-icon='icon:check'></i>" : "<i class='gsl-text-success' gsl-icon='icon:close'></i>";
+						$img = $row->canedit ? "<i class='gsl-text-success' gsl-icon='icon:check'></i>" : "<i class='gsl-text-danger' gsl-icon='icon:close'></i>";
 
 						$href = '';
 						if ($row->canedit >= 0)
@@ -219,7 +219,7 @@ $fullspan = 12;
 						<td align="center"><?php echo $href; ?></td>
 
 						<?php
-						$img = $row->canpublishall ? "<i class='gsl-text-danger' gsl-icon='icon:check'></i>" : "<i class='gsl-text-success' gsl-icon='icon:close'></i>";
+						$img = $row->canpublishall ? "<i class='gsl-text-success' gsl-icon='icon:check'></i>" : "<i class='gsl-text-danger' gsl-icon='icon:close'></i>";
 
 						$href = '';
 						if ($row->canpublishall >= 0)
@@ -237,7 +237,7 @@ $fullspan = 12;
 						<td align="center"><?php echo $href; ?></td>
 
 						<?php
-						$img = $row->candeleteall ? "<i class='gsl-text-danger' gsl-icon='icon:check'></i>" : "<i class='gsl-text-success' gsl-icon='icon:close'></i>";
+						$img = $row->candeleteall ? "<i class='gsl-text-success' gsl-icon='icon:check'></i>" : "<i class='gsl-text-danger' gsl-icon='icon:close'></i>";
 
 						$href = '';
 						if ($row->candeleteall >= 0)
@@ -255,7 +255,7 @@ $fullspan = 12;
 						<td align="center"><?php echo $href; ?></td>
 
 						<?php
-						$img  = $row->canuploadimages ? "<i class='gsl-text-danger' gsl-icon='icon:check'></i>" : "<i class='gsl-text-success' gsl-icon='icon:close'></i>";
+						$img  = $row->canuploadimages ? "<i class='gsl-text-success' gsl-icon='icon:check'></i>" : "<i class='gsl-text-danger' gsl-icon='icon:close'></i>";
 						$href = '';
 						if ($row->canuploadimages >= 0)
 						{
@@ -272,7 +272,7 @@ $fullspan = 12;
 						<td align="center"><?php echo $href; ?></td>
 
 						<?php
-						$img = $row->canuploadmovies ? "<i class='gsl-text-danger' gsl-icon='icon:check'></i>" : "<i class='gsl-text-success' gsl-icon='icon:close'></i>";
+						$img = $row->canuploadmovies ? "<i class='gsl-text-success' gsl-icon='icon:check'></i>" : "<i class='gsl-text-danger' gsl-icon='icon:close'></i>";
 
 						$href = '';
 						if ($row->canuploadmovies >= 0)
@@ -290,7 +290,7 @@ $fullspan = 12;
 						<td align="center"><?php echo $href; ?></td>
 
 						<?php
-						$img = $row->cancreateown ? "<i class='gsl-text-danger' gsl-icon='icon:check'></i>" : "<i class='gsl-text-success' gsl-icon='icon:close'></i>";
+						$img = $row->cancreateown ? "<i class='gsl-text-success' gsl-icon='icon:check'></i>" : "<i class='gsl-text-danger' gsl-icon='icon:close'></i>";
 
 						$href = '';
 						if ($row->cancreateown >= 0)
@@ -308,7 +308,7 @@ $fullspan = 12;
 						<td align="center"><?php echo $href; ?></td>
 
 						<?php
-						$img = $row->cancreateglobal ? "<i class='gsl-text-danger' gsl-icon='icon:check'></i>" : "<i class='gsl-text-success' gsl-icon='icon:close'></i>";
+						$img = $row->cancreateglobal ? "<i class='gsl-text-success' gsl-icon='icon:check'></i>" : "<i class='gsl-text-danger' gsl-icon='icon:close'></i>";
 
 						$href = '';
 						if ($row->cancreateglobal >= 0)

@@ -621,7 +621,7 @@ class JEventsModelicalevent extends ListModel
 
 		if ($success)
 		{
-			Factory::getApplication()->triggerEvent('onSaveTranslation', array($array), true);
+			Factory::getApplication()->triggerEvent('onSaveTranslation', array($array, true));
 		}
 
 		return $success;

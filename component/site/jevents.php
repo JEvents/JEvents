@@ -58,6 +58,7 @@ $registry = JevRegistry::getInstance("jevents");
 HTMLHelper::_('behavior.core', true);
 
 // This loads jQuery too!
+JHtml::_('jquery.framework');
 JevHtmlBootstrap::framework();
 
 // jQnc not only fixes noConflict it creates the jQuery alias

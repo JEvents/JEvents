@@ -94,6 +94,7 @@ class JEventsModelicalrepeat extends ListModel
 		}
 
 		$searchText = $this->getState('filter.search', '');
+        $searchText	= $db->escape(trim(strtolower($searchText)));
 
 		$searchTextQuery =  '';
 
@@ -144,6 +145,7 @@ class JEventsModelicalrepeat extends ListModel
 			$id = $cid;
 
 		$searchText = $this->getState('filter.search', '');
+        $searchText	= $db->escape(trim(strtolower($searchText)));
 
 		$searchTextQuery =  '';
 

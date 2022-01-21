@@ -162,7 +162,7 @@ if (!$jversion->isCompatible('4.0'))
                                    onclick="return Joomla.listItemTask('cb<?php echo $i; ?>','<?php echo $row->state ? 'defaults.unpublish' : 'defaults.publish'; ?>')"><?php echo $img; ?></a>
                             </td>
                             <td>
-                                <?php echo $i + 1; ?>
+                                <?php echo $row->id; ?>
                             </td>
                         </tr>
                         <?php
