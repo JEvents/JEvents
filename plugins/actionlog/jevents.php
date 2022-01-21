@@ -140,11 +140,13 @@ class PlgActionlogJEvents extends \Joomla\CMS\Plugin\CMSPlugin
 
 	}
 
-	public function onSaveTranslation(array $data, $success) {
-		echo '<pre>';
-		var_dump($data);
-		echo '</pre>';
-		die('onSaveTranslation');
+	public function onSaveTranslation(array $data, bool $success) {
+
+        // Todo code in Save Translation Action Log
+//		echo '<pre>';
+//		var_dump($data);
+//		echo '</pre>';
+//		die('onSaveTranslation');
 
 	}
 

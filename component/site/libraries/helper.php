@@ -4334,7 +4334,10 @@ SCRIPT;
 			//Joomla! no longer provides HTML allowed in input so we need to fetch raw
 			//Then filter on through with InputFilter to HTML
 
-			foreach ($array as $key => $row)
+            // Ensure it is an array for filtering.
+            $array	= is_string($array) ? array($array) : $array;
+
+            foreach ($array as $key => $row)
 			{
 				//Single row check
 				if (!is_array($row))
