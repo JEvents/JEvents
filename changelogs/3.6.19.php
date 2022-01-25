@@ -1,6 +1,6 @@
 <?php
 $changelog["package_jevents"]["3.6.19"] = array();
-$changelog["package_jevents"]["3.6.19"]["date"] = "2020-10-13";
+$changelog["package_jevents"]["3.6.19"]["date"] = "2021-10-13";
 $changelog["package_jevents"]["3.6.19"]["features"] = array();
 $changelog["package_jevents"]["3.6.19"]["features"][] = "New config option to allow showing of Joomla sidebar in backend - disabled by default";
 $changelog["package_jevents"]["3.6.19"]["bugfixes"] = array();

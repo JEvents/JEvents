@@ -1,6 +1,6 @@
 <?php
 $changelog["package_jevents"]["3.6.14"] = array();
-$changelog["package_jevents"]["3.6.14"]["date"] = "2020-05-26";
+$changelog["package_jevents"]["3.6.14"]["date"] = "2021-05-26";
 $changelog["package_jevents"]["3.6.14"]["features"] = array();
 $changelog["package_jevents"]["3.6.14"]["features"][]="Use gslselect replacement instead of chosen where possible in event editing";
 $changelog["package_jevents"]["3.6.14"]["features"][]="Added TZID as an custom layout field";

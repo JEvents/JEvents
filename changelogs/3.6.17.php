@@ -1,6 +1,6 @@
 <?php
 $changelog["package_jevents"]["3.6.17"] = array();
-$changelog["package_jevents"]["3.6.17"]["date"] = "2020-09-14";
+$changelog["package_jevents"]["3.6.17"]["date"] = "2021-09-14";
 $changelog["package_jevents"]["3.6.17"]["features"] = array();
 $changelog["package_jevents"]["3.6.17"]["bugfixes"] = array();
 $changelog["package_jevents"]["3.6.17"]["bugfixes"][]="Fix for buttons in config view - problem due to changes made to support Joomla 4 :(";
