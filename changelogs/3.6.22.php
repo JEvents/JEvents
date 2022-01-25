@@ -1,6 +1,6 @@
 <?php
 $changelog["package_jevents"]["3.6.22"] = array();
-$changelog["package_jevents"]["3.6.22"]["date"] = "2020-11-29";
+$changelog["package_jevents"]["3.6.22"]["date"] = "2021-11-29";
 $changelog["package_jevents"]["3.6.22"]["features"] = array();
 $changelog["package_jevents"]["3.6.22"]["bugfixes"] = array();
 
