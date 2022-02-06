@@ -9,9 +9,9 @@
  * @link        http://www.jevents.net
  */
 
-use Joomla\String\StringHelper;
-
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\String\StringHelper;
 
 function JevMapColor($background)
 {
@@ -107,5 +107,3 @@ function JevMapColor($background)
 	return ($yiq >= 128) ? '#000' : '#fff';
 
 }
-
-?>

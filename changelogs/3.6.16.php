@@ -1,6 +1,6 @@
 <?php
 $changelog["package_jevents"]["3.6.16"] = array();
-$changelog["package_jevents"]["3.6.16"]["date"] = "2020-09-07";
+$changelog["package_jevents"]["3.6.16"]["date"] = "2021-09-07";
 $changelog["package_jevents"]["3.6.16"]["features"] = array();
 $changelog["package_jevents"]["3.6.16"]["bugfixes"] = array();
 $changelog["package_jevents"]["3.6.16"]["bugfixes"][]="Fix for irregular date selector";

@@ -1,6 +1,6 @@
 <?php
 $changelog["package_jevents"]["3.6.12"] = array();
-$changelog["package_jevents"]["3.6.12"]["date"] = "2020-01-06";
+$changelog["package_jevents"]["3.6.12"]["date"] = "2021-01-06";
 $changelog["package_jevents"]["3.6.12"]["features"] = array();
 $changelog["package_jevents"]["3.6.12"]["bugfixes"] = array();
 $changelog["package_jevents"]["3.6.12"]["bugfixes"][]="Make sure custom js and custom css from customised layouts are used in the frontend";

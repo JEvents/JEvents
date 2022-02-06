@@ -1,6 +1,6 @@
 <?php
 $changelog["package_jevents"]["3.6.13"] = array();
-$changelog["package_jevents"]["3.6.13"]["date"] = "2020-03-17";
+$changelog["package_jevents"]["3.6.13"]["date"] = "2021-03-17";
 $changelog["package_jevents"]["3.6.13"]["features"] = array();
 $changelog["package_jevents"]["3.6.13"]["features"][]="Support for uikit or bootstrap modals based on JEvents config";
 $changelog["package_jevents"]["3.6.13"]["features"][]="Allow more plugins to pickup settings in main parameters editing within JEvents";

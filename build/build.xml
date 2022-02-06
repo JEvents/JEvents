@@ -369,6 +369,11 @@
             <property name="genericfolder" value="modules/mod_jevents_switchview" />
             <property name="zipfile" value="mod_jevents_switchview.zip" />
         </phingcall>
+        <phingcall target="build-generic">
+            <property name="genericname" value="JEvents Dashboard Module" />
+            <property name="genericfolder" value="modules/mod_jevents_dashboard" />
+            <property name="zipfile" value="mod_jevents_dashboard.zip" />
+        </phingcall>
     </target>
 
     <!-- ============================================  -->
@@ -421,6 +426,7 @@
         <copy file="${builddir}/mod_jevents_latest.zip" todir="${builddir}/package/" />
         <copy file="${builddir}/mod_jevents_legend.zip" todir="${builddir}/package/" />
         <copy file="${builddir}/mod_jevents_switchview.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/mod_jevents_dashboard.zip" todir="${builddir}/package/" />
 
 
         <fileset dir="${builddir}/package" id="packagedir">

@@ -445,8 +445,8 @@ class JEventsHTML
 		{
 			
 		}
-		// if only one category then preselect it
-		if (count($options) == 1)
+		// if only one category then preselect it but NOT when editing layouts
+		if (count($options) == 1 && $jevtask !== "defaults.edit")
 		{
 			$catid = current($options)->value;
 		}
@@ -479,7 +479,7 @@ class JEventsHTML
 		    </select>
 		    <?php
 		    $html = ob_get_clean();
-		    if (count($options) == 1)
+		    if (count($options) == 1  && $jevtask !== "defaults.edit")
 		    {
 			$html   =  "<div class='catname'>".  $options[0]->text. "</div><div style='display:none'>" . $html . "</div>";
 			// this doesn't work because it throws JS error on showon!
