@@ -30,6 +30,7 @@ SCRIPT;
 }
 jimport('joomla.filesystem.file');
 
+$isCodeMirror = false;
 if ($this->item->name == "month.calendar_cell" || $this->item->name == "month.calendar_tip" || $this->item->name == "icalevent.edit_page"  || $this->item->name == "icalevent.list_block3"  || $this->item->name == "icalevent.list_block4")
 {
 	$editor = Editor::getInstance("none");
@@ -37,6 +38,7 @@ if ($this->item->name == "month.calendar_cell" || $this->item->name == "month.ca
 else
 {
 	$editor = Factory::getConfig()->get('editor');
+	$isCodeMirror = $editor == "codemirror";
 	$editor = Editor::getInstance($editor);
 }
 
@@ -80,6 +82,7 @@ if (strpos($this->item->name, "module.") === 0)
 	if (JPluginHelper::getPlugin('editors', 'codemirror'))
 	{
 		$editor = Editor::getInstance("codemirror");
+		$isCodeMirror = true;
 	}
 	else
 	{
@@ -230,6 +233,91 @@ $this->item->params = json_encode($templateparams);
 					<?php
 					// parameters : areaname, content, hidden field, width, height, rows, cols
 					echo $editor->display('value', htmlspecialchars($this->item->value, ENT_QUOTES, 'UTF-8'), 700, 450, '70', '15', false);
+
+					// This allow us to highlight the JEvents fields and their formats in codemirror
+					if ($isCodeMirror)
+					{
+						// In Joomla 3 this works
+						//HTMLHelper::script('media/editors/codemirror/addon/mode/overlay.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => false));
+						// In Joomla 4 we can't seem to add the overlay after the event without a timeout!
+						//HTMLHelper::script('media/vendor/codemirror/addon/mode/overlay.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
+						HTMLHelper::script('media/com_jevents/js/codemirror_overlay.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
+						if (version_compare(JVERSION, '4.0.0', 'ge'))
+						{
+							Factory::getApplication()->getDocument()->addStyleDeclaration(<<< STYLE
+.cm-mustache {color: #0a5e46;background-color: #eee}
+.cm-mustache-hash-1 {color: #1e87f0;background-color: #eee}
+.cm-mustache-hash-2 {color: #bc19d3;background-color: #eee}
+.cm-mustache:before {
+  font-family: "Font Awesome\ 5 Free";
+  content: "\\f133";
+}
+.cm-mustache:after {
+  font-family: "Font Awesome\ 5 Free";
+  content: "\\f133";
+}
+STYLE
+							);
+						}
+						else
+						{
+							Factory::getApplication()->getDocument()->addStyleDeclaration(<<< STYLE
+.cm-mustache {color: #0a5e46;background-color: #eee}
+.cm-mustache-hash-1 {color: #1e87f0;background-color: #eee}
+.cm-mustache-hash-2 {color: #bc19d3;background-color: #eee}}
+STYLE
+							);
+						}
+
+						Factory::getApplication()->getDocument()->addScriptDeclaration(<<< SCRIPT
+
+document.addEventListener('DOMContentLoaded', function() {
+	window.setTimeout(function () {
+
+		Joomla.editors.instances['value'].setOption('mode', 'mustache');
+
+	    Joomla.editors.instances['value'].setOption('mode', 'mustacheHash');
+
+		//Joomla.editors.instances['value'].highlightFormatting();
+		
+		// See https://codemirror.net/doc/manual.html#events
+		Joomla.editors.instances['value'].on('change', function(instance, changeObj) {
+			console.groupCollapsed('change');
+			console.log(instance);
+			console.log(changeObj);
+			console.groupEnd();
+		});
+
+		Joomla.editors.instances['value'].on('change', function(instance, changeObj) {
+			console.groupCollapsed('change');
+			console.log(instance);
+			console.log(changeObj);
+			console.groupEnd();
+		});
+		
+		Joomla.editors.instances['value'].on('mousedown', function(cm, event) {
+			window.setTimeout(function () {
+				console.groupCollapsed('mousedown');
+				var cur = cm.getCursor()
+				var token = cm.getTokenAt(cur);
+				
+				if (token.type == 'mustache-hash-2' || token.type == 'mustache-hash-1')
+				{					
+					token = cm.getTokenAt({'line':cur.line, 'ch':token.state.overlay.mustacheOpenPos + 1});
+				}
+				if (token.type == 'mustache')
+				{
+					console.log(token);
+										
+				}				
+				console.groupEnd();
+				}, 100);
+			});
+	}, 1000);
+});
+SCRIPT
+);
+					}
 					?>
 				</div>
 			</div>

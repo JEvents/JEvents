@@ -22,7 +22,6 @@ defaultsEditorPlugin = {
         jevjq(parent).trigger("chosen:updated");
         jevjq(parent).trigger("liszt:updated");
     },
-
     insert: function (fieldName, pluginNode) {
         var sel = jevjq("#" + pluginNode + " option:selected");
 
