@@ -265,8 +265,8 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
 				labels: <?php echo  json_encode($this->eventsByCat);?>,
 				datasets: [
 					{
-						backgroundColor: ['<?php echo  implode("', '", $this->eventsByCatColours); ?>'],
-						data: [<?php echo  implode(", ", $this->eventsByCatCounts); ?>],
+						backgroundColor: ['<?php echo is_array($this->eventsByCatColours) ? implode("', '", $this->eventsByCatColours) : $this->eventsByCatColours ; ?>'],
+						data: [<?php echo is_array($this->eventsByCatCounts) ? implode(", ", $this->eventsByCatCounts) : $this->eventsByCatCounts; ?>],
 					},
 				],
 			},
