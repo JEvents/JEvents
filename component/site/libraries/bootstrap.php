@@ -97,7 +97,10 @@ class JevHtmlBootstrap
 	 */
 	public static function popover($selector = '.hasPopover', $params = array())
 	{
-		if (version_compare(JVERSION, '4', 'ge'))
+		$jevparams = ComponentHelper::getParams('com_jevents');
+		$toolTipType = $jevparams->get('tooltiptype', 'bootstrap');
+
+		if (version_compare(JVERSION, '4', 'ge') && $toolTipType !== 'uikit')
 		{
 			// For Joomla 4 we need to change the data attritute
 			HTMLHelper::_('bootstrap.popover', $selector, $params);
@@ -110,9 +113,12 @@ class JevHtmlBootstrap
 			return;
 		}
 
-		JHtml::_('jquery.framework');
-		JHtml::_('bootstrap.framework');
-		JevHtmlBootstrap::loadCss();
+		if ($toolTipType !== 'uikit')
+		{
+			JHtml::_('jquery.framework');
+			JHtml::_('bootstrap.framework');
+			JevHtmlBootstrap::loadCss();
+		}
 
 		$opt['animation'] = isset($params['animation']) ? $params['animation'] : false;
 		$opt['html']      = isset($params['html']) ? $params['html'] : true;
@@ -143,9 +149,6 @@ class JevHtmlBootstrap
 		$uikitopt['mode'] = isset($params['trigger']) ? str_replace(" ", ",", $params['trigger']) : 'hover';
 		$uikitopt['container'] = isset($params['container']) ? $params['container'] : 'body';
 		$uikitoptions = json_encode($uikitopt);
-
-		$jevparams = ComponentHelper::getParams('com_jevents');
-		$toolTipType = $jevparams->get('tooltiptype', 'bootstrap');
 
 		Factory::getDocument()->addScriptDeclaration(
 <<< SCRIPT

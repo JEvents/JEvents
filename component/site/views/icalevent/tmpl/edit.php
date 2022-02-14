@@ -25,6 +25,11 @@ if (!isset($this->jevviewdone))
 
 	$this->loadModules("jevpreeditevent");
 
+/*
+	echo "<pre>";
+	debug_print_backtrace();
+	echo "</pre>";
+*/
 	include_once(JEV_ADMINPATH . "/views/icalevent/tmpl/" . basename(__FILE__));
 
 	/*

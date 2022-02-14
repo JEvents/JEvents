@@ -168,7 +168,8 @@ class PlgSystemGwejson extends JPlugin
 			{
 				$requestObject            = new stdClass();
 				$requestObject->typeahead = $input->get('typeahead', '', 'string');
-				$data                     = null;
+				// Needed for PHP 8
+				$data                     = new stdClass();
 				$data                     = ProcessJsonRequest($requestObject, $data);
 			}
 			catch (Exception $e)

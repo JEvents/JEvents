@@ -268,6 +268,12 @@ document.addEventListener('DOMContentLoaded', function () {
 		}
 	}
 
+	// remove phoca top menu
+	if (document.querySelector('.ph-topmenu-navbar'))
+	{
+		document.querySelector('.ph-topmenu-navbar').style.display = 'none';
+	}
+
 	// Hide toggled left-menu if in click mode
 	document.querySelector('#right-col > .gsl-content, #right-col > #top-head').addEventListener('mouseover', () => {
 		if (document.getElementById('left-col') && document.getElementById('left-col') && !document.getElementById('left-col').classList.contains('hide-label')) {

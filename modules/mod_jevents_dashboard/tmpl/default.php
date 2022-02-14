@@ -3,10 +3,15 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 if (!defined("GSLMSIE10"))
 {
 	define("GSLMSIE10", 0);
 }
+
+$lang         = Factory::getLanguage();
+$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
 include_once JPATH_ADMINISTRATOR . "/components/com_jevents/helpers/gslhelper.php";
 
