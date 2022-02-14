@@ -30,13 +30,15 @@ function jevModalNoTitle(id, url) {
 
 function launchJevModal_uikit(selector, url) {
     // Clear the old page!
-    document.querySelector(selector + ' iframe').src =  "";
-    gslUIkit.util.on(selector, 'show', function () {
-        if (url) {
-            document.querySelector(selector + ' iframe').src = url;
-        }
-    });
-
+    var iframe = document.querySelector(selector + ' iframe');
+    if (iframe) {
+        document.querySelector(selector + ' iframe').src = "";
+        gslUIkit.util.on(selector, 'show', function () {
+            if (url) {
+                document.querySelector(selector + ' iframe').src = url;
+            }
+        });
+    }
 
     gslUIkit.util.on(selector, 'hide', function () {
     });

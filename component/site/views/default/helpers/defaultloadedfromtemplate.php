@@ -2416,7 +2416,7 @@ function jevSpecialHandling($matches)
 
 function jevStripDateFormatting($matches)
 {
-    if (count($matches) == 1 && JString::strpos($matches[0], ";") > 0)
+    if (count($matches) == 1 && StringHelper::strpos($matches[0], ";") > 0)
     {
         global $tempreplace, $tempevent, $tempsearch, $tempblank;
         $parts = explode(";", $matches[0]);

@@ -457,7 +457,7 @@ class GslHelper
 			$iconLink->icon           = "";
 			$iconLink->iconSrc        = "components/com_yoursites/assets/images/YourSitesIcon.png";
 			$iconLink->label          = strip_tags(Text::_('COM_YOURSITES'));
-			$iconLink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_('COM_YOURSITES', true);
+			$iconLink->tooltip        = $leftmenutrigger !== 2 ? "" :str_replace("'", '"',  Text::_('COM_YOURSITES', false));
 			$iconLink->tooltip_detail = "";
 			$iconLinks[]              = $iconLink;
 		}
