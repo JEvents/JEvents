@@ -89,6 +89,10 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 		if (method_exists($this, $layout))
 		{
 			$this->$layout($tpl);
+			if (isset($this->jevviewdone) && $this->jevviewdone)
+			{
+				return;
+			}
 		}
 
 		// Allow the layout to be overriden by menu parameter - this only works if its valid for the task

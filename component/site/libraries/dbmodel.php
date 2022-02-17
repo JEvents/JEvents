@@ -3172,7 +3172,7 @@ class JEventsDBModel
 		$user    = Factory::getUser();
 
 		$app     = Factory::getApplication();
-		$db      = Factory::getDBO();
+		$db      = Factory::getDbo();
 		$lang    = Factory::getLanguage();
 		$langtag = $lang->getTag();
 
@@ -3254,7 +3254,7 @@ class JEventsDBModel
 			. "  AND icsf.state=1 AND icsf.access IN (" . JEVHelper::getAid($user) . ")"
 			. "\n Group by DATE(rpt.startrepeat)";
 
-		$db = Factory::getDBO();
+		$db = Factory::getDbo();
 		$db->setQuery($query);
 		$res = $db->loadObjectList();
 
