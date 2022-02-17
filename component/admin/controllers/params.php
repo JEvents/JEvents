@@ -280,6 +280,11 @@ class AdminParamsController extends AdminController
 			}
 		}
 
+		// Must clear plugin cache too!
+		$this->cleanCache('com_plugins', 1); // admin
+		$this->cleanCache('com_plugins', 0); // site
+
+
 		//SAVE AND APPLY CODE FROM PRAKASH
 		switch ($this->getTask())
 		{
