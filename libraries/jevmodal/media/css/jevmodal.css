@@ -81,6 +81,11 @@
 }
 
 /* Common CSS */
+
+body > div.jevmodal.show {
+    z-index:10000
+}
+
 .jevmodal .close {
     float: right;
     font-size: 20px;
