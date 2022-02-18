@@ -282,9 +282,17 @@ class EventCalendarCell_default extends JEventsDefaultView
 			jimport('joomla.filesystem.path');
 			$filetofind = strtolower($file) . ".php";
 			$paths      = $this->_view->get("_path");
-			if (Path::find($paths['template'], $filetofind))
+			if ($filepath = Path::find($paths['template'], $filetofind))
 			{
-				$tooltip = $this->_view->loadTemplate($tpl);
+				try
+				{
+					// Bloody stupid YooTheme pro 2.7.17 with its streapwrapper breaks REALLY basic stuff!
+					$tooltip = $this->_view->loadTemplate($tpl);
+				}
+				catch (Exception $e)
+				{
+					$tooltip = "";
+				}
 			}
 		}
 
