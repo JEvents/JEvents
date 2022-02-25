@@ -50,6 +50,7 @@ body.com_jevents {
     Problem with Safari with not navigation positioned badly
    */
   /* Make sure lighbox is at the very top! */
+  /* Joomla 4.1 Atum! */
 }
 #gslc.gsl-scope .left-nav.gsl-list > li:nth-child(n+2) {
   margin-top: 0;
@@ -356,7 +357,7 @@ body.com_jevents {
   /*font-size: 0;*/
   vertical-align: middle;
   white-space: nowrap;
-  *margin-left: 0.3em;
+  *margin-left: .3em;
 }
 #gslc.gsl-scope .ysbtn-group:first-child {
   *margin-left: 0;
@@ -408,7 +409,7 @@ body.com_jevents {
   margin: 0;
   line-height: 175%;
   color: #999;
-  transition: all 0.2s;
+  transition: all .2s;
 }
 #gslc.gsl-scope #uploadModal p.lead {
   color: #999;
@@ -503,7 +504,7 @@ body.com_jevents {
   /*  display: none!important; */
 }
 #gslc.gsl-scope .ys-gsl-action-buttons .enabledToolbarItem {
-  opacity: 1;
+  opacity: 1.0;
   display: block;
 }
 #gslc.gsl-scope .gsl-offcanvas {
@@ -534,8 +535,8 @@ body.com_jevents {
   padding: 0;
   min-width: 250px;
   max-width: 450px;
-  font-size: 0.8rem;
-  line-height: 1rem;
+  font-size: 0.80rem;
+  line-height: 1.0rem;
 }
 #gslc.gsl-scope .ys-popover-block .ys-popover-title {
   margin: 0;
@@ -636,6 +637,9 @@ body.com_jevents {
 }
 #gslc.gsl-scope .gsl-dropdown.gsl-open {
   width: max-content;
+}
+#gslc.gsl-scope a[target="_blank"]::before {
+  content: "";
 }
 /* action toolbar styling */
 .gsl-scope .ystoolbar_wrapper.gsl-button-group .gsl-dropdown .gsl-button {
