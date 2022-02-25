@@ -265,10 +265,10 @@ function gslselectSetupOptions(node, dropDownNav, dropDownDiv, selectElement, fi
         optionLink.setAttribute('style',  style );
     }
     optionLink.setAttribute('data-value', node.value || '');
-    optionLink.setAttribute('data-index', node.index || -1);
+    optionLink.setAttribute('data-index', (node.index == 0 ? node.index : (node.index || -1)));
     optionReplacement.appendChild(optionLink);
 
-    optionLink.classList.add('gsl-si-' + (node.index || -1));
+    optionLink.classList.add('gsl-si-' + (node.index == 0 ? node.index : (node.index || -1)));
 
     if (node.nodeName.toUpperCase() == 'OPTION' && node.selected &&  !node.disabled) {
         optionReplacement.classList.add("gsl-active");

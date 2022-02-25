@@ -58,7 +58,7 @@ class iCalRRule extends Joomla\CMS\Table\Table
 		$temp->freq = $temp->data['FREQ'];
 
 		// Should really test count
-		$temp->processField("count", 999);
+		$temp->processField("count", 10);
 		$temp->processField("interval", 1);
 		//interval ios a mysql reserved word
 		$temp->rinterval = $temp->interval;
@@ -128,7 +128,7 @@ class iCalRRule extends Joomla\CMS\Table\Table
 
 		// Should really test count
 		$temp->processField2("freq", "YEARLY");
-		$temp->processField2("count", 999);
+		$temp->processField2("count", 10);
 		$temp->processField2("rinterval", 1);
 		//interval ios a mysql reserved word
 		$temp->_interval = $temp->rinterval;

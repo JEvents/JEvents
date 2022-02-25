@@ -706,27 +706,26 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		$jversion = new Joomla\CMS\Version;
 
-        if ($params->get("bootstrapchosen", 1))
+        if ($app->isClient('administrator') || $params->get("newfrontendediting", 1))
+        {
+            HTMLHelper::script('media/com_jevents/js/gslselect.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
+            //HTMLHelper::script('media/com_jevents/js/gslselect.js', array('version' => JEventsHelper::JEvents_Version(false) . base64_encode(rand(0,99999)), 'relative' => false), array('defer' => true));
+
+            $script = <<< SCRIPT
+			document.addEventListener('DOMContentLoaded', function () {
+				gslselect('#adminForm select:not(.gsl-hidden)');
+			})
+SCRIPT;
+            Factory::getDocument()->addScriptDeclaration($script);
+
+        }
+        else if ($params->get("bootstrapchosen", 1))
         {
 	        if (!$jversion->isCompatible('4.0'))
 	        {
 		        HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
 	        }
         }
-        else if ($app->isClient('administrator') || $params->get("newfrontendediting", 1))
-        {
-	        HTMLHelper::script('media/com_jevents/js/gslselect.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
-	        //HTMLHelper::script('media/com_jevents/js/gslselect.js', array('version' => JEventsHelper::JEvents_Version(false) . base64_encode(rand(0,99999)), 'relative' => false), array('defer' => true));
-
-			$script = <<< SCRIPT
-			document.addEventListener('DOMContentLoaded', function () {
-				gslselect('#adminForm select:not(.gsl-hidden)');
-			})
-SCRIPT;
-			Factory::getDocument()->addScriptDeclaration($script);
-
-        }
-
 
         $uEditor    = Factory::getUser()->getParam('editor',  Factory::getConfig()->get('editor', 'none'));
 

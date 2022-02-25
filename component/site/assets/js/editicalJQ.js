@@ -1265,7 +1265,7 @@ function selectIrregularDate() {
 	var calpopup = document.querySelector(".irregularDateSelector .js-calendar");
 
 	// Trap month to month movement!
-	if (calpopup.style.display !== "none")
+	if (calpopup.style.display !== "none" && !calpopup.hidden)
 	{
 		return;
 	}
