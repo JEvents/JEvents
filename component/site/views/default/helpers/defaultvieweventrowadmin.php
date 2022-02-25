@@ -33,7 +33,8 @@ function DefaultViewEventRowAdmin($view, $row, $manage = false)
 	$deletelink = "";
 	if (!$manage && JEVHelper::canDeleteEvent($row))
 	{
-		$deletelink = '<a href="' . $row->deletelink(false) . "&rettask=admin.listevents" . '" title="' . Text::_('JEV_DELETE') . '"><b>' . Text::_('JEV_DELETE') . "</b></a>\n";
+        $deleteMsg  = 'onclick="return confirm(\'' . Text::_('ARE_YOU_SURE_YOU_WISH_TO_DELETE_THIS_EVENT', true) . '\')"';
+		$deletelink = '<a href="' . $row->deletelink(false) . "&rettask=admin.listevents" . '" title="' . Text::_('JEV_DELETE') . '" ' . $deleteMsg . '><b>' . Text::_('JEV_DELETE') . "</b></a>\n";
 	}
 
 	if (!$manage && JEVHelper::canPublishEvent($row))
