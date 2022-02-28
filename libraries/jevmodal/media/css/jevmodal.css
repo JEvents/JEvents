@@ -178,11 +178,9 @@ body > div.jevmodal.show {
 }
 
 .jevmodal .modal-body {
-    position: absolute;
     left: 0px;
     right: 0px;
     bottom: 10px;
-    top: 36px;
     overflow-y: hidden;
     max-height: none;
     padding: 10px 5px 5px 5px;

@@ -125,6 +125,13 @@ function jevModalPopup(id, url, title) {
     return;
 }
 
+function jevModalPopupOpen(id)
+{
+    launchJevModal('#' + id);
+
+    return;
+}
+
 function jevModalNoHeader(id, url) {
     addJevModalHtml(id);
 
@@ -153,29 +160,32 @@ function jevModalNoTitle(id, url) {
     return;
 }
 
-function launchJevModal(selector, url) {
+function launchJevModal(selector, url = false) {
     // Clear the old page!
     var iframe = document.querySelector(selector + ' iframe');
-    iframe.src = "";
-    iframe.addEventListener('load', function () {
-        var iframe = document.querySelector(selector+ ' iframe');
-        if(iframe.src.indexOf(url) >= 0) {
+    if (iframe && url) {
 
-            var modal = document.querySelector(selector);
-            var modalHeader = modal.querySelector('.modal-header ');
-            var modalBody   = modal.querySelector('.modal-body ');
-            var modalContent   = modal.querySelector('.modal-content ');
-            var modalDialog   = modal.querySelector('.modal-dialog ');
+        iframe.src = "";
+        iframe.addEventListener('load', function () {
+            var iframe = document.querySelector(selector + ' iframe');
+            if (iframe.src.indexOf(url) >= 0) {
 
-            window.addEventListener('resize', function() {
-                jevIframeSizing(iframe, modal, modalHeader, modalBody, modalContent, modalDialog);
-            })
+                var modal = document.querySelector(selector);
+                var modalHeader = modal.querySelector('.modal-header ');
+                var modalBody = modal.querySelector('.modal-body ');
+                var modalContent = modal.querySelector('.modal-content ');
+                var modalDialog = modal.querySelector('.modal-dialog ');
 
-            window.setTimeout(function () {
-                jevIframeSizing(iframe, modal, modalHeader, modalBody, modalContent, modalDialog);
-            }, 500);
-        }
-    });
+                window.addEventListener('resize', function () {
+                    jevIframeSizing(iframe, modal, modalHeader, modalBody, modalContent, modalDialog);
+                })
+
+                window.setTimeout(function () {
+                    jevIframeSizing(iframe, modal, modalHeader, modalBody, modalContent, modalDialog);
+                }, 500);
+            }
+        });
+    }
 
     jQuery(selector).off('show shown.bs.modal');
     jQuery(selector).on('show shown.bs.modal', function () {
@@ -248,7 +258,19 @@ function jevIframeSizing(iframe, modal, modalHeader, modalBody, modalContent, mo
 */
 }
 
-function addJevModalHtml(id) {
+function addJevModalHtml(id, withiframe = true, modalData = {}) {
+    var myModal = "";
+    var title = "";
+    var body = "";
+    var modalsize = "jevmodal-full";
+
+    if (modalData)
+    {
+        title = modalData.title;
+        body  = modalData.body;
+        modalsize = '';
+    }
+
     /** Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap */
     var bootstrap5 = false;
     var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
@@ -262,18 +284,19 @@ function addJevModalHtml(id) {
     }
 
     var myModal = "";
-    var modalsize = 'jevmodal-full';
+
     if (!document.getElementById(id)) {
         if (bootstrap5) {
             myModal = '<div class="modal  ' + modalsize + ' jevmodal" id="' + id + '" tabindex="-1" role="dialog" aria-labelledby="' + id + 'Label" aria-hidden="true" >'
                 + '<div class="modal-dialog modal-lg modal-xl modal-dialog-centered">'
                 + '<div class="modal-content">'
                 + '<div class="modal-header">'
-                + '<h4 class="modal-title" id="' + id + 'Label"></h4>'
+                + '<h4 class="modal-title" id="' + id + 'Label">' + title + '</h4>'
                 + '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>'
                 + '</div>'
                 + '<div class="modal-body">'
-                + '<iframe src="" ></iframe>'
+                + (withiframe ? '<iframe src="" ></iframe>' : '')
+                + body
                 + '</div>'
                 + '</div>'
                 + '</div>'
@@ -285,10 +308,11 @@ function addJevModalHtml(id) {
                 + '<div class="modal-content">'
                 + '<div class="modal-header">'
                 + '<button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
-                + '<h4 class="modal-title" id="' + id + 'Label"></h4>'
+                + '<h4 class="modal-title" id="' + id + 'Label">' + title + '</h4>'
                 + '</div>'
                 + '<div class="modal-body">'
-                + '<iframe src="" ></iframe>'
+                + (withiframe ? '<iframe src="" ></iframe>' : '')
+                + body
                 + '</div>'
                 + '</div>'
                 + '</div>'
@@ -300,10 +324,11 @@ function addJevModalHtml(id) {
                 + '<div class="modal-content">'
                 + '<div class="modal-header">'
                 + '<button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
-                + '<h4 class="modal-title" id="' + id + 'Label"></h4>'
+                + '<h4 class="modal-title" id="' + id + 'Label">' + title + '</h4>'
                 + '</div>'
                 + '<div class="modal-body">'
-                + '<iframe src=""></iframe>'
+                + (withiframe ? '<iframe src="" ></iframe>' : '')
+                + body
                 + '</div>'
                 + '</div>'
                 + '</div>'
