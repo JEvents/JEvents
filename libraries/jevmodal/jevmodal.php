@@ -10,6 +10,7 @@ defined('JPATH_PLATFORM') or die;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Layout\LayoutHelper;
 
 /**
  * Utility class for Bootstrap or UIKit Modal Popups especially URL based Modals which bootstrap usually fails on
@@ -38,6 +39,21 @@ class JevModal
 	public static function modal($selector = '.jevmodal', $params = array())
 	{
 
+		$jevparams = ComponentHelper::getParams('com_jevents');
+		$modalType = $jevparams->get("modals", "joomlaversion");
+		if ($modalType == "joomlaversion")
+		{
+			return HTMLHelper::_('bootstrap.modal', $selector);
+		}
+		else if ($modalType == "uikit")
+		{
+			//HTMLHelper::_('bootstrap.modal', $selector);return;
+		}
+		else
+		{
+			return HTMLHelper::_('bootstrap.modal', $selector);
+		}
+
 		if (!isset(static::$loaded[__METHOD__][$selector]))
 		{
 
@@ -63,7 +79,53 @@ SCRIPT;
 			static::$loaded[__METHOD__][$selector] = true;
 		}
 
-		return;
+		return "";
+	}
+
+	/*
+	 * Options for the modal can be:
+	 * - keyboard     boolean  true   Closes the modal when escape key is pressed
+	 * - focus        boolean  true   Closes the modal when escape key is pressed
+	 * - title        string   null   The modal title
+	 * - closeButton  boolean  true   Display modal close button (default = true)
+	 * - footer       string   null   Optional markup for the modal footer
+	 * - url          string   null   URL of a resource to be inserted as an `<iframe>` inside the modal body
+	 */
+
+	public static function renderModal($selector = 'modal', $options = [], $body = '') :string
+	{
+		// Only load once
+		if (!empty(static::$loaded[__METHOD__][$selector]))
+		{
+			return '';
+		}
+
+		$jevparams = ComponentHelper::getParams('com_jevents');
+		$modalType = $jevparams->get("modals", "joomlaversion");
+
+		if ($modalType == "joomlaversion")
+		{
+			return HTMLHelper::_('bootstrap.renderModal', $selector, $options, $body);
+		}
+		else if ($modalType == "uikit")
+		{
+			$layoutData = [
+				'selector' => $selector,
+				'params'   => $options,
+				'body'     => $body,
+			];
+
+			static::$loaded[__METHOD__][$selector] = true;
+
+			return LayoutHelper::render('jevents.modal.main', $layoutData);
+
+		}
+		else
+		{
+			return HTMLHelper::_('bootstrap.renderModal', $selector, $options, $body);
+		}
+
+
 	}
 
 
@@ -127,7 +189,7 @@ SCRIPT;
 	 *
 	 * @since   3.0
 	 */
-	public static function framework($debug = null, $forceBoostrap = false, $forceUIkit = false)
+	public static function framework($debug = null)
 	{
 
 		// Only load once
@@ -135,6 +197,9 @@ SCRIPT;
 		{
 			return;
 		}
+
+		$forceBoostrap = false;
+		$forceUIkit = false;
 
 		$jevparams = ComponentHelper::getParams('com_jevents');
 

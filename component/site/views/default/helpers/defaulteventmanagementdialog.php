@@ -17,9 +17,10 @@ use Joomla\CMS\Component\ComponentHelper;
  */
 function DefaultEventManagementDialog($view, $row, $mask, $bootstrap = false)
 {
+	JLoader::register('JevModal', JPATH_LIBRARIES . "/jevents/jevmodal/jevmodal.php");
 
     $actionId   = "action_dialogJQ" . $row->rp_id();
-	JevHtmlBootstrap::modal($actionId);
+
 	$input      = Factory::getApplication()->input;
 	$user       = Factory::getUser();
 
@@ -34,7 +35,6 @@ function DefaultEventManagementDialog($view, $row, $mask, $bootstrap = false)
 			//JevHtmlBootstrap::modal();
 			//JEVHelper::script('editpopupJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 
-			JLoader::register('JevModal', JPATH_LIBRARIES . "/jevents/jevmodal/jevmodal.php");
 			JevModal::framework();
 
 			$popup  = true;
@@ -119,101 +119,74 @@ function DefaultEventManagementDialog($view, $row, $mask, $bootstrap = false)
 			return false;
 		}
 
+		$title = Text::_("JEV_MANAGE_EVENT");
+
+		ob_start();
+		if ($publishLink != "")
+		{
+			?>
+			<a href="<?php echo $publishLink; ?>" id="publish_reccur"
+			   title="<?php echo $publishText; ?>"><?php echo $publishImg; ?><?php echo $publishText; ?></a>
+			<br/>
+			<?php
+		}
 		?>
-		<div id="action_dialogJQ<?php echo $row->rp_id(); ?>" class="action_dialogJQ modal hide fade" tabindex="-1"
-		     role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-sm">
-				<div class="modal-content">
-					<div class="modal-header">
-						<?php
-							$jversion = new Joomla\CMS\Version;
-							if ($jversion->isCompatible('4.0'))
-							{
-						?>
-						<h4 class="modal-title" id="myModalLabel"><?php echo Text::_("JEV_MANAGE_EVENT"); ?></h4>
-						<button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
-								<?php
-							}
-							else {
-								?>
-						<button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="myModalLabel"><?php echo Text::_("JEV_MANAGE_EVENT"); ?></h4>
-								<?php
-							}
-							?>
-					</div>
-					<div class="modal-body">
-						<?php
-						if ($publishLink != "")
-						{
-							?>
-							<a href="<?php echo $publishLink; ?>" id="publish_reccur"
-							   title="<?php echo $publishText; ?>"><?php echo $publishImg; ?><?php echo $publishText; ?></a>
-							<br/>
-							<?php
-						}
-						?>
-						<?php
-						if ($editRepeatLink != "")
-						{
-							?>
-							<a href="<?php echo $editRepeatLink; ?>" id="edit_reccur"
-							   title="edit event"><?php echo $editRepeatImg; ?><?php echo Text::_('EDIT_REPEAT'); ?></a>
-							<br/>
-							<?php
-						}
-						if ($editLink != "")
-						{
-							?>
-							<a href="<?php echo $editLink; ?>" id="edit_event"
-							   title="edit event"><?php echo $editImg; ?><?php echo Text::_('EDIT_EVENT'); ?></a><br/>
-							<a href="<?php echo $editCopyLink; ?>" id="edit_eventcopy"
-							   title="edit event"><?php echo $editCopyImg; ?><?php echo Text::_('COPY_AND_EDIT_EVENT'); ?></a>
-							<br/>
-							<?php
-						}
-						if ($deleteRepeatLink != "")
-						{
-							?>
-							<a href="<?php echo $deleteRepeatLink; ?>"
-							   onclick="return confirm('<?php echo Text::_('ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_RECURRENCE', true); ?>')"
-							   id="delete_repeat"
-							   title="delete repeat"><?php echo $deleteRepeatImg; ?><?php echo Text::_('DELETE_THIS_REPEAT'); ?></a>
-							<br/>
-							<?php
-						}
-						if ($deleteLink != "")
-						{
-							?>
-							<a href="<?php echo $deleteLink; ?>"
-							   onclick="return confirm('<?php echo Text::_($hasrepeat ? 'ARE_YOU_SURE_YOU_WISH_TO_DELETE_THIS_EVENT_AND_ALL_ITS_REPEAT' : 'ARE_YOU_SURE_YOU_WISH_TO_DELETE_THIS_EVENT', true); ?>')"
-							   id="delete_event"
-							   title="delete event"><?php echo $deleteImg; ?><?php echo Text::_($hasrepeat ? "DELETE_ALL_REPEATS" : "DELETE_EVENT"); ?></a>
-							<br/>
-							<?php
-						}
-						if ($deleteFutureLink != "")
-						{
-							?>
-							<a href="<?php echo $deleteFutureLink; ?>"
-							   onclick="return confirm('<?php echo Text::_('ARE_YOU_SURE_YOU_WITH_TO_DELETE_THIS_EVENT_AND_ALL_FUTURE_REPEATS', true) ?>')"
-							   id="delete_eventfuture"
-							   title="delete event"><?php echo $deleteFutureImg; ?><?php echo Text::_('JEV_DELETE_FUTURE_REPEATS'); ?></a>
-							<br/>
-							<?php
-
-						}
-						?>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default"
-						        data-dismiss="modal" data-bs-dismiss="modal" ><?php echo Text::_("JEV_CLOSE"); ?></button>
-					</div>
-				</div>
-			</div>
-		</div>
-
 		<?php
+		if ($editRepeatLink != "")
+		{
+			?>
+			<a href="<?php echo $editRepeatLink; ?>" id="edit_reccur"
+			   title="edit event"><?php echo $editRepeatImg; ?><?php echo Text::_('EDIT_REPEAT'); ?></a>
+			<br/>
+			<?php
+		}
+		if ($editLink != "")
+		{
+			?>
+			<a href="<?php echo $editLink; ?>" id="edit_event"
+			   title="edit event"><?php echo $editImg; ?><?php echo Text::_('EDIT_EVENT'); ?></a><br/>
+			<a href="<?php echo $editCopyLink; ?>" id="edit_eventcopy"
+			   title="edit event"><?php echo $editCopyImg; ?><?php echo Text::_('COPY_AND_EDIT_EVENT'); ?></a>
+			<br/>
+			<?php
+		}
+		if ($deleteRepeatLink != "")
+		{
+			?>
+			<a href="<?php echo $deleteRepeatLink; ?>"
+			   onclick="return confirm('<?php echo Text::_('ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_RECURRENCE', true); ?>')"
+			   id="delete_repeat"
+			   title="delete repeat"><?php echo $deleteRepeatImg; ?><?php echo Text::_('DELETE_THIS_REPEAT'); ?></a>
+			<br/>
+			<?php
+		}
+		if ($deleteLink != "")
+		{
+			?>
+			<a href="<?php echo $deleteLink; ?>"
+			   onclick="return confirm('<?php echo Text::_($hasrepeat ? 'ARE_YOU_SURE_YOU_WISH_TO_DELETE_THIS_EVENT_AND_ALL_ITS_REPEAT' : 'ARE_YOU_SURE_YOU_WISH_TO_DELETE_THIS_EVENT', true); ?>')"
+			   id="delete_event"
+			   title="delete event"><?php echo $deleteImg; ?><?php echo Text::_($hasrepeat ? "DELETE_ALL_REPEATS" : "DELETE_EVENT"); ?></a>
+			<br/>
+			<?php
+		}
+		if ($deleteFutureLink != "")
+		{
+			?>
+			<a href="<?php echo $deleteFutureLink; ?>"
+			   onclick="return confirm('<?php echo Text::_('ARE_YOU_SURE_YOU_WITH_TO_DELETE_THIS_EVENT_AND_ALL_FUTURE_REPEATS', true) ?>')"
+			   id="delete_eventfuture"
+			   title="delete event"><?php echo $deleteFutureImg; ?><?php echo Text::_('JEV_DELETE_FUTURE_REPEATS'); ?></a>
+			<br/>
+			<?php
+
+		}
+
+		$body = ob_get_clean();
+
+		$options = array("title" => $title);
+		echo JevModal::renderModal($actionId, $options, $body);
+
 		return true;
 	}
 	else

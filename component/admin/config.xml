@@ -114,8 +114,22 @@
 		       label="JEV_SHOW_EMAIL_ICON" description="JEV_SHOW_EMAIL_ICON_TIP" difficulty="1"/>
 		<field name="fixjquery" type="jevboolean" class="gsl-button-group" default="1" label="JEV_FIX_JQUERY"
 		       description="JEV_FIX_JQUERY_TIP" difficulty="2" maxjoomlaversion="3.99.99"/>
-		<field name="bootstrapcss" type="jevlist" default="1" label="JEV_LOAD_BOOTSTRAP_CSS"
-		       description="JEV_LOAD_BOOTSTRAP_CSS_DESC" difficulty="2" minjoomlaversion="2.5.0">
+
+		<field name="modals"
+			   type="jevlist"
+			   default="joomlaversion"
+			   label="JEV_MODAL_FRAMEWORK"
+			   description="JEV_MODAL_FRAMEWORK_DESC" difficulty="1"
+		>
+			<option value="joomlaversion">COM_JEVENTS_MODAL_JOOMLA_VERSION</option>
+			<option value="jevents">COM_JEVENTS_MODAL_JEVENTS_BACKEND_STYLE</option>
+			<option value="uikit">COM_JEVENTS_MODAL_UIKIT</option>
+		</field>
+
+		<field name="bootstrapcss" type="jevlist" default="1"
+			   label="JEV_LOAD_BOOTSTRAP_CSS"
+		       description="JEV_LOAD_BOOTSTRAP_CSS_DESC"
+			   difficulty="2">
 			<option value="0">JEV_DO_NOT_LOAD_BOOSTRAP</option>
 			<option value="1">JEV_USE_JEVENTS_BOOTSTRAP</option>
 			<option value="2">JEV_USE_JOOMLA_BOOTSTRAP</option>
