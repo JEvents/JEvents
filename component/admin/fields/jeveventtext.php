@@ -43,7 +43,7 @@ class FormFieldJeveventtext extends JFormFieldText
 				}
 			}
 			$placeholder = !empty($placeholder) ? ' placeholder="' . htmlspecialchars(Text::_($placeholder)) . '"' : '';
-			$input       = str_replace("/>", " $placeholder />", $input);
+			$input       = str_replace("<input", "<input $placeholder ", $input);
 		}
 
 		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
