@@ -37,51 +37,50 @@
 				</field>
 				<field name="showtooltips" type="jevboolean" class="btn-group" default="0"
 				       label="JEV_SHOW_TOOLTIPS_CLUB_ONLY" description="JEV_SHOW_TOOLTIPS_CLUB_ONLY_DESC"
-				       conditional="modcal_useLocalParam" conditions="1"/>
+				       showon="modcal_useLocalParam:1"/>
 				<field name="noeventcheck" type="jevmultilist" default="0" label="JEV_NO_EVENT_CHECK"
-				       description="JEV_NO_EVENT_CHECK_TIP" conditional="modcal_useLocalParam" conditions="1">
+				       description="JEV_NO_EVENT_CHECK_TIP" showon="modcal_useLocalParam:1">
 					<option value="0">Jev_no</option>
 					<option value="1">Jev_yes</option>
 				</field>
 				<field name="ignorecatfilter" type="jevboolean" class="btn-group" default="0"
 				       label="JEV_LOCK_CAT_FILTERS" description="JEV_LOCK_CAT_FILTERS_TIP"
-				       conditional="modcal_useLocalParam" conditions="1"/>
+				       showon="modcal_useLocalParam:1"/>
 				<field name="ignorefiltermodule" type="jevboolean" class="btn-group" default="1"
 				       label="JEV_IGNORE_FILTER_MOD" description="JEV_IGNORE_FILTER_MOD_TIP"
-				       conditional="modcal_useLocalParam" conditions="1"/>
+				       showon="modcal_useLocalParam:1"/>
 				<field name="@spacer" type="jevinfo" default="JEV_HEADER_LINKS"/>
 				<field name="minical_showlink" type="jevradio" class="btn-group" default="1" label="JEV_TITLE_AS"
-				       description="JEV_TITLE_AS_TIP" conditional="modcal_useLocalParam" conditions="1">
+				       description="JEV_TITLE_AS_TIP" showon="modcal_useLocalParam:1">
 					<option value="0">None</option>
 					<option value="1">JEV_AS_LINK</option>
 					<option value="2">JEV_AS_TEXT</option>
 				</field>
 				<field name="minical_prevyear" type="jevboolean" class="btn-group" default="1" label="JEV_PREV_YEAR"
-				       description="JEV_PREV_YEAR_TIP" conditional="modcal_useLocalParam" conditions="1"/>
+				       description="JEV_PREV_YEAR_TIP" showon="modcal_useLocalParam:1"/>
 				<field name="minical_prevmonth" type="jevboolean" class="btn-group" default="1" label="JEV_PREV_MONTH"
-				       description="JEV_PREV_MONTH_TIP" conditional="modcal_useLocalParam" conditions="1"/>
+				       description="JEV_PREV_MONTH_TIP" showon="modcal_useLocalParam:1"/>
 				<field name="minical_actmonth" type="jevradio" class="btn-group" default="1" label="JEV_CURR_MONTH"
-				       description="JEV_CURR_MONTH_TIP" conditional="modcal_useLocalParam" conditions="1">
+				       description="JEV_CURR_MONTH_TIP" showon="modcal_useLocalParam:1">
 					<option value="0">Jev_no</option>
 					<option value="1">JEV_AS_LINK</option>
 					<option value="2">JEV_AS_TEXT</option>
 				</field>
 				<field name="minical_actyear" type="jevradio" class="btn-group" default="1" label="JEV_CURR_YEAR"
-				       description="JEV_CURR_YEAR_TIP" conditional="modcal_useLocalParam" conditions="1">
+				       description="JEV_CURR_YEAR_TIP" showon="modcal_useLocalParam:1">
 					<option value="0">Jev_no</option>
 					<option value="1">JEV_AS_LINK</option>
 					<option value="2">JEV_AS_TEXT</option>
 				</field>
 				<field name="minical_nextmonth" type="jevboolean" class="btn-group" default="1" label="JEV_NEXT_MONTH"
-				       description="JEV_NEXT_MONTH_TIP" conditional="modcal_useLocalParam" conditions="1"/>
+				       description="JEV_NEXT_MONTH_TIP" showon="modcal_useLocalParam:1"/>
 				<field name="minical_nextyear" type="jevboolean" class="btn-group" default="1" label="JEV_NEXT_YEAR"
-				       description="JEV_NEXT_YEAR_TIP" conditional="modcal_useLocalParam" conditions="1"/>
+				       description="JEV_NEXT_YEAR_TIP" showon="modcal_useLocalParam:1"/>
 				<field name="minical_usedate" type="jevboolean" class="btn-group" default="1" label="JEV_USE_DATE"
-				       description="JEV_USE_DATE_TIP" conditional="modcal_useLocalParam" conditions="1"/>
+				       description="JEV_USE_DATE_TIP" showon="modcal_useLocalParam:1"/>
 				<field name="@spacer" type="spacer" default="" label="" description=""/>
 				<field name="modcal_DispLastMonth" type="jevmultilist" default="NO" label="JEV_DISPLAY_LAST_MONTH"
-				       description="JEV_MINICAL_DISPLAY_LAST_MONTH_DESC" conditional="modcal_useLocalParam"
-				       conditions="1">
+				       description="JEV_MINICAL_DISPLAY_LAST_MONTH_DESC" showon="modcal_useLocalParam:1">
 					<option value="NO">JEV_NO</option>
 					<option value="YES_stop">JEV_DLM_YES_STOP_DAY</option>
 					<option value="YES_stop_events">JEV_DLM_YES_EVENT_SDAY</option>
@@ -89,10 +88,9 @@
 					<option value="ALWAYS_events">JEV_DLM_ALWAYS_IF_EVENTS</option>
 				</field>
 				<field name="modcal_DispLastMonthDays" type="jevtext" size="2" default="0" label="JEV_DLM_STOP_DAY"
-				       description="JEV_TIP_DLM_STOP_DAY" conditional="modcal_useLocalParam" conditions="1"/>
+				       description="JEV_TIP_DLM_STOP_DAY" showon="modcal_useLocalParam:1"/>
 				<field name="modcal_DispNextMonth" type="jevmultilist" default="NO" label="JEV_DISPLAY_NEXT_MONTH"
-				       description="JEV_MINICAL_DISPLAY_NEXT_MONTH_DESC" conditional="modcal_useLocalParam"
-				       conditions="1">
+				       description="JEV_MINICAL_DISPLAY_NEXT_MONTH_DESC" showon="modcal_useLocalParam:1">
 					<option value="NO">JEV_NO</option>
 					<option value="YES_stop">JEV_DLM_YES_STOP_DAY</option>
 					<option value="YES_stop_events">JEV_DLM_YES_EVENT_SDAY</option>
@@ -100,11 +98,10 @@
 					<option value="ALWAYS_events">JEV_DLM_ALWAYS_IF_EVENTS</option>
 				</field>
 				<field name="modcal_DispNextMonthDays" type="jevtext" default="0" menu="hide" size="3"
-				       label="JEV_DNM_START_DAY" description="JEV_TIP_DNM_START_DAY" conditional="modcal_useLocalParam"
-				       conditions="1"/>
+				       label="JEV_DNM_START_DAY" description="JEV_TIP_DNM_START_DAY" showon="modcal_useLocalParam:1"/>
 				<field name="emptydaylinks" type="jevboolean" class="btn-group" default="1"
 				       label="JEV_SHOW_EMPTY_CAL_DAYS_AS_LINKS" description="JEV_SHOW_EMPTY_CAL_DAYS_AS_LINKS_DESC"
-				       conditional="modcal_useLocalParam" conditions="1"/>
+				       showon="modcal_useLocalParam:1"/>
 			</fieldset>
 			<fieldset name="JEV_CLUB_ADDONS" label="COM_MODULES_JEV_CLUB_ADDONS_FIELDSET_LABEL"
 			          addfieldpath="/administrator/components/com_jevents/fields/">

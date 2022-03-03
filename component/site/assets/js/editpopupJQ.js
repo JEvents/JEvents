@@ -241,7 +241,6 @@ function addImportPopupHtml() {
                 + '</div>';
             +'</div>';
         }
-
         jQuery(myImportModal).appendTo("body");
     }
 }

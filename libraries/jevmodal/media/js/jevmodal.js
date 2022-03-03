@@ -265,26 +265,26 @@ function addJevModalHtml(id) {
     var modalsize = 'jevmodal-full';
     if (!document.getElementById(id)) {
         if (bootstrap5) {
-            myModal = '<div class="modal  ' + modalsize + ' jevmodal" id="' + id + '" tabindex="-1" role="dialog" aria-labelledby="' + id + 'Label" aria-hidden="true" >'
+            myModal = '<div class="jevbootstrap"><div class="modal  ' + modalsize + ' jevmodal" id="' + id + '" tabindex="-1" role="dialog" aria-labelledby="' + id + 'Label" aria-hidden="true" >'
                 + '<div class="modal-dialog modal-lg modal-xl modal-dialog-centered">'
                 + '<div class="modal-content">'
                 + '<div class="modal-header">'
                 + '<h4 class="modal-title" id="' + id + 'Label"></h4>'
-                + '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>'
+                + '<button type="button" class="btn-close uk-modal-close-default" data-bs-dismiss="modal" aria-label="Close"></button>'
                 + '</div>'
                 + '<div class="modal-body">'
                 + '<iframe src="" ></iframe>'
                 + '</div>'
                 + '</div>'
                 + '</div>'
-                + '</div>';
+                + '</div></div>';
         }
         else if (bootstrap3_enabled) {
-            myModal = '<div class="modal   fade ' + modalsize + ' jevmodal" id="' + id + '" tabindex="-1" role="dialog" aria-labelledby="' + id + 'Label" aria-hidden="true" >'
+            myModal = '<div class="jevbootstrap"><div class="modal   fade ' + modalsize + ' jevmodal" id="' + id + '" tabindex="-1" role="dialog" aria-labelledby="' + id + 'Label" aria-hidden="true" >'
                 + '<div class="modal-dialog modal-lg modal-xl modal-dialog-centered">'
                 + '<div class="modal-content">'
                 + '<div class="modal-header">'
-                + '<button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+                + '<button type="button" class="close uk-modal-close-default" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
                 + '<h4 class="modal-title" id="' + id + 'Label"></h4>'
                 + '</div>'
                 + '<div class="modal-body">'
@@ -292,14 +292,14 @@ function addJevModalHtml(id) {
                 + '</div>'
                 + '</div>'
                 + '</div>'
-                + '</div>';
+                + '</div></div>';
         }
         else {
-            myModal = '<div class="modal  hide fade ' + modalsize + ' jevmodal" id="' + id + '" tabindex="-1" role="dialog" aria-labelledby="' + id + 'Label" aria-hidden="true" >'
+            myModal = '<div class="jevbootstrap"><div class="modal  hide fade ' + modalsize + ' jevmodal" id="' + id + '" tabindex="-1" role="dialog" aria-labelledby="' + id + 'Label" aria-hidden="true" >'
                 + '<div class="modal-dialog ">'
                 + '<div class="modal-content">'
                 + '<div class="modal-header">'
-                + '<button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+                + '<button type="button" class="close uk-modal-close-default" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
                 + '<h4 class="modal-title" id="' + id + 'Label"></h4>'
                 + '</div>'
                 + '<div class="modal-body">'
@@ -307,7 +307,7 @@ function addJevModalHtml(id) {
                 + '</div>'
                 + '</div>'
                 + '</div>'
-                + '</div>';
+                + '</div></div>';
         }
         // see http://stackoverflow.com/questions/10636667/bootstrap-modal-appearing-under-background
         jQuery(myModal).appendTo("body");
