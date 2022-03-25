@@ -646,7 +646,14 @@ class EventCalendarCell_default extends JEventsDefaultView
 		$tooltiptitle   = htmlspecialchars($tooltiptitle, ENT_QUOTES);
 		$tooltipcontent = htmlspecialchars($tooltipcontent, ENT_QUOTES);
 
-		$tip = '<span class="editlinktip hasjevtip" title="' . $tooltiptitle . '" data-content="' . $tooltipcontent . '" >' . $link . '</span>';
+		if (version_compare(JVERSION, '4.0.0', 'ge'))
+		{
+			$tip = '<span class="editlinktip hasjevtip" title="' . $tooltiptitle . '" data-bs-content="' . $tooltipcontent . '" >' . $link . '</span>';
+		}
+		else
+		{
+			$tip = '<span class="editlinktip hasjevtip" title="' . $tooltiptitle . '" data-content="' . $tooltipcontent . '" >' . $link . '</span>';
+		}
 
 		return $tip;
 	}

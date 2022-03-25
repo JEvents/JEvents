@@ -8,7 +8,7 @@ function DefaultEventIcalButton($view, $row)
 {
 
 	JEVHelper::script('view_detailJQ.js', 'components/' . JEV_COM_COMPONENT . "/assets/js/");
-	JevHtmlBootstrap::modal();
+	JevModal::modal();
 	JEVHelper::script('editpopupJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 	?>
 

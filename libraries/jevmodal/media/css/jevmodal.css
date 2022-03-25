@@ -43,6 +43,7 @@
     bottom: 5%;
     top: 5%;
     left: 5%;
+    max-height: 90%;
     margin: 0px;
     z-index: 1050;
     width: 90%;

@@ -54,30 +54,45 @@ $browser = Browser::getInstance();
 
 $registry = JevRegistry::getInstance("jevents");
 
-// Load Joomla Core scripts for sites that don't load MooTools;
+// Load Joomla Core scripts
 HTMLHelper::_('behavior.core', true);
 
 // This loads jQuery too!
 JHtml::_('jquery.framework');
-JevHtmlBootstrap::framework();
-
 // jQnc not only fixes noConflict it creates the jQuery alias
 // we use in JEvents "jevqc" so we always need it
 JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
 
-if (ComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapcss", 1) == 1)
+$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+$newparams = Factory::getApplication('site')->getParams();
+
+if (strpos($params->get('framework', 'bootstrap'), 'bootstrap') === 0)
 {
-	// This version of bootstrap has maximum compatibility with JEvents due to enhanced namespacing
-	HTMLHelper::stylesheet("com_jevents/bootstrap.css", array(), true);
-	// Responsive version of bootstrap with maximum compatibility with JEvents due to enhanced namespacing
-	HTMLHelper::stylesheet("com_jevents/bootstrap-responsive.css", array(), true);
+	JevHtmlBootstrap::framework();
+
+	if (ComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapcss", 1) == 1)
+	{
+		// This version of bootstrap has maximum compatibility with JEvents due to enhanced namespacing
+		HTMLHelper::stylesheet("com_jevents/bootstrap.css", array(), true);
+		// Responsive version of bootstrap with maximum compatibility with JEvents due to enhanced namespacing
+		HTMLHelper::stylesheet("com_jevents/bootstrap-responsive.css", array(), true);
+	}
+	else if (ComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapcss", 1) == 2)
+	{
+		JHtmlBootstrap::loadCss();
+	}
+
 }
-else if (ComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapcss", 1) == 2)
+else
 {
-	JHtmlBootstrap::loadCss();
+	$params->set('bootstrapchosen', 0);
+	$params->set('bootstrapcss', 0);
+	$newparams->set('bootstrapchosen', 0);
+	$newparams->set('bootstrapcss', 0);
 }
 
-$newparams = Factory::getApplication('site')->getParams();
+JevModal::modal();
+
 // Because the application sets a default page title,
 // we need to get it from the menu item itself
 // WP TODO sort out menus!

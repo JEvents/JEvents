@@ -383,7 +383,7 @@ class JevLibHtmlBootstrap
 		$opt['title']     = isset($params['title']) ? $params['title'] : null;
 		$opt['trigger']   = isset($params['trigger']) ? $params['trigger'] : 'hover focus';
 		$opt['content']   = isset($params['content']) ? $params['content'] : null;
-		$opt['delay']     = isset($params['delay']) ? $params['delay'] : null;
+		$opt['delay']     = isset($params['delay']) ? $params['delay'] :  [ 'show' => 50, 'hide' => 20000 ];
 		$opt['container'] = isset($params['container']) ? $params['container'] : 'body';
 		//$opt['template'] = isset($params['template']) ? $params['template'] : '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>';
 
