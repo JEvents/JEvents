@@ -12,3 +12,5 @@ $changelog["package_jevents"][$version]["bugfixes"][]="Include min JS files in p
 $changelog["package_jevents"][$version]["bugfixes"][]="Fix for conditional custom fields during step by step event creation";
 $changelog["package_jevents"][$version]["bugfixes"][]="Switch parameter editing to use native Joomla showon";
 $changelog["package_jevents"][$version]["bugfixes"][]="iCal import modal z-index fix for uikit sites";
+$changelog["package_jevents"][$version]["bugfixes"][]="Fix for latest events module custom layout selector in Joomla 4";
+
