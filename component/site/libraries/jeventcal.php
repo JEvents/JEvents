@@ -309,7 +309,7 @@ class jEventCal
 
 		if (!isset($this->_rptcount))
 		{
-			if ($this->freq() == "none") return false;
+			if (strtolower($this->freq()) == "none") return false;
 			if ($this->until() != $this->dtstart() || $this->count() > 1)
 			{
 				return true;

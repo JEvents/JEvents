@@ -5,7 +5,7 @@ function jevEditPopup(url) {
     }
     catch (e) {
     }
-    addEditModalHtml();
+
     /** see http://stackoverflow.com/questions/16152275/how-to-resize-twitter-bootstrap-modal-dynamically-based-on-the-content */
     jQuery('#myEditModal .modal-header').css({'display': 'block'});
     jQuery('#myEditModal .modal-title').html(Joomla.JText._("JEV_ADD_EVENT"));
@@ -23,7 +23,7 @@ function jevEditTranslation(url, title) {
     }
     catch (e) {
     }
-    addEditModalHtml();
+
     /** see http://stackoverflow.com/questions/16152275/how-to-resize-twitter-bootstrap-modal-dynamically-based-on-the-content */
     jQuery('#myEditModal .modal-header').css({'display': 'block'});
     jQuery('#myEditModal .modal-title').html(title);
@@ -41,7 +41,6 @@ function jevEditPopupNoHeader(url) {
     }
     catch (e) {
     }
-    addEditModalHtml();
 
     /** Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap */
     var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
@@ -60,7 +59,6 @@ function jevEditPopupNoTitle(url) {
     }
     catch (e) {
     }
-    addEditModalHtml();
 
     /** see http://stackoverflow.com/questions/16152275/how-to-resize-twitter-bootstrap-modal-dynamically-based-on-the-content */
     jQuery('#myEditModal .modal-body').css({'top': '5px'});
@@ -141,120 +139,5 @@ function launchModal(selector, url) {
     /** initialized with no keyboard */
     /** reloads parent page on close!
      ** jQuery(selector).on('hidden.bs.modal', function (e) { location.reload();}); */
-
-}
-
-function addEditModalHtml() {
-    /** Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap */
-    var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
-    if (!jQuery("#myEditModal").length) {
-        if (bootstrap3_enabled) {
-            myEditModal = '<div class="jevbootstrap"><div class="modal   fade" id="myEditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >'
-                + '<div class="modal-dialog modal-lg">'
-                + '<div class="modal-content">'
-                + '<div class="modal-header">'
-                + '<button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
-                + '<h4 class="modal-title" id="myModalLabel"></h4>'
-                + '</div>'
-                + '<div class="modal-body">'
-                + '<iframe src="about:blank;"></iframe>'
-                + '</div>'
-                + '</div>'
-                + '</div>'
-                + '</div>';
-            +'</div>';
-        }
-        else {
-            myEditModal = '<div class="jevbootstrap"><div class="modal  hide " id="myEditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >'
-                + '<div class="modal-dialog modal-lg">'
-                + '<div class="modal-content">'
-                + '<div class="modal-header">'
-                + '<button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
-                + '<h4 class="modal-title" id="myModalLabel"></h4>'
-                + '</div>'
-                + '<div class="modal-body">'
-                + '<iframe src="about:blank;"></iframe>'
-                + '</div>'
-                + '</div>'
-                + '</div>'
-                + '</div>';
-            +'</div>';
-        }
-        /** see http://stackoverflow.com/questions/10636667/bootstrap-modal-appearing-under-background */
-        jQuery(myEditModal).appendTo("body");
-    }
-}
-
-function jevImportPopup(url) {
-    /** close dialog may not exist for monthly calendar */
-    try {
-        jQuery('.action_dialogJQ').modal('hide');
-    }
-    catch (e) {
-
-    }
-    addImportPopupHtml();
-
-    /** see http://stackoverflow.com/questions/16152275/how-to-resize-twitter-bootstrap-modal-dynamically-based-on-the-content
-     ** jQuery('#myImportModal .modal-body').css({  'top':'5px'});
-     ** jQuery('#myImportModal .modal-header').css({  'display':'block'}); */
-
-    launchModal('#myImportModal', url);
-
-
-}
-
-
-function addImportPopupHtml() {
-    /** Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap */
-    var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
-    if (!document.getElementById("myImportModal")) {
-        if (bootstrap3_enabled) {
-            myImportModal = '<div class="jevbootstrap"><div class="modal  fade" id="myImportModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >'
-                + '<div class="modal-dialog modal-sm">'
-                + '<div class="modal-content">'
-                + '<div class="modal-header">'
-                + '<button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
-                + '<h4 class="modal-title" id="exampleModalLabel">' + Joomla.JText._("JEV_IMPORT_ICALEVENT") + '</h4>'
-                + '</div>'
-                + '<div class="modal-body">'
-                + '<iframe src="about:blank;"></iframe>'
-                + '</div>'
-                + '</div>'
-                + '</div>'
-                + '</div>';
-            +'</div>';
-        }
-        else {
-            myImportModal = '<div class="jevbootstrap"><div class="modal  hide fade" id="myImportModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >'
-                + '<div class="modal-dialog modal-sm">'
-                + '<div class="modal-content">'
-                + '<div class="modal-header">'
-                + '<button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
-                + '<h4 class="modal-title" id="exampleModalLabel">' + Joomla.JText._("JEV_IMPORT_ICALEVENT") + '</h4>'
-                + '</div>'
-                + '<div class="modal-body">'
-                + '<iframe src="about:blank;"></iframe>'
-                + '</div>'
-                + '</div>'
-                + '</div>'
-                + '</div>';
-            +'</div>';
-        }
-
-        jQuery(myImportModal).appendTo("body");
-    }
-}
-
-function jevIdPopup(id) {
-    /** close dialog may not exist for monthly calendar */
-    try {
-        jQuery('#' + id).modal('hide');
-    }
-    catch (e) {
-
-    }
-    launchModal('#' + id);
-
 
 }

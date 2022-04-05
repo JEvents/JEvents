@@ -40,6 +40,7 @@ JLoader::register('SaveIcalEvent', JEV_ADMINLIBS . "saveIcalEvent.php");
 JLoader::register('JEVHelper', JEV_PATH . "libraries/helper.php");
 JLoader::register('JevModuleHelper', JEV_PATH . "libraries/jevmodulehelper.php");
 JLoader::register('JevHtmlBootstrap', JEV_PATH . "libraries/bootstrap.php");
+JLoader::register('JevModal', JPATH_LIBRARIES . "/jevents/jevmodal/jevmodal.php");
 
 // TODO replace with Date
 JLoader::register('JEventDate', JEV_PATH . "libraries/jeventdate.php");

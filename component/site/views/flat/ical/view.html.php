@@ -38,7 +38,7 @@ class flatViewIcal extends JEventsflatView
 		$this->popup = false;
 		if ($params->get("editpopup", 0) && JEVHelper::isEventCreator())
 		{
-			JevHtmlBootstrap::modal();
+			JevModal::modal();
 			JEVHelper::script('editpopupJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 			$this->popup  = true;
 			$this->popupw = $params->get("popupw", 800);

@@ -23,6 +23,19 @@
 			</option>
 		</field>
 
+		<field name="framework"
+			   type="jevlist"
+			   default="native"
+			   label="JEV_FRONTEND_FRAMEWORK"
+			   description="JEV_FRONTEND_FRAMEWORK_DESC"
+			   difficulty="1">
+			<option value="native">JEV_CORE_JOOMLA_BOOSTRAP</option>
+			<option value="bootstrap3">JEV_BOOSTRAP3</option>
+			<option value="bootstrap4">JEV_BOOSTRAP4</option>
+			<option value="bootstrap5">JEV_BOOSTRAP5</option>
+			<option value="uikit3">JEV_UIKIT3</option>
+		</field>
+
 		<field name="clubcode_spacer" type="jevinfo" default='JEV_JOOMLA_UPDATE_CLUBCODE_INFO' menu="hide" label=""
 		       description="" difficulty="1"/>
 		<field name="clubcode" type="jevtext" size="60" default='' menu="hide" label="JEV_JOOMLA_UPDATE_CLUBCODE"
@@ -30,7 +43,7 @@
 
 		<field name="shownews" type="jevboolean" class="gsl-button-group" default="1" menu="hide" label="COM_JEVENTS_SHOW_JEVENTS_NEWS"
 			   description="COM_JEVENTS_SHOW_JEVENTS_NEWS_DESC" difficulty="3"
-			   conditional="clubcode" conditions="!"
+			   showon="clubcode!:"
 		/>
 
 		<field name="landingpage" type="radio" class="gsl-button-group"  default="cpanel.cpanel" label="COM_JEVENTS_ADMIN_LANDING_PAGE"
@@ -78,7 +91,7 @@
 		</field>
 		<field name="iconstoshow" type="jevmultilist" default="byyear,bymonth,byweek,byday,search" multiple="multiple"
 		       size="6" label="JEV_ICONS_TO_SHOW" description="JEV_ICONS_TO_SHOW_DESC" difficulty="2"
-		       conditional="com_calUseIconic" conditions="1,2">
+		       showon="com_calUseIconic:1,2">
 			<option value="byyear">JEVENTS_LIST_YEAR_DEFAULT_TITLE</option>
 			<option value="bymonth">JEVENTS_MONTH_VIEW_DEFAULT_TITLE</option>
 			<option value="byweek">JEVENTS_LIST_WEEK_DEFAULT_TITLE</option>
@@ -88,7 +101,7 @@
 		</field>
 
 		<field name="com_navbarcolor" type="jevmultilist" default='green' menu="hide" label="JEV_NAV_BAR_COLOR"
-		       description="" difficulty="1" conditional="com_calUseIconic" conditions="0">
+		       description="" difficulty="1" showon="com_calUseIconic:0">
 			<option value="green">JEV_NAV_BAR_GREEN</option>
 			<option value="orange">JEV_NAV_BAR_ORANGE</option>
 			<option value="blue">JEV_NAV_BAR_BLUE</option>
@@ -200,7 +213,7 @@
 				default="0"
 				label="STRUCTURED_EVENT_DATA_IMAGE_LABEL"
 				description="STRUCTURED_EVENT_DATA_IMAGE_DESC"
-				conditional="enable_gsed" conditions="1"
+				showon="enable_gsed:1"
 		/>
 
 		<field
@@ -209,7 +222,7 @@
 				default="1920x1920"
 				label="STRUCTURED_EVENT_DATA_IMAGE_SIZE_LABEL"
 				description="STRUCTURED_EVENT_DATA_IMAGE_SIZE_DESC"
-				conditional="enable_gsed" conditions="1"
+				showon="enable_gsed:1"
 		/>
 
         <field
@@ -218,7 +231,7 @@
                 default="/components/com_jevents/images/logo.png"
                 label="STRUCTURED_EVENT_DATA_DEFAULT_IMAGE_LABEL"
                 description="STRUCTURED_EVENT_DATA_DEFAULT_IMAGE_DESC"
-                conditional="enable_gsed" conditions="1"
+                showon="enable_gsed:1"
         />
 
         <field
@@ -227,7 +240,7 @@
 				default="0"
 				label="STRUCTURED_EVENT_DATA_PERSON_TYPE_LABEL"
 				description="STRUCTURED_EVENT_DATA_PERSON_TYPE_DESC"
-				conditional="enable_gsed" conditions="1"
+				showon="enable_gsed:1"
 		/>
 
 		<field
@@ -236,7 +249,7 @@
 				default="0"
 				label="STRUCTURED_EVENT_DATA_ORGANIZER_TYPE_LABEL"
 				description="STRUCTURED_EVENT_DATA_ORGANIZER_TYPE_DESC"
-				conditional="enable_gsed"
+				showon="enable_gsed"
 				conditions="1"
 		/>
 
@@ -249,7 +262,7 @@
 				description="STRUCTURED_EVENT_DATA_ONLINE_EVENT_DETAILS_DESC"
 				selectmessage="SELECT_ONLINE_EVENT_DETAILS"
 				badconfigmessage="STRUCTURED_DATA_OUTPUT_REQUIRES_CUSTOM_FIELDS_AND_EVENT_URL_SET_UP"
-				conditional="enable_gsed"
+				showon="enable_gsed"
 				conditions="1"
 		/>
 
@@ -262,7 +275,7 @@
 				description="STRUCTURED_EVENT_DATA_EVENT_STATUS_DETAILS_DESC"
 				badconfigmessage="STRUCTURED_DATA_OUTPUT_REQUIRES_CUSTOM_FIELDS_AND_EVENT_URL_SET_UP"
 				selectmessage="SELECT_EVENT_STATUS_DETAILS"
-				conditional="enable_gsed"
+				showon="enable_gsed"
 				conditions="1"
 		/>
 <!--
@@ -323,7 +336,7 @@ Default should be set by the custom field
 
 		<field name="titleplaceholder" type="jevtext" size="60" default='JEV_EVENT_TITLE_PLACEHOLDER' menu="hide" label="COM_JEVENTS_TITLE_PLACEHOLDER"
 			   description="COM_JEVENTS_TITLE_PLACEHOLDER_DESC" difficulty="1"
-			   conditional="enableshowon" conditions="1"
+			   showon="enableshowon:1"
 		/>
 
 		<field name="com_calUseStdTime" type="jevboolean" class="gsl-button-group" default="1" menu="hide"
@@ -374,9 +387,9 @@ Default should be set by the custom field
 		<field name="editpopup" type="jevboolean" class="gsl-button-group" default="0" menu="hide"
 		       label='FRONTEND_EDIT_IN_POPUP' description='FRONTEND_EDIT_IN_POPUP_DESC' difficulty="2"/>
 		<field name="popupw" type="jevtext" default="800" size="6" menu="hide" label='POPUP_WINDOW_WIDTH'
-		       description='POPUP_WINDOW_WIDTH_DESC' difficulty="2" conditional="editpopup" conditions="1"/>
+		       description='POPUP_WINDOW_WIDTH_DESC' difficulty="2" showon="editpopup:1"/>
 		<field name="popuph" type="jevtext" default="500" size="6" menu="hide" label='POPUP_WINDOW_HEIGHT'
-		       description='POPUP_WINDOW_HEIGHT_DESC' difficulty="2" conditional="editpopup" conditions="1"/>
+		       description='POPUP_WINDOW_HEIGHT_DESC' difficulty="2" showon="editpopup:1"/>
 		<field name="com_single_pane_edit" type="jevboolean" class="gsl-button-group" default="0" menu="hide"
 		       label="JEV_ONE_TAB_EVENT" description="JEV_ONE_TAB_EVENT_TIP" difficulty="2"/>
 
@@ -386,7 +399,7 @@ Default should be set by the custom field
 		<field name="disablemultiday" type="jevboolean" class="gsl-button-group" default="0" menu="hide"
 		       label="JEV_DISABLE_MULTIDAY" description="JEV_DISABLE_MULTIDAY_DESC" difficulty="1"/>
 		<field name="multiday" type="jevboolean" class="gsl-button-group" default="1" menu="hide" label="JEV_DEFAULT_MULTIDAY"
-		       description="JEV_DEFAULT_MULTIDAY_DESC" difficulty="1" conditional="disablemultiday" conditions="0"/>
+		       description="JEV_DEFAULT_MULTIDAY_DESC" difficulty="1" showon="disablemultiday:0"/>
 		<field name="ignorelayout" type="jevboolean" class="gsl-button-group" default="0" menu="hide"
 		       label="JEV_IGNORE_EDIT_LAYOUT_IN_BACKEND" description="JEV_IGNORE_EDIT_LAYOUT_IN_BACKEND_TIP"
 		       difficulty="2"/>
@@ -418,7 +431,7 @@ Default should be set by the custom field
 		<field name="offeredtimezones" type="jevtimezone" multiple="true" class="chosen" default="-1" size="5"
 		       style="width:250px;"
 		       menu="hide" label="JEV_AVAILABLE_TIMEZONES" description="JEV_AVAILABLE_TIMEZONES_DESC"
-		       conditional="showtimezone" conditions="1" difficulty="2"/>
+		       showon="showtimezone:1" difficulty="2"/>
 
 		<field name="checkconflicts" type="jevlist" default="0" menu="hide" label="JEV_CHECK_CLASHES"
 		       description="JEV_CHECK_CLASHES_TIP" difficulty="1">
@@ -458,7 +471,7 @@ Default should be set by the custom field
 		       label="JEV_NOTIFICATION_MESSAGE" description="JEV_NOTIFICATION_MESSAGE_DESC" filter="safehtml"
 		       difficulty="2"/>
 		<field name="editreturnto" type="jevlist" default="day.listevents" size="1" label="JEV_EVED_REDIRECT"
-		       description="JEV_EVED_REDIRECT_DESC" difficulty="1" conditions="1,2">
+		       description="JEV_EVED_REDIRECT_DESC" difficulty="1:1,2">
 			<option value="month.calendar">JEVENTS_MONTH_VIEW_DEFAULT_TITLE</option>
 			<option value="week.listevents">JEVENTS_LIST_WEEK_DEFAULT_TITLE</option>
 			<option value="day.listevents">JEVENTS_LIST_DAY_DEFAULT_TITLE</option>
@@ -533,8 +546,7 @@ Default should be set by the custom field
 		//-->
 
 		<field name="tooltiptype" type="jevmultilist" default='bootstrap' menu="hide" label="JEV_TOOLTIPTYPE"
-		       description="JEV_TOOLTIPTYPE_TIP" difficulty="2" conditional="com_enableToolTip" conditions="1">
-			<option value="joomla">JEV_MOOTOOLS</option>
+		       description="JEV_TOOLTIPTYPE_TIP" difficulty="2" showon="com_enableToolTip:1[AND]framework:native">
 			<option value="bootstrap">JEV_BOOTSTRAP</option>
 			<option value="uikit">JEV_UIKIT</option>
 		</field>
@@ -657,10 +669,10 @@ Default should be set by the custom field
 		       label="JEV_USE_NEW_SEF_URL_SYSTEM" description="JEV_USE_NEW_SEF_URL_SYSTEM_DESC"/>
 		<field name="nocatindetaillink" type="jevboolean" class="gsl-button-group" default="0" menu="hide"
 		       label="JEV_SUPPRESS_CATEGORY_IN_DETAIL_LINKS" description="JEV_SUPPRESS_CATEGORY_IN_DETAIL_LINKS_DESC"
-		       conditional="newsef" conditions="1"/>
+		       showon="newsef:1"/>
 		<field name="noeventdetailinurl" type="jevboolean" class="gsl-button-group" default="0" menu="hide"
 		       label="JEV_SUPPRESS_EVENTDETAIL_IN_SEF_LINKS" description="JEV_SUPPRESS_EVENTDETAIL_IN_SEF_LINKS_DESC"
-		       conditional="newsef" conditions="1"/>
+		       showon="newsef:1"/>
 		<field name="com_blockRobots" type="jevlist" default="0" menu="hide" label="JEV_STOP_ROBOTS"
 		       description="JEV_STOP_ROBOTS_TIP">
 			<option value="0">JEV_NO</option>
@@ -669,14 +681,14 @@ Default should be set by the custom field
 			<option value="3">JEV_ALLOW_DETAIL_INDEXING</option>
 		</field>
 		<field name="robotprior" type="jevlist" default="-1 month" menu="hide" label="JEV_ROBOTS_PRIOR"
-		       description="JEV_ROBOTS_PRIOR_TIP" conditional="com_blockRobots" conditions="2">
+		       description="JEV_ROBOTS_PRIOR_TIP" showon="com_blockRobots:2">
 			<option value="-1 day">JEV_1_DAY</option>
 			<option value="-1 month">JEV_1_MONTH</option>
 			<option value="-3 months">JEV_3_MONTHS</option>
 			<option value="-1 year">JEV_1_YEAR</option>
 		</field>
 		<field name="robotpost" type="jevlist" default="+1 month" menu="hide" label="JEV_ROBOTS_POST"
-		       description="JEV_ROBOTS_POST_TIP" conditional="com_blockRobots" conditions="2">
+		       description="JEV_ROBOTS_POST_TIP" showon="com_blockRobots:2">
 			<option value="+1 day">JEV_1_DAY</option>
 			<option value="+1 month">JEV_1_MONTH</option>
 			<option value="+3 months">JEV_3_MONTHS</option>
@@ -706,12 +718,12 @@ Default should be set by the custom field
 		</field>
 
 		<field name="spacer_cm0" type="jevinfo" default="JEV_TAB_CAL_MOD" menu="hide" label="" description=""
-		       difficulty="3" conditional="module_config_from_component" conditions="1"/>
+		       difficulty="3" showon="module_config_from_component:1"/>
 		<field name="spacer_cm1" type="jevinfo" default="JEV_SETT_FOR_CAL_MOD" menu="hide" label="" description=""
-		       difficulty="3" conditional="module_config_from_component" conditions="1"/>
+		       difficulty="3" showon="module_config_from_component:1"/>
 
 		<field name="modcal_DispLastMonth" type="jevlist" default='NO' menu="hide" label="JEV_DISPLAY_LAST_MONTH"
-		       description="" difficulty="3" conditional="module_config_from_component" conditions="1">
+		       description="" difficulty="3" showon="module_config_from_component:1">
 			<option value="NO">JEV_NO</option>
 			<option value="YES_stop">JEV_DLM_YES_STOP_DAY</option>
 			<option value="YES_stop_events">JEV_DLM_YES_EVENT_SDAY</option>
@@ -719,11 +731,11 @@ Default should be set by the custom field
 			<option value="ALWAYS_events">JEV_DLM_ALWAYS_IF_EVENTS</option>
 		</field>
 		<field name="modcal_DispLastMonthDays" type="jevtext" default="0" menu="hide" size="3" label="JEV_DLM_STOP_DAY"
-		       description="JEV_TIP_DLM_STOP_DAY" difficulty="3" conditional="module_config_from_component"
+		       description="JEV_TIP_DLM_STOP_DAY" difficulty="3" showon="module_config_from_component"
 		       conditions="1"/>
 
 		<field name="modcal_DispNextMonth" type="jevlist" default='NO' menu="hide" label="JEV_DISPLAY_NEXT_MONTH"
-		       description="" difficulty="3" conditional="module_config_from_component" conditions="1">
+		       description="" difficulty="3" showon="module_config_from_component:1">
 			<option value="NO">JEV_NO</option>
 			<option value="YES_stop">JEV_DLM_YES_STOP_DAY</option>
 			<option value="YES_stop_events">JEV_DLM_YES_EVENT_SDAY</option>
@@ -731,23 +743,23 @@ Default should be set by the custom field
 			<option value="ALWAYS_events">JEV_DLM_ALWAYS_IF_EVENTS</option>
 		</field>
 		<field name="modcal_DispNextMonthDays" type="jevtext" default="0" menu="hide" size="3" label="JEV_DNM_START_DAY"
-		       description="JEV_TIP_DNM_START_DAY" difficulty="3" conditional="module_config_from_component"
+		       description="JEV_TIP_DNM_START_DAY" difficulty="3" showon="module_config_from_component"
 		       conditions="1"/>
 		<field name="modcal_LinkCloaking" type="jevboolean" class="gsl-button-group" default="0" menu="hide"
 		       label="JEV_HIDE_LINKS" description="JEV_HIDE_LINKS_TIP" difficulty="3"
-		       conditional="module_config_from_component" conditions="1"/>
+		       showon="module_config_from_component:1"/>
 
 		<field name="spacer_le0" type="jevinfo" default="JEV_TAB_LATEST_MOD" menu="hide" label="" description=""
-		       difficulty="3" conditional="module_config_from_component" conditions="1"/>
+		       difficulty="3" showon="module_config_from_component:1"/>
 		<field name="spacer_le1" type="jevinfo" default="JEV_SETT_FOR_MOD_LATEST" menu="hide" label="" description=""
-		       difficulty="3" conditional="module_config_from_component" conditions="1"/>
+		       difficulty="3" showon="module_config_from_component:1"/>
 
 		<field name="modlatest_MaxEvents" type="jevtext" default="10" menu="hide" size="3" label="JEV_LEV_MAX_DISPLAY"
-		       description="JEV_LEV_MAX_DISPLAY_TIP" difficulty="3" conditional="module_config_from_component"
+		       description="JEV_LEV_MAX_DISPLAY_TIP" difficulty="3" showon="module_config_from_component"
 		       conditions="1"/>
 
 		<field name="modlatest_Mode" type="jevlist" default="0" menu="hide" label="JEV_LEV_DISPLAY_MODE"
-		       description="JEV_LEV_DISPLAY_MODE_TIP" difficulty="3" conditional="module_config_from_component"
+		       description="JEV_LEV_DISPLAY_MODE_TIP" difficulty="3" showon="module_config_from_component"
 		       conditions="1">
 			<option value="0">0</option>
 			<option value="1">1</option>
@@ -757,12 +769,12 @@ Default should be set by the custom field
 			<option value="5">5</option>
 		</field>
 		<field name="modlatest_Days" type="jevtext" default="5" menu="hide" size="3" label="JEV_LEV_DAY_RANGE"
-		       description="JEV_LEV_DAY_RANGE_TIP" difficulty="1" conditional="module_config_from_component"
+		       description="JEV_LEV_DAY_RANGE_TIP" difficulty="1" showon="module_config_from_component"
 		       conditions="1"/>
 		<field name="startnow" type="jevboolean" class="gsl-button-group" default="1" label="START_NOW"
-		       description="START_NOW_DESC" difficulty="1" conditional="module_config_from_component" conditions="1"/>
+		       description="START_NOW_DESC" difficulty="1" showon="module_config_from_component:1"/>
 		<field name="modlatest_NoRepeat" type="list" default="0" label="JEV_LEV_REP_EV_DISPLAY_OPTIONS"
-		       description="JEV_LEV_REP_EV_DISPLAY_OPTIONS_TIP" conditional="modlatest_useLocalParam" conditions="1">
+		       description="JEV_LEV_REP_EV_DISPLAY_OPTIONS_TIP" showon="modlatest_useLocalParam:1">
 			<option value="0">JEV_SHOW_ALL_REPEATS</option>
 			<option value="1">JEV_SHOW_ONE_REPEAT</option>
 			<!--<option value="2">JEV_SHOW_FIRST_REPEAT_ONLY</option>//-->
@@ -770,11 +782,11 @@ Default should be set by the custom field
 		</field>
 		<field name="modlatest_DispYear" type="jevboolean" class="gsl-button-group" default="0" menu="hide"
 		       label="JEV_LEV_DISPLAY_YEAR" description="JEV_LEV_DISPLAY_YEAR_TIP" difficulty="1"
-		       conditional="module_config_from_component" conditions="1"/>
+		       showon="module_config_from_component:1"/>
 
 		<field name="modlatest_multiday" type="jevlist" default="0" label="JEV_LATEST_MULTIEVENT_DISPLAY"
 		       description="JEV_LATEST_MULTIEVENT_DISPLAY_DESC" difficulty="3"
-		       conditional="module_config_from_component" conditions="1">
+		       showon="module_config_from_component:1">
 			<option value="0">JEV_LATEST_MULTIEVENT_DISPLAY_OPTION_0</option>
 			<option value="1">JEV_LATEST_MULTIEVENT_DISPLAY_OPTION_1</option>
 			<option value="2">JEV_LATEST_MULTIEVENT_DISPLAY_OPTION_2</option>
@@ -782,15 +794,15 @@ Default should be set by the custom field
 		</field>
 		<field name="modlatest_DispLinks" type="jevboolean" class="gsl-button-group" default="1" menu="hide"
 		       label="JEV_LEV_EV_AS_LINK" description="JEV_LEV_EV_AS_LINK_TIP" difficulty="3"
-		       conditional="module_config_from_component" conditions="1"/>
+		       showon="module_config_from_component:1"/>
 		<field name="modlatest_DisDateStyle" type="jevboolean" class="gsl-button-group" default="0" menu="hide"
 		       label="JEV_LEV_CSS_DATE_FIELD" description="JEV_LEV_CSS_DATE_FIELD_TIP" difficulty="3"
-		       conditional="module_config_from_component" conditions="1"/>
+		       showon="module_config_from_component:1"/>
 		<field name="modlatest_DisTitleStyle" type="jevboolean" class="gsl-button-group" default="0" menu="hide"
 		       label="JEV_LEV_CSS_TITLE_FIELD" description="JEV_LEV_CSS_TITLE_FIELD_TIP" difficulty="3"
-		       conditional="module_config_from_component" conditions="1"/>
+		       showon="module_config_from_component:1"/>
 		<field name="modlatest_LinkToCal" type="jevlist" default="0" menu="hide" label="JEV_LEV_LINKCAL_FIELD"
-		       description="JEV_LEV_LINKCAL_FIELD_TIP" difficulty="3" conditional="module_config_from_component"
+		       description="JEV_LEV_LINKCAL_FIELD_TIP" difficulty="3" showon="module_config_from_component"
 		       conditions="1">
 			<option value="0">JEV_LEV_NOLINK</option>
 			<option value="1">JEV_LEV_FIRSTLINE</option>
@@ -798,23 +810,23 @@ Default should be set by the custom field
 		</field>
 		<field name="modlatest_SortReverse" type="jevboolean" class="gsl-button-group" default="0" menu="hide"
 		       label="JEV_LEV_SORTREVERSE" description="JEV_LEV_SORTREVERSE_TIP" difficulty="3"
-		       conditional="module_config_from_component" conditions="1"/>
+		       showon="module_config_from_component:1"/>
 		<field name="modlatest_LinkCloaking" type="jevboolean" class="gsl-button-group" default="0" menu="hide"
 		       label="JEV_LEV_HIDE_LINK" description="JEV_LEV_HIDE_LINK_TIP" difficulty="3"
-		       conditional="module_config_from_component" conditions="1"/>
+		       showon="module_config_from_component:1"/>
 		<field name="spacer_le2" type="jevinfo" default="JEV_LEV_AVAIL_FIELDS_JEV_LEV_FUNC_DATE_JEV_LEV_FUNC_STRFTIME"
-		       menu="hide" label="" description="" difficulty="3" conditional="module_config_from_component"
+		       menu="hide" label="" description="" difficulty="3" showon="module_config_from_component"
 		       conditions="1"/>
 		<field name="modlatest_CustFmtStr" type="jevtextarea"
 		       default="${eventDate}[!a: - ${endDate(%I:%M%p)}]&lt;br/&gt;${title}" menu="hide" rows="5" cols="60"
 		       label="JEV_LEV_CUST_FORM_STRING" description="JEV_LEV_CUST_FORM_STRING_TIP" difficulty="3"
-		       conditional="module_config_from_component" conditions="1"/>
+		       showon="module_config_from_component:1"/>
 		<field name="modlatest_RSS" type="jevboolean" class="gsl-button-group" default="0" menu="hide"
 		       label="JEV_LEV_RSSLINK_FIELD" description="JEV_LEV_RSSLINK_TIP" difficulty="3"
-		       conditional="module_config_from_component" conditions="1"/>
+		       showon="module_config_from_component:1"/>
 		<field name="modlatest_contentplugins" type="jevboolean" class="gsl-button-group" default="0" menu="hide"
 		       label="JEV_LATEST_CONTENT_PLUGINS" description="JEV_LATEST_CONTENT_PLUGINS_TIP" difficulty="3"
-		       conditional="module_config_from_component" conditions="1"/>
+		       showon="module_config_from_component:1"/>
 
 	</fieldset>
 

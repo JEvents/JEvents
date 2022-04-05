@@ -169,8 +169,8 @@ class PlgSystemGwejson extends JPlugin
 				$requestObject            = new stdClass();
 				$requestObject->typeahead = $input->get('typeahead', '', 'string');
 				// Needed for PHP 8
-				$data                     = new stdClass();
-				$data                     = ProcessJsonRequest($requestObject, $data);
+				$data = new stdClass();
+				$data = ProcessJsonRequest($requestObject, $data);
 			}
 			catch (Exception $e)
 			{
@@ -292,4 +292,16 @@ class PlgSystemGwejson extends JPlugin
 		}
 	}
 	*/
+
+	public
+	function onAfterRender()
+	{
+		if (version_compare(JVERSION, '4.0.0', 'ge'))
+		{
+
+			$document = Factory::getApplication()->getDocument();
+			$wa      = $document->getWebAssetManager();
+			$scripts = $wa->getAssets('script');
+		}
+	}
 }

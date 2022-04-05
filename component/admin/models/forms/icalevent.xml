@@ -45,7 +45,7 @@
 			   showon="catid!:,0[AND]title!:"
 		/>
 		<!--
-		conditional="title" conditions="fred" />
+		showon="title:fred" />
 		//-->
 		<field name="ics_id"
 			   type="jeveventcalendar"

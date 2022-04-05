@@ -122,8 +122,13 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 			<div class="modal-dialog modal-sm">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="myModalLabel"><?php echo Text::_("JEV_SAVE"); ?></h4>
+						<?php if (version_compare(JVERSION, '4.0.0', 'ge'))  { ?>
+							<h4 class="modal-title" id="myModalLabel"><?php echo Text::_("JEV_SAVE"); ?></h4>
+							<button type="button" class="close btn-close" data-dismiss="modal" data-bs-dismiss="modal" aria-hidden="true"></button>
+						<?php } else { ?>
+							<button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title" id="myModalLabel"><?php echo Text::_("JEV_SAVE"); ?></h4>
+						<?php } ?>
 					</div>
 					<div class="modal-body">
 						<?php

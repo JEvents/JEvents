@@ -1040,9 +1040,20 @@ SCRIPT;
 			$showon = ob_get_clean();
 			if (isset($this->customfields[$key]["showon"]) && !empty($this->customfields[$key]["showon"]))
 			{
-				$showon = $this->customfields[$key]["showon"];
-				// keep a copy for custom fields since for customised layouts we loose the general showon handling!
-				$showon .= str_replace("data-showon-gsl", "data-showon-2gsl" , $showon);
+				// merge a copy for custom fields since for customised layouts we loose the general showon handling!
+				$originalShowon = $this->customfields[$key]["showon"];
+				$originalShowon = trim($originalShowon);
+				$originalShowon = str_replace("data-showon-gsl='[", "", $originalShowon);
+				$originalShowon = substr($originalShowon, 0, strlen($originalShowon) - 2);
+				if (strpos($originalShowon, "{") === 0 && strrpos($originalShowon, "}") === (strlen($originalShowon)-1))
+				{
+					$originalShowon = str_replace('"op":""', '"op":"AND"', $originalShowon);
+					$showon = substr($showon, 0, strlen($showon) - 2) . "," . $originalShowon . "]'";
+					//$showon = str_replace("data-showon-gsl='[", "data-showon-gsl='[" . $originalShowon . ",", $showon);
+
+					// replace the custom field showon attribute so that direct editing pages pick up the adjusted value
+					$this->customfields[$key]["showon"] = $showon;
+				}
 			}
 			?>
 			<div class=" gsl-margin-small-top gsl-child-width-1-1 gsl-grid  jevplugin_<?php echo $key; ?>" <?php echo $showon; ?>>

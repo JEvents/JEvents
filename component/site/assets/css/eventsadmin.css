@@ -653,7 +653,7 @@ td.ev_td_right ul.ev_ul {
     top: 5%;
     left: 50% !important;
     position: fixed !important;
-    z-index: 1050;
+    z-index: 9999;
     text-align: left;
     height:auto;
 }
@@ -874,19 +874,23 @@ table.ev_navtable tr {
 
 /* Modal event editing  and CSV import*/
 
-#myEditModal {
+#myEditModal_OLD {
     bottom: 5%;
     position: fixed;
     overflow: hidden;
 }
 
+#myImportModal .uk-modal-dialog {
+    height: 500px;
+}
+/*
 #myImportModal {
     margin-left: -280px;
     width: 560px;
     height: 500px;
     overflow: hidden;
     position: fixed;
-    z-index: 1050;
+    z-index: 9999;
     background-color: #ffffff;
     border: 1px solid rgba(0, 0, 0, 0.3);
     -webkit-border-radius: 6px;
@@ -901,8 +905,8 @@ table.ev_navtable tr {
     background-clip: padding-box;
     text-align: left;
 }
-
-#myEditModal.modal:not(.jeviso-modal) {
+*/
+#myEditModal_OLD.modal:not(.jeviso-modal) {
     position: fixed;
     bottom: 5%;
     top: 5%;
@@ -926,7 +930,7 @@ table.ev_navtable tr {
     text-align: left;
 }
 
-#myEditModal.modal.fade:not(.jeviso-modal) {
+#myEditModal_OLD.modal.fade:not(.jeviso-modal) {
     top: -25%;
     -webkit-transition: opacity 0.3s linear, top 0.3s ease-out;
     -moz-transition: opacity 0.3s linear, top 0.3s ease-out;
@@ -934,15 +938,15 @@ table.ev_navtable tr {
     transition: opacity 0.3s linear, top 0.3s ease-out;
 }
 
-#myEditModal.modal.fade.in:not(.jeviso-modal) {
+#myEditModal_OLD.modal.fade.in:not(.jeviso-modal) {
     top: 5%;
 }
 
-#myEditModal body.modal {
+#myEditModal_OLD body.modal {
     padding-top: 0;
 }
 
-#myEditModal .close, #myImportModal .close {
+#myEditModal_OLD .close, #myImportModal_OLD .close {
     float: right;
     font-size: 20px;
     font-weight: bold;
@@ -953,10 +957,10 @@ table.ev_navtable tr {
     filter: alpha(opacity=20);
 }
 
-#myEditModal .close:hover,
-#myEditModal .close:focus,
-#myImportModal .close:hover,
-#myImportModal .close:focus {
+#myEditModal_OLD .close:hover,
+#myEditModal_OLD .close:focus,
+#myImportModal_OLD .close:hover,
+#myImportModal_OLD .close:focus {
     color: #000000;
     text-decoration: none;
     cursor: pointer;
@@ -964,7 +968,7 @@ table.ev_navtable tr {
     filter: alpha(opacity=40);
 }
 
-#myEditModal button.close, #myImportModal button.close {
+#myEditModal_OLD button.close, #myImportModal_OLD button.close {
     padding: 0;
     cursor: pointer;
     background: transparent;
@@ -972,11 +976,11 @@ table.ev_navtable tr {
     -webkit-appearance: none;
 }
 
-#myEditModal .modal-header .close, #myImportModal .modal-header .close {
+#myEditModal_OLD .modal-header .close, #myImportModal_OLD .modal-header .close {
     margin-top: 2px;
 }
 
-#myEditModal .modal-footer, #myImportModal .modal-footer {
+#myEditModal_OLD .modal-footer, #myImportModal_OLD .modal-footer {
     padding: 14px 15px 15px;
     margin-bottom: 0;
     text-align: right;
@@ -990,33 +994,33 @@ table.ev_navtable tr {
     box-shadow: inset 0 1px 0 #ffffff;
 }
 
-#myEditModal .modal-footer:before,
-#myEditModal .modal-footer:after,
+#myEditModal_OLD .modal-footer:before,
+#myEditModal_OLD .modal-footer:after,
 #myImporttModal .modal-footer:before,
-#myImportModal .modal-footer:after {
+#myImportModal_OLD .modal-footer:after {
     display: table;
     line-height: 0;
     content: "";
 }
 
-#myEditModal .modal-footer:after, #myImportModal .modal-footer:after {
+#myEditModal_OLD .modal-footer:after, #myImportModal_OLD .modal-footer:after {
     clear: both;
 }
 
-#myEditModal .modal-footer .btn + .btn, #myImportModal .modal-footer .btn + .btn {
+#myEditModal_OLD .modal-footer .btn + .btn, #myImportModal_OLD .modal-footer .btn + .btn {
     margin-bottom: 0;
     margin-left: 5px;
 }
 
-#myEditModal .modal-footer .btn-group .btn + .btn, #myImportModal .modal-footer .btn-group .btn + .btn {
+#myEditModal_OLD .modal-footer .btn-group .btn + .btn, #myImportModal_OLD .modal-footer .btn-group .btn + .btn {
     margin-left: -1px;
 }
 
-#myEditModal .modal-footer .btn-block + .btn-block, #myImportModal .modal-footer .btn-block + .btn-block {
+#myEditModal_OLD .modal-footer .btn-block + .btn-block, #myImportModal_OLD .modal-footer .btn-block + .btn-block {
     margin-left: 0;
 }
 
-#myEditModal .modal-header, #myImportModal .modal-header {
+#myEditModal_OLD .modal-header, #myImportModal_OLD .modal-header {
     float: none;
     height: 35px;
     left: 0;
@@ -1026,7 +1030,7 @@ table.ev_navtable tr {
     border-bottom: 1px solid #eee;
 }
 
-#myEditModal h4, #myImportModal h4 {
+#myEditModal_OLD h4, #myImportModal_OLD h4 {
     margin: 0;
     font-family: inherit;
     font-weight: bold;
@@ -1036,7 +1040,7 @@ table.ev_navtable tr {
     text-rendering: optimizelegibility;
 }
 
-#myEditModal .modal-body, #myImportModal .modal-body {
+#myEditModal_OLD .modal-body, #myImportModal_OLD .modal-body {
     position: absolute;
     left: 0;
     right: 0;
@@ -1050,27 +1054,28 @@ table.ev_navtable tr {
     -webkit-overflow-scrolling: touch;
 }
 
-#myEditModal .modal-body iframe, #myImportModal .modal-body iframe {
+#myEditModal_OLD .modal-body iframe, #myImportModal_OLD .modal-body iframe {
     width: 99.5%;
     border: none;
     height: 100%;
+    min-height: 425px;
     max-height: 100%;
     /* See http://stackoverflow.com/questions/9129182/iframe-100-height-causes-vertical-scrollbar */
     display: block;
 }
 
-#myEditModal .modal-dialog {
+#myEditModal_OLD .modal-dialog {
     height: 100%;
     width: auto;
     margin: 0;
 }
 
-#myImportModal .modal-dialog {
+#myImportModal_OLD .modal-dialog {
     height: 100%;
     width: auto;
 }
 
-#myImportModal .modal-content, #myEditModal .modal-content {
+#myImportModal_OLD .modal-content, #myEditModal_OLD .modal-content {
     box-sizing: border-box;
     height: 100%;
     margin: 5px;
@@ -1212,7 +1217,7 @@ div#byirregular strong
 /* Only for sites that want a max size for the popup! */
 
 @media (min-width: 1200px) {
-    #myEditModal.modal {
+    #myEditModal_OLD.modal {
         left: 50%;
         margin-left: -550px;
         max-width: 1100px;
@@ -1220,7 +1225,7 @@ div#byirregular strong
 }
 
 @media (max-width: 1199px) {
-    #myEditModal.modal {
+    #myEditModal_OLD.modal {
         left: 45%;
         margin-left: -45%;
 
@@ -1228,7 +1233,7 @@ div#byirregular strong
 }
 
 @media (max-width: 900px) {
-    #myEditModal.modal {
+    #myEditModal_OLD.modal {
         width: 98%;
         left: 49%;
         margin-left: -49%;
@@ -1237,12 +1242,12 @@ div#byirregular strong
 }
 
 @media (max-height: 900px) {
-    #myEditModal.modal {
+    #myEditModal_OLD.modal {
         height: 98%;
         bottom: 1%;
     }
 
-    #myEditModal.modal.fade.in {
+    #myEditModal_OLD.modal.fade.in {
         top: 1%;
     }
 }
@@ -1273,6 +1278,7 @@ body.admin.com_jevents [class^="icon-"] {
 .jevbootstrap .modal:not(.jeviso-modal) > .modal-dialog {
     left: 0;
     right: 0;
+    margin: 0;
 }
 
 .sr-only {
