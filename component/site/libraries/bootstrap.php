@@ -64,15 +64,7 @@ class JevHtmlBootstrap
 	 */
 	public static function modal($selector = 'modal', $params = array())
 	{
-		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
-		if (strpos($params->get('framework', 'uikit3'), 'bootstrap') === 0)
-		{
-			HTMLHelper::_('bootstrap.renderModal', $selector, $params);
-		}
-		else
-		{
-			JevModal::modal($selector, $params);
-		}
+		JevModal::modal($selector, $params);
 		return;
 
 	}
@@ -104,17 +96,8 @@ class JevHtmlBootstrap
 	 */
 	public static function popover($selector = '.hasPopover', $params = array())
 	{
-		// Only load once
-		if (isset(static::$loaded[__METHOD__][$selector]))
-		{
-			return;
-		}
-
 		JevModal::popover($selector, $params);
-		static::$loaded[__METHOD__][$selector] = true;
-
 		return;
-
 	}
 
 	/**

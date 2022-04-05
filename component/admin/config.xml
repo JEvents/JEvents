@@ -546,8 +546,7 @@ Default should be set by the custom field
 		//-->
 
 		<field name="tooltiptype" type="jevmultilist" default='bootstrap' menu="hide" label="JEV_TOOLTIPTYPE"
-		       description="JEV_TOOLTIPTYPE_TIP" difficulty="2" showon="com_enableToolTip:1[AND]framework:bootstrap">
-			<option value="joomla">JEV_MOOTOOLS</option>
+		       description="JEV_TOOLTIPTYPE_TIP" difficulty="2" showon="com_enableToolTip:1[AND]framework:native">
 			<option value="bootstrap">JEV_BOOTSTRAP</option>
 			<option value="uikit">JEV_UIKIT</option>
 		</field>

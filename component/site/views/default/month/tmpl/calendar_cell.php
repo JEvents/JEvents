@@ -174,7 +174,7 @@ class EventCalendarCell_default extends JEventsDefaultView
 			else
 			{
 
-				JevHtmlBootstrap::popover('.hasjevtip', array("trigger" => "hover focus", "placement" => "top", "container" => "#jevents_body", "delay" => array("show" => 150, "hide" => 150)));
+				JevModal::popover('.hasjevtip', array("trigger" => "hover focus", "placement" => "top", "container" => "#jevents_body", "delay" => array("show" => 150, "hide" => 150)));
 
 				$tooltip = $this->loadOverride("tooltip");
 				// allow fallback to old method
@@ -646,6 +646,12 @@ class EventCalendarCell_default extends JEventsDefaultView
 		$tooltiptitle   = htmlspecialchars($tooltiptitle, ENT_QUOTES);
 		$tooltipcontent = htmlspecialchars($tooltipcontent, ENT_QUOTES);
 
+		// from customised layouts of tooltip
+		if (empty($tooltipcontent))
+		{
+			$tooltipcontent = $tooltiptitle;
+			$tooltiptitle = "";
+		}
 		if (version_compare(JVERSION, '4.0.0', 'ge'))
 		{
 			$tip = '<span class="editlinktip hasjevtip" title="' . $tooltiptitle . '" data-bs-content="' . $tooltipcontent . '" >' . $link . '</span>';

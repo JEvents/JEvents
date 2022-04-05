@@ -420,7 +420,7 @@ jQuery(document).ready(function(){
 });                                
 SCRIPT;
 
-			JevHtmlBootstrap::popover('#myPluginAccordion .icon-info' , array("trigger"=>"hover focus", "placement"=>"top", "container"=>"#plugin_options", "delay"=> array( "show"=> 150, "hide"=> 150 )));
+			JevModal::popover('#myPluginAccordion .icon-info' , array("trigger"=>"hover focus", "placement"=>"top", "container"=>"#plugin_options", "delay"=> array( "show"=> 150, "hide"=> 150 )));
 			Factory::getDocument()->addScriptDeclaration($script);
 
 			$i = 0;

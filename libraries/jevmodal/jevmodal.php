@@ -38,15 +38,22 @@ class JevModal
 	public static function modal($selector = '.jevmodal', $params = array())
 	{
 
-		if (!isset(static::$loaded[__METHOD__][$selector]))
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+		if (strpos($params->get('framework', 'bootstrap'), 'bootstrap') === 0 || $params->get('framework', 'bootstrap') == 'native')
 		{
+			HTMLHelper::_('bootstrap.renderModal', $selector, $params);
+		}
+		else
+		{
+			if (!isset(static::$loaded[__METHOD__][$selector]))
+			{
 
-			// Include Modal framework
-			static::framework();
+				// Include Modal framework
+				static::framework();
 
-			$jsonParams = json_encode($params);
+				$jsonParams = json_encode($params);
 
-			$script = <<< SCRIPT
+				$script = <<< SCRIPT
 document.addEventListener('DOMContentLoaded', function() {
 	var targets = document.querySelectorAll('$selector');
 	targets.forEach(function(target) {
@@ -58,12 +65,12 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 });
 SCRIPT;
-			Factory::getDocument()->addScriptDeclaration($script);
+				Factory::getDocument()->addScriptDeclaration($script);
 
-			// Set static array
-			static::$loaded[__METHOD__][$selector] = true;
+				// Set static array
+				static::$loaded[__METHOD__][$selector] = true;
+			}
 		}
-
 		return;
 	}
 
@@ -113,6 +120,14 @@ SCRIPT;
 		else {
 			// Load jQuery
 			HTMLHelper::_('jquery.framework');
+			if (version_compare(JVERSION, '4', 'ge') && $jevparams->get('framework', 'native') == 'native')
+			{
+				// Include the Bootstrap component
+				Factory::getApplication()
+					->getDocument()
+					->getWebAssetManager()
+					->useScript('bootstrap.modal');
+			}
 
 			HTMLHelper::stylesheet('com_jevents/lib_jevmodal/jevmodal.css', array('relative' => true));
 			HTMLHelper::script('com_jevents/lib_jevmodal/jevmodal.js', array('framework' => false, 'relative' => true, 'pathOnly' => false, 'detectBrowser' => false, 'detectDebug' => true));
@@ -162,17 +177,34 @@ SCRIPT;
 		$jevparams = ComponentHelper::getParams('com_jevents');
 		$toolTipType = $jevparams->get('tooltiptype', 'bootstrap');
 
-		if(strpos($jevparams->get('framework', 'bootstrap'), 'bootstrap') !== 0)
+		// If using uikit framework then override tooltip preference for consistency
+		if(strpos($jevparams->get('framework', 'bootstrap'), 'uikit') === 0)
 		{
 			$toolTipType = 'uikit';
 		}
 
+		// Migrate old MooTools tooltips - from old settings
+		if ($toolTipType == 'joomla')
+		{
+			$toolTipType = $jevparams->get('framework', 'bootstrap') == 'uikit' ? 'uikit' : 'bootstrap';
+		}
+
 		if (version_compare(JVERSION, '4', 'ge') && $toolTipType !== 'uikit')
 		{
-			// For Joomla 4 we need to change the data attribute
+			// For Joomla 4 we need to change the data attribute - use the native popover method unless specifically using UIKit
 			HTMLHelper::_('bootstrap.popover', $selector, $params);
 			return;
 		}
+		/*
+		if (version_compare(JVERSION, '4', 'ge') && $jevparams->get('framework', 'native') == 'native')
+		{
+			// Include the Bootstrap component
+			Factory::getApplication()
+				->getDocument()
+				->getWebAssetManager()
+				->useScript('bootstrap.popover');
+		}
+		*/
 
 		//$params['delay'] = [ 'show' => 50, 'hide' => 20000 ];
 
@@ -203,7 +235,7 @@ SCRIPT;
 		$uikitopt['title'] = isset($params['title']) ? $params['title'] : '';
 		$uikitopt['pos']   = isset($params['placement']) ? $params['placement'] : 'top';
 		$uikitopt['delay'] = isset($params['delay']['show']) ? $params['delay']['show'] : 0;
-		$uikitopt['delayHide'] = 20000;
+		$uikitopt['delayHide'] = 200;
 		$uikitopt['offset'] = 20;
 		$uikitopt['animation'] = 'uk-animation-fade';
 		$uikitopt['duration'] = 100;
@@ -227,7 +259,14 @@ document.addEventListener('DOMContentLoaded', function()
 		catch (e) {
 			if ('$toolTipType' != "uikit"  || typeof UIkit == 'undefined' ) {
 			// Do not use this for YooTheme Pro templates otherwise you get strange behaviour!
-				jQuery('$selector').popover($options);
+				if (jQuery('$selector').popover )
+				{			
+					jQuery('$selector').popover($options);
+				}
+				else 
+				{
+					alert('problem with popovers!');
+				}
 			}
 			else 
 			{
@@ -235,7 +274,7 @@ document.addEventListener('DOMContentLoaded', function()
 				var hoveritems = document.querySelectorAll('$selector');
 				hoveritems.forEach(function (hoveritem) {
 					let title = hoveritem.getAttribute('data-yspoptitle') || hoveritem.getAttribute('data-original-title') || hoveritem.getAttribute('title');
-					let body = hoveritem.getAttribute('data-yspopcontent') || hoveritem.getAttribute('data-content') || '';
+					let body = hoveritem.getAttribute('data-yspopcontent') || hoveritem.getAttribute('data-content') || hoveritem.getAttribute('data-bs-content') || '';
 					let options = hoveritem.getAttribute('data-yspopoptions') || '$uikitoptions';
 					options = JSON.parse(options);
 					/*

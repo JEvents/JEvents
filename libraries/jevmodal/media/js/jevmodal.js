@@ -34,7 +34,9 @@ function jevModalSelector(sourceElement, params, evt) {
 
         if (typeof elementData.title !== 'undefined')
         {
-            modalHeader.style.display = 'block';
+            if (elementData.title !== "") {
+                modalHeader.style.display = 'block';
+            }
             modalTitle.innerHTML = elementData.title;
         }
         else
@@ -100,7 +102,9 @@ function jevModalResize(id) {
 
     if (typeof elementData.title !== 'undefined')
     {
-        modalHeader.style.display = 'block';
+        if (elementData.title !== "") {
+            modalHeader.style.display = 'block';
+        }
         modalTitle.innerHTML = elementData.title;
     }
     else
@@ -129,7 +133,7 @@ function jevModalPopup(id, url, title) {
     addJevModalHtml(id);
 
     // see http://stackoverflow.com/questions/16152275/how-to-resize-twitter-bootstrap-modal-dynamically-based-on-the-content
-    jQuery('#' + id + ' .modal-header').css({'display': 'block'});
+    //jQuery('#' + id + ' .modal-header').css({'display': 'block'});
     jQuery('#' + id + ' .modal-title').html(title)
     launchJevModal('#' + id, url);
 

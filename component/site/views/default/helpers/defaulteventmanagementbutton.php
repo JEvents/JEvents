@@ -8,7 +8,7 @@ function DefaultEventManagementButton($view, $row)
 {
 
 	JEVHelper::script('view_detailJQ.js', 'components/' . JEV_COM_COMPONENT . "/assets/js/");
-	JevHtmlBootstrap::modal();
+	JevModal::modal();
 	JEVHelper::script('editpopupJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 	?>
 	<a href="javascript:jevIdPopup('action_dialogJQ<?php echo $row->rp_id(); ?>');"
