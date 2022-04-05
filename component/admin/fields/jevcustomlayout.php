@@ -54,17 +54,38 @@ class JFormFieldJevcustomlayout extends JFormFieldList
 
 		$html =  "<script>jQuery(document).ready(function ($){loadJevPreview('$target', '$csstarget', '$ignorebrtarget', '$ttop', '$trow', '$tbot', '$inccss');});</script>";
 		$id = $this->id;
-		$html .= <<<DROPDOWN
-<div class="dropdown btn-group" id="$id">
-  <button class="btn btn-default dropdown-toggle" type="button" id="dropdown$target" data-toggle="dropdown" aria-expanded="false">
-    Select Layout
-    <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown$target" id="dropdownUL_$target" role="menu">
-    <li role="presentation"><a role="menuitem" class="dropdownpopover" href="#" data-title="Current Customised Value" data-content="Custom Format String customised by you">Current Value</a></li>
-    </ul>
-</div>
-DROPDOWN;
+        if (version_compare(JVERSION, "4", "gt")) {
+            $html .= <<<DROPDOWN
+				<div class="dropdown btn-group" id="$id">
+				  <button type="button" id="dropdown$target" class="btn btn-primary dropdown-toggle dropdown-toggle-split" 
+				  data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Select Layout
+					<span class="caret"></span>
+				  </button>
+				  <ul class="dropdown-menu" style="min-width:200px" role="menu" aria-labelledby="dropdown$target" id="dropdownUL_$target" role="menu">
+					<li role="presentation"><a role="menuitem" 
+					class="dropdownpopover dropdown-item" href="#" 
+					data-bs-title="Current Customised Value" 
+					data-bs-content="Custom Format String customised by you">Current Value</a></li>
+					</ul>
+				</div>
+				DROPDOWN;
+        } else {
+            $html .= <<<DROPDOWN
+				<div class="dropdown btn-group" id="$id">
+				  <button class="btn btn-default dropdown-toggle" type="button" id="dropdown$target" 
+				  data-toggle="dropdown" aria-expanded="false">
+					Select Layout
+					<span class="caret"></span>
+				  </button>
+				  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown$target" id="dropdownUL_$target" role="menu">
+					<li role="presentation"><a role="menuitem" class="dropdownpopover" href="#" 
+					data-title="Current Customised Value" 
+					data-content="Custom Format String customised by you">Current Value</a></li>
+					</ul>
+				</div>
+				DROPDOWN;
+        }
 
 		return $html;
 	}
