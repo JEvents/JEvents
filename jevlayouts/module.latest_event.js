@@ -750,7 +750,7 @@ function loadJevPreview(target, csstarget, jstarget, ttop, tbot) {
 				info = "<img src='" + item.image + "' style='margin:0px 10px 10px 10px;'/><br/>";
 			}
 			info += "<div>" + item.info + "</div>";
-			var elem = jQuery('<li role="presentation"><a  role="menuitem" tabindex="-1" href="#" class="dropdownpopover" data-title="\n' + item.name + '" data-content="\n' + info + '">\n' + item.name + '</a></li>');
+			var elem = jQuery('<li role="presentation"><a  role="menuitem" tabindex="-1" href="#" class="dropdownpopover" data-title="\n' + item.name + '" data-content="\n' + info + '" data-bs-content="\n' + info + '">\n' + item.name + '</a></li>');
 			var dropdowntarget = jQuery("#dropdownUL_" + target);
 			elem.appendTo(dropdowntarget);
 			elem.on('click', function (event) {
