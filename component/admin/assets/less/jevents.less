@@ -26,6 +26,27 @@
       select, input {
         max-width: 100%;
         margin-bottom: 0;
+        /* Needed for BS 5 templates */
+        float: none;
+      }
+      input.form-check-input {
+        /* Needed for BS 5 templates */
+        margin-left : 0;
+      }
+      .input-group-text {
+        /* Needed for some BS 5 templates  */
+        display:initial;
+        padding: 1px;
+        border: none;
+      }
+      #myEditTabs li.hiddenTab {
+        display:none!important;
+      }
+
+      li.cleverGetHeightCSS {
+        display:block!important;
+        height: 0;
+        overflow: hidden;
       }
     }
   }

@@ -1,6 +1,17 @@
 var j3 = true;
 j3 = typeof j3php == "undefined" ? j3 : j3php;
 
+function jevIdPopup(id) {
+    /** close dialog may not exist for monthly calendar */
+    try {
+        jQuery('#' + id).modal('hide');
+    }
+    catch (e) {
+
+    }
+    launchJevModal('#' + id);
+}
+
 function jevModalSelector(sourceElement, params, evt) {
     if(sourceElement.getAttribute('data-jevmodal')) {
         evt.preventDefault();
@@ -23,7 +34,9 @@ function jevModalSelector(sourceElement, params, evt) {
 
         if (typeof elementData.title !== 'undefined')
         {
-            modalHeader.style.display = 'block';
+            if (elementData.title !== "") {
+                modalHeader.style.display = 'block';
+            }
             modalTitle.innerHTML = elementData.title;
         }
         else
@@ -89,7 +102,9 @@ function jevModalResize(id) {
 
     if (typeof elementData.title !== 'undefined')
     {
-        modalHeader.style.display = 'block';
+        if (elementData.title !== "") {
+            modalHeader.style.display = 'block';
+        }
         modalTitle.innerHTML = elementData.title;
     }
     else
@@ -118,7 +133,7 @@ function jevModalPopup(id, url, title) {
     addJevModalHtml(id);
 
     // see http://stackoverflow.com/questions/16152275/how-to-resize-twitter-bootstrap-modal-dynamically-based-on-the-content
-    jQuery('#' + id + ' .modal-header').css({'display': 'block'});
+    //jQuery('#' + id + ' .modal-header').css({'display': 'block'});
     jQuery('#' + id + ' .modal-title').html(title)
     launchJevModal('#' + id, url);
 
@@ -156,26 +171,28 @@ function jevModalNoTitle(id, url) {
 function launchJevModal(selector, url) {
     // Clear the old page!
     var iframe = document.querySelector(selector + ' iframe');
-    iframe.src = "";
-    iframe.addEventListener('load', function () {
-        var iframe = document.querySelector(selector+ ' iframe');
-        if(iframe.src.indexOf(url) >= 0) {
+    if (iframe) {
+        iframe.src = "";
+        iframe.addEventListener('load', function () {
+            var iframe = document.querySelector(selector + ' iframe');
+            if (iframe.src.indexOf(url) >= 0) {
 
-            var modal = document.querySelector(selector);
-            var modalHeader = modal.querySelector('.modal-header ');
-            var modalBody   = modal.querySelector('.modal-body ');
-            var modalContent   = modal.querySelector('.modal-content ');
-            var modalDialog   = modal.querySelector('.modal-dialog ');
+                var modal = document.querySelector(selector);
+                var modalHeader = modal.querySelector('.modal-header ');
+                var modalBody = modal.querySelector('.modal-body ');
+                var modalContent = modal.querySelector('.modal-content ');
+                var modalDialog = modal.querySelector('.modal-dialog ');
 
-            window.addEventListener('resize', function() {
-                jevIframeSizing(iframe, modal, modalHeader, modalBody, modalContent, modalDialog);
-            })
+                window.addEventListener('resize', function () {
+                    jevIframeSizing(iframe, modal, modalHeader, modalBody, modalContent, modalDialog);
+                })
 
-            window.setTimeout(function () {
-                jevIframeSizing(iframe, modal, modalHeader, modalBody, modalContent, modalDialog);
-            }, 500);
-        }
-    });
+                window.setTimeout(function () {
+                    jevIframeSizing(iframe, modal, modalHeader, modalBody, modalContent, modalDialog);
+                }, 500);
+            }
+        });
+    }
 
     jQuery(selector).off('show shown.bs.modal');
     jQuery(selector).on('show shown.bs.modal', function () {
@@ -228,9 +245,9 @@ function jevIframeSizing(iframe, modal, modalHeader, modalBody, modalContent, mo
     var extraHeight = (iframe.contentDocument.body.scrollHeight > iframe.contentDocument.body.offsetHeight) ? 20 : 0;
     // if extraheight is 20 then there will be a scroll bar visible
     var extraWidth = (iframe.contentDocument.body.scrollWidth > iframe.contentDocument.body.offsetWidth || extraHeight == 20) ? 20 : 0;
-    console.log(extraHeight + " : " + extraWidth);
-    console.log('set iframe Height = ' + (iframe.contentDocument.body.scrollHeight + extraHeight) + 'px');
-    console.log('set iframe Width  = ' + (iframe.contentDocument.body.scrollWidth  + extraWidth) + 'px');
+    //console.log('iframe ' + extraHeight + " : " + extraWidth);
+    //console.log('set iframe Height = ' + (iframe.contentDocument.body.scrollHeight + extraHeight) + 'px');
+    //console.log('set iframe Width  = ' + (iframe.contentDocument.body.scrollWidth  + extraWidth) + 'px');
 
     iframe.style.height = (iframe.contentDocument.body.scrollHeight + extraHeight) + 'px';
     iframe.style.width  = (iframe.contentDocument.body.scrollWidth  + extraWidth) + 'px';
@@ -265,7 +282,7 @@ function addJevModalHtml(id) {
     var modalsize = 'jevmodal-full';
     if (!document.getElementById(id)) {
         if (bootstrap5) {
-            myModal = '<div class="jevbootstrap"><div class="modal  ' + modalsize + ' jevmodal" id="' + id + '" tabindex="-1" role="dialog" aria-labelledby="' + id + 'Label" aria-hidden="true" >'
+            myModal = '<div class="modal  ' + modalsize + ' jevmodal" id="' + id + '" tabindex="-1" role="dialog" aria-labelledby="' + id + 'Label" aria-hidden="true" >'
                 + '<div class="modal-dialog modal-lg modal-xl modal-dialog-centered">'
                 + '<div class="modal-content">'
                 + '<div class="modal-header">'
@@ -277,10 +294,10 @@ function addJevModalHtml(id) {
                 + '</div>'
                 + '</div>'
                 + '</div>'
-                + '</div></div>';
+                + '</div>';
         }
         else if (bootstrap3_enabled) {
-            myModal = '<div class="jevbootstrap"><div class="modal   fade ' + modalsize + ' jevmodal" id="' + id + '" tabindex="-1" role="dialog" aria-labelledby="' + id + 'Label" aria-hidden="true" >'
+            myModal = '<div class="modal   fade ' + modalsize + ' jevmodal" id="' + id + '" tabindex="-1" role="dialog" aria-labelledby="' + id + 'Label" aria-hidden="true" >'
                 + '<div class="modal-dialog modal-lg modal-xl modal-dialog-centered">'
                 + '<div class="modal-content">'
                 + '<div class="modal-header">'
@@ -292,10 +309,10 @@ function addJevModalHtml(id) {
                 + '</div>'
                 + '</div>'
                 + '</div>'
-                + '</div></div>';
+                + '</div>';
         }
         else {
-            myModal = '<div class="jevbootstrap"><div class="modal  hide fade ' + modalsize + ' jevmodal" id="' + id + '" tabindex="-1" role="dialog" aria-labelledby="' + id + 'Label" aria-hidden="true" >'
+            myModal = '<div class="modal  hide fade ' + modalsize + ' jevmodal" id="' + id + '" tabindex="-1" role="dialog" aria-labelledby="' + id + 'Label" aria-hidden="true" >'
                 + '<div class="modal-dialog ">'
                 + '<div class="modal-content">'
                 + '<div class="modal-header">'
@@ -307,7 +324,7 @@ function addJevModalHtml(id) {
                 + '</div>'
                 + '</div>'
                 + '</div>'
-                + '</div></div>';
+                + '</div>';
         }
         // see http://stackoverflow.com/questions/10636667/bootstrap-modal-appearing-under-background
         jQuery(myModal).appendTo("body");

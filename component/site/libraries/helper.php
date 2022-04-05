@@ -4235,25 +4235,11 @@ SCRIPT;
 
 	}
 
-	/**
-	 * DEPRECATED use JevHtmlBootstrap::modal instead
-	 */
 	public static
 	function modal($selector = 'a.modal', $params = array())
 	{
 
-		if (version_compare(JVERSION, "3.0", "ge"))
-		{
-			// Load the code Joomla version
-			//	HTMLHelper::_('jquery.framework');
-			//	HTMLHelper::_('bootstrap.modal');
-			//	return;
-		}
-
-		HTMLHelper::_('behavior.modal', $selector, $params);
-
-		return;
-
+		JevModal::modal($selector, $params);
 		return;
 	}
 

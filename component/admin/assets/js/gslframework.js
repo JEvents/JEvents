@@ -443,7 +443,7 @@ function ys_setuppopover(selector)
 	hoveritems.forEach(function (hoveritem) {
 
 		let title = hoveritem.getAttribute('data-yspoptitle') || hoveritem.getAttribute('data-original-title') || hoveritem.getAttribute('title');
-		let body = hoveritem.getAttribute('data-yspopcontent') || hoveritem.getAttribute('data-content') || '';
+		let body = hoveritem.getAttribute('data-yspopcontent') || hoveritem.getAttribute('data-content')  || hoveritem.getAttribute('data-bs-content') || '';
 		let options = hoveritem.getAttribute('data-yspopoptions') || '{"mode" : "click, hover", "offset" : 20,"delayHide" : 200, "pos" : "top"}';
 		//options = '{ "offset" : 20,"delay" : 20, "pos" : "top", "duration" : 200}';
 		options = JSON.parse(options);

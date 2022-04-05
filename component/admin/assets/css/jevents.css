@@ -930,6 +930,26 @@ body.com_jevents {
 #gslc.gsl-scope div#jevents #adminForm input {
   max-width: 100%;
   margin-bottom: 0;
+  /* Needed for BS 5 templates */
+  float: none;
+}
+#gslc.gsl-scope div#jevents #adminForm input.form-check-input {
+  /* Needed for BS 5 templates */
+  margin-left: 0;
+}
+#gslc.gsl-scope div#jevents #adminForm .input-group-text {
+  /* Needed for some BS 5 templates  */
+  display: initial;
+  padding: 1px;
+  border: none;
+}
+#gslc.gsl-scope div#jevents #adminForm #myEditTabs li.hiddenTab {
+  display: none!important;
+}
+#gslc.gsl-scope div#jevents #adminForm li.cleverGetHeightCSS {
+  display: block!important;
+  height: 0;
+  overflow: hidden;
 }
 #gslc.gsl-scope #left-col ul.left-nav .notinstalled {
   opacity: 0.25;

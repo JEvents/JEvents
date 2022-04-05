@@ -23,6 +23,19 @@
 			</option>
 		</field>
 
+		<field name="framework"
+			   type="jevlist"
+			   default="native"
+			   label="JEV_FRONTEND_FRAMEWORK"
+			   description="JEV_FRONTEND_FRAMEWORK_DESC"
+			   difficulty="1">
+			<option value="native">JEV_CORE_JOOMLA_BOOSTRAP</option>
+			<option value="bootstrap3">JEV_BOOSTRAP3</option>
+			<option value="bootstrap4">JEV_BOOSTRAP4</option>
+			<option value="bootstrap5">JEV_BOOSTRAP5</option>
+			<option value="uikit3">JEV_UIKIT3</option>
+		</field>
+
 		<field name="clubcode_spacer" type="jevinfo" default='JEV_JOOMLA_UPDATE_CLUBCODE_INFO' menu="hide" label=""
 		       description="" difficulty="1"/>
 		<field name="clubcode" type="jevtext" size="60" default='' menu="hide" label="JEV_JOOMLA_UPDATE_CLUBCODE"
@@ -533,8 +546,7 @@ Default should be set by the custom field
 		//-->
 
 		<field name="tooltiptype" type="jevmultilist" default='bootstrap' menu="hide" label="JEV_TOOLTIPTYPE"
-		       description="JEV_TOOLTIPTYPE_TIP" difficulty="2" showon="com_enableToolTip:1">
-			<option value="joomla">JEV_MOOTOOLS</option>
+		       description="JEV_TOOLTIPTYPE_TIP" difficulty="2" showon="com_enableToolTip:1[AND]framework:native">
 			<option value="bootstrap">JEV_BOOTSTRAP</option>
 			<option value="uikit">JEV_UIKIT</option>
 		</field>

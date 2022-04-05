@@ -1192,7 +1192,11 @@ document.addEventListener('DOMContentLoaded', function() {
         jevjq('#byyearday, #bymonth, #byweekno, #bymonthday, #byday, #byirregular, #bysetpos').on('click', function() {
             jevjq('#'+this.id).find('legend input[name="whichby"]').attr('checked', true);
             toggleWhichBy(this.id);
-        });
+        })
+
+	document.addEventListener('gslshowon', function(e) {
+		hideEmptyJevTabs();
+	})
 
 });
 
@@ -1249,6 +1253,21 @@ function hideEmptyJevTabs() {
 				if(tab.innerHTML.trim().length == 0)
 				{
 					uitablabels[index].style.display = 'none';
+				}
+				else
+				{
+					tab.classList.add('cleverGetHeightCSS');
+					//console.log(index + ' ' + tab.scrollHeight);
+					if (tab.scrollHeight == 0)
+					{
+						//console.log('hide tab ' + index);
+						uitablabels[index].classList.add('hiddenTab');
+					}
+					else
+					{
+						uitablabels[index].classList.remove('hiddenTab');
+					}
+					tab.classList.remove('cleverGetHeightCSS');
 				}
 			});
 		}

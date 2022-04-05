@@ -161,7 +161,7 @@ $tmpl = $app->input->getCmd('tmpl', '');
 	            }
 	            ?>
                 <nav class="gsl-navbar-container ys-gsl-action-buttons gsl-navbar" gsl-navbar>
-                    <div class="gsl-navbar-left  gsl-width-expand@m">
+                    <div class="gsl-navbar-left gsl-background-primary gsl-width-expand@m">
                         <?php
                         $bar            = JToolBar::getInstance('toolbar2');
                         $toolbarButtons = $bar->getItems();

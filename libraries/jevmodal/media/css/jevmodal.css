@@ -43,6 +43,7 @@
     bottom: 5%;
     top: 5%;
     left: 5%;
+    max-height: 90%;
     margin: 0px;
     z-index: 1050;
     width: 90%;
@@ -191,10 +192,11 @@ body > div.jevmodal.show {
 }
 
 .jevmodal .modal-body iframe {
-    width: 100%;
+    width: 100%!important;
     border: none;
-    height: 100%;
+    height: 100%!important;
     max-height: 100%;
+    max-width: 100%;
 }
 
 .jevmodal .modal-dialog {
