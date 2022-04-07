@@ -246,23 +246,29 @@ SCRIPT;
 		$uikitopt['container'] = isset($params['container']) ? $params['container'] : 'body';
 		$uikitoptions = json_encode($uikitopt);
 
+		$container = $opt['container'];
+
 		Factory::getDocument()->addScriptDeclaration(
 			<<< SCRIPT
-document.addEventListener('DOMContentLoaded', function()
-{
-	if ($options.mouseonly && 'ontouchstart' in document.documentElement) {
+function jevPopover(selector, container) {
+	var uikitoptions = $uikitoptions; 
+	var bsoptions = $options;
+	uikitoptions.container = container;
+	bsoptions.container = container;
+	
+	if (bsoptions.mouseonly && 'ontouchstart' in document.documentElement) {
 		return;
 	}
-	if (jQuery('$selector').length){
+	if (jQuery(selector).length){
 		try {
-			ys_setuppopover('$selector', $uikitoptions);
+			ys_setuppopover(selector, uikitoptions);
 		}
 		catch (e) {
 			if ('$toolTipType' != "uikit"  || typeof UIkit == 'undefined' ) {
 			// Do not use this for YooTheme Pro templates otherwise you get strange behaviour!
-				if (jQuery('$selector').popover )
+				if (jQuery(selector).popover )
 				{			
-					jQuery('$selector').popover($options);
+					jQuery(selector).popover(bsoptions);
 				}
 				else 
 				{
@@ -272,11 +278,11 @@ document.addEventListener('DOMContentLoaded', function()
 			else 
 			{
 				// Fall back to native uikit
-				var hoveritems = document.querySelectorAll('$selector');
+				var hoveritems = document.querySelectorAll(selector);
 				hoveritems.forEach(function (hoveritem) {
 					let title = hoveritem.getAttribute('data-yspoptitle') || hoveritem.getAttribute('data-original-title') || hoveritem.getAttribute('title');
 					let body = hoveritem.getAttribute('data-yspopcontent') || hoveritem.getAttribute('data-content') || hoveritem.getAttribute('data-bs-content') || '';
-					let options = hoveritem.getAttribute('data-yspopoptions') || '$uikitoptions';
+					let options = hoveritem.getAttribute('data-yspopoptions') || uikitoptions;
 					options = JSON.parse(options);
 					/*
 					var phtml = '<div class="uk-card uk-card-default uk-padding-remove uk-background-default" style="width:max-content;border-top-left-radius: 5px;border-top-right-radius: 5px;">' +
@@ -299,6 +305,10 @@ document.addEventListener('DOMContentLoaded', function()
 			}	
 		}
 	}
+}
+document.addEventListener('DOMContentLoaded', function()
+{
+	jevPopover('$selector', '$container');
 });
 SCRIPT
 		);

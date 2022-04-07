@@ -27,17 +27,23 @@ function callNavigation(link, datatype) {
             modbody.innerHTML = json.data;
             // we may have tooltips to re-enable too!
             try {
-                jQuery(modbody).find('.hasjevtip').popover({
-                    'animation': null,
-                    'html': true,
-                    'placement': 'top',
-                    'selector': null,
-                    'title': null,
-                    'trigger': 'hover focus',
-                    'content': null,
-                    'delay': {'hide': 150},
-                    'container': modbody
-                });
+                if (typeof jevPopover == "function")
+                {
+                    jevPopover('.hasjevtip', modbody);
+                }
+                else {
+                    jQuery(modbody).find('.hasjevtip').popover({
+                        'animation': null,
+                        'html': true,
+                        'placement': 'top',
+                        'selector': null,
+                        'title': null,
+                        'trigger': 'hover focus',
+                        'content': null,
+                        'delay': {'hide': 150},
+                        'container': modbody
+                    });
+                }
             }
             catch (e) {
             }
