@@ -17,6 +17,7 @@
 .jevmodal-small .modal-dialog {
     width: auto;
     margin: 0px;
+    max-width: 100%;
 }
 
 .jevmodal-medium {
@@ -30,6 +31,7 @@
 .jevmodal-medium .modal-dialog {
     height: 100%;
     width: auto;
+    max-width: 100%;
 }
 
 .jevmodal-full {
@@ -203,6 +205,7 @@ body > div.jevmodal.show {
     height: 100%;
     width: auto;
     margin: 0px;
+    max-width: 100%;
 }
 
 .jevmodal .modal-content {

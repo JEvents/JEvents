@@ -19,7 +19,7 @@ function DefaultEventManagementDialog($view, $row, $mask, $bootstrap = false)
 {
 
     $actionId   = "action_dialogJQ" . $row->rp_id();
-	JevModal::modal($actionId);
+
 	$input      = Factory::getApplication()->input;
 	$user       = Factory::getUser();
 
@@ -31,8 +31,6 @@ function DefaultEventManagementDialog($view, $row, $mask, $bootstrap = false)
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		if ($params->get("editpopup", 0) && JEVHelper::isEventCreator())
 		{
-			//JevModal::modal();
-			//JEVHelper::script('editpopupJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 
 			JLoader::register('JevModal', JPATH_LIBRARIES . "/jevents/jevmodal/jevmodal.php");
 			JevModal::framework();
