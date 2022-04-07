@@ -9,6 +9,57 @@ function jevIdPopup(id) {
     launchJevModal_gsl('#' + id);
 }
 
+function jevModalSelector(sourceElement, params, evt) {
+    if(sourceElement.getAttribute('data-jevmodal')) {
+        evt.preventDefault();
+
+        var id = 'jevModal' + Math.floor(Math.random() * Math.floor(100000));
+        addJevModalHtml_gsl(id, sourceElement);
+
+        var elementData = JSON.parse(sourceElement.getAttribute('data-jevmodal') || '{}');
+
+        var modal = document.getElementById(id);
+        var modalBody   = modal.querySelector('.gsl-modal-body');
+        var modalDialog = modal.querySelector('.gsl-modal-dialog ');
+        var modalTitle  = modal.querySelector('.gsl-modal-title');
+        var modalClose  = modal.querySelector('.gsl-close');
+
+        if (typeof elementData.size !== 'size') {
+            modalDialog.classList.add(elementData.size);
+        }
+
+        if (typeof elementData.title !== 'undefined')
+        {
+            if (elementData.title !== "") {
+                modalTitle.style.display = 'block';
+            }
+            modalTitle.innerHTML = elementData.title;
+        }
+        else
+        {
+            modalBody.style.top = '5px';
+
+            if (modalClose) {
+                modalClose.style.marginRight = '-15px';
+                modalClose.style.marginTop = '-15px';
+                modalClose.style.Opacity = 1;
+                modalClose.style.fontSize = '30px';
+            }
+            modalTitle.style.display = 'none';
+        }
+
+        modal.style.maxHeight = '90%';
+
+        var href = elementData.href  || sourceElement.href;
+        launchJevModal_gsl('#' + id, href);
+    }
+    else
+    {
+        return;
+    }
+
+}
+
 function jevModalPopup(id, url, title) {
     addJevModalHtml_gsl(id);
 

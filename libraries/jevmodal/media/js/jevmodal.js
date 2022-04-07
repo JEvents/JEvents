@@ -226,12 +226,22 @@ function launchJevModal(selector, url) {
         }
     });
 
-    // Joomla 4 changes
+    // Joomla 4/Bootstrap 5 changes
+    var bootstrap5 = false;
+    var bootstrap4 = false;
     try {
+        var bsVersion = window.bootstrap.Tooltip.VERSION.substr(0,1);
+        bootstrap5 = bsVersion >= 5;
+        bootstrap4 = bsVersion >= 4 && !bootstrap5;
+    } catch (e) {
+    }
+
+    if (bootstrap5)
+    {
         var myModal = new bootstrap.Modal(document.querySelector(selector), {backdrop: true, show: true, keyboard: true, remote: ''});
         myModal.show();
     }
-    catch (e) {
+    else {
         jQuery(selector).modal({backdrop: true, show: true, keyboard: true, remote: ''}) // initialized with no keyboard
     }
 
@@ -239,6 +249,10 @@ function launchJevModal(selector, url) {
 }
 
 function jevIframeSizing(iframe, modal, modalHeader, modalBody, modalContent, modalDialog) {
+    if (!iframe)
+    {
+        return;
+    }
     // add 20 to hide scroll bars that are not needed
     // console.log("width = " + iframe.contentDocument.body.scrollWidth + " vs " + iframe.contentDocument.body.offsetWidth);
     // console.log("height = " + iframe.contentDocument.body.scrollHeight + " vs " + iframe.contentDocument.body.offsetHeight);
@@ -334,13 +348,26 @@ function addJevModalHtml(id) {
 
 function closeJevModalBySelector(selector)
 {
-    // Joomla 4 changes
+    // Joomla 4/Bootstrap 5 changes
+    var bootstrap5 = false;
+    var bootstrap4 = false;
     try {
-        var myModalEl = document.querySelector(selector)
-        var modal = bootstrap.Modal.getInstance(myModalEl)
-        modal.close();
+        var bsVersion = window.bootstrap.Tooltip.VERSION.substr(0,1);
+        bootstrap5 = bsVersion >= 5;
+        bootstrap4 = bsVersion >= 4 && !bootstrap5;
+    } catch (e) {
     }
-    catch (e) {
-        jQuery(selector).modal('hide');
+
+    if (bootstrap5)
+    {
+        var myModalEls = document.querySelectorAll(selector)
+        myModalEls.forEach(function (myModalEl) {
+            var modal = bootstrap.Modal.getInstance(myModalEl)
+            modal.hide();
+        });
+    }
+    else {
+        var $selector = jQuery(selector);
+         $selector.modal('hide');
     }
 }

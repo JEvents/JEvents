@@ -45,7 +45,6 @@ function DefaultViewDatecellAddEvent($view, $year, $month, $day)
 		if (!$modalDefined && $view->popup)
 		{
 			$modalDefined = true;
-			//JevModal::modal("myEditModal");
 			Text::script('JEV_ADD_EVENT');
 		}
 

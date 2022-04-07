@@ -35,15 +35,12 @@ class JevModal
 	 *
 	 * @since   3.0
 	 */
-	public static function modal($selector = '.jevmodal', $params = array())
+	public static function modal($selector = "", $params = array())
 	{
+		// Include Modal framework
+		static::framework();
 
-		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
-		if (strpos($params->get('framework', 'bootstrap'), 'bootstrap') === 0 || $params->get('framework', 'bootstrap') == 'native')
-		{
-			HTMLHelper::_('bootstrap.renderModal', $selector, $params);
-		}
-		else
+		if ($selector !== "")
 		{
 			if (!isset(static::$loaded[__METHOD__][$selector]))
 			{
@@ -103,6 +100,10 @@ SCRIPT;
 		if (!$forceBoostrap && ($task == "icalevent.edit" || $task == "icalrepeat.edit")
 			&& (Factory::getApplication()->isClient('administrator') || $jevparams->get("newfrontendediting", 1))
 		)
+		{
+			HTMLHelper::script('com_jevents/lib_jevmodal/jevmodal_gsl.js', array('framework' => false, 'relative' => true, 'pathOnly' => false, 'detectBrowser' => false, 'detectDebug' => true));
+		}
+		else if (Factory::getApplication()->isClient('administrator') && Factory::getApplication()->input->getCmd('option') == 'com_rsvppro')
 		{
 			HTMLHelper::script('com_jevents/lib_jevmodal/jevmodal_gsl.js', array('framework' => false, 'relative' => true, 'pathOnly' => false, 'detectBrowser' => false, 'detectDebug' => true));
 		}

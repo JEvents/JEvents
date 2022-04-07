@@ -49,8 +49,8 @@ class FormFieldJEVselectEvent extends FormField
 		}
 
 		// Load the modal behavior script.
-		JLoader::register('JevModal', JPATH_LIBRARIES . "/jevents/jevmodal/jevmodal.php");
-		JevModal::modal("a.selectmodal");
+		JLoader::register('JevModal',JPATH_LIBRARIES."/jevents/jevmodal/jevmodal.php");
+		JevModal::framework();
 
 		$js = "
 		function jSelectEvent_" . $this->id . "(link, title, Itemid, evid, rpid) {

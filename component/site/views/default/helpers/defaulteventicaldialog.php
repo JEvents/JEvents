@@ -10,7 +10,7 @@ include_once JEV_HELPERS . '/jevExportHelper.php';
 function DefaultEventIcalDialog($view, $row, $mask, $bootstrap = false)
 {
 
-	JevModal::modal("ical_dialogJQ" . $row->rp_id());
+	JevModal::framework();
 
 	$jevparams = ComponentHelper::getParams('com_jevents');
 	if (strpos($jevparams->get('framework', 'bootstrap'), 'uikit') === 0)
