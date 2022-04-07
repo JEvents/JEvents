@@ -32,17 +32,33 @@ function callNavigation(link, datatype) {
                     jevPopover('.hasjevtip', modbody);
                 }
                 else {
-                    jQuery(modbody).find('.hasjevtip').popover({
-                        'animation': null,
+                    // Joomla 4/Bootstrap 5 changes
+                    var bootstrap5 = false;
+                    var bootstrap4 = false;
+                    try {
+                        var bsVersion = window.bootstrap.Tooltip.VERSION.substr(0,1);
+                        bootstrap5 = bsVersion >= 5;
+                        bootstrap4 = bsVersion >= 4 && !bootstrap5;
+                    } catch (e) {
+                    }
+                    popoveroptions = {
                         'html': true,
                         'placement': 'top',
-                        'selector': null,
-                        'title': null,
+                        'title': '',
                         'trigger': 'hover focus',
-                        'content': null,
-                        'delay': {'hide': 150},
+                        'content': '',
+                        'delay': {'hide': 150, 'show': 150},
                         'container': modbody
-                    });
+                    };
+                    if (bootstrap5)
+                    {
+                        modbody.querySelectorAll('.hasjevtip').forEach(function (el) {
+                            var pop = new window.bootstrap.Popover(el, popoveroptions);
+                        });
+                    }
+                    else {
+                        jQuery(modbody).find('.hasjevtip').popover(popoveroptions);
+                    }
                 }
             }
             catch (e) {
