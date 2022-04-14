@@ -6,6 +6,9 @@
     background-color: #f7f7f7;
     border-bottom: 1px solid #DDD;
 }
+#flatcal_minical .flatcal_navbar td {
+    min-width: 10px;
+}
 
 #flatcal_minical .flatcal_tiny_add_event_link {
 

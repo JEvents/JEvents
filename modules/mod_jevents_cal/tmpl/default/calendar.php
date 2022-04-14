@@ -328,7 +328,7 @@ public function getCal($modid = 0)
 
 		$content = '';
 
-		$scriptlinks = '';
+		$scriptlinks = [];
 
 		if ($this->minical_showlink)
 		{
@@ -347,8 +347,11 @@ public function getCal($modid = 0)
 				if ($this->minical_prevmonth)
 				{
 					$linkprevious = htmlentities(Uri::base() . "index.php?option=$option&task=modcal.ajax&day=1&month=$base_prev_month&year=$base_prev_month_year&modid=$this->_modid&tmpl=component" . $this->cat);
-					$scriptlinks  .= "linkprevious = '" . $linkprevious . "';\n";
+					$scriptlinks['linkprevious']  = $linkprevious;
 					$content      .= $this->monthYearNavigation($basefirst_of_month, "-1 month", '&lt;', Text::_('JEV_CLICK_TOSWITCH_PM'));
+				}
+				else {
+					$scriptlinks['linkprevious']  = "";
 				}
 
 				if ($this->minical_actmonth == 1)
@@ -387,8 +390,11 @@ public function getCal($modid = 0)
 				if ($this->minical_nextmonth)
 				{
 					$linknext    = htmlentities(Uri::base() . "index.php?option=$$option&task=modcal.ajax&day=1&month=$base_next_month&year=$base_next_month_year&modid=$this->_modid&tmpl=component" . $this->cat);
-					$scriptlinks .= "linknext = '" . $linknext . "';\n";
+					$scriptlinks['linknext']  = $linknext;
 					$content     .= $this->monthYearNavigation($basefirst_of_month, "+1 month", '&gt;', Text::_('JEV_CLICK_TOSWITCH_NM'));
+				}
+				else {
+					$scriptlinks['linknext']  = "";
 				}
 
 				if ($this->minical_nextyear)
@@ -476,9 +482,20 @@ public function getCal($modid = 0)
 
 		$content .= '</table>' . $lf;
 
-		if ($scriptlinks != "")
+		if ($input->getCmd('jevtask', '') === 'modcal.ajax')
 		{
-			$content .= "<script style='text/javascript'>xyz=1;" . $scriptlinks . "zyx=1;</script>";
+			if (count($scriptlinks)){
+				$content .= "<script style='text/javascript'>xyz=1;" . json_encode($scriptlinks) . "zyx=1;</script>";
+			}
+		}
+		else
+		{
+			$content .= "<script style='text/javascript'>xyz=1;";
+			foreach ($scriptlinks as $k => $v)
+			{
+				$content .= "$k = '$v';\n";
+			}
+			$content .= "zyx=1;</script>";
 		}
 
 		return $content;
@@ -509,18 +526,17 @@ public function getCal($modid = 0)
 	public function _navigationJS($modid)
 	{
 
-		static $included = false;
-		if ($included) return;
-		$included = true;
-		$viewname = $this->getTheme();
-		if (file_exists(JPATH_SITE . "/modules/mod_jevents_cal/tmpl/$viewname/assets/js/calnav.js"))
-		{
-			JEVHelper::script("modules/mod_jevents_cal/tmpl/$viewname/assets/js/calnav.js");
-		}
-		else
-		{
-			JEVHelper::script("modules/mod_jevents_cal/tmpl/default/assets/js/calnav.js");
-		}
+		JEVHelper::script("modules/mod_jevents_cal/tmpl/default/assets/js/calnav.js");
+
+		$specificScript = <<< SCRIPT
+function setupSpecificNavigation()
+{
+setupMiniCalTouchInteractions(".mod_events_table", true);
+}
+SCRIPT;
+
+		Factory::getDocument()->addScriptDeclaration($specificScript);
+
 	}
 
 		/**

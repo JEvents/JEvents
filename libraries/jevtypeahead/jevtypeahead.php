@@ -94,6 +94,8 @@ class JevTypeahead
 			$opt['prefetch']	= isset($params['prefetch']) ? $params['prefetch'] : '';
 			$opt['remote']		= isset($params['remote']) ? $params['remote'] : '';
 			$opt['data_value']	= isset($params['data_value']) ? $params['data_value'] : 'value';
+			$opt['menu']	= isset($params['menu']) ? $params['menu'] : 'tt-menu';
+
 			$opt['data_id']    = isset($params['data_id']) ? $params['data_id'] : 'id';
 			$opt['field_selector']    = isset($params['field_selector']) ? $params['field_selector'] : '';
 			$opt['highlight']	= isset($params['highlight']) ? $params['highlight'] : 'true';
@@ -171,6 +173,7 @@ class JevTypeahead
 										{
 											highlight: ".$opt['highlight'].",
 											minLength: ".$opt['minLength'].",
+											classNames : { menu: '" . $opt['menu'] . "'},
 										},
 										{
 											name: '$jsname',
