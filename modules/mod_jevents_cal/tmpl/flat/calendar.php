@@ -132,16 +132,16 @@ class FlatModCalView extends DefaultModCalView
 
 		$jev_component_name = JEV_COM_COMPONENT;
 		$this->_navigationJS($this->_modid);
-		$scriptlinks = "";
+		$scriptlinks = [];
 		if ($this->minical_prevmonth)
 		{
 			$linkprevious = htmlentities(Uri::base() . "index.php?option=$jev_component_name&task=modcal.ajax&day=1&month=$base_prev_month&year=$base_prev_month_year&modid=$this->_modid&tmpl=component" . $this->cat);
-			$scriptlinks  .= "linkprevious = '" . $linkprevious . "';\n";
+			$scriptlinks['linkprevious']  = $linkprevious;
 			$linkprevious = '<img border="0" title="' . Text::_("JEV_PREVIOUSMONTH") . '" alt="' . Text::_("JEV_LAST_MONTH") . '" class="mod_events_link" src="' . $viewimages . '/mini_arrowleft.gif" onmousedown="callNavigation(\'' . $linkprevious . '\');" ontouchstart="callNavigation(\'' . $linkprevious . '\');" />';
 		}
 		else
 		{
-			$linkprevious = "";
+			$scriptlinks['linkprevious']  = "";
 		}
 
 		if ($this->minical_actmonth == 1)
@@ -167,12 +167,12 @@ class FlatModCalView extends DefaultModCalView
 		if ($this->minical_nextmonth)
 		{
 			$linknext    = htmlentities(Uri::base() . "index.php?option=$jev_component_name&task=modcal.ajax&day=1&month=$base_next_month&year=$base_next_month_year&modid=$this->_modid&tmpl=component" . $this->cat);
-			$scriptlinks .= "linknext = '" . $linknext . "';\n";
+			$scriptlinks['linknext']  = $linknext;
 			$linknext    = '<img border="0" title="' . Text::_("JEV_NEXT_MONTH") . '" alt="' . Text::_("JEV_NEXT_MONTH") . '" class="mod_events_link" src="' . $viewimages . '/mini_arrowright.gif" onmousedown="callNavigation(\'' . $linknext . '\');"  ontouchstart="callNavigation(\'' . $linknext . '\');" />';
 		}
 		else
 		{
-			$linknext = "";
+			$scriptlinks['linknext']  = "";
 		}
 
 		$content = '
@@ -271,12 +271,38 @@ class FlatModCalView extends DefaultModCalView
 		$content .= "</table>\n";
 		$content .= "</td></tr><tr class='full_cal_link'><td> </td></tr></table></div>\n";
 
-		if ($scriptlinks != "")
+		if ($input->getCmd('jevtask', '') === 'modcal.ajax')
 		{
-			$content .= "<script style='text/javascript'>xyz=1;" . $scriptlinks . "zyx=1;</script>";
+			if (count($scriptlinks)){
+				$content .= "<script style='text/javascript'>xyz=1;" . json_encode($scriptlinks) . "zyx=1;</script>";
+			}
+		}
+		else
+		{
+			$content .= "<script style='text/javascript'>xyz=1;";
+			foreach ($scriptlinks as $k => $v)
+			{
+				$content .= "$k = '$v';\n";
+			}
+			$content .= "zyx=1;</script>";
 		}
 
 		return $content;
 	}
 
+	public function _navigationJS($modid)
+	{
+
+		JEVHelper::script("modules/mod_jevents_cal/tmpl/default/assets/js/calnav.js");
+
+		$specificScript = <<< SCRIPT
+function setupSpecificNavigation()
+{
+	setupMiniCalTouchInteractions(".flatcal_weekdays", true);
+}
+SCRIPT;
+
+		Factory::getDocument()->addScriptDeclaration($specificScript);
+
+	}
 }

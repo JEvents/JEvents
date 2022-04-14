@@ -20,7 +20,16 @@ function callNavigation(link, datatype) {
             }
             if (json.script) {
                 //alert(json.script);
-                eval(json.script);
+                var script = JSON.parse(json.script);
+                try {
+                    linkprevious = script.linkprevious;
+                    linknext = script.linknext;
+                }
+                catch (e)
+                {
+                    // fallback to old version
+                    eval(json.script);
+                }
             }
             var myspan = document.getElementById("testspan" + json.modid);
             var modbody = myspan.parentNode;
@@ -71,7 +80,8 @@ function callNavigation(link, datatype) {
             catch (e) {
             }
 
-            setupMiniCalTouchInteractions();
+            setupSpecificNavigation();
+
         })
         .fail(function (jqxhr, textStatus, error) {
             alert(textStatus + ", " + error);
@@ -80,15 +90,16 @@ function callNavigation(link, datatype) {
 
 // setup touch interaction
 jQuery(document).on('ready', function () {
-    setupMiniCalTouchInteractions();
+    setupSpecificNavigation();
 });
 
 var jevMiniTouchStartX = false;
 var jevMiniTouchStartY = false;
 
-function setupMiniCalTouchInteractions() {
+function setupMiniCalTouchInteractions(selector, parent) {
     if ('ontouchstart' in document.documentElement) {
-        jQuery(".mod_events_table").parent().on("touchend", function (evt) {
+        var target = parent ? jQuery(selector).parent() : jQuery(selector);
+        target.on("touchend", function (evt) {
             //jevlog("touchend/touchend.");
             //jevlog('changed touches '+ evt.originalEvent.changedTouches.length);
             var touchobj = evt.originalEvent.changedTouches[0];
@@ -107,13 +118,13 @@ function setupMiniCalTouchInteractions() {
                 evt.preventDefault();
             }
         });
-        jQuery(".mod_events_table").parent().on("touchstart", function (evt) {
+        target.on("touchstart", function (evt) {
             //evt.preventDefault();
             var touchobj = evt.originalEvent.changedTouches[0];
             jevMiniTouchStartX = touchobj.pageX;
             jevMiniTouchStartY = touchobj.pageY;
         });
-        jQuery(".mod_events_table").parent().on("touchmove", function (evt) {
+        target.on("touchmove", function (evt) {
             // top stop scrolling etc. but only in the horizontal
             var touchobj = evt.originalEvent.changedTouches[0];
 

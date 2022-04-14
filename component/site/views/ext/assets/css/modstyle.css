@@ -4,6 +4,9 @@
     border-bottom: 1px solid #B4B4B6;
 }
 
+#extcal_minical .extcal_navbar td {
+    min-width: 10px !important;
+}
 #extcal_minical .extcal_tiny_add_event_link {
     font-size: 9px;
     font-weight: normal;

@@ -433,7 +433,7 @@ function setEndDateWhenNotRepeating(elem){
 	endDate = endDate.dateFromYMD(end_date.value);
 
     defaultEndDate = new Date();
-    defaultEndDate = endDate.dateFromYMD(end_date.defaultValue);
+    defaultEndDate = defaultEndDate.dateFromYMD(end_date.defaultValue);
 
 	/** If the end date is not visible then always set the end date to match the start date **/
 	enddate_container = document.querySelector('.jevenddate');
@@ -441,7 +441,7 @@ function setEndDateWhenNotRepeating(elem){
 		end_date.value = start_date.value;
 	}
 
-	/** New way of handling publidh_up and publish_down calendar inputs **/
+	/** New way of handling publish_up and publish_down calendar inputs **/
 
 	if (id === 'publish_up' && startDate != defaultStartDate) {
         end_date.value = start_date.value;

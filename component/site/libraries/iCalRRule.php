@@ -747,6 +747,20 @@ class iCalRRule extends Joomla\CMS\Table\Table
 					$this->byday = "+" . $daynames[$currentWeekDay];
 					$days        = array($this->byday);
 				}
+				// If we have a SU in the list then it can get skipped since its weekdayMap value is zero and other days could get used first
+				// So if $days includes SU we must put it first IFF day of the week starts on Monday in the config!
+				if (in_array("SU", $days))
+				{
+					$newdays = array("SU");
+					foreach ($days as $day)
+					{
+						if ($day != "SU")
+						{
+							$newdays[] = $day;
+						}
+					}
+					$days = $newdays;
+				}
 				while ($countRepeats < $this->count && !$this->_afterUntil($currentWeekStart))
 				{
 					list ($currentDay, $currentMonth, $currentYear) = explode(":", JevDate::strftime("%d:%m:%Y", $currentWeekStart));

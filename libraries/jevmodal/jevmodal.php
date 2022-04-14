@@ -129,6 +129,11 @@ SCRIPT;
 					->getWebAssetManager()
 					->useScript('bootstrap.modal');
 			}
+			else if (version_compare(JVERSION, '4', 'lt') && $jevparams->get('framework', 'native') == 'native')
+			{
+				// Include Bootstrap framework
+				JHtml::_('bootstrap.framework');
+			}
 
 			HTMLHelper::stylesheet('com_jevents/lib_jevmodal/jevmodal.css', array('relative' => true));
 			HTMLHelper::script('com_jevents/lib_jevmodal/jevmodal.js', array('framework' => false, 'relative' => true, 'pathOnly' => false, 'detectBrowser' => false, 'detectDebug' => true));

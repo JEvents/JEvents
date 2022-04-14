@@ -603,7 +603,14 @@ class JEV_CommonFunctions
 			$mail->addCC($cc);
 		}
 		$mail->IsHTML(true);
-		$mail->send();
+		try
+		{
+			$mail->send();
+		}
+		catch (Exception $e)
+		{
+			$app->enqueueMessage("JERROR_SENDING_EMAIL", 'warning');
+		}
 
 	}
 
