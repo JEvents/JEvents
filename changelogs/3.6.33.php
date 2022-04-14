@@ -1,5 +1,5 @@
 <?php
-$version = "3.6.32";
+$version = "3.6.33";
 $date = "2022-04-14";
 $changelog["package_jevents"][$version] = array();
 $changelog["package_jevents"][$version]["date"] = $date;
