@@ -1056,7 +1056,21 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				include_once JEV_HELPERS.'/jevExportHelper.php';
 				$replace[] = JevExportHelper::getAddToGCal($event);
 				$blank[] = "";
-				break;;
+				break;
+
+			case "{{ICALOUTLOOKLIVE}}":
+				$search[] = "{{ICALOUTLOOKLIVE}}";
+				include_once JEV_HELPERS.'/jevExportHelper.php';
+				$replace[] = JevExportHelper::getAddToOutlookLive($event);
+				$blank[] = "";
+				break;
+
+			case "{{ICALOUTLOOK}}":
+				$search[] = "{{ICALOUTLOOK}}";
+				include_once JEV_HELPERS.'/jevExportHelper.php';
+				$replace[] = JevExportHelper::getAddToMsOutlook($event);
+				$blank[] = "";
+				break;
 
 			case "{{ACCESS}}":
 				$search[]  = "{{ACCESS}}";

@@ -126,7 +126,22 @@ class plgFinderJEvents extends Adapter
 		return true;
 	}
 
-	public function onAfterSaveEvent(&$vevent, $dryrun)
+
+	public function onFinderResult (& $result, & $query)
+	{
+	    // make sure it is an event and if it should be hidden etc.
+		if ($result->getElement('rp_id') > 0)
+		{
+			// Just in case we don't have JEvents plugins registered yet
+			PluginHelper::importPlugin("jevents");
+
+			Factory::getApplication()->triggerEvent('onJEventsFinderResult', array(& $result, & $query));
+
+		}
+	}
+
+
+	public function onAfterSaveEvent(& $vevent, $dryrun)
 	{
 
 		if ($dryrun || !isset($vevent->detail_id) || $vevent->detail_id == 0)
@@ -295,6 +310,18 @@ class plgFinderJEvents extends Adapter
 		if (isset($theevent[0]) && $theevent[0]) {
 			PluginHelper::importPlugin('jevents');
 			Factory::getApplication()->triggerEvent('onJevFinderIndexing', array(&$theevent));
+			try
+			{
+				$item->title       = $theevent[0]->title();
+				$item->description = $theevent[0]->content();
+				$item->setElement('body', $theevent[0]->content());
+				$item->setElement('summary', $theevent[0]->content());
+			}
+			catch (Exception $e)
+			{
+
+			}
+
 		}
 
 		$theevent = count($theevent) === 1 ? $theevent[0] : $theevent;
@@ -455,7 +482,7 @@ class plgFinderJEvents extends Adapter
 	 *
 	 * @since   2.5
 	 */
-	protected function getListQuery($query = null, $type = 'list')
+	protected function  getListQuery($query = null, $type = 'list')
 	{
 
 		$db = Factory::getDbo();

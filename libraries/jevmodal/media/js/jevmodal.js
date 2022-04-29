@@ -1,5 +1,3 @@
-var j3 = true;
-j3 = typeof j3php == "undefined" ? j3 : j3php;
 
 function jevIdPopup(id) {
     /** close dialog may not exist for monthly calendar */

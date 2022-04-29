@@ -702,7 +702,10 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
                             <li id="<?php echo $extraTab['paneid'];?>">
                             <?php
 						}
-						echo "<div class='jevextrablock'>";
+						ob_start();
+						JEventsHelper::showOnRel($this->form, 'jevcontent');
+						$showon = ob_get_clean();
+						echo "<div class='jevextrablock' " .  $showon . ">";
 
                         // Short cut replacement pending plugin updates!
                         $extraTab['content'] = str_replace('class="row ', 'class="row  gsl-grid gsl-margin-remove ',$extraTab['content'] );

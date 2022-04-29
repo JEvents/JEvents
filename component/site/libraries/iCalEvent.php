@@ -296,8 +296,8 @@ else $this->_detail = false;
 
 		} catch (Exception $e) {
 
-			$app->enqueueMessage(Text::_("PROBLEMS_STORING_EVENT_DETAIL"), 'error');
-			echo $e. "<br/>";
+			$app->enqueueMessage(Text::_("JEV_PROBLEMS_STORING_EVENT_DETAIL") . $e->getMessage(), 'error');
+			//echo $e. "<br/>";
 			return false;
 		}
 

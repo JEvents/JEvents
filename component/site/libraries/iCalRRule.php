@@ -66,7 +66,7 @@ class iCalRRule extends Joomla\CMS\Table\Table
 		unset($temp->interval);
 		if ($temp->freq == "none")
 		{
-			$temp->processField("until", "");
+			$temp->processField("until", 0);
 		}
 		else
 		{

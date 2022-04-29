@@ -96,8 +96,41 @@ class JevExportHelper
 		$urlString['et']         = "et=" . $eventData['et'];
 		$urlString['rawdetails'] = "desc=" . $eventData['details'];
 		$urlString['location']   = "in_loc=" . $eventData['location'];
-		$link                    = "http://calendar.yahoo.com/?v=60&view=d&type=20&" . implode("&", $urlString);
+		$link                    = "https://calendar.yahoo.com/?v=60&view=d&type=20&" . implode("&", $urlString);
 
 		return $link;
 	}
+
+	static function getAddToOutlookLive($row)
+	{
+
+		$eventData = JevExportHelper::getEventStringArray($row);
+
+		$urlString['title']      = "subject=" . $eventData['title'];
+		$urlString['st']         = "startdt=" . $eventData['st'];
+		$urlString['st']         = "enddt=" . $eventData['et'];
+		$urlString['rawdetails'] = "body=" . $eventData['rawdetails'];
+		$urlString['location']   = "location=" . $eventData['location'];
+		//https://outlook.live.com/owa/?path=/calendar/action/compose&rru=addevent&startdt=2021-05-24T12%3A00%3A00-05%3A00&enddt=2021-05-25T12%3A00%3A00-05%3A00&subject=Test&location=Attineos&body=blabla
+		$link                    = "https://outlook.live.com/owa/?path=/calendar/action/compose&rru=addevent&" . implode("&", $urlString);
+
+		return $link;
+	}
+
+	static function getAddToMsOutlook($row)
+	{
+
+		$eventData = JevExportHelper::getEventStringArray($row);
+
+		$urlString['title']      = "subject=" . $eventData['title'];
+		$urlString['st']         = "startdt=" . $eventData['st'];
+		$urlString['st']         = "enddt=" . $eventData['et'];
+		$urlString['rawdetails'] = "body=" . $eventData['rawdetails'];
+		$urlString['location']   = "location=" . $eventData['location'];
+		//https://outlook.office.com/owa/?path=/calendar/action/compose&rru=addevent&startdt=2021-05-24T12%3A00%3A00-05%3A00&enddt=2021-05-25T12%3A00%3A00-05%3A00&subject=Test&location=Attineos&body=blabla
+		$link                    = "https://outlook.office.com/owa/?path=/calendar/action/compose&rru=addevent&" . implode("&", $urlString);
+
+		return $link;
+	}
+
 }

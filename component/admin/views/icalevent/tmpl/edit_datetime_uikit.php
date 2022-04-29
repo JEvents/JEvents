@@ -32,7 +32,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 	$repeatStyle = "style='display:none;' class='jeveditrepeats' ";
 }
 ?>
-<div style="clear:both;" class="jevdatetime">
+<div style="clear:both;" class="jevdatetime" <?php  JEventsHelper::showOnRel($this->form, 'allDayEvent');?> >
 	<fieldset class="jev_sed">
 		<legend><?php echo Text::_("Start_End_Duration"); ?></legend>
 		<?php

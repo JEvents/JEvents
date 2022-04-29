@@ -99,6 +99,12 @@ var JevStdRequiredFields = {
                 if (typeof value == "undefined" || value == null) {
                     value = "";
                 }
+                // Joomla 4 editor can leave whitespaces e.g. \t in the value also some editors e.g. JCE don't push the changed
+                if (typeof window.Joomla.editors.instances[name] !== 'undefined')
+                {
+                    value = window.Joomla.editors.instances[name].getValue();
+                    value = value.trim();
+                }
             }
             // A set of radio checkboxes
             else if (matches.length > 1) {
