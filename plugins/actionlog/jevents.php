@@ -107,6 +107,11 @@ class PlgActionlogJEvents extends \Joomla\CMS\Plugin\CMSPlugin
 
 	public function onAfterSaveEvent($event, $dryrun ) {
 
+		if ($dryrun)
+		{
+			return;
+		}
+
 		$context    = Factory::getApplication()->input->get('option');
 
 		$ev_id      = $event->ev_id;

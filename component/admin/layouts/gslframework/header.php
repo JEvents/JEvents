@@ -38,7 +38,7 @@ if (typeof j3 != "undefined")
 }
 SCRIPT;
 
-	if (ComponentHelper::getParams(JEV_COM_COMPONENT)->get("j4sidebar", 0))
+	if (ComponentHelper::getParams('com_jevents')->get("j4sidebar", 0))
 	{
 		$script .= "document.addEventListener('DOMContentLoaded',function() {document.querySelector('body').classList.add('with-joomla-sidebar');});\n";
 	}

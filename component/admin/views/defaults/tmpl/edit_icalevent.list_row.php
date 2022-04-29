@@ -84,6 +84,8 @@ defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_JURI_ROOT",true);?
 defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_JURI_BASE",true);?>", "SITEBASE");
 defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_ICAL_SAVE",true);?>", "ICALSAVE");
 defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_GOOGLE_SAVE",true);?>", "ICALGOOGLE");
+defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_MSOUTLOOK_SAVE",true);?>", "ICALOUTLOOK");
+defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_OUTLOOKLIVE_SAVE",true);?>", "ICALOUTLOOKLIVE");
 
 <?php
 // get list of enabled plugins

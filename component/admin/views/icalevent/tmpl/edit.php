@@ -716,7 +716,10 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 							echo HTMLHelper::_('bootstrap.endPanel');
 							echo HTMLHelper::_('bootstrap.addPanel', "myEditTabs", $extraTab['paneid']);
 						}
-						echo "<div class='jevextrablock'>";
+						ob_start();
+						JEventsHelper::showOnRel($this->form, 'jevcontent');
+						$showon = ob_get_clean();
+						echo "<div class='jevextrablock' " .  $showon . ">";
 						echo $extraTab['content'];
 						echo "</div>";
 					}

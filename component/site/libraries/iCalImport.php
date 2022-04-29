@@ -114,6 +114,9 @@ class iCalImport
 				curl_setopt($ch, CURLOPT_USERAGENT, "Jevents.net");
 				curl_setopt($ch, CURLOPT_ENCODING, '');
 				$this->rawData = curl_exec($ch);
+
+				$charset = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+
 				curl_close($ch);
 
 				// try file_get_contents as a backup
@@ -438,7 +441,17 @@ class iCalImport
 						if ($parts[$i] == "ENCODING=QUOTED-PRINTABLE")
 						{
 							//$value=str_replace("=0D=0A","<br/>",$value);
-							$value = quoted_printable_decode($value);
+							if (strpos($value, "=bd") > 0)
+							{
+								// quoted_printable_decode incorrectly decodes LOWER case encoding e.g. =db instead of =DB thereby messing up URLs in the text
+								$value = preg_replace("/=([a-z]+)/", "=::$1", $value);
+								$value = quoted_printable_decode($value);
+								$value = preg_replace("/=::([a-z]+)/", "=$1", $value);
+							}
+							else
+							{
+								$value = quoted_printable_decode($value);
+							}
 						}
 						// drop other ibts like language etc.
 					}

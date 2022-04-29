@@ -434,14 +434,24 @@ STYLE;
 
 		$field = $form->getField($fieldid);
 		$rel = "";
+		$showon = false;
+
 		if ($field && $field->showon)
 		{
-			HTMLHelper::_('jquery.framework');
+			$showon = $field->showon;
+		}
+		else if ($field && $field->getAttribute('showontabtest', false) && $params->get("com_single_pane_edit", 0))
+		{
+			$showon = $field->getAttribute('showontabtest', false);
+		}
+		if ($showon)
+		{
+		    HTMLHelper::_('jquery.framework');
             JEVHelper::script('showon.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 //            HTMLHelper::_('script', 'jui/cms.js', array('version' => 'auto', 'relative' => true), array('defer' => true));
 
 			$rel           = ' data-showon-gsl=\'' .
-				json_encode(FormHelper::parseShowOnConditions($field->showon, $field->formControl, $field->group)) . '\'';
+				json_encode(FormHelper::parseShowOnConditions($showon, $field->formControl, $field->group)) . '\'';
 		}
 		echo $rel;
 	}

@@ -121,6 +121,20 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		return true;
 	}
 
+	public function onFinderResult (& $result, & $query)
+	{
+		// make sure it is an event and if it should be hidden etc.
+		if ($result->getElement('evdet_id') > 0)
+		{
+			// Just in case we don't have JEvents plugins registered yet
+			PluginHelper::importPlugin("jevents");
+
+			Factory::getApplication()->triggerEvent('onJEventsFinderResult', array(& $result, & $query));
+
+		}
+	}
+
+
 	public function onAfterSaveEvent(&$vevent, $dryrun)
 	{
 
@@ -292,6 +306,18 @@ class plgFinderJEvents extends FinderIndexerAdapter
 			PluginHelper::importPlugin('jevents');
 			$dispatcher = JEventDispatcher::getInstance();
 			$dispatcher->trigger('onJevFinderIndexing', array(&$theevent));
+			try
+			{
+				$item->title       = $theevent[0]->title();
+				$item->description = $theevent[0]->content();
+				$item->setElement('body', '');
+				$item->setElement('summary', $theevent[0]->content());
+			}
+			catch (Exception $e)
+			{
+
+			}
+
 		}
 
 		$theevent = count($theevent) === 1 ? $theevent[0] : $theevent;

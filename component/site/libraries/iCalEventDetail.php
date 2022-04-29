@@ -269,7 +269,12 @@ class iCalEventDetail extends Joomla\CMS\Table\Table
 		$this->modified = $date->toMySQL();
 
 		try {
-			parent::store($updateNulls);
+
+			$success = parent::store($updateNulls);
+			if (!$success)
+			{
+				throw new Exception("Problem saving event " . $this->getError(), 321);
+			}
 			// just in case we don't have jevents plugins registered yet
 			PluginHelper::importPlugin("jevents");
 			// I also need to store custom data

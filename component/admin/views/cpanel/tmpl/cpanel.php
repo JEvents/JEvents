@@ -17,6 +17,7 @@ use Joomla\CMS\Feed\FeedFactory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Factory;
 
 $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
@@ -116,6 +117,96 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		$params = ComponentHelper::getParams("com_jevents");
 		if ($params->get("shownews", 1))
 		{
+			// Via Javascript
+			$script = <<< SCRIPT
+function decodeHtml(str)
+{
+    var map =
+    {
+        '&amp;': '&',
+        '&lt;': '<',
+        '&gt;': '>',
+        '&quot;': '"',
+        '&#039;': "'"
+    };
+    return str.replace(/&amp;|&lt;|&gt;|&quot;|&#039;/g, function(m) {return map[m];});
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+var RSS_URL = 'https://www.jevents.net/blog?format=feed&type=rss';
+try {
+fetch(RSS_URL)
+  .then(response => response.text())
+  .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
+  .then(data => {
+    const items = data.querySelectorAll("item");
+
+    let sliderItems = document.querySelector('.gsl-slider-items');
+    let count = 0;
+    items.forEach(el => {    
+   	  if (count >= 3) return;	  
+
+      let html = "";
+      let link = el.querySelector('link'); 
+      if (link)
+        link = link.innerHTML;
+      let title = el.querySelector('title');
+      if (title) 
+        title = decodeHtml(title.innerHTML);
+      let description = el.querySelector('description').innerHTML;
+      if (description) {
+        let doc = new DOMParser().parseFromString(description, 'text/html');
+        description = decodeHtml(doc.body.textContent || "");
+        description = description.substring(0, 200);
+      }
+      html += '<li style="padding:0 20px 0 10px;">';
+      html += '<span class="feed-link">';
+	  html += '<a href="' + link + '" target="_blank">';
+      html += title;
+      html += '</a></span>';
+      html += '<div class="feed-item-description">';
+      html += description;
+      html += '</div>';
+      html += '</li>';
+	  sliderItems.insertAdjacentHTML("beforeend", html);
+	  count ++;
+	  
+    });
+    console.log(data);
+  })
+ }
+ catch (ex) 
+ {
+ }
+ });
+SCRIPT;
+			Factory::getApplication()->getDocument()->addScriptDeclaration($script);
+			?>
+			<div class="gsl-margin-small gsl-width-1-1 gsl-position-relative gsl-card gsl-card-default gsl-card-small gsl-card-hover"
+                     style="padding:10px 55px 35px 55px;">
+	    <div class="gsl-card-header">
+		    <div class="gsl-grid gsl-grid-small">
+			    <h4 class="gsl-width-auto">
+				    <span gsl-icon="icon:tv; ratio : 2" class="gsl-margin-small-right gsl-text-primary"></span>
+				    <?php echo Text::_("COM_JEVENTS_JEVENTS_NEWS");?>
+			    </h4>
+		    </div>
+	    </div>
+	    <div class="gsl-card-body gsl-slider ys_newsfeed" gsl-slider="autoplay:true; autoplay-interval:5000; pause-on-hover:true">
+		    <ul class=" gsl-slider-items gsl-grid gsl-child-width-1-1" style="width: calc(100% + 20px);">
+		    </ul>
+
+		    <a class="gsl-position-center-left gsl-position-small gsl-hidden-hover" href="#"
+		       gsl-slidenav-previous gsl-slider-item="previous"></a>
+		    <a class="gsl-position-center-right gsl-position-small gsl-hidden-hover" href="#" gsl-slidenav-next
+		       gsl-slider-item="next"></a>
+
+		    <ul class="gsl-slider-nav gsl-dotnav gsl-position-bottom-center gsl-padding-small"></ul>
+	    </div>
+    </div>
+	<?php
+
+			/*
 			// Get RSS parsed object
 			try
 			{
@@ -183,6 +274,7 @@ $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
                 </div>
 				<?php
 			}
+			*/
 		}
 		?>
         <div class="gsl-grid gsl-grid-medium gsl-grid" gsl-grid gsl-height-match="target: > div > .gsl-card">
