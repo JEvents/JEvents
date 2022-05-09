@@ -266,7 +266,7 @@ RAWTEXT;
 		$user  = Factory::getUser();
 		$guest = $user->get('guest');
 
-		@ini_set("memory_limit", "256M");
+		@ini_set("memory_limit", "512M");
 		@ini_set("max_execution_time", "300");
 
 		// clean out the cache

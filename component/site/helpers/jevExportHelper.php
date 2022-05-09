@@ -100,18 +100,62 @@ class JevExportHelper
 
 		return $link;
 	}
+    static function getOutlookPrep($row)
+    {
+	    $jevparams  = ComponentHelper::getParams(JEV_COM_COMPONENT);
+	    $eventData = JevExportHelper::getEventStringArray($row);
+
+	    $urlString['title']      = "subject=" . $eventData['title'];
+
+	    $jtz        = $jevparams->get("icaltimezonelive", "");
+	    $jtz        = isset($event->_tzid) && !empty($event->_tzid) ? $event->_tzid : $jtz;
+	    if (!empty($jtz))
+	    {
+		    $jtz = new DateTimeZone($jtz);
+	    }
+	    else
+	    {
+		    $jtz = new DateTimeZone(@date_default_timezone_get());
+	    }
+
+	    $utctz = new DateTimeZone('UTC');
+	    if ($row->alldayevent())
+	    {
+		    $startDateFormatted = JEventsHTML::getDateFormat($row->yup(), $row->mup(), $row->dup(), "%Y-%m-%d") ;
+	    }
+	    else
+	    {
+		    $startDate = JEventsHTML::getDateFormat($row->yup(), $row->mup(), $row->dup(), "%Y-%m-%d") . "T" . sprintf('%02d:%02d:00', $row->hup(), $row->minup());
+		    $indate  = new DateTime($startDate, $jtz);
+		    $indate->setTimezone($utctz);
+		    $startDateFormatted = $indate->format('Y-m-d\TH:i:s') . "Z";
+
+		    if ($row->noendtime())
+		    {
+			    $endDateFormatted = JEventsHTML::getDateFormat($row->ydn(), $row->mdn(), $row->ddn(), "%Y-%m-%d") ;
+		    }
+		    else
+		    {
+			    $endDate = JEventsHTML::getDateFormat($row->ydn(), $row->mdn(), $row->ddn(), "%Y-%m-%d") . "T" . sprintf('%02d:%02d:00', $row->hdn(), $row->mindn());
+			    $outdate = new DateTime($endDate);
+			    $outdate->setTimezone($utctz);
+			    $endDateFormatted = $outdate->format('Y-m-d\TH:i:s') . "Z";
+		    }
+
+	    }
+
+	    $urlString['st']         = "startdt=" . $startDateFormatted;
+	    $urlString['et']         = "enddt=" . $endDateFormatted;
+	    $urlString['rawdetails'] = "body=" . $eventData['rawdetails'];
+	    $urlString['location']   = "location=" . $eventData['location'];
+
+		return $urlString;
+    }
 
 	static function getAddToOutlookLive($row)
 	{
 
-		$eventData = JevExportHelper::getEventStringArray($row);
-
-		$urlString['title']      = "subject=" . $eventData['title'];
-		$urlString['st']         = "startdt=" . $eventData['st'];
-		$urlString['st']         = "enddt=" . $eventData['et'];
-		$urlString['rawdetails'] = "body=" . $eventData['rawdetails'];
-		$urlString['location']   = "location=" . $eventData['location'];
-		//https://outlook.live.com/owa/?path=/calendar/action/compose&rru=addevent&startdt=2021-05-24T12%3A00%3A00-05%3A00&enddt=2021-05-25T12%3A00%3A00-05%3A00&subject=Test&location=Attineos&body=blabla
+		$urlString = self::getOutlookPrep($row);
 		$link                    = "https://outlook.live.com/owa/?path=/calendar/action/compose&rru=addevent&" . implode("&", $urlString);
 
 		return $link;
@@ -119,15 +163,7 @@ class JevExportHelper
 
 	static function getAddToMsOutlook($row)
 	{
-
-		$eventData = JevExportHelper::getEventStringArray($row);
-
-		$urlString['title']      = "subject=" . $eventData['title'];
-		$urlString['st']         = "startdt=" . $eventData['st'];
-		$urlString['st']         = "enddt=" . $eventData['et'];
-		$urlString['rawdetails'] = "body=" . $eventData['rawdetails'];
-		$urlString['location']   = "location=" . $eventData['location'];
-		//https://outlook.office.com/owa/?path=/calendar/action/compose&rru=addevent&startdt=2021-05-24T12%3A00%3A00-05%3A00&enddt=2021-05-25T12%3A00%3A00-05%3A00&subject=Test&location=Attineos&body=blabla
+		$urlString = self::getOutlookPrep($row);
 		$link                    = "https://outlook.office.com/owa/?path=/calendar/action/compose&rru=addevent&" . implode("&", $urlString);
 
 		return $link;

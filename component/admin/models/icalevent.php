@@ -122,7 +122,7 @@ class JEventsModelicalevent extends ListModel
 		$app   = Factory::getApplication();
 		$input = $app->input;
 
-		$showUnpublishedICS        = true;
+		$showUnpublishedICS = JEVHelper::isAdminUser();
 		JEV_CommonFunctions::getCategoryData();
 
 		$icsFile = intval($this->getState('filter.icsFile', 0));
@@ -347,6 +347,11 @@ class JEventsModelicalevent extends ListModel
 			{
 				$where[] = "\n (ev.state=1 OR ev.state=0)";
 			}
+		}
+		else
+		{
+			// only published and unpublished unless specifically looking for other types of state
+			$where[] = "\n (ev.state=1 OR ev.state=0)";
 		}
 
 		// if anon user plugin enabled then include this information

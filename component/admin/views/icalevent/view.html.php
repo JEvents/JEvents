@@ -76,14 +76,14 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		JToolbarHelper::spacer();
 
 
-		$showUnpublishedICS = false;
+		$showUnpublishedICS = JEVHelper::isAdminUser();
 
 		$db = Factory::getDbo();
 
 		JHtmlSidebar::setAction('index.php?option=com_jevents&task=icalevent.list');
 
 		// Get list of ics Files
-		$query = "SELECT ics.ics_id as value, ics.label as text FROM #__jevents_icsfile as ics ";
+		$query = "SELECT ics.ics_id as value, ics.label as text , ics.state FROM #__jevents_icsfile as ics ";
 
 		if (!$showUnpublishedICS)
 		{
@@ -98,6 +98,10 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		$dbicsfiles = $db->loadAssocList();
 
 		foreach ($dbicsfiles As $iscfile) {
+			if ((int) $iscfile['state'] !== 1)
+			{
+				$iscfile['text'] = "** [" . $iscfile['text'] . "] **";
+			}
 			$icsfiles[] = $iscfile;
 		}
 

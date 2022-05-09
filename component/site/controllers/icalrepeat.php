@@ -46,6 +46,10 @@ class ICalRepeatController extends AdminIcalrepeatController
 	function detail()
 	{
 
+		//JLoader::register('JevRegistry', JPATH_SITE . "/components/com_jevents/libraries/registry.php");
+		//$registry = JevRegistry::getInstance("jevents");
+		//$registry->set('eventdetails', false);
+
 		// Do we have to be logged in to see this event
 		$user = Factory::getUser();
 
