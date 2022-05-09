@@ -288,7 +288,9 @@ function jevPopover(selector, container) {
 					let title = hoveritem.getAttribute('data-yspoptitle') || hoveritem.getAttribute('data-original-title') || hoveritem.getAttribute('title');
 					let body = hoveritem.getAttribute('data-yspopcontent') || hoveritem.getAttribute('data-content') || hoveritem.getAttribute('data-bs-content') || '';
 					let options = hoveritem.getAttribute('data-yspopoptions') || uikitoptions;
-					options = JSON.parse(options);
+					if (typeof options == 'string') {
+						options = JSON.parse(options);
+					}
 					/*
 					var phtml = '<div class="uk-card uk-card-default uk-padding-remove uk-background-default" style="width:max-content;border-top-left-radius: 5px;border-top-right-radius: 5px;">' +
 					(title != '' ? '<div class="uk-text-emphasis">' + title + '</div>' : '') +
@@ -332,8 +334,17 @@ SCRIPT
     var oldHide = $.fn.popover.Constructor.prototype.hide || false;
 
     $.fn.popover.Constructor.prototype.hide = function() {
-        // Bootstrap 4         
-        if (this.config)
+		var bootstrap5 = false;
+		var bootstrap4 = false;
+		try {
+		    var bsVersion = window.bootstrap.Tooltip.VERSION.substr(0,1);
+		    bootstrap5 = bsVersion >= 5;
+		    bootstrap4 = bsVersion >= 4 && !bootstrap5;
+		} catch (e) {
+		}
+        var bootstrap3 = window.jQuery && (typeof jQuery().emulateTransitionEnd == 'function');
+        // Bootstrap  3+         
+        if (this.config || bootstrap4 || bootstrap3 || bootstrap5)
         {
             //- This is not needed for recent versions of Bootstrap 4
             /*
@@ -354,7 +365,12 @@ SCRIPT
 	            var that = this;
 	            // try again after what would have been the delay
 	            setTimeout(function() {
-	                return that.hide.call(that, arguments);
+	                try {
+	                    return that.hide.call(that, arguments);
+	                }
+	                catch (e) 
+	                {
+	                }
 	            }, that.options.delay.hide);
 	            return;
 	        }

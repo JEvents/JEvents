@@ -15,7 +15,8 @@ use Joomla\CMS\Factory;
 
 if (version_compare(JVERSION, "4", "gt")
 	&& (Joomla\CMS\Factory::getApplication()->getInput()->getCmd('option', '') == "com_menus"
-		|| Joomla\CMS\Factory::getApplication()->getInput()->getCmd('option', '') == "com_modules")
+		|| Joomla\CMS\Factory::getApplication()->getInput()->getCmd('option', '') == "com_modules"
+		|| Joomla\CMS\Factory::getApplication()->getInput()->getCmd('option', '') == "com_plugins")
 	)
 {
 	include (JPATH_SITE . "/layouts/joomla/form/field/radio/buttons.php");
