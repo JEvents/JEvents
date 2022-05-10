@@ -20,12 +20,9 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Associations;
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Application\ApplicationHelper;
-use Joomla\CMS\Language\Text;
 use Joomla\Component\Menus\Administrator\Helper\MenusHelper;
-use Joomla\String\StringHelper;
-use Joomla\CMS\Router\Route;
 
 /**
  * Content Component Association Helper
@@ -50,7 +47,12 @@ abstract class JEventsHelperAssociation extends CategoryHelperAssociation
 	public static function getAssociations($id = 0, $view = null)
 	{
 
+		$user = Factory::getUser();
+		$diagnostics = $user->authorise('core.admin', 'com_jevents');
+		$diagnostics = false;
+
 		static $returnData = array();
+		static $defaultLang = false;
 
 		JLoader::register('JevRegistry', JPATH_SITE . "/components/com_jevents/libraries/registry.php");
 
@@ -63,8 +65,17 @@ abstract class JEventsHelperAssociation extends CategoryHelperAssociation
 		if ($jevtask == 'icalrepeat.detail')
 		{
 			$rp_id = $input->getInt("evid");
+
 			if (isset($returnData[$rp_id]))
 			{
+				if ($diagnostics)
+				{
+					echo "Default Language = $defaultLang<br>";
+					echo "<pre>";
+					print_r($returnData[$rp_id]);
+					echo "</pre>";
+				}
+
 				return $returnData[$rp_id];
 			}
 			$sitelangs = JLanguageHelper::getInstalledLanguages(0);
@@ -76,8 +87,6 @@ abstract class JEventsHelperAssociation extends CategoryHelperAssociation
 				$year = $input->getInt("year");
 				$month = $input->getInt("month");
 				$day = $input->getInt("day");
-
-				$currentlang    = Factory::getLanguage();
 
 				$menu		= $app->getMenu();
 				$active		= $menu->getActive();
@@ -106,17 +115,18 @@ abstract class JEventsHelperAssociation extends CategoryHelperAssociation
 				{
 					$translationdata = array();
 				}
-				$default = $currentlang->getDefault();
+
+				$defaultLang = ComponentHelper::getParams('com_languages')->get('site', 'en-GB');
+
 				$baseVersion = false;
-				if ($default)
+				if ($defaultLang)
 				{
 					// Base language data
 					$db->setQuery("SELECT d.* FROM #__jevents_repetition as r "
 						. " INNER JOIN #__jevents_vevdetail as d ON d.evdet_id = r.eventdetail_id"
 						. " WHERE r.rp_id = " . $rp_id);
-					$baseVersion = $translationdata[$default] = $db->loadObject();
+					$baseVersion = $translationdata[$defaultLang] = $db->loadObject();
 				}
-
 
 				if ($translationdata)
 				{
@@ -139,6 +149,7 @@ abstract class JEventsHelperAssociation extends CategoryHelperAssociation
 
 			}
 			$returnData[$rp_id] = $return;
+
 			return $return;
 		}
 

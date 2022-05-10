@@ -17,6 +17,7 @@ use Joomla\String\StringHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Component\Menus\Administrator\Helper\MenusHelper;
 
 class jIcalEventRepeat extends jIcalEventDB
 {
@@ -283,6 +284,23 @@ class jIcalEventRepeat extends jIcalEventDB
 		{
 			$Itemid = $Itemid > 0 ? $Itemid : JEVHelper::getItemid($this);
 		}
+
+		$associations = array();
+		if (version_compare(JVERSION, '4.0.0', 'lt'))
+		{
+			require_once JPATH_ROOT . '/administrator/components/com_menus/helpers/menus.php';
+			$associations = \MenusHelper::getAssociations($Itemid);
+		}
+		else
+		{
+			$associations = MenusHelper::getAssociations($Itemid);
+		}
+		$lang = Factory::getLanguage();
+		if (isset($associations[$lang->getTag()]))
+		{
+			$Itemid = $associations[$lang->getTag()];
+		}
+
 		// uid = event series unique id i.e. the actual event
 		$title = ApplicationHelper::stringURLSafe($this->title());
 		if ($this->rp_id())
