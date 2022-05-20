@@ -1,18 +1,22 @@
 <?php
-$version                                            = "3.6.34";
-$date                                               = "2022-04-29";
+$version                                            = "3.6.35";
+$date                                               = "2022-05-20";
 $extension                                          = "package_jevents";
 $changelog[$extension][$version]                    = array();
 $changelog[$extension][$version]["date"]            = $date;
 $changelog[$extension][$version]["features"]        = array();
-$changelog[$extension][$version]["features"][]      = "Add save to MS Outlook/Outlook live links";
-$changelog[$extension][$version]["features"][]      = "Allow Finder plugin to play well with hidden event detail plugin";
-$changelog[$extension][$version]["features"][]      = "Switch loading of JEvents news to use Javascript XHR request";
+//$changelog[$extension][$version]["features"][]      = "";
 
 $changelog[$extension][$version]["bugfixes"]        = array();
-$changelog[$extension][$version]["bugfixes"][]      = "Fix to conditional display of blocks when using field by field editing with zero tab event editing";
-$changelog[$extension][$version]["bugfixes"][]      = "Fix for JCE editor not triggering test on empty required description field";
-$changelog[$extension][$version]["bugfixes"][]      = "Trap for occasional bad PHP quoted_printable_decode problems on event importing";
+$changelog[$extension][$version]["bugfixes"][]      = "Fix event preview lightbox in backend";
+$changelog[$extension][$version]["bugfixes"][]      = "Hide Club extension menu items if they are installed but the user is not authorised to use them";
+$changelog[$extension][$version]["bugfixes"][]      = "Fix showon handling in plugin paramaters in main JEvents config";
+$changelog[$extension][$version]["bugfixes"][]      = "Fix popup translation modals";
+$changelog[$extension][$version]["bugfixes"][]      = "Force finder plugin use perma target menu item when set for event detail";
+
+
+
+
 
 
 
