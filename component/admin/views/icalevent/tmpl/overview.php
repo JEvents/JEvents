@@ -115,7 +115,7 @@ $data['filters'] = $this->filters;
                                 <?php echo HTMLHelper::_('grid.id', $i, $row->ev_id()); ?>
                             </td>
                             <td>
-                                <span gsl-lightbox >
+                                <span gsl-lightbox>
                                 <a href="<?php  echo Uri::root() . $row->viewDetailLink($row->yup(), $row->mup(), $row->dup(), false, $itemId);?>"
                                    id="modal_preview" title="Preview"
                                    data-caption="Preview"

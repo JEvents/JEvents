@@ -38,5 +38,5 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 })
 
-ys_popover(".hasYsPopover");
+ys_popover(".hasYsPopover, .hasPopover");
 

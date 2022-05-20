@@ -812,7 +812,6 @@ function JEventsBuildRouteNew(&$query, $task)
 				if (isset($query['catids']) && StringHelper::strlen($query['catids']) > 0)
 				{
 					$segments[] = $query['catids'];
-					unset($query['catids']);
 				}
 				else
 				{
@@ -824,6 +823,7 @@ function JEventsBuildRouteNew(&$query, $task)
 						}
 					}
 				}
+				unset($query['catids']);
 
 				switch ($task)
 				{
