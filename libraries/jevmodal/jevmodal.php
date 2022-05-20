@@ -97,7 +97,7 @@ SCRIPT;
 		// UIKit or Bootstrap
 		$jinput = JFactory::getApplication()->input;
 		$task = $jinput->getString("task", $jinput->getString("jevtask", ""));
-		if (!$forceBoostrap && ($task == "icalevent.edit" || $task == "icalrepeat.edit")
+		if (!$forceBoostrap && ($task == "icalevent.edit" || $task == "icalrepeat.edit"  || $task == "icalevent.list")
 			&& (Factory::getApplication()->isClient('administrator') || $jevparams->get("newfrontendediting", 1))
 		)
 		{

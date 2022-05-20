@@ -409,6 +409,8 @@ if (count($jevplugins))
 							// Needed to deal with early execution of initTemplate in backend
 							//$fieldhtml = str_replace('gsl-button-group', 'gsl-button-group-ysts',$fieldhtml );
 
+							$fieldhtml = str_replace("data-showon=", "data-showon-gsl=", $fieldhtml);
+
 							$html[] = $fieldhtml;
 
 						}
@@ -646,7 +648,8 @@ SCRIPT;
                         </a>
                         <div class="gsl-accordion-content gsl-hidden">
 							<?php
-							echo implode("\n", $html);
+							$html = implode("\n", $html);
+							echo str_replace("data-showon=", "data-showon-gsl=", $html);
 							?>
                         </div>
 						<?php

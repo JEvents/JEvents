@@ -389,41 +389,43 @@ class GslHelper
 		$db->setQuery("SELECT * FROM #__extensions WHERE element = 'jevcustomfields' AND type='plugin' AND folder='jevents' ");
 		$extension = $db->loadObject();
 		// Stop if user is not authorised to manage JEvents
-		if ($extension && $extension->enabled && JEVHelper::isAdminUser())
+		if ($extension && $extension->enabled )
 		{
-
-			Factory::getLanguage()->load("plg_jevents_jevcustomfields", JPATH_ADMINISTRATOR);
-
-			$iconLink                 = new stdClass();
-			$iconLink->class          = "";
-			$iconLink->active         = strpos($task, "plugin.jev_customfields") === 0;
-			$iconLink->link           = Route::_("index.php?option=com_jevents&task=plugin.jev_customfields.overview");
-			$iconLink->icon           = "code";
-			$iconLink->label          = Text::_('JEV_CUSTOM_FIELDS');
-			$iconLink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_('JEV_CUSTOM_FIELDS', true);
-			$iconLink->tooltip_detail = "";
-			$iconLinks[]              = $iconLink;
-
-			try
+			if (JEVHelper::isAdminUser())
 			{
-				$manifestCache = json_decode($extension->manifest_cache);
-				if (version_compare($manifestCache->version,"3.7.0", "ge") || $manifestCache->version == "3.5.0RC2")
+				Factory::getLanguage()->load("plg_jevents_jevcustomfields", JPATH_ADMINISTRATOR);
+
+				$iconLink                 = new stdClass();
+				$iconLink->class          = "";
+				$iconLink->active         = strpos($task, "plugin.jev_customfields") === 0;
+				$iconLink->link           = Route::_("index.php?option=com_jevents&task=plugin.jev_customfields.overview");
+				$iconLink->icon           = "code";
+				$iconLink->label          = Text::_('JEV_CUSTOM_FIELDS');
+				$iconLink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_('JEV_CUSTOM_FIELDS', true);
+				$iconLink->tooltip_detail = "";
+				$iconLinks[]              = $iconLink;
+
+				try
 				{
-					$iconLink->sublinks = array();
+					$manifestCache = json_decode($extension->manifest_cache);
+					if (version_compare($manifestCache->version, "3.7.0", "ge") || $manifestCache->version == "3.5.0RC2")
+					{
+						$iconLink->sublinks = array();
 
-					$sublink              = new stdClass();
-					$sublink->onclick     = "(function(e) { document.location='" . Route::_("index.php?option=com_fields&context=com_jevents.event") . " ';return false;})(event);";
-					$sublink->link        = "";
-					$sublink->class       = "gsl-button gsl-small gsl-button-secondary gsl-padding-remove gsl-text-left ";
-					$sublink->icon        = 'joomla';
-					$sublink->iconclass   = "gsl-margin-small-right gsl-display-inline-block";
-					$sublink->label       = JText::_('COM_JEVENTS_JOOMLA_CUSTOM_FIELDS');
-					$iconLink->sublinks[] = $sublink;
+						$sublink              = new stdClass();
+						$sublink->onclick     = "(function(e) { document.location='" . Route::_("index.php?option=com_fields&context=com_jevents.event") . " ';return false;})(event);";
+						$sublink->link        = "";
+						$sublink->class       = "gsl-button gsl-small gsl-button-secondary gsl-padding-remove gsl-text-left ";
+						$sublink->icon        = 'joomla';
+						$sublink->iconclass   = "gsl-margin-small-right gsl-display-inline-block";
+						$sublink->label       = JText::_('COM_JEVENTS_JOOMLA_CUSTOM_FIELDS');
+						$iconLink->sublinks[] = $sublink;
+					}
 				}
-			}
-			catch (Exception $e)
-			{
+				catch (Exception $e)
+				{
 
+				}
 			}
 
 		}

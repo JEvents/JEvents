@@ -294,6 +294,10 @@ class plgFinderJEvents extends Adapter
 
 		// Build the necessary route and path information.
 		$itemid      = $this->params->get("target_itemid", 0);
+		if ($itemid == 0)
+		{
+			$itemid = $item->params->get("permatarget", 0);
+		}
 		$item->url   = "index.php?option=com_jevents&task=icalevent.detail&evid=" . $item->eventid . "&Itemid=" . $itemid;//$this->getURL($item->id, $this->extension, $this->layout);
 		$item->route = "index.php?option=com_jevents&task=icalevent.detail&evid=" . $item->eventid . "&Itemid=" . $itemid;
 
