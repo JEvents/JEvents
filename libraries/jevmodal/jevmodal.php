@@ -97,8 +97,11 @@ SCRIPT;
 		// UIKit or Bootstrap
 		$jinput = JFactory::getApplication()->input;
 		$task = $jinput->getString("task", $jinput->getString("jevtask", ""));
-		if (!$forceBoostrap && ($task == "icalevent.edit" || $task == "icalrepeat.edit"  || $task == "icalevent.list")
-			&& (Factory::getApplication()->isClient('administrator') || $jevparams->get("newfrontendediting", 1))
+		if (!$forceBoostrap
+			&& (
+				Factory::getApplication()->isClient('administrator')
+				|| ( $jevparams->get("newfrontendediting", 1) && ($task == "icalevent.edit" || $task == "icalrepeat.edit"  || $task == "icalevent.list"))
+			)
 		)
 		{
 			HTMLHelper::script('com_jevents/lib_jevmodal/jevmodal_gsl.js', array('framework' => false, 'relative' => true, 'pathOnly' => false, 'detectBrowser' => false, 'detectDebug' => true));
