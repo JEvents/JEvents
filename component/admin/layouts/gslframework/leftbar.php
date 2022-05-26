@@ -22,14 +22,29 @@ if ($option == "com_categories")
 $componentParams = ComponentHelper::getParams($option);
 $leftmenutrigger = $componentParams->get("leftmenutrigger", 0);
 
+$script = <<< SCRIPT
+var leftMenuTrigger = $leftmenutrigger;
+SCRIPT;
+	Factory::getApplication()->getDocument()->addScriptDeclaration($script);
+
 ?>
-<aside id="left-col" class="gsl-padding-remove  gsl-background-secondary hide-label ">
+<aside id="left-col" class="gsl-padding-remove  gsl-background-secondary <?php echo $leftmenutrigger == 3 ? '' : 'hide-label';?> ">
 
     <nav class="left-nav-wrap  gsl-width-auto@m gsl-navbar"
-	    <?php echo $leftmenutrigger == 2 ? "" : ('gsl-navbar="mode: ' . ($leftmenutrigger == 0 ? "hover" : "click") .'"');?>
-    >
+	    <?php
+	    if ($leftmenutrigger != 3)
+	    {
+		    echo $leftmenutrigger == 2 ? "" : ('gsl-navbar="mode: ' . ($leftmenutrigger == 0 ? "hover" : "click") . '"');
+	    }
+		?>
+        >
         <div class="left-logo gsl-background-secondary gsl-toggle"
-			<?php echo $leftmenutrigger == 2 ? "" : ('gsl-toggle="target:#left-col, #left-col .left-nav, .ysts-page-title; mode: ' . ($leftmenutrigger == 0 ? "hover" : "click") . ';cls: hide-label"') ;?>
+			<?php
+			if ($leftmenutrigger != 3)
+			{
+				echo $leftmenutrigger == 2 ? "" : ('gsl-toggle="target:#left-col, #left-col .left-nav, .ysts-page-title; mode: ' . ($leftmenutrigger == 0 ? "hover" : "click") . ';cls: hide-label"');
+			}
+			?>
         >
             <div>
                 <?php
@@ -42,8 +57,13 @@ $leftmenutrigger = $componentParams->get("leftmenutrigger", 0);
             <?php
             ob_start();
             ?>
-            <ul class="left-nav gsl-navbar-nav gsl-list hide-label gsl-background-secondary gsl-toggle"
-	            <?php echo $leftmenutrigger == 2 ? "" : ('gsl-toggle="target:#left-col, #left-col .left-nav, .ysts-page-title; mode: ' . ($leftmenutrigger == 0 ? "hover" : "click") . ';cls: hide-label"') ;?>
+            <ul class="left-nav gsl-navbar-nav gsl-list gsl-background-secondary gsl-toggle <?php echo $leftmenutrigger == 3 ? '' : 'hide-label';?> "
+	            <?php
+	            if ($leftmenutrigger != 3)
+	            {
+		            echo $leftmenutrigger == 2 ? "" : ('gsl-toggle="target:#left-col, #left-col .left-nav, .ysts-page-title; mode: ' . ($leftmenutrigger == 0 ? "hover" : "click") . ';cls: hide-label"');
+		            }
+				?>
             >
                 <?php
                 foreach ($leftIconLinks as $leftIconLink)

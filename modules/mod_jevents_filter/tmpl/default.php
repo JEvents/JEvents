@@ -110,12 +110,17 @@ if (
 $allowAutoSubmit = true;
 $filterHTML      = $filters->getFilterHTML($allowAutoSubmit);
 
-if ($params->get("bootstrapchosen", 1))
+if ($params->get("bootstrapchosen", 1) == 1)
 {
 	// Load Bootstrap
 	JevHtmlBootstrap::framework();
 	HTMLHelper::_('formbehavior.chosen', '.jevfiltermodule select');
 	require(ModuleHelper::getLayoutPath('mod_jevents_filter', 'default_chosenlayout'));
+}
+else if ($params->get("bootstrapchosen", 1) == 2)
+{
+	// Load Bootstrap
+	require(ModuleHelper::getLayoutPath('mod_jevents_filter', 'default_uikitlayout'));
 }
 else
 {

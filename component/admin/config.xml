@@ -57,6 +57,7 @@
 			<option value="0">JEV_MOUSEOVER_TOUCH</option>
 			<option value="1">JEV_CLICK_TOUCH</option>
 			<option value="2">JEV_NO_LEFT_MENU_LABELS</option>
+			<option value="3">JEV_LEFT_MENU_LABELS_AWAY_VISIBLE</option>
 		</field>
 
 		<field name="j4sidebar" type="jevboolean" class="gsl-button-group"  default="0" label="JEV_BACKEND_J4_SHOW_SIDEBAR"

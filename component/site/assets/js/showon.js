@@ -124,7 +124,7 @@ Joomla = window.Joomla || {};
 
                 if (showfield)
                 {
-                    var isGrid = target[0].classList.contains('gsl-grid') || target[0].parentNode.classList.contains('gsl-grid');
+                    var isGrid = target[0].classList.contains('gsl-grid') || target[0].parentNode.classList.contains('gsl-grid')  || target[0].classList.contains('control-group');
                     target[0].style.display = isGrid ? 'flex' : 'block';
                 }
                 else
@@ -134,7 +134,7 @@ Joomla = window.Joomla || {};
             } else {
                 if (showfield)
                 {
-                    var isGrid = target[0].classList.contains('gsl-grid') || target[0].parentNode.classList.contains('gsl-grid');
+                    var isGrid = target[0].classList.contains('gsl-grid') || target[0].parentNode.classList.contains('gsl-grid')  || target[0].classList.contains('control-group');
                     target[0].style.display = isGrid ? 'flex' : 'block';
                 }
                 else

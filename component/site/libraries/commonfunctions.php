@@ -411,33 +411,48 @@ class JEV_CommonFunctions
 		// mail function
 		$mail          = Factory::getMailer();
 		$sender_config = $params->get('sender_config', 9);
-		if ($sender_config == 0)
+
+		try
 		{
+			if ($sender_config == 0)
+			{
 
-			$mail->setSender(array(0 => $adminEmail, 1 => $adminName));
+				$mail->setSender(array(0 => $adminEmail, 1 => $adminName));
 
+			}
+			elseif ($sender_config == 1)
+			{
+
+				$mail->setSender(array(0 => $config->mailfrom, 1 => $config->fromname));
+
+			}
+			else
+			{
+				$mail->setSender(array(0 => $params->get('sender_email', ''), 1 => $params->get('sender_name', '')));
+			}
+
+			if ($params->get('email_replyto', 0) == 1)
+			{
+				$mail->addReplyTo($adminEmail);
+			}
 		}
-		elseif ($sender_config == 1)
+		catch (Exception $e)
 		{
-
-			$mail->setSender(array(0 => $config->mailfrom, 1 => $config->fromname));
-
-		}
-		else
-		{
-			$mail->setSender(array(0 => $params->get('sender_email', ''), 1 => $params->get('sender_name', '')));
-		}
-
-		if ($params->get('email_replyto', 0) == 1)
-		{
-			$mail->addReplyTo($adminEmail);
+			$app->enqueueMessage("JEV_UNABLE_TO_SET_EMAIL_SENDER_OR_REPLY_TO", 'warning');
 		}
 
 		$mail->addRecipient($authoremail);
 		$mail->setSubject($subject);
 		$mail->setBody($content);
 		$mail->IsHTML(true);
-		$mail->send();
+		try
+		{
+			$mail->send();
+		}
+		catch (Exception $e)
+		{
+			$app->enqueueMessage("JERROR_SENDING_EMAIL", 'warning');
+		}
 	}
 
 	public static function sendAdminMail($adminName, $adminEmail, $subject = '', $title = '', $content = '', $day = '', $month = '', $year = '', $start_time = '', $end_time = '', $author = '', $live_site = "", $modifylink = "", $viewlink = "", $event = false, $cc = "")
@@ -535,35 +550,48 @@ class JEV_CommonFunctions
 
 		$mail          = Factory::getMailer();
 		$sender_config = $params->get('sender_config', 0);
-		if ($sender_config == 0)
+		try
 		{
+			if ($sender_config == 0)
+			{
 
-			$mail->setSender(array(0 => $adminEmail, 1 => $adminName));
+				$mail->setSender(array(0 => $adminEmail, 1 => $adminName));
 
+			}
+			elseif ($sender_config == 1)
+			{
+
+				$mail->setSender(array(0 => $config->mailfrom != "" ? $config->mailfrom : $adminEmail, 1 => $config->fromname != "" ? $config->fromname : $adminName));
+
+			}
+			else
+			{
+				$mail->setSender(array(0 => $params->get('sender_email', $adminEmail), 1 => $params->get('sender_name', $adminName)));
+			}
 		}
-		elseif ($sender_config == 1)
+		catch (Exception $e)
 		{
-
-			$mail->setSender(array(0 => $config->mailfrom != "" ? $config->mailfrom : adminEmail, 1 => $config->fromname != "" ? $config->fromname : adminName));
-
+			$app->enqueueMessage("JEV_UNABLE_TO_SET_EMAIL_SENDER_OR_REPLY_TO", 'warning');
 		}
-		else
-		{
-			$mail->setSender(array(0 => $params->get('sender_email', $adminEmail), 1 => $params->get('sender_name', $adminName)));
-		}
-
 
 		// attach anonymous creator etc.
 		PluginHelper::importPlugin('jevents');
 		$app->triggerEvent('onDisplayCustomFields', array(&$event));
 
-		if (!isset($event->authoremail) && $params->get('email_replyto', 0) == 1)
+		try
 		{
-			$mail->addReplyTo($adminEmail);
+			if (!isset($event->authoremail) && $params->get('email_replyto', 0) == 1)
+			{
+				$mail->addReplyTo($adminEmail);
+			}
+			else if (isset($event->authoremail) && $event->authoremail !== '')
+			{
+				$mail->addReplyTo($event->authoremail);
+			}
 		}
-		else if (isset($event->authoremail) && $event->authoremail !== '')
+		catch (Exception $e)
 		{
-			$mail->addReplyTo($event->authoremail);
+			$app->enqueueMessage("JEV_UNABLE_TO_SET_EMAIL_SENDER_OR_REPLY_TO", 'warning');
 		}
 
 		if (isset($add_cc) && $add_cc !== "")
