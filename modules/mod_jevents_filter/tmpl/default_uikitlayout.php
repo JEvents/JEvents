@@ -49,7 +49,7 @@ if (count($filterHTML) > 0)
 .jevfilterlist .jevfilterinput .chzn-container, .jevfilterlist .jevfilterinput input {
 	max-width:100%;
 }
-   .jevfilterfloatlist li {
+.jevfilterfloatlist li {
 	float:left;
 	margin-right:5px;
 }
@@ -99,13 +99,12 @@ STYLE;
 					<tr>
 						<td colspan="<?php echo $params->get("showlabels", 1) ? 2 : 1;?> ?>">
 							<div class="uk-button uk-button-group">
-								<input class="modfilter_button uk-button uk-button-secondary" type="button" onclick="JeventsFilters.reset(this.form)"
+								<input class="modfilter_button uk-button uk-button-danger" type="button" onclick="JeventsFilters.reset(this.form)"
 							           value="<?php echo Text::_('RESET'); ?>"/>
 								<input class="modfilter_button uk-button uk-button-primary" type="submit" value="<?php echo Text::_('ok'); ?>"
 								       name="jevents_filter_submit"/>
 							</div>
 						</td>
-					</tr>
 					</tr>
 				</table>
 				<?php
@@ -146,7 +145,7 @@ STYLE;
 						if ($params->get("showlabels", 1))
 						{
 							?>
-							<td><input class="modfilter_button uk-button uk-button-secondary" type="button" onclick="JeventsFilters.reset(this.form)"
+							<td><input class="modfilter_button uk-button uk-button-danger" type="button" onclick="JeventsFilters.reset(this.form)"
 							           value="<?php echo Text::_('RESET'); ?>"/></td>
 						<?php } ?>
 					</tr>
@@ -169,7 +168,7 @@ STYLE;
 						?>
 						<td colspan="<?php echo $params->get("showlabels", 1) ? 2 : 1;?> ?>">
 							<div class="uk-button uk-button-group">
-								<input class="modfilter_button uk-button uk-button-secondary" type="button" onclick="JeventsFilters.reset(this.form)"
+								<input class="modfilter_button uk-button uk-button-danger" type="button" onclick="JeventsFilters.reset(this.form)"
 							           value="<?php echo Text::_('RESET'); ?>"/>
 								<input class="modfilter_button uk-button uk-button-primary" type="submit" value="<?php echo Text::_('ok'); ?>"
 								       name="jevents_filter_submit"/>
@@ -222,7 +221,7 @@ STYLE;
 					?>
 					<li>
 						<div class="jevfilterinput uk-button uk-button-group">
-							<input class="modfilter_button uk-button uk-button-secondary" type="button" onclick="JeventsFilters.reset(this.form)"
+							<input class="modfilter_button uk-button uk-button-danger" type="button" onclick="JeventsFilters.reset(this.form)"
 							       value="<?php echo Text::_('RESET'); ?>"/>
 							<input class="modfilter_button uk-button uk-button-primary" type="submit" value="<?php echo Text::_('ok'); ?>"
 							       name="jevents_filter_submit"/>
@@ -248,6 +247,47 @@ STYLE;
 	</form>
 	<?php
 	$output = ob_get_clean();
-	$output = str_replace(array("gsl-", "evsearch", "inputbox") , array("uk-","evsearch uk-input","uk-input"), $output);
+
+	$output = str_replace("gsl-", "uk-", $output);
+
+	$dom        = new DOMDocument();
+	// see http://php.net/manual/en/domdocument.savehtml.php cathexis dot de ¶
+	@$dom->loadHTML('<html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></head><body>' . $output . '</body>');
+
+	$selects = $dom->getElementsByTagName('select');
+	foreach ($selects as $select)
+	{
+		$select->setAttribute('class', $select->getAttribute('class') . ' uk-select');
+	}
+
+	$buttons = $dom->getElementsByTagName('button');
+	foreach ($buttons as $button)
+	{
+		$class = $button->getAttribute('class');
+		$class = str_replace('btn-', 'uk-button', $class);
+		$button->setAttribute('class', ' uk-button ' . $class);
+	}
+
+	$textareas = $dom->getElementsByTagName('textarea');
+	foreach ($textareas as $textarea)
+	{
+		$textarea->setAttribute('class', $textarea->getAttribute('class') . ' uk-select');
+	}
+
+	$inputs = $dom->getElementsByTagName('input');
+	foreach ($inputs as $input)
+	{
+		switch ($input->getAttribute('type'))
+		{
+			case 'text':
+			case 'email':
+				$input->setAttribute('class', $input->getAttribute('class') . ' uk-input');
+				break;
+
+		}
+	}
+
+	$output = $dom->saveHTML($dom->getElementsByTagName('body')[0]);
+
 	echo $output;
 }

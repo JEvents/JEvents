@@ -56,13 +56,13 @@
 					<option value="newmenu">JEV_FILTER_NEW_MENU_ITEM</option>
 				</field>
 				<!--
-								<field
-									name="enablebootstrap"
-									type="jevboolean" class="btn-group"
-									default="1"
-									label="JEV_FILTER_ENABLE_BOOSTRAP"
-									description="JEV_FILTER_ENABLE_BOOSTRAP_DESC" />
-									//-->
+				<field
+					name="enablebootstrap"
+					type="jevboolean" class="btn-group"
+					default="1"
+					label="JEV_FILTER_ENABLE_BOOSTRAP"
+					description="JEV_FILTER_ENABLE_BOOSTRAP_DESC" />
+					//-->
 				<field name="bootstrapcss" type="radio" class="btn-group"
 				       default="-1" default25="0" default30="1" label="JEV_LOAD_BOOTSTRAP_CSS"
 				       description="JEV_LOAD_BOOTSTRAP_CSS_DESC">
