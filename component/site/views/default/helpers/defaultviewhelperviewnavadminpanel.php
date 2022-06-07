@@ -51,15 +51,8 @@ function DefaultViewHelperViewNavAdminPanel($view)
 					HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
 				}
 			}
-			if ($cfg->get("bootstrapcss", 1) == 1)
-			{
-				// This version of bootstrap has maximum compatability with JEvents due to enhanced namespacing
-				HTMLHelper::stylesheet("com_jevents/bootstrap.css", array(), true);
-			}
-			else if ($cfg->get("bootstrapcss", 1) == 2)
-			{
-				JHtmlBootstrap::loadCss();
-			}
+			JevHtmlBootstrap::loadCss();
+
 			// Load event adding language string
 			Text::script('JEV_ADD_EVENT');
 			Text::script('JEV_IMPORT_ICALEVENT');

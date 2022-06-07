@@ -74,15 +74,7 @@ SCRIPT;
 	Factory::getDocument()->addScriptDeclaration($script);
 	 */
 }
-if ($params->get("bootstrapcss", 1) == 1)
-{
-	// This version of bootstrap has maximum compatability with JEvents due to enhanced namespacing
-	HTMLHelper::stylesheet("com_jevents/bootstrap.css", array(), true);
-}
-else if ($params->get("bootstrapcss", 1) == 2)
-{
-	JHtmlBootstrap::loadCss();
-}
+JevHtmlBootstrap::loadCss();
 
 // use Route to preseve language selection
 $action = Factory::getApplication()->isClient('administrator') ? "index.php" : Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=" . JEVHelper::getItemid());

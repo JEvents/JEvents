@@ -113,6 +113,16 @@
 						label="JEV_FILTER_SHOWLABELS"
 						description="JEV_FILTER_SHOWLABELS_DESC"/>
 
+				<field name="customcss"
+					   type="jevtextarea"
+					   filter="raw"
+					   cols="50"
+					   rows="5"
+					   class="jevtextarea"
+					   default=''
+					   label="MOD_JEV_FILTER_MODULE_CUSTOM_CSS"
+					   description="MOD_JEV_FILTER_MODULE_CUSTOM_CSS_TIP"
+				/>
 
 			</fieldset>
 			<fieldset

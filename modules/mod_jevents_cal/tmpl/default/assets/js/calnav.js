@@ -1,16 +1,17 @@
 function callNavigation(link, datatype) {
     link += "&json=1";
-    //link += "&XDEBUG_SESSION_START=netbeans-xdebug";
-    var jSonRequest = jQuery.ajax({
-        type: 'GET',
-        // use JSONP to allow cross-domain calling of this data!
-        dataType: (typeof datatype !== 'undefined') ? datatype : 'jsonp',
-        cache: false,
-        url: link,
-        contentType: "application/json; charset=utf-8",
-        scriptCharset: "utf-8"
-    })
-        .done(function (json) {
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", link);
+    xhr.setRequestHeader("accept", "application/json; charset=utf-8")
+    xhr.onload = function () {
+        try {
+            if (xhr.status != 200) {
+                alert('error ' + xhr.statusText);
+                return;
+            }
+
+            var json = JSON.parse(xhr.responseText);
             if (!json || !json.data) {
                 if (typeof datatype == 'undefined') {
                     return callNavigation(link, "json");
@@ -66,7 +67,9 @@ function callNavigation(link, datatype) {
                         });
                     }
                     else {
-                        jQuery(modbody).find('.hasjevtip').popover(popoveroptions);
+                        if (typeof jQuery !== 'undefined') {
+                            jQuery(modbody).find('.hasjevtip').popover(popoveroptions);
+                        }
                     }
                 }
             }
@@ -82,14 +85,22 @@ function callNavigation(link, datatype) {
 
             setupSpecificNavigation();
 
-        })
-        .fail(function (jqxhr, textStatus, error) {
-            alert(textStatus + ", " + error);
-        });
+        } catch (e) {
+            alert('bad response = ' + e + "\n" + xhr.responseText );
+        }
+    }
+
+    xhr.onerror = function () {
+        alert('error ' + xhr.statusText);
+
+    }
+
+    xhr.send();
+
 }
 
 // setup touch interaction
-jQuery(document).on('ready', function () {
+document.addEventListener('DOMContentLoaded', function () {
     setupSpecificNavigation();
 });
 
@@ -98,10 +109,8 @@ var jevMiniTouchStartY = false;
 
 function setupMiniCalTouchInteractions(selector, parent) {
     if ('ontouchstart' in document.documentElement) {
-        var target = parent ? jQuery(selector).parent() : jQuery(selector);
-        target.on("touchend", function (evt) {
-            //jevlog("touchend/touchend.");
-            //jevlog('changed touches '+ evt.originalEvent.changedTouches.length);
+        var target = parent ? document.querySelector(selector).parentNode() : selector;
+        target.addEventListener("touchend", function (evt) {
             var touchobj = evt.originalEvent.changedTouches[0];
             var vdist = touchobj.pageY - jevMiniTouchStartY;
             if (Math.abs(vdist) > 50) {
@@ -118,13 +127,13 @@ function setupMiniCalTouchInteractions(selector, parent) {
                 evt.preventDefault();
             }
         });
-        target.on("touchstart", function (evt) {
+        target.addEventListener("touchstart", function (evt) {
             //evt.preventDefault();
             var touchobj = evt.originalEvent.changedTouches[0];
             jevMiniTouchStartX = touchobj.pageX;
             jevMiniTouchStartY = touchobj.pageY;
         });
-        target.on("touchmove", function (evt) {
+        target.addEventListener("touchmove", function (evt) {
             // top stop scrolling etc. but only in the horizontal
             var touchobj = evt.originalEvent.changedTouches[0];
 

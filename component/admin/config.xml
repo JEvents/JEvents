@@ -35,6 +35,14 @@
 			<option value="bootstrap5">JEV_BOOSTRAP5</option>
 			<option value="uikit3">JEV_UIKIT3</option>
 		</field>
+		<field name="bootstrapcss" type="jevlist" default="1" label="JEV_LOAD_BOOTSTRAP_CSS"
+			   description="JEV_LOAD_BOOTSTRAP_CSS_DESC" difficulty="2" minjoomlaversion="2.5.0"
+			   showon="framework!:uikit3"
+		>
+			<option value="0">JEV_DO_NOT_LOAD_BOOSTRAP</option>
+			<option value="1" maxjoomlaversion="3.99999">JEV_USE_JEVENTS_BOOTSTRAP</option>
+			<option value="2">JEV_USE_JOOMLA_BOOTSTRAP</option>
+		</field>
 
 		<field name="clubcode_spacer" type="jevinfo" default='JEV_JOOMLA_UPDATE_CLUBCODE_INFO' menu="hide" label=""
 		       description="" difficulty="1"/>
@@ -128,12 +136,6 @@
 		       label="JEV_SHOW_EMAIL_ICON" description="JEV_SHOW_EMAIL_ICON_TIP" difficulty="1"/>
 		<field name="fixjquery" type="jevboolean" class="gsl-button-group" default="1" label="JEV_FIX_JQUERY"
 		       description="JEV_FIX_JQUERY_TIP" difficulty="2" maxjoomlaversion="3.99.99"/>
-		<field name="bootstrapcss" type="jevlist" default="1" label="JEV_LOAD_BOOTSTRAP_CSS"
-		       description="JEV_LOAD_BOOTSTRAP_CSS_DESC" difficulty="2" minjoomlaversion="2.5.0">
-			<option value="0">JEV_DO_NOT_LOAD_BOOSTRAP</option>
-			<option value="1">JEV_USE_JEVENTS_BOOTSTRAP</option>
-			<option value="2">JEV_USE_JOOMLA_BOOTSTRAP</option>
-		</field>#
 		<!--
 		<field name="joomlatags" type="jevboolean" class="gsl-button-group" default="1" menu="hide" label="COM_JEVENTS_USE_JOOMLA_TAGS"
 			   description="" difficulty="1"/>

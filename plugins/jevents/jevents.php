@@ -27,7 +27,7 @@ class plgContentJEvents extends CMSPlugin
 	function onContentBeforeSave($context, $data)
 	{
 
-		if (intval($data->id) == 0)
+		if (!isset($data->id) || intval($data->id) == 0)
 		{
 			return true;
 		}

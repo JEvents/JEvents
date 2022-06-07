@@ -30,23 +30,7 @@ if (count($filterHTML) > 0)
 		}
 	}
 	 */
-	if ($params->get("bootstrapcss", 1) == 2)
-	{
-		JHtmlBootstrap::loadCss();
-	}
-	else if ($params->get("bootstrapcss", 1) == 2)
-	{
-		$cfg = JEVConfig::getInstance();
-		if ($cfg->get("bootstrapcss", 1) == 1)
-		{
-			// This version of bootstrap has maximum compatability with JEvents due to enhanced namespacing
-			HTMLHelper::stylesheet("com_jevents/bootstrap.css", array(), true);
-		}
-		else if ($cfg->get("bootstrapcss", 1) == 2)
-		{
-			JHtmlBootstrap::loadCss();
-		}
-	}
+	JevHtmlBootstrap::loadCss();
 
 	JEVHelper::script("mod_jevents_filter.js", "modules/mod_jevents_filter/", false);
 	?>

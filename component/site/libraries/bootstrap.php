@@ -154,7 +154,11 @@ class JevHtmlBootstrap
 	public static function loadCss($includeMainCss = true, $direction = 'ltr', $attribs = array())
 	{
 
-		$params = ComponentHelper::getParams('com_jevents');
+		$params = ComponentHelper::getParams('com_jevents');#
+		if (strpos($params->get('framework', 'native'),  "uikit") !== false)
+		{
+			return;
+		}
 		// Load Bootstrap main CSS
 		if ($includeMainCss)
 		{
@@ -172,7 +176,7 @@ class JevHtmlBootstrap
 		}
 
 		// Load Bootstrap RTL CSS
-		if ($direction === 'rtl')
+		if ($direction === 'rtl' && $params->get("bootstrapcss", 1) > 0)
 		{
 			HTMLHelper::_('stylesheet', 'jui/bootstrap-rtl.css', $attribs, true);
 		}

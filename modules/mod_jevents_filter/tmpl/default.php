@@ -110,6 +110,12 @@ if (
 $allowAutoSubmit = true;
 $filterHTML      = $filters->getFilterHTML($allowAutoSubmit);
 
+if ($params->get("customcss", false))
+{
+	$css = $params->get("customcss", false);
+	Factory::getDocument()->addStyleDeclaration($css);
+}
+
 if ($params->get("bootstrapchosen", 1) == 1)
 {
 	// Load Bootstrap
