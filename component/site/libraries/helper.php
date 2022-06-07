@@ -2895,7 +2895,12 @@ class JEVHelper
 		if (strpos($file, "JQ.js") == false)
 		{
 			$jqfile = str_replace(".js", "JQ.js", $file);
-			if (HTMLHelper::script($path . $jqfile, false, false, true))
+			if (HTMLHelper::script($path . $jqfile,
+					array(
+						'relative'      => false,
+						'pathOnly'      => true
+					)
+			))
 			{
 				$file = $jqfile;
 			}

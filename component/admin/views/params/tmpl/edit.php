@@ -399,12 +399,18 @@ if (count($jevplugins))
 							}
 
 							$hasconfig = true;
+
 							$fieldhtml = $field->renderField();
 
 							// Short cut replacement pending plugin updates!
 							$fieldhtml = str_replace('class="row ', 'class="row  gsl-grid gsl-margin-remove ',$fieldhtml );
 							$fieldhtml = str_replace('class="span2', 'class="gsl-width-1-6@m gsl-width-1-1 gsl-margin-small-bottom', $fieldhtml );
 							$fieldhtml = str_replace(array('class="span10', 'class=" span10'), 'class="gsl-width-expand gsl-margin-small-bottom  ', $fieldhtml );
+
+							$fieldhtml = str_replace('class="control-group"', 'class="gsl-grid"', $fieldhtml);
+							$fieldhtml = str_replace('class="control-label"', 'class="gsl-width-1-3"', $fieldhtml);
+							$fieldhtml = str_replace('class="controls"', 'class="gsl-width-2-3"', $fieldhtml);
+
 
 							// Needed to deal with early execution of initTemplate in backend
 							//$fieldhtml = str_replace('gsl-button-group', 'gsl-button-group-ysts',$fieldhtml );
@@ -636,7 +642,11 @@ SCRIPT;
 								}
 
 								$hasconfig = true;
-								$html[]    = $field->renderField();
+								$renderField = $field->renderField();
+								$renderField = str_replace('class="control-group"', 'class="gsl-grid"', $renderField);
+								$renderField = str_replace('class="control-label"', 'class="gsl-width-1-3"', $renderField);
+								$renderField = str_replace('class="controls"', 'class="gsl-width-2-3"', $renderField);
+								$html[]    = $renderField;
 							}
 							$html[] = '</div>';
 						}

@@ -45,6 +45,14 @@ SCRIPT;
 	$document->addScriptDeclaration($script);
 }
 
+$option = Factory::getApplication()->input->getCmd('option', 'com_jevents');
+if ($option == "com_categories")
+{
+	$option = Factory::getApplication()->input->getCmd('extension', 'com_jevents');
+}
+$componentParams = ComponentHelper::getParams($option);
+$leftmenutrigger = $componentParams->get("leftmenutrigger", 0);
+
 // Load component specific data
 $componentpath = dirname(dirname(dirname(__FILE__)));
 include_once($componentpath . "/helpers/gslhelper.php");
@@ -66,7 +74,7 @@ $tmpl = $app->input->getCmd('tmpl', '');
        }
         ?>
         <!-- /LEFT BAR -->
-        <div id="right-col" class="gsl-padding-remove gsl-width-expand@m <?php if (!empty($tmpl) || $app->isClient('site')) echo "noleftbar";?> ">
+        <div id="right-col" class="gsl-padding-remove <?php echo $leftmenutrigger == 3 ? '' : 'gsl-width-expand@m';?> <?php if (!empty($tmpl) || $app->isClient('site')) echo "noleftbar";?> ">
 
             <!--HEADER-->
             <header id="top-head" >

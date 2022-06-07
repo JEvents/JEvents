@@ -56,13 +56,13 @@
 					<option value="newmenu">JEV_FILTER_NEW_MENU_ITEM</option>
 				</field>
 				<!--
-								<field
-									name="enablebootstrap"
-									type="jevboolean" class="btn-group"
-									default="1"
-									label="JEV_FILTER_ENABLE_BOOSTRAP"
-									description="JEV_FILTER_ENABLE_BOOSTRAP_DESC" />
-									//-->
+				<field
+					name="enablebootstrap"
+					type="jevboolean" class="btn-group"
+					default="1"
+					label="JEV_FILTER_ENABLE_BOOSTRAP"
+					description="JEV_FILTER_ENABLE_BOOSTRAP_DESC" />
+					//-->
 				<field name="bootstrapcss" type="radio" class="btn-group"
 				       default="-1" default25="0" default30="1" label="JEV_LOAD_BOOTSTRAP_CSS"
 				       description="JEV_LOAD_BOOTSTRAP_CSS_DESC">
@@ -70,9 +70,15 @@
 					<option value="0">JNO</option>
 					<option value="2">JYES</option>
 				</field>
-				<field name="bootstrapchosen" type="jevboolean" class="btn-group"
-				       default="-1" default25="0" default30="1" label="JEV_LOAD_BOOTSTRAP_CHOSEN"
-				       description="JEV_LOAD_BOOTSTRAP_CHOSEN_DESC"/>
+
+				<field name="bootstrapchosen" type="list" class="btn-group"
+				       default="-1" default25="0" default30="1"
+					   label="MOD_JEV_FILTER_MODULE_CONTROLS_STYLE"
+				       description="MOD_JEV_FILTER_MODULE_CONTROLS_STYLE_DESC">
+					<option value="1">MOD_JEV_FILTER_MODULE_LOAD_BOOTSTRAP_CHOSEN</option>
+					<option value="0">MOD_JEV_FILTER_MODULE_NATIVE_HTML</option>
+					<option value="2">MOD_JEV_FILTER_MODULE_LOAD_UIKIT_STYLE</option>
+				</field>
 
 				<field
 						name="disablenonjeventspages"
@@ -107,6 +113,16 @@
 						label="JEV_FILTER_SHOWLABELS"
 						description="JEV_FILTER_SHOWLABELS_DESC"/>
 
+				<field name="customcss"
+					   type="jevtextarea"
+					   filter="raw"
+					   cols="50"
+					   rows="5"
+					   class="jevtextarea"
+					   default=''
+					   label="MOD_JEV_FILTER_MODULE_CUSTOM_CSS"
+					   description="MOD_JEV_FILTER_MODULE_CUSTOM_CSS_TIP"
+				/>
 
 			</fieldset>
 			<fieldset

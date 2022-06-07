@@ -9,10 +9,12 @@ function checkJQ() {
 
 checkJQ();
 
-// workaround for tooltips and popovers failing when MooTools is enabled with Bootstrap 3
-// See http://www.mintjoomla.com/support/community-forum/user-item/1833-braza/48-cobalt-8/2429.html?start=20
-
+// Various DOMContentLoaded event handlers
 document.addEventListener('DOMContentLoaded', function () {
+
+    // workaround for tooltips and popovers failing when MooTools is enabled with Bootstrap 3
+    // See http://www.mintjoomla.com/support/community-forum/user-item/1833-braza/48-cobalt-8/2429.html?start=20
+
     /** Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap */
     var bootstrap3_enabled = window.jQuery && (typeof jQuery().emulateTransitionEnd == 'function');
 
@@ -60,21 +62,24 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-});
 
-// disable click event in popover for non-touch devices
-document.addEventListener('DOMContentLoaded', function () {
-    if (!('ontouchstart' in document.documentElement)) {
-        //alert('non-touch');
-        jQuery("<style>").prop("type", "text/css").html(" .jev-click-to-open {display:none;}").appendTo("head");
-    }
-    else {
-        //alert('has-touch');
-        // jQuery("<style>" ).prop("type" , "text/css").html(" .jev-click-to-open {display:none;}").appendTo("head");
-    }
-});
+    // disable click event in popover for non-touch devices
+    // Do as a timeout because on a few sites in Joomla 4 this messes up the lazy-stylesheet conversion for some reason
+    window.setTimeout(function() {
+        if (!('ontouchstart' in document.documentElement)) {
+            //alert('non-touch');
+            var styleEl = document.createElement('style');
 
-document.addEventListener('DOMContentLoaded', function() {
+            // Append <style> element to <head>
+            document.head.appendChild(styleEl);
+
+            // Grab style element's sheet
+            var styleSheet = styleEl.sheet;
+            styleSheet.insertRule(" .jev-click-to-open {display:none;}", styleSheet.cssRules.length);
+        }
+    },  200);
+
+    // Setup tooltip migrations if needed
     var tips = document.querySelectorAll('.hasjevtip');
     tips.forEach(function (el)
     {

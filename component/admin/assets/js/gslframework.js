@@ -135,6 +135,28 @@ function ystsPositionElements()
 			gslUIkit.dropdown(leftDropDowns[l], data);
 		}
 	}
+
+	if (typeof leftMenuTrigger != "undefined" && leftMenuTrigger == 3)
+	{
+		var leftColWidth = document.querySelector('#left-col .left-nav').offsetWidth;
+		var leftColDisplay = getComputedStyle(document.querySelector('#left-col .left-nav li')).display;
+		if (leftColDisplay == "inline-block")
+		{
+			document.getElementById('right-col').style.marginLeft = '0px';
+			if (document.getElementById('top-head')) {
+				document.getElementById('top-head').style.marginLeft = '0px';
+				document.querySelector('#top-head .ys-titlebar').style.marginLeft = '0px';
+			}
+		}
+		else
+		{
+			document.getElementById('right-col').style.marginLeft = leftColWidth + 'px';
+			if (document.getElementById('top-head')) {
+				document.getElementById('top-head').style.marginLeft = (leftColWidth-50) + 'px';
+				document.querySelector('#top-head .ys-titlebar').style.marginLeft = '-5px';
+			}
+		}
+	}
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -276,6 +298,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	// Hide toggled left-menu if in click mode
 	document.querySelector('#right-col > .gsl-content, #right-col > #top-head').addEventListener('mouseover', () => {
+		if (typeof leftMenuTrigger != "undefined" && leftMenuTrigger == 3) {
+			return;
+		}
 		if (document.getElementById('left-col') && document.getElementById('left-col') && !document.getElementById('left-col').classList.contains('hide-label')) {
 			var elements = document.querySelectorAll('#left-col, #left-col .left-nav, .ysts-page-title');
 			elements.forEach(function(element)

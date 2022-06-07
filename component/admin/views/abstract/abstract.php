@@ -19,6 +19,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\String\StringHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\Registry\Registry;
 
 jimport('joomla.application.component.view');
 
@@ -359,8 +360,22 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 
 		if ($template_value == "")
 			return;
+
 		if (count($matchesarray) == 0)
 			return;
+
+		$templates[$template_name]->params = new Registry($templates[$template_name]->params);
+		$customcss = $templates[$template_name]->params->get('customcss', '');
+		if (!empty($customcss))
+		{
+			Factory::getDocument()->addStyleDeclaration($customcss);
+		}
+
+		$customjs = $templates[$template_name]->params->get('customjs', '');
+		if (!empty($customjs))
+		{
+			Factory::getDocument()->addScriptDeclaration($customjs);
+		}
 
 		// Create the tabs content
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);

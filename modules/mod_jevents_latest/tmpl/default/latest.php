@@ -154,25 +154,7 @@ class DefaultModLatestView
 		$this->displayRSS           = intval($myparam->get('modlatest_RSS', 0));
 		$this->sortReverse          = intval($myparam->get('modlatest_SortReverse', 0));
 
-		if ($myparam->get("bootstrapcss", 1) == 1)
-		{
-			$cfg = JEVConfig::getInstance();
-			if ($cfg->get("bootstrapcss", 1) == 1)
-			{
-				// This version of bootstrap has maximum compatability with JEvents due to enhanced namespacing
-				HTMLHelper::stylesheet("com_jevents/bootstrap.css", array(), true);
-				// Responsive version of bootstrap with maximum compatibility with JEvents due to enhanced namespacing
-				HTMLHelper::stylesheet("com_jevents/bootstrap-responsive.css", array(), true);
-			}
-			else if ($cfg->get("bootstrapcss", 1) == 2)
-			{
-				JHtmlBootstrap::loadCss();
-			}
-		}
-		else if ($myparam->get("bootstrapcss", 1) == 2)
-		{
-			JHtmlBootstrap::loadCss();
-		}
+		JevHtmlBootstrap::loadCss();
 
 		if (File::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
 		{

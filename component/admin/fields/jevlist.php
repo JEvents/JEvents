@@ -39,4 +39,34 @@ class JFormFieldJevlist extends JFormFieldList
 	}
 
 
+	protected function getOptions()
+	{
+		$options = parent::getOptions();
+		$skip = array();
+		foreach ($this->element->xpath('option') as $option)
+		{
+			$maxJoomlaVersion = (string) $option['maxjoomlaversion'];
+			$minJoomlaVersion = (string) $option['minjoomlaversion'];
+			if (!empty($maxJoomlaVersion) && version_compare(JVERSION, $maxJoomlaVersion, "gt"))
+			{
+				$skip[] = (string) $option['value'];
+			}
+			if (!empty($minJoomlaVersion) && version_compare(JVERSION, $minJoomlaVersion, "lt"))
+			{
+				$skip[] = (string) $option['value'];
+			}
+			if (!empty($skip))
+			{
+				foreach ($options as $i => $option)
+				{
+					if(isset($option->value) && in_array($option->value, $skip))
+					{
+						unset($options[$i]);
+					}
+				}
+				$options = array_values($options);
+			}
+		}
+		return $options;
+	}
 }

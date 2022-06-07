@@ -69,18 +69,7 @@ $newparams = Factory::getApplication('site')->getParams();
 if (strpos($params->get('framework', 'bootstrap'), 'bootstrap') === 0 || $params->get('framework', 'bootstrap') == 'native')
 {
 	JevHtmlBootstrap::framework();
-
-	if (version_compare(JVERSION, '4', 'lt') && ComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapcss", 1) == 1)
-	{
-		// This version of bootstrap has maximum compatibility with JEvents due to enhanced namespacing
-		HTMLHelper::stylesheet("com_jevents/bootstrap.css", array(), true);
-		// Responsive version of bootstrap with maximum compatibility with JEvents due to enhanced namespacing
-		HTMLHelper::stylesheet("com_jevents/bootstrap-responsive.css", array(), true);
-	}
-	else if (version_compare(JVERSION, '4', 'lt') || ComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapcss", 1) == 2)
-	{
-		JHtmlBootstrap::loadCss();
-	}
+	JevHtmlBootstrap::loadCss();
 
 }
 else
@@ -342,7 +331,7 @@ JEVHelper::parameteriseJoomlaCache();
 //echo  "JEvents component pre task = ".round($time_end - $starttime, 4)."<br/>";
 
 //HTMLHelper::_('bootstrap.popover', '.hasjevtip');
-JevModal::popover('.hasjevtip' , array("trigger"=>"hover focus", "placement"=>"top", "delay"=> array( "show"=> 150, "hide"=> 150 )));
+JevModal::popover('.hasjevtip' , array("trigger"=>"hover focus", "placement"=>"top", "container"=>"#jevents_body", "delay"=> array( "show"=> 150, "hide"=> 150 )));
 
 // Perform the Request task
 $controller->execute($task);
