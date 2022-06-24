@@ -38,14 +38,21 @@ class JFormFieldJEVuser extends JFormFieldList
 		// if no value set then default to zero
 		if (intval($this->value) == 0)
 		{
-
-			$options = (array) $this->getOptions();
-			foreach ($options as $option)
+			if ($this->name == "jform[params][admin]"
+				&& Factory::getApplication()->input->getCmd("option") == "com_categories")
 			{
-				if ($option->sendEmail)
+				$this->value = 0;
+			}
+			else
+			{
+				$options = (array) $this->getOptions();
+				foreach ($options as $option)
 				{
-					$this->value = $option->value;
-					break;
+					if ($option->sendEmail)
+					{
+						$this->value = $option->value;
+						break;
+					}
 				}
 			}
 		}
@@ -98,7 +105,7 @@ class JFormFieldJEVuser extends JFormFieldList
 		// use union orf arrays sincee getData no longer has string keys in the resultant array
 		//$creatorgroups = $creatorgroups["core.admin"]->getData()+ $creatorgroups["core.create"]->getData();
 		// use union orf arrays sincee getData no longer has string keys in the resultant array
-		$creatorgroupsdata = $creatorgroups["core.admin"]->getData();
+		$creatorgroupsdata = isset($creatorgroups["core.admin"]) ? $creatorgroups["core.admin"]->getData() : array();
 		// take the higher permission setting
 		foreach ($creatorgroups[$action]->getData() as $creatorgroup => $permission)
 		{

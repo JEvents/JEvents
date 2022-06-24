@@ -329,7 +329,7 @@ SQL;
 CREATE TABLE IF NOT EXISTS #__jevents_icsfile(
 	ics_id int(12) NOT NULL auto_increment,
 	srcURL VARCHAR(500) NOT NULL default "",
-	label varchar(30) NOT NULL UNIQUE default "",
+	label varchar(200) NOT NULL UNIQUE default "",
 
 	filename VARCHAR(120) NOT NULL default "",
 	icaltype tinyint(3) NOT NULL default 0,
@@ -794,6 +794,13 @@ SQL;
 		$sql = "SHOW COLUMNS FROM #__jevents_icsfile";
 		$db->setQuery($sql);
 		$cols = @$db->loadObjectList("Field");
+
+		if (array_key_exists("label", $cols) && $cols["label"]->Type == "varchar(30)")
+		{
+			$sql = "ALTER TABLE #__jevents_icsfile MODIFY COLUMN label VARCHAR(200) NOT NULL default ''";
+			$db->setQuery($sql);
+			@$db->execute();
+		}
 
 		if (!array_key_exists("overlaps", $cols))
 		{

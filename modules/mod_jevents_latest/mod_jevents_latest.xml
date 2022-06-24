@@ -157,7 +157,7 @@
 				       label="JEV_LATEST_DISPLAY_EVENTS_FOR_DAYS" description="JEV_LATEST_DISPLAY_EVENTS_FOR_DAYS_DESC"
 				       showon="modlatest_useLocalParam:1"/>
 				<field name="startnow" type="jevradio" class="btn-group" default="0" label="START_NOW"
-				       description="START_NOW_DESC" showon="modlatest_useLocalParam:1">
+				       description="START_NOW_DESC" showon="modlatest_useLocalParam:1[AND]modlatest_Mode:2,3">
 					<option value="0">JEV_NO</option>`
 					<option value="1">JEV_Yes</option>
 				</field>

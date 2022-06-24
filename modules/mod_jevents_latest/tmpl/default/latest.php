@@ -453,6 +453,7 @@ class DefaultModLatestView
 
 	function getLatestEventsData($limit = "")
 	{
+		$debugLatest = false;
 
 		$app    = Factory::getApplication();
 		$input  = $app->input;
@@ -538,6 +539,21 @@ $t_datenowSQL = $t_datenow->toMysql();
 				}
 				break;
 			case 3:
+				if ($this->startNow)
+				{
+					// NOW - $days
+					$beginDate = date('Y-m-d', JevDate::mktime(0, 0, 0, $this->now_m, $this->now_d - $this->rangeDays, $this->now_Y)) . " " . date("H:i:s");
+					// end of today + $days
+					$endDate = date('Y-m-d', JevDate::mktime(0, 0, 0, $this->now_m, $this->now_d + $this->rangeDays, $this->now_Y)) . " 23:59:59";
+				}
+				else
+				{
+					// begin of today - $days
+					$beginDate = date('Y-m-d', JevDate::mktime(0, 0, 0, $this->now_m, $this->now_d - $this->rangeDays, $this->now_Y)) . " 00:00:00";
+					// end of today + $days
+					$endDate = date('Y-m-d', JevDate::mktime(0, 0, 0, $this->now_m, $this->now_d + $this->rangeDays, $this->now_Y)) . " 23:59:59";
+				}
+				break;
 			case 5:
 			case 6:
 			case 8:
@@ -664,6 +680,14 @@ $t_datenowSQL = $t_datenow->toMysql();
 				usort($rows, array(get_class($this), "_sortEventsByModificationDate"));
 		}
 
+		if ($debugLatest)
+		{
+			foreach ($rows as $val)
+			{
+				echo $val->_startrepeat . " " . $val->_endrepeat . " " . $val->ev_id() . " " . $val->title() . "<br/>";
+			}
+		}
+
 		if ($this->dispMode == 6)
 		{
 			if (count($rows))
@@ -714,6 +738,11 @@ $t_datenowSQL = $t_datenow->toMysql();
 
 				while ($date <= $lastDate)
 				{
+					if ($debugLatest)
+					{
+						echo "checking for events on " . strftime("%Y-%m-%d",$date) . "<Br>";
+					}
+
 					// get the events for this $date
 					$eventsThisDay = array();
 					foreach ($rows as $row)
@@ -724,12 +753,21 @@ $t_datenowSQL = $t_datenow->toMysql();
 							if ($row->_endrepeat < $t_datenowSQL)
 								continue;
 						}
+						if ($debugLatest)
+						{
+							echo "Event: " . $row->title() . " is still in the reckoning<br>";
+							echo "Testing checkRepeatDay " . $this->multiday . "<br>";
+						}
 
 
 						if (($this->dispMode == 5 && $this->checkCreateDay($date, $row))
 							|| ($this->dispMode == 8 && $this->checkModificationDay($date, $row))
 							|| ($this->dispMode != 5 && $this->dispMode != 8 && $row->checkRepeatDay($date, $this->multiday)))
 						{
+							if ($debugLatest)
+							{
+								echo "Event: " . $row->title() . " is still in the reckoning<br>";
+							}
 							if (($this->repeatdisplayoptions && $row->hasrepetition())
 								// use settings from the event - multi day event only show once
 								|| ($this->multiday == 0 && ($row->ddn() != $row->dup() || $row->mdn() != $row->mup() || $row->ydn() != $row->yup()) && $row->multiday() == 0)
@@ -776,6 +814,10 @@ $t_datenowSQL = $t_datenow->toMysql();
 						{
 							break;
 						}
+					}
+					if ($debugLatest)
+					{
+						echo count($eventsThisDay) . " eventsThisDay<Br>";
 					}
 					if (count($eventsThisDay))
 					{

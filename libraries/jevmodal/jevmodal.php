@@ -96,8 +96,12 @@ SCRIPT;
 
 		// UIKit or Bootstrap
 		$jinput = JFactory::getApplication()->input;
+
+		$comMenus = $jinput->getCmd('option') == "com_menus";
+
 		$task = $jinput->getString("task", $jinput->getString("jevtask", ""));
 		if (!$forceBoostrap
+			&& !$comMenus
 			&& (
 				Factory::getApplication()->isClient('administrator')
 				|| ( $jevparams->get("newfrontendediting", 1) && ($task == "icalevent.edit" || $task == "icalrepeat.edit"  || $task == "icalevent.list"))
@@ -114,7 +118,7 @@ SCRIPT;
         {
             HTMLHelper::script('com_jevents/lib_jevmodal/jevmodal_gsl.js', array('framework' => false, 'relative' => true, 'pathOnly' => false, 'detectBrowser' => false, 'detectDebug' => true));
         }
-		else if (strpos($jevparams->get('framework', 'bootstrap'), 'uikit') === 0)
+		else if (!$comMenus && strpos($jevparams->get('framework', 'bootstrap'), 'uikit') === 0)
 		{
 			HTMLHelper::script('com_jevents/lib_jevmodal/jevmodal_uikit.js', array('framework' => false, 'relative' => true, 'pathOnly' => false, 'detectBrowser' => false, 'detectDebug' => true));
 
@@ -288,9 +292,9 @@ function jevPopover(selector, container) {
 				// Fall back to native uikit
 				var hoveritems = document.querySelectorAll(selector);
 				hoveritems.forEach(function (hoveritem) {
-					let title = hoveritem.getAttribute('data-yspoptitle') || hoveritem.getAttribute('data-original-title') || hoveritem.getAttribute('title');
-					let body = hoveritem.getAttribute('data-yspopcontent') || hoveritem.getAttribute('data-content') || hoveritem.getAttribute('data-bs-content') || '';
-					let options = hoveritem.getAttribute('data-yspopoptions') || uikitoptions;
+					var title = hoveritem.getAttribute('data-yspoptitle') || hoveritem.getAttribute('data-original-title') || hoveritem.getAttribute('title');
+					var body = hoveritem.getAttribute('data-yspopcontent') || hoveritem.getAttribute('data-content') || hoveritem.getAttribute('data-bs-content') || '';
+					var options = hoveritem.getAttribute('data-yspopoptions') || uikitoptions;
 					if (typeof options == 'string') {
 						options = JSON.parse(options);
 					}
@@ -318,7 +322,12 @@ function jevPopover(selector, container) {
 }
 document.addEventListener('DOMContentLoaded', function()
 {
-	jevPopover('$selector', '$container');
+	try {
+		jevPopover('$selector', '$container');
+	}
+	catch (e) 
+	{
+	}
 });
 SCRIPT
 		);

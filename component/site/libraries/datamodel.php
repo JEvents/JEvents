@@ -138,7 +138,7 @@ class JEventsDataModel
 		$separator = $params->get("catseparator", "|");
 
 		$catidsIn = $input->getString('catids', 'NONE');
-		if ($catidsIn == "NONE" || $catidsIn == 0)
+		if ($catidsIn == "NONE" || (int) $catidsIn == 0)
 		{
 			$catidsIn = $input->getString('category_fv', 'NONE');
 		}
