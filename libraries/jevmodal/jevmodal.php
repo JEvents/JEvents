@@ -288,9 +288,9 @@ function jevPopover(selector, container) {
 				// Fall back to native uikit
 				var hoveritems = document.querySelectorAll(selector);
 				hoveritems.forEach(function (hoveritem) {
-					let title = hoveritem.getAttribute('data-yspoptitle') || hoveritem.getAttribute('data-original-title') || hoveritem.getAttribute('title');
-					let body = hoveritem.getAttribute('data-yspopcontent') || hoveritem.getAttribute('data-content') || hoveritem.getAttribute('data-bs-content') || '';
-					let options = hoveritem.getAttribute('data-yspopoptions') || uikitoptions;
+					var title = hoveritem.getAttribute('data-yspoptitle') || hoveritem.getAttribute('data-original-title') || hoveritem.getAttribute('title');
+					var body = hoveritem.getAttribute('data-yspopcontent') || hoveritem.getAttribute('data-content') || hoveritem.getAttribute('data-bs-content') || '';
+					var options = hoveritem.getAttribute('data-yspopoptions') || uikitoptions;
 					if (typeof options == 'string') {
 						options = JSON.parse(options);
 					}
