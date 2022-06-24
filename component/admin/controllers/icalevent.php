@@ -1054,6 +1054,7 @@ SQL;
 
 		$app   = Factory::getApplication();
 		$input = $app->input;
+		$Itemid = $input->getInt("Itemid");
 
 		$msg   = "";
 		$event = $this->doSave($msg);
@@ -1065,8 +1066,17 @@ SQL;
 
 		if (!$rp_id)
 		{
-			$app->enqueueMessage(Text::_("JEV_CANNOT_DISPLAY_SAVED_EVENT_ON_THIS_MENU_ITEM", "WARNING"));
-			return;
+			// See if a plugin can find our missing event - maybe on another menu item
+			PluginHelper::importPlugin('jevents');
+			$app->triggerEvent('onMissingEventById', array(& $testevent, $evid, & $Itemid));
+			$rp_id     = !is_null($testevent) ? $testevent->rp_id() : null;
+
+			if (!$rp_id)
+			{
+				$app->enqueueMessage(Text::_("JEV_CANNOT_DISPLAY_SAVED_EVENT_ON_THIS_MENU_ITEM", "WARNING"));
+
+				return;
+			}
 		}
 		list($year, $month, $day) = JEVHelper::getYMD();
 
@@ -1077,7 +1087,6 @@ SQL;
 		}
 		else
 		{
-			$Itemid = $input->getInt("Itemid");
 
 			$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 			if ($params->get("editpopup", 0))

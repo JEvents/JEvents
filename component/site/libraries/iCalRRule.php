@@ -415,6 +415,11 @@ class iCalRRule extends Joomla\CMS\Table\Table
 						$currentMonth = JevDate::strftime("%m", $start);
 						foreach ($days as $day)
 						{
+							if ($day === "")
+							{
+								continue;
+							}
+
 							if ($countRepeats >= $this->count || $this->_afterUntil($start))
 							{
 								return $this->_repetitions;
@@ -552,6 +557,11 @@ class iCalRRule extends Joomla\CMS\Table\Table
 						$currentMonthDays = date("t", $currentMonthStart);
 						foreach ($days as $day)
 						{
+							if ($day === "")
+							{
+								continue;
+							}
+
 							if ($countRepeats >= $this->count || $this->_afterUntil($start)) return $this->_repetitions;
 
 							$details = array();
@@ -663,6 +673,10 @@ class iCalRRule extends Joomla\CMS\Table\Table
 
 						foreach ($days as $day)
 						{
+							if ($day === "")
+							{
+								continue;
+							}
 							if ($countRepeats >= $this->count || $this->_afterUntil($start))
 							{
 								return $this->_repetitions;
@@ -767,6 +781,10 @@ class iCalRRule extends Joomla\CMS\Table\Table
 
 					foreach ($days as $day)
 					{
+						if ($day === "")
+						{
+							continue;
+						}
 						if ($countRepeats >= $this->count || $this->_afterUntil($start))
 						{
 							return $this->_repetitions;
@@ -1047,6 +1065,11 @@ class iCalRRule extends Joomla\CMS\Table\Table
 				$days = explode(",", str_replace(" ", "", $this->data['BYDAY']));
 				foreach ($days as $day)
 				{
+					if ($day === "")
+					{
+						continue;
+					}
+
 					$details = array();
 					preg_match("/(\+|-?)(\d?)(.+)/", $day, $details);
 					if (count($details) != 4) echo "<br/><br/><b>PROBLEMS with $day</b><br/><br/>";
@@ -1066,6 +1089,11 @@ class iCalRRule extends Joomla\CMS\Table\Table
 				$days = explode(",", str_replace(" ", "", $this->data['BYDAY']));
 				foreach ($days as $day)
 				{
+					if ($day === "")
+					{
+						continue;
+					}
+
 					$details = array();
 					preg_match("/(\+|-?)(\d?)(.+)/", $day, $details);
 					if (count($details) != 4) echo "<br/><br/><b>PROBLEMS with $day</b><br/><br/>";
