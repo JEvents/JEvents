@@ -154,7 +154,7 @@ Joomla = window.Joomla || {};
             }
 
             try {
-                const showonChanged = new CustomEvent('gslshowon', {
+                var showonChanged = new CustomEvent('gslshowon', {
                     detail: {
                         name: 'showonChanged'
                     }

@@ -5,6 +5,10 @@
  * @copyright  2017--JEVENTS_COPYRIGHT GWESystems Ltd
  * @license    GNU General Public License version 3 or later; see LICENSE.txt
  */
+// Polyfills for MSIE
+if (window.NodeList && !NodeList.prototype.forEach) {
+    NodeList.prototype.forEach = Array.prototype.forEach;
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     // set container scope for code
