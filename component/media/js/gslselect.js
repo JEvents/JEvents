@@ -7,6 +7,10 @@
  * @license    GNU General Public License version 3 or later; see LICENSE.txt
  */
 
+// Polyfills for MSIE
+if (window.NodeList && !NodeList.prototype.forEach) {
+    NodeList.prototype.forEach = Array.prototype.forEach;
+}
 
 function gslselect(selector) {
 

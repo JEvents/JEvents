@@ -51,6 +51,11 @@ class JevModal
 				$jsonParams = json_encode($params);
 
 				$script = <<< SCRIPT
+// Polyfills for MSIE
+if (window.NodeList && !NodeList.prototype.forEach) {
+	NodeList.prototype.forEach = Array.prototype.forEach;
+}
+
 document.addEventListener('DOMContentLoaded', function() {
 	var targets = document.querySelectorAll('$selector');
 	targets.forEach(function(target) {

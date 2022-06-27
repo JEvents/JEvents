@@ -343,6 +343,10 @@ function addJevModalHtml(id) {
     }
 }
 
+// Polyfills for MSIE
+if (window.NodeList && !NodeList.prototype.forEach) {
+    NodeList.prototype.forEach = Array.prototype.forEach;
+}
 
 function closeJevModalBySelector(selector)
 {

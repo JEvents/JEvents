@@ -20,6 +20,12 @@ Array.prototype.associate = function (keys) {
   return result;
 };
 // from Mootools
+
+// Polyfills for MSIE
+if (window.NodeList && !NodeList.prototype.forEach) {
+	NodeList.prototype.forEach = Array.prototype.forEach;
+}
+
 //
 // my version
 Date.prototype.clearTime =  function(){
