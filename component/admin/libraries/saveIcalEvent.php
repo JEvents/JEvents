@@ -326,6 +326,12 @@ class SaveIcalEvent
 			$evid      = (int) $vevent->ev_id;
 			$testevent = $queryModel->getEventById($evid, 1, "icaldb");
 
+			if (!$testevent)
+			{
+				// Could be that the event can not be displayed on this menu item and so notifications would fail - disable category access checks and other filters!
+				$testevent = $queryModel->getEventById($evid, 1, "icaldb", false, true);
+			}
+
 			list($year, $month, $day) = JEVHelper::getYMD();
 			//http://joomlacode1.5svn/index.php?option=com_jevents&task=icalevent.edit&evid=1&Itemid=68&rp_id=72&year=2008&month=09&day=10&lang=cy
 			$uri  = Uri::getInstance(Uri::base());

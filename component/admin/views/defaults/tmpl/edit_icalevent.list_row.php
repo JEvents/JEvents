@@ -52,6 +52,7 @@ defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_TRUNCATED_DE
 defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_TRUNCTITLE",true);?>", "TRUNCATED_TITLE:20");
 defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_LOCATION_LABEL",true);?>", "LOCATION_LABEL");
 defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_LOCATION",true);?>", "LOCATION");
+defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_ATTACHMENT",true);?>", "ATTACH");
 defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_CONTACT_LABEL",true);?>", "CONTACT_LABEL");
 defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_CONTACT",true);?>", "CONTACT");
 defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_EXTRAINFO",true);?>", "EXTRAINFO");

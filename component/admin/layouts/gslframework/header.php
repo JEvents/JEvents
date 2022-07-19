@@ -193,6 +193,10 @@ $tmpl = $app->input->getCmd('tmpl', '');
                             }
                             $buttonoutput = str_replace("btn ", "gsl-button gsl-button-primary ", $buttonoutput);
                             $buttonoutput = str_replace('class=""', "class='gsl-button gsl-button-primary' ", $buttonoutput);
+							if (strpos($buttonoutput, "type=") === false)
+							{
+								$buttonoutput = str_replace('<button ', '<button type="button" ', $buttonoutput);
+							}
                             $buttonoutput = str_replace(array("btn-small"), "", $buttonoutput);
                             echo $buttonoutput;
                         }

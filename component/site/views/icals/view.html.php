@@ -54,7 +54,9 @@ class ICalsViewIcals extends JEventsAbstractView
 		}
 		else
 		{
-			return "DESCRIPTION;ENCODING=QUOTED-PRINTABLE:" . $this->wraplines($description);
+			// ENCODING=QUOTED-PRINTABLE is deprecated
+			//return "DESCRIPTION;ENCODING=QUOTED-PRINTABLE:" . $this->wraplines($description);
+			return "DESCRIPTION:" . $this->wraplines($description, 76, false);
 
 		}
 	}

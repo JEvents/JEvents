@@ -86,6 +86,7 @@ let YsInstaller = {
 
 function ystsPositionElements()
 {
+
 	let headerOffsetHeight = document.getElementById('top-head').offsetHeight;
 
 	if (document.getElementById('ysts_system_messages')) {

@@ -4235,7 +4235,9 @@ SCRIPT;
 		}
 		else
 		{
-			return "DESCRIPTION;ENCODING=QUOTED-PRINTABLE:" . self::wraplines($description);
+			// ENCODING=QUOTED-PRINTABLE is deprecated
+			// return "DESCRIPTION;ENCODING=QUOTED-PRINTABLE:" . self::wraplines($description);
+			return "DESCRIPTION:" . self::wraplines($description, 76, false);
 		}
 
 	}
