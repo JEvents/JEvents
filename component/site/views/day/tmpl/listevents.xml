@@ -60,6 +60,15 @@
 			//-->
 			<field name="fixedday" type="calendar" default="" size="10" label="COM_JEVENTS_FIXED_DAY_LBL"
 			       description="COM_JEVENTS_FIXED_DAY_DSC"/>
+
+			<field name="daymultiday" type="jevmultilist" default="0" label="JEV_LATEST_MULTIEVENT_DISPLAY"
+				   description="JEV_LATEST_MULTIEVENT_DISPLAY_DESC" >
+				<option value="0">JEV_LATEST_MULTIEVENT_DISPLAY_OPTION_0</option>
+				<!--<option value="1">JEV_LATEST_MULTIEVENT_DISPLAY_OPTION_1</option>-->
+				<option value="2">JEV_LATEST_MULTIEVENT_DISPLAY_OPTION_2</option>
+				<!--<option value="3">JEV_LATEST_MULTIEVENT_DISPLAY_OPTION_3</option>-->
+			</field>
+
 			<field name="extras0" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'
 			       description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'/>
 			<field name="extras1" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'

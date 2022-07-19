@@ -13,7 +13,7 @@ function DefaultEventManagementButton($view, $row)
 	?>
 	<a href="javascript:jevIdPopup('action_dialogJQ<?php echo $row->rp_id(); ?>');"
 	   title="<?php echo Text::_('JEV_E_EDIT', true); ?>">
-		<?php echo HTMLHelper::image('com_jevents/icons-32/edit.png', Text::_("JEV_E_EDIT"), null, true); ?>
+		<span class="icon-edit"> </span>
 	</a>
 	<?php
 }

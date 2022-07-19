@@ -493,6 +493,29 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		// Built in fields
 		switch ($strippedmatch)
 		{
+			case "{{ATTACH}}":
+				$search[]  = "{{ATTACH}}";
+				if (isset($event->_evrawdata) && !empty($event->_evrawdata))
+				{
+					try
+					{
+						$rawdata = unserialize($event->_evrawdata);
+						if (isset($rawdata["ATTACH"]) && count($rawdata["ATTACH"]))
+						{
+							$replace[] = $rawdata["ATTACH"][0];
+						}
+					}
+					catch (Exception $e)
+					{
+						$replace[] = "";
+					}
+				}
+				else
+				{
+					$replace[] = "";
+				}
+				$blank[]   = "";
+				break;
 			case "{{TITLE}}":
 				$search[]  = "{{TITLE}}";
 				$replace[] = $event->title();

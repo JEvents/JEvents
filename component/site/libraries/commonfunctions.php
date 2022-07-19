@@ -576,7 +576,14 @@ class JEV_CommonFunctions
 
 		// attach anonymous creator etc.
 		PluginHelper::importPlugin('jevents');
-		$app->triggerEvent('onDisplayCustomFields', array(&$event));
+		try
+		{
+			$app->triggerEvent('onDisplayCustomFields', array(&$event));
+		}
+		catch (Exception $e)
+		{
+			// Ignored sometimes e.g. if target menu item blocks display of the event!
+		}
 
 		try
 		{

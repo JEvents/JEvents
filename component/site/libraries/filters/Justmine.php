@@ -47,6 +47,14 @@ class jevJustmineFilter extends jevFilter
 
 		parent::__construct($tablename, "state", $isstring);
 
+		// Should these be ignored?
+		$reg       = Factory::getConfig();
+		$modparams = $reg->get("jev.modparams", false);
+		if ($modparams && $modparams->get("ignorefiltermodule", false))
+		{
+			$this->filter_value = $this->filterNullValue;
+		}
+
 	}
 
 	function _createFilter($prefix = "")

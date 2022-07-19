@@ -21,8 +21,8 @@ function callNavigation(link, datatype) {
             }
             if (json.script) {
                 //alert(json.script);
-                var script = JSON.parse(json.script);
                 try {
+                    var script = JSON.parse(json.script);
                     linkprevious = script.linkprevious;
                     linknext = script.linknext;
                 }
