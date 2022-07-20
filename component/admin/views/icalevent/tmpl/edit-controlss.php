@@ -69,6 +69,7 @@ $action = $app->isClient('administrator') ? "index.php" : Route::_("index.php?op
 	<div id="jevents" <?php
 	echo ($app->isClient('site') && $params->get("darktemplate", 0)) ? "class='jeventsdark'" : "";
 	?> >
+	<div id="jevents_body">
 		<form action="<?php echo $action; ?>" method="post" name="adminForm" enctype='multipart/form-data'
 		      id="adminForm" class="form-horizontal jevbootstrap">
 			<?php
@@ -614,6 +615,7 @@ $action = $app->isClient('administrator') ? "index.php" : Route::_("index.php?op
 			?>
 
 		</form>
+	</div>
 	</div>
 <?php
 $app = Factory::getApplication();

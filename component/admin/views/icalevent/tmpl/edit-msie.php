@@ -75,6 +75,7 @@ $accesslevels = "jeval".implode(" jeval", array_unique($accesslevels));
     <div id="jevents" <?php
 	echo (!Factory::getApplication()->isAdmin() && $params->get("darktemplate", 0)) ? "class='jeventsdark $accesslevels'" : "class='$accesslevels' ";
 	?> >
+	<div id="jevents_body">
         <form action="<?php echo $action; ?>" method="post" name="adminForm" enctype='multipart/form-data' id="adminForm"   class="form-horizontal jevbootstrap" >
 			<?php
 			ob_start();
@@ -676,6 +677,7 @@ $accesslevels = "jeval".implode(" jeval", array_unique($accesslevels));
 			?>
 
         </form>
+	</div>
     </div>
 <?php
 $app = Factory::getApplication();

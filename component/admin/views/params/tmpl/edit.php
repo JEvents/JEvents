@@ -68,6 +68,7 @@ if (count($jevplugins))
 ?>
 <!-- Set Difficulty : -->
 <div id="jevents">
+	<div id="jevents_body">
 <form action="index.php" method="post" name="adminForm" autocomplete="off" id="adminForm">
 	<fieldset class='jevconfig'>
 		<?php
@@ -700,6 +701,7 @@ SCRIPT;
 	<?php echo HTMLHelper::_('form.token'); ?>
 
 </form>
+	</div>
 </div>
 
 

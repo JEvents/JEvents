@@ -335,6 +335,26 @@ class plgFinderJEvents extends Adapter
 
 			}
 
+			$db = Factory::getDbo();
+			$sql = $db->getQuery(true);
+			$sql->select("*")
+				->from("#__jev_files_combined")
+				->where("evdet_id = "  . (int) $theevent[0]->_evdet_id);
+			$this->db->setQuery($sql);
+			try
+			{
+				$images = $db->loadObject();
+				if ($images && isset($images->imagename1) &&  !empty($images->imagename1))
+				{
+					$item->imageUrl = $images->imagename1;
+					$item->imageAlt = $images->imagetitle1 ?? '';
+				}
+			}
+			catch (Exception $e)
+			{
+				$images = false;
+			}
+
 		}
 
 		$theevent = count($theevent) === 1 ? $theevent[0] : $theevent;

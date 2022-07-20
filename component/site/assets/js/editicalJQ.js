@@ -35,6 +35,16 @@ Date.prototype.clearTime =  function(){
 	return this;
 };
 
+/** Returns the number of the week in year, as defined in ISO 8601. */
+Date.prototype.getWeekNumber = function() {
+	var d = new Date(this.getFullYear(), this.getMonth(), this.getDate(), 0, 0, 0);
+	var DoW = d.getDay();
+	d.setDate(d.getDate() - (DoW + 6) % 7 + 3); // Nearest Thu
+	var ms = d.valueOf(); // GMT
+	d.setMonth(0);
+	d.setDate(4); // Thu in Week 1
+	return Math.round((ms - d.valueOf()) / (7 * 864e5)) + 1;
+};
 
 var eventEditDateFormat = "Y-m-d";
 //Date.defineParser(eventEditDateFormat.replace("d","%d").replace("m","%m").replace("Y","%Y"));
@@ -969,6 +979,33 @@ function fixRepeatDates(checkYearDay){
 	catch (e)
 	{
 
+	}
+
+	var wn = document.adminForm["weeknums[]"];
+
+	for(var week = 0; week < wn.length; week++){
+		if (parseInt(document.getElementById('evid').value) == 0) {
+
+			var firstOfMonth   = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+			var weeknumber = startDate.getWeekNumber() - firstOfMonth.getWeekNumber();
+
+			if (week == weeknumber)
+			{
+				wn[week].checked = true;
+			}
+			else {
+				wn[week].checked = false;
+			}
+
+			// Make sure label is highlighted
+			try {
+				changeHiddenInput(wn[week]);
+			}
+			catch (e)
+			{
+
+			}
+		}
 	}
 
 	end_date = document.getElementById("publish_down");
