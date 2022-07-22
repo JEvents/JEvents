@@ -108,8 +108,9 @@ var jevMiniTouchStartX = false;
 var jevMiniTouchStartY = false;
 
 function setupMiniCalTouchInteractions(selector, parent) {
+    var target = parent ? document.querySelector(selector).parentNode : selector;
     if ('ontouchstart' in document.documentElement) {
-        var target = parent ? document.querySelector(selector).parentNode() : selector;
+        var target = parent ? document.querySelector(selector).parentNode : selector;
         target.addEventListener("touchend", function (evt) {
             var touchobj = evt.originalEvent.changedTouches[0];
             var vdist = touchobj.pageY - jevMiniTouchStartY;

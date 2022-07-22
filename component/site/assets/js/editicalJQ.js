@@ -1024,12 +1024,31 @@ function fixRepeatDates(checkYearDay){
 
 }
 
-function toggleWeekNums(newstate){
-	wn = document.adminForm["weeknums[]"];
-	for(var w=0;w<wn.length;w++){
-		wn[w].checked=newstate;
-	}
+function toggleWeekNums(newstate) {
+	var wn = document.adminForm["weeknums[]"];
+	if (parseInt(document.getElementById('evid').value) == 0) {
+		for (var week = 0; week < wn.length; week++) {
+			var firstOfMonth = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+			var weeknumber = startDate.getWeekNumber() - firstOfMonth.getWeekNumber();
 
+			if (week == weeknumber) {
+				wn[week].checked = true;
+			} else {
+				wn[week].checked = false;
+			}
+
+			// Make sure label is highlighted
+			try {
+				changeHiddenInput(wn[week]);
+			} catch (e) {
+
+			}
+		}
+	} else {
+		for (var w = 0; w < wn.length; w++) {
+			wn[w].checked = newstate;
+		}
+	}
 	updateRepeatWarning();
 
 }
