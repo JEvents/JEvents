@@ -10,7 +10,7 @@ function jevIdPopup(id) {
 }
 
 function jevModalSelector(sourceElement, params, evt) {
-    if(sourceElement.getAttribute('data-jevmodal')) {
+    if(sourceElement.getAttribute('data-jevmodal') || sourceElement.getAttribute('rel')) {
         evt.preventDefault();
 
         var id = 'jevModal' + Math.floor(Math.random() * Math.floor(100000));
