@@ -340,9 +340,9 @@ class plgFinderJEvents extends Adapter
 			$sql->select("*")
 				->from("#__jev_files_combined")
 				->where("evdet_id = "  . (int) $theevent[0]->_evdet_id);
-			$this->db->setQuery($sql);
 			try
 			{
+                $this->db->setQuery($sql);
 				$images = $db->loadObject();
 				if ($images && isset($images->imagename1) &&  !empty($images->imagename1))
 				{

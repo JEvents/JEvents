@@ -1382,7 +1382,7 @@ class JEventsDBModel
 					. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 					. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 					. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-					. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+					. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 					. $extrajoin
 					. $catwhere
 					// New equivalent but simpler test
