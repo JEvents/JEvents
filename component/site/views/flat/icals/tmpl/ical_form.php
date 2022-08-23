@@ -76,7 +76,7 @@ if ($input->getString("submit", "") != "")
 		echo "<h3 class='export_priv'>" . Text::_("JEV_PUBLIC_AND_PRIVATE_EVENTS") . "</h3>";
 	}
 
-	if ($cfg->get("show_webcal_url", 0) == 1)
+	if ($cfg->get("show_webcal_url", 1) == 1)
 	{
 		echo $this->ExportWebCal($publiclink, $privatelink);
 	}
@@ -86,18 +86,18 @@ if ($input->getString("submit", "") != "")
 		echo $this->ExportIcalDownload($publiclink, $privatelink);
 	}
 
-	if ($cfg->get("outlook2003icalexport", 0) == 1)
+	if ($cfg->get("outlook2003icalexport", 1) == 1)
 	{
 		echo $this->ExportOutlook2003($publiclink, $privatelink);
 	}
 
 	// New ICAL Export Options for Google,
-	if ($cfg->get("show_webcal_google", 0) == 1)
+	if ($cfg->get("show_webcal_google", 1) == 1)
 	{
 		echo $this->ExportGoogle($publiclink, $privatelink);
 	}
 }
-if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download", 1) == 0 && $cfg->get("show_webcal_url", 0) == 0 && $cfg->get("show_webcal_google", 0) && $cfg->get("outlook2003icalexport", 0))
+if ($cfg->get("outlook2003icalexport", 1) == 0 && $cfg->get("show_ical_download", 1) == 0 && $cfg->get("show_webcal_url", 1) == 0 && $cfg->get("show_webcal_google", 1) && $cfg->get("outlook2003icalexport", 1))
 {
 	//If non are enabled we don't want to have user thinking the script is buggy as nothing is produced.
 	echo "<div style='margin:15px;font-weight:bold;'>" . Text::_("JEV_ICAL_ALL_DISABLED") . "</div>";

@@ -48,7 +48,7 @@ class ICalsViewIcals extends JEventsAbstractView
 
 		// wraplines	from vCard class
 		$cfg = JEVConfig::getInstance();
-		if ($cfg->get("outlook2003icalexport", 0))
+		if ($cfg->get("outlook2003icalexport", 1))
 		{
 			return "DESCRIPTION:" . $this->wraplines($description, 76, false);
 		}
@@ -64,8 +64,8 @@ class ICalsViewIcals extends JEventsAbstractView
 	protected function replacetags($description)
 	{
 
-		$description = str_replace('<p>', '\n\n', $description);
-		$description = str_replace('<P>', '\n\n', $description);
+		$description = str_replace('<p>', '', $description);
+		$description = str_replace('<P>', '', $description);
 		$description = str_replace('</p>', '\n', $description);
 		$description = str_replace('</P>', '\n', $description);
 		$description = str_replace('<p/>', '\n\n', $description);

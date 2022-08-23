@@ -729,7 +729,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
             $script = <<< SCRIPT
 			document.addEventListener('DOMContentLoaded', function () {
 				gslselect('#adminForm select:not(.gsl-hidden)');
-			})
+			});
 SCRIPT;
             Factory::getDocument()->addScriptDeclaration($script);
 
