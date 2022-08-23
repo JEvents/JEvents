@@ -136,12 +136,11 @@ class ICalsController extends AdminIcalsController
 		// validate the key
 		$icalkey = $params->get("icalkey", "secret phrase");
 
-		$outlook2003icalexport = $input->getInt("outlook2003", 0) && $params->get("outlook2003icalexport", 0);
+		$outlook2003icalexport = $input->getInt("outlook2003", 0) && $params->get("outlook2003icalexport", 1);
 		if ($outlook2003icalexport)
 		{
 			$input->set("icf", 1);
 		}
-
 		$privatecalendar = false;
 		$k               = $input->getString("k", "NONE");
 		$pk              = $input->getString("pk", "NONE");
@@ -606,7 +605,7 @@ class ICalsController extends AdminIcalsController
 
 		// wraplines	from vCard class
 		$cfg = JEVConfig::getInstance();
-		if ($cfg->get("outlook2003icalexport", 0))
+		if ($cfg->get("outlook2003icalexport", 1))
 		{
 			return "DESCRIPTION:" . $this->wraplines($description, 76, false);
 		}
@@ -622,8 +621,8 @@ class ICalsController extends AdminIcalsController
 	private function replacetags($description)
 	{
 
-		$description = str_replace('<p>', '\n\n', $description);
-		$description = str_replace('<P>', '\n\n', $description);
+		$description = str_replace('<p>', '', $description);
+		$description = str_replace('<P>', '', $description);
 		$description = str_replace('</p>', '\n', $description);
 		$description = str_replace('</P>', '\n', $description);
 		$description = str_replace('<p/>', '\n\n', $description);

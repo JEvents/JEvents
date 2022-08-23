@@ -28,7 +28,7 @@ if (!$jversion->isCompatible('4.0'))
 	$script = <<< SCRIPT
 			document.addEventListener('DOMContentLoaded', function () {
 				gslselect('#adminForm select:not(.gsl-hidden)');
-			})
+			});
 SCRIPT;
 	Factory::getDocument()->addScriptDeclaration($script);
 

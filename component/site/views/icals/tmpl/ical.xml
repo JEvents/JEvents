@@ -47,14 +47,14 @@
 			<field name="include_subcats" class="btn-group" type="jevboolean" default="1"
 			       label="JEV_INCLUDE_SUBCATEGORIES" description="JEV_INCLUDE_SUBCATEGORIES_DESC"/>
 
-			<field name="outlook2003icalexport" type="jevboolean" class="btn-group" default="0"
+			<field name="outlook2003icalexport" type="jevboolean" class="btn-group" default="1"
 			       label="JEV_ADD_SPECIAL_EXPORT_FOR_OUTLOOK_2003"
 			       description="JEV_ADD_SPECIAL_EXPORT_FOR_OUTLOOK_2003_DESC"/>
-			<field name="show_webcal_url" type="jevboolean" class="btn-group" default="0" label="JEV_ICAL_WEBCAL_URL"
+			<field name="show_webcal_url" type="jevboolean" class="btn-group" default="1" label="JEV_ICAL_WEBCAL_URL"
 			       description="JEV_ICAL_WEBCAL_URL_DESC"/>
 			<field name="show_ical_download" type="jevboolean" class="btn-group" default="1"
 			       label="JEV_ICAL_ALLOW_DOWNLOAD" description="JEV_ICAL_ALLOW_DOWNLOAD"/>
-			<field name="show_webcal_google" type="jevboolean" class="btn-group" default="0"
+			<field name="show_webcal_google" type="jevboolean" class="btn-group" default="1"
 			       label="JEV_ICAL_GOOGLE_CALENDAR" description="JEV_ICAL_GOOGLE_CALENDAR_DESC"/>
 
 			<field name="@spacer" type="jevinfo" default='ADDITIONAL_CONSTRAINTS' label="" description=""

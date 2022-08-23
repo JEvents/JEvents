@@ -4229,7 +4229,7 @@ SCRIPT;
 
 		// wraplines	from vCard class
 		$cfg = JEVConfig::getInstance();
-		if ($cfg->get("outlook2003icalexport", 0))
+		if ($cfg->get("outlook2003icalexport", 1))
 		{
 			return "DESCRIPTION:" . self::wraplines($description, 76, false);
 		}

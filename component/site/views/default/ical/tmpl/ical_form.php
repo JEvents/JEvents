@@ -126,7 +126,7 @@ if ($input->getString("submit", "") != "")
 		echo "<p><a href='$privatelink'>" . Text::_('JEV_REP_ICAL_PRIVATE') . "</a></p>";
 	}
 
-	if ($cfg->get("outlook2003icalexport", 0))
+	if ($cfg->get("outlook2003icalexport", 1))
 	{
 		echo "<p>" . Text::_('Outlook 2003 specific links') . "</p>";
 		echo "<p><a href='$publiclink&outlook2003=1'>" . Text::_('JEV_REP_ICAL_PUBLIC') . "</a></p>";
