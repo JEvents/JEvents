@@ -1097,7 +1097,7 @@ class JEventsDBModel
 			. " \n AND icsf.state=1"
 			. "\n AND icsf.access  IN (" . JEVHelper::getAid($user) . ")"
 			// published state is now handled by filter
-			. "\n AND rpt.startrepeat=(SELECT MIN(rptq.startrepeat) FROM #__jevents_repetition as rptq WHERE rptq.eventid=rpt.eventid AND rptq.startrepeat >= '$t_datenowSQL' AND rptq.startrepeat <= '$enddate' $multiday3)"
+			. "\n AND rpt.startrepeat=(SELECT MIN(rptq.startrepeat) FROM #__jevents_repetition as rptq WHERE rptq.eventid=ev.ev_id AND rptq.startrepeat >= '$t_datenowSQL' AND rptq.startrepeat <= '$enddate' $multiday3)"
 			. "\n GROUP BY ev.ev_id";
 
 		// always in reverse hits  order!
@@ -1397,7 +1397,7 @@ class JEventsDBModel
 					// published state is now handled by filter
 					. "\n AND rpt.startrepeat=(
 				SELECT MIN(rptq.startrepeat) FROM #__jevents_repetition as rptq
-				WHERE rptq.eventid=rpt.eventid
+				WHERE rptq.eventid=ev.ev_id
 				AND  (
 					(rptq.startrepeat >= '$t_datenowSQL' AND rptq.startrepeat <= '$enddate')
 					OR (rptq.startrepeat <= '$t_datenowSQL' AND rptq.endrepeat  > '$t_datenowSQL'  $multiday3)
@@ -1463,7 +1463,7 @@ class JEventsDBModel
 					// published state is now handled by filter
 					. "\n AND rpt.startrepeat=(
 					SELECT MAX(rptq.startrepeat) FROM #__jevents_repetition as rptq
-					 WHERE rptq.eventid=rpt.eventid
+					 WHERE rptq.eventid=ev.ev_id
 					AND rptq.startrepeat <= '$t_datenowSQL' AND rptq.startrepeat >= '$startdate'
 					$rptwhere
 				)
@@ -1528,7 +1528,7 @@ class JEventsDBModel
 					/*
 					  . "\n AND rpt.startrepeat=(
 					  SELECT MAX(rptq.startrepeat) FROM #__jevents_repetition as rptq
-					  WHERE rptq.eventid=rpt.eventid
+					  WHERE rptq.eventid=ev.ev_id
 					  AND rptq.startrepeat <= '$t_datenowSQL' AND rptq.endrepeat >= '$t_datenowSQL'
 					  $rptwherex
 					  )"
@@ -2301,7 +2301,7 @@ class JEventsDBModel
 					// published state is now handled by filter
 					. "\n AND rpt.startrepeat=(
 				SELECT MIN(rptq.startrepeat) FROM #__jevents_repetition as rptq
-				WHERE rptq.eventid=rpt.eventid
+				WHERE rptq.eventid=ev.ev_id
 				AND  (
 					(rptq.startrepeat >= '$t_datenowSQL' AND rptq.startrepeat <= '$enddate')
 					OR (rptq.startrepeat <= '$t_datenowSQL' AND rptq.endrepeat  > '$t_datenowSQL'  $multiday3)
@@ -2362,7 +2362,7 @@ class JEventsDBModel
 					// published state is now handled by filter
 					. "\n AND rpt.startrepeat=(
 					SELECT MAX(rptq.startrepeat) FROM #__jevents_repetition as rptq
-					 WHERE rptq.eventid=rpt.eventid
+					 WHERE rptq.eventid=ev.ev_id
 					AND rptq.startrepeat <= '$t_datenowSQL' AND rptq.startrepeat >= '$startdate'
 					$rptwhere
 				)
@@ -2419,7 +2419,7 @@ class JEventsDBModel
 					/*
 					  . "\n AND rpt.startrepeat=(
 					  SELECT MAX(rptq.startrepeat) FROM #__jevents_repetition as rptq
-					  WHERE rptq.eventid=rpt.eventid
+					  WHERE rptq.eventid=ev.ev_id
 					  AND rptq.startrepeat <= '$t_datenowSQL' AND rptq.endrepeat >= '$t_datenowSQL'
 					  $rptwherex
 					  )"
