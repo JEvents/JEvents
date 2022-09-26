@@ -78,7 +78,7 @@ class ICalsViewIcals extends JEventsAbstractView
 		$description = str_replace('<BR>', '\n', $description);
 		$description = str_replace('<li>', '\n - ', $description);
 		$description = str_replace('<LI>', '\n - ', $description);
-		$description = strip_tags($description);
+		$description = strip_tags($description, '<a>');
 		//$description 	= strtr( $description,	array_flip(get_html_translation_table( HTML_ENTITIES ) ) );
 		//$description 	= preg_replace( "/&#([0-9]+);/me","chr('\\1')", $description );
 		return $description;

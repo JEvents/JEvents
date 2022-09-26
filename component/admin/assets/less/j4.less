@@ -1,6 +1,6 @@
 @import "vars.less";
 /** Joomla 4 **/
-body:not(.with-joomla-sidebar) header.header {
+body:not(.with-joomla-sidebar):not(.site) header.header {
   display:none;
 }
 
@@ -14,7 +14,7 @@ body.@{mycomponent}, body.com_categories, body.com_fields {
     content:none;
   }
 
-  &:not(.with-joomla-sidebar) header.header {
+  &:not(.with-joomla-sidebar):not(.site) header.header {
     display: none;
   }
 

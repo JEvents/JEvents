@@ -824,6 +824,13 @@ SQL;
 			@$db->execute();
 		}
 
+		if (!array_key_exists("createnewcategories", $cols))
+		{
+			$sql = "Alter table #__jevents_icsfile ADD COLUMN createnewcategories tinyint(3) NOT NULL default 1";
+			$db->setQuery($sql);
+			@$db->execute();
+		}
+
 		if (!array_key_exists("autorefresh", $cols))
 		{
 			$sql = "Alter table #__jevents_icsfile ADD COLUMN autorefresh tinyint(3) NOT NULL default 0";

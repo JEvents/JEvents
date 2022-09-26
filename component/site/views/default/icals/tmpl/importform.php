@@ -76,6 +76,34 @@ $action = Factory::getApplication()->isClient('administrator') ? "index.php" : U
 				{
 					echo $this->clist . "<Br/>";
 				} ?>
+
+				<?php
+				if (!isset($this->editItem->createnewcatories) || $this->editItem->createnewcatories == 0)
+				{
+					$checked0 = ' checked="checked"';
+					$checked1 = '';
+				}
+				else
+				{
+					$checked1 = ' checked="checked"';
+					$checked0 = '';
+				}
+				?>
+				<div >
+					<strong><?php echo Text::_('JEV_CREATE_NEW_IMPORTED_CATEGORIES'); ?></strong>
+					<br>
+					<div >
+						<fieldset class="radio gsl-button-group" id="createnewcatories">
+							<input id="createnewcatories0" type="radio" class='gsl-hidden' value="0"
+							       name="createnewcatories" <?php echo $checked0; ?>/>
+							<label for="createnewcatories0" class="gsl-button <?php echo empty($checked0) ? "gsl-button-default" : "gsl-button-danger";?> gsl-button-small"><?php echo Text::_('JEV_NO'); ?></label>
+							<input id="createnewcatories1" type="radio" class='gsl-hidden' value="1"
+							       name="createnewcatories" <?php echo $checked1; ?>/>
+							<label for="createnewcatories1" class="gsl-button <?php echo empty($checked1) ? "gsl-button-default" : "gsl-button-primary";?> gsl-button-small"><?php echo Text::_('JEV_YES'); ?></label>
+						</fieldset>
+					</div>
+				</div>
+
 				<strong><?php echo Text::_('SELECT_CATEGORY'); ?></strong><br/>
 				<?php echo JEventsHTML::buildCategorySelect(0, '', $this->dataModel->accessibleCategoryList(), false, true, 0, 'catid', JEV_COM_COMPONENT, $this->excats); ?>
 				<br/>

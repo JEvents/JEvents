@@ -228,7 +228,8 @@ function launchJevModal(selector, url) {
     var bootstrap5 = false;
     var bootstrap4 = false;
     try {
-        var bsVersion = window.bootstrap.Tooltip.VERSION.substr(0,1);
+        var testClass = window.bootstrap.Tooltip || window.bootstrap.Modal;
+        var bsVersion = testClass.VERSION.substr(0,1);
         bootstrap5 = bsVersion >= 5;
         bootstrap4 = bsVersion >= 4 && !bootstrap5;
     } catch (e) {
@@ -283,7 +284,9 @@ function addJevModalHtml(id) {
     var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
     if (!bootstrap3_enabled) {
         try {
-            var bsVersion = window.bootstrap.Tooltip.VERSION.substr(0,1);
+            var testClass = window.bootstrap.Tooltip || window.bootstrap.Modal;
+            var bsVersion = testClass.VERSION.substr(0,1);
+
             bootstrap3_enabled = bsVersion >= 4;
             bootstrap5 = bsVersion >= 5;
         } catch (e) {
@@ -354,7 +357,9 @@ function closeJevModalBySelector(selector)
     var bootstrap5 = false;
     var bootstrap4 = false;
     try {
-        var bsVersion = window.bootstrap.Tooltip.VERSION.substr(0,1);
+        var testClass = window.bootstrap.Tooltip || window.bootstrap.Modal;
+        var bsVersion = testClass.VERSION.substr(0,1);
+
         bootstrap5 = bsVersion >= 5;
         bootstrap4 = bsVersion >= 4 && !bootstrap5;
     } catch (e) {

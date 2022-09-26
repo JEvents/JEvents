@@ -233,11 +233,11 @@ class SaveIcalEvent
 			}
 			catch (Exception $e)
 			{
-				throw new Exception($e->getTraceAsString());
-
 			//	throw new Exception($e->getMessage());
 				$success = false;
 				$app->enqueueMessage('101 - ' . Text::_('COULD_NOT_SAVE_EVENT_'), 'warning');
+
+				throw new Exception(Text::_("PROBLEMS_STORING_EVENT") . "<br>" . $e->getMessage(), 321, $e);
 			}
 		}
 		else

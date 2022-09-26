@@ -268,12 +268,32 @@ class iCalEventDetail extends Joomla\CMS\Table\Table
 		$date           = JevDate::getDate();
 		$this->modified = $date->toMySQL();
 
+		if ($this->dtstart < 0 || $this->dtend < 0)
+		{
+			$sql = "SHOW COLUMNS FROM #__jevents_vevdetail";
+			$db  = Factory::getDbo();
+			$db->setQuery($sql);
+			$cols = @$db->loadObjectList("Field");
+
+			if (array_key_exists("dtstart", $cols) && strtolower($cols["dtstart"]->Type) == "int")
+			{
+				$sql = "ALTER TABLE #__jevents_vevdetail modify dtstart bigint NOT NULL";
+				$db->setQuery($sql);
+				@$db->execute();
+
+				$sql = "ALTER TABLE #__jevents_vevdetail modify dtend bigint NOT NULL";
+				$db->setQuery($sql);
+				@$db->execute();
+			}
+
+		}
+
 		try {
 
 			$success = parent::store($updateNulls);
 			if (!$success)
 			{
-				throw new Exception("Problem saving event " . $this->getError(), 321);
+				throw new Exception("Problem saving event (" . $this->dtstart. ") : " . $this->getError(), 321);
 			}
 			// just in case we don't have jevents plugins registered yet
 			PluginHelper::importPlugin("jevents");

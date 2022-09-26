@@ -150,7 +150,6 @@ class plgFinderJEvents extends Adapter
 		}
 		$detailid = $vevent->detail_id;
 
-
 		// Reindex the item
 		$this->reindex($detailid);
 
@@ -492,7 +491,12 @@ class plgFinderJEvents extends Adapter
 			throw new Exception($e, 500);
 
 		}
-
+/*
+		echo (string) $sql;
+		echo "<br>";
+		var_dump($row);
+		exit();
+*/
 
 		// Convert the item to a result object.
 		$item = ArrayHelper::toObject($row, 'FinderIndexerResult');

@@ -520,6 +520,7 @@ class ICalsController extends AdminIcalsController
 
 		$catid          = $input->getInt('catid', 0);
 		$ignoreembedcat = $input->getInt('ignoreembedcat', 0);
+		$createnewcategories = $input->getInt('createnewcategories', 1);
 		// Should come from the form or existing item
 		$access      = 0;
 		$state       = 1;
@@ -545,7 +546,7 @@ class ICalsController extends AdminIcalsController
 		// I need a better check and expiry information etc.
 		if (StringHelper::strlen($uploadURL) > 0)
 		{
-			$icsFile = iCalICSFile::newICSFileFromURL($uploadURL, $icsid, $catid, $access, $state, $icsLabel, $autorefresh, $ignoreembedcat);
+			$icsFile = iCalICSFile::newICSFileFromURL($uploadURL, $icsid, $catid, $access, $state, $icsLabel, $autorefresh, $ignoreembedcat, $createnewcategories);
 		}
 		else if (isset($_FILES['upload']) && is_array($_FILES['upload']))
 		{
@@ -557,7 +558,7 @@ class ICalsController extends AdminIcalsController
 			}
 			else
 			{
-				$icsFile = iCalICSFile::newICSFileFromFile($file, $icsid, $catid, $access, $state, $icsLabel, 0, $ignoreembedcat);
+				$icsFile = iCalICSFile::newICSFileFromFile($file, $icsid, $catid, $access, $state, $icsLabel, 0, $ignoreembedcat, $createnewcategories);
 			}
 		}
 
@@ -635,7 +636,7 @@ class ICalsController extends AdminIcalsController
 		$description = str_replace('<BR>', '\n', $description);
 		$description = str_replace('<li>', '\n - ', $description);
 		$description = str_replace('<LI>', '\n - ', $description);
-		$description = strip_tags($description);
+		$description = strip_tags($description, '<a>');
 		//$description 	= strtr( $description,	array_flip(get_html_translation_table( HTML_ENTITIES ) ) );
 		//$description 	= preg_replace( "/&#([0-9]+);/me","chr('\\1')", $description );
 		return $description;

@@ -1804,11 +1804,12 @@
                 function async(suggestions) {
                     suggestions = suggestions || [];
                     if (!canceled && rendered < that.limit) {
+                        // GWE Mod - see https://github.com/twitter/typeahead.js/pull/1774/files
                         that.cancel = $.noop;
-                        suggestions = suggestions.slice(0, that.limit - rendered);
-                        rendered += suggestions.length;
                         that._append(query, suggestions.slice(0, that.limit - rendered));
                         that.async && that.trigger("asyncReceived", query);
+                        rendered += suggestions.length;
+                        //suggestions = suggestions.slice(0, that.limit - rendered);
                     }
                 }
             },

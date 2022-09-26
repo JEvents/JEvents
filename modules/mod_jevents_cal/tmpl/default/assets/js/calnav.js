@@ -46,7 +46,8 @@ function callNavigation(link, datatype) {
                     var bootstrap5 = false;
                     var bootstrap4 = false;
                     try {
-                        var bsVersion = window.bootstrap.Tooltip.VERSION.substr(0,1);
+                        var testClass = window.bootstrap.Tooltip || window.bootstrap.Modal;
+                        var bsVersion = testClass.VERSION.substr(0,1);
                         bootstrap5 = bsVersion >= 5;
                         bootstrap4 = bsVersion >= 4 && !bootstrap5;
                     } catch (e) {

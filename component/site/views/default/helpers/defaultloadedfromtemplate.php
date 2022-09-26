@@ -15,7 +15,8 @@ use Joomla\CMS\Layout\LayoutHelper;
 
 function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $template_value = false, $runplugins = true, $skipfiles = false)
 {
-	static $processedCssJs = array();
+	static $processedCss = array();
+	static $processedJs = array();
 
 	$jevparams  = ComponentHelper::getParams(JEV_COM_COMPONENT);
 	$db         = Factory::getDbo();
@@ -139,17 +140,17 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					}
 					if (isset($templateparams->customcss) && !empty($templateparams->customcss))
 					{
-						if (!in_array($templateparams->customcss, $processedCssJs))
+						if (!in_array($templateparams->customcss, $processedCss))
 						{
-							$processedCssJs[] = $templateparams->customcss;
-							Factory::getDocument()->addStyleDeclaration($templateparams->customcss);
+							$processedCss[] = $templateparams->customcss;
+							//Factory::getDocument()->addStyleDeclaration($templateparams->customcss);
 						}
 					}
 					if (isset($templateparams->customjs) && !empty($templateparams->customjs))
 					{
-						if (!in_array($templateparams->customjs, $processedCssJs))
+						if (!in_array($templateparams->customjs, $processedJs))
 						{
-							$processedCssJs[] = $templateparams->customjs;
+							$processedJs[] = $templateparams->customjs;
 							Factory::getDocument()->addScriptDeclaration($templateparams->customjs);
 						}
 					}
@@ -352,16 +353,16 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		$loadedFromFile = isset($template->fromfile);
 
 		$customcss = $template->params->get('customcss', '');
-		if (!in_array($customcss, $processedCssJs))
+		if (!in_array($customcss, $processedCss))
 		{
-			$processedCssJs[] = $customcss;
-			Factory::getDocument()->addStyleDeclaration($customcss);
+			$processedCss[] = $customcss;
+			//Factory::getDocument()->addStyleDeclaration($customcss);
 		}
 
 		$customjs = $template->params->get('customjs', '');
-		if (!in_array($customjs, $processedCssJs))
+		if (!in_array($customjs, $processedJs))
 		{
-			$processedCssJs[] = $customjs;
+			$processedJs[] = $customjs;
 			Factory::getDocument()->addScriptDeclaration($customjs);
 		}
 
@@ -439,17 +440,17 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		}
 		if (isset($templateparams->customcss) && !empty($templateparams->customcss) )
 		{
-			if (!in_array($templateparams->customcss, $processedCssJs))
+			if (!in_array($templateparams->customcss, $processedCss))
 			{
-				$processedCssJs[] = $templateparams->customcss;
-				Factory::getDocument()->addStyleDeclaration($templateparams->customcss);
+				$processedCss[] = $templateparams->customcss;
+				//Factory::getDocument()->addStyleDeclaration($templateparams->customcss);
 			}
 		}
 		if (isset($templateparams->customjs) && !empty($templateparams->customjs) )
 		{
-			if (!in_array($templateparams->customjs, $processedCssJs))
+			if (!in_array($templateparams->customjs, $processedJs))
 			{
-				$processedCssJs[] = $templateparams->customjs;
+				$processedJs[] = $templateparams->customjs;
 				Factory::getDocument()->addScriptDeclaration($templateparams->customjs);
 			}
 		}
@@ -2264,6 +2265,11 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		}
 	}
 
+	$processedCssString = implode("\n", $processedCss);
+	// non greedy replacement - because of the ?
+	$processedCssString = preg_replace_callback('|{{.*?}}|', 'cleanLabels', $processedCssString);
+
+
 	for ($s = 0; $s < count($search); $s++)
 	{
 		global $tempreplace, $tempevent, $tempsearch, $tempblank;
@@ -2272,10 +2278,12 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		$tempsearch     = str_replace("}}", "#", $search[$s]);
 		$tempevent      = $event;
 		$template_value = preg_replace_callback("|$tempsearch(.+?)}}|", 'jevSpecialHandling2', $template_value);
+		$processedCssString = preg_replace_callback("|$tempsearch(.+?)}}|", 'jevSpecialHandling2', $processedCssString);
 	}
 
 	// The universal search and replace to finish
 	$template_value = str_replace($search, $replace, $template_value);
+	$processedCssString = str_replace($search, $replace, $processedCssString);
 
 	if ($specialmodules && strpos($template_value, "{{MODULESTART#") !== false)
 	{
@@ -2333,6 +2341,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 	// non greedy replacement - because of the ?
 	$template_value = preg_replace_callback('|{{.*?}}|', 'cleanUnpublished', $template_value);
+	$processedCssString = preg_replace_callback('|{{.*?}}|', 'cleanUnpublished', $processedCssString);
+
+	Factory::getDocument()->addStyleDeclaration($processedCssString);
 
 	// replace [[ with { to that other content plugins can work ok - but not for calendar cell or tooltip since we use [[ there already!
 	if ($template_name != "month.calendar_cell" && $template_name != "month.calendar_tip")

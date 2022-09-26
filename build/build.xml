@@ -440,6 +440,7 @@
             <fileset refid="packagedir" />
         </zip>
         <copy file="${builddir}/../pkg_jevents_${extension.version}.zip" tofile="${builddir}/../pkg_jevents.zip" />
+
         <delete dir="${builddir}" includeemptydirs="true" verbose="false" failonerror="true" />
 
 

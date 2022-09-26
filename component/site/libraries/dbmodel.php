@@ -438,11 +438,29 @@ class JEventsDBModel
 							}
 						}
 					}
-					$mmcatidList = implode(",", $mmcatids);
+
+					$specificCatids = array();
+					foreach ($catids as $specificCatid)
+					{
+						$specificCat      = $mmcats->get($specificCatid);
+						$specificCatids[] = $specificCatid;
+						if ($specificCat && $specificCat->hasChildren())
+						{
+							$kids = $specificCat->getChildren(true);
+							foreach ($kids as $kid)
+							{
+								$specificCatids[] = $kid->id;
+							}
+						}
+					}
+
+					$catids   = array_intersect($mmcatids, $specificCatids);
+
 				}
-
-
-				$catids   = array_intersect($mmcatids, $catids);
+				else
+				{
+					$catids   = array_intersect($mmcatids, $catids);
+				}
 				$catids   = array_values($catids);
 				$catids[] = -1;
 				// hardening!
@@ -3128,6 +3146,7 @@ class JEventsDBModel
 			{
 				$db = Factory::getDbo();
 				$db->setQuery($query);
+				echo "<pre>" .  $db->replacePrefix((string) $db->getQuery()) . "</pre>";
 				$rows = $db->loadObjectList();
 				list ($usec, $sec) = explode(" ", microtime());
 				$time_end = (float) $usec + (float) $sec;

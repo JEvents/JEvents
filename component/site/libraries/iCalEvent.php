@@ -236,7 +236,7 @@ else $this->_detail = false;
 			$this->access = $ical_access;
 		}
 
-		if ($this->ev_id == 0)
+		if ((int) $this->ev_id == 0)
 		{
 			$date          = JevDate::getDate("+0 seconds");
 			$this->created = $date->toMySQL();
@@ -296,9 +296,9 @@ else $this->_detail = false;
 
 		} catch (Exception $e) {
 
-			$app->enqueueMessage(Text::_("JEV_PROBLEMS_STORING_EVENT_DETAIL") . $e->getMessage(), 'error');
-			//echo $e. "<br/>";
+			throw new Exception(Text::_("JEV_PROBLEMS_STORING_EVENT_DETAIL") . $e->getMessage(), 320, $e);
 			return false;
+
 		}
 
 
@@ -320,7 +320,7 @@ else $this->_detail = false;
 		} catch (Exception $e) {
 
 			$app->enqueueMessage(Text::_("PROBLEMS_STORING_EVENT"), 'error');
-			echo $e . "<br/>";
+			throw new Exception(Text::_("PROBLEMS_STORING_EVENT") . $e->getMessage(), 321, $e);
 			return false;
 		}
 
@@ -370,7 +370,9 @@ else $this->_detail = false;
 		{
 			$this->rrule->store($updateNulls);
 		} catch (Exception $e) {
-			echo $e . "<br/>";
+			throw new Exception(Text::_("JEV_PROBLEMS_STORING_EVENT_DETAIL") . $e->getMessage(), 322, $e);
+			return false;
+
 		}
 
 		return true;
