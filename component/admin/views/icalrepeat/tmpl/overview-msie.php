@@ -86,7 +86,7 @@ $fullspan = 12;
             <input type="hidden" name="cid[]" value="0" />
             <input type="hidden" name="evid" value="<?php echo $this->evid;?>" />
             <input type="hidden" name="task" value="icalrepeat.list" />
-            <input type="hidden" name="boxchecked" value="0" />
+            <input type="hidden" name="boxchecked" id="boxchecked" value="0" />
         </div>
     </form>
 

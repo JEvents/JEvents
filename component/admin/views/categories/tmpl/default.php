@@ -299,7 +299,7 @@ echo LayoutHelper::render('gslframework.header', null, JPATH_ADMINISTRATOR. "/co
 
 		<input type="hidden" name="extension" value="<?php echo $extension; ?>" />
 		<input type="hidden" name="task" value="" />
-		<input type="hidden" name="boxchecked" value="0" />
+		<input type="hidden" name="boxchecked" id="boxchecked" value="0" />
 		<?php echo HTMLHelper::_('form.token'); ?>
 	</div>
 </form>

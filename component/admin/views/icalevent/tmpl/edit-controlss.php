@@ -169,7 +169,7 @@ $action = $app->isClient('administrator') ? "index.php" : Route::_("index.php?op
 			list($year, $month, $day) = JEVHelper::getYMD();
 			?>
 			<input type="hidden" name="jevtype" value="icaldb"/>
-			<input type="hidden" name="boxchecked" value="0"/>
+			<input type="hidden" name="boxchecked" id="boxchecked" value="0"/>
 			<input type="hidden" name="updaterepeats" value="0"/>
 			<input type="hidden" name="task" value="<?php echo $input->getCmd("task", "icalevent.edit"); ?>"/>
 			<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>

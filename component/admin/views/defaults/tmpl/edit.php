@@ -459,7 +459,7 @@ SCRIPT
 		<input type="hidden" name="name" value="<?php echo $this->item->name; ?>">
 		<input type="hidden" name="id" value="<?php echo $this->item->id; ?>">
 		<input type="hidden" name="language" value="<?php echo $this->item->language; ?>">
-		<input type="hidden" name="boxchecked" value="0"/>
+		<input type="hidden" name="boxchecked" id="boxchecked" value="0"/>
 		<input type="hidden" name="task" value="defaults.edit"/>
 		<input type="hidden" name="act" value=""/>
 		<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>

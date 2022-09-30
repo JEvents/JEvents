@@ -16,7 +16,7 @@ use Joomla\CMS\Language\Text;
 	<form action="index.php" method="post" name="adminForm" id="adminForm">
 		<h3><?php echo Text::_('DATABASE_NOW_SETUP'); ?></h3>
 		<input type="submit" value="<?php echo "continue"; ?>"/>
-		<input type="hidden" name="boxchecked" value="0"/>
+		<input type="hidden" name="boxchecked" id="boxchecked" value="0"/>
 		<input type="hidden" name="task" value="cpanel.cpanel"/>
 		<input type="hidden" name="act" value=""/>
 		<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>

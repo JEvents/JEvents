@@ -179,7 +179,7 @@ if (!$jversion->isCompatible('4.0'))
 
             <input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>
             <input type="hidden" name="task" value="defaults.list"/>
-            <input type="hidden" name="boxchecked" value="0"/>
+            <input type="hidden" name="boxchecked" id="boxchecked" value="0"/>
             <?php echo HTMLHelper::_('form.token'); ?>
         </div>
     </div>

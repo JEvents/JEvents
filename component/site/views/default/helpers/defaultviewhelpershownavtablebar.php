@@ -127,3 +127,60 @@ function DefaultViewHelperShowNavTableBar($view)
 
 }
 
+
+
+/*
+SELECT u1.name FROM murryj4_users AS u1 WHERE u1.id={ATTENDEE_USER_ID}
+UNION
+(
+SELECT u.name
+FROM murryj4_comprofiler_members AS lst
+    INNER JOIN murryj4_users AS u
+ON u.id = lst.memberid
+WHERE lst.referenceid={ATTENDEE_USER_ID}
+ORDER BY u.name ASC
+    )
+UNION
+(
+SELECT CONCAT('[ ', u2.name, ' ]')
+FROM murryj4_comprofiler_members AS lst2
+    INNER JOIN murryj4_users AS u2
+ON u2.id = lst2.memberid
+WHERE u2.id NOT IN (
+    SELECT {ATTENDEE_USER_ID}
+    UNION
+    SELECT u3.id FROM murryj4_comprofiler_members AS lst3
+    INNER JOIN murryj4_users AS u3 ON u3.id = lst3.memberid
+    WHERE lst3.referenceid={ATTENDEE_USER_ID}
+    )
+ORDER BY u2.name ASC
+    )
+
+
+
+SELECT CONCAT(u1.firstname, ' ', u1.lastname) FROM murryj4_comprofiler AS u1 WHERE u1.user_id={ATTENDEE_USER_ID}
+UNION
+(
+SELECT CONCAT(u.firstname, ' ', u.lastname)
+FROM murryj4_comprofiler_members AS lst
+    INNER JOIN murryj4_comprofiler AS u
+ON u.user_id = lst.memberid
+WHERE lst.referenceid={ATTENDEE_USER_ID}
+ORDER BY u.lastname ASC, u.firstname ASC
+    )
+UNION
+(
+SELECT CONCAT('[ ', u2.firstname, ' ', u2.lastname, ' ]')
+FROM murryj4_comprofiler_members AS lst2
+    INNER JOIN murryj4_comprofiler AS u2
+ON u2.user_id = lst2.memberid
+WHERE u2.user_id NOT IN (
+    SELECT {ATTENDEE_USER_ID}
+    UNION
+    SELECT u3.id FROM murryj4_comprofiler_members AS lst3
+    INNER JOIN murryj4_comprofiler AS u3 ON u3.user_id = lst3.memberid
+    WHERE lst3.referenceid={ATTENDEE_USER_ID}
+    )
+ORDER BY u2.lastname ASC, u2.firstname ASC
+    )
+ */

@@ -337,7 +337,7 @@ $fullspan = 12;
 			</table>
 			<?php echo HTMLHelper::_('form.token'); ?>
 			<input type="hidden" name="hidemainmenu" value=""/>
-			<input type="hidden" name="boxchecked" value="0"/>
+			<input type="hidden" name="boxchecked" id="boxchecked" value="0"/>
 			<input type="hidden" name="task" value='user.overview'/>
 			<input type="hidden" name="filter_order" value="<?php echo $input->getCmd("filter_order", "tl.id"); ?>"/>
 			<input type="hidden" name="filter_order_Dir"
