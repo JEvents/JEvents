@@ -1,0 +1,116 @@
+// Name:            My Component
+// Description:     This is my custom component
+//
+// Component:       `my-component`
+//
+// Sub-objects:     `my-component-title`
+//                  `my-component-card`
+//
+// ========================================================================
+
+
+// Variables
+// ========================================================================
+
+@my-component-title-margin:                         40px;
+
+@my-component-title-color:                          #ddd;
+
+@my-component-title-font-family:                    @global-primary-font-family;
+@my-component-title-font-weight:                    @global-primary-font-weight;
+@my-component-title-text-transform:                 @global-primary-text-transform;
+@my-component-title-letter-spacing:                 @global-primary-letter-spacing;
+@my-component-title-font-style:                     @global-primary-font-style;
+
+@my-component-title-text-shadow:                    none;
+
+@my-component-card-background:                      @global-primary-background;
+@my-component-card-primary-background:              @card-primary-background;
+
+@my-component-card-box-shadow:                      none;
+
+@my-component-card-border-mode:                     ~'';
+@my-component-card-border-width:                    0;
+@my-component-card-border:                          transparent;
+@my-component-card-border-radius:                   0;
+
+@internal-my-component-card-gradient:               ~'';
+
+
+/* ========================================================================
+   Component: My Component
+ ========================================================================== */
+
+.my-component-title {
+  margin-top: @my-component-title-margin;
+  .hook-my-component-title();
+}
+
+.my-component-card {
+  background-color: @my-component-card-background;
+  .hook-my-component-card();
+}
+#jevents {
+  .uk-card-primary {
+    .hook-jevents-card();
+  }
+}
+
+.hook-jevents-card() when not ( @my-component-card-primary-background = @card-primary-background) {
+  background-color: @my-component-card-primary-background;
+}
+
+//
+// Following properties will only be set if they differ from their default value
+//
+
+// Color
+.hook-my-component-title() when not (@my-component-title-color = transparent) {
+  color: @my-component-title-color;
+}
+
+// Typography
+.hook-my-component-title() when not (@my-component-title-font-family = inherit) {
+  font-family: @my-component-title-font-family;
+}
+
+.hook-my-component-title() when not (@my-component-title-font-weight = inherit) {
+  font-weight: @my-component-title-font-weight;
+}
+
+.hook-my-component-title() when not (@my-component-title-text-transform = inherit) {
+  text-transform: @my-component-title-text-transform;
+}
+
+.hook-my-component-title() when not (@my-component-title-letter-spacing = inherit) {
+  letter-spacing: @my-component-title-letter-spacing;
+}
+
+.hook-my-component-title() when not (@my-component-title-font-style = inherit) {
+  font-style: @my-component-title-font-style;
+}
+
+// Shadows
+.hook-my-component-title() when not (@my-component-title-text-shadow = none) {
+  text-shadow: @my-component-title-text-shadow;
+}
+
+.hook-my-component-card() when not (@my-component-card-box-shadow = none) {
+  box-shadow: @my-component-card-box-shadow;
+}
+
+// Border
+.hook-my-component-card() when not (@my-component-card-border-width = 0) {
+  border@{my-component-card-border-mode}: @my-component-card-border-width solid @my-component-card-border;
+}
+
+.hook-my-component-card() when not (@my-component-card-border-radius = 0) {
+  border-radius: @my-component-card-border-radius;
+}
+
+// Background Gradient
+// Mind that variables prefixed with `internal` will not show up in the style customizer.
+
+.hook-my-component-card() when not (@internal-my-component-card-gradient = ~'') {
+  background-image: @internal-my-component-card-gradient;
+}

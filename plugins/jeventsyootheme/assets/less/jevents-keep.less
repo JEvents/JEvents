@@ -1,0 +1,208 @@
+// Name:            JEvents
+// Description:     This is my custom component
+//
+// Component:       `JEvents`
+//
+// Sub-objects:     `jevents-legend`
+//                  `jevents-title`
+//                  `jevents-card`
+//
+// ========================================================================
+
+
+// Variables
+// ========================================================================
+
+// Legend Module
+@jevents-legend-background:                     @navbar-background;
+@jevents-legend-font-size:                      @navbar-nav-item-font-size;
+@jevents-legend-height:                         @navbar-nav-item-height;
+@jevents-legend-color:                          @navbar-nav-item-color;
+@jevents-legend-hover-color:                    @navbar-nav-item-hover-color;
+@jevents-legend-font-style:                     @navbar-nav-item-font-style;
+@jevents-legend-text-transform:                 @navbar-nav-item-text-transform;
+@jevents-legend-letter-spacing:                 @navbar-nav-item-letter-spacing;
+@jevents-legend-padding-horizontal:             @navbar-nav-item-padding-horizontal;
+
+// Dynamic Legend
+#jevents .jevcatbar {
+
+  .uk-navbar-nav {
+
+    .hook-jevents-legend-background();
+
+    & > li {
+
+      .hook-jevents-legend-height();
+      .hook-jevents-legend-padding-horizontal();
+
+      > a {
+
+        .hook-jevents-legend-font-size();
+        .hook-jevents-legend-text-transform();
+        .hook-jevents-legend-letter-spacing();
+        .hook-jevents-legend-color();
+
+        & :hover {
+
+          .hook-jevents-legend-hover-color();
+
+        }
+      }
+    }
+
+    .uk-navbar-dropdown {
+
+      .hook-jevents-legend-background();
+
+      .uk-navbar-dropdown-nav {
+
+        & > li > a:hover {
+
+          .hook-jevents-legend-hover-color();
+
+        }
+      }
+    }
+  }
+}
+
+.hook-jevents-legend-background() when not ( @jevents-legend-background = @navbar-background) {
+  background: @jevents-legend-background;
+}
+
+.hook-jevents-legend-height() when not ( @jevents-legend-height = @navbar-nav-item-height) {
+  height: @jevents-legend-height;
+}
+
+.hook-jevents-legend-padding-horizontal() when not ( @jevents-legend-padding-horizontal = @navbar-nav-item-padding-horizontal) {
+  padding-left: @jevents-legend-padding-horizontal;
+  padding-right: @jevents-legend-padding-horizontal;
+}
+
+.hook-jevents-legend-font-size() when not ( @jevents-legend-font-size = @navbar-nav-item-font-size) {
+  font-size: @jevents-legend-font-size;
+}
+
+.hook-jevents-legend-text-transform() when not ( @jevents-legend-text-transform = @navbar-nav-item-text-transform) {
+  text-transform: @jevents-legend-text-transform;
+}
+
+.hook-jevents-legend-letter-spacing() when not ( @jevents-legend-letter-spacing = @navbar-nav-item-letter-spacing) {
+  letter-spacing: @jevents-legend-letter-spacing;
+}
+
+.hook-jevents-legend-color() when not ( @jevents-legend-color = @navbar-nav-item-color) {
+  color: @jevents-legend-color;
+}
+
+.hook-jevents-legend-hover-color() when not ( @jevents-legend-hover-color = @navbar-nav-item-hover-color) {
+  color: @jevents-legend-hover-color;
+}
+
+
+// Title group
+@jevents-title-margin:                         40px;
+
+@jevents-title-color:                          #ddd;
+
+@jevents-title-font-family:                    @global-primary-font-family;
+@jevents-title-font-weight:                    @global-primary-font-weight;
+@jevents-title-text-transform:                 @global-primary-text-transform;
+@jevents-title-letter-spacing:                 @global-primary-letter-spacing;
+@jevents-title-font-style:                     @global-primary-font-style;
+
+@jevents-title-text-shadow:                    none;
+
+// Card group
+@jevents-card-background:                      @global-primary-background;
+@jevents-card-primary-background:              @card-primary-background;
+
+@jevents-card-box-shadow:                      none;
+
+@jevents-card-border-mode:                     ~'';
+@jevents-card-border-width:                    0;
+@jevents-card-border:                          transparent;
+@jevents-card-border-radius:                   0;
+
+@internal-jevents-card-gradient:               ~'';
+
+
+
+
+.jevents-title {
+  margin-top: @jevents-title-margin;
+  .hook-jevents-title();
+}
+
+.jevents-card {
+  background-color: @jevents-card-background;
+  .hook-jevents-card();
+}
+
+body.com_jevents, body.com_rsvppro, #jevents {
+  .uk-card-primary {
+    .hook-jevents-card();
+  }
+}
+
+.hook-jevents-card() when not ( @jevents-card-primary-background = @card-primary-background) {
+  background-color: @jevents-card-primary-background;
+}
+
+//
+// Following properties will only be set if they differ from their default value
+//
+
+// Color
+.hook-jevents-title() when not (@jevents-title-color = transparent) {
+  color: @jevents-title-color;
+}
+
+// Typography
+.hook-jevents-title() when not (@jevents-title-font-family = inherit) {
+  font-family: @jevents-title-font-family;
+}
+
+.hook-jevents-title() when not (@jevents-title-font-weight = inherit) {
+  font-weight: @jevents-title-font-weight;
+}
+
+.hook-jevents-title() when not (@jevents-title-text-transform = inherit) {
+  text-transform: @jevents-title-text-transform;
+}
+
+.hook-jevents-title() when not (@jevents-title-letter-spacing = inherit) {
+  letter-spacing: @jevents-title-letter-spacing;
+}
+
+.hook-jevents-title() when not (@jevents-title-font-style = inherit) {
+  font-style: @jevents-title-font-style;
+}
+
+// Shadows
+.hook-jevents-title() when not (@jevents-title-text-shadow = none) {
+  text-shadow: @jevents-title-text-shadow;
+}
+
+.hook-jevents-card() when not (@jevents-card-box-shadow = none) {
+  box-shadow: @jevents-card-box-shadow;
+}
+
+// Border
+.hook-jevents-card() when not (@jevents-card-border-width = 0) {
+  border@{jevents-card-border-mode}: @jevents-card-border-width solid @jevents-card-border;
+}
+
+.hook-jevents-card() when not (@jevents-card-border-radius = 0) {
+  border-radius: @jevents-card-border-radius;
+}
+
+// Background Gradient
+// Mind that variables prefixed with `internal` will not show up in the style customizer.
+
+.hook-jevents-card() when not (@internal-jevents-card-gradient = ~'') {
+  background-image: @internal-jevents-card-gradient;
+}
+/*
+*/

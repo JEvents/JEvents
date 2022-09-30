@@ -1,0 +1,26 @@
+// Name:            JEvents
+// Description:     This is my custom component
+//
+// Component:       `JEvents`
+//
+// Sub-objects:     `jevents-legend`
+//                  `jevents-title`
+//                  `jevents-card`
+//
+// ========================================================================
+
+
+// Special JEvents Mixin
+.jevents-value(@jevents-property, @jevents, @native) when not ( @jevents = @native)
+{
+    @{jevents-property} : @jevents;
+}
+
+@import  "jevents_navbar.less";
+
+// For some reason if we import multiple files here only one is processed!
+// For for now we daisy chain these within each separate file
+//@import  "jevents_title.less";
+//@import  "jevents_card.less";
+
+
