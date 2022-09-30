@@ -704,6 +704,22 @@ class JEVHelper
 			{
 				$value = strftime("%Y-%m-%d");
 			}
+			else
+			{
+				$datetime = date_create_from_format($format, $value);
+				// This is probably because we have mysql formatted value
+				if (!$datetime)
+				{
+					$datetime = date_create_from_format('Y-m-d', $value);
+					if (!$datetime)
+					{
+						$value    = date($format);
+						$datetime = date_create_from_format($format, $value);
+					}
+				}
+				$value = $datetime->format("Y-m-d");
+			}
+
 
 			list ($yearpart, $monthpart, $daypart) = explode("-", $value);
 			$value = str_replace(array("Y", "m", "d"), array($yearpart, $monthpart, $daypart), $format);
@@ -4194,8 +4210,8 @@ SCRIPT;
 	function replacetags($description)
 	{
 
-		$description = str_replace('<p>', '\n\n', $description);
-		$description = str_replace('<P>', '\n\n', $description);
+		$description = str_replace('<p>', '', $description);
+		$description = str_replace('<P>', '', $description);
 		$description = str_replace('</p>', '\n', $description);
 		$description = str_replace('</P>', '\n', $description);
 		$description = str_replace('<p/>', '\n\n', $description);
@@ -4208,7 +4224,7 @@ SCRIPT;
 		$description = str_replace('<BR>', '\n', $description);
 		$description = str_replace('<li>', '\n - ', $description);
 		$description = str_replace('<LI>', '\n - ', $description);
-		$description = strip_tags($description);
+		$description = strip_tags($description, '<a>');
 		//$description 	= strtr( $description,	array_flip(get_html_translation_table( HTML_ENTITIES ) ) );
 		//$description 	= preg_replace( "/&#([0-9]+);/me","chr('\\1')", $description );
 		return $description;
@@ -4229,13 +4245,15 @@ SCRIPT;
 
 		// wraplines	from vCard class
 		$cfg = JEVConfig::getInstance();
-		if ($cfg->get("outlook2003icalexport", 0))
+		if ($cfg->get("outlook2003icalexport", 1))
 		{
 			return "DESCRIPTION:" . self::wraplines($description, 76, false);
 		}
 		else
 		{
-			return "DESCRIPTION;ENCODING=QUOTED-PRINTABLE:" . self::wraplines($description);
+			// ENCODING=QUOTED-PRINTABLE is deprecated
+			// return "DESCRIPTION;ENCODING=QUOTED-PRINTABLE:" . self::wraplines($description);
+			return "DESCRIPTION:" . self::wraplines($description, 76, false);
 		}
 
 	}

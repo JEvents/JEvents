@@ -1,0 +1,63 @@
+// Name:            JEvents
+// Description:     This is my custom component
+//
+// Component:       `JEvents`
+//
+// Sub-objects:     `jevents-card`
+//
+// ========================================================================
+
+// Card group
+@jevents-card-background:                      @global-primary-background;
+@jevents-card-primary-background:              @card-primary-background;
+
+@jevents-card-box-shadow:                      none;
+
+@jevents-card-border-mode:                     ~'';
+@jevents-card-border-width:                    0;
+@jevents-card-border:                          transparent;
+@jevents-card-border-radius:                   0;
+
+@internal-jevents-card-gradient:               ~'';
+
+
+.jevents-card {
+  background-color: @jevents-card-background;
+  .hook-jevents-card();
+}
+
+body.com_jevents, body.com_rsvppro, #jevents {
+  .uk-card-primary {
+    .hook-jevents-card();
+  }
+}
+
+.hook-jevents-card() when not ( @jevents-card-primary-background = @card-primary-background) {
+  background-color: @jevents-card-primary-background;
+}
+
+//
+// Following properties will only be set if they differ from their default value
+//
+
+
+
+.hook-jevents-card() when not (@jevents-card-box-shadow = none) {
+  box-shadow: @jevents-card-box-shadow;
+}
+
+// Border
+.hook-jevents-card() when not (@jevents-card-border-width = 0) {
+  border@{jevents-card-border-mode}: @jevents-card-border-width solid @jevents-card-border;
+}
+
+.hook-jevents-card() when not (@jevents-card-border-radius = 0) {
+  border-radius: @jevents-card-border-radius;
+}
+
+// Background Gradient
+// Mind that variables prefixed with `internal` will not show up in the style customizer.
+
+.hook-jevents-card() when not (@internal-jevents-card-gradient = ~'') {
+  background-image: @internal-jevents-card-gradient;
+}

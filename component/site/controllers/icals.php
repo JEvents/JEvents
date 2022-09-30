@@ -136,12 +136,11 @@ class ICalsController extends AdminIcalsController
 		// validate the key
 		$icalkey = $params->get("icalkey", "secret phrase");
 
-		$outlook2003icalexport = $input->getInt("outlook2003", 0) && $params->get("outlook2003icalexport", 0);
+		$outlook2003icalexport = $input->getInt("outlook2003", 0) && $params->get("outlook2003icalexport", 1);
 		if ($outlook2003icalexport)
 		{
 			$input->set("icf", 1);
 		}
-
 		$privatecalendar = false;
 		$k               = $input->getString("k", "NONE");
 		$pk              = $input->getString("pk", "NONE");
@@ -521,6 +520,7 @@ class ICalsController extends AdminIcalsController
 
 		$catid          = $input->getInt('catid', 0);
 		$ignoreembedcat = $input->getInt('ignoreembedcat', 0);
+		$createnewcategories = $input->getInt('createnewcategories', 1);
 		// Should come from the form or existing item
 		$access      = 0;
 		$state       = 1;
@@ -546,7 +546,7 @@ class ICalsController extends AdminIcalsController
 		// I need a better check and expiry information etc.
 		if (StringHelper::strlen($uploadURL) > 0)
 		{
-			$icsFile = iCalICSFile::newICSFileFromURL($uploadURL, $icsid, $catid, $access, $state, $icsLabel, $autorefresh, $ignoreembedcat);
+			$icsFile = iCalICSFile::newICSFileFromURL($uploadURL, $icsid, $catid, $access, $state, $icsLabel, $autorefresh, $ignoreembedcat, $createnewcategories);
 		}
 		else if (isset($_FILES['upload']) && is_array($_FILES['upload']))
 		{
@@ -558,7 +558,7 @@ class ICalsController extends AdminIcalsController
 			}
 			else
 			{
-				$icsFile = iCalICSFile::newICSFileFromFile($file, $icsid, $catid, $access, $state, $icsLabel, 0, $ignoreembedcat);
+				$icsFile = iCalICSFile::newICSFileFromFile($file, $icsid, $catid, $access, $state, $icsLabel, 0, $ignoreembedcat, $createnewcategories);
 			}
 		}
 
@@ -606,13 +606,15 @@ class ICalsController extends AdminIcalsController
 
 		// wraplines	from vCard class
 		$cfg = JEVConfig::getInstance();
-		if ($cfg->get("outlook2003icalexport", 0))
+		if ($cfg->get("outlook2003icalexport", 1))
 		{
 			return "DESCRIPTION:" . $this->wraplines($description, 76, false);
 		}
 		else
 		{
-			return "DESCRIPTION;ENCODING=QUOTED-PRINTABLE:" . $this->wraplines($description);
+			// ENCODING=QUOTED-PRINTABLE is deprecated
+			// return "DESCRIPTION;ENCODING=QUOTED-PRINTABLE:" . $this->wraplines($description);
+			return "DESCRIPTION:" . $this->wraplines($description, 76, false);
 		}
 
 	}
@@ -620,8 +622,8 @@ class ICalsController extends AdminIcalsController
 	private function replacetags($description)
 	{
 
-		$description = str_replace('<p>', '\n\n', $description);
-		$description = str_replace('<P>', '\n\n', $description);
+		$description = str_replace('<p>', '', $description);
+		$description = str_replace('<P>', '', $description);
 		$description = str_replace('</p>', '\n', $description);
 		$description = str_replace('</P>', '\n', $description);
 		$description = str_replace('<p/>', '\n\n', $description);
@@ -634,7 +636,7 @@ class ICalsController extends AdminIcalsController
 		$description = str_replace('<BR>', '\n', $description);
 		$description = str_replace('<li>', '\n - ', $description);
 		$description = str_replace('<LI>', '\n - ', $description);
-		$description = strip_tags($description);
+		$description = strip_tags($description, '<a>');
 		//$description 	= strtr( $description,	array_flip(get_html_translation_table( HTML_ENTITIES ) ) );
 		//$description 	= preg_replace( "/&#([0-9]+);/me","chr('\\1')", $description );
 		return $description;

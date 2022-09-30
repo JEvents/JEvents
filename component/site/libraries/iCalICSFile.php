@@ -41,6 +41,9 @@ class iCalICSFile extends Joomla\CMS\Table\Table
 	// if true allows for front end refresh via cronjob
 	var $autorefresh = 0;
 
+	// if true imports allows creation of new categories
+	var $createnewcategories = 1;
+
 	// if true imports ignore embedded cateogry info
 	var $ignoreembedcat = 0;
 
@@ -65,7 +68,7 @@ class iCalICSFile extends Joomla\CMS\Table\Table
 		$this->access = intval(JEVHelper::getBaseAccess());
 	}
 
-	public static function newICSFileFromURL($uploadURL, $icsid, $catid, $access = 0, $state = 1, $label = "", $autorefresh = 0, $ignoreembedcat = 0)
+	public static function newICSFileFromURL($uploadURL, $icsid, $catid, $access = 0, $state = 1, $label = "", $autorefresh = 0, $ignoreembedcat = 0, $createnewcategories = 1)
 	{
 
 		$db   = Factory::getDbo();
@@ -123,12 +126,12 @@ class iCalICSFile extends Joomla\CMS\Table\Table
 		return $temp;
 	}
 
-	public static function newICSFileFromFile($file, $icsid, $catid, $access = 0, $state = 1, $label = "", $autorefresh = 0, $ignoreembedcat = 0)
+	public static function newICSFileFromFile($file, $icsid, $catid, $access = 0, $state = 1, $label = "", $autorefresh = 0, $ignoreembedcat = 0, $createnewcategories = 1)
 	{
 
 		$db   = Factory::getDbo();
 		$temp = new iCalICSFile($db);
-		$temp->_setup($icsid, $catid, $access, $state, $autorefresh, $ignoreembedcat);
+		$temp->_setup($icsid, $catid, $access, $state, $autorefresh, $ignoreembedcat, $createnewcategories);
 		if ($access == 0)
 		{
 			$temp->access = intval(JEVHelper::getBaseAccess());
@@ -193,7 +196,7 @@ RAWTEXT;
 		return $temp;
 	}
 
-	public function _setup($icsid, $catid, $access = 0, $state = 1, $autorefresh = 0, $ignoreembedcat = 0)
+	public function _setup($icsid, $catid, $access = 0, $state = 1, $autorefresh = 0, $ignoreembedcat = 0, $createnewcategories = 1)
 	{
 
 		if ($icsid > 0) $this->ics_id = $icsid;
@@ -204,12 +207,13 @@ RAWTEXT;
 		$this->state          = $state;
 		$this->autorefresh    = $autorefresh;
 		$this->ignoreembedcat = $ignoreembedcat;
+		$this->createnewcategories = $createnewcategories;
 	}
 
 	/**
 	 * Used to create Ical from raw strring
 	 */
-	public function newICSFileFromString($rawtext, $icsid, $catid, $access = 0, $state = 1, $label = "", $autorefresh = 0, $ignoreembedcat = 0)
+	public function newICSFileFromString($rawtext, $icsid, $catid, $access = 0, $state = 1, $label = "", $autorefresh = 0, $ignoreembedcat = 0, $createnewcategories = 1)
 	{
 
 		$db   = Factory::getDbo();
@@ -222,7 +226,7 @@ RAWTEXT;
 		}
 		else
 		{
-			$temp->_setup($icsid, $catid, $access, $state, $autorefresh, $ignoreembedcat);
+			$temp->_setup($icsid, $catid, $access, $state, $autorefresh, $ignoreembedcat, $createnewcategories);
 			$temp->srcURL   = "";
 			$temp->filename = "_from_events_cat" . $catid;
 			$temp->icaltype = 2;  // i.e. from file
@@ -329,7 +333,7 @@ RAWTEXT;
 						foreach ($evcat as $ct)
 						{
 							// if no such category then create it/them
-							if (!array_key_exists(trim($ct), $categories))
+							if (!array_key_exists(trim($ct), $categories) && $this->createnewcategories)
 							{
 								$cat = new JEventsCategory($db);
 								$cat->bind(array("title" => trim($ct)));
@@ -353,12 +357,26 @@ RAWTEXT;
 							$vevent->catid = array();
 							foreach ($evcat as $ct)
 							{
-								$vevent->catid[] = $categories[trim($ct)]->id;
+								if (isset($categories[trim($ct)]))
+								{
+									$vevent->catid[] = $categories[trim($ct)]->id;
+								}
+								else if (!in_array((int) $catid, $vevent->catid))
+								{
+									$vevent->catid[] = (int) $catid;
+								}
 							}
 						}
 						else
 						{
-							$vevent->catid = $categories[trim($evcat[0])]->id;
+							if (isset($categories[trim($ct)]))
+							{
+								$vevent->catid = $categories[trim($evcat[0])]->id;
+							}
+							else
+							{
+								$vevent->catid = (int) $catid;
+							}
 						}
 					}
 				}
@@ -481,13 +499,17 @@ RAWTEXT;
 						foreach ($evcat as $ct)
 						{
 							// if no such category then create it/them
-							if (!array_key_exists($ct, $categories))
+							if (!array_key_exists(trim($ct), $categories) && $this->createnewcategories)
 							{
 								$cat = new JEventsCategory($db);
-								$cat->bind(array("title" => $ct));
+								$cat->bind(array("title" => trim($ct)));
 								$cat->published = 1;
 								$cat->check();
-								$cat->store();
+								if (!$cat->store())
+								{
+									//var_dump($cat->getErrors());
+									die(Text::plural('COM_JEVENTS_MANAGE_CALENDARS_ICAL_IMPORT_FAILED_TO_CREATE_CAT', $ct));
+								}
 							}
 						}
 						// must reset  the list of categories now
@@ -501,12 +523,26 @@ RAWTEXT;
 							$vevent->catid = array();
 							foreach ($evcat as $ct)
 							{
-								$vevent->catid[] = $categories[$ct]->id;
+								if (isset($categories[trim($ct)]))
+								{
+									$vevent->catid[] = $categories[trim($ct)]->id;
+								}
+								else if (!in_array((int) $catid, $vevent->catid))
+								{
+									$vevent->catid[] = (int) $catid;
+								}
 							}
 						}
 						else
 						{
-							$vevent->catid = $categories[$evcat[0]]->id;
+							if (isset($categories[trim($ct)]))
+							{
+								$vevent->catid = $categories[trim($evcat[0])]->id;
+							}
+							else
+							{
+								$vevent->catid = (int) $catid;
+							}
 						}
 					}
 				}

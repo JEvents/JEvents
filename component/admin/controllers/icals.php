@@ -328,6 +328,7 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
 			$overlaps       = $input->getInt('overlaps', $currentICS->overlaps);
 			$autorefresh    = $input->getInt('autorefresh', $autorefresh);
 			$ignoreembedcat = $input->getInt('ignoreembedcat', $currentICS->ignoreembedcat);
+			$createnewcategories = $input->getInt('createnewcategories', $currentICS->createnewcategories);
 
 			// This is a native ical - so we are only updating identifiers etc
 			if ($currentICS->icaltype == 2)
@@ -360,6 +361,7 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
 
 			$catid          = $input->getInt('catid', 0);
 			$ignoreembedcat = $input->getInt('ignoreembedcat', 0);
+			$createnewcategories = $input->getInt('createnewcategories', 1);
 			// Should come from the form or existing item
 			$access    = $input->getInt('access', 0);
 			$state     = 1;
@@ -382,7 +384,7 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
 		// I need a better check and expiry information etc.
 		if (StringHelper::strlen($uploadURL) > 0)
 		{
-			$icsFile = iCalICSFile::newICSFileFromURL($uploadURL, $icsid, $catid, $access, $state, $icsLabel, $autorefresh, $ignoreembedcat);
+			$icsFile = iCalICSFile::newICSFileFromURL($uploadURL, $icsid, $catid, $access, $state, $icsLabel, $autorefresh, $ignoreembedcat, $createnewcategories);
 		}
 		else if (isset($_FILES['upload']) && is_array($_FILES['upload']))
 		{
@@ -523,6 +525,7 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
 			$overlaps    = $input->getInt('overlaps', $currentICS->overlaps);
 			$autorefesh  = $input->getInt('autorefresh', $currentICS->autorefresh);
 			$ignoreembed = $input->getInt('ignoreembedcat', $currentICS->ignoreembedcat);
+			$createnewcategories = $input->getInt('createnewcategories', $currentICS->createnewcategories);
 
 			// We are only updating identifiers etc
 			$ics = new iCalICSFile($db);
@@ -536,6 +539,7 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
 			$ics->label          = $icsLabel;
 			$ics->srcURL         = $uploadURL;
 			$ics->ignoreembedcat = $ignoreembed;
+			$ics->createnewcategories = $createnewcategories;
 			$ics->autorefresh    = $autorefesh;
 			// TODO update access and state
 			$ics->updateDetails();

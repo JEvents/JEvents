@@ -184,7 +184,7 @@ class JEventsDataModel
 		else
 		{
 			$this->catids = array();
-			if ($catidsIn == "NONE" || $catidsIn == 0)
+			if ($catidsIn == "NONE" || $catidsIn == 0 || $catidsIn == '')
 			{
 				$this->catidList = "";
 				// New system

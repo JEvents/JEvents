@@ -211,7 +211,8 @@ class vEvent// extends CMSObject
 			$description = strtr($description, array_flip(get_html_translation_table(HTML_ENTITIES)));
 			$description = preg_replace("/&#([0-9]+);/me", "chr('\\1')", $description);
 			// quoted_printable_encode	from vCard class
-			$this->addProperty("DESCRIPTION;ENCODING=QUOTED-PRINTABLE", quoted_printable_encode($description));
+			//$this->addProperty("DESCRIPTION;ENCODING=QUOTED-PRINTABLE", quoted_printable_encode($description));
+			$this->addProperty("DESCRIPTION", $description);
 		}
 	}
 

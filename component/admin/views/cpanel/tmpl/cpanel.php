@@ -509,7 +509,7 @@ SCRIPT;
     <form action="<?php echo Route::_('index.php?option=com_jevents'); ?>" method="post" name="adminForm" id="adminForm">
         <input type="hidden" name="task" value=""/>
         <input type="hidden" name="redirecturl" value=""/>
-        <input type="hidden" name="boxchecked" value="0"/>
+        <input type="hidden" name="boxchecked" id="boxchecked" value="0"/>
         <input type="hidden" name="form_submitted" value="1"/>
         <input type="hidden" name="baseurl" id="baseurl" value="<?php echo JURI::root(); ?>"/>
         <input type="hidden" name="listlayout" id="listlayout"  value=""/>

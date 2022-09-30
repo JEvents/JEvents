@@ -150,7 +150,6 @@ class plgFinderJEvents extends Adapter
 		}
 		$detailid = $vevent->detail_id;
 
-
 		// Reindex the item
 		$this->reindex($detailid);
 
@@ -298,8 +297,17 @@ class plgFinderJEvents extends Adapter
 		{
 			$itemid = $item->params->get("permatarget", 0);
 		}
-		$item->url   = "index.php?option=com_jevents&task=icalevent.detail&evid=" . $item->eventid . "&Itemid=" . $itemid;//$this->getURL($item->id, $this->extension, $this->layout);
-		$item->route = "index.php?option=com_jevents&task=icalevent.detail&evid=" . $item->eventid . "&Itemid=" . $itemid;
+		if (false && (int) $item->getElement('rp_id'))
+		{
+			$rpid = (int) $item->getElement('rp_id');
+			$item->url   = "index.php?option=com_jevents&task=icalrepeat.detail&evid=" . $rpid . "&Itemid=" . $itemid;//$this->getURL($item->id, $this->extension, $this->layout);
+			$item->route = "index.php?option=com_jevents&task=icalrepeat.detail&evid=" . $rpid . "&Itemid=" . $itemid;
+		}
+		else
+		{
+			$item->url   = "index.php?option=com_jevents&task=icalevent.detail&evid=" . $item->eventid . "&Itemid=" . $itemid;//$this->getURL($item->id, $this->extension, $this->layout);
+			$item->route = "index.php?option=com_jevents&task=icalevent.detail&evid=" . $item->eventid . "&Itemid=" . $itemid;
+		}
 
 		include_once(JPATH_SITE . "/components/com_jevents/jevents.defines.php");
 
@@ -324,6 +332,26 @@ class plgFinderJEvents extends Adapter
 			catch (Exception $e)
 			{
 
+			}
+
+			$db = Factory::getDbo();
+			$sql = $db->getQuery(true);
+			$sql->select("*")
+				->from("#__jev_files_combined")
+				->where("evdet_id = "  . (int) $theevent[0]->_evdet_id);
+			try
+			{
+                $this->db->setQuery($sql);
+				$images = $db->loadObject();
+				if ($images && isset($images->imagename1) &&  !empty($images->imagename1))
+				{
+					$item->imageUrl = $images->imagename1;
+					$item->imageAlt = $images->imagetitle1 ?? '';
+				}
+			}
+			catch (Exception $e)
+			{
+				$images = false;
 			}
 
 		}
@@ -463,7 +491,12 @@ class plgFinderJEvents extends Adapter
 			throw new Exception($e, 500);
 
 		}
-
+/*
+		echo (string) $sql;
+		echo "<br>";
+		var_dump($row);
+		exit();
+*/
 
 		// Convert the item to a result object.
 		$item = ArrayHelper::toObject($row, 'FinderIndexerResult');

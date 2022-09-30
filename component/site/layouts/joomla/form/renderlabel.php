@@ -31,8 +31,8 @@ if (!empty($description))
 {
 	if ($text && $text !== $description)
 	{
-		JHtml::_('bootstrap.popover');
-		$classes[] = 'hasPopover';
+		//JHtml::_('bootstrap.popover');
+		$classes[] = 'hasYsPopover';
 		$title     = ' title="' . htmlspecialchars(trim($text, ':')) . '"'
 			. ' data-content="'. htmlspecialchars($description) . '"';
 
@@ -43,7 +43,7 @@ if (!empty($description))
 	}
 	else
 	{
-		JHtml::_('bootstrap.tooltip');
+		//JHtml::_('bootstrap.tooltip');
 		$classes[] = 'hasTooltip';
 		$title     = ' title="' . JHtml::_('tooltipText', trim($text, ':'), $description, 0) . '"';
 	}

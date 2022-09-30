@@ -218,7 +218,7 @@ $data['filters'] = $this->filters;
                 </div>
                 <input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>
                 <input type="hidden" name="task" value="icalevent.list"/>
-                <input type="hidden" name="boxchecked" value="0"/>
+                <input type="hidden" name="boxchecked" id="boxchecked" value="0"/>
                 <input type="hidden" name="filter_order" value="<?php echo $order; ?>"/>
                 <input type="hidden" name="filter_order_Dir" value="<?php echo $orderdir; ?>"/>
                 <?php echo HTMLHelper::_('form.token'); ?>

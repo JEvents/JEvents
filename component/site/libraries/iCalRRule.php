@@ -118,7 +118,7 @@ class iCalRRule extends Joomla\CMS\Table\Table
 	 *
 	 * @return n/a
 	 */
-	public function iCalRRuleFromDB($icalrowAsArray)
+	public static function iCalRRuleFromDB($icalrowAsArray)
 	{
 
 		$db   = Factory::getDbo();

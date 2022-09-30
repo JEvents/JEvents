@@ -103,10 +103,12 @@ SCRIPT;
 		$jinput = JFactory::getApplication()->input;
 
 		$comMenus = $jinput->getCmd('option') == "com_menus";
+		$comModules = $jinput->getCmd('option') == "com_modules";
 
 		$task = $jinput->getString("task", $jinput->getString("jevtask", ""));
 		if (!$forceBoostrap
 			&& !$comMenus
+			&& !$comModules
 			&& (
 				Factory::getApplication()->isClient('administrator')
 				|| ( $jevparams->get("newfrontendediting", 1) && ($task == "icalevent.edit" || $task == "icalrepeat.edit"  || $task == "icalevent.list"))
@@ -123,7 +125,7 @@ SCRIPT;
         {
             HTMLHelper::script('com_jevents/lib_jevmodal/jevmodal_gsl.js', array('framework' => false, 'relative' => true, 'pathOnly' => false, 'detectBrowser' => false, 'detectDebug' => true));
         }
-		else if (!$comMenus && strpos($jevparams->get('framework', 'bootstrap'), 'uikit') === 0)
+		else if (!$comMenus && !$comModules && strpos($jevparams->get('framework', 'bootstrap'), 'uikit') === 0)
 		{
 			HTMLHelper::script('com_jevents/lib_jevmodal/jevmodal_uikit.js', array('framework' => false, 'relative' => true, 'pathOnly' => false, 'detectBrowser' => false, 'detectDebug' => true));
 
@@ -209,6 +211,7 @@ SCRIPT;
 
 		if (version_compare(JVERSION, '4', 'ge') && $toolTipType !== 'uikit')
 		{
+
 			// For Joomla 4 we need to change the data attribute - use the native popover method unless specifically using UIKit
 			HTMLHelper::_('bootstrap.popover', $selector, $params);
 			return;
@@ -354,7 +357,9 @@ SCRIPT
 		var bootstrap5 = false;
 		var bootstrap4 = false;
 		try {
-		    var bsVersion = window.bootstrap.Tooltip.VERSION.substr(0,1);
+	        var testClass = window.bootstrap.Tooltip || window.bootstrap.Modal;
+	        var bsVersion = testClass.VERSION.substr(0,1);
+
 		    bootstrap5 = bsVersion >= 5;
 		    bootstrap4 = bsVersion >= 4 && !bootstrap5;
 		} catch (e) {

@@ -21,8 +21,8 @@ function callNavigation(link, datatype) {
             }
             if (json.script) {
                 //alert(json.script);
-                var script = JSON.parse(json.script);
                 try {
+                    var script = JSON.parse(json.script);
                     linkprevious = script.linkprevious;
                     linknext = script.linknext;
                 }
@@ -46,7 +46,8 @@ function callNavigation(link, datatype) {
                     var bootstrap5 = false;
                     var bootstrap4 = false;
                     try {
-                        var bsVersion = window.bootstrap.Tooltip.VERSION.substr(0,1);
+                        var testClass = window.bootstrap.Tooltip || window.bootstrap.Modal;
+                        var bsVersion = testClass.VERSION.substr(0,1);
                         bootstrap5 = bsVersion >= 5;
                         bootstrap4 = bsVersion >= 4 && !bootstrap5;
                     } catch (e) {
@@ -108,8 +109,9 @@ var jevMiniTouchStartX = false;
 var jevMiniTouchStartY = false;
 
 function setupMiniCalTouchInteractions(selector, parent) {
+    var target = parent ? document.querySelector(selector).parentNode : selector;
     if ('ontouchstart' in document.documentElement) {
-        var target = parent ? document.querySelector(selector).parentNode() : selector;
+        var target = parent ? document.querySelector(selector).parentNode : selector;
         target.addEventListener("touchend", function (evt) {
             var touchobj = evt.originalEvent.changedTouches[0];
             var vdist = touchobj.pageY - jevMiniTouchStartY;

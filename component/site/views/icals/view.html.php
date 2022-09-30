@@ -48,13 +48,15 @@ class ICalsViewIcals extends JEventsAbstractView
 
 		// wraplines	from vCard class
 		$cfg = JEVConfig::getInstance();
-		if ($cfg->get("outlook2003icalexport", 0))
+		if ($cfg->get("outlook2003icalexport", 1))
 		{
 			return "DESCRIPTION:" . $this->wraplines($description, 76, false);
 		}
 		else
 		{
-			return "DESCRIPTION;ENCODING=QUOTED-PRINTABLE:" . $this->wraplines($description);
+			// ENCODING=QUOTED-PRINTABLE is deprecated
+			//return "DESCRIPTION;ENCODING=QUOTED-PRINTABLE:" . $this->wraplines($description);
+			return "DESCRIPTION:" . $this->wraplines($description, 76, false);
 
 		}
 	}
@@ -62,8 +64,8 @@ class ICalsViewIcals extends JEventsAbstractView
 	protected function replacetags($description)
 	{
 
-		$description = str_replace('<p>', '\n\n', $description);
-		$description = str_replace('<P>', '\n\n', $description);
+		$description = str_replace('<p>', '', $description);
+		$description = str_replace('<P>', '', $description);
 		$description = str_replace('</p>', '\n', $description);
 		$description = str_replace('</P>', '\n', $description);
 		$description = str_replace('<p/>', '\n\n', $description);
@@ -76,7 +78,7 @@ class ICalsViewIcals extends JEventsAbstractView
 		$description = str_replace('<BR>', '\n', $description);
 		$description = str_replace('<li>', '\n - ', $description);
 		$description = str_replace('<LI>', '\n - ', $description);
-		$description = strip_tags($description);
+		$description = strip_tags($description, '<a>');
 		//$description 	= strtr( $description,	array_flip(get_html_translation_table( HTML_ENTITIES ) ) );
 		//$description 	= preg_replace( "/&#([0-9]+);/me","chr('\\1')", $description );
 		return $description;

@@ -31,6 +31,7 @@ Factory::getDocument()->addScriptDeclaration('
 
 ?>
 <div id="jevents">
+	<div id="jevents_body">
 <form action="<?php echo Route::_('index.php?option=com_jevents&task=icalevent.savetranslation'); ?>" method="post"
       name="adminForm" id="translate-form" class="gsl-form-horizontal form-validate">
 
@@ -133,5 +134,5 @@ Factory::getDocument()->addScriptDeclaration('
 	<input type="hidden" name="task" value="icalevent.savetranslation"/>
 	<?php echo HTMLHelper::_('form.token'); ?>
 </form>
-
+	</div>
 </div>

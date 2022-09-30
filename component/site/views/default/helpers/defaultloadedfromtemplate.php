@@ -15,7 +15,8 @@ use Joomla\CMS\Layout\LayoutHelper;
 
 function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $template_value = false, $runplugins = true, $skipfiles = false)
 {
-	static $processedCssJs = array();
+	static $processedCss = array();
+	static $processedJs = array();
 
 	$jevparams  = ComponentHelper::getParams(JEV_COM_COMPONENT);
 	$db         = Factory::getDbo();
@@ -139,17 +140,17 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					}
 					if (isset($templateparams->customcss) && !empty($templateparams->customcss))
 					{
-						if (!in_array($templateparams->customcss, $processedCssJs))
+						if (!in_array($templateparams->customcss, $processedCss))
 						{
-							$processedCssJs[] = $templateparams->customcss;
-							Factory::getDocument()->addStyleDeclaration($templateparams->customcss);
+							$processedCss[] = $templateparams->customcss;
+							//Factory::getDocument()->addStyleDeclaration($templateparams->customcss);
 						}
 					}
 					if (isset($templateparams->customjs) && !empty($templateparams->customjs))
 					{
-						if (!in_array($templateparams->customjs, $processedCssJs))
+						if (!in_array($templateparams->customjs, $processedJs))
 						{
-							$processedCssJs[] = $templateparams->customjs;
+							$processedJs[] = $templateparams->customjs;
 							Factory::getDocument()->addScriptDeclaration($templateparams->customjs);
 						}
 					}
@@ -263,8 +264,11 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					// non greedy replacement - because of the ?
 					$templates[$template_name][$catid]->value = preg_replace_callback('|{{.*?}}|', 'cleanLabels', $templates[$template_name][$catid]->value);
 
+					$customcss = $templates[$template_name][$catid]->params->get('customcss', '');
+					$customcss = preg_replace_callback('|{{.*?}}|', 'cleanLabels', $customcss);
+
 					$matchesarray = array();
-					preg_match_all('|{{.*?}}|', $templates[$template_name][$catid]->value, $matchesarray);
+					preg_match_all('|{{.*?}}|', $templates[$template_name][$catid]->value . $customcss, $matchesarray);
 
 					$templates[$template_name][$catid]->matchesarray = $matchesarray;
 				}
@@ -352,16 +356,16 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		$loadedFromFile = isset($template->fromfile);
 
 		$customcss = $template->params->get('customcss', '');
-		if (!in_array($customcss, $processedCssJs))
+		if (!in_array($customcss, $processedCss))
 		{
-			$processedCssJs[] = $customcss;
-			Factory::getDocument()->addStyleDeclaration($customcss);
+			$processedCss[] = $customcss;
+			//Factory::getDocument()->addStyleDeclaration($customcss);
 		}
 
 		$customjs = $template->params->get('customjs', '');
-		if (!in_array($customjs, $processedCssJs))
+		if (!in_array($customjs, $processedJs))
 		{
-			$processedCssJs[] = $customjs;
+			$processedJs[] = $customjs;
 			Factory::getDocument()->addScriptDeclaration($customjs);
 		}
 
@@ -439,23 +443,23 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		}
 		if (isset($templateparams->customcss) && !empty($templateparams->customcss) )
 		{
-			if (!in_array($templateparams->customcss, $processedCssJs))
+			if (!in_array($templateparams->customcss, $processedCss))
 			{
-				$processedCssJs[] = $templateparams->customcss;
-				Factory::getDocument()->addStyleDeclaration($templateparams->customcss);
+				$processedCss[] = $templateparams->customcss;
+				//Factory::getDocument()->addStyleDeclaration($templateparams->customcss);
 			}
 		}
 		if (isset($templateparams->customjs) && !empty($templateparams->customjs) )
 		{
-			if (!in_array($templateparams->customjs, $processedCssJs))
+			if (!in_array($templateparams->customjs, $processedJs))
 			{
-				$processedCssJs[] = $templateparams->customjs;
+				$processedJs[] = $templateparams->customjs;
 				Factory::getDocument()->addScriptDeclaration($templateparams->customjs);
 			}
 		}
 
 		// non greedy replacement - because of the ?
-		$template_value = preg_replace_callback('|{{.*?}}|', 'cleanLabels', $template_value);
+		$template_value = preg_replace_callback('|{{.*?}}|', 'cleanLabels', $template_value . implode("\n", $processedCss));
 
 		$matchesarray = array();
 		preg_match_all('|{{.*?}}|', $template_value, $matchesarray);
@@ -493,6 +497,29 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		// Built in fields
 		switch ($strippedmatch)
 		{
+			case "{{ATTACH}}":
+				$search[]  = "{{ATTACH}}";
+				if (isset($event->_evrawdata) && !empty($event->_evrawdata))
+				{
+					try
+					{
+						$rawdata = unserialize($event->_evrawdata);
+						if (isset($rawdata["ATTACH"]) && count($rawdata["ATTACH"]))
+						{
+							$replace[] = $rawdata["ATTACH"][0];
+						}
+					}
+					catch (Exception $e)
+					{
+						$replace[] = "";
+					}
+				}
+				else
+				{
+					$replace[] = "";
+				}
+				$blank[]   = "";
+				break;
 			case "{{TITLE}}":
 				$search[]  = "{{TITLE}}";
 				$replace[] = $event->title();
@@ -1872,23 +1899,13 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				$blank[]   = "";
 				break;
 
-			default:
-				$strippedmatch = str_replace(array("{", "}"), "", $strippedmatch);
-				if (is_callable(array($event, $strippedmatch)))
-				{
-					$search[]  = "{{" . $strippedmatch . "}}";
-					$replace[] = $event->$strippedmatch();
-					$blank[]   = "";
-				}
-				break;
-
 			case "{{LDJSON}}" :
 				if ($template_name === "icalevent.detail_body"
-                    && $jevparams->get("enable_gsed", 0)
-                    && $jevparams->get("sevd_imagename", 0)
+					&& $jevparams->get("enable_gsed", 0)
+					&& $jevparams->get("sevd_imagename", 0)
 					&& $jevparams->get("permatarget", 0)
-                    && $hasLocationOrIsOnline
-                )
+					&& $hasLocationOrIsOnline
+				)
 				{
 
 					$lddata = array();
@@ -1959,119 +1976,119 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 							$lddata["image"] = plgJEventsjevfiles::getSizedImageUrl($event, $imageurl, $jevparams->get('sevd_imagesize', '1920x1920'), $imgpluginparams);
 						}
 						catch (Exception $e)
-                        {
-                            // for sites that haven't upgraded standard images
-	                        $lddata["image"] = $event->$imageurl;
-	                        if (strpos($lddata["image"], "/") === 0)
-	                        {
-		                        $lddata["image"] = substr($lddata["image"], 1);
-	                        }
-	                        // no need to add host details to call to getSizedImage Url
-	                        $lddata["image"] = array(JURI::root(false)  . $lddata["image"]);
-                        }
+						{
+							// for sites that haven't upgraded standard images
+							$lddata["image"] = $event->$imageurl;
+							if (strpos($lddata["image"], "/") === 0)
+							{
+								$lddata["image"] = substr($lddata["image"], 1);
+							}
+							// no need to add host details to call to getSizedImage Url
+							$lddata["image"] = array(JURI::root(false)  . $lddata["image"]);
+						}
 
 						if ($resetparams)
-                        {
-	                        $imgpluginparams->set("defaultimage", "");
-	                        $imgplugin->params = json_encode($imgpluginparams);
-                        }
+						{
+							$imgpluginparams->set("defaultimage", "");
+							$imgplugin->params = json_encode($imgpluginparams);
+						}
 					}
 
 					if (isset($event->_jevlocation))
-                    {
-                        $loc = array();
-	                    $loc["@type"] = "Place";
-	                    $loc["name"] = $event->_jevlocation->title;
-	                    $address = array();
-	                    if (isset($event->_jevlocation->street) && !empty($event->_jevlocation->street))
-	                    {
-		                    $address["streetAddress"] = $event->_jevlocation->street;
-	                    }
-	                    if (isset($event->_jevlocation->postcode) && !empty($event->_jevlocation->postcode))
-	                    {
-		                    $address["postalCode"] = $event->_jevlocation->postcode;
-	                    }
-	                    if (isset($event->_jevlocation->city) && !empty($event->_jevlocation->city))
-	                    {
-		                    $address["addressLocality"] = $event->_jevlocation->city;
-	                    }
-	                    if (isset($event->_jevlocation->state) && !empty($event->_jevlocation->state))
-	                    {
-		                    $address["addressRegion"] = $event->_jevlocation->state;
-	                    }
-	                    if (isset($event->_jevlocation->country) && !empty($event->_jevlocation->country))
-	                    {
-		                    $address["addressCountry"] = $event->_jevlocation->country;
-	                    }
-	                    // Structured data needs a valid address
-	                    if (!empty($address))
-                        {
-	                        $address["@type"] = "PostalAddress";
-	                        $loc["address"] = $address;
+					{
+						$loc = array();
+						$loc["@type"] = "Place";
+						$loc["name"] = $event->_jevlocation->title;
+						$address = array();
+						if (isset($event->_jevlocation->street) && !empty($event->_jevlocation->street))
+						{
+							$address["streetAddress"] = $event->_jevlocation->street;
+						}
+						if (isset($event->_jevlocation->postcode) && !empty($event->_jevlocation->postcode))
+						{
+							$address["postalCode"] = $event->_jevlocation->postcode;
+						}
+						if (isset($event->_jevlocation->city) && !empty($event->_jevlocation->city))
+						{
+							$address["addressLocality"] = $event->_jevlocation->city;
+						}
+						if (isset($event->_jevlocation->state) && !empty($event->_jevlocation->state))
+						{
+							$address["addressRegion"] = $event->_jevlocation->state;
+						}
+						if (isset($event->_jevlocation->country) && !empty($event->_jevlocation->country))
+						{
+							$address["addressCountry"] = $event->_jevlocation->country;
+						}
+						// Structured data needs a valid address
+						if (!empty($address))
+						{
+							$address["@type"] = "PostalAddress";
+							$loc["address"] = $address;
 
-	                        $lddata["location"] = $loc;
-	                        $lddata["eventAttendanceMode"] = "https://schema.org/OfflineEventAttendanceMode";
-                        }
-                    }
+							$lddata["location"] = $loc;
+							$lddata["eventAttendanceMode"] = "https://schema.org/OfflineEventAttendanceMode";
+						}
+					}
 
-                    if (isset($event->_jevpeople) && count($event->_jevpeople))
-                    {
-                        foreach ($event->_jevpeople as $person)
-                        {
-                            if ($person->type_id == $jevparams->get("sevd_peopletype", -1))
-                            {
-                                $pdata = array();
-                                $pdata["@type"] = "PerformingGroup";
-                                $pdata["name"] = $person->title;
+					if (isset($event->_jevpeople) && count($event->_jevpeople))
+					{
+						foreach ($event->_jevpeople as $person)
+						{
+							if ($person->type_id == $jevparams->get("sevd_peopletype", -1))
+							{
+								$pdata = array();
+								$pdata["@type"] = "PerformingGroup";
+								$pdata["name"] = $person->title;
 
-                                $lddata["performer"] = $pdata;
-                                break;
-                            }
-                        }
-	                    foreach ($event->_jevpeople as $person)
-	                    {
-		                    if ($person->type_id == $jevparams->get("sevd_organizertype", -1))
-		                    {
-			                    $pdata = array();
-			                    $pdata["@type"] = "Organization";
-			                    $pdata["name"] = $person->title;
-			                    if (isset($person->www) && !empty($person->www))
-			                    {
-				                    $pdata["url"] = $person->www;
-			                    }
+								$lddata["performer"] = $pdata;
+								break;
+							}
+						}
+						foreach ($event->_jevpeople as $person)
+						{
+							if ($person->type_id == $jevparams->get("sevd_organizertype", -1))
+							{
+								$pdata = array();
+								$pdata["@type"] = "Organization";
+								$pdata["name"] = $person->title;
+								if (isset($person->www) && !empty($person->www))
+								{
+									$pdata["url"] = $person->www;
+								}
 
-			                    $lddata["organizer"] = $pdata;
-			                    break;
-		                    }
-	                    }
-                    }
+								$lddata["organizer"] = $pdata;
+								break;
+							}
+						}
+					}
 
 					$onlineevent = $jevparams->get("sevd_onlineeventfield", 0);
-                    if ($onlineevent !== 0 && isset($event->customfields) && isset($event->customfields[$onlineevent]) && !empty($event->customfields[$onlineevent]['value']))
-                    {
-                    	if (isset($lddata["location"]))
-	                    {
-		                    $lddata["location"] = array($lddata["location"]);
+					if ($onlineevent !== 0 && isset($event->customfields) && isset($event->customfields[$onlineevent]) && !empty($event->customfields[$onlineevent]['value']))
+					{
+						if (isset($lddata["location"]))
+						{
+							$lddata["location"] = array($lddata["location"]);
 
-		                    $loc = array();
-		                    $loc["@type"] = "VirtualLocation";
-		                    $loc["url"] = $event->customfields[$onlineevent]['value'];
+							$loc = array();
+							$loc["@type"] = "VirtualLocation";
+							$loc["url"] = $event->customfields[$onlineevent]['value'];
 
-		                    $lddata["location"][] = $loc;
+							$lddata["location"][] = $loc;
 
-		                    $lddata["eventAttendanceMode"] = "https://schema.org/MixedEventAttendanceMode";
-	                    }
-                    	else
-	                    {
-		                    $lddata["eventAttendanceMode"] = "https://schema.org/OnlineEventAttendanceMode";
-		                    $loc = array();
-		                    $loc["@type"] = "VirtualLocation";
-		                    $loc["url"] = $event->customfields[$onlineevent]['value'];
+							$lddata["eventAttendanceMode"] = "https://schema.org/MixedEventAttendanceMode";
+						}
+						else
+						{
+							$lddata["eventAttendanceMode"] = "https://schema.org/OnlineEventAttendanceMode";
+							$loc = array();
+							$loc["@type"] = "VirtualLocation";
+							$loc["url"] = $event->customfields[$onlineevent]['value'];
 
-		                    $lddata["location"] = $loc;
-	                    }
+							$lddata["location"] = $loc;
+						}
 
-                    }
+					}
 
 					$eventstatus = $jevparams->get("sevd_eventstatus", 0);
 					if ($eventstatus !== 0 && isset($event->customfields) && isset($event->customfields[$eventstatus]) && !empty($event->customfields[$eventstatus]['rawvalue']))
@@ -2092,9 +2109,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						}
 					}
 
-                    // TODO RSVP Pro
-                    /*
-                    $offer = array();
+					// TODO RSVP Pro
+					/*
+					$offer = array();
 					$offer["@type"] = "Offer";
 					//$offer["price"] = 0;
 					//$offer["priceCurrency"] = "USD";
@@ -2103,11 +2120,21 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					$offer["validFrom"] = "2017-01-20T16:20-08:00";
 
 					$lddata["offers"] = array($offer);
-                    */
+					*/
 
 					$search[]  = "{{LDJSON}}";
 					// Structured data needs a valid address
 					$replace[] = isset($lddata["location"]) ? json_encode($lddata) : "";
+					$blank[]   = "";
+				}
+				break;
+
+			default:
+				$strippedmatch = str_replace(array("{", "}"), "", $strippedmatch);
+				if (is_callable(array($event, $strippedmatch)))
+				{
+					$search[]  = "{{" . $strippedmatch . "}}";
+					$replace[] = $event->$strippedmatch();
 					$blank[]   = "";
 				}
 				break;
@@ -2241,6 +2268,11 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		}
 	}
 
+	$processedCssString = implode("\n", $processedCss);
+	// non greedy replacement - because of the ?
+	$processedCssString = preg_replace_callback('|{{.*?}}|', 'cleanLabels', $processedCssString);
+
+
 	for ($s = 0; $s < count($search); $s++)
 	{
 		global $tempreplace, $tempevent, $tempsearch, $tempblank;
@@ -2249,10 +2281,12 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		$tempsearch     = str_replace("}}", "#", $search[$s]);
 		$tempevent      = $event;
 		$template_value = preg_replace_callback("|$tempsearch(.+?)}}|", 'jevSpecialHandling2', $template_value);
+		$processedCssString = preg_replace_callback("|$tempsearch(.+?)}}|", 'jevSpecialHandling2', $processedCssString);
 	}
 
 	// The universal search and replace to finish
 	$template_value = str_replace($search, $replace, $template_value);
+	$processedCssString = str_replace($search, $replace, $processedCssString);
 
 	if ($specialmodules && strpos($template_value, "{{MODULESTART#") !== false)
 	{
@@ -2310,6 +2344,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 	// non greedy replacement - because of the ?
 	$template_value = preg_replace_callback('|{{.*?}}|', 'cleanUnpublished', $template_value);
+	$processedCssString = preg_replace_callback('|{{.*?}}|', 'cleanUnpublished', $processedCssString);
+
+	Factory::getDocument()->addStyleDeclaration($processedCssString);
 
 	// replace [[ with { to that other content plugins can work ok - but not for calendar cell or tooltip since we use [[ there already!
 	if ($template_name != "month.calendar_cell" && $template_name != "month.calendar_tip")

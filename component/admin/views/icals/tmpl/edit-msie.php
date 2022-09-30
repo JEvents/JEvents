@@ -278,7 +278,7 @@ $action = Factory::getApplication()->isAdmin() ? "index.php" : "index.php?option
 		?>
         <input type="hidden" name="icsid" id="icsid"  <?php echo $disabled; ?> value="<?php echo $id; ?>"/>
 		<?php echo HTMLHelper::_('form.token'); ?>
-        <input type="hidden" name="boxchecked" value="0" />
+        <input type="hidden" name="boxchecked" id="boxchecked" value="0" />
         <input type="hidden" name="task" value="icals.edit" />
         <input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>" />
     </form>

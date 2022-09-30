@@ -69,6 +69,7 @@ $action = $app->isClient('administrator') ? "index.php" : Route::_("index.php?op
 	<div id="jevents" <?php
 	echo ($app->isClient('site') && $params->get("darktemplate", 0)) ? "class='jeventsdark'" : "";
 	?> >
+	<div id="jevents_body">
 		<form action="<?php echo $action; ?>" method="post" name="adminForm" enctype='multipart/form-data'
 		      id="adminForm" class="form-horizontal jevbootstrap">
 			<?php
@@ -168,7 +169,7 @@ $action = $app->isClient('administrator') ? "index.php" : Route::_("index.php?op
 			list($year, $month, $day) = JEVHelper::getYMD();
 			?>
 			<input type="hidden" name="jevtype" value="icaldb"/>
-			<input type="hidden" name="boxchecked" value="0"/>
+			<input type="hidden" name="boxchecked" id="boxchecked" value="0"/>
 			<input type="hidden" name="updaterepeats" value="0"/>
 			<input type="hidden" name="task" value="<?php echo $input->getCmd("task", "icalevent.edit"); ?>"/>
 			<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>
@@ -614,6 +615,7 @@ $action = $app->isClient('administrator') ? "index.php" : Route::_("index.php?op
 			?>
 
 		</form>
+	</div>
 	</div>
 <?php
 $app = Factory::getApplication();

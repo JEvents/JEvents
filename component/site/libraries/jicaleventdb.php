@@ -402,7 +402,16 @@ class jIcalEventDB extends jEventCal
 	{
 		if (!isset($this->_byday) || $this->_byday === "")
 		{
-			$this->_byday = "+1WE,+2WE,+3WE,+4WE,+5WE";
+			$firstOfMonth = date("Y-m-01", $this->dtstart());
+			$weeknumber = intval(date("W", $this->dtstart())) - intval(date("W", strtotime($firstOfMonth)));
+			if ($weeknumber > 0 && $weeknumber <= 6)
+			{
+				$this->_byday = "+" . $weeknumber ."WE";
+			}
+			else
+			{
+				$this->_byday = "+1WE,+2WE,+3WE,+4WE,+5WE";
+			}
 		}
 		if (isset($this->_byday) && $this->_byday != "")
 		{

@@ -17,7 +17,7 @@ use Joomla\CMS\Component\ComponentHelper;
 
 $app    = Factory::getApplication();
 $params = ComponentHelper::getParams(JEV_COM_COMPONENT);
-if ($app->isClient('administrator') || $params->get("newfrontendediting", 1))
+if ($app->isClient('administrator') || $params->get("newfrontendediting", 1) || version_compare(JVERSION, '4.0' , 'ge'))
 {
 	echo $this->loadTemplate('uikit');
 	return;
@@ -316,7 +316,7 @@ $action = Factory::getApplication()->isClient('administrator') ? "index.php" : "
 		?>
 		<input type="hidden" name="icsid" id="icsid" <?php echo $disabled; ?> value="<?php echo $id; ?>"/>
 		<?php echo HTMLHelper::_('form.token'); ?>
-		<input type="hidden" name="boxchecked" value="0"/>
+		<input type="hidden" name="boxchecked" id="boxchecked" value="0"/>
 		<input type="hidden" name="task" value="icals.edit"/>
 		<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>
 	</form>

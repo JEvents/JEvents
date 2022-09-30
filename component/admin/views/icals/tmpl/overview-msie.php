@@ -176,7 +176,7 @@ $fullspan = 12;
 		<?php echo HTMLHelper::_('form.token'); ?>
         <input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>" />
         <input type="hidden" name="task" value="icals.list" />
-        <input type="hidden" name="boxchecked" value="0" />
+        <input type="hidden" name="boxchecked" id="boxchecked" value="0" />
     </div>
 </form>
 

@@ -91,6 +91,8 @@
         <copy file="../${genericfolder}/admin/assets/css/j3.css" todir="${builddir}/${genericfolder}/component/site/assets/css/" />
         <copy file="../${genericfolder}/admin/assets/css/j4.css" todir="${builddir}/${genericfolder}/component/site/assets/css/" />
         <copy file="../${genericfolder}/admin/assets/css/jevents.css" todir="${builddir}/${genericfolder}/component/site/assets/css/" />
+        <copy file="../${genericfolder}/admin/assets/js/gslframework.min.js" todir="${builddir}/${genericfolder}/component/site/assets/js/" />
+        <copy file="../${genericfolder}/admin/assets/js/jevents.min.js" todir="${builddir}/${genericfolder}/component/site/assets/js/" />
 
         <phingcall target="sedreplace">
             <property name="name" value="${genericfolder}" />
@@ -438,6 +440,7 @@
             <fileset refid="packagedir" />
         </zip>
         <copy file="${builddir}/../pkg_jevents_${extension.version}.zip" tofile="${builddir}/../pkg_jevents.zip" />
+
         <delete dir="${builddir}" includeemptydirs="true" verbose="false" failonerror="true" />
 
 

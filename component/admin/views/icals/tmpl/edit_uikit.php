@@ -17,6 +17,9 @@ use Joomla\CMS\HTML\HTMLHelper;
 global $task, $catid;
 $db = Factory::getDbo();
 
+HTMLHelper::_('jquery.framework');
+JEVHelper::script('showon.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
+
 $uEditor = Factory::getUser()->getParam('editor', Factory::getConfig()->get('editor', 'none'));
 
 $editor = \Joomla\CMS\Editor\Editor::getInstance($uEditor);
@@ -130,9 +133,39 @@ $action = Factory::getApplication()->isClient('administrator') ? "index.php" : "
 				</div>
 			</div>
 
+			<?php
+			if (!isset($this->editItem->createnewcategories) || $this->editItem->createnewcategories == 0)
+			{
+				$checked0 = ' checked="checked"';
+				$checked1 = '';
+			}
+			else
+			{
+				$checked1 = ' checked="checked"';
+				$checked0 = '';
+			}
+			?>
 			<div class="control-group">
 				<div class="control-label">
-					<?php echo Text::_("JEV_FALLBACK_CATEGORY"); ?>
+					<label title="" class="hasTip" for="createnewcategories"
+					       id="createnewcategories-lbl"><?php echo Text::_('JEV_CREATE_NEW_IMPORTED_CATEGORIES'); ?></label>
+				</div>
+				<div class="controls">
+					<fieldset class="radio gsl-button-group" id="createnewcategories">
+						<input id="createnewcategories0" type="radio" class='gsl-hidden' value="0"
+						       name="createnewcategories" <?php echo $checked0; ?>/>
+						<label for="createnewcategories0" class="gsl-button <?php echo empty($checked0) ? "gsl-button-default" : "gsl-button-danger";?> gsl-button-small"><?php echo Text::_('JEV_NO'); ?></label>
+						<input id="createnewcategories1" type="radio" class='gsl-hidden' value="1"
+						       name="createnewcategories" <?php echo $checked1; ?>/>
+						<label for="createnewcategories1" class="gsl-button <?php echo empty($checked1) ? "gsl-button-default" : "gsl-button-primary";?> gsl-button-small"><?php echo Text::_('JEV_YES'); ?></label>
+					</fieldset>
+				</div>
+			</div>
+
+			<div class="control-group"  >
+				<div class="control-label">
+					<strong><?php echo Text::_("JEV_FALLBACK_CATEGORY"); ?></strong><br>
+					<?php echo Text::_("JEV_FALLBACK_CATEGORY_2"); ?>
 				</div>
 				<div class="controls">
 					<?php echo JEventsHTML::buildCategorySelect($catid, "", null, $this->with_unpublished_cat, true, 0, 'catid'); ?>
@@ -151,7 +184,7 @@ $action = Factory::getApplication()->isClient('administrator') ? "index.php" : "
 				$checked0 = '';
 			}
 			?>
-			<div class="control-group">
+			<div class="control-group"  data-showon-gsl='[{"field":"createnewcategories","values":["0"],"sign":"=","op":""}]' >
 				<div class="control-label">
 					<label title="" class="hasTip" for="ignoreembedcat"
 					       id="ignoreembedcat-lbl"><?php echo Text::_('JEV_IGNORE_EMBEDDED_CATEGORIES'); ?></label>
@@ -341,7 +374,7 @@ $action = Factory::getApplication()->isClient('administrator') ? "index.php" : "
 				?>
 				<input type="hidden" name="icsid" id="icsid" <?php echo $disabled; ?> value="<?php echo $id; ?>"/>
 				<?php echo HTMLHelper::_('form.token'); ?>
-				<input type="hidden" name="boxchecked" value="0"/>
+				<input type="hidden" name="boxchecked" id="boxchecked" value="0"/>
 				<input type="hidden" name="task" value="icals.edit"/>
 				<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>
 			</div>

@@ -1,5 +1,5 @@
 /** Joomla 4 **/
-body:not(.with-joomla-sidebar) header.header {
+body:not(.with-joomla-sidebar):not(.site) header.header {
   display: none;
 }
 body.com_jevents,
@@ -37,9 +37,9 @@ body.com_categories .gsl-navbar-nav a[target="_blank"]::before,
 body.com_fields .gsl-navbar-nav a[target="_blank"]::before {
   content: none;
 }
-body.com_jevents:not(.with-joomla-sidebar) header.header,
-body.com_categories:not(.with-joomla-sidebar) header.header,
-body.com_fields:not(.with-joomla-sidebar) header.header {
+body.com_jevents:not(.with-joomla-sidebar):not(.site) header.header,
+body.com_categories:not(.with-joomla-sidebar):not(.site) header.header,
+body.com_fields:not(.with-joomla-sidebar):not(.site) header.header {
   display: none;
 }
 body.com_jevents.with-joomla-sidebar,

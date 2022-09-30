@@ -531,7 +531,7 @@ public function getCal($modid = 0)
 		$specificScript = <<< SCRIPT
 function setupSpecificNavigation()
 {
-setupMiniCalTouchInteractions(".mod_events_table", true);
+setupMiniCalTouchInteractions(".mod_events_table,.jevcalendar ", true);
 }
 SCRIPT;
 

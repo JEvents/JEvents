@@ -1,0 +1,69 @@
+// Name:            JEvents
+// Description:     This is my custom component
+//
+// Component:       `JEvents`
+//
+// Sub-objects:     `jevents-title`
+//
+// ========================================================================
+
+@import  "jevents_card.less";
+
+// Variables
+// ========================================================================
+
+
+// Title group
+@jevents-title-margin:                         40px;
+
+@jevents-title-color:                          #ddd;
+
+@jevents-title-font-family:                    @global-primary-font-family;
+@jevents-title-font-weight:                    @global-primary-font-weight;
+@jevents-title-text-transform:                 @global-primary-text-transform;
+@jevents-title-letter-spacing:                 @global-primary-letter-spacing;
+@jevents-title-font-style:                     @global-primary-font-style;
+
+@jevents-title-text-shadow:                    none;
+
+
+.jevents-title {
+  margin-top: @jevents-title-margin;
+  .hook-jevents-title();
+}
+
+
+//
+// Following properties will only be set if they differ from their default value
+//
+
+// Color
+.hook-jevents-title() when not (@jevents-title-color = transparent) {
+  color: @jevents-title-color;
+}
+
+// Typography
+.hook-jevents-title() when not (@jevents-title-font-family = inherit) {
+  font-family: @jevents-title-font-family;
+}
+
+.hook-jevents-title() when not (@jevents-title-font-weight = inherit) {
+  font-weight: @jevents-title-font-weight;
+}
+
+.hook-jevents-title() when not (@jevents-title-text-transform = inherit) {
+  text-transform: @jevents-title-text-transform;
+}
+
+.hook-jevents-title() when not (@jevents-title-letter-spacing = inherit) {
+  letter-spacing: @jevents-title-letter-spacing;
+}
+
+.hook-jevents-title() when not (@jevents-title-font-style = inherit) {
+  font-style: @jevents-title-font-style;
+}
+
+// Shadows
+.hook-jevents-title() when not (@jevents-title-text-shadow = none) {
+  text-shadow: @jevents-title-text-shadow;
+}

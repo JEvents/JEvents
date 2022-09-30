@@ -50,6 +50,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 	<div id="jevents" <?php
 	echo (!Factory::getApplication()->isClient('administrator') && $params->get("darktemplate", 0)) ? "class='jeventsdark $accesslevels'" : "class='$accesslevels' ";
 	?> >
+	<div id="jevents_body">
 		<form action="<?php echo $action; ?>" method="post" name="adminForm" enctype='multipart/form-data' class="gsl-form-horizontal"
 		      id="adminForm" >
 			<?php
@@ -156,7 +157,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 			list($year, $month, $day) = JEVHelper::getYMD();
 			?>
 			<input type="hidden" name="jevtype" value="icaldb"/>
-			<input type="hidden" name="boxchecked" value="0"/>
+			<input type="hidden" name="boxchecked" id="boxchecked" value="0"/>
 			<input type="hidden" name="updaterepeats" value="0"/>
 			<input type="hidden" name="task" value="<?php echo $input->getCmd("task", "icalevent.edit"); ?>"/>
 			<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>
@@ -756,6 +757,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 			?>
 
 		</form>
+	</div>
 	</div>
 <?php
 $app = Factory::getApplication();

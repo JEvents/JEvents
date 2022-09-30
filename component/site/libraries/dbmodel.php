@@ -29,6 +29,8 @@ class JEventsDBModel
 	var $cfg = null;
 	var $datamodel = null;
 	var $subquery = false;
+	// default multi-day event treatment
+	var $daymultiday = 2;
 
 	public function __construct(&$datamodel)
 	{
@@ -436,11 +438,29 @@ class JEventsDBModel
 							}
 						}
 					}
-					$mmcatidList = implode(",", $mmcatids);
+
+					$specificCatids = array();
+					foreach ($catids as $specificCatid)
+					{
+						$specificCat      = $mmcats->get($specificCatid);
+						$specificCatids[] = $specificCatid;
+						if ($specificCat && $specificCat->hasChildren())
+						{
+							$kids = $specificCat->getChildren(true);
+							foreach ($kids as $kid)
+							{
+								$specificCatids[] = $kid->id;
+							}
+						}
+					}
+
+					$catids   = array_intersect($mmcatids, $specificCatids);
+
 				}
-
-
-				$catids   = array_intersect($mmcatids, $catids);
+				else
+				{
+					$catids   = array_intersect($mmcatids, $catids);
+				}
 				$catids   = array_values($catids);
 				$catids[] = -1;
 				// hardening!
@@ -612,7 +632,7 @@ class JEventsDBModel
 			$extrajoin  = (count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '');
 			$extrawhere = (count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '');
 
-			$query = "SELECT ev.*, ev.state as published, rpt.*, rr.*, det.* $extrafields, ev.created as created "
+			$query = "SELECT ev.*, ev.state as published, rpt.*, rr.*, det.* $extrafields, ev.rawdata as evrawdata, ev.created as created "
 				. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
 				. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
 				. "\n , HOUR(rpt.startrepeat) as hup, MINUTE(rpt.startrepeat ) as minup, SECOND(rpt.startrepeat ) as sup"
@@ -1095,7 +1115,7 @@ class JEventsDBModel
 			. " \n AND icsf.state=1"
 			. "\n AND icsf.access  IN (" . JEVHelper::getAid($user) . ")"
 			// published state is now handled by filter
-			. "\n AND rpt.startrepeat=(SELECT MIN(rptq.startrepeat) FROM #__jevents_repetition as rptq WHERE rptq.eventid=rpt.eventid AND rptq.startrepeat >= '$t_datenowSQL' AND rptq.startrepeat <= '$enddate' $multiday3)"
+			. "\n AND rpt.startrepeat=(SELECT MIN(rptq.startrepeat) FROM #__jevents_repetition as rptq WHERE rptq.eventid=ev.ev_id AND rptq.startrepeat >= '$t_datenowSQL' AND rptq.startrepeat <= '$enddate' $multiday3)"
 			. "\n GROUP BY ev.ev_id";
 
 		// always in reverse hits  order!
@@ -1274,6 +1294,8 @@ class JEventsDBModel
 			}
 		}
 		$rptwhere = (count($rptwhere) ? ' AND ' . implode(' AND ', $rptwhere) : '');
+		$rptwhere = str_replace("rpt2.", "rptq.", $rptwhere);
+		$rptwherex = str_replace("rptq.", "rptx.", $rptwhere);
 
 		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList(JEVHelper::getAid($user), null, null, false, true, $includeSubs) . ")";
 		$params   = ComponentHelper::getParams("com_jevents");
@@ -1378,7 +1400,7 @@ class JEventsDBModel
 					. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 					. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 					. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-					. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+					. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 					. $extrajoin
 					. $catwhere
 					// New equivalent but simpler test
@@ -1393,7 +1415,7 @@ class JEventsDBModel
 					// published state is now handled by filter
 					. "\n AND rpt.startrepeat=(
 				SELECT MIN(rptq.startrepeat) FROM #__jevents_repetition as rptq
-				WHERE rptq.eventid=rpt.eventid
+				WHERE rptq.eventid=ev.ev_id
 				AND  (
 					(rptq.startrepeat >= '$t_datenowSQL' AND rptq.startrepeat <= '$enddate')
 					OR (rptq.startrepeat <= '$t_datenowSQL' AND rptq.endrepeat  > '$t_datenowSQL'  $multiday3)
@@ -1459,7 +1481,7 @@ class JEventsDBModel
 					// published state is now handled by filter
 					. "\n AND rpt.startrepeat=(
 					SELECT MAX(rptq.startrepeat) FROM #__jevents_repetition as rptq
-					 WHERE rptq.eventid=rpt.eventid
+					 WHERE rptq.eventid=ev.ev_id
 					AND rptq.startrepeat <= '$t_datenowSQL' AND rptq.startrepeat >= '$startdate'
 					$rptwhere
 				)
@@ -1524,9 +1546,9 @@ class JEventsDBModel
 					/*
 					  . "\n AND rpt.startrepeat=(
 					  SELECT MAX(rptq.startrepeat) FROM #__jevents_repetition as rptq
-					  WHERE rptq.eventid=rpt.eventid
+					  WHERE rptq.eventid=ev.ev_id
 					  AND rptq.startrepeat <= '$t_datenowSQL' AND rptq.endrepeat >= '$t_datenowSQL'
-					  $rptwhere
+					  $rptwherex
 					  )"
 					 */
 					// This is the alternative - it could produce unexpected results if you have overlapping repeats over 'now' but this is  low risk
@@ -2202,6 +2224,8 @@ class JEventsDBModel
 			}
 		}
 		$rptwhere = (count($rptwhere) ? ' AND ' . implode(' AND ', $rptwhere) : '');
+		$rptwhere = str_replace("rpt2.", "rptq.", $rptwhere);
+		$rptwherex = str_replace("rptq.", "rptx.", $rptwhere);
 
 		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
 		$params   = ComponentHelper::getParams("com_jevents");
@@ -2295,7 +2319,7 @@ class JEventsDBModel
 					// published state is now handled by filter
 					. "\n AND rpt.startrepeat=(
 				SELECT MIN(rptq.startrepeat) FROM #__jevents_repetition as rptq
-				WHERE rptq.eventid=rpt.eventid
+				WHERE rptq.eventid=ev.ev_id
 				AND  (
 					(rptq.startrepeat >= '$t_datenowSQL' AND rptq.startrepeat <= '$enddate')
 					OR (rptq.startrepeat <= '$t_datenowSQL' AND rptq.endrepeat  > '$t_datenowSQL'  $multiday3)
@@ -2356,7 +2380,7 @@ class JEventsDBModel
 					// published state is now handled by filter
 					. "\n AND rpt.startrepeat=(
 					SELECT MAX(rptq.startrepeat) FROM #__jevents_repetition as rptq
-					 WHERE rptq.eventid=rpt.eventid
+					 WHERE rptq.eventid=ev.ev_id
 					AND rptq.startrepeat <= '$t_datenowSQL' AND rptq.startrepeat >= '$startdate'
 					$rptwhere
 				)
@@ -2413,9 +2437,9 @@ class JEventsDBModel
 					/*
 					  . "\n AND rpt.startrepeat=(
 					  SELECT MAX(rptq.startrepeat) FROM #__jevents_repetition as rptq
-					  WHERE rptq.eventid=rpt.eventid
+					  WHERE rptq.eventid=ev.ev_id
 					  AND rptq.startrepeat <= '$t_datenowSQL' AND rptq.endrepeat >= '$t_datenowSQL'
-					  $rptwhere
+					  $rptwherex
 					  )"
 					 */
 					// This is the alternative - it could produce unexpected results if you have overlapping repeats over 'now' but this is  low risk
@@ -2862,6 +2886,9 @@ class JEventsDBModel
 		//$startdate = JevDate::strftime('%Y-%m-%d %H:%M:%S', $startdate+10800);
 		//$enddate = JevDate::strftime('%Y-%m-%d %H:%M:%S', $enddate+10800);
 
+		$params   = ComponentHelper::getParams("com_jevents");
+		$this->daymultiday             = intval($params->get('daymultiday', 0));
+
 		return $this->listIcalEvents($startdate, $enddate);
 
 	}
@@ -2929,6 +2956,14 @@ class JEventsDBModel
 		else
 		{
 			$filters->setWhereJoin($extrawhere, $extrajoin);
+		}
+
+		// Do we only show multiday events on the first day?
+		if ($this->daymultiday == 2)
+		{
+
+			$extrawhere[] = "rpt.startrepeat >= '$startdate' ";
+
 		}
 
 		if ($debuginfo)
@@ -3017,7 +3052,7 @@ class JEventsDBModel
 
 				$extrajoin = (count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '');
 
-				$query = "SELECT det.evdet_id as detailid, rpt.*, ev.*, rr.*, det.* ,  ev.state as published, ev.created as created $extrafields"
+				$query = "SELECT det.evdet_id as detailid, rpt.*, ev.*, rr.*, det.* , ev.rawdata as evrawdata,  ev.state as published, ev.created as created $extrafields"
 					. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
 					. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
 					. "\n , HOUR(rpt.startrepeat) as hup, MINUTE(rpt.startrepeat ) as minup, SECOND(rpt.startrepeat ) as sup"
@@ -3075,7 +3110,7 @@ class JEventsDBModel
 
 			// This version picks the details from the details table
 			// ideally we should check if the event is a repeat but this involves extra queries unfortunately
-			$query = "SELECT det.evdet_id as detailid, rpt.*, ev.*, rr.*, det.* ,  ev.state as published, ev.created as created $extrafields"
+			$query = "SELECT det.evdet_id as detailid, rpt.*, ev.*, rr.*, det.* , ev.rawdata as evrawdata,  ev.state as published, ev.created as created $extrafields"
 				. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
 				. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
 				. "\n , HOUR(rpt.startrepeat) as hup, MINUTE(rpt.startrepeat ) as minup, SECOND(rpt.startrepeat ) as sup"
@@ -3111,6 +3146,7 @@ class JEventsDBModel
 			{
 				$db = Factory::getDbo();
 				$db->setQuery($query);
+				echo "<pre>" .  $db->replacePrefix((string) $db->getQuery()) . "</pre>";
 				$rows = $db->loadObjectList();
 				list ($usec, $sec) = explode(" ", microtime());
 				$time_end = (float) $usec + (float) $sec;
@@ -3539,7 +3575,10 @@ class JEventsDBModel
 	function listIcalEventsByRange($startdate, $enddate, $limitstart, $limit, $showrepeats = true, $order = "rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC", $filters = false, $extrafields = "", $extratables = "", $count = false)
     {
 
-        $app = Factory::getApplication();
+	    $params   = ComponentHelper::getParams("com_jevents");
+	    $this->daymultiday             = intval($params->get('daymultiday', 0));
+
+	    $app = Factory::getApplication();
         $input = $app->input;
         list($year, $month, $day) = explode('-', $startdate);
         list($thisyear, $thismonth, $thisday) = JEVHelper::getYMD();
@@ -3608,7 +3647,15 @@ class JEventsDBModel
             $catwhere = "\n WHERE 1 ";
         }
 
-        $extrajoin = (count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '');
+	    // Do we only show multiday events on the first day?
+	    if ($this->daymultiday == 2)
+	    {
+
+		    $extrawhere[] = "rpt.startrepeat >= '$startdate' ";
+
+	    }
+
+	    $extrajoin = (count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '');
         $extrawhere = (count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '');
         $extrawhere2 = (count($extrawhere2) ? ' AND ' . implode(' AND ', $extrawhere2) : '');
 
@@ -3755,7 +3802,7 @@ class JEventsDBModel
 	 *
 	 * @return jeventcal (or desencent)
 	 */
-	function getEventById($evid, $includeUnpublished = 0, $jevtype = "icaldb", $checkAccess = true)
+	function getEventById($evid, $includeUnpublished = 0, $jevtype = "icaldb", $checkAccess = true, $skipFilters = false)
 	{
 
 		$user = Factory::getUser();
@@ -3783,6 +3830,11 @@ class JEventsDBModel
 				$filterarray = array("published", "justmine", "search", "repeating");
 			}
 
+			if ($skipFilters)
+			{
+				$filterarray = array();
+			}
+
 			// If there are extra filters from the module then apply them now
 			$reg       = Factory::getConfig();
 			$modparams = $reg->get("jev.modparams", false);
@@ -3795,7 +3847,10 @@ class JEventsDBModel
 			$filters->setWhereJoin($extrawhere, $extrajoin);
 			$needsgroup = $filters->needsGroupBy();
 
-			$app->triggerEvent('onListEventsById', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin));
+			if (!$skipFilters)
+			{
+				$app->triggerEvent('onListEventsById', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin));
+			}
 
 			$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList(null, null, null, false, $checkAccess) . ")";
 			$params   = ComponentHelper::getParams("com_jevents");
@@ -3816,8 +3871,8 @@ class JEventsDBModel
 
 			$extrajoin  = (count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '');
 			$extrawhere = (count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '');
-			// make sure we pick up the event state
 
+			// make sure we pick up the event state
 			$query = "SELECT ev.*, rpt.*, rr.*, det.* $extrafields , ev.state as state,  ev.state as published "
 				. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
 				. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"

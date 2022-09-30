@@ -44,6 +44,13 @@ function Defaultgetstartenddates($view)
 	$startdate = $app->getUserStateFromRequest('range_startdate' . $Itemid, 'startdate', $input->getString("startdate"));
 	$enddate   = $app->getUserStateFromRequest('range_enddate' . $Itemid, 'enddate', $input->getString("enddate"));
 
+	if ($jevtask == "day.listevents" && empty($input->get('enddate', '')) && empty($input->get('range_startdate', '')))
+	{
+		list($year, $month, $day) = JEVHelper::getYMD();
+		$startdate = "$year-$month-$day";
+		$enddate = "$year-$month-$day";
+	}
+
 	if ($startdate != "")
 	{
 		// WE have specified a start date in the URL so we should use it!

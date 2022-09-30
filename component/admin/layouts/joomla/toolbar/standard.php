@@ -25,11 +25,18 @@ $task     = isset($displayData['task'])   ? $displayData['task'] : false;
 $class    = $displayData['class'];
 $text     = $displayData['text'];
 $btnClass = $displayData['btnClass'];
+$listCheck = isset($displayData['listCheck'])   ? $displayData['listCheck'] : false;
 
 if (!$doTask && $task)
 {
 	$doTask = "Joomla.submitbutton('" . $task . "')";
+	if ($listCheck)
+	{
+		$doTask = "if ( document.getElementById('boxchecked').value > 0 ) { " . $doTask . " } else alert ('" . JText::_('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST', true) . "');";
+
+	}
 }
+
 $displayData['gslicon'] = str_replace("icon-", "", $class);
 
 if (strpos($displayData['gslicon'], " ") > 0)

@@ -1,0 +1,1114 @@
+/*
+* We can use this approach to offer customised colour schemes!
+ */
+/*
+
+:root {
+  --defaultbackground   : #fddff;
+  --mutedbackground     : #f8f8f8;
+  --primarybackground   : #1e87f0;
+  --secondarybackground : #222;
+  --successbackground   : #32d296;
+  --warningbackground   : #faa05a;
+  --dangerbackground    : #f0506e;
+};
+*/
+/* Global fix for off canvas causing body to scroll when showing */
+body,
+body.com_jevents {
+  height: initial;
+}
+/* Put responsive.less at the bottom so it can override other values */
+#gslc.gsl-scope {
+  /*
+ * Divider override UIkit default - default in 3.3.7 leaves top list item squashed - especially in narrow screen mode
+ */
+  /*
+  .gsl-button.gsl-button-small {
+    line-height: 25px;
+    font-size: 0.8rem;
+  }
+*/
+  /* -- Top navigation -- */
+  /* Smaller Header */
+  /* Left bar */
+  /* Left bar links */
+  /* Search nav */
+  /* Smooth shadow transition */
+  /* Charts */
+  /** System alert Messages **/
+  /* list view button groups */
+  /* progressmodal in sidebar */
+  /* Upload modal styling */
+  /* list views page */
+  /* hide dodgy virtuemart menu - breaks hathor layouts!*/
+  /* system message icons */
+  /* Action Panel CSS */
+  /** End Action Panel CSS **/
+  /* popovers and tooltips */
+  /*
+    Problem with Safari with not navigation positioned badly
+   */
+  /* Make sure lighbox is at the very top! */
+}
+#gslc.gsl-scope .left-nav.gsl-list > li:nth-child(n+2) {
+  margin-top: 0;
+}
+#gslc.gsl-scope .gsl-list-divider > li {
+  padding-top: 10px;
+}
+#gslc.gsl-scope .gsl-button-mini {
+  padding: 0 5px;
+  line-height: 20px;
+  font-size: 0.65rem;
+}
+#gslc.gsl-scope #top-head {
+  z-index: 9;
+}
+#gslc.gsl-scope #top-head h1.ysts-page-title,
+#gslc.gsl-scope #top-head h1.page-title {
+  font-size: 1.5em;
+  line-height: 50px;
+  color: #fff;
+  padding: 0 0 0 10px;
+  margin: 0;
+  /* Icon for com_categories */
+}
+#gslc.gsl-scope #top-head h1.ysts-page-title span,
+#gslc.gsl-scope #top-head h1.page-title span {
+  display: none;
+}
+#gslc.gsl-scope .gsl-navbar-nav > li > a,
+#gslc.gsl-scope .gsl-navbar-item,
+#gslc.gsl-scope .gsl-navbar-toggle {
+  /* navbar height */
+  min-height: 52px;
+  padding: 0 8px;
+  font-size: 0.85rem;
+  color: #FFF;
+}
+#gslc.gsl-scope #left-col {
+  position: relative;
+  left: 0;
+  top: 0;
+  /* overflow-x: hidden; safari */
+  z-index: 1000;
+  transition: height 0.3s ease-out;
+  width: 50px;
+  /* msie */
+}
+#gslc.gsl-scope #left-col .left-nav-wrap {
+  position: fixed;
+  margin-top: 50px;
+  height: calc(100% - 50px);
+  z-index: 10;
+  /* msie 11 */
+}
+#gslc.gsl-scope #left-col .left-nav-wrap :hover .left-nav {
+  transition: 0.4s;
+}
+#gslc.gsl-scope #left-col .left-nav-wrap .left-nav {
+  display: block;
+  /* msie */
+  padding: 0;
+  /* Height to accomodate 5 icons - adjust if adding more */
+  height: 200px;
+}
+#gslc.gsl-scope #left-col .left-nav-wrap .left-nav button {
+  /*white-space: nowrap;*/
+  display: block;
+  width: 100%;
+  min-width: 300px;
+}
+#gslc.gsl-scope #left-col .left-nav-wrap .left-nav li {
+  position: relative;
+  /* highlight active left menu in danger color */
+}
+#gslc.gsl-scope #left-col .left-nav-wrap .left-nav li.gsl-active > a {
+  color: #f0506e;
+  background: #333;
+}
+#gslc.gsl-scope #left-col .left-nav-wrap .left-nav li.gsl-active > a > span > svg * {
+  stroke: #f0506e;
+}
+#gslc.gsl-scope #left-col .left-nav-wrap .left-nav li > a {
+  display: block;
+  min-height: 40px;
+  padding: 0 5px 0 15px;
+  line-height: 40px;
+}
+#gslc.gsl-scope #left-col .left-nav-wrap .left-nav .gsl-dropdown {
+  padding: 0px 10px 10px 10px;
+}
+#gslc.gsl-scope #left-col .left-nav-wrap .left-nav .gsl-navbar-dropdown {
+  padding: 0;
+  left: 100% !important;
+  top: -10px !important;
+  margin: 0;
+  width: 300px;
+}
+#gslc.gsl-scope #left-col .left-nav-wrap .left-nav .gsl-navbar-dropdown > .gsl-nav {
+  padding: 10px;
+  font-size: 1rem;
+}
+#gslc.gsl-scope #left-col .left-nav-wrap .left-nav .gsl-navbar-dropdown > .gsl-nav li {
+  padding: 3px;
+}
+#gslc.gsl-scope #left-col .left-nav-wrap .left-nav.hide-label span.nav-label,
+#gslc.gsl-scope #left-col .left-nav-wrap .left-nav.hide-label .gsl-navbar-dropdown,
+#gslc.gsl-scope #left-col .left-nav-wrap .left-nav.hide-label .gsl-dropdown {
+  display: none;
+}
+#gslc.gsl-scope #left-col .left-nav-wrap .nav-label {
+  padding-right: 10px;
+}
+#gslc.gsl-scope #left-col {
+  position: fixed;
+  z-index: 990;
+  /* Drop arrow */
+}
+#gslc.gsl-scope #left-col ul.gsl-nav-default > li > a {
+  padding: 8px 20px;
+  border-left: 2px solid transparent;
+  transition: all 0.15s ease-out;
+}
+#gslc.gsl-scope #left-col ul.gsl-nav-default li.gsl-nav-header {
+  padding: 20px 20px 8px 20px;
+}
+#gslc.gsl-scope #left-col ul.gsl-nav-default > li > a:hover,
+#gslc.gsl-scope #left-col ul.gsl-nav-default > li.gsl-open > a {
+  border-left: 2px solid #39f;
+  padding-left: 30px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+#gslc.gsl-scope #left-col ul.gsl-nav-default li .gsl-nav-sub {
+  padding-left: 34px;
+}
+#gslc.gsl-scope #left-col .gsl-dropdown.user-drop {
+  min-width: 160px;
+  max-width: 160px;
+  padding: 0.75rem;
+}
+#gslc.gsl-scope #left-col .gsl-dropdown.user-drop:after {
+  bottom: 100%;
+  left: 50%;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border: solid;
+  border-color: rgba(255, 255, 255, 0);
+  border-bottom-color: #fff;
+  border-width: 4px;
+  margin-left: -4px;
+}
+#gslc.gsl-scope #left-col .left-logo {
+  position: absolute;
+  top: -50px;
+  line-height: calc(50px - 10px);
+  padding: 5px 0 5px 5px;
+  white-space: nowrap;
+  font-size: 1.3rem;
+  font-weight: bold;
+  width: calc(100% - 5px);
+  /* navbar height  sets the width for the image*/
+}
+#gslc.gsl-scope #left-col .left-logo a {
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: normal;
+  text-transform: uppercase;
+}
+#gslc.gsl-scope #left-col .left-logo a:hover {
+  text-decoration: none;
+}
+#gslc.gsl-scope #left-col .left-logo > div {
+  width: calc(50px - 10px);
+  display: inline-block;
+}
+#gslc.gsl-scope #left-col .left-logo > div img {
+  margin-right: 0;
+}
+#gslc.gsl-scope #left-col .left-logo > span.nav-label {
+  display: inline-block;
+  color: #fff;
+}
+#gslc.gsl-scope #left-col.hide-label .left-logo span.nav-label {
+  display: none;
+}
+#gslc.gsl-scope .left-content-box {
+  padding: 0.75rem 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  margin-bottom: -1px;
+}
+#gslc.gsl-scope .left-nav-wrap {
+  padding-bottom: 0;
+}
+#gslc.gsl-scope .content-box-dark {
+  background-color: rgba(0, 0, 0, 0.09);
+}
+#gslc.gsl-scope .text-light {
+  font-weight: 200;
+  font-size: 1.25rem;
+}
+#gslc.gsl-scope .bar-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  padding: 15px 0;
+  background-color: #222A30;
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  bottom: 28px;
+  width: 50px;
+}
+#gslc.gsl-scope .custom-logo {
+  height: 32px;
+}
+#gslc.gsl-scope .profile-img {
+  width: 60px;
+  margin: 0 auto 10px auto;
+  display: block;
+}
+#gslc.gsl-scope .panel-icons {
+  margin: 0 4px;
+}
+#gslc.gsl-scope .gsl-content {
+  background-color: #f7f7f7;
+  margin-left: 0;
+  transition: margin 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: -10px;
+  padding-top: 10px;
+  min-height: 100vh;
+  /* editing pages */
+}
+#gslc.gsl-scope .gsl-content .ys-version-button {
+  min-width: 96px;
+}
+#gslc.gsl-scope .gsl-content .ys-plugin-version {
+  min-width: 110px;
+}
+#gslc.gsl-scope .gsl-content .ys-narrow-rows td {
+  padding: 6px 12px;
+}
+#gslc.gsl-scope .gsl-content .gsl-tab {
+  margin: 0;
+}
+#gslc.gsl-scope .gsl-content .gsl-switcher {
+  margin: 20px 20px;
+}
+#gslc.gsl-scope #top-head [class*="gsl-navbar-dropdown-bottom"] {
+  margin-top: 0;
+}
+#gslc.gsl-scope .js-stools-container-filters .search-field {
+  width: 140px;
+  -webkit-transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+#gslc.gsl-scope .js-stools-container-filters .search-field:focus {
+  width: 200px;
+  border-color: #fff !important;
+}
+#gslc.gsl-scope .gsl-card {
+  box-shadow: none;
+}
+#gslc.gsl-scope .gsl-heading-primary {
+  letter-spacing: -0.032em;
+  font-weight: 300;
+}
+#gslc.gsl-scope .gsl-card {
+  -webkit-transition: box-shadow 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: box-shadow 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+#gslc.gsl-scope .chart-container {
+  position: relative;
+  min-height: max-content;
+  margin: 0 auto;
+}
+#gslc.gsl-scope .chart-container canvas {
+  min-height: 300px;
+}
+#gslc.gsl-scope .gsl-main-logo,
+#gslc.gsl-scope .gsl-smaller-logo {
+  max-height: 40px;
+  margin: auto;
+}
+#gslc.gsl-scope #system-message-container .alert {
+  padding: 15px;
+  margin: 5px;
+  border-radius: 0;
+}
+#gslc.gsl-scope #system-message-container .alert .close {
+  top: 0;
+  right: 0;
+}
+#gslc.gsl-scope #ysts_debug_messages {
+  margin-left: 50px;
+}
+#gslc.gsl-scope .ysbtn-group {
+  position: relative;
+  /* See https://css-tricks.com/fighting-the-space-between-inline-block-elements/ */
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  /*font-size: 0;*/
+  vertical-align: middle;
+  white-space: nowrap;
+  *margin-left: 0.3em;
+}
+#gslc.gsl-scope .ysbtn-group:first-child {
+  *margin-left: 0;
+}
+#gslc.gsl-scope .ysbtn-group .btn + .btn {
+  margin-left: -1px;
+}
+#gslc.gsl-scope .ysbtn-group + #gslc.gsl-scope .ysbtn-group {
+  margin-left: 5px;
+}
+#gslc.gsl-scope #uploadModal {
+  min-width: 300px;
+  max-width: 500px;
+}
+#gslc.gsl-scope #uploadModal #ysDropZone {
+  text-align: center;
+  margin: 20px auto;
+  line-height: 40px;
+  color: #000;
+  background-color: #fafbfc;
+  border: 1px dashed #999;
+  box-sizing: border-box;
+  padding: 5% 0;
+  transition: all 0.2s ease 0s;
+  width: 100%;
+  position: relative;
+}
+#gslc.gsl-scope #uploadModal #ysDropZone #upload-icon {
+  font-size: 35px;
+}
+#gslc.gsl-scope #uploadModal #ysDropZone .ysts_uploadsize_explanation {
+  line-height: 15px;
+  margin: 10px;
+  font-style: italic;
+  text-align: justify;
+}
+#gslc.gsl-scope #uploadModal #ysDropZone.hover {
+  border-color: #666;
+  background-color: #eee;
+}
+#gslc.gsl-scope #uploadModal #ysDropZone.hover #upload-icon,
+#gslc.gsl-scope #uploadModal #ysDropZone p.lead {
+  color: #666;
+}
+#gslc.gsl-scope #uploadModal #upload-icon {
+  font-size: 48px;
+  width: auto;
+  height: auto;
+  margin: 0;
+  line-height: 175%;
+  color: #999;
+  transition: all 0.2s;
+}
+#gslc.gsl-scope #uploadModal p.lead {
+  color: #999;
+}
+#gslc.gsl-scope #uploadModal button::-moz-focus-inner,
+#gslc.gsl-scope #uploadModal input::-moz-focus-inner {
+  border: initial;
+}
+#gslc.gsl-scope #uploadModal #loading {
+  background: rgba(255, 255, 255, 0.8) url('/media/jui/images/ajax-loader.gif') 50% 25% no-repeat;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: none;
+  opacity: 0.95;
+  -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
+  filter: alpha(opacity=80);
+  overflow: hidden;
+}
+#gslc.gsl-scope .mainlistblock {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  /*
+    overflow-x: auto;
+    transform:rotateX(180deg);
+    */
+}
+#gslc.gsl-scope .mainlistblock .mainlist {
+  margin: 0 0 0 0;
+  padding: 0;
+  /*
+      transform:rotateX(180deg);
+      */
+}
+#gslc.gsl-scope .mainlistblock .mainlist .row0 {
+  background-color: transparent;
+}
+#gslc.gsl-scope .mainlistblock .mainlist .row1 {
+  background-color: #f7f7f7;
+}
+#gslc.gsl-scope .mainlistblock .mainlist .tags li {
+  display: inline-block;
+  margin: 0 2px 4px 0;
+}
+#gslc.gsl-scope body.panelleft .mainlistblock {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+#gslc.gsl-scope body.panelleft .mainlistblock .mainlist {
+  margin: 0;
+  padding: 0;
+}
+#gslc.gsl-scope #vm-menu {
+  display: none;
+}
+#gslc.gsl-scope #system-message-container div.btn {
+  font-size: 10px;
+  padding: 1px;
+  margin: 1px;
+  line-height: 12px;
+  cursor: auto;
+}
+#gslc.gsl-scope #system-message-container div.btn .jversion {
+  min-width: 30px;
+}
+#gslc.gsl-scope .ys-gsl-action-buttons {
+  margin: 0;
+}
+#gslc.gsl-scope .ys-gsl-action-buttons button.gsl-button {
+  border: solid 1px #fff;
+  border-radius: 2px;
+  margin: 2px;
+  padding: 0 10px;
+}
+#gslc.gsl-scope .ys-gsl-action-buttons button.gsl-button span.gsl-icon {
+  margin-right: 0.25em;
+}
+#gslc.gsl-scope .ys-gsl-action-buttons .gsl-dropdown button.gsl-button {
+  border: none;
+  margin: 0 ;
+  border-radius: 0;
+}
+#gslc.gsl-scope .ys-gsl-action-buttons .disabledToolbarItem {
+  opacity: 0.3;
+  display: block;
+  /*  display: none!important; */
+}
+#gslc.gsl-scope .ys-gsl-action-buttons .enabledToolbarItem {
+  opacity: 1;
+  display: block;
+}
+#gslc.gsl-scope .gsl-offcanvas {
+  top: 0;
+}
+#gslc.gsl-scope .gsl-offcanvas#offcanvas-right-panel .gsl-offcanvas-bar {
+  /* So joomla status bar doesn't block our view */
+}
+#gslc.gsl-scope .gsl-offcanvas#offcanvas-right-panel .gsl-offcanvas-bar button.gsl-offcanvas-close {
+  position: fixed;
+  background-color: inherit;
+}
+#gslc.gsl-scope .gsl-offcanvas#offcanvas-right-panel .gsl-offcanvas-bar .offcanvas-content {
+  padding-bottom: 50px;
+}
+#gslc.gsl-scope .gsl-offcanvas-overlay::before {
+  background: rgba(0, 0, 0, 0.5);
+}
+#gslc.gsl-scope .gsl-tooltip {
+  background-color: #eee;
+  color: #242C33;
+  box-shadow: 0 2px 12px rgba(50, 50, 50, 0.1);
+  border: solid 1px #c5c5c5;
+  max-width: 600px;
+}
+#gslc.gsl-scope .ys-popover-block {
+  margin: 0;
+  padding: 0;
+  min-width: 250px;
+  max-width: 450px;
+  font-size: 0.8rem;
+  line-height: 1rem;
+}
+#gslc.gsl-scope .ys-popover-block .ys-popover-title {
+  margin: 0;
+  padding: 8px 14px;
+  font-weight: bold;
+  background-color: #f7f7f7;
+  border-bottom: 1px solid #ebebeb;
+  text-align: left;
+}
+#gslc.gsl-scope .ys-popover-block .ys-popover-body {
+  padding: 9px 14px;
+  text-align: left;
+  margin-top: 0;
+  white-space: normal;
+}
+#gslc.gsl-scope .ys-popover-block .ys-popover-body br {
+  margin-bottom: 1rem;
+}
+#gslc.gsl-scope .ys-popover-block i.poparrow {
+  width: 40px;
+  height: 28px;
+  position: absolute;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  color: #ccc;
+  color: blue;
+}
+#gslc.gsl-scope .ys-popover-block i.poparrow svg polyline {
+  fill: white;
+  fill: red;
+  stroke-width: 0.6px;
+}
+#gslc.gsl-scope .ys-popover-block i.poparrow.popbelow {
+  top: -26px;
+}
+#gslc.gsl-scope .ys-popover-block i.poparrow.popabove {
+  bottom: -14px;
+}
+#gslc.gsl-scope #right-col {
+  margin-top: 0;
+  /* Sites Filters */
+}
+#gslc.gsl-scope #right-col .ys-titlebar {
+  z-index: 999;
+  /* Initial display constraints prior to page flow being completed */
+  max-height: 50px;
+  overflow: hidden;
+}
+#gslc.gsl-scope #right-col #top-head {
+  position: fixed;
+  right: 0;
+  /* top : 0; */
+  left: 50px;
+  /* So that they are above the search filter */
+  z-index: 100;
+}
+#gslc.gsl-scope #right-col #top-head .ysts-page-title.hide-label {
+  opacity: 0;
+  transition: opacity 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+#gslc.gsl-scope #right-col #ysts_system_messages {
+  margin-bottom: 20px;
+  /* TODO calculate this and handle resizing! */
+  margin-top: 120px;
+}
+#gslc.gsl-scope #right-col .ysts_list_filters {
+  margin-bottom: 10px;
+  padding-left: 10px;
+}
+#gslc.gsl-scope #right-col .ysts-filterbar {
+  display: inline-block;
+}
+#gslc.gsl-scope #right-col .ysts-filterbar > * {
+  display: inline-block;
+}
+#gslc.gsl-scope #right-col .ysts-filterbar button {
+  padding: 0 10px;
+}
+#gslc.gsl-scope #right-col .ysts-filterbar #filter_search {
+  max-width: 200px;
+}
+#gslc.gsl-scope #right-col.noleftbar #top-head {
+  left: 0;
+  /* So that menu bar is not fixed half way down the page */
+  position: relative;
+}
+#gslc.gsl-scope .sticky {
+  position: sticky;
+  z-index: 99;
+  background-color: inherit;
+}
+#gslc.gsl-scope .gsl-slider-nav.gsl-dotnav {
+  width: auto;
+}
+#gslc.gsl-scope .gsl-lightbox {
+  z-index: 9999;
+}
+#gslc.gsl-scope .gsl-dropdown.gsl-open {
+  width: max-content;
+}
+/* action toolbar styling */
+.gsl-scope .ystoolbar_wrapper.gsl-button-group .gsl-dropdown .gsl-button {
+  text-align: left;
+  display: block;
+  width: 100%;
+  margin-left: 0;
+}
+/* Sub menu items with popover/tooltip */
+.gsl-scope .ystoolbar_wrapper .gsl-inline {
+  width: 100%;
+}
+/* Search toolbar */
+.gsl-scope #ysts-main-container .js-stools {
+  box-sizing: content-box;
+  /* Joomla search bar reveal sets this to inline-block! */
+}
+.gsl-scope #ysts-main-container .js-stools .js-stools-container-filters-visible {
+  display: flex;
+}
+#gslc.gsl-scope .chzn-container .chzn-drop {
+  border-radius: 0 0 3px 3px;
+}
+#gslc.gsl-scope .control-group .chzn-container {
+  max-width: 100%;
+}
+#gslc.gsl-scope .control-group .chzn-container .chzn-choices li.search-field,
+#gslc.gsl-scope .control-group .chzn-container .chzn-choices li.search-field input {
+  width: 100% !important;
+}
+#gslc.gsl-scope .chzn-container-single .chzn-single {
+  background-color: #fff;
+  background-clip: inherit;
+  background-image: none;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+  height: auto;
+  line-height: 26px;
+}
+#gslc.gsl-scope .chzn-container-single .chzn-single div {
+  background-color: #f3f3f3;
+  border-left: 1px solid #ccc;
+  bottom: 0;
+  height: auto;
+  text-align: center;
+  width: 28px;
+}
+#gslc.gsl-scope .chzn-container-single .chzn-single div b {
+  background-image: none;
+  display: inline-block;
+}
+#gslc.gsl-scope .chzn-container-single .chzn-single div b:after {
+  content: '\E011';
+  font-family: IcoMoon;
+}
+#gslc.gsl-scope .chzn-container-single .chzn-single abbr {
+  background: none;
+  right: 36px;
+  top: 0;
+}
+#gslc.gsl-scope .chzn-container-single .chzn-single abbr:before {
+  font-family: IcoMoon;
+  content: '\0049';
+  font-size: 10px;
+  line-height: 26px;
+}
+#gslc.gsl-scope .chzn-container-single .chzn-single abbr:hover {
+  color: #000;
+}
+#gslc.gsl-scope .chzn-container-single .chzn-single .chzn-search:after {
+  content: '\0053';
+  font-family: IcoMoon;
+  position: relative;
+  right: 20px;
+  top: 2px;
+}
+#gslc.gsl-scope .chzn-container-single .chzn-single .chzn-search input[type="text"] {
+  background: none;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+  box-shadow: none;
+  height: 25px;
+}
+#gslc.gsl-scope .chzn-container-single .chzn-single .chzn-search input[type="text"]:focus {
+  border-color: #3071A9;
+}
+#gslc.gsl-scope .chzn-container-single .chzn-single .chzn-search .chzn-drop {
+  background-clip: padding-box;
+  border-color: #3071A9;
+  border-radius: 0 0 3px 3px;
+}
+#gslc.gsl-scope .chzn-container-active .chzn-single {
+  color: #3071A9;
+}
+#gslc.gsl-scope .chzn-container-active.chzn-with-drop .chzn-single {
+  background-image: none;
+  border: 1px solid #3071A9;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+#gslc.gsl-scope .chzn-container-active.chzn-with-drop .chzn-single div {
+  background-color: #f3f3f3;
+  border-bottom: 1px solid #ccc;
+  border-bottom-left-radius: 3px;
+  border-left: 1px solid #ccc;
+}
+#gslc.gsl-scope .chzn-container-active.chzn-with-drop .chzn-single div b:after {
+  content: '\E00F';
+  font-family: IcoMoon;
+}
+#gslc.gsl-scope .chzn-container-active.chzn-container-multi .chzn-choices {
+  border: 1px solid #3071A9;
+  box-shadow: none;
+}
+#gslc.gsl-scope .chzn-container-active .chzn-choices {
+  border: 1px solid #3071A9;
+}
+#gslc.gsl-scope .chzn-container .chzn-results {
+  background-color: #fff;
+  border-radius: 0 0 3px 3px;
+  margin: 0;
+  padding: 0;
+}
+#gslc.gsl-scope .chzn-container .chzn-results li.highlighted {
+  background-color: #3071A9;
+  background-image: none;
+}
+#gslc.gsl-scope .chzn-color[rel="value_"] div {
+  background-color: #f3f3f3;
+  border-left: 1px solid #ccc;
+}
+#gslc.gsl-scope .chzn-color-state.chzn-single div,
+#gslc.gsl-scope .chzn-color.chzn-single[rel="value_0"] div,
+#gslc.gsl-scope .chzn-color.chzn-single[rel="value_1"] div,
+#gslc.gsl-scope .chzn-color-state.chzn-single[rel="value_-1"] div,
+#gslc.gsl-scope .chzn-color-state.chzn-single[rel="value_-2"] div,
+#gslc.gsl-scope .chzn-color.chzn-single[rel="value_hide"] div,
+#gslc.gsl-scope .chzn-color.chzn-single[rel="value_show_no_link"] div,
+#gslc.gsl-scope .chzn-color.chzn-single[rel="value_show_with_link"] div {
+  background-color: transparent !important;
+  border: none !important;
+}
+#gslc.gsl-scope .chzn-container-multi .chzn-choices {
+  background-image: none;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+}
+#gslc.gsl-scope .chzn-container-multi .chzn-choices li.search-choice {
+  background-color: #3071A9;
+  background-image: none;
+  border: 0;
+  box-shadow: none;
+  color: #fff;
+  line-height: 20px;
+  padding: 0 7px;
+}
+#gslc.gsl-scope .chzn-container-multi .chzn-choices li.search-choice .search-choice-close {
+  color: #f5f5f5;
+  display: inline-block;
+  margin-left: 5px;
+  position: relative;
+  top: 0;
+  left: 0;
+  background-image: none;
+  font-size: inherit;
+}
+#gslc.gsl-scope .chzn-container-multi .chzn-choices li.search-choice .search-choice-close:hover {
+  text-decoration: none;
+}
+#gslc.gsl-scope .chzn-container-multi .chzn-choices li.search-choice .search-choice-close:before {
+  font-family: IcoMoon;
+  content: '\004A';
+  position: relative;
+  right: 1px;
+  top: 0;
+}
+#gslc.gsl-scope .js-stools .js-stools-container-bar .js-stools-field-filter .chzn-container {
+  margin: 1px 0;
+  padding: 0 !important;
+}
+#gslc.gsl-scope .chzn-color.chzn-single[rel="value_1"],
+#gslc.gsl-scope .chzn-color-reverse.chzn-single[rel="value_0"],
+#gslc.gsl-scope .chzn-color-state.chzn-single[rel="value_1"],
+#gslc.gsl-scope .chzn-color.chzn-single[rel="value_show_no_link"],
+#gslc.gsl-scope .chzn-color.chzn-single[rel="value_show_with_link"] {
+  background-color: #46a546;
+  *background-color: #46a546;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  color: #ffffff;
+}
+#gslc.gsl-scope .chzn-color.chzn-single[rel="value_1"]:hover,
+#gslc.gsl-scope .chzn-color.chzn-single[rel="value_1"]:focus,
+#gslc.gsl-scope .chzn-color.chzn-single[rel="value_1"]:active,
+#gslc.gsl-scope .chzn-color.chzn-single[rel="value_1"].active,
+#gslc.gsl-scope .chzn-color.chzn-single[rel="value_1"].disabled,
+#gslc.gsl-scope .chzn-color.chzn-single[rel="value_1"][disabled],
+#gslc.gsl-scope .chzn-color-reverse.chzn-single[rel="value_0"]:hover,
+#gslc.gsl-scope .chzn-color-reverse.chzn-single[rel="value_0"]:focus,
+#gslc.gsl-scope .chzn-color-reverse.chzn-single[rel="value_0"]:active,
+#gslc.gsl-scope .chzn-color-reverse.chzn-single[rel="value_0"].active,
+#gslc.gsl-scope .chzn-color-reverse.chzn-single[rel="value_0"].disabled,
+#gslc.gsl-scope .chzn-color-reverse.chzn-single[rel="value_0"][disabled],
+#gslc.gsl-scope .chzn-color-state.chzn-single[rel="value_1"]:hover,
+#gslc.gsl-scope .chzn-color-state.chzn-single[rel="value_1"]:focus,
+#gslc.gsl-scope .chzn-color-state.chzn-single[rel="value_1"]:active,
+#gslc.gsl-scope .chzn-color-state.chzn-single[rel="value_1"].active,
+#gslc.gsl-scope .chzn-color-state.chzn-single[rel="value_1"].disabled,
+#gslc.gsl-scope .chzn-color-state.chzn-single[rel="value_1"][disabled],
+#gslc.gsl-scope .chzn-color.chzn-single[rel="value_show_no_link"]:hover,
+#gslc.gsl-scope .chzn-color.chzn-single[rel="value_show_no_link"]:focus,
+#gslc.gsl-scope .chzn-color.chzn-single[rel="value_show_no_link"]:active,
+#gslc.gsl-scope .chzn-color.chzn-single[rel="value_show_no_link"].active,
+#gslc.gsl-scope .chzn-color.chzn-single[rel="value_show_no_link"].disabled,
+#gslc.gsl-scope .chzn-color.chzn-single[rel="value_show_no_link"][disabled],
+#gslc.gsl-scope .chzn-color.chzn-single[rel="value_show_with_link"]:hover,
+#gslc.gsl-scope .chzn-color.chzn-single[rel="value_show_with_link"]:focus,
+#gslc.gsl-scope .chzn-color.chzn-single[rel="value_show_with_link"]:active,
+#gslc.gsl-scope .chzn-color.chzn-single[rel="value_show_with_link"].active,
+#gslc.gsl-scope .chzn-color.chzn-single[rel="value_show_with_link"].disabled,
+#gslc.gsl-scope .chzn-color.chzn-single[rel="value_show_with_link"][disabled] {
+  color: #fff;
+  background-color: #2f6f2f;
+  *background-color: #2f6f2f;
+}
+#gslc.gsl-scope .chzn-color.chzn-single[rel="value_1"]:active,
+#gslc.gsl-scope .chzn-color.chzn-single[rel="value_1"].active,
+#gslc.gsl-scope .chzn-color-reverse.chzn-single[rel="value_0"]:active,
+#gslc.gsl-scope .chzn-color-reverse.chzn-single[rel="value_0"].active,
+#gslc.gsl-scope .chzn-color-state.chzn-single[rel="value_1"]:active,
+#gslc.gsl-scope .chzn-color-state.chzn-single[rel="value_1"].active,
+#gslc.gsl-scope .chzn-color.chzn-single[rel="value_show_no_link"]:active,
+#gslc.gsl-scope .chzn-color.chzn-single[rel="value_show_no_link"].active,
+#gslc.gsl-scope .chzn-color.chzn-single[rel="value_show_with_link"]:active,
+#gslc.gsl-scope .chzn-color.chzn-single[rel="value_show_with_link"].active {
+  background-color: #46a546;
+}
+#gslc.gsl-scope .chzn-color-state.chzn-single[rel="value_0"],
+#gslc.gsl-scope .chzn-color-state.chzn-single[rel="value_-2"] {
+  background-color: #bd362f;
+  *background-color: #bd362f;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  color: #ffffff;
+}
+#gslc.gsl-scope .chzn-color-state.chzn-single[rel="value_0"]:hover,
+#gslc.gsl-scope .chzn-color-state.chzn-single[rel="value_0"]:focus,
+#gslc.gsl-scope .chzn-color-state.chzn-single[rel="value_0"]:active,
+#gslc.gsl-scope .chzn-color-state.chzn-single[rel="value_0"].active,
+#gslc.gsl-scope .chzn-color-state.chzn-single[rel="value_0"].disabled,
+#gslc.gsl-scope .chzn-color-state.chzn-single[rel="value_0"][disabled],
+#gslc.gsl-scope .chzn-color-state.chzn-single[rel="value_-2"]:hover,
+#gslc.gsl-scope .chzn-color-state.chzn-single[rel="value_-2"]:focus,
+#gslc.gsl-scope .chzn-color-state.chzn-single[rel="value_-2"]:active,
+#gslc.gsl-scope .chzn-color-state.chzn-single[rel="value_-2"].active,
+#gslc.gsl-scope .chzn-color-state.chzn-single[rel="value_-2"].disabled,
+#gslc.gsl-scope .chzn-color-state.chzn-single[rel="value_-2"][disabled] {
+  color: #fff;
+  background-color: #802420;
+  *background-color: #802420;
+}
+#gslc.gsl-scope .chzn-color-state.chzn-single[rel="value_0"]:active,
+#gslc.gsl-scope .chzn-color-state.chzn-single[rel="value_0"].active,
+#gslc.gsl-scope .chzn-color-state.chzn-single[rel="value_-2"]:active,
+#gslc.gsl-scope .chzn-color-state.chzn-single[rel="value_-2"].active {
+  background-color: #bd362f;
+}
+@media screen and (min-width: 960px) {
+  #gslc.gsl-scope {
+    /* irregular date selections select:multiple doesn't set a height */
+  }
+  #gslc.gsl-scope #left-col {
+    bottom: 0;
+  }
+  #gslc.gsl-scope #right-col:not(.noleftbar) {
+    /* equal to left-col width */
+    margin-left: 50px;
+    width: calc(100% - 50px);
+  }
+  #gslc.gsl-scope .gsl-select {
+    min-height: 40px;
+  }
+  /* Not within #gslc.gsl-scope - its too tight and js can't change the widths! */
+  .gsl-scope #offcanvas-left-panel .gsl-offcanvas-bar {
+    width: 50%;
+  }
+  .gsl-scope .gsl-offcanvas .gsl-offcanvas-bar {
+    right: -50%;
+  }
+  .gsl-scope #offcanvas-right-panel .gsl-offcanvas-bar {
+    width: 60%;
+  }
+  .gsl-scope .gsl-offcanvas-flip .gsl-offcanvas-bar {
+    right: -60%;
+  }
+}
+@media (max-width: 1600px) {
+  #gslc.gsl-scope .gsl-content .createdseconds {
+    display: none;
+  }
+}
+@media (max-width: 1250px) {
+  #gslc.gsl-scope .gsl-content.gsl-backend {
+    /* filters */
+  }
+  #gslc.gsl-scope .gsl-content.gsl-backend .gsl-grid .js-stools-field-list {
+    padding-left: 15px;
+  }
+  #gslc.gsl-scope .gsl-content.gsl-backend .gsl-grid .gsl-button,
+  #gslc.gsl-scope .gsl-content.gsl-backend .gsl-grid input {
+    padding: 0 15px;
+    line-height: 28px;
+    font-size: 0.875rem;
+    height: 28px;
+  }
+  #gslc.gsl-scope .gsl-content.gsl-backend .gsl-grid .gsl-select {
+    padding: 0 10px 0 0;
+    line-height: 28px;
+    height: 28px;
+    font-size: 0.875rem;
+  }
+  #gslc.gsl-scope .gsl-content.gsl-backend .gsl-grid .gsl-select:not([multiple]):not([size]) {
+    /*   background-image:none;*/
+  }
+  #gslc.gsl-scope .gsl-content.gsl-backend .js-stools-container-filters {
+    margin: 10px 0 0 0;
+  }
+  #gslc.gsl-scope .gsl-content.gsl-backend .js-stools-container-filters .js-stools-field-filter {
+    padding-left: 5px;
+    margin-top: 5px;
+  }
+  /* Hide VM and CB Menu items */
+  nav.navbar #vm-menu.nav,
+  nav.navbar #menu.nav:not(:first-child) {
+    display: none;
+  }
+}
+@media (max-width: 960px) {
+  #gslc.gsl-scope {
+    /*
+   * Params editing fixes
+   * Divider override UIkit default - default in 3.3.7 leaves top list item squashed - narrow screen mode
+   */
+  }
+  #gslc.gsl-scope .gsl-content.gsl-backend .gsl-button {
+    padding: 0 15px;
+    line-height: 28px;
+    font-size: 0.875rem;
+  }
+  #gslc.gsl-scope #left-col {
+    position: fixed;
+    width: 100%;
+    overflow: visible;
+  }
+  #gslc.gsl-scope #left-col .left-logo {
+    position: absolute;
+    top: 0;
+    margin-left: -50px;
+    width: 40px;
+    padding: 0 0 0 5px;
+  }
+  #gslc.gsl-scope #left-col .left-nav-wrap {
+    margin-top: 0;
+    margin-left: 50px;
+    position: static;
+    float: left;
+    top: 0;
+    width: calc(100% - 50px);
+  }
+  #gslc.gsl-scope #left-col .left-nav-wrap > .gsl-navbar {
+    width: 100%;
+    height: 50px;
+  }
+  #gslc.gsl-scope #left-col .left-nav-wrap .left-nav {
+    height: 50px;
+    padding: 0px;
+    overflow: hidden;
+  }
+  #gslc.gsl-scope #left-col .left-nav-wrap .left-nav span.nav-label {
+    display: none;
+  }
+  #gslc.gsl-scope #left-col .left-nav-wrap .left-nav > li {
+    display: inline-block;
+    line-height: 25px;
+    height: 35px;
+  }
+  #gslc.gsl-scope #left-col .left-nav-wrap .left-nav > li > a {
+    padding-top: 5px;
+    /*
+              height: 20px;
+              line-height: 20px;
+               */
+  }
+  #gslc.gsl-scope #left-col .left-nav-wrap .left-nav .gsl-navbar-dropdown {
+    margin-top: 45px;
+    margin-left: -45px;
+  }
+  #gslc.gsl-scope #left-col .left-nav-wrap .left-nav .gsl-navbar-dropdown li {
+    padding-left: 10px !important;
+    height: 30px;
+  }
+  #gslc.gsl-scope #left-col .left-nav-wrap .left-nav .gsl-navbar-dropdown li button {
+    font-size: 0.875rem;
+  }
+  #gslc.gsl-scope #right-col {
+    margin-top: 0;
+  }
+  #gslc.gsl-scope #right-col h1.ysts-page-title {
+    margin-left: 50px;
+  }
+  #gslc.gsl-scope #right-col .ys-titlebar {
+    z-index: 100;
+  }
+  #gslc.gsl-scope #right-col #top-head {
+    left: 0;
+  }
+  #gslc.gsl-scope #right-col #top-head .ys-gsl-action-buttons {
+    /* position:fixed;*/
+    /* So that they are above the search filter */
+    z-index: 100;
+  }
+  #gslc.gsl-scope #right-col #top-head .gsl-navbar-right {
+    display: none;
+  }
+  #gslc.gsl-scope #right-col #ysts_system_messages {
+    margin-top: 105px;
+  }
+  #gslc.gsl-scope .gsl-list-divider > li {
+    margin-top: 10px;
+    border-left: 1px solid #e5e5e5;
+    border-top-width: 0;
+  }
+  #gslc.gsl-scope #myParamsTabs > li {
+    padding: 0 10px;
+  }
+  /* Not within #gslc.gsl-scope - its too tight and js can't change the widths! */
+  .gsl-scope #offcanvas-left-panel .gsl-offcanvas-bar {
+    width: 90%;
+  }
+  .gsl-scope .gsl-offcanvas .gsl-offcanvas-bar {
+    right: -90%;
+  }
+  .gsl-scope #offcanvas-right-panel .gsl-offcanvas-bar {
+    width: 95%;
+  }
+  .gsl-scope .gsl-offcanvas-flip .gsl-offcanvas-bar {
+    right: -95%;
+  }
+}
+@media (max-width: 768px) {
+  body.com_jevents {
+    /*padding:0;*/
+  }
+  #gslc.gsl-scope #left-col {
+    position: relative;
+    top: 0 !important;
+  }
+  #gslc.gsl-scope #right-col #top-head {
+    position: static;
+    /*
+        This allows the heading to stay fixed when scrolling sideways
+        position:fixed;
+        left:0;
+         */
+  }
+  #gslc.gsl-scope #right-col #top-head .ys-titlebar {
+    display: none;
+  }
+  #gslc.gsl-scope #right-col #top-head .ys-gsl-action-buttons {
+    left: 0;
+    z-index: 99;
+  }
+  #gslc.gsl-scope #right-col #ysts_system_messages {
+    margin-top: 0;
+  }
+}
