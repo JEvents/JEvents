@@ -1,0 +1,209 @@
+@media screen and (min-width: 960px) {
+  #gslc.gsl-scope {
+    /* irregular date selections select:multiple doesn't set a height */
+  }
+  #gslc.gsl-scope #left-col {
+    bottom: 0;
+  }
+  #gslc.gsl-scope #right-col:not(.noleftbar) {
+    /* equal to left-col width */
+    margin-left: 50px;
+    width: calc(100% - 50px);
+  }
+  #gslc.gsl-scope .gsl-select {
+    min-height: 40px;
+  }
+  /* Not within #gslc.gsl-scope - its too tight and js can't change the widths! */
+  .gsl-scope #offcanvas-left-panel .gsl-offcanvas-bar {
+    width: 50%;
+  }
+  .gsl-scope .gsl-offcanvas .gsl-offcanvas-bar {
+    right: -50%;
+  }
+  .gsl-scope #offcanvas-right-panel .gsl-offcanvas-bar {
+    width: 60%;
+  }
+  .gsl-scope .gsl-offcanvas-flip .gsl-offcanvas-bar {
+    right: -60%;
+  }
+}
+@media (max-width: 1600px) {
+  #gslc.gsl-scope .gsl-content .createdseconds {
+    display: none;
+  }
+}
+@media (max-width: 1250px) {
+  #gslc.gsl-scope .gsl-content.gsl-backend {
+    /* filters */
+  }
+  #gslc.gsl-scope .gsl-content.gsl-backend .gsl-grid .js-stools-field-list {
+    padding-left: 15px;
+  }
+  #gslc.gsl-scope .gsl-content.gsl-backend .gsl-grid .gsl-button,
+  #gslc.gsl-scope .gsl-content.gsl-backend .gsl-grid input {
+    padding: 0 15px;
+    line-height: 28px;
+    font-size: 0.875rem;
+    height: 28px;
+  }
+  #gslc.gsl-scope .gsl-content.gsl-backend .gsl-grid .gsl-select {
+    padding: 0 10px 0 0;
+    line-height: 28px;
+    height: 28px;
+    font-size: 0.875rem;
+  }
+  #gslc.gsl-scope .gsl-content.gsl-backend .gsl-grid .gsl-select:not([multiple]):not([size]) {
+    /*   background-image:none;*/
+  }
+  #gslc.gsl-scope .gsl-content.gsl-backend .js-stools-container-filters {
+    margin: 10px 0 0 0;
+  }
+  #gslc.gsl-scope .gsl-content.gsl-backend .js-stools-container-filters .js-stools-field-filter {
+    padding-left: 5px;
+    margin-top: 5px;
+  }
+  /* Hide VM and CB Menu items */
+  nav.navbar #vm-menu.nav,
+  nav.navbar #menu.nav:not(:first-child) {
+    display: none;
+  }
+}
+@media (max-width: 960px) {
+  #gslc.gsl-scope {
+    /*
+   * Params editing fixes
+   * Divider override UIkit default - default in 3.3.7 leaves top list item squashed - narrow screen mode
+   */
+  }
+  #gslc.gsl-scope .gsl-content.gsl-backend .gsl-button {
+    padding: 0 15px;
+    line-height: 28px;
+    font-size: 0.875rem;
+  }
+  #gslc.gsl-scope #left-col {
+    position: fixed;
+    width: 100%;
+    overflow: visible;
+  }
+  #gslc.gsl-scope #left-col .left-logo {
+    position: absolute;
+    top: 0;
+    margin-left: -50px;
+    width: 40px;
+    padding: 0 0 0 5px;
+  }
+  #gslc.gsl-scope #left-col .left-nav-wrap {
+    margin-top: 0;
+    margin-left: 50px;
+    position: static;
+    float: left;
+    top: 0;
+    width: calc(100% - 50px);
+  }
+  #gslc.gsl-scope #left-col .left-nav-wrap > .gsl-navbar {
+    width: 100%;
+    height: 50px;
+  }
+  #gslc.gsl-scope #left-col .left-nav-wrap .left-nav {
+    height: 50px;
+    padding: 0px;
+    overflow: hidden;
+  }
+  #gslc.gsl-scope #left-col .left-nav-wrap .left-nav span.nav-label {
+    display: none;
+  }
+  #gslc.gsl-scope #left-col .left-nav-wrap .left-nav > li {
+    display: inline-block;
+    line-height: 25px;
+    height: 35px;
+  }
+  #gslc.gsl-scope #left-col .left-nav-wrap .left-nav > li > a {
+    padding-top: 5px;
+    /*
+              height: 20px;
+              line-height: 20px;
+               */
+  }
+  #gslc.gsl-scope #left-col .left-nav-wrap .left-nav .gsl-navbar-dropdown {
+    margin-top: 45px;
+    margin-left: -45px;
+  }
+  #gslc.gsl-scope #left-col .left-nav-wrap .left-nav .gsl-navbar-dropdown li {
+    padding-left: 10px !important;
+    height: 30px;
+  }
+  #gslc.gsl-scope #left-col .left-nav-wrap .left-nav .gsl-navbar-dropdown li button {
+    font-size: 0.875rem;
+  }
+  #gslc.gsl-scope #right-col {
+    margin-top: 0;
+  }
+  #gslc.gsl-scope #right-col h1.ysts-page-title {
+    margin-left: 50px;
+  }
+  #gslc.gsl-scope #right-col .ys-titlebar {
+    z-index: 100;
+  }
+  #gslc.gsl-scope #right-col #top-head {
+    left: 0;
+  }
+  #gslc.gsl-scope #right-col #top-head .ys-gsl-action-buttons {
+    /* position:fixed;*/
+    /* So that they are above the search filter */
+    z-index: 100;
+  }
+  #gslc.gsl-scope #right-col #top-head .gsl-navbar-right {
+    display: none;
+  }
+  #gslc.gsl-scope #right-col #ysts_system_messages {
+    margin-top: 105px;
+  }
+  #gslc.gsl-scope .gsl-list-divider > li {
+    margin-top: 10px;
+    border-left: 1px solid #e5e5e5;
+    border-top-width: 0;
+  }
+  #gslc.gsl-scope #myParamsTabs > li {
+    padding: 0 10px;
+  }
+  /* Not within #gslc.gsl-scope - its too tight and js can't change the widths! */
+  .gsl-scope #offcanvas-left-panel .gsl-offcanvas-bar {
+    width: 90%;
+  }
+  .gsl-scope .gsl-offcanvas .gsl-offcanvas-bar {
+    right: -90%;
+  }
+  .gsl-scope #offcanvas-right-panel .gsl-offcanvas-bar {
+    width: 95%;
+  }
+  .gsl-scope .gsl-offcanvas-flip .gsl-offcanvas-bar {
+    right: -95%;
+  }
+}
+@media (max-width: 768px) {
+  body.com_jevents {
+    /*padding:0;*/
+  }
+  #gslc.gsl-scope #left-col {
+    position: relative;
+    top: 0 !important;
+  }
+  #gslc.gsl-scope #right-col #top-head {
+    position: static;
+    /*
+        This allows the heading to stay fixed when scrolling sideways
+        position:fixed;
+        left:0;
+         */
+  }
+  #gslc.gsl-scope #right-col #top-head .ys-titlebar {
+    display: none;
+  }
+  #gslc.gsl-scope #right-col #top-head .ys-gsl-action-buttons {
+    left: 0;
+    z-index: 99;
+  }
+  #gslc.gsl-scope #right-col #ysts_system_messages {
+    margin-top: 0;
+  }
+}
