@@ -210,7 +210,7 @@ $this->item->params = json_encode($templateparams);
 					$poptions[] = HTMLHelper::_('select.option', 0, Text::_("JUNPUBLISHED"));
 					$poptions[] = HTMLHelper::_('select.option', 1, Text::_("JPUBLISHED"));
 					$poptions[] = HTMLHelper::_('select.option', -1, Text::_("JTRASHED"));
-					echo HTMLHelper::_('select.genericlist', $poptions, 'state', 'class="inputbox form-control "', 'value', 'text', $this->item->state);
+					echo HTMLHelper::_('select.genericlist', $poptions, 'state', 'class="inputbox form-control gsl-select "', 'value', 'text', $this->item->state);
 					?>
 				</div>
 				<div class="form-group gsl-width-1-4@m">
