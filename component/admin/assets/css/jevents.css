@@ -357,7 +357,7 @@ body.com_jevents {
   /*font-size: 0;*/
   vertical-align: middle;
   white-space: nowrap;
-  *margin-left: .3em;
+  *margin-left: 0.3em;
 }
 #gslc.gsl-scope .ysbtn-group:first-child {
   *margin-left: 0;
@@ -409,7 +409,7 @@ body.com_jevents {
   margin: 0;
   line-height: 175%;
   color: #999;
-  transition: all .2s;
+  transition: all 0.2s;
 }
 #gslc.gsl-scope #uploadModal p.lead {
   color: #999;
@@ -504,7 +504,7 @@ body.com_jevents {
   /*  display: none!important; */
 }
 #gslc.gsl-scope .ys-gsl-action-buttons .enabledToolbarItem {
-  opacity: 1.0;
+  opacity: 1;
   display: block;
 }
 #gslc.gsl-scope .gsl-offcanvas {
@@ -530,13 +530,21 @@ body.com_jevents {
   border: solid 1px #c5c5c5;
   max-width: 600px;
 }
+#gslc.gsl-scope .gsl-tooltip .ys-popover-title {
+  font-size: 1.4em;
+  line-height: 1.6em;
+}
+#gslc.gsl-scope .gsl-tooltip .ys-popover-body {
+  font-size: 1.2em;
+  line-height: 1.4em;
+}
 #gslc.gsl-scope .ys-popover-block {
   margin: 0;
   padding: 0;
   min-width: 250px;
   max-width: 450px;
-  font-size: 0.80rem;
-  line-height: 1.0rem;
+  font-size: 0.8rem;
+  line-height: 1rem;
 }
 #gslc.gsl-scope .ys-popover-block .ys-popover-title {
   margin: 0;
@@ -987,7 +995,7 @@ body.com_jevents {
   z-index: 9999;
   background: #000;
   opacity: 0;
-  transition: opacity .15s linear;
+  transition: opacity 0.15s linear;
   touch-action: pinch-zoom;
 }
 #gslc.gsl-scope .gsl-lightbox.gsl-open {

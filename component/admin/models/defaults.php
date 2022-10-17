@@ -71,15 +71,20 @@ class DefaultsModelDefaults extends BaseDatabaseModel
 				}
 			}
 
-			$filter_catid = Factory::getApplication()->getUserStateFromRequest("jevdefaults.filter_catid", 'filter_catid', "0");
-			if ($filter_catid != "0" && $layouttype == "jevents")
+			$filter_catid = Factory::getApplication()->getUserStateFromRequest("jevdefaults.filter_catid", 'filter_catid', "");
+			if ($filter_catid == "-1")
+			{
+
+			}
+			else if ($filter_catid == "")
+			{
+				$query->where('def.catid = 0' );
+			}
+			else if ($filter_catid != "" && $layouttype == "jevents")
 			{
 				$query->where('def.catid = ' . intval($filter_catid));
 			}
-			else
-			{
-				$query->where('def.catid = 0');
-			}
+
 
 			// Currently no option to customise event editing by category
 			if ($filter_catid != "0" && $filter_catid != "")
@@ -175,7 +180,7 @@ class DefaultsModelDefaults extends BaseDatabaseModel
 		// if only published entries then allow option to look across all categories
 		if (Factory::getApplication()->getUserStateFromRequest("jevdefaults.filter_published", 'filter_published', "0,1") == 1)
 		{
-			array_unshift($options, HTMLHelper::_('select.option', '0', Text::_('JEV_ANY_CATEGORY')));
+			array_unshift($options, HTMLHelper::_('select.option', '-1', Text::_('JEV_ANY_CATEGORY')));
 		}
 
 		return $options;

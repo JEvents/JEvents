@@ -48,6 +48,12 @@
 		       description="" difficulty="1"/>
 		<field name="clubcode" type="jevtext" size="60" default='' menu="hide" label="JEV_JOOMLA_UPDATE_CLUBCODE"
 		       description="JEV_JOOMLA_UPDATE_CLUBCODE_DESC" difficulty="1"/>
+		<field name="hideunusedmenuitems" type="jevboolean"
+			   class="gsl-button-group" default="0" menu="hide"
+			   label="COM_JEVENTS_HIDE_UNUSED_MENU_ITEMS"
+			   description="COM_JEVENTS_HIDE_UNUSED_MENU_ITEMS_DESC" difficulty="3"
+			   showon="clubcode!:"
+		/>
 
 		<field name="shownews" type="jevboolean" class="gsl-button-group" default="1" menu="hide" label="COM_JEVENTS_SHOW_JEVENTS_NEWS"
 			   description="COM_JEVENTS_SHOW_JEVENTS_NEWS_DESC" difficulty="3"

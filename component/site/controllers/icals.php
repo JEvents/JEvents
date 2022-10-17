@@ -591,32 +591,45 @@ class ICalsController extends AdminIcalsController
 
 	}
 
-	private function setDescription($desc)
+	protected function setDescription($desc)
 	{
 
 		// TODO - run this through plugins first ?
 
-		$input  = Factory::getApplication()->input;
+		// See http://www.jevents.net/forum/viewtopic.php?f=23&t=21939&p=115231#wrap
+		// can we use 	X-ALT-DESC;FMTTYPE=text/html: as well as DESCRIPTION
+		$input = Factory::getApplication()->input;
 
 		$icalformatted = $input->getInt("icf", 0);
 		if (!$icalformatted)
+		{
+			$htmlDesc    = $desc;
 			$description = $this->replacetags($desc);
+		}
 		else
+		{
+			$htmlDesc    = $desc;
 			$description = $desc;
+		}
 
 		// wraplines	from vCard class
 		$cfg = JEVConfig::getInstance();
+		$return = "";
 		if ($cfg->get("outlook2003icalexport", 1))
 		{
-			return "DESCRIPTION:" . $this->wraplines($description, 76, false);
+			$return =  "DESCRIPTION:" . $this->wraplines($description, 76, false);
 		}
 		else
 		{
 			// ENCODING=QUOTED-PRINTABLE is deprecated
-			// return "DESCRIPTION;ENCODING=QUOTED-PRINTABLE:" . $this->wraplines($description);
-			return "DESCRIPTION:" . $this->wraplines($description, 76, false);
+			//return "DESCRIPTION;ENCODING=QUOTED-PRINTABLE:" . $this->wraplines($description);
+			$return = "DESCRIPTION:" . $this->wraplines($description, 76, false);
 		}
-
+		if ($htmlDesc !== $description)
+		{
+			$return = "X-ALT-DESC;FMTTYPE=text/html:" . $this->wraplines($htmlDesc, 76, false);
+		}
+		return $return;
 	}
 
 	private function replacetags($description)
@@ -733,7 +746,7 @@ class ICalsController extends AdminIcalsController
 			$firststart -= 31622400;
 			$timezone   = new DateTimeZone($current_timezone);
 
-			if (version_compare(PHP_VERSION, "5.3.0") >= 0)
+			if (version_compare(PHP_VERSION, "5.3.0", "gte"))
 			{
 				$transitions = $timezone->getTransitions($firststart);
 			}

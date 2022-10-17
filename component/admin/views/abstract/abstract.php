@@ -488,7 +488,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 			}
 		}
 		// Create the tabs content
-		if ( version_compare(JVERSION, '4.0' , 'lt ') && (GSLMSIE10  || (!$app->isClient('administrator') && !$params->get("newfrontendediting", 1))))
+		if ( version_compare(JVERSION, '4.0' , 'lt') && (GSLMSIE10  || (!$app->isClient('administrator') && !$params->get("newfrontendediting", 1))))
 		{
 			if ($tabstartarray0Count > 0 && isset($tabstartarray[0]))
 			{

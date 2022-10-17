@@ -3489,7 +3489,6 @@ SCRIPT;
 						}
 					}
 					// We Need to wrap this according to the specs
-					/* $html .= "DESCRIPTION:".preg_replace("'<[\/\!]*?[^<>]*?>'si","",preg_replace("/\n|\r\n|\r$/","",$a->content()))."\n"; */
 					$html .= self::setDescription(strip_tags($row->content())) . "\r\n";
 
 					if ($a->hasContactInfo())
@@ -3936,7 +3935,7 @@ SCRIPT;
 			$firststart -= 31622400;
 			$timezone   = new DateTimeZone($current_timezone);
 
-			if (version_compare(PHP_VERSION, "5.3.0") >= 0)
+			if (version_compare(PHP_VERSION, "5.3.0", "gte"))
 			{
 				$transitions = $timezone->getTransitions($firststart);
 			}
@@ -4231,31 +4230,45 @@ SCRIPT;
 
 	}
 
-	protected static
-	function setDescription($desc)
+	protected static function setDescription($desc)
 	{
 
 		// TODO - run this through plugins first ?
 
-		$icalformatted = Factory::getApplication()->input->getInt("icf", 0);
+		// See http://www.jevents.net/forum/viewtopic.php?f=23&t=21939&p=115231#wrap
+		// can we use 	X-ALT-DESC;FMTTYPE=text/html: as well as DESCRIPTION
+		$input = Factory::getApplication()->input;
+
+		$icalformatted = $input->getInt("icf", 0);
 		if (!$icalformatted)
+		{
+			$htmlDesc    = $desc;
 			$description = self::replacetags($desc);
+		}
 		else
+		{
+			$htmlDesc    = $desc;
 			$description = $desc;
+		}
 
 		// wraplines	from vCard class
 		$cfg = JEVConfig::getInstance();
+		$return = "";
 		if ($cfg->get("outlook2003icalexport", 1))
 		{
-			return "DESCRIPTION:" . self::wraplines($description, 76, false);
+			$return =  "DESCRIPTION:" . self::wraplines($description, 76, false);
 		}
 		else
 		{
 			// ENCODING=QUOTED-PRINTABLE is deprecated
-			// return "DESCRIPTION;ENCODING=QUOTED-PRINTABLE:" . self::wraplines($description);
-			return "DESCRIPTION:" . self::wraplines($description, 76, false);
+			//return "DESCRIPTION;ENCODING=QUOTED-PRINTABLE:" . $this->wraplines($description);
+			$return = "DESCRIPTION:" . self::wraplines($description, 76, false);
 		}
-
+		if ($htmlDesc !== $description)
+		{
+			$return = "X-ALT-DESC;FMTTYPE=text/html:" . self::wraplines($htmlDesc, 76, false);
+		}
+		return $return;
 	}
 
 	public static

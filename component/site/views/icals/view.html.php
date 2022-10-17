@@ -42,23 +42,34 @@ class ICalsViewIcals extends JEventsAbstractView
 
 		$icalformatted = $input->getInt("icf", 0);
 		if (!$icalformatted)
+		{
+			$htmlDesc    = $desc;
 			$description = $this->replacetags($desc);
+		}
 		else
+		{
+			$htmlDesc    = $desc;
 			$description = $desc;
+		}
 
 		// wraplines	from vCard class
 		$cfg = JEVConfig::getInstance();
+		$return = "";
 		if ($cfg->get("outlook2003icalexport", 1))
 		{
-			return "DESCRIPTION:" . $this->wraplines($description, 76, false);
+			$return =  "DESCRIPTION:" . $this->wraplines($description, 76, false);
 		}
 		else
 		{
 			// ENCODING=QUOTED-PRINTABLE is deprecated
 			//return "DESCRIPTION;ENCODING=QUOTED-PRINTABLE:" . $this->wraplines($description);
-			return "DESCRIPTION:" . $this->wraplines($description, 76, false);
-
+			$return = "DESCRIPTION:" . $this->wraplines($description, 76, false);
 		}
+		if ($htmlDesc !== $description)
+		{
+			$return = "X-ALT-DESC;FMTTYPE=text/html:" . $this->wraplines($htmlDesc, 76, false);
+		}
+		return $return;
 	}
 
 	protected function replacetags($description)
@@ -185,7 +196,7 @@ class ICalsViewIcals extends JEventsAbstractView
 			$firststart -= 31622400;
 			$timezone   = new DateTimeZone($current_timezone);
 
-			if (version_compare(PHP_VERSION, "5.3.0") >= 0)
+			if (version_compare(PHP_VERSION, "5.3.0", "gte"))
 			{
 				$transitions = $timezone->getTransitions($firststart);
 			}

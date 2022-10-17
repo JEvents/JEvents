@@ -3281,6 +3281,8 @@ class JEventsDBModel
 
 	function listIcalEventsByWeek($weekstart, $weekend)
 	{
+		$params   = ComponentHelper::getParams("com_jevents");
+		$this->daymultiday             = intval($params->get('daymultiday', 0));
 
 		return $this->listIcalEvents($weekstart, $weekend);
 
@@ -3296,6 +3298,9 @@ class JEventsDBModel
 
 //		$cfg = JEVConfig::getInstance();
 //		var_dump($this->countIcalEventsByRangebyDay($startdate, $enddate,  $cfg->get('com_showrepeats')));
+
+		$params   = ComponentHelper::getParams("com_jevents");
+		$this->daymultiday             = intval($params->get('daymultiday', 0));
 
 		return $this->listIcalEvents($startdate, $enddate, "");
 
@@ -3430,6 +3435,9 @@ class JEventsDBModel
 		{
 			return array();
 		}
+		$params   = ComponentHelper::getParams("com_jevents");
+		$this->daymultiday             = intval($params->get('daymultiday', 0));
+
 		$startdate = ($this->cfg->get("showyearpast", 1) || $year > $thisyear) ? JevDate::mktime(0, 0, 0, 1, 1, $year) : JevDate::mktime(0, 0, 0, $thismonth, $thisday, $thisyear);
 		$enddate   = JevDate::mktime(23, 59, 59, 12, 31, $year);
 		if (!$count)
@@ -3946,6 +3954,9 @@ class JEventsDBModel
 		$app  = Factory::getApplication();
 		$cfg  = JEVConfig::getInstance();
 
+		$params   = ComponentHelper::getParams("com_jevents");
+		$this->daymultiday             = intval($params->get('daymultiday', 0));
+
 		$rows_per_page = $limit;
 
 		if (empty($limitstart) || !$limitstart)
@@ -4072,6 +4083,9 @@ class JEventsDBModel
 		{
 			return $rows;
 		}
+
+		$params   = ComponentHelper::getParams("com_jevents");
+		$this->daymultiday             = intval($params->get('daymultiday', 0));
 
 		$user = Factory::getUser();
 		$db   = Factory::getDbo();
@@ -4419,6 +4433,9 @@ class JEventsDBModel
 		$user = Factory::getUser();
 		$app  = Factory::getApplication();
 
+		$params   = ComponentHelper::getParams("com_jevents");
+		$this->daymultiday             = intval($params->get('daymultiday', 0));
+
 		// Use catid in accessibleCategoryList to pick up offsping too!
 		$aid       = null;
 		$catidlist = implode(",", $catids);
@@ -4722,6 +4739,9 @@ class JEventsDBModel
 		$user      = Factory::getUser();
 		$adminuser = JEVHelper::isAdminUser($user);
 		$db        = Factory::getDbo();
+
+		$params   = ComponentHelper::getParams("com_jevents");
+		$this->daymultiday             = intval($params->get('daymultiday', 0));
 
 		$keyword = $db->escape($keyword, true);
 
