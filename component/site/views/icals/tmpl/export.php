@@ -169,12 +169,10 @@ if (!empty($this->icalEvents))
 			$link = $a->viewDetailLink($a->yup(), $a->mup(), $a->dup(), true, $params->get('default_itemid', 0));
 			$uri  = Uri::getInstance(Uri::base());
 			$root = $uri->toString(array('scheme', 'host', 'port'));
-			$html .= $this->setDescription($a->content() . ' ' . Text::_('JEV_EVENT_IMPORTED_FROM') . $root . Route::_($link, true, -1)) . "\r\n";
+			$html .= "URL:" . $this->wraplines($root . Route::_($link, true, -1)) . "\r\n";
+			//$html .= $this->setDescription($a->content() . ' ' . Text::_('JEV_EVENT_IMPORTED_FROM') . $root . Route::_($link, true, -1)) . "\r\n";
 		}
-		else
-		{
-			$html .= $this->setDescription($a->content()) . "\r\n";
-		}
+		$html .= $this->setDescription($a->content()) . "\r\n";
 
 		if ($a->hasContactInfo())
 		{
@@ -444,6 +442,12 @@ if (!empty($this->icalEvents))
 				if ($a->location() != "") $html .= "LOCATION:" . $this->wraplines($this->replacetags($a->location())) . "\r\n";
 				// We Need to wrap this according to the specs
 				$html .= $this->setDescription($a->content()) . "\r\n";
+
+				$ilink = $a->viewDetailLink($a->yup(), $a->mup(), $a->dup(), true, $params->get('default_itemid', 0));
+				$iuri  = Uri::getInstance(Uri::base());
+				$iroot = $iuri->toString(array('scheme', 'host', 'port'));
+				$html .= "URL:" . self::wraplines($iroot . Route::_($ilink, true, -1)) . "\r\n";
+
 
 				if ($a->hasContactInfo())
 					$html .= "CONTACT:" . $this->replacetags($a->contact_info()) . "\r\n";

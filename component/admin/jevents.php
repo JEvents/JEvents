@@ -101,6 +101,12 @@ if (!$authorisedonly && !$user->authorise('core.manage', 'com_jevents'))
 {
 	throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'));
 }
+$spcolourscheme = $params->get('spcolourscheme', '');
+$disablesmartphone = (int) $params->get('disablesmartphone', 1);
+if ($spcolourscheme !== '' && $disablesmartphone == 0 && $_SERVER['REQUEST_METHOD'] == 'GET')
+{
+	Factory::getApplication()->enqueueMessage(Text::_("COM_JEVENTS_SMARTPHONE_THEME_SHOULD_BE_DISABLED"), 'notice');
+}
 
 // Must also load frontend language files
 $lang = Factory::getLanguage();

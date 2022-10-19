@@ -98,13 +98,16 @@ function ProcessJsonRequest(&$requestObject, $returnData)
 		// use union orf arrays sincee getData no longer has string keys in the resultant array
 		//$creatorgroups = $creatorgroups["core.admin"]->getData()+ $creatorgroups["core.create"]->getData();
 		// use union orf arrays sincee getData no longer has string keys in the resultant array
-		$creatorgroupsdata = $creatorgroups["core.admin"]->getData();
+		$creatorgroupsdata = isset($creatorgroups["core.admin"]) ? $creatorgroups["core.admin"]->getData() : array();
 		// take the higher permission setting
-		foreach ($creatorgroups["core.create"]->getData() as $creatorgroup => $permission)
+		if (isset($creatorgroups["core.create"]))
 		{
-			if ($permission)
+			foreach ($creatorgroups["core.create"]->getData() as $creatorgroup => $permission)
 			{
-				$creatorgroupsdata[$creatorgroup] = $permission;
+				if ($permission)
+				{
+					$creatorgroupsdata[$creatorgroup] = $permission;
+				}
 			}
 		}
 

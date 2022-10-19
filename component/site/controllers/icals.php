@@ -627,7 +627,7 @@ class ICalsController extends AdminIcalsController
 		}
 		if ($htmlDesc !== $description)
 		{
-			$return = "X-ALT-DESC;FMTTYPE=text/html:" . $this->wraplines($htmlDesc, 76, false);
+			$return .= "\r\nX-ALT-DESC;FMTTYPE=text/html:" . $this->wraplines($htmlDesc, 76, false);
 		}
 		return $return;
 	}

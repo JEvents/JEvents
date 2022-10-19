@@ -153,6 +153,7 @@ class AdminParamsController extends AdminController
 		$post['params']  = $input->post->get('jform', null, 'RAW');
 		$post['plugins'] = $input->post->get('jform_plugin', null, 'RAW');
 		$post['option']  = $component;
+		$post['params']['disablesmartphone'] = 1;
 		$table->bind($post);
 
 		// Pre-save checks

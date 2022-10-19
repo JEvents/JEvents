@@ -29,7 +29,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 	function __construct($config = null)
 	{
 
-		parent::__construct($config);
+         		parent::__construct($config);
 		jimport('joomla.filesystem.file');
 
 		$app = Factory::getApplication();

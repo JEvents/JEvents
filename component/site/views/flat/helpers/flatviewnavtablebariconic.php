@@ -145,7 +145,8 @@ class FlatViewNavTableBarIconic
 				<div id="nav-search">
 					<a href="<?php echo Route::_('index.php?option=' . $option . $cat . '&task=search.form&' . $view_date->toDateURL() . '&Itemid=' . $Itemid); ?>"
 					   title="<?php echo Text::_('JEV_SEARCH_TITLE'); ?>">
-						<img src="<?php echo $viewimages; ?>/icon-search.gif" alt="Search"/></a>
+						<img src="<?php echo $viewimages; ?>/icon-search.gif" alt="Search"/>
+					</a>
 				</div>
 			<?php } ?>
 			<?php

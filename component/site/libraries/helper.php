@@ -3488,6 +3488,12 @@ SCRIPT;
 							$html .= "LOCATION:" . self::wraplines(self::replacetags($row->location())) . "\r\n";
 						}
 					}
+
+					$ilink = $row->viewDetailLink($row->yup(), $row->mup(), $row->dup(), true, $params->get('default_itemid', 0));
+					$iuri  = Uri::getInstance(Uri::base());
+					$iroot = $iuri->toString(array('scheme', 'host', 'port'));
+					$html .= "URL:" . self::wraplines($iroot . Route::_($ilink, true, -1)) . "\r\n";
+
 					// We Need to wrap this according to the specs
 					$html .= self::setDescription(strip_tags($row->content())) . "\r\n";
 
@@ -3780,6 +3786,11 @@ SCRIPT;
 						// We Need to wrap this according to the specs
 						$html .= self::setDescription(strip_tags($a->content())) . "\r\n";
 
+						$ilink = $a->viewDetailLink($a->yup(), $a->mup(), $a->dup(), true, $params->get('default_itemid', 0));
+						$iuri  = Uri::getInstance(Uri::base());
+						$iroot = $iuri->toString(array('scheme', 'host', 'port'));
+						$html .= "URL:" . self::wraplines($iroot . Route::_($ilink, true, -1)) . "\r\n";
+
 						if ($a->hasContactInfo())
 							$html .= "CONTACT:" . self::replacetags($a->contact_info()) . "\r\n";
 
@@ -3844,6 +3855,11 @@ SCRIPT;
 						$html .= "LOCATION:" . self::wraplines(self::replacetags($a->location())) . "\r\n";
 					// We Need to wrap this according to the specs
 					$html .= self::setDescription(strip_tags($a->content())) . "\r\n";
+
+					$ilink = $a->viewDetailLink($a->yup(), $a->mup(), $a->dup(), true, $params->get('default_itemid', 0));
+					$iuri  = Uri::getInstance(Uri::base());
+					$iroot = $iuri->toString(array('scheme', 'host', 'port'));
+					$html .= "URL:" . self::wraplines($iroot . Route::_($ilink, true, -1)) . "\r\n";
 
 					if ($a->hasContactInfo())
 						$html .= "CONTACT:" . self::replacetags($a->contact_info()) . "\r\n";
@@ -4266,7 +4282,7 @@ SCRIPT;
 		}
 		if ($htmlDesc !== $description)
 		{
-			$return = "X-ALT-DESC;FMTTYPE=text/html:" . self::wraplines($htmlDesc, 76, false);
+			$return .= "\r\nX-ALT-DESC;FMTTYPE=text/html:" . self::wraplines($htmlDesc, 76, false);
 		}
 		return $return;
 	}

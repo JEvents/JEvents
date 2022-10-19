@@ -107,14 +107,16 @@ class JFormFieldJEVuser extends JFormFieldList
 		// use union orf arrays sincee getData no longer has string keys in the resultant array
 		$creatorgroupsdata = isset($creatorgroups["core.admin"]) ? $creatorgroups["core.admin"]->getData() : array();
 		// take the higher permission setting
-		foreach ($creatorgroups[$action]->getData() as $creatorgroup => $permission)
+		if (isset($creatorgroups["core.create"]))
 		{
-			if ($permission)
+			foreach ($creatorgroups[$action]->getData() as $creatorgroup => $permission)
 			{
-				$creatorgroupsdata[$creatorgroup] = $permission;
+				if ($permission)
+				{
+					$creatorgroupsdata[$creatorgroup] = $permission;
+				}
 			}
 		}
-
 		$users = array(0);
 		foreach ($creatorgroupsdata as $creatorgroup => $permission)
 		{
