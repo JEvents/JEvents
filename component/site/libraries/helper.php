@@ -3492,10 +3492,10 @@ SCRIPT;
 					$ilink = $row->viewDetailLink($row->yup(), $row->mup(), $row->dup(), true, $params->get('default_itemid', 0));
 					$iuri  = Uri::getInstance(Uri::base());
 					$iroot = $iuri->toString(array('scheme', 'host', 'port'));
-					$html .= "URL:" . self::wraplines($iroot . Route::_($ilink, true, -1)) . "\r\n";
+					$html .= " URL;VALUE=URI:" . self::wraplines($iroot . Route::_($ilink, true, -1)) . "\r\n";
 
 					// We Need to wrap this according to the specs
-					$html .= self::setDescription(strip_tags($row->content())) . "\r\n";
+					$html .= self::setDescription($row->content()) . "\r\n";
 
 					if ($a->hasContactInfo())
 						$html .= "CONTACT:" . self::replacetags($row->contact_info()) . "\r\n";
@@ -3784,12 +3784,12 @@ SCRIPT;
 						if ($a->location() != "")
 							$html .= "LOCATION:" . self::wraplines(self::replacetags($a->location())) . "\r\n";
 						// We Need to wrap this according to the specs
-						$html .= self::setDescription(strip_tags($a->content())) . "\r\n";
+						$html .= self::setDescription($a->content()) . "\r\n";
 
 						$ilink = $a->viewDetailLink($a->yup(), $a->mup(), $a->dup(), true, $params->get('default_itemid', 0));
 						$iuri  = Uri::getInstance(Uri::base());
 						$iroot = $iuri->toString(array('scheme', 'host', 'port'));
-						$html .= "URL:" . self::wraplines($iroot . Route::_($ilink, true, -1)) . "\r\n";
+						$html .= " URL;VALUE=URI:" . self::wraplines($iroot . Route::_($ilink, true, -1)) . "\r\n";
 
 						if ($a->hasContactInfo())
 							$html .= "CONTACT:" . self::replacetags($a->contact_info()) . "\r\n";
@@ -3854,12 +3854,12 @@ SCRIPT;
 					if ($a->location() != "")
 						$html .= "LOCATION:" . self::wraplines(self::replacetags($a->location())) . "\r\n";
 					// We Need to wrap this according to the specs
-					$html .= self::setDescription(strip_tags($a->content())) . "\r\n";
+					$html .= self::setDescription($a->content()) . "\r\n";
 
 					$ilink = $a->viewDetailLink($a->yup(), $a->mup(), $a->dup(), true, $params->get('default_itemid', 0));
 					$iuri  = Uri::getInstance(Uri::base());
 					$iroot = $iuri->toString(array('scheme', 'host', 'port'));
-					$html .= "URL:" . self::wraplines($iroot . Route::_($ilink, true, -1)) . "\r\n";
+					$html .= " URL;VALUE=URI:" . self::wraplines($iroot . Route::_($ilink, true, -1)) . "\r\n";
 
 					if ($a->hasContactInfo())
 						$html .= "CONTACT:" . self::replacetags($a->contact_info()) . "\r\n";
@@ -3951,7 +3951,7 @@ SCRIPT;
 			$firststart -= 31622400;
 			$timezone   = new DateTimeZone($current_timezone);
 
-			if (version_compare(PHP_VERSION, "5.3.0", "gte"))
+			if (version_compare(PHP_VERSION, "5.3.0", "ge"))
 			{
 				$transitions = $timezone->getTransitions($firststart);
 			}
@@ -4153,11 +4153,10 @@ SCRIPT;
 
 	// Special methods ONLY user for iCal invitations
 
-	protected static
+	public static
 	function wraplines($input, $line_max = 76, $quotedprintable = false)
 	{
 
-		$hex = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F');
 		$eol = "\r\n";
 
 		$input = str_replace($eol, "", $input);
@@ -4179,49 +4178,9 @@ SCRIPT;
 		}
 
 		return $output;
-
-		$escape  = '=';
-		$output  = '';
-		$outline = "";
-		$newline = ' ';
-
-		$linlen = StringHelper::strlen($input);
-
-
-		for ($i = 0; $i < $linlen; $i++)
-		{
-			$c = StringHelper::substr($input, $i, 1);
-
-			/*
-			  $dec = ord($c);
-			  if (!$quotedprintable) {
-			  if (($dec == 32) && ($i == ($linlen - 1))) { // convert space at eol only
-			  $c = '=20';
-			  } elseif (($dec == 61) || ($dec < 32 ) || ($dec > 126)) { // always encode "\t", which is *not* required
-			  $h2 = floor($dec / 16);
-			  $h1 = floor($dec % 16);
-			  $c = $escape . $hex["$h2"] . $hex["$h1"];
-			  }
-			  }
-			 */
-			if ((StringHelper::strlen($outline) + 1) >= $line_max)
-			{ // CRLF is not counted
-				$output  .= $outline . $eol . $newline; // soft line break; "\r\n" is okay
-				$outline = $c;
-				//$newline .= " ";
-			}
-			else
-			{
-				$outline .= $c;
-			}
-		} // end of for
-		$output .= $outline;
-
-		return trim($output);
-
 	}
 
-	protected static
+	public static
 	function replacetags($description)
 	{
 
@@ -4239,6 +4198,47 @@ SCRIPT;
 		$description = str_replace('<BR>', '\n', $description);
 		$description = str_replace('<li>', '\n - ', $description);
 		$description = str_replace('<LI>', '\n - ', $description);
+
+		try
+		{
+			$dom = new DOMDocument();
+			// see http://php.net/manual/en/domdocument.savehtml.php cathexis dot de ¶
+			$dom->loadHTML('<html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></head><body>' . $description . '</body>');
+
+			$links = $dom->getElementsByTagName('a');
+			foreach ($links as $link)
+			{
+				$fragment = $dom->createDocumentFragment();
+				$href = $link->getAttribute('href');
+				$text = $link->textContent;
+				if ($text == $href || empty($href))
+				{
+					$fragment->appendXML($link->textContent);
+				}
+				else
+				{
+					$fragment->appendXML($link->textContent . " (" . $href . ")");
+				}
+
+				$link->parentNode->replaceChild($fragment, $link);
+			}
+			//$description = $dom->saveHTML($dom->getElementsByTagName('body')[0]);
+			$body = $dom->getElementsByTagName('body')[0];
+			$newdescription= '';
+			$children = $body->childNodes;
+			foreach ($children as $child) {
+				$newdescription .= $child->ownerDocument->saveHTML( $child );
+			}
+			if (!empty($newdescription))
+			{
+				$description = $newdescription;
+			}
+
+		}
+		catch (Exception $exception)
+		{
+			$x = 1;
+		}
 		$description = strip_tags($description, '<a>');
 		//$description 	= strtr( $description,	array_flip(get_html_translation_table( HTML_ENTITIES ) ) );
 		//$description 	= preg_replace( "/&#([0-9]+);/me","chr('\\1')", $description );
@@ -4246,7 +4246,7 @@ SCRIPT;
 
 	}
 
-	protected static function setDescription($desc)
+	public static function setDescription($desc)
 	{
 
 		// TODO - run this through plugins first ?

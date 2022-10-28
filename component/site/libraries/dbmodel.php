@@ -3296,6 +3296,9 @@ class JEventsDBModel
 		$startdate = JevDate::mktime(0, 0, 0, $month, 1, $year);
 		$enddate   = JevDate::mktime(23, 59, 59, $month, date('t', $startdate), $year);
 
+		//$startdate -= 604800;
+		//$enddate   += 604800;
+
 //		$cfg = JEVConfig::getInstance();
 //		var_dump($this->countIcalEventsByRangebyDay($startdate, $enddate,  $cfg->get('com_showrepeats')));
 

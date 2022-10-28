@@ -593,135 +593,17 @@ class ICalsController extends AdminIcalsController
 
 	protected function setDescription($desc)
 	{
-
-		// TODO - run this through plugins first ?
-
-		// See http://www.jevents.net/forum/viewtopic.php?f=23&t=21939&p=115231#wrap
-		// can we use 	X-ALT-DESC;FMTTYPE=text/html: as well as DESCRIPTION
-		$input = Factory::getApplication()->input;
-
-		$icalformatted = $input->getInt("icf", 0);
-		if (!$icalformatted)
-		{
-			$htmlDesc    = $desc;
-			$description = $this->replacetags($desc);
-		}
-		else
-		{
-			$htmlDesc    = $desc;
-			$description = $desc;
-		}
-
-		// wraplines	from vCard class
-		$cfg = JEVConfig::getInstance();
-		$return = "";
-		if ($cfg->get("outlook2003icalexport", 1))
-		{
-			$return =  "DESCRIPTION:" . $this->wraplines($description, 76, false);
-		}
-		else
-		{
-			// ENCODING=QUOTED-PRINTABLE is deprecated
-			//return "DESCRIPTION;ENCODING=QUOTED-PRINTABLE:" . $this->wraplines($description);
-			$return = "DESCRIPTION:" . $this->wraplines($description, 76, false);
-		}
-		if ($htmlDesc !== $description)
-		{
-			$return .= "\r\nX-ALT-DESC;FMTTYPE=text/html:" . $this->wraplines($htmlDesc, 76, false);
-		}
-		return $return;
+		return JEVHelper::setDescription($desc);
 	}
 
 	private function replacetags($description)
 	{
-
-		$description = str_replace('<p>', '', $description);
-		$description = str_replace('<P>', '', $description);
-		$description = str_replace('</p>', '\n', $description);
-		$description = str_replace('</P>', '\n', $description);
-		$description = str_replace('<p/>', '\n\n', $description);
-		$description = str_replace('<P/>', '\n\n', $description);
-		$description = str_replace('<br />', '\n', $description);
-		$description = str_replace('<br/>', '\n', $description);
-		$description = str_replace('<br>', '\n', $description);
-		$description = str_replace('<BR />', '\n', $description);
-		$description = str_replace('<BR/>', '\n', $description);
-		$description = str_replace('<BR>', '\n', $description);
-		$description = str_replace('<li>', '\n - ', $description);
-		$description = str_replace('<LI>', '\n - ', $description);
-		$description = strip_tags($description, '<a>');
-		//$description 	= strtr( $description,	array_flip(get_html_translation_table( HTML_ENTITIES ) ) );
-		//$description 	= preg_replace( "/&#([0-9]+);/me","chr('\\1')", $description );
-		return $description;
-
+		return JEVHelper::replacetags($replacetags);
 	}
 
 	private function wraplines($input, $line_max = 76, $quotedprintable = false)
 	{
-
-		$hex = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F');
-		$eol = "\r\n";
-
-		$input = str_replace($eol, "", $input);
-
-		// new version
-
-		$output = '';
-		while (StringHelper::strlen($input) >= $line_max)
-		{
-			$output .= StringHelper::substr($input, 0, $line_max - 1);
-			$input  = StringHelper::substr($input, $line_max - 1);
-			if (StringHelper::strlen($input) > 0)
-			{
-				$output .= $eol . " ";
-			}
-		}
-		if (StringHelper::strlen($input) > 0)
-		{
-			$output .= $input;
-		}
-
-		return $output;
-
-		$escape  = '=';
-		$output  = '';
-		$outline = "";
-		$newline = ' ';
-
-		$linlen = StringHelper::strlen($input);
-
-
-		for ($i = 0; $i < $linlen; $i++)
-		{
-			$c = StringHelper::substr($input, $i, 1);
-
-			/*
-			  $dec = ord($c);
-			  if (!$quotedprintable) {
-			  if (($dec == 32) && ($i == ($linlen - 1))) { // convert space at eol only
-			  $c = '=20';
-			  } elseif (($dec == 61) || ($dec < 32 ) || ($dec > 126)) { // always encode "\t", which is *not* required
-			  $h2 = floor($dec / 16);
-			  $h1 = floor($dec % 16);
-			  $c = $escape . $hex["$h2"] . $hex["$h1"];
-			  }
-			  }
-			 */
-			if ((StringHelper::strlen($outline) + 1) >= $line_max)
-			{ // CRLF is not counted
-				$output  .= $outline . $eol . $newline; // soft line break; "\r\n" is okay
-				$outline = $c;
-				//$newline .= " ";
-			}
-			else
-			{
-				$outline .= $c;
-			}
-		} // end of for
-		$output .= $outline;
-
-		return trim($output);
-
+		return JEVHelper::wraplines($input, $line_max, $quotedprintable);
 	}
 
 	private function vtimezone($icalEvents)
@@ -746,7 +628,7 @@ class ICalsController extends AdminIcalsController
 			$firststart -= 31622400;
 			$timezone   = new DateTimeZone($current_timezone);
 
-			if (version_compare(PHP_VERSION, "5.3.0", "gte"))
+			if (version_compare(PHP_VERSION, "5.3.0", "ge"))
 			{
 				$transitions = $timezone->getTransitions($firststart);
 			}

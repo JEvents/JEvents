@@ -8,6 +8,7 @@
  */
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\Version;
 use Joomla\CMS\Layout\LayoutHelper;
 
@@ -26,6 +27,20 @@ echo LayoutHelper::render('gslframework.header', null, JPATH_ADMINISTRATOR. "/co
 $jversion = new Version;
 if ($jversion->isCompatible('4.0'))
 {
+	Factory::getDbo()->setQuery("SELECT * FROM #__categories WHERE extension='com_jevents'");
+	$categories = Factory::getDbo()->loadObjectList('id');
+	$style = "";
+	foreach ($categories as $cat)
+	{
+		$catparams = new JevRegistry($cat->params);
+		if ($catparams->get("catcolour"))
+		{
+			$style .= "tr[data-item-id='$cat->id'] .cat-title a {  border-left:solid 3px  " . $catparams->get("catcolour") . ";padding-left:5px;}\n";
+		}
+	}
+	Factory::getApplication()->getDocument()->addStyleDeclaration($style);
+
+
 	include(JPATH_COMPONENT_ADMINISTRATOR . "/tmpl/categories/default.php");
 }
 else
