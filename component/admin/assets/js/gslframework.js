@@ -298,24 +298,26 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 
 	// Hide toggled left-menu if in click mode
-	document.querySelector('#right-col > .gsl-content, #right-col > #top-head').addEventListener('mouseover', () => {
-		if (typeof leftMenuTrigger != "undefined" && leftMenuTrigger == 3) {
-			return;
-		}
-		if (document.getElementById('left-col') && document.getElementById('left-col') && !document.getElementById('left-col').classList.contains('hide-label')) {
-			var elements = document.querySelectorAll('#left-col, #left-col .left-nav, .ysts-page-title');
-			elements.forEach(function(element)
-			{
-				if (element.classList.contains('hide-label'))
+	document.querySelectorAll('#right-col > .gsl-content, #right-col > #top-head').forEach(elem => {
+		elem.addEventListener('mouseover', () => {
+			if (typeof leftMenuTrigger != "undefined" && leftMenuTrigger == 3) {
+				return;
+			}
+			if (document.getElementById('left-col') && document.getElementById('left-col') && !document.getElementById('left-col').classList.contains('hide-label')) {
+				var elements = document.querySelectorAll('#left-col, #left-col .left-nav, .ysts-page-title');
+				elements.forEach(function(element)
 				{
-					element.classList.remove('hide-label');
-				}
-				else
-				{
-					element.classList.add('hide-label');
-				}
-			})
-		}
+					if (element.classList.contains('hide-label'))
+					{
+						element.classList.remove('hide-label');
+					}
+					else
+					{
+						element.classList.add('hide-label');
+					}
+				})
+			}
+		});
 	});
 
 	ystsPositionElements()

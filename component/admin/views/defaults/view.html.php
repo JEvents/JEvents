@@ -211,6 +211,10 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 							$hasTranslation = true;
 						}
 					}
+					else
+					{
+
+					}
 					$url          = Route::_('index.php?option=com_jevents&task=defaults.edit&id=' . $translationid, false);
 					$img          = HTMLHelper::_('image', 'mod_languages/' . $item->image . '.gif',
 						$item->title,

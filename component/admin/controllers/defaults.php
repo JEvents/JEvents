@@ -322,7 +322,7 @@ class AdminDefaultsController extends Joomla\CMS\MVC\Controller\FormController
 				$matched = false;
 				foreach ($specificLanguageTitles as $stitle)
 				{
-					if ($title->name == $stitle->name && $stitle->language == $lang_code)
+					if ($title->name == $stitle->name && $stitle->language == $lang_code  && $stitle->catid == $title->catid)
 					{
 						$matched = true;
 						break;
@@ -338,10 +338,10 @@ class AdminDefaultsController extends Joomla\CMS\MVC\Controller\FormController
 		if (count($missingDefaults) > 0)
 		{
 			$query = $db->getQuery(true);
-			$query->insert("#__jev_defaults")->columns("title, name, subject,value,state,params,language");
+			$query->insert("#__jev_defaults")->columns("title, name, subject,value,state,params,language, catid");
 			foreach ($missingDefaults as $md)
 			{
-				$values = array($db->quote($md["title"]->title), $db->quote($md["title"]->name), $db->quote($md["title"]->subject), $db->quote($md["title"]->value), 0, $db->quote($md["title"]->params), $db->quote($md["lang_code"]));
+				$values = array($db->quote($md["title"]->title), $db->quote($md["title"]->name), $db->quote($md["title"]->subject), $db->quote($md["title"]->value), 0, $db->quote($md["title"]->params), $db->quote($md["lang_code"]), $db->quote($md["title"]->catid));
 				$query->values(implode(",", $values));
 			}
 			$db->setQuery($query);

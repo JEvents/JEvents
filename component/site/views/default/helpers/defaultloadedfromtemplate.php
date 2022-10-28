@@ -2619,7 +2619,14 @@ function jevSpecialHandling2($matches)
 		}
 		else if (count($parts) >= 1)
 		{
-			return sprintf($parts[0], $tempreplace);
+			try
+			{
+				return sprintf($parts[0], $tempreplace);
+			}
+			catch (Exception $e)
+			{
+				return "Invalid format string in custom layout <br>" . $matches[1] . "<br>Please report to site manager.";
+			}
 		}
 	}
 	else

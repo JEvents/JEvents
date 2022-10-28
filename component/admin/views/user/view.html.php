@@ -94,12 +94,15 @@ class AdminUserViewUser extends JEventsAbstractView
 		$params        = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		$rules         = Access::getAssetRules("com_jevents", true);
 		$data          = $rules->getData();
-		$creatorgroups = $data["core.create"]->getData();
-		foreach ($data["core.admin"]->getData() as $creatorgroup => $permission)
+		$creatorgroups = isset($data["core.create"]) ? $data["core.create"]->getData() : array();
+		if (isset($data["core.admin"]))
 		{
-			if ($permission == 1)
+			foreach ($data["core.admin"]->getData() as $creatorgroup => $permission)
 			{
-				$creatorgroups[$creatorgroup] = $permission;
+				if ($permission == 1)
+				{
+					$creatorgroups[$creatorgroup] = $permission;
+				}
 			}
 		}
 		// array_merge does a re-indexing !!

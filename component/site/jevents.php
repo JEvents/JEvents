@@ -70,7 +70,7 @@ if (strpos($params->get('framework', 'bootstrap'), 'bootstrap') === 0 || $params
 {
 	JevHtmlBootstrap::framework();
 	JevHtmlBootstrap::loadCss();
-
+	HTMLHelper::stylesheet('media/system/css/joomla-fontawesome.min.css');
 }
 else
 {
@@ -148,6 +148,8 @@ if (!$isMobile && isset($_SERVER['HTTP_USER_AGENT']))
 }
 
 $params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+// Smart phone theme is discontinued so disable it here
+$params->set("disablesmartphone", 1);
 
 if ($isMobile || strpos($app->getTemplate(), 'mobile_') === 0 || (class_exists("T3Common") && class_exists("T3Parameter") && T3Common::mobile_device_detect()) || $input->get("jEV", "") == "smartphone")
 {

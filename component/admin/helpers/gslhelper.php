@@ -147,6 +147,8 @@ class GslHelper
 
 
 		$params = ComponentHelper::getParams("com_jevents");
+		$clubcode = $params->get("clubcode", "");
+		$hideunusedmenuitems = (int) $params->get("hideunusedmenuitems", 0);
 
 		$leftmenutrigger = (int) $params->get("leftmenutrigger", 0);
 
@@ -197,6 +199,96 @@ class GslHelper
 				$iconLink->tooltip_detail = "";
 				$iconLinks[]              = $iconLink;
 			}
+		}
+
+		$iconLink                 = new stdClass();
+		$iconLink->class          = "";
+		$iconLink->active         = 0;
+		$iconLink->link           = Route::_("index.php?option=com_modules&filter[module]=mod_jevents_latest");
+		$iconLink->icon           = "grid";
+		$iconLink->label          = Text::_('COM_JEVENTS_MODULES');
+		$iconLink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_('COM_JEVENTS_MODULES', true);
+		$iconLink->tooltip_detail = "";
+		$iconLinks[]              = $iconLink;
+
+		try
+		{
+			$iconLink->sublinks = array();
+
+			Factory::getLanguage()->load("mod_jevents_latest", JPATH_SITE);
+
+			$sublink                 = new stdClass();
+			$sublink->class          = "gsl-button gsl-small gsl-button-secondary gsl-padding-remove gsl-text-left ";
+			$sublink->onclick        = "(function(e) { window.open('" . Route::_("index.php?option=com_modules&filter[module]=mod_jevents_latest") . " ');return false;})(event);";
+			$sublink->link           = "";
+			$sublink->icon           = "list";
+			$sublink->iconclass      = "gsl-margin-small-right gsl-display-inline-block";
+			$sublink->label          = Text::_('MOD_JEV_LATEST_EVENTS_TITLE');
+			$sublink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_('MOD_JEV_LATEST_EVENTS_TITLE', true);
+			$sublink->tooltip_detail = "";
+
+			$iconLink->sublinks[] = $sublink;
+
+			Factory::getLanguage()->load("mod_jevents_cal", JPATH_SITE);
+
+			$sublink                 = new stdClass();
+			$sublink->class          = "gsl-button gsl-small gsl-button-secondary gsl-padding-remove gsl-text-left ";
+			$sublink->onclick        = "(function(e) { window.open('" . Route::_("index.php?option=com_modules&filter[module]=mod_jevents_cal") . " ');return false;})(event);";
+			$sublink->link           = "";
+			$sublink->icon           = "calendar";
+			$sublink->iconclass      = "gsl-margin-small-right gsl-display-inline-block";
+			$sublink->label          = Text::_('MOD_JEV_CALENDAR_TITLE');
+			$sublink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_('MOD_JEV_CALENDAR_TITLE', true);
+			$sublink->tooltip_detail = "";
+
+			$iconLink->sublinks[] = $sublink;
+
+			Factory::getLanguage()->load("mod_jevents_custom", JPATH_SITE);
+
+			$sublink                 = new stdClass();
+			$sublink->class          = "gsl-button gsl-small gsl-button-secondary gsl-padding-remove gsl-text-left ";
+			$sublink->onclick        = "(function(e) { window.open('" . Route::_("index.php?option=com_modules&filter[module]=mod_jevents_custom") . " ');return false;})(event);";
+			$sublink->link           = "";
+			$sublink->icon           = "paint-bucket";
+			$sublink->iconclass      = "gsl-margin-small-right gsl-display-inline-block";
+			$sublink->label          = Text::_('MOD_JEV_CUSTOM_MODULE_TITLE');
+			$sublink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_('MOD_JEV_CUSTOM_MODULE_TITLE', true);
+			$sublink->tooltip_detail = "";
+
+			$iconLink->sublinks[] = $sublink;
+
+			Factory::getLanguage()->load("mod_jevents_filter", JPATH_SITE);
+
+			$sublink                 = new stdClass();
+			$sublink->class          = "gsl-button gsl-small gsl-button-secondary gsl-padding-remove gsl-text-left ";
+			$sublink->onclick        = "(function(e) { window.open('" . Route::_("index.php?option=com_modules&filter[module]=mod_jevents_filter") . " ');return false;})(event);";
+			$sublink->link           = "";
+			$sublink->icon           = "search";
+			$sublink->iconclass      = "gsl-margin-small-right gsl-display-inline-block";
+			$sublink->label          = Text::_('MOD_JEV_FILTER_MODULE_TITLE');
+			$sublink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_('MOD_JEV_FILTER_MODULE_TITLE', true);
+			$sublink->tooltip_detail = "";
+
+			$iconLink->sublinks[] = $sublink;
+
+			Factory::getLanguage()->load("mod_jevents_legend", JPATH_SITE);
+
+			$sublink                 = new stdClass();
+			$sublink->class          = "gsl-button gsl-small gsl-button-secondary gsl-padding-remove gsl-text-left ";
+			$sublink->onclick        = "(function(e) { window.open('" . Route::_("index.php?option=com_modules&filter[module]=mod_jevents_legend") . " ');return false;})(event);";
+			$sublink->link           = "";
+			$sublink->icon           = "settings";
+			$sublink->iconclass      = "gsl-margin-small-right gsl-display-inline-block";
+			$sublink->label          = Text::_('MOD_JEV_LEGEND_TITLE');
+			$sublink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_('MOD_JEV_LEGEND_TITLE', true);
+			$sublink->tooltip_detail = "";
+
+			$iconLink->sublinks[] = $sublink;
+
+		}
+		catch (Exception $e)
+		{
+
 		}
 
 		$iconLink                 = new stdClass();
@@ -255,7 +347,7 @@ class GslHelper
 			$iconLinks[]              = $iconLink;
 
 		}
-		else
+		else if (!$hideunusedmenuitems)
 		{
 			$iconLink                 = new stdClass();
 			$iconLink->class          = "notinstalled";
@@ -293,7 +385,7 @@ class GslHelper
 			$iconLinks[]              = $iconLink;
 
 		}
-		else
+		else if (!$hideunusedmenuitems)
 		{
 			$iconLink                 = new stdClass();
 			$iconLink->class          = "notinstalled";
@@ -332,7 +424,7 @@ class GslHelper
 			$iconLinks[]              = $iconLink;
 
 		}
-		else
+		else if (!$hideunusedmenuitems)
 		{
 			$iconLink                 = new stdClass();
 			$iconLink->class          = "notinstalled";
@@ -370,7 +462,7 @@ class GslHelper
 			$iconLinks[]              = $iconLink;
 
 		}
-		else
+		else if (!$hideunusedmenuitems)
 		{
 			$iconLink                 = new stdClass();
 			$iconLink->class          = "notinstalled";
@@ -429,7 +521,7 @@ class GslHelper
 			}
 
 		}
-		else
+		else if (!$hideunusedmenuitems)
 		{
 			$iconLink                 = new stdClass();
 			$iconLink->class          = "notinstalled";

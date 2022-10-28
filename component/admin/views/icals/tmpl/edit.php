@@ -76,7 +76,7 @@ $action = Factory::getApplication()->isClient('administrator') ? "index.php" : "
 
 
 		// build the html select list
-		$glist = JEventsHTML::buildAccessSelect($access, 'class="inputbox" size="1"', "", "access");
+		$glist = JEventsHTML::buildAccessSelect($access, 'class="gsl-select gsl-form-width-large" size="1"', "", "access");
 
 		$disabled = "";
 		echo JEventsHTML::buildScriptTag('start');
@@ -114,7 +114,7 @@ $action = Factory::getApplication()->isClient('administrator') ? "index.php" : "
 				<?php echo Text::_("Unique_Identifier"); ?>
 			</div>
 			<div class="controls">
-				<input class="inputbox" type="text" name="icsLabel" id="icsLabel" value="<?php echo $label; ?>"
+				<input class="gsl-input gsl-form-width-large" type="text" name="icsLabel" id="icsLabel" value="<?php echo $label; ?>"
 				       size="80"/>
 			</div>
 		</div>
@@ -252,7 +252,7 @@ $action = Factory::getApplication()->isClient('administrator') ? "index.php" : "
 			?>
 			<?php if ($id == 0) { ?>
 			<h3><?php echo $filename; ?></h3>
-			<input class="inputbox" type="file" name="upload" id="upload" size="80"/><br/><br/>
+			<input class="gsl-input gsl-form-width-large" type="file" name="upload" id="upload" size="80"/><br/><br/>
 			<button name="loadical" title="Load Ical"
 			        onclick="var icalfile=document.getElementById('upload').value;if (icalfile.length==0)return false; else submitbutton('icals.save');return false;"><?php echo Text::_('LOAD_ICAL_FROM_FILE'); ?></button>
 			<?php
@@ -303,7 +303,7 @@ $action = Factory::getApplication()->isClient('administrator') ? "index.php" : "
 				</div>
 			</div>
 
-			<input class="inputbox" type="text" name="uploadURL" id="uploadURL" <?php echo $disabled; ?> size="120"
+			<input class="gsl-input gsl-form-width-large" type="text" name="uploadURL" id="uploadURL" <?php echo $disabled; ?> size="120"
 			       value="<?php echo $srcURL; ?>"/><br/><br/>
 			<?php if ($id == 0) { ?>
 			<button name="loadical" title="Load Ical" <?php echo $disabled; ?>
