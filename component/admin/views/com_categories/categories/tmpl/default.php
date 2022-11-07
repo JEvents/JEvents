@@ -35,7 +35,7 @@ if ($jversion->isCompatible('4.0'))
 		$catparams = new JevRegistry($cat->params);
 		if ($catparams->get("catcolour"))
 		{
-			$style .= "tr[data-item-id='$cat->id'] .cat-title a {  border-left:solid 3px  " . $catparams->get("catcolour") . ";padding-left:5px;}\n";
+			$style .= "tr[data-item-id='$cat->id'] .cat-title a, tr[data-item-id='$cat->id'] th a {  border-left:solid 3px  " . $catparams->get("catcolour") . ";padding-left:5px;}\n";
 		}
 	}
 	Factory::getApplication()->getDocument()->addStyleDeclaration($style);

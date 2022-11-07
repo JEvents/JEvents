@@ -243,7 +243,7 @@ class DefaultViewNavTableBarIconic
 				{ ?>
 			<td colspan="6" align="center" valign="top">
 				<?php }
-				$index = Route::_("index.php?option=' . JEV_COM_COMPONENT . $this->cat . '&task=month.calendar&Itemid=$this->Itemid");
+				$index = Route::_("index.php?option=" . JEV_COM_COMPONENT . $this->cat . "&task=month.calendar&Itemid=$this->Itemid");
 				?>
 				<div id="jumpto" class="jev_none">
 					<form name="BarNav" action="<?php echo $index; ?>" method="get">
