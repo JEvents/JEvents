@@ -19,11 +19,18 @@ use Joomla\CMS\HTML\HTMLHelper;
 $jversion = new Joomla\CMS\Version;
 if (!$jversion->isCompatible('4.0'))
 {
-	HTMLHelper::_('formbehavior.chosen', 'select');
+	//HTMLHelper::_('formbehavior.chosen', 'select');
+	HTMLHelper::script('media/com_jevents/js/gslselect.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
+	$script = <<< SCRIPT
+			window.addEventListener('load', function () {
+				gslselect("#adminForm select:not(.gsl-hidden)");
+			})
+SCRIPT;
+	Factory::getDocument()->addScriptDeclaration($script);
 }
 jimport('joomla.filesystem.file');
 
-if ($this->item->name == "month.calendar_cell" || $this->item->name == "month.calendar_tip" || $this->item->name == "icalevent.edit_page"  || $this->item->name == "icalevent.list_block3")
+if ($this->item->name == "month.calendar_cell" || $this->item->name == "month.calendar_tip" || $this->item->name == "icalevent.edit_page"  || $this->item->name == "icalevent.list_block3"  || $this->item->name == "icalevent.list_block4")
 {
 	$editor = Editor::getInstance("none");
 }
@@ -39,6 +46,9 @@ if (strpos($this->item->name, "com_") === 0)
 	$parts = explode(".", $this->item->name);
 	$lang->load($parts[0]);
 }
+
+if ($this->item->value == "" && file_exists(dirname(__FILE__) . '/' . $this->item->name . ".3.7.html"))
+	$this->item->value = file_get_contents(dirname(__FILE__) . '/' . $this->item->name . ".3.html");
 
 if ($this->item->value == "" && file_exists(dirname(__FILE__) . '/' . $this->item->name . ".3.html"))
 	$this->item->value = file_get_contents(dirname(__FILE__) . '/' . $this->item->name . ".3.html");
@@ -58,6 +68,10 @@ if ($this->item->name == 'icalevent.list_block2' && $this->item->value == "" && 
 if ($this->item->name == 'icalevent.list_block3' && $this->item->value == "" && Jfile::exists(JPATH_SITE . '/components/com_jevents/views/float/defaults/icalevent.list_block3.html')) {
 	$this->item->value = file_get_contents(JPATH_SITE . '/components/com_jevents/views/float/defaults/icalevent.list_block3.html');
 }
+else if ($this->item->name == 'icalevent.list_block4' && $this->item->value == "" && Jfile::exists(JPATH_SITE . '/components/com_jevents/views/float/defaults/icalevent.list_block4.html')) {
+	$this->item->value = file_get_contents(JPATH_SITE . '/components/com_jevents/views/float/defaults/icalevent.list_block4.html');
+}
+
 
 if (strpos($this->item->name, "module.") === 0)
 {
@@ -193,7 +207,7 @@ $this->item->params = json_encode($templateparams);
 					$poptions[] = HTMLHelper::_('select.option', 0, Text::_("JUNPUBLISHED"));
 					$poptions[] = HTMLHelper::_('select.option', 1, Text::_("JPUBLISHED"));
 					$poptions[] = HTMLHelper::_('select.option', -1, Text::_("JTRASHED"));
-					echo HTMLHelper::_('select.genericlist', $poptions, 'state', 'class="inputbox form-control chzn-color-state"', 'value', 'text', $this->item->state);
+					echo HTMLHelper::_('select.genericlist', $poptions, 'state', 'class="inputbox form-control "', 'value', 'text', $this->item->state);
 					?>
 				</div>
 				<div class="form-group gsl-width-1-4@m">

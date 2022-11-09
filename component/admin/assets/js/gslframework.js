@@ -398,6 +398,10 @@ function ys_setuptooltip(selector) {
 		options.container = "#gslc";
 		options.title = title;
 
+		if (hoveritem.hasAttribute('title')) {
+			hoveritem.removeAttribute('title');
+		}
+
 		gslUIkit.tooltip(hoveritem, options);
 	});
 }
@@ -409,8 +413,8 @@ function ys_setuppopover(selector)
 	var hoveritems = document.querySelectorAll(selector);
 	hoveritems.forEach(function (hoveritem) {
 
-		let title = hoveritem.getAttribute('data-yspoptitle') || hoveritem.getAttribute('title');
-		let body = hoveritem.getAttribute('data-yspopcontent') || '';
+		let title = hoveritem.getAttribute('data-yspoptitle') || hoveritem.getAttribute('data-original-title') || hoveritem.getAttribute('title');
+		let body = hoveritem.getAttribute('data-yspopcontent') || hoveritem.getAttribute('data-content') || '';
 		let options = hoveritem.getAttribute('data-yspopoptions') || '{"mode" : "click, hover", "offset" : 20,"delayHide" : 200, "pos" : "top"}';
 		//options = '{ "offset" : 20,"delay" : 20, "pos" : "top", "duration" : 200}';
 		options = JSON.parse(options);
@@ -426,6 +430,9 @@ function ys_setuppopover(selector)
 			(body != '' ? '<div class="ys-popover-body">' + body + '</div>' : '') +
 			'</div>';
 		options.title = phtml;
+		if (hoveritem.hasAttribute('title')) {
+			hoveritem.removeAttribute('title');
+		}
 
 		gslUIkit.tooltip(hoveritem, options);
 	});

@@ -51,8 +51,10 @@ $data['options'] = array_merge($customOptions, $data['options']);
 						<?php echo HTMLHelper::_('grid.checkall'); ?>
 					</th>
 					<th class="title" width="60%" nowrap="nowrap"><?php echo Text::_('JEV_ICAL_SUMMARY'); ?></th>
-					<th width="40%"
+					<th width="30%"
 					    nowrap="nowrap"><?php echo Text::_('COM_JEVENTS_ICALREPEAT_REPEAT_DATE_TIME'); ?></th>
+					<th width="10%" style="text-align:center"
+					    nowrap="nowrap"><?php echo Text::_('COM_JEVENTS_ICALREPEAT_REPEAT_IS_EXCEPTION'); ?></th>
 				</tr>
 
 				<?php
@@ -63,20 +65,35 @@ $data['options'] = array_merge($customOptions, $data['options']);
 				{
 					$row = &$this->icalrows[$i]; ?>
 					<tr class="row<?php echo $k; ?>">
-						<td width="20">
+						<td >
 							<?php echo HTMLHelper::_('grid.id', $i, $row->rp_id()); ?>
 						</td>
-						<td width="30%">
+						<td >
 							<a href="index.php?option=com_jevents&task=icalrepeat.edit&cid[]=<?php echo $row->rp_id(); ?>" onclick="return Joomla.listItemTask('cb<?php echo $i; ?>','icalrepeat.edit')"
 							   title="<?php echo Text::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->title(); ?></a>
 						</td>
-						<td width="40%">
+						<td >
 							<?php
 							$times = '<table style="border: 1px solid #666666; width:100%;">';
 							$times .= '<tr><td>' . Text::_('JEV_FROM') . ' : ' . ($row->alldayevent() ? StringHelper::substr($row->publish_up(), 0, 10) : StringHelper::substr($row->publish_up(), 0, 16)) . '</td></tr>';
 							$times .= '<tr><td>' . Text::_('JEV_TO') . ' : ' . (($row->noendtime() || $row->alldayevent()) ? StringHelper::substr($row->publish_down(), 0, 10) : StringHelper::substr($row->publish_down(), 0, 16)) . '</td></tr>';
 							$times .= "</table>";
 							echo $times;
+							?>
+						</td>
+						<td style="text-align:center">
+							<?php
+							$exception_type = 0;
+							if (isset($row->_exception_type) && !is_null($row->_exception_type))
+							{
+								$exception_type = (int) $row->_exception_type;
+							}
+							if ($exception_type)
+							{
+								?>
+								<span class="gsl-icon" data-gsl-icon="icon:cog" ></span>
+								<?php
+							}
 							?>
 						</td>
 					</tr>

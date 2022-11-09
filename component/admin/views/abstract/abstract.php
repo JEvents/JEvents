@@ -271,6 +271,27 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 		$app    = Factory::getApplication();
 
 		$db = Factory::getDbo();
+
+		static $allcatids;
+		if (!isset($allcatids))
+		{
+			$query = $db->getQuery(true);
+
+			$query->select('a.id, a.parent_id');
+			$query->from('#__categories AS a');
+			$query->where('a.parent_id > 0');
+
+			// Filter on extension.
+			$query->where('a.extension = "com_jevents"');
+			$query->where('a.published = 1');
+			$query->where('a.language in (' . $db->quote(Factory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
+			$query->order('a.lft');
+
+			$db->setQuery($query);
+			$allcatids = $db->loadObjectList('id');
+		}
+
+
 		// find published template
 		static $templates;
 		static $fieldNameArray;
@@ -337,6 +358,16 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 		if (count($matchesarray) == 0)
 			return;
 
+		// Create the tabs content
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+		if (GSLMSIE10  || (!$app->isClient('administrator') && !$params->get("newfrontendediting", 1)))
+		{
+		}
+		else
+		{
+			// replace bootstrap span styling!
+			$template_value = str_replace(array('span2', 'span10'), array('gsl-width-1-6', 'gsl-width-5-6'), $template_value);
+		}
 
 		// now replace the fields
 
@@ -669,38 +700,29 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 		$input  = $app->input;
 
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+		$jversion = new Joomla\CMS\Version;
 
-        if ($params->get("bootstrapchosen", 1) || $app->isClient('administrator'))
+        if ($params->get("bootstrapchosen", 1))
         {
-	        if ($app->isClient('administrator') || $params->get("newfrontendediting", 1))
+	        if (!$jversion->isCompatible('4.0'))
 	        {
-		        $jversion = new Joomla\CMS\Version;
-		        if (!$jversion->isCompatible('4.0'))
-		        {
-		        	HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
-		        }
-
-		        /*
-				JHtml::script('administrator/components/com_jevents/assets/js/gslselect.js');
-				$script = <<< SCRIPT
-				document.addEventListener('DOMContentLoaded', function () {
-				gslselect('#adminForm select');
-				})
-
-SCRIPT;
-
-							Factory::getDocument()->addScriptDeclaration($script);
-				 */
-	        }
-	        else
-	        {
-		        $jversion = new Joomla\CMS\Version;
-		        if (!$jversion->isCompatible('4.0'))
-		        {
-			        HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
-		        }
+		        HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
 	        }
         }
+        else if ($app->isClient('administrator') || $params->get("newfrontendediting", 1))
+        {
+	        HTMLHelper::script('media/com_jevents/js/gslselect.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
+	        //HTMLHelper::script('media/com_jevents/js/gslselect.js', array('version' => JEventsHelper::JEvents_Version(false) . base64_encode(rand(0,99999)), 'relative' => false), array('defer' => true));
+
+			$script = <<< SCRIPT
+			document.addEventListener('DOMContentLoaded', function () {
+				gslselect('#adminForm select:not(.gsl-hidden)');
+			})
+SCRIPT;
+			Factory::getDocument()->addScriptDeclaration($script);
+
+        }
+
 
         $uEditor    = Factory::getUser()->getParam('editor',  Factory::getConfig()->get('editor', 'none'));
 
@@ -1020,7 +1042,7 @@ SCRIPT;
 				$showon .= str_replace("data-showon-gsl", "data-showon-2gsl" , $showon);
 			}
 			?>
-			<div class=" gsl-margin-remove-top gsl-child-width-1-1 gsl-grid  jevplugin_<?php echo $key; ?>" <?php echo $showon; ?>>
+			<div class=" gsl-margin-small-top gsl-child-width-1-1 gsl-grid  jevplugin_<?php echo $key; ?>" <?php echo $showon; ?>>
                 <div class="gsl-width-1-6@m gsl-width-1-3">
 				    <label class="control-label "><?php echo $this->customfields[$key]["label"]; ?></label>
                 </div>

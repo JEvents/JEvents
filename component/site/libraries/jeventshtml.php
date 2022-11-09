@@ -221,7 +221,7 @@ class JEventsHTML
 	 * @param boolean $require_sel		First entry: true = Choose one category, false = All categories
 	 * @param int $catidtop				Top level category ancestor
 	 */
-	public static function buildCategorySelect($catid, $args, $catidList = null, $with_unpublished = false, $require_sel = false, $catidtop = 0, $fieldname = "catid", $sectionname = JEV_COM_COMPONENT, $excludeid = false, $order = "ordering", $eventediting = false, $allowMultiCat = false)
+	public static function buildCategorySelect($catid, $args, $catidList = null, $with_unpublished = false, $require_sel = false, $catidtop = 0, $fieldname = "catid", $sectionname = JEV_COM_COMPONENT, $excludeid = false, $order = "ordering", $eventediting = false, $allowMultiCat = false, $skipgslclass = false)
 	{
 		// need to declare this because of bug in Joomla HTMLHelper::_('select.options', on content pages - it loade the WRONG CLASS!
 		//include_once(JPATH_SITE . "/libraries/cms/html/category.php");
@@ -451,6 +451,8 @@ class JEventsHTML
 			$catid = current($options)->value;
 		}
 
+		$gslclass = $skipgslclass ? '' : 'gsl-select';
+
 		// sort categories alphabetically
 		// usort($options, function($a, $b) { return strcmp($a->text,$b->text);});
 		// should we offer multi-choice categories?
@@ -460,15 +462,15 @@ class JEventsHTML
 		{
 			$size = count($options) > 6 ? 6 : count($options) + 1;
 			?>
-			<label class="sr-only gsl-select" for="<?php echo $fieldname;?>"><?php echo Text::_('JEV_CATEGORY_SELECT_LBL'); ?></label>
-			<select name="<?php echo $fieldname; ?>[]"  id="<?php echo $fieldname; ?>" <?php echo $args; ?> multiple="multiple" size="<?php echo $size; ?>" style="width:300px;">
+			<label class="sr-only " for="<?php echo $fieldname;?>"><?php echo Text::_('JEV_CATEGORY_SELECT_LBL'); ?></label>
+			<select name="<?php echo $fieldname; ?>[]"  id="<?php echo $fieldname; ?>" <?php echo $args; ?> multiple="multiple" class="<?php echo $gslclass;?>" size="<?php echo $size; ?>" style="width:300px;">
 			    <?php
 		    }
 		    else
 		    {
 			    ?>
-			    <label class="sr-only gsl-select" for="<?php echo $fieldname;?>"><?php echo Text::_('JEV_CATEGORY_SELECT_LBL'); ?></label>
-			    <select name="<?php echo $fieldname; ?>" <?php echo $args; ?>  id="<?php echo $fieldname; ?>" >
+			    <label class="sr-only " for="<?php echo $fieldname;?>"><?php echo Text::_('JEV_CATEGORY_SELECT_LBL'); ?></label>
+			    <select name="<?php echo $fieldname; ?>" class="<?php echo $gslclass;?>"  <?php echo $args; ?>  id="<?php echo $fieldname; ?>" >
 				<option value="" <?php echo $catid == "" ? 'selected="true" ' : '';?> ><?php echo $t_first_entry; ?></option>
 				<?php
 			}

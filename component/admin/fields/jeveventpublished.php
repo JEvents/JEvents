@@ -45,7 +45,7 @@ class FormFieldJeveventpublished extends FormField
 			$poptions[] = HTMLHelper::_('select.option', 1, Text::_("JPUBLISHED"));
 			$poptions[] = HTMLHelper::_('select.option', -1, Text::_("JTRASHED"));
 
-			return HTMLHelper::_('select.genericlist', $poptions, 'state', 'class="inputbox chzn-color-state" size="1"', 'value', 'text', $this->value);
+			return HTMLHelper::_('select.genericlist', $poptions, 'state', 'class="inputbox " size="1"', 'value', 'text', $this->value);
 
 		}
 		else

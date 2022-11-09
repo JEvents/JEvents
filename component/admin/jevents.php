@@ -29,8 +29,19 @@ if (version_compare(phpversion(), '5.0.0', '<') === true)
 
 	return;
 }
+
+if (!defined('GSLMSIE10') && isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], "MSIE") !== false || strpos($_SERVER['HTTP_USER_AGENT'], "Internet Explorer") !== false))
+{
+	define ("GSLMSIE10" , 1);
+}
+else if(!defined('GSLMSIE10'))
+{
+	define ("GSLMSIE10" , 0);
+}
+
 // remove metadata.xml if its there.
 jimport('joomla.filesystem.file');
+
 if (File::exists(JPATH_COMPONENT_SITE . '/' . "metadata.xml"))
 {
 	File::delete(JPATH_COMPONENT_SITE . '/' . "metadata.xml");
@@ -88,7 +99,7 @@ $user           = Factory::getUser();
 //Stop if user is not authorised to access JEvents CPanel
 if (!$authorisedonly && !$user->authorise('core.manage', 'com_jevents'))
 {
-	return;
+	throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'));
 }
 
 // Must also load frontend language files
@@ -247,15 +258,6 @@ else
 	throw new Exception('Invalid Controller Class - ' . $controllerClass, 500);
 
 	return false;
-}
-
-if (isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], "MSIE") !== false || strpos($_SERVER['HTTP_USER_AGENT'], "Internet Explorer") !== false))
-{
-	define ("GSLMSIE10" , 1);
-}
-else
-{
-	define ("GSLMSIE10" , 0);
 }
 
 // record what is running - used by the filters

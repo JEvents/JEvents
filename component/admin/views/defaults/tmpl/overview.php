@@ -12,6 +12,13 @@ HtmlHelper::_('bootstrap.tooltip');
 $mainspan = 10;
 $fullspan = 12;
 
+$jversion = new Joomla\CMS\Version;
+if (!$jversion->isCompatible('4.0'))
+{
+	//HTMLHelper::_('formbehavior.chosen', 'select');
+	HTMLHelper::script('media/com_jevents/js/gslselect.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
+}
+
 ?>
 <?php if (!empty($this->sidebar)) : ?>
 	<div id="j-sidebar-container" class="span2">

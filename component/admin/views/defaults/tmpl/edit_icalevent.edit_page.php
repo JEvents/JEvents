@@ -55,8 +55,8 @@ use Joomla\CMS\Plugin\PluginHelper;
         defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_GEOLAT_LABEL",true);?>", "GEOLAT_LBL");
         defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_CONTACT",true);?>", "CONTACT");
         defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_CONTACT_LABEL",true);?>", "CONTACT_LBL");
-        defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_EXTRAINFO",true);?>", "EXTRAINFO");
-        defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_EXTRAINFO_LABEL",true);?>", "EXTRAINFO_LBL");
+        defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_EXTRAINFO",true);?>", "EXTRA");
+        defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_EXTRAINFO_LABEL",true);?>", "EXTRA_LBL");
         defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_CUSTOMFIELDS",true);?>", "CUSTOMFIELDS");
         defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_CALTAB",true);?>", "CALTAB");
 		<?php

@@ -193,8 +193,8 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 			if ($params->get("dayselect", 0))
 			{
 				?>
-                <label for='IRREGULARBTN' class="btn radio">
-                    <input type="radio" name="freq" id="IRREGULARBTN" value="IRREGULAR" onclick="toggleFreq('IRREGULAR');"  <?php if ($this->row->freq() == "IRREGULAR") echo 'checked="checked"'; ?>/>
+                <label for='IRREGULAR' class="btn radio">
+                    <input type="radio" name="freq" id="IRREGULAR" value="IRREGULAR" onclick="toggleFreq('IRREGULAR');"  <?php if ($this->row->freq() == "IRREGULAR") echo 'checked="checked"'; ?>/>
 					<?php echo Text::_('IRREGULAR'); ?>
                 </label>
 			<?php } ?>
@@ -351,7 +351,9 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 		{
 		?>
 		var freq = "<?php echo strtoupper($this->row->freq()); ?>";
-		document.getElementById(freq).checked = true;
+        if (document.getElementById(freq)) {
+            document.getElementById(freq).checked = true;
+        }
 		toggleFreq(freq, true);
 		var by = "<?php
 			if ($this->row->byyearday(true) != "")

@@ -39,8 +39,10 @@ class GslHelper
 			HTMLHelper::stylesheet('components/com_jevents/assets/css/j3.css', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false));
 		}
 
+		//HTMLHelper::script('media/com_jevents/js/requireWorkaround1.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
 		HTMLHelper::script('media/com_jevents/js/uikit.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
 		HTMLHelper::script('media/com_jevents/js/uikit-icons.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
+		//HTMLHelper::script('media/com_jevents/js/requireWorkaround2.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
 		HTMLHelper::script('components/com_jevents/assets/js/gslframework.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
 		HTMLHelper::script('components/com_jevents/assets/js/jevents.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
 	}
@@ -245,7 +247,13 @@ class GslHelper
 			$iconLink->label          = Text::_('COM_JEVLOCATIONS');
 			$iconLink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_('COM_JEVLOCATIONS', true);
 			$iconLink->tooltip_detail = "";
+			if (file_exists(JPATH_ADMINISTRATOR . "/components/com_jevlocations/helpers/gslmenuhelper.php"))
+			{
+				include_once JPATH_ADMINISTRATOR . "/components/com_jevlocations/helpers/gslmenuhelper.php";
+				$iconLink->sublinks = GslLocationsMenuHelper::getLeftIconSubLinks($leftmenutrigger);
+			}
 			$iconLinks[]              = $iconLink;
+
 		}
 		else
 		{
@@ -277,7 +285,13 @@ class GslHelper
 			$iconLink->label          = Text::_('COM_JEVENTSTAGS');
 			$iconLink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_('COM_JEVENTSTAGS', true);
 			$iconLink->tooltip_detail = "";
+			if (file_exists(JPATH_ADMINISTRATOR . "/components/com_jeventstags/helpers/gslmenuhelper.php"))
+			{
+				include_once JPATH_ADMINISTRATOR . "/components/com_jeventstags/helpers/gslmenuhelper.php";
+				$iconLink->sublinks = GslTagsMenuHelper::getLeftIconSubLinks($leftmenutrigger);
+			}
 			$iconLinks[]              = $iconLink;
+
 		}
 		else
 		{
@@ -309,7 +323,14 @@ class GslHelper
 			$iconLink->label          = Text::_('COM_JEVPEOPLE');
 			$iconLink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_('COM_JEVPEOPLE', true);
 			$iconLink->tooltip_detail = "";
+
+			if (file_exists(JPATH_ADMINISTRATOR . "/components/com_jevpeople/helpers/gslmenuhelper.php"))
+			{
+				include_once JPATH_ADMINISTRATOR . "/components/com_jevpeople/helpers/gslmenuhelper.php";
+				$iconLink->sublinks = GslPeopleMenuHelper::getLeftIconSubLinks($leftmenutrigger);
+			}
 			$iconLinks[]              = $iconLink;
+
 		}
 		else
 		{
@@ -341,7 +362,13 @@ class GslHelper
 			$iconLink->label          = Text::_('COM_RSVPPRO');
 			$iconLink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_('COM_RSVPPRO', true);
 			$iconLink->tooltip_detail = "";
+			if (file_exists(JPATH_ADMINISTRATOR . "/components/com_rsvppro/helpers/gslmenuhelper.php"))
+			{
+				include_once JPATH_ADMINISTRATOR . "/components/com_rsvppro/helpers/gslmenuhelper.php";
+				$iconLink->sublinks = GslRsvpproMenuHelper::getLeftIconSubLinks($leftmenutrigger);
+			}
 			$iconLinks[]              = $iconLink;
+
 		}
 		else
 		{
@@ -376,6 +403,29 @@ class GslHelper
 			$iconLink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_('JEV_CUSTOM_FIELDS', true);
 			$iconLink->tooltip_detail = "";
 			$iconLinks[]              = $iconLink;
+
+			try
+			{
+				$manifestCache = json_decode($extension->manifest_cache);
+				if (version_compare($manifestCache->version,"3.7.0", "ge") || $manifestCache->version == "3.5.0RC2")
+				{
+					$iconLink->sublinks = array();
+
+					$sublink              = new stdClass();
+					$sublink->onclick     = "(function(e) { document.location='" . Route::_("index.php?option=com_fields&context=com_jevents.event") . " ';return false;})(event);";
+					$sublink->link        = "";
+					$sublink->class       = "gsl-button gsl-small gsl-button-secondary gsl-padding-remove gsl-text-left ";
+					$sublink->icon        = 'joomla';
+					$sublink->iconclass   = "gsl-margin-small-right gsl-display-inline-block";
+					$sublink->label       = JText::_('COM_JEVENTS_JOOMLA_CUSTOM_FIELDS');
+					$iconLink->sublinks[] = $sublink;
+				}
+			}
+			catch (Exception $e)
+			{
+
+			}
+
 		}
 		else
 		{
@@ -388,6 +438,27 @@ class GslHelper
 			$iconLink->tooltip        = Text::_("COM_JEVENTS_DISABLED_OPTION", true);
 			$iconLink->tooltip_detail = Text::_("COM_JEVENTS_DISABLED_OPTION_DESC", true);
 			$iconLink->target         = "_blank";
+			$iconLinks[]              = $iconLink;
+		}
+
+		// YourSites
+		$db = Factory::getDbo();
+		$db->setQuery("SELECT enabled FROM #__extensions WHERE element = 'com_yoursites' AND type='component' ");
+		$is_enabled = $db->loadResult();
+		// Availability and access check .
+		if ($is_enabled && JFactory::getUser()->authorise('core.manage', 'com_yoursites'))
+		{
+			Factory::getLanguage()->load("com_yoursites", JPATH_ADMINISTRATOR);
+
+			$iconLink                 = new stdClass();
+			$iconLink->class          = "";
+			$iconLink->active         = $view == "yoursites";
+			$iconLink->link           = Route::_("index.php?option=com_yoursites");
+			$iconLink->icon           = "";
+			$iconLink->iconSrc        = "components/com_yoursites/assets/images/YourSitesIcon.png";
+			$iconLink->label          = strip_tags(Text::_('COM_YOURSITES'));
+			$iconLink->tooltip        = $leftmenutrigger !== 2 ? "" : Text::_('COM_YOURSITES', true);
+			$iconLink->tooltip_detail = "";
 			$iconLinks[]              = $iconLink;
 		}
 

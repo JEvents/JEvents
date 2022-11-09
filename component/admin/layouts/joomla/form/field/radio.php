@@ -13,7 +13,7 @@ defined('JPATH_BASE') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
 
-if (GSLMSIE10)
+if (!defined('GSLMSIE10') || GSLMSIE10)
 {
 	include (JPATH_SITE . "/layouts/joomla/form/field/" .  basename(__FILE__));
 	return;

@@ -15,10 +15,13 @@
 
     #adminForm
     {
+
       /* Buttons in forms */
+      /*
       label.gsl-button-small {
         padding-left: 15px;
       }
+       */
       /* select and input in event editing */
       select, input {
         max-width: 100%;
@@ -31,6 +34,10 @@
   /* Disabled left bar items */
   #left-col ul.left-nav .notinstalled {
       opacity : 0.25;
+  }
+
+  #left-col .left-nav img {
+    max-width: 20px;
   }
 
   .adminlist.table-striped {
@@ -70,5 +77,28 @@ body.com_categories {
   }
 }
 
+/* com_fields */
+body.com_fields .gsl-content {
+  padding-left:10px;
+  padding-right:10px;
+
+  .btn-danger {
+    background-color: #f0506e;
+    color: #fff;
+  }
+  .btn-success {
+    background-color: #46a546;
+    color: #fff;
+  }
+  span.caret {
+    vertical-align:middle;
+    margin-left: 5px;
+  }
+
+}
+body.com_fields  #system-message-container {
+  float:none;
+  width:100%;
+}
 
 @import "responsive.less";

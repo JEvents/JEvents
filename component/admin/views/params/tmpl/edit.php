@@ -24,7 +24,15 @@ use Joomla\CMS\Form\FormHelper;
 $jversion = new Joomla\CMS\Version;
 if (!$jversion->isCompatible('4.0'))
 {
-	HTMLHelper::_('formbehavior.chosen', '#adminForm select.chosen');
+	HTMLHelper::script('media/com_jevents/js/gslselect.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
+	$script = <<< SCRIPT
+			document.addEventListener('DOMContentLoaded', function () {
+				gslselect('#adminForm select:not(.gsl-hidden)');
+			})
+SCRIPT;
+	Factory::getDocument()->addScriptDeclaration($script);
+
+	//HTMLHelper::_('formbehavior.chosen', '#adminForm select.chosen');
 }
 
 $version = JEventsVersion::getInstance();
