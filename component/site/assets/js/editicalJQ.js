@@ -1212,7 +1212,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	// Fix JoomlaCalendar too
-	if (j3) {
+	if (typeof j3 != 'undefined' && j3) {
 		JoomlaCalendar.prototype._handleDayMouseDownOLD = JoomlaCalendar.prototype._handleDayMouseDown;
 		JoomlaCalendar.prototype._handleDayMouseDown = function (ev) {
 			var el = ev.currentTarget;

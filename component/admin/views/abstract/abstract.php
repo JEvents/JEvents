@@ -20,6 +20,7 @@ use Joomla\String\StringHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\Registry\Registry;
+use Joomla\CMS\Filesystem\File;
 
 jimport('joomla.application.component.view');
 
@@ -29,7 +30,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 	function __construct($config = null)
 	{
 
-         		parent::__construct($config);
+		parent::__construct($config);
 		jimport('joomla.filesystem.file');
 
 		$app = Factory::getApplication();
@@ -124,16 +125,16 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 			}
 			parent::display($tpl);
 		}
-        else
-        {
-	        echo LayoutHelper::render('gslframework.header');
-	        ob_start();
-	        parent::display($tpl);
-	        $html = ob_get_clean();
-	        // Convert what we can of Bootstrap to uikit using regexp
-	        echo $html;
-	        echo LayoutHelper::render('gslframework.footer');
-        }
+		else
+		{
+			echo LayoutHelper::render('gslframework.header');
+			ob_start();
+			parent::display($tpl);
+			$html = ob_get_clean();
+			// Convert what we can of Bootstrap to uikit using regexp
+			echo $html;
+			echo LayoutHelper::render('gslframework.footer');
+		}
 
 	}
 
@@ -273,7 +274,15 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 	 */
 	function loadEditFromTemplate($template_name = 'icalevent.edit_page', $event = null, $mask = null, $search = array(), $replace = array(), $blank = array())
 	{
+		static $processedCss = array();
+		static $processedJs = array();
+
+		$jevparams = $params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		$app    = Factory::getApplication();
+
+		$datamodel = new JEventsDataModel();
+		$datamodel->setupComponentCatids();
+		$accessiblecats = explode(",", $datamodel->accessibleCategoryList());
 
 		$db = Factory::getDbo();
 
@@ -282,7 +291,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 		{
 			$query = $db->getQuery(true);
 
-			$query->select('a.id, a.parent_id');
+			$query->select('a.id, a.parent_id, a.level');
 			$query->from('#__categories AS a');
 			$query->where('a.parent_id > 0');
 
@@ -295,6 +304,30 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 			$db->setQuery($query);
 			$allcatids = $db->loadObjectList('id');
 		}
+		$topLevelAccessibleCats = array();
+		foreach ($accessiblecats as $accessiblecat)
+		{
+			if (array_key_exists($accessiblecat, $allcatids ) && $allcatids[$accessiblecat]->level == 1)
+			{
+				$topLevelAccessibleCats[] = $accessiblecat;
+			}
+		}
+		$secondLevelAccessibleCats = array();
+		foreach ($accessiblecats as $accessiblecat)
+		{
+			if (array_key_exists($accessiblecat, $allcatids ) && $allcatids[$accessiblecat]->level == 2)
+			{
+				$secondLevelAccessibleCats[] = $accessiblecat;
+			}
+		}
+		$thirdLevelAccessibleCats = array();
+		foreach ($accessiblecats as $accessiblecat)
+		{
+			if (array_key_exists($accessiblecat, $allcatids ) && $allcatids[$accessiblecat]->level == 3)
+			{
+				$thirdLevelAccessibleCats[] = $accessiblecat;
+			}
+		}
 
 
 		// find published template
@@ -304,15 +337,110 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 		{
 			$templates      = array();
 			$fieldNameArray = array();
+			$rawtemplates   = array();
 		}
+		$specialmodules = false;
+		static $allcat_catids;
+		$loadedFromFile = false;
 
 		if (!array_key_exists($template_name, $templates))
 		{
-			$db->setQuery("SELECT * FROM #__jev_defaults WHERE state=1 AND name= " . $db->Quote($template_name) . " AND " . 'language in (' . $db->quote(Factory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
-			$templates[$template_name] = $db->loadObjectList("language");
+
+			$db->setQuery("SELECT * FROM #__jev_defaults WHERE state=1 AND name= " . $db->Quote($template_name) . " AND value<>'' AND " . 'language in (' . $db->quote(Factory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
+			$rawtemplates              = $db->loadObjectList();
+			$templates[$template_name] = array();
+			if ($rawtemplates)
+			{
+				foreach ($rawtemplates as $rt)
+				{
+					if (!isset($templates[$template_name][$rt->language]))
+					{
+						$templates[$template_name][$rt->language] = array();
+					}
+					$templates[$template_name][$rt->language][$rt->catid] = $rt;
+				}
+			}
+
+			if (!isset($templates[$template_name]['*'][0]))
+			{
+				$templatefile = JEV_ADMINPATH . "views/defaults/tmpl/$template_name.html";
+				/*
+								// Fall back to html version
+								// Can't do this because we may need one tab editing or cal before desc etc.
+								if (File::exists($templatefile))
+								{
+									$loadedFromFile = true;
+									if (!isset($templates[$template_name]['*']))
+									{
+										$templates[$template_name]['*'] = array();
+									}
+									$templates[$template_name]['*'][0]        = new stdClass();
+									$templates[$template_name]['*'][0]->value = file_get_contents($templatefile);
+
+									$templateparams = new stdClass();
+									// is there custom css or js - if so push into the params
+									if (strpos($templates[$template_name]['*'][0]->value, '{{CUSTOMJS}') !== false)
+									{
+										preg_match('|' . preg_quote('{{CUSTOMJS}}') . '(.+?)' . preg_quote('{{/CUSTOMJS}}') . '|s', $templates[$template_name]['*'][0]->value, $matches);
+
+										if (count($matches) == 2)
+										{
+											$templateparams->customjs                 = $matches[1];
+											$templates[$template_name]['*'][0]->value = str_replace($matches[0], "", $templates[$template_name]['*'][0]->value);
+										}
+									}
+									if (strpos($templates[$template_name]['*'][0]->value, '{{CUSTOMCSS}') !== false)
+									{
+										preg_match('|' . preg_quote('{{CUSTOMCSS}}') . '(.+?)' . preg_quote('{{/CUSTOMCSS}}') . '|s', $templates[$template_name]['*'][0]->value, $matches);
+
+										if (count($matches) == 2)
+										{
+											$templateparams->customcss                = $matches[1];
+											$templates[$template_name]['*'][0]->value = str_replace($matches[0], "", $templates[$template_name]['*'][0]->value);
+										}
+									}
+									if (isset($templateparams->customcss) && !empty($templateparams->customcss))
+									{
+										if (!in_array($templateparams->customcss, $processedCss))
+										{
+											$processedCss[] = $templateparams->customcss;
+											//Factory::getDocument()->addStyleDeclaration($templateparams->customcss);
+										}
+									}
+									if (isset($templateparams->customjs) && !empty($templateparams->customjs))
+									{
+										if (!in_array($templateparams->customjs, $processedJs))
+										{
+											$processedJs[] = $templateparams->customjs;
+											Factory::getDocument()->addScriptDeclaration($templateparams->customjs);
+										}
+									}
+
+									$templates[$template_name]['*'][0]->params   = json_encode($templateparams);
+									$templates[$template_name]['*'][0]->fromfile = true;
+								}
+								else
+								{
+									return false;
+								}
+				*/
+			}
+
 			if (isset($templates[$template_name][Factory::getLanguage()->getTag()]))
 			{
-				$templates[$template_name] = $templates[$template_name][Factory::getLanguage()->getTag()];
+				$templateArray = $templates[$template_name][Factory::getLanguage()->getTag()];
+				// We have the most specific by language now fill in the gaps
+				if (isset($templates[$template_name]["*"]))
+				{
+					foreach ($templates[$template_name]["*"] as $cat => $cattemplates)
+					{
+						if (!isset($templateArray[$cat]))
+						{
+							$templateArray[$cat] = $cattemplates;
+						}
+					}
+				}
+				$templates[$template_name] = $templateArray;
 			}
 			else if (isset($templates[$template_name]["*"]))
 			{
@@ -320,65 +448,238 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 			}
 			else if (is_array($templates[$template_name]) && count($templates[$template_name]) == 0)
 			{
-				$templates[$template_name] = null;
+				$templates[$template_name] = array();
 			}
-			else if (is_array($templates[$template_name]))
+			else if (is_array($templates[$template_name]) && count($templates[$template_name]) > 0)
 			{
 				$templates[$template_name] = current($templates[$template_name]);
 			}
 			else
 			{
-				$templates[$template_name] = null;
+				$templates[$template_name] = array();
 			}
 
-			if (is_null($templates[$template_name]) || $templates[$template_name]->value == "")
-				return false;
-
-			// strip carriage returns other wise the preg replace doesn;y work - needed because wysiwyg editor may add the carriage return in the template field
-			$templates[$template_name]->value = str_replace("\r", '', $templates[$template_name]->value);
-			$templates[$template_name]->value = str_replace("\n", '', $templates[$template_name]->value);
-			// non greedy replacement - because of the ?
-			$templates[$template_name]->value = preg_replace_callback('|{{.*?}}|', array($this, 'cleanEditLabels'), $templates[$template_name]->value);
-
-			// Make sure hidden fields and javascript are all loaded
-			if (strpos($templates[$template_name]->value, "{{HIDDENINFO}}") === false)
+			$matched = false;
+			foreach (array_keys($templates[$template_name]) as $catid)
 			{
-				$templates[$template_name]->value .= "{{HIDDENINFO}}";
+				if ($templates[$template_name][$catid]->value != "")
+				{
+
+					if (isset($templates[$template_name][$catid]->params))
+					{
+						$templates[$template_name][$catid]->params = new JevRegistry($templates[$template_name][$catid]->params);
+						$specialmodules                            = $templates[$template_name][$catid]->params;
+
+					}
+
+					// Adjust template_value to include dynamic module output then strip it out afterwards
+					if ($specialmodules)
+					{
+						$modids = $specialmodules->get("modid", array());
+						if (count($modids) > 0)
+						{
+							$modvals = $specialmodules->get("modval", array());
+							// not sure how this can arise :(
+							if (is_object($modvals))
+							{
+								$modvals = get_object_vars($modvals);
+							}
+							$modids  = array_values($modids);
+							$modvals = array_values($modvals);
+
+							for ($count = 0; $count < count($modids) && $count < count($modvals) && trim($modids[$count]) != ""; $count++)
+							{
+								$templates[$template_name][$catid]->value .= "{{module start:MODULESTART#" . $modids[$count] . "}}";
+								// cleaned later!
+								//$templates[$template_name][$catid]->value .= preg_replace_callback('|{{.*?}}|', 'cleanLabels', $modvals[$count]);
+								$templates[$template_name][$catid]->value .= $modvals[$count];
+								$templates[$template_name][$catid]->value .= "{{module end:MODULEEND}}";
+							}
+						}
+					}
+
+					// strip carriage returns other wise the preg replace doesn;y work - needed because wysiwyg editor may add the carriage return in the template field
+					$templates[$template_name][$catid]->value = str_replace("\r", '', $templates[$template_name][$catid]->value);
+					$templates[$template_name][$catid]->value = str_replace("\n", '', $templates[$template_name][$catid]->value);
+					// non greedy replacement - because of the ?
+					$templates[$template_name][$catid]->value = preg_replace_callback('|{{.*?}}|', array($this, 'cleanEditLabels'), $templates[$template_name][$catid]->value);
+
+					// Make sure hidden fields and javascript are all loaded
+					if (strpos($templates[$template_name][$catid]->value, "{{HIDDENINFO}}") === false)
+					{
+						$templates[$template_name][$catid]->value .= "{{HIDDENINFO}}";
+					}
+					$matchesarray = array();
+					preg_match_all('|{{.*?}}|', $templates[$template_name][$catid]->value, $matchesarray);
+
+					$templates[$template_name][$catid]->matchesarray = $matchesarray;
+				}
 			}
-			$matchesarray = array();
-			preg_match_all('|{{.*?}}|', $templates[$template_name]->value, $matchesarray);
-
-			$templates[$template_name]->matchesarray = $matchesarray;
 		}
-		if (is_null($templates[$template_name]) || $templates[$template_name]->value == "")
-			return false;
 
-		$template = $templates[$template_name];
+		if (is_null($templates[$template_name]))
+		{
+			return false;
+		}
+
+		$catids = $eventCatids = ($event->catids() && count($event->catids())) ? $event->catids() : array($event->catid() ? $event->catid() : 0);
+		if ($catids == array(0))
+		{
+			$catids =  $accessiblecats;
+		}
+		if (!in_array(0, $catids))
+		{
+			$catids[] = 0;
+		}
+
+		// find the overlap
+		$catids = array_values(array_intersect($catids, array_keys($templates[$template_name])));
+
+		// If no categories match - check for parent, one level
+		if (count($catids) == 0 || (count($catids) == 1 && $catids[0] == 0))
+		{
+			$catids   = ($event->catids() && count($event->catids())) ? $event->catids() : array($event->catid());
+			$catcount = count($catids);
+			for ($c = 0; $c < $catcount; $c++)
+			{
+				if (isset($allcatids[$catids[$c]]) && $allcatids[$catids[$c]]->parent_id > 0)
+				{
+					$catids[] = $allcatids[$catids[$c]]->parent_id;
+				}
+			}
+			$catids[] = 0;
+			// find the overlap
+			$catids = array_values(array_intersect($catids, array_keys($templates[$template_name])));
+
+			// If no categories match - check for parent, one level
+			if (count($catids) == 0 || (count($catids) == 1 && $catids[0] == 0))
+			{
+				$catids   = ($event->catids() && count($event->catids())) ? $event->catids() : array($event->catid());
+				$catcount = count($catids);
+				for ($c = 0; $c < $catcount; $c++)
+				{
+					if (isset($allcatids[$catids[$c]]) && $allcatids[$catids[$c]]->parent_id > 0)
+					{
+						$catids[] = $allcatids[$catids[$c]]->parent_id;
+					}
+				}
+				$catids[] = 0;
+				// find the overlap
+				$catids = array_values(array_intersect($catids, array_keys($templates[$template_name])));
+			}
+		}
+
+		// At present must be an EXACT category match - no inheriting allowed!
+		if (count($catids) == 0)
+		{
+			if (!isset($templates[$template_name][0]) || $templates[$template_name][0]->value == "")
+			{
+				return false;
+			}
+		}
+
+		$template = false;
+		$matchingTemplates = array();
+		foreach ($catids as $catid)
+		{
+			// use the first matching non-empty layout
+			if ($templates[$template_name][$catid]->value != "")
+			{
+				$matchingTemplates[(int) $catid]  = $templates[$template_name][$catid];
+			}
+		}
+
+		// Existing Event
+		if ($eventCatids !== array(0))
+		{
+			$overlapCatids = array_intersect($eventCatids, array_keys($matchingTemplates));
+			if (count($overlapCatids) == 1)
+			{
+				// first category specific layout that matches
+				$template = $matchingTemplates[$overlapCatids[0]];
+			}
+			// otherwise use the default
+			else if (isset($matchingTemplates[0]))
+			{
+				$template = $matchingTemplates[0];
+			}
+		}
+		// new event
+		else if (count($matchingTemplates) >= 1 && count($topLevelAccessibleCats) >= 1)
+		{
+			$overlapCatids = array_intersect($topLevelAccessibleCats, array_keys($matchingTemplates));
+			if (count($overlapCatids) == 1)
+			{
+				// first category specific layout that matches
+				$template = $matchingTemplates[$overlapCatids[0]];
+			}
+			// otherwise use the default
+			else if (isset($matchingTemplates[0]))
+			{
+				$template = $matchingTemplates[0];
+			}
+		}
+		else if (count($matchingTemplates) >= 1 && count($secondLevelAccessibleCats) >= 1)
+		{
+			$overlapCatids = array_intersect($secondLevelAccessibleCats, array_keys($matchingTemplates));
+			if (count($overlapCatids) == 1)
+			{
+				// first category specific layout that matches
+				$template = $matchingTemplates[$overlapCatids[0]];
+			}
+			// otherwise use the default
+			else if (isset($matchingTemplates[0]))
+			{
+				$template = $matchingTemplates[0];
+			}
+		}
+		else if (count($matchingTemplates) >= 1 && count($thirdLevelAccessibleCats) >= 1)
+		{
+			$overlapCatids = array_intersect($thirdLevelAccessibleCats, array_keys($matchingTemplates));
+			if (count($overlapCatids) == 1)
+			{
+				// first category specific layout that matches
+				$template = $matchingTemplates[$overlapCatids[0]];
+			}
+			// otherwise use the default
+			else if (isset($matchingTemplates[0]))
+			{
+				$template = $matchingTemplates[0];
+			}
+		}
+		// otherwise use the default
+		else if (isset($matchingTemplates[0]))
+		{
+			$template = $matchingTemplates[0];
+		}
+
+		if (!$template)
+		{
+			return false;
+		}
 
 		$template_value = $template->value;
-		$matchesarray   = $templates[$template_name]->matchesarray;
+		$specialmodules = $template->params;
 
-		if ($template_value == "")
-			return;
+		$matchesarray   = $template->matchesarray;
+		$loadedFromFile = isset($template->fromfile);
 
-		if (count($matchesarray) == 0)
-			return;
-
-		$templates[$template_name]->params = new Registry($templates[$template_name]->params);
-		$customcss = $templates[$template_name]->params->get('customcss', '');
-		if (!empty($customcss))
+		$customcss = $template->params->get('customcss', '');
+		if (!in_array($customcss, $processedCss))
 		{
+			$processedCss[] = $customcss;
 			Factory::getDocument()->addStyleDeclaration($customcss);
 		}
 
-		$customjs = $templates[$template_name]->params->get('customjs', '');
-		if (!empty($customjs))
+		$customjs = $template->params->get('customjs', '');
+		if (!in_array($customjs, $processedJs))
 		{
+			$processedJs[] = $customjs;
 			Factory::getDocument()->addScriptDeclaration($customjs);
 		}
 
+
 		// Create the tabs content
-		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		if (GSLMSIE10  || (!$app->isClient('administrator') && !$params->get("newfrontendediting", 1)))
 		{
 		}
@@ -447,6 +748,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 
 				if (GSLMSIE10 || (!$app->isClient('administrator') && !$params->get("newfrontendediting", 1)))
 				{
+					/*
 					//We get and add all the tabs
 					$tabreplace = '<ul class="nav nav-tabs" id="myEditTabs">';
 					for ($tab = 0; $tab < $tabstartarray0Count; $tab++)
@@ -465,6 +767,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 					$tabreplace .= "</ul>\n";
 					$tabreplace = $tabreplace . $tabstartarray[0][0];
 					$template_value = str_replace($tabstartarray[0][0], $tabreplace, $template_value);
+					*/
 				}
 				else
 				{
@@ -488,25 +791,30 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 			}
 		}
 		// Create the tabs content
-		if ( version_compare(JVERSION, '4.0' , 'lt') && (GSLMSIE10  || (!$app->isClient('administrator') && !$params->get("newfrontendediting", 1))))
+		if ( GSLMSIE10  || (!$app->isClient('administrator') && !$params->get("newfrontendediting", 1)))
 		{
 			if ($tabstartarray0Count > 0 && isset($tabstartarray[0]))
 			{
 				for ($tab = 0; $tab < $tabstartarray0Count; $tab++)
 				{
 					$paneid = str_replace(" ", "_", htmlspecialchars($tabstartarray[1][$tab]));
+					$tablabel = ($paneid == Text::_($paneid)) ? $tabstartarray[1][$tab] : Text::_($paneid);
+					$tablabel = (strtoupper($tablabel) === $tablabel) ? Text::_($tablabel) : $tablabel;
 					if ($tab == 0)
 					{
-						$tabcode = HTMLHelper::_('bootstrap.startPane', 'myEditTabs', array('active' => $paneid)) . HTMLHelper::_('bootstrap.addPanel', "myEditTabs", $paneid);
+						$tabcode = HTMLHelper::_('bootstrap.startTabSet', 'myEditTabs', array('active' => $paneid))
+							. HTMLHelper::_('bootstrap.addTab', "myEditTabs", $paneid, $tablabel);
 					}
 					else
 					{
-						$tabcode = HTMLHelper::_('bootstrap.endPanel') . HTMLHelper::_('bootstrap.addPanel', "myEditTabs", $paneid);
+						$tabcode = HTMLHelper::_('bootstrap.endTab')
+							. HTMLHelper::_('bootstrap.addTab', "myEditTabs", $paneid, $tablabel);
 					}
 					$template_value = str_replace($tabstartarray[0][$tab], $tabcode, $template_value);
 				}
 				// Manually close the tabs
-				$template_value = str_replace("{{TABSEND}}", HTMLHelper::_('bootstrap.endPanel') . HTMLHelper::_('bootstrap.endPane'), $template_value);
+				$template_value = str_replace("{{TABSEND}}", HTMLHelper::_('bootstrap.endTab')
+					. HTMLHelper::_('bootstrap.endTabSet'), $template_value);
 			}
 		}
 		else
@@ -640,8 +948,8 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 
 
 		// Disable general showon effects if using a customised event editing form
-         $template_value = str_replace("data-showon-gsl", "data-showon-gsl-disabled", $template_value);
-		 $template_value = str_replace("data-showon-2gsl", "data-showon-gsl", $template_value);
+		$template_value = str_replace("data-showon-gsl", "data-showon-gsl-disabled", $template_value);
+		$template_value = str_replace("data-showon-2gsl", "data-showon-gsl", $template_value);
 
 		echo $template_value;
 
@@ -721,28 +1029,28 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		$jversion = new Joomla\CMS\Version;
 
-        if ($app->isClient('administrator') || $params->get("newfrontendediting", 1))
-        {
-            HTMLHelper::script('media/com_jevents/js/gslselect.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
-            //HTMLHelper::script('media/com_jevents/js/gslselect.js', array('version' => JEventsHelper::JEvents_Version(false) . base64_encode(rand(0,99999)), 'relative' => false), array('defer' => true));
+		if ($app->isClient('administrator') || $params->get("newfrontendediting", 1))
+		{
+			HTMLHelper::script('media/com_jevents/js/gslselect.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
+			//HTMLHelper::script('media/com_jevents/js/gslselect.js', array('version' => JEventsHelper::JEvents_Version(false) . base64_encode(rand(0,99999)), 'relative' => false), array('defer' => true));
 
-            $script = <<< SCRIPT
+			$script = <<< SCRIPT
 			document.addEventListener('DOMContentLoaded', function () {
 				gslselect('#adminForm select:not(.gsl-hidden)');
 			});
 SCRIPT;
-            Factory::getDocument()->addScriptDeclaration($script);
+			Factory::getDocument()->addScriptDeclaration($script);
 
-        }
-        else if ($params->get("bootstrapchosen", 1))
-        {
-	        if (!$jversion->isCompatible('4.0'))
-	        {
-		        HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
-	        }
-        }
+		}
+		else if ($params->get("bootstrapchosen", 1))
+		{
+			if (!$jversion->isCompatible('4.0'))
+			{
+				HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
+			}
+		}
 
-        $uEditor    = Factory::getUser()->getParam('editor',  Factory::getConfig()->get('editor', 'none'));
+		$uEditor    = Factory::getUser()->getParam('editor',  Factory::getConfig()->get('editor', 'none'));
 
 		$this->editor = \Joomla\CMS\Editor\Editor::getInstance($uEditor);
 
@@ -1072,10 +1380,10 @@ SCRIPT;
 			}
 			?>
 			<div class=" gsl-margin-small-top gsl-child-width-1-1 gsl-grid  jevplugin_<?php echo $key; ?>" <?php echo $showon; ?>>
-                <div class="gsl-width-1-6@m gsl-width-1-3">
-				    <label class="control-label "><?php echo $this->customfields[$key]["label"]; ?></label>
-                </div>
-                <div class="gsl-width-expand">
+				<div class="gsl-width-1-6@m gsl-width-1-3">
+					<label class="control-label "><?php echo $this->customfields[$key]["label"]; ?></label>
+				</div>
+				<div class="gsl-width-expand">
 					<?php echo $this->customfields[$key]["input"]; ?>
 				</div>
 			</div>

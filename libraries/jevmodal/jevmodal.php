@@ -103,7 +103,7 @@ SCRIPT;
 		$jinput = JFactory::getApplication()->input;
 
 		$comMenus = $jinput->getCmd('option') == "com_menus";
-		$comModules = $jinput->getCmd('option') == "com_modules";
+		$comModules = $jinput->getCmd('option') == "com_modules" || $jinput->getCmd('option') == "com_advancedmodules";
 
 		$task = $jinput->getString("task", $jinput->getString("jevtask", ""));
 		if (!$forceBoostrap
@@ -236,7 +236,6 @@ document.addEventListener('DOMContentLoaded', function() {
    });
 });
 SCRIPT;
-
             Factory::getApplication()
                 ->getDocument()
                 ->addScriptDeclaration($popoverStyling);

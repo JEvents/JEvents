@@ -144,7 +144,7 @@ if (!empty($this->icalEvents))
 		if (!empty($a->_class))
 			$html .= "CLASS:" . $a->_class . "\r\n";
 		$html .= "CREATED:" . JevDate::strftime("%Y%m%dT%H%M%S", strtotime($a->_created)) . "\r\n";
-		$html .= "SUMMARY:" . $a->title() . "\r\n";
+		$html .= "SUMMARY:" . JEVHelper::iCalTitlePrefix($a) . $a->title() . "\r\n";
 		if ($a->location() != "")
 		{
 			if (!is_numeric($a->location()))

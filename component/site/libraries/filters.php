@@ -290,6 +290,10 @@ class jevFilterProcessing
 		$this->filterHTML = array();
 		foreach ($this->filters as $filter)
 		{
+			if (isset($this->modParams))
+			{
+				$filter->modParams = $this->modParams;
+			}
 			if (method_exists($filter, "createfilterHTML"))
 			{
 				$filterHTML = $filter->createfilterHTML($allowAutoSubmit);

@@ -164,10 +164,10 @@ $action = Factory::getApplication()->isAdmin() ? "index.php" : "index.php?option
 			<?php
 		}
 		// Tabs
-		echo HTMLHelper::_('bootstrap.startPane', 'myicalTabs', array('active' => 'from_scratch'));
+		echo HTMLHelper::_('bootstrap.startTabSet', 'myicalTabs', array('active' => 'from_scratch'));
 
 		if ($id == 0 || $icaltype == 2) {
-			echo HTMLHelper::_('bootstrap.addPanel', "myicalTabs", "from_scratch");
+			echo HTMLHelper::_('bootstrap.addTab', "myicalTabs", "from_scratch");
 			if (!isset($this->editItem->isdefault) || $this->editItem->isdefault == 0) {
 				$checked0 = ' checked="checked"';
 				$checked1 = '';
@@ -219,8 +219,8 @@ $action = Factory::getApplication()->isAdmin() ? "index.php" : "index.php?option
 		}
 
 		if ($id == 0 || $icaltype == 1) {
-			echo HTMLHelper::_('bootstrap.endPanel');
-			echo HTMLHelper::_('bootstrap.addPanel', "myicalTabs", "from_file");
+			echo HTMLHelper::_('bootstrap.endTab');
+			echo HTMLHelper::_('bootstrap.addTab', "myicalTabs", "from_file");
 			?>
 			<?php if ($id == 0) { ?>
                 <h3><?php echo $filename; ?></h3>
@@ -231,8 +231,8 @@ $action = Factory::getApplication()->isAdmin() ? "index.php" : "index.php?option
 		}
 
 		if ($id == 0 || $icaltype == 0) {
-			echo HTMLHelper::_('bootstrap.endPanel');
-			echo HTMLHelper::_('bootstrap.addPanel', "myicalTabs", "from_url");
+			echo HTMLHelper::_('bootstrap.endTab');
+			echo HTMLHelper::_('bootstrap.addTab', "myicalTabs", "from_url");
 			?>
 			<?php
 			$urlsAllowed = ini_get("allow_url_fopen");
@@ -273,8 +273,8 @@ $action = Factory::getApplication()->isAdmin() ? "index.php" : "index.php?option
 				<?php
 			}
 		}
-		echo HTMLHelper::_('bootstrap.endPanel');
-		echo HTMLHelper::_('bootstrap.endPane', 'myicalTabs');
+		echo HTMLHelper::_('bootstrap.endTab');
+		echo HTMLHelper::_('bootstrap.endTabSet', 'myicalTabs');
 		?>
         <input type="hidden" name="icsid" id="icsid"  <?php echo $disabled; ?> value="<?php echo $id; ?>"/>
 		<?php echo HTMLHelper::_('form.token'); ?>

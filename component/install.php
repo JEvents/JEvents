@@ -205,12 +205,12 @@ CREATE TABLE IF NOT EXISTS #__jevents_vevdetail(
 	description longtext NOT NULL ,
 	geolon float NOT NULL default 0,
 	geolat float NOT NULL default 0,
-	location VARCHAR(120) NOT NULL default "",
+	location VARCHAR(500) NOT NULL default "",
 	priority tinyint unsigned NOT NULL default 0,
 	status varchar(20) NOT NULL default "",
 	summary longtext NOT NULL ,
-	contact VARCHAR(120) NOT NULL default "",
-	organizer VARCHAR(120) NOT NULL default "",
+	contact VARCHAR(500) NOT NULL default "",
+	organizer VARCHAR(500) NOT NULL default "",
 	url text NOT NULL ,
 	extra_info text NOT NULL,
 	created varchar(30) NOT NULL default "",
@@ -223,7 +223,7 @@ CREATE TABLE IF NOT EXISTS #__jevents_vevdetail(
 	noendtime tinyint(3) NOT NULL default 0,
 		
 	PRIMARY KEY  (evdet_id),
-	INDEX (location)
+	INDEX (location(240))
 ) $charset;
 SQL;
 		$db->setQuery($sql);
@@ -476,9 +476,9 @@ CREATE TABLE IF NOT EXISTS #__jevents_translation (
 	evdet_id int(12) NOT NULL default 0,
 
 	description longtext NOT NULL ,
-	location VARCHAR(120) NOT NULL default "",
+	location VARCHAR(500) NOT NULL default "",
 	summary longtext NOT NULL ,
-	contact VARCHAR(120) NOT NULL default "",
+	contact VARCHAR(500) NOT NULL default "",
 	extra_info text NOT NULL ,
 	language varchar(20) NOT NULL default '*',
 
@@ -593,6 +593,41 @@ SQL;
 		$db->setQuery($sql);
 		$cols = @$db->loadObjectList("Field");
 
+		$sql = "SHOW INDEX FROM #__jevents_vevdetail";
+		$db->setQuery($sql);
+		$indexcols = @$db->loadObjectList("Key_name");
+
+		if (array_key_exists("location", $cols) && strtoupper($cols['location']->Type) !== "VARCHAR(500)")
+		{
+			$sql = "ALTER TABLE #__jevents_vevdetail MODIFY COLUMN location VARCHAR(500) NOT NULL default ''";
+			$db->setQuery($sql);
+			@$db->execute();
+
+			if (array_key_exists("location", $indexcols))
+			{
+				$sql = "alter table #__jevents_vevdetail drop index location";
+				$db->setQuery($sql);
+				@$db->execute();
+
+				$sql = "ALTER TABLE #__jevents_vevdetail ADD INDEX location (location (240))";
+				$db->setQuery($sql);
+				@$db->execute();
+			}
+		}
+
+		if (array_key_exists("contact", $cols) && strtoupper($cols['contact']->type) !== "VARCHAR(500)")
+		{
+			$sql = "ALTER TABLE #__jevents_vevdetail MODIFY COLUMN contact VARCHAR(500) NOT NULL default ''";
+			$db->setQuery($sql);
+			@$db->execute();
+		}
+		if (array_key_exists("organizer", $cols) && strtoupper($cols['organizer']->type) !== "VARCHAR(500)")
+		{
+			$sql = "ALTER TABLE #__jevents_vevdetail MODIFY COLUMN organizer VARCHAR(500) NOT NULL default ''";
+			$db->setQuery($sql);
+			@$db->execute();
+		}
+
 		if (!array_key_exists("modified", $cols))
 		{
 			$sql = "ALTER TABLE #__jevents_vevdetail ADD modified datetime  NOT NULL default '0000-00-00 00:00:00' ";
@@ -651,17 +686,14 @@ SQL;
 
 		}
 
-		$sql = "SHOW INDEX FROM #__jevents_vevdetail";
-		$db->setQuery($sql);
-		$cols = @$db->loadObjectList("Key_name");
-
-		if (!array_key_exists("location", $cols))
+		if (!array_key_exists("location", $indexcols))
 		{
-			$sql = "ALTER TABLE #__jevents_vevdetail ADD INDEX location (location)";
+			$sql = "ALTER TABLE #__jevents_vevdetail ADD INDEX location (location (240))";
 			$db->setQuery($sql);
 			@$db->execute();
 		}
-		if (!array_key_exists("multiday", $cols))
+
+		if (!array_key_exists("multiday", $indexcols))
 		{
 			$sql = "ALTER TABLE #__jevents_vevdetail ADD INDEX multiday (multiday)";
 			$db->setQuery($sql);
@@ -824,13 +856,6 @@ SQL;
 			@$db->execute();
 		}
 
-		if (!array_key_exists("createnewcategories", $cols))
-		{
-			$sql = "Alter table #__jevents_icsfile ADD COLUMN createnewcategories tinyint(3) NOT NULL default 1";
-			$db->setQuery($sql);
-			@$db->execute();
-		}
-
 		if (!array_key_exists("autorefresh", $cols))
 		{
 			$sql = "Alter table #__jevents_icsfile ADD COLUMN autorefresh tinyint(3) NOT NULL default 0";
@@ -939,6 +964,24 @@ SQL;
 		if (!array_key_exists("langcodename", $cols))
 		{
 			$sql = "ALTER TABLE #__jev_defaults ADD INDEX langcodename (language, catid, name)";
+			$db->setQuery($sql);
+			@$db->execute();
+		}
+
+		$sql = "SHOW COLUMNS FROM #__jevents_translation";
+		$db->setQuery($sql);
+		$cols = @$db->loadObjectList("Field");
+
+		if (array_key_exists("location", $cols) && strtoupper($cols['location']->Type) !== "VARCHAR(500)")
+		{
+			$sql = "ALTER TABLE #__jevents_translation MODIFY COLUMN location VARCHAR(500) NOT NULL default ''";
+			$db->setQuery($sql);
+			@$db->execute();
+		}
+
+		if (array_key_exists("contact", $cols) && strtoupper($cols['contact']->type) !== "VARCHAR(500)")
+		{
+			$sql = "ALTER TABLE #__jevents_translation MODIFY COLUMN contact VARCHAR(500) NOT NULL default ''";
 			$db->setQuery($sql);
 			@$db->execute();
 		}

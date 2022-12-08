@@ -16,6 +16,7 @@ use Joomla\CMS\Factory;
 if (version_compare(JVERSION, "4", "gt")
 	&& (Joomla\CMS\Factory::getApplication()->getInput()->getCmd('option', '') == "com_menus"
 		|| Joomla\CMS\Factory::getApplication()->getInput()->getCmd('option', '') == "com_modules"
+		|| Joomla\CMS\Factory::getApplication()->getInput()->getCmd('option', '') == "com_advancedmodules"
 		|| Joomla\CMS\Factory::getApplication()->getInput()->getCmd('option', '') == "com_plugins")
 	)
 {

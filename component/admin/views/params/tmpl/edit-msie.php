@@ -170,7 +170,7 @@ if (count($jevplugins)){
         </ul>
 
 		<?php
-		echo HTMLHelper::_('bootstrap.startPane', 'myParamsTabs', array('active' => 'JEV_TAB_COMPONENT'));
+		echo HTMLHelper::_('bootstrap.startTabSet', 'myParamsTabs', array('active' => 'JEV_TAB_COMPONENT'));
 		$fieldSets = $this->form->getFieldsets();
 
 		foreach ($fieldSets as $name => $fieldSet)
@@ -180,7 +180,7 @@ if (count($jevplugins)){
 				continue;
 			}
 			$label = empty($fieldSet->label) ? $name : $fieldSet->label;
-			echo HTMLHelper::_('bootstrap.addPanel', "myParamsTabs", $name);
+			echo HTMLHelper::_('bootstrap.addTab', "myParamsTabs", $name);
 
 			$html = array();
 
@@ -276,12 +276,12 @@ if (count($jevplugins)){
 			?>
 
 			<?php
-			echo HTMLHelper::_('bootstrap.endPanel');
+			echo HTMLHelper::_('bootstrap.endTab');
 		}
 
 		if ($haslayouts)
 		{
-			echo HTMLHelper::_('bootstrap.addPanel', "myParamsTabs", "club_layouts");
+			echo HTMLHelper::_('bootstrap.addTab', "myParamsTabs", "club_layouts");
 			?>
             <ul class="nav nav-tabs" id="myLayoutTabs">
 				<?php
@@ -309,7 +309,7 @@ if (count($jevplugins)){
 				?>
             </ul>
 			<?php
-			echo HTMLHelper::_('bootstrap.startPane', "myLayoutTabs", array('active' => $first));
+			echo HTMLHelper::_('bootstrap.startTabSet', "myLayoutTabs", array('active' => $first));
 
 			// Now get layout specific parameters
 			//Form::addFormPath(JPATH_COMPONENT ."/views/");
@@ -391,23 +391,23 @@ $html[] = '</tr>';
 					}
 					if ($hasconfig)
 					{
-						echo HTMLHelper::_('bootstrap.addPanel', 'myLayoutTabs', $viewfile);
-						//echo HTMLHelper::_('bootstrap.addPanel', 'myParamsTabs', $viewfile);
+						echo HTMLHelper::_('bootstrap.addTab', 'myLayoutTabs', $viewfile);
+						//echo HTMLHelper::_('bootstrap.addTab', 'myParamsTabs', $viewfile);
 
 						echo implode("\n", $html);
 
-						echo HTMLHelper::_('bootstrap.endPanel');
-						//echo HTMLHelper::_('bootstrap.endPanel');
+						echo HTMLHelper::_('bootstrap.endTab');
+						//echo HTMLHelper::_('bootstrap.endTab');
 					}
 				}
 			}
-			echo HTMLHelper::_('bootstrap.endPane', 'myLayoutTabs');
-			echo HTMLHelper::_('bootstrap.endPanel');
+			echo HTMLHelper::_('bootstrap.endTabSet', 'myLayoutTabs');
+			echo HTMLHelper::_('bootstrap.endTab');
 		}
 
 		if ($hasPlugins)
 		{
-			echo HTMLHelper::_('bootstrap.addPanel', "myParamsTabs", "plugin_options");
+			echo HTMLHelper::_('bootstrap.addTab', "myParamsTabs", "plugin_options");
 			echo HTMLHelper::_('bootstrap.startAccordion', 'myPluginAccordion', array('active' => 'collapsexx', 'parent' => 'plugin_options'));
 			$script = <<<SCRIPT
 jQuery(document).ready(function(){    
@@ -581,7 +581,7 @@ SCRIPT;
 				}
 			}
 			echo HTMLHelper::_('bootstrap.endAccordion');
-			echo HTMLHelper::_('bootstrap.endPanel');
+			echo HTMLHelper::_('bootstrap.endTab');
 		}
 		?>
 
