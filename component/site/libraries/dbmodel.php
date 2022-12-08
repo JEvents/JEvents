@@ -3232,6 +3232,7 @@ class JEventsDBModel
 			$icalrows = $db->loadObjectList();
 		} catch (Exception $e) {
 			$error .= $e;
+			$icalrows = [];
 		}
 
 		if ($adminuser)
@@ -4275,6 +4276,7 @@ class JEventsDBModel
 
 		$user = Factory::getUser();
 		$db   = Factory::getDbo();
+		$app  = Factory::getApplication();
 
 		$extrawhere  = array();
 		$extrajoin   = array();
@@ -4297,7 +4299,7 @@ class JEventsDBModel
 
 		$adminCats = JEVHelper::categoryAdmin();
 		$where     = '';
-		if ($creator_id == 'ADMIN')
+		if ($creator_id == 'ADMIN' || JEVHelper::isEventEditor() || JEVHelper::isEventPublisher(true))
 		{
 			$where = "";
 		}
@@ -4329,6 +4331,9 @@ class JEventsDBModel
 
 		$filters = jevFilterProcessing::getInstance(array("published", "justmine", "category", "startdate", "search", "repeating"));
 		$filters->setWhereJoin($extrawhere, $extrajoin);
+
+		$needsgroup = false;
+		$app->triggerEvent('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
 
 		$extrajoin  = (count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '');
 		$extrawhere = (count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '');
@@ -4719,7 +4724,19 @@ class JEventsDBModel
 			;
 		}
 
-		$db->setQuery($query);
+		try
+		{
+			$db->setQuery($query);
+		}
+		catch (Exception $e)
+		{
+			if (JDEBUG)
+			{
+				echo "Problems in countIcalEventsByCat line 4735<br>";
+				echo (string) $query . "<br>";
+				exit();
+			}
+		}
 		//echo $db->_sql;
 		//echo $db->explain();
 		$total = intval($db->loadResult());

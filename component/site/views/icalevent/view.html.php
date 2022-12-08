@@ -123,6 +123,10 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 				$juser      = Factory::getUser();
 				$canEditOwn = $juser->authorise('core.edit.own', 'com_jevents');
 			}
+			else if (JEVHelper::canEditOwnEventNewEventOnlyCheck())
+			{
+				$canEditOwn = true;
+			}
 			if (JEVHelper::isEventEditor() || $canEditOwn)
 			{
 				$this->toolbarButton("icalevent.apply", 'apply', 'apply', 'JEV_SAVE', false);

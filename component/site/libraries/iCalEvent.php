@@ -340,14 +340,29 @@ else $this->_detail = false;
 					$order++;
 				}
 			}
-			$db->setQuery("DELETE FROM #__jevents_catmap where evid = " . $this->ev_id . " AND catid NOT IN (" . implode(",", $catids) . ")");
-			$sql     = $db->getQuery();
-			$success = $db->execute();
-			if (count($pairs) > 0)
+			try
 			{
-				$db->setQuery("Replace into #__jevents_catmap (evid, catid, ordering) VALUES " . implode(",", $pairs));
+				$db->setQuery("DELETE FROM #__jevents_catmap where evid = " . $this->ev_id . " AND catid NOT IN (" . implode(",", $catids) . ")");
 				$sql     = $db->getQuery();
 				$success = $db->execute();
+			}
+			catch (Exception $e) {
+
+				$app->enqueueMessage("Problems clearing category mapping entry for imported event", 'warning');
+			}
+
+			if (count($pairs) > 0)
+			{
+				try
+				{
+					$db->setQuery("Replace into #__jevents_catmap (evid, catid, ordering) VALUES " . implode(",", $pairs));
+					$success = $db->execute();
+				}
+				catch (Exception $e) {
+
+					$app->enqueueMessage("Problems storing category mapping entry for imported event", 'warning');
+				}
+
 			}
 		}
 

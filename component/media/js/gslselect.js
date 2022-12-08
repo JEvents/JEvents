@@ -129,9 +129,11 @@ function gslselect(selector) {
                 filter.classList.add('gsl-button-default');
                 filter.type = 'button';
                 filter.style.overflow = "hidden";
+                filter.style.textTransform = "none";
                 filter.classList.add('gsl-text-left');
                 filter.classList.add('gsl-padding-remove-top');
                 filter.classList.add('gsl-padding-remove-bottom');
+                filter.classList.add('gsl-overflow-hidden');
             }
             filter.classList.add('gsl-padding-small');
             filter.classList.add('gsl-select');
@@ -440,7 +442,7 @@ function gslselectSetupOptions(node, dropDownNav, dropDownDiv, selectElement, fi
             })
 
             optionLink.setAttribute('data-selected', "false");
-            initialValue = document.createTextNode(optionLink.innerHTML)
+            initialValue = document.createTextNode(optionLink.innerText)
             selectElement.value = optionLink.getAttribute('data-value');
 
             optionLink.classList.add('gsl-text-bold');
@@ -449,7 +451,9 @@ function gslselectSetupOptions(node, dropDownNav, dropDownDiv, selectElement, fi
 
         }
 
-        filter.setAttribute('style', optionLink.getAttribute('style'));
+        if (optionLink.getAttribute('style')) {
+            filter.setAttribute('style', optionLink.getAttribute('style'));
+        }
         filter.innerHTML = "";
         filter.appendChild(initialValue);
 

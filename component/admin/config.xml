@@ -171,7 +171,7 @@
 		       difficulty="3"/>
 		<!-- TIMEZONE DATA //-->
 		<!-- see http://www.php.net/manual/en/datetimezone.listidentifiers.php //-->
-		<field name="icaltimezonelive" type="jevtimezone" default="" menu="hide" label="JEV_TIMEZONE_2"
+		<field name="icaltimezonelive" type="jevtimezone" default="" menu="hide" label="JEV_TIMEZONE_2" class="gsl-select"
 		       description="JEV_TIMEZONE_2_DESC" difficulty="3"/>
 
 		<field name="regexsearch" type="jevlist" default="1" label="JEV_SEARCH_TYPE" description="JEV_SEARCH_TYPE_DESC"
@@ -341,11 +341,13 @@ Default should be set by the custom field
 			   label="JEV_USE_NEW_FRONTEND_EDITING_FORMATTING" description="JEV_USE_NEW_FRONTEND_EDITING_FORMATTING_DESC" difficulty="1"/>
 
 		<field name="enableshowon" type="jevboolean" class="gsl-button-group" default="0" menu="hide"
-		   label="COM_JEVENT_ENABLE_SHOWON_EDITING" description="COM_JEVENT_ENABLE_SHOWON_EDITING_DESC" difficulty="1"/>
+		   label="COM_JEVENT_ENABLE_SHOWON_EDITING" description="COM_JEVENT_ENABLE_SHOWON_EDITING_DESC" difficulty="1"
+			   showon="newfrontendediting:1"
+		/>
 
 		<field name="titleplaceholder" type="jevtext" size="60" default='JEV_EVENT_TITLE_PLACEHOLDER' menu="hide" label="COM_JEVENTS_TITLE_PLACEHOLDER"
 			   description="COM_JEVENTS_TITLE_PLACEHOLDER_DESC" difficulty="1"
-			   showon="enableshowon:1"
+			   showon="newfrontendediting:1[AND]enableshowon:1"
 		/>
 
 		<field name="com_calUseStdTime" type="jevboolean" class="gsl-button-group" default="1" menu="hide"
@@ -437,7 +439,7 @@ Default should be set by the custom field
 		</field>
 		<field name="showtimezone" type="jevboolean" class="gsl-button-group" default="0" menu="hide" label="JEV_SHOW_TIMEZONE"
 		       description="JEV_SHOW_TIMEZONE_DESC" difficulty="2"/>
-		<field name="offeredtimezones" type="jevtimezone" multiple="true" class="chosen" default="-1" size="5"
+		<field name="offeredtimezones" type="jevtimezone" multiple="true" class="gsl-select" default="-1" size="5"
 		       style="width:250px;"
 		       menu="hide" label="JEV_AVAILABLE_TIMEZONES" description="JEV_AVAILABLE_TIMEZONES_DESC"
 		       showon="showtimezone:1" difficulty="2"/>
@@ -603,7 +605,7 @@ Default should be set by the custom field
 		       difficulty="3"/>
 		<!-- TIMEZONE DATA //-->
 		<!-- see http://www.php.net/manual/en/datetimezone.listidentifiers.php //-->
-		<field name="icaltimezone" type="jevtimezone" default="" menu="hide" label="JEV_TIMEZONE"
+		<field name="icaltimezone" type="jevtimezone" default="" menu="hide" label="JEV_TIMEZONE" class="gsl-select"
 		       description="JEV_TIMEZONE_DESC" difficulty="3"/>
 		<!--
 		<field name="icaltimezone" type="jevtext" default="" menu="hide" size="50" label="JEV_TIMEZONE" description="JEV_TIMEZONE DESC"/>
@@ -614,6 +616,14 @@ Default should be set by the custom field
 		       label="JEV_SHOW_ICAL_ICON" description="JEV_SHOW_ICAL_ICON_DESC" difficulty="2"/>
 		<field name="disableicalexport" type="jevboolean" class="gsl-button-group" default="0" menu="hide"
 		       label="JEV_DISABLE_ICAL_EXPORT" description="JEV_DISABLE_ICAL_EXPORT_DESC" difficulty="2"/>
+		<field name="icalexportprefix" type="list" default="0" menu="hide" label="JEV_ICAL_EXPORT_PREFIX"
+			   description="JEV_ICAL_EXPORT_PREFIX_TIP" difficulty="2" showon="disableicalexport:0">
+			<option value="0">JEV_ICAL_EXPORT_PREFIX_NONE</option>
+			<option value="1">JEV_CATEGORY_NAME</option>
+			<option value="2">JEV_FIELD_CALENDAR</option>
+			<option value="2">JEV_ICAL_EXPORT_PREFIX_SITE_NAME</option>
+		</field>
+
 		<field name="icalmultiday" type="jevboolean" class="gsl-button-group" default="0" menu="hide" label="JEV_ICAL_MULTIDAY"
 		       description="JEV_ICAL_MULTIDAY_TIP" difficulty="2"/>
 		<field name="icalmultiday24h" type="jevboolean" class="gsl-button-group" default="0" menu="hide" label="JEV_MULTIDAY24"

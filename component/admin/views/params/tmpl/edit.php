@@ -643,7 +643,9 @@ SCRIPT;
 								}
 
 								$hasconfig = true;
+
 								$renderField = $field->renderField();
+
 								$renderField = str_replace('class="control-group"', 'class="gsl-grid"', $renderField);
 								$renderField = str_replace('class="control-label"', 'class="gsl-width-1-3"', $renderField);
 								$renderField = str_replace('class="controls"', 'class="gsl-width-2-3"', $renderField);

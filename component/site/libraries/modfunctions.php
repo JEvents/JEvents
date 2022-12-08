@@ -90,7 +90,7 @@ function findAppropriateMenuID(&$catidsOut, &$modcatids, &$catidList, $modparams
 		else
 		{
 			// if no menu pointing the JEvents use itemid of home page and set empty menu array
-			$myItemid  = 1;
+			$myItemid  = $menu->getDefault()->id;
 			$menuitems = array();
 		}
 	}

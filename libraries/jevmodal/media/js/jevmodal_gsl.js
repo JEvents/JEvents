@@ -123,7 +123,7 @@ function addJevModalHtml_gsl(id) {
             + '</div>';
 
         // see http://stackoverflow.com/questions/10636667/bootstrap-modal-appearing-under-background
-        var container = document.getElementById('gslc') || document.getElementById('jevents')  || document.getElementById('myTab');
+        var container = document.querySelector('#gslc, #jevents, #myTab');
         container.insertAdjacentHTML('beforeend', myModal);
 
     }

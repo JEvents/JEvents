@@ -35,7 +35,7 @@ $assoc = false && Associations::isEnabled() && Factory::getApplication()->isClie
 
 if (!empty($this->editor)) {
 	// This view is used also in com_menus. Load the xtd script only if the editor is set!
-	$app->getDocument()->addScriptOptions('xtd-articles', array('editor' => $this->editor));
+	// $app->getDocument()->addScriptOptions('xtd-articles', array('editor' => $this->editor));
 }
 
 

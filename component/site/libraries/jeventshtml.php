@@ -263,12 +263,21 @@ class JEventsHTML
         $options = array();
         $parents = array();
 
+		$lang = Factory::getLanguage();
         foreach ($items as &$item)
         {
             $repeat = ($item->level - 1 >= 0) ? $item->level - 1 : 0;
             $item->title = str_repeat('- ', $repeat) . $item->title;
 
-            if ($item->language !== '*')
+			$jevtask = $input->getString("jevtask");
+			if (strpos($jevtask, "icalevent.edit") !== false || strpos($jevtask, "icalrepeat.edit") !== false)
+			{
+	            if ($item->language !== '*' && $item->language != $lang->getTag())
+	            {
+	                $item->title .= ' (' . $item->language . ')';
+	            }
+			}
+			else if ($item->language !== '*')
             {
                 $item->title .= ' (' . $item->language . ')';
             }

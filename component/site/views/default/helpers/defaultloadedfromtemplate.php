@@ -197,18 +197,6 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				$templates[$template_name] = null;
 			}
 
-			$hasLocationOrIsOnline = false;
-			$onlineevent = $jevparams->get("sevd_onlineeventfield", 0);
-			if ($onlineevent !== 0 && isset($event->customfields) && isset($event->customfields[$onlineevent]) && !empty($event->customfields[$onlineevent]['value']))
-			{
-				$hasLocationOrIsOnline = true;
-			}
-			if (isset($event->_jevlocation)
-				&& !empty($event->_jevlocation))
-			{
-				$hasLocationOrIsOnline = true;
-			}
-
 			$matched = false;
 			foreach (array_keys($templates[$template_name]) as $catid)
 			{
@@ -468,6 +456,18 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		return;
 	if (count($matchesarray) == 0)
 		return;
+
+	$hasLocationOrIsOnline = false;
+	$onlineevent = $jevparams->get("sevd_onlineeventfield", 0);
+	if ($onlineevent !== 0 && isset($event->customfields) && isset($event->customfields[$onlineevent]) && !empty($event->customfields[$onlineevent]['value']))
+	{
+		$hasLocationOrIsOnline = true;
+	}
+	if (isset($event->_jevlocation)
+		&& !empty($event->_jevlocation))
+	{
+		$hasLocationOrIsOnline = true;
+	}
 
 // now replace the fields
 	$search     = array();

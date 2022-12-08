@@ -21,7 +21,7 @@ use Joomla\CMS\Component\ComponentHelper;
 
 $app    = Factory::getApplication();
 $params = ComponentHelper::getParams(JEV_COM_COMPONENT);
-if ($app->isClient('administrator') || $params->get("newfrontendediting", 1) || version_compare(JVERSION, '4.0' , 'lt '))
+if ($app->isClient('administrator') || $params->get("newfrontendediting", 1) || version_compare(JVERSION, '4.0' , 'lt'))
 {
 	$editPage = $this->loadTemplate('uikit');
 	//$editPage = str_replace("hasPopover", "hasYsPopover", $editPage);
@@ -360,7 +360,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 			<div class="adminform">
 				<?php
 				if (!$cfg->get('com_single_pane_edit', 0))
-				{
+				{/*
 					?>
 					<ul class="nav nav-tabs" id="myEditTabs">
 						<li class="active"><a data-toggle="tab"
@@ -406,9 +406,10 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 						?>
 					</ul>
 					<?php
-					// Tabs
-					echo HTMLHelper::_('bootstrap.startPane', 'myEditTabs', array('active' => 'common'));
-					echo HTMLHelper::_('bootstrap.addPanel', 'myEditTabs', "common");
+				*/
+								// Tabs
+					echo HTMLHelper::_('bootstrap.startTabSet', 'myEditTabs', array('active' => 'common'));
+					echo HTMLHelper::_('bootstrap.addTab', 'myEditTabs', "common", Text::_("JEV_TAB_COMMON"));
 				}
 				?>
 				<div class="row jevtitle" <?php JEventsHelper::showOnRel($this->form, 'title'); ?>>
@@ -680,8 +681,8 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 				*/
                 if (!$cfg->get('com_single_pane_edit', 0) && !$cfg->get('timebeforedescription', 0))
 				{
-					echo HTMLHelper::_('bootstrap.endPanel');
-					echo HTMLHelper::_('bootstrap.addPanel', "myEditTabs", "calendar");
+					echo HTMLHelper::_('bootstrap.endTab');
+					echo HTMLHelper::_('bootstrap.addTab', "myEditTabs", "calendar", Text::_("JEV_TAB_CALENDAR"));
 				}
 				if (!$cfg->get('timebeforedescription', 0))
 				{
@@ -706,8 +707,8 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 
 						if (!$cfg->get('com_single_pane_edit', 0))
 						{
-							echo HTMLHelper::_('bootstrap.endPanel');
-							echo HTMLHelper::_('bootstrap.addPanel', "myEditTabs", $extraTab['paneid']);
+							echo HTMLHelper::_('bootstrap.endTab');
+							echo HTMLHelper::_('bootstrap.addTab', "myEditTabs", $extraTab['paneid'], $extraTab['title']);
 						}
 						ob_start();
 						JEventsHelper::showOnRel($this->form, 'jevcontent');
@@ -721,15 +722,15 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 
 				if (!$cfg->get('com_single_pane_edit', 0))
 				{
-					echo HTMLHelper::_('bootstrap.endPanel');
+					echo HTMLHelper::_('bootstrap.endTab');
 					if ($assoc)
 					{
-						echo HTMLHelper::_('bootstrap.addPanel', "myEditTabs", "associations");
+						echo HTMLHelper::_('bootstrap.addTab', "myEditTabs", "associations"), Text::_('COM_JEVENTS_ITEM_ASSOCIATIONS_FIELDSET_LABEL', true);
 						echo $this->loadTemplate('associations');
-						echo HTMLHelper::_('bootstrap.endPanel');
+						echo HTMLHelper::_('bootstrap.endTab');
 					}
 
-					echo HTMLHelper::_('bootstrap.endPane', 'myEditTabs');
+					echo HTMLHelper::_('bootstrap.endTabSet', 'myEditTabs');
 				}
 				?>
 			</div>

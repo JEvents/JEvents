@@ -298,7 +298,7 @@ class FlatModCalView extends DefaultModCalView
 		$specificScript = <<< SCRIPT
 function setupSpecificNavigation()
 {
-	setupMiniCalTouchInteractions(".flatcal_weekdays", true);
+	setupMiniCalTouchInteractions("#flatcal_minical", false);
 }
 SCRIPT;
 

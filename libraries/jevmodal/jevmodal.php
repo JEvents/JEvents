@@ -103,7 +103,7 @@ SCRIPT;
 		$jinput = JFactory::getApplication()->input;
 
 		$comMenus = $jinput->getCmd('option') == "com_menus";
-		$comModules = $jinput->getCmd('option') == "com_modules";
+		$comModules = $jinput->getCmd('option') == "com_modules" || $jinput->getCmd('option') == "com_advancedmodules";
 
 		$task = $jinput->getString("task", $jinput->getString("jevtask", ""));
 		if (!$forceBoostrap
@@ -214,6 +214,32 @@ SCRIPT;
 
 			// For Joomla 4 we need to change the data attribute - use the native popover method unless specifically using UIKit
 			HTMLHelper::_('bootstrap.popover', $selector, $params);
+            $popoverStyling = <<< SCRIPT
+document.addEventListener('DOMContentLoaded', function() {
+   var elements = document.querySelectorAll("$selector");
+   elements.forEach(function(myPopoverTrigger)
+   {
+        myPopoverTrigger.addEventListener('show.bs.popover', function () {
+            var title = myPopoverTrigger.getAttribute('data-bs-original-title') || false;
+            if (title)
+            {
+                const popover = bootstrap.Popover.getInstance(myPopoverTrigger);
+                if (popover.tip) 
+                {
+                    var header = popover.tip.querySelector('.popover-header');
+                    if (header) {
+                        header.outerHTML = title;
+                    }
+                }
+            }
+        })
+   });
+});
+SCRIPT;
+            Factory::getApplication()
+                ->getDocument()
+                ->addScriptDeclaration($popoverStyling);
+
 			return;
 		}
 		/*
@@ -233,7 +259,8 @@ SCRIPT;
 		{
 			JHtml::_('jquery.framework');
 			JHtml::_('bootstrap.framework');
-			JevHtmlBootstrap::loadCss();
+            JLoader::register('JevHtmlBootstrap', JPATH_SITE . "/components/com_jevents/libraries/bootstrap.php");
+            JevHtmlBootstrap::loadCss();
 		}
 
 		$opt['animation'] = isset($params['animation']) ? $params['animation'] : false;

@@ -368,8 +368,8 @@ $accesslevels = "jeval".implode(" jeval", array_unique($accesslevels));
                     </ul>
 					<?php
 					// Tabs
-					echo HTMLHelper::_('bootstrap.startPane', 'myEditTabs', array('active' => 'common'));
-					echo HTMLHelper::_('bootstrap.addPanel', 'myEditTabs', "common");
+					echo HTMLHelper::_('bootstrap.startTabSet', 'myEditTabs', array('active' => 'common'));
+					echo HTMLHelper::_('bootstrap.addTab', 'myEditTabs', "common");
 				}
 				?>
                 <div class="row jevtitle">
@@ -619,8 +619,8 @@ $accesslevels = "jeval".implode(" jeval", array_unique($accesslevels));
 
 				if (!$cfg->get('com_single_pane_edit', 0) && !$cfg->get('timebeforedescription', 0))
 				{
-					echo HTMLHelper::_('bootstrap.endPanel');
-					echo HTMLHelper::_('bootstrap.addPanel', "myEditTabs", "calendar");
+					echo HTMLHelper::_('bootstrap.endTab');
+					echo HTMLHelper::_('bootstrap.addTab', "myEditTabs", "calendar");
 				}
 				if (!$cfg->get('timebeforedescription', 0))
 				{
@@ -644,8 +644,8 @@ $accesslevels = "jeval".implode(" jeval", array_unique($accesslevels));
 
 						if (!$cfg->get('com_single_pane_edit', 0))
 						{
-							echo HTMLHelper::_('bootstrap.endPanel');
-							echo HTMLHelper::_('bootstrap.addPanel', "myEditTabs", $extraTab['paneid']);
+							echo HTMLHelper::_('bootstrap.endTab');
+							echo HTMLHelper::_('bootstrap.addTab', "myEditTabs", $extraTab['paneid']);
 						}
 						echo "<div class='jevextrablock'>";
 						echo $extraTab['content'];
@@ -656,14 +656,14 @@ $accesslevels = "jeval".implode(" jeval", array_unique($accesslevels));
 
 				if (!$cfg->get('com_single_pane_edit', 0))
 				{
-					echo HTMLHelper::_('bootstrap.endPanel');
+					echo HTMLHelper::_('bootstrap.endTab');
 					if ($assoc){
-						echo HTMLHelper::_('bootstrap.addPanel', "myEditTabs", "associations");
+						echo HTMLHelper::_('bootstrap.addTab', "myEditTabs", "associations");
 						echo $this->loadTemplate('associations');
-						echo HTMLHelper::_('bootstrap.endPanel');
+						echo HTMLHelper::_('bootstrap.endTab');
 					}
 
-					echo HTMLHelper::_('bootstrap.endPane', 'myEditTabs');
+					echo HTMLHelper::_('bootstrap.endTabSet', 'myEditTabs');
 				}
 				?>
             </div>

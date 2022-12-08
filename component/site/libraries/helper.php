@@ -1957,6 +1957,39 @@ class JEVHelper
 
 	}
 
+	/**
+	 * Test to see if user can edit own events
+	 *
+	 * @return unknown
+	 */
+	public static
+	function canEditOwnEventNewEventOnlyCheck()
+	{
+		$params     = ComponentHelper::getParams(JEV_COM_COMPONENT);
+		if (!$params->get("authorisedonly", 0))
+		{
+			$juser      = Factory::getUser();
+			$canEditOwn = $juser->authorise('core.edit.own', 'com_jevents');
+		}
+		else
+		{
+			// are we an authorised user
+			$jevuser = JEVHelper::getAuthorisedUser();
+			if ($jevuser)
+			{
+				$canEditOwn = $jevuser->cancreate;
+			}
+			else
+			{
+				$canEditOwn = false;
+			}
+		}
+
+
+		return $canEditOwn;
+
+	}
+
 	// Fall back test to see if user can publish their own events based on config setting
 
 	public static
@@ -3917,6 +3950,28 @@ SCRIPT;
 
 		return $html;
 
+	}
+
+	public static function iCalTitlePrefix($row)
+	{
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+		$prefix = $params->get("icalexportprefix", 0);
+		switch ($prefix)
+		{
+			default :
+			case  0:
+				return "";
+			case  1:
+				return $row->getCategoryName() . " - ";
+			case  2:
+				return $row->getCalendarName() . " - ";
+			case  3:
+				$config   = new JConfig();
+				$sitename = $config->sitename;
+
+				return $sitename . " - ";
+		}
+		return "";
 	}
 
 	protected static

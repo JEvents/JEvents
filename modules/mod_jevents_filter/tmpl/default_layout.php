@@ -92,13 +92,13 @@ STYLE;
 					}
 					?>
 					<tr>
-						<td><input class="modfilter_button" type="button" onclick="JeventsFilters.reset(this.form)"
+						<td><input class="modfilter_button btn btn-secondary" type="button" onclick="JeventsFilters.reset(this.form)"
 						           value="<?php echo Text::_('RESET'); ?>"/>
 							<?php if ($params->get("showlabels", 1)) { ?>
 						</td>
 						<td>
 							<?php } ?>
-							<input class="modfilter_button" type="submit" value="<?php echo Text::_('ok'); ?>"
+							<input class="modfilter_button  btn btn-primary" type="submit" value="<?php echo Text::_('ok'); ?>"
 							       name="jevents_filter_submit"/></td>
 					</tr>
 				</table>
@@ -140,7 +140,7 @@ STYLE;
 						if ($params->get("showlabels", 1))
 						{
 							?>
-							<td><input class="modfilter_button" type="button" onclick="JeventsFilters.reset(this.form)"
+							<td><input class="modfilter_button btn btn-secondary" type="button" onclick="JeventsFilters.reset(this.form)"
 							           value="<?php echo Text::_('RESET'); ?>"/></td>
 						<?php } ?>
 					</tr>
@@ -163,10 +163,10 @@ STYLE;
 						if (!$params->get("showlabels", 1))
 						{
 							?>
-							<td><input class="modfilter_button" type="button" onclick="JeventsFilters.reset(this.form)"
+							<td><input class="modfilter_button btn btn-secondary" type="button" onclick="JeventsFilters.reset(this.form)"
 							           value="<?php echo Text::_('RESET'); ?>"/></td>
 						<?php } ?>
-						<td><input class="modfilter_button" type="submit" value="<?php echo Text::_('ok'); ?>"
+						<td><input class="modfilter_button btn btn-primary" type="submit" value="<?php echo Text::_('ok'); ?>"
 						           name="jevents_filter_submit"/></td>
 					</tr>
 				</table>
@@ -214,15 +214,15 @@ STYLE;
 					}
 					?>
 					<li>
-						<div class="jevfilterinput">
-							<input class="modfilter_button" type="button" onclick="JeventsFilters.reset(this.form)"
-							       value="<?php echo Text::_('RESET'); ?>"/>
-							<?php if ($params->get("showlabels", 1)) { ?>
-						</div>
-						<div class="jevfilterinput">
-							<?php } ?>
-							<input class="modfilter_button" type="submit" value="<?php echo Text::_('ok'); ?>"
-							       name="jevents_filter_submit"/>
+						<?php if ($params->get("showlabels", 1)) { ?>
+							<br>
+						<?php } ?>
+						<div class="jevfilterinput btn-group">
+							<button class="modfilter_button btn btn-secondary" type="button" onclick="JeventsFilters.reset(this.form)">
+								<?php echo Text::_('RESET'); ?></button>
+							<button class="modfilter_button  btn btn-primary" type="submit" name="jevents_filter_submit">
+								<?php echo Text::_('ok'); ?>
+							</button>
 						</div>
 					</li>
 				</ul>
