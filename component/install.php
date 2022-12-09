@@ -599,9 +599,6 @@ SQL;
 
 		if (array_key_exists("location", $cols) && strtoupper($cols['location']->Type) !== "VARCHAR(500)")
 		{
-			$sql = "ALTER TABLE #__jevents_vevdetail MODIFY COLUMN location VARCHAR(500) NOT NULL default ''";
-			$db->setQuery($sql);
-			@$db->execute();
 
 			if (array_key_exists("location", $indexcols))
 			{
@@ -613,6 +610,10 @@ SQL;
 				$db->setQuery($sql);
 				@$db->execute();
 			}
+
+			$sql = "ALTER TABLE #__jevents_vevdetail MODIFY COLUMN location VARCHAR(500) NOT NULL default ''";
+			$db->setQuery($sql);
+			@$db->execute();
 		}
 
 		if (array_key_exists("contact", $cols) && strtoupper($cols['contact']->type) !== "VARCHAR(500)")
