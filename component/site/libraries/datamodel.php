@@ -1271,6 +1271,10 @@ class JEventsDataModel
 				$row->contactlink(JEventsHTML::getUserMailtoLink($row->id(), $row->created_by(), true, $row));
 				$row->bgcolor = JEV_CommonFunctions::setColor($row);
 				$row->fgcolor = JevMapColor($row->bgcolor);
+				if (empty($row->rp_id()))
+				{
+					$row->_rp_id = $this->queryModel->findMatchingRepeat($row->uid(), $row->yup(), $row->mup(), $row->dup());
+				}
 
 			}
 		}

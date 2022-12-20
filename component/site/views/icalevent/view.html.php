@@ -140,8 +140,8 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 
         //Set previous page
         $session = Factory::getSession();
-        $input   = new \Joomla\Input\Input($_SERVER);
-        $referer = $input->getString('HTTP_REFERER', null);
+        $sinput   = new \Joomla\Input\Input($_SERVER);
+        $referer = $sinput->getString('HTTP_REFERER', null);
         $current = Uri::getInstance();
         $current = $current->toString(array('scheme', 'host', 'port', 'path', 'query'));
         if ($referer && $referer !== $current) {

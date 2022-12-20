@@ -55,6 +55,18 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	static $allcat_catids;
 	$loadedFromFile = false;
 
+	$hasLocationOrIsOnline = false;
+	$onlineevent = $jevparams->get("sevd_onlineeventfield", 0);
+	if ($onlineevent !== 0 && isset($event->customfields) && isset($event->customfields[$onlineevent]) && !empty($event->customfields[$onlineevent]['value']))
+	{
+		$hasLocationOrIsOnline = true;
+	}
+	if (isset($event->_jevlocation)
+		&& !empty($event->_jevlocation))
+	{
+		$hasLocationOrIsOnline = true;
+	}
+
 	if (!$template_value)
 	{
 		if (!array_key_exists($template_name, $templates))
@@ -202,16 +214,6 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			{
 				if ($templates[$template_name][$catid]->value != "")
 				{
-					// Add structured data output
-					if ($template_name === "icalevent.detail_body"
-						&& $jevparams->get("enable_gsed", 0)
-						&& $jevparams->get("sevd_imagename", 0)
-						&& $jevparams->get("permatarget", 0)
-						&& $hasLocationOrIsOnline
-					)
-					{
-						$templates[$template_name][$catid]->value .= "<script type='application/ld+json'>{{Structured Data:LDJSON}}</script>";
-					}
 
 					if (isset($templates[$template_name][$catid]->params))
 					{
@@ -337,6 +339,17 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			return false;
 		}
 
+		// Add structured data output
+		if ($template_name === "icalevent.detail_body"
+			&& $jevparams->get("enable_gsed", 0)
+			&& $jevparams->get("sevd_imagename", 0)
+			&& $jevparams->get("permatarget", 0)
+			&& $hasLocationOrIsOnline
+		)
+		{
+			$template->value .= "<script type='application/ld+json'>{{Structured Data:LDJSON}}</script>";
+		}
+
 		$template_value = $template->value;
 		$specialmodules = $template->params;
 
@@ -456,18 +469,6 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		return;
 	if (count($matchesarray) == 0)
 		return;
-
-	$hasLocationOrIsOnline = false;
-	$onlineevent = $jevparams->get("sevd_onlineeventfield", 0);
-	if ($onlineevent !== 0 && isset($event->customfields) && isset($event->customfields[$onlineevent]) && !empty($event->customfields[$onlineevent]['value']))
-	{
-		$hasLocationOrIsOnline = true;
-	}
-	if (isset($event->_jevlocation)
-		&& !empty($event->_jevlocation))
-	{
-		$hasLocationOrIsOnline = true;
-	}
 
 // now replace the fields
 	$search     = array();

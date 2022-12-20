@@ -605,24 +605,24 @@ SQL;
 				$sql = "alter table #__jevents_vevdetail drop index location";
 				$db->setQuery($sql);
 				@$db->execute();
-
-				$sql = "ALTER TABLE #__jevents_vevdetail ADD INDEX location (location (240))";
-				$db->setQuery($sql);
-				@$db->execute();
 			}
 
 			$sql = "ALTER TABLE #__jevents_vevdetail MODIFY COLUMN location VARCHAR(500) NOT NULL default ''";
 			$db->setQuery($sql);
 			@$db->execute();
+
+			$sql = "ALTER TABLE #__jevents_vevdetail ADD INDEX location (location (240))";
+			$db->setQuery($sql);
+			@$db->execute();
 		}
 
-		if (array_key_exists("contact", $cols) && strtoupper($cols['contact']->type) !== "VARCHAR(500)")
+		if (array_key_exists("contact", $cols) && strtoupper($cols['contact']->Type) !== "VARCHAR(500)")
 		{
 			$sql = "ALTER TABLE #__jevents_vevdetail MODIFY COLUMN contact VARCHAR(500) NOT NULL default ''";
 			$db->setQuery($sql);
 			@$db->execute();
 		}
-		if (array_key_exists("organizer", $cols) && strtoupper($cols['organizer']->type) !== "VARCHAR(500)")
+		if (array_key_exists("organizer", $cols) && strtoupper($cols['organizer']->Type) !== "VARCHAR(500)")
 		{
 			$sql = "ALTER TABLE #__jevents_vevdetail MODIFY COLUMN organizer VARCHAR(500) NOT NULL default ''";
 			$db->setQuery($sql);
@@ -857,6 +857,13 @@ SQL;
 			@$db->execute();
 		}
 
+		if (!array_key_exists("createnewcategories", $cols))
+		{
+			$sql = "Alter table #__jevents_icsfile ADD COLUMN createnewcategories tinyint(3) NOT NULL default 1";
+			$db->setQuery($sql);
+			@$db->execute();
+		}
+
 		if (!array_key_exists("autorefresh", $cols))
 		{
 			$sql = "Alter table #__jevents_icsfile ADD COLUMN autorefresh tinyint(3) NOT NULL default 0";
@@ -980,7 +987,7 @@ SQL;
 			@$db->execute();
 		}
 
-		if (array_key_exists("contact", $cols) && strtoupper($cols['contact']->type) !== "VARCHAR(500)")
+		if (array_key_exists("contact", $cols) && strtoupper($cols['contact']->Type) !== "VARCHAR(500)")
 		{
 			$sql = "ALTER TABLE #__jevents_translation MODIFY COLUMN contact VARCHAR(500) NOT NULL default ''";
 			$db->setQuery($sql);
