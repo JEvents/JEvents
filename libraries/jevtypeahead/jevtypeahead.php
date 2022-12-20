@@ -108,7 +108,7 @@ class JevTypeahead
 			$opt['json']	= isset($params['json']) ?  $params['json'] : '';
 
 			if ($opt['scrollable']){
-				JFactory::getDocument()->addStyleDeclaration( ".scrollable-dropdown-menu .tt-menu, .scrollable-dropdown-menu .tt-dropdown-menu, #scrollable-dropdown-menu .tt-menu, #scrollable-dropdown-menu .tt-dropdown-menu{max-height: 150px; overflow-y: auto; }");
+				JFactory::getDocument()->addStyleDeclaration( ".scrollable-dropdown-menu .tt-menu, .scrollable-dropdown-menu .tt-dropdown-menu, #scrollable-dropdown-menu .tt-menu, #scrollable-dropdown-menu .tt-dropdown-menu{max-height: 150px; overflow-y: auto; background-color: #fff;}");
 			}
 
 			$options = json_encode($opt);
