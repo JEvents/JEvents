@@ -446,7 +446,7 @@ if (!empty($this->icalEvents))
 				$ilink = $a->viewDetailLink($a->yup(), $a->mup(), $a->dup(), true, $params->get('default_itemid', 0));
 				$iuri  = Uri::getInstance(Uri::base());
 				$iroot = $iuri->toString(array('scheme', 'host', 'port'));
-				$html .= " URL;VALUE=URI:" . self::wraplines($iroot . Route::_($ilink, true, -1)) . "\r\n";
+				$html .= " URL;VALUE=URI:" . $this->wraplines($iroot . Route::_($ilink, true, -1)) . "\r\n";
 
 
 				if ($a->hasContactInfo())
