@@ -161,7 +161,7 @@ class plgContentJEvents extends CMSPlugin
 
 				// Reset the query using our newly populated query object.
 				$db->setQuery($query);
-				$db->loadObjectList();
+				$db->execute();
 
 				//Quick way to query debug without launching netbeans.
 				//Factory::getApplication()->enqueueMessage($query, 'Error');

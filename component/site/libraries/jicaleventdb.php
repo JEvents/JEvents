@@ -403,7 +403,12 @@ class jIcalEventDB extends jEventCal
 		if (!isset($this->_byday) || $this->_byday === "")
 		{
 			$firstOfMonth = date("Y-m-01", $this->dtstart());
-			$weeknumber = intval(date("W", $this->dtstart())) - intval(date("W", strtotime($firstOfMonth)));
+			$weeknumber = intval(date("W", $this->dtstart())) - intval(date("W", strtotime($firstOfMonth )));
+			// first of the month could be last year and return 52 e.g. 1 jan 2023 is a sunday in week 52 of 2022!!
+			if ($weeknumber < 0)
+			{
+				$weeknumber = intval(date("W", $this->dtstart()));
+			}
 			if ($weeknumber > 0 && $weeknumber <= 6)
 			{
 				$this->_byday = "+" . $weeknumber ."WE";
