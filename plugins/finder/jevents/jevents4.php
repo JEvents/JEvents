@@ -578,4 +578,37 @@ class plgFinderJEvents extends Adapter
 
 	}
 
+
+	/**
+	 * Method to remove outdated index entries
+	 *
+	 * @return  integer
+	 *
+	 * @since   4.2.0
+	 */
+	public function onFinderGarbageCollection()
+	{
+
+		$db = $this->db;
+		$type_id = $this->getTypeId();
+
+		$query = $db->getQuery(true);
+		$subquery = $db->getQuery(true);
+		$subquery->select('CONCAT(' . $db->quote($this->getUrl('', $this->extension, $this->layout)) . ', evdet_id)')
+			->from($db->quoteName($this->table));
+		$query->select($db->quoteName('l.link_id'))
+			->from($db->quoteName('#__finder_links', 'l'))
+			->where($db->quoteName('l.type_id') . ' = ' . $type_id)
+			->where($db->quoteName('l.url') . ' LIKE ' . $db->quote($this->getUrl('%', $this->extension, $this->layout)))
+			->where($db->quoteName('l.url') . ' NOT IN (' . $subquery . ')');
+		$db->setQuery($query);
+		$items = $db->loadColumn();
+
+		foreach ($items as $item) {
+			$this->indexer->remove($item);
+		}
+
+		return count($items);
+	}
+
 }
