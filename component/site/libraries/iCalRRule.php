@@ -189,7 +189,7 @@ class iCalRRule extends Joomla\CMS\Table\Table
 		$this->_repetitions = array();
 		if (!isset($this->eventid))
 		{
-			echo "no eventid set in generateRepetitions<br/>";
+			echo "no eventid set in getRepetitions<br/>";
 
 			return $this->_repetitions;
 		}

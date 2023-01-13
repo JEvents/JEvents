@@ -665,7 +665,7 @@ else $this->_detail = false;
 		$this->_repetitions = array();
 		if (!isset($this->ev_id))
 		{
-			echo "no id set in generateRepetitions<br/>";
+			echo "no id set in getRepetitions<br/>";
 
 			return $this->_repetitions;
 		}

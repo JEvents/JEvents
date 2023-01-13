@@ -227,7 +227,7 @@ class JFormFieldJevcolumns extends JFormFieldText
 		</tr></table>';
 
 		}
-		$input .= '<textarea style="display:block;margin-top:10px;"  name="' . $this->name . '"  id="jevcolumns">' . $invalues . '</textarea>';
+		$input .= '<textarea style="display:none;margin-top:10px;"  name="' . $this->name . '"  id="jevcolumns">' . $invalues . '</textarea>';
 		$input .= '<div style="clear:left"></div>';
 
 		$input .= '<script type="text/javascript">document.addEventListener("DOMContentLoaded", () => {setupColumnChoices(true);setupColumnLis(true);})</script>';
