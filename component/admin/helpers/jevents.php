@@ -485,4 +485,56 @@ STYLE;
 		return $packageversion;
 	}
 
+	/**
+	 * Adds Count Items for Tag Manager.
+	 *
+	 * @param   \stdClass[]  $items      The content objects
+	 * @param   string       $extension  The name of the active view.
+	 *
+	 * @return  void
+	 *
+	 * @since   4.0.0
+	 * @throws  \Exception
+	 */
+	public static function countTagItems(array $items, string $extension)
+	{
+		$db = Factory::getDbo();
+
+		// Allow custom state / condition values and custom column names to support custom components
+		$counter_names =  array(
+			'-2' => 'count_trashed',
+			'0'  => 'count_unpublished',
+			'1'  => 'count_published',
+			'2'  => 'count_archived',
+		);
+
+		// The relation query does not return a value for cases without relations of a particular state / condition, set zero as default
+		foreach ($items as $item) {
+			foreach ($counter_names as $n) {
+				$item->{$n} = 0;
+			}
+		}
+
+		$query = "select evt.state, count(evt.state) FROM #__contentitem_tag_map AS ctm
+		INNER JOIN #__ucm_content as uc on ctm.core_content_id = uc.core_content_id AND uc.core_type_alias = 'com_jevents.eventdetail'
+		INNER JOIN #__jevents_vevdetail AS det ON det.evdet_id = uc.core_content_item_id
+		INNER JOIN #__jevents_vevent AS evt ON evt.detail_id = det.evdet_id
+		GROUP BY evt.state";
+
+		$relationsAll = $db->setQuery($query)->loadObjectList();
+
+		// Loop through the DB data overwriting the above zeros with the found count
+		foreach ($relationsAll as $relation) {
+			// Sanity check in case someone removes the state IN above ... and some views may start throwing warnings
+			if (isset($counter_names[$relation->state])) {
+				$id = (int) $relation->catid;
+				$cn = $counter_names[$relation->state];
+
+				$records[$id]->{$cn} = $relation->count;
+			}
+		}
+
+
+	}
+
 }

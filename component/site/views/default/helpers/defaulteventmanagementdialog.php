@@ -130,16 +130,6 @@ function DefaultEventManagementDialog($view, $row, $mask, $bootstrap = false)
 					</div>
 					<div class="uk-modal-body">
 						<?php
-						if ($publishLink != "")
-						{
-							?>
-							<a href="<?php echo $publishLink; ?>" id="publish_reccur" class="uk-display-block uk-margin-small"
-							   title="<?php echo $publishText; ?>"><?php echo $publishImg; ?><?php echo $publishText; ?></a>
-
-							<?php
-						}
-						?>
-						<?php
 						if ($editRepeatLink != "")
 						{
 							?>
@@ -157,6 +147,18 @@ function DefaultEventManagementDialog($view, $row, $mask, $bootstrap = false)
 
 							<?php
 						}
+						?>
+						<hr>
+						<?php
+						if ($publishLink != "")
+						{
+							?>
+							<a href="<?php echo $publishLink; ?>" id="publish_reccur" class="uk-display-block uk-margin-small"
+							   title="<?php echo $publishText; ?>"><?php echo $publishImg; ?><?php echo $publishText; ?></a>
+
+							<?php
+						}
+
 						if ($deleteRepeatLink != "")
 						{
 							?>
@@ -221,16 +223,6 @@ function DefaultEventManagementDialog($view, $row, $mask, $bootstrap = false)
 					</div>
 					<div class="modal-body">
 						<?php
-						if ($publishLink != "")
-						{
-							?>
-							<a href="<?php echo $publishLink; ?>" id="publish_reccur"
-							   title="<?php echo $publishText; ?>"><?php echo $publishImg; ?><?php echo $publishText; ?></a>
-							<br/>
-							<?php
-						}
-						?>
-						<?php
 						if ($editRepeatLink != "")
 						{
 							?>
@@ -246,6 +238,17 @@ function DefaultEventManagementDialog($view, $row, $mask, $bootstrap = false)
 							   title="edit event"><?php echo $editImg; ?><?php echo Text::_('EDIT_EVENT'); ?></a><br/>
 							<a href="<?php echo $editCopyLink; ?>" id="edit_eventcopy"
 							   title="edit event"><?php echo $editCopyImg; ?><?php echo Text::_('COPY_AND_EDIT_EVENT'); ?></a>
+							<br/>
+							<?php
+						}
+						?>
+						<hr>
+						<?php
+						if ($publishLink != "")
+						{
+							?>
+							<a href="<?php echo $publishLink; ?>" id="publish_reccur"
+							   title="<?php echo $publishText; ?>"><?php echo $publishImg; ?><?php echo $publishText; ?></a>
 							<br/>
 							<?php
 						}

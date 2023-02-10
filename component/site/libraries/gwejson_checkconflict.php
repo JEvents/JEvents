@@ -32,6 +32,7 @@ function ProcessJsonRequest(&$requestObject, $returnData)
 	}
 
 	$returnData->allclear = 1;
+	$returnData->overlappingRepeats = 0;
 
 	ini_set("display_errors", 0);
 
@@ -43,7 +44,7 @@ function ProcessJsonRequest(&$requestObject, $returnData)
 
 	$params = ComponentHelper::getParams("com_jevents");
 
-	if (!$params->get("checkconflicts", 0))
+	if (!$params->get("checkconflicts", 0) && !$params->get("checkoverlappingrepeats", 0))
 		return $returnData;
 
 	// Do we ignore overlaps
@@ -109,6 +110,9 @@ function ProcessJsonRequest(&$requestObject, $returnData)
 	$returnData->overlaps = array();
 	if ($requestObject->pressbutton == "icalrepeat.apply" || $requestObject->pressbutton == "icalrepeat.save")
 	{
+		if (!$params->get("checkconflicts", 0))
+			return $returnData;
+
 		$testrepeat = simulateSaveRepeat($requestObject);
 
 		// now we have out event and its repetitions we now check to see for overlapping events
@@ -118,10 +122,49 @@ function ProcessJsonRequest(&$requestObject, $returnData)
 	{
 		$testevent = simulateSaveEvent($requestObject);
 
+		// Do the repeats overlap each other but not overridden
+		if ($params->get("checkoverlappingrepeats", 0) 	&&
+			(! isset($requestObject->formdata->overlaprepeatoverride) || $requestObject->formdata->overlaprepeatoverride == 0))
+		{
+			$overlaprepeats = false;
+			if (count($testevent->repetitions) > 1)
+			{
+				$oldrep = false;
+				foreach ($testevent->repetitions as $rep)
+				{
+					if (!$oldrep)
+					{
+						$oldrep = $rep;
+						continue;
+					}
+					else
+					{
+						if ($rep->startrepeat < $oldrep->endrepeat && $rep->endrepeat > $oldrep->startrepeat)
+						{
+							$overlaprepeats = true;
+							break;
+						}
+						$oldrep = $rep;
+					}
+				}
+			}
+			if ($overlaprepeats)
+			{
+				$returnData->allclear           = 0;
+				$returnData->overlappingRepeats = 1;
+
+				return $returnData;
+
+			}
+		}
+
+		if (!$params->get("checkconflicts", 0))
+			return $returnData;
+
 		// now we have out event and its repetitions we now check to see for overlapping events
 		$overlaps = checkEventOverlaps($testevent, $returnData, intval($requestObject->formdata->evid), $requestObject);
-	}
 
+	}
 
 	if (count($overlaps) > 0)
 	{
@@ -146,7 +189,6 @@ function ProcessJsonRequest(&$requestObject, $returnData)
 			$returnData->overlaps[]   = $overlap;
 		}
 	}
-
 
 	if ($requestObject->error)
 	{

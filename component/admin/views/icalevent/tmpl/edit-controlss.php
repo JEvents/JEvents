@@ -131,6 +131,19 @@ $action = $app->isClient('administrator') ? "index.php" : Route::_("index.php?op
 				</div>
 				<?php
 			}
+			?>
+			<div id='jevoverlaprepeatwarning'>
+				<div><?php echo Text::_("JEV_CHECK_OVERLAPPING_REPEATS"); ?></div>
+				<div>
+					<strong>
+						<label><?php echo Text::_("JEV_OVERLAPPING_REPEATS_OVERRIDE"); ?>
+							<!-- not checked by default !!! //-->
+							<input type="checkbox" name="overlaprepeatoverride" value="1"/>
+						</label>
+					</strong>
+				</div>
+			</div>
+			<?php
 
 			$native = true;
 			if ($this->row->icsid() > 0)
@@ -263,7 +276,7 @@ $action = $app->isClient('administrator') ? "index.php" : Route::_("index.php?op
 						<?php
 						// Do we have to check for conflicting events i.e. overlapping times etc. BUT ONLY FOR EVENTS INITIALLY
 						$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
-						if (  $params->get("checkconflicts", 0) )
+	                    if (  $params->get("checkconflicts", 0) ||  $params->get("checkoverlappingrepeats", 1) )
 						{
 						$checkURL = Uri::root() . "components/com_jevents/libraries/checkconflict.php";
 						$urlitemid = JEVHelper::getItemid() > 0 ? "&Itemid=" . JEVHelper::getItemid() : "";

@@ -182,20 +182,22 @@ class FlatViewNavTableBarIconic
 			$hiddencat = '<input type="hidden" name="catids" value="' . $view->datamodel->catidsOut . '"/>';
 		}
 
-        $index = Route::_("index.php?option=com_jevents&view=month&layout=calendar&Itemid=$Itemid");
+		$index = Route::_("index.php");
 		?>
-		<div id="jumpto" class="jev_none">
-			<form name="BarNav" action="<?php echo $index; ?>" method="get">
+		<div id="jumpto"  class="jev_none">
+			<form name="BarNav" action="<?php echo $index;?>" method="get">
+				<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT;?>" />
+				<input type="hidden" name="task" value="month.calendar" />
 				<?php
 				echo $hiddencat;
-				/* Day Select */
+				/*Day Select*/
 				// JEventsHTML::buildDaySelect( $this_date->getYear(1), $this_date->getMonth(1), $this_date->getDay(1), ' style="font-size:10px;"' );
-				/* Month Select */
-				JEventsHTML::buildMonthSelect($this_date->getMonth(1), '');
-				/* Year Select */
-				JEventsHTML::buildYearSelect($this_date->getYear(1), '');
-				?>
-				<button onclick="submit(this.form)"><?php echo Text::_('JEV_JUMPTO'); ?></button>
+				/*Month Select*/
+				JEventsHTML::buildMonthSelect( $this_date->getMonth(1), 'style="font-size:10px;"');
+				/*Year Select*/
+				JEventsHTML::buildYearSelect( $this_date->getYear(1), 'style="font-size:10px;"' ); ?>
+				<button onclick="submit(this.form)"><?php echo   Text::_('JEV_JUMPTO');?></button>
+				<input type="hidden" name="Itemid" value="<?php echo $Itemid; ?>" />
 			</form>
 		</div>
 		<?php

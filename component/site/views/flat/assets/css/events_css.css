@@ -400,7 +400,7 @@ table.jev_row {
 }
 
 div.previousmonth {
-    margin-left: 1%;
+    /* margin-left: 1%;*/
 }
 
 #jevents_body #jev_maincal.jev_listview .jev_daysnames {

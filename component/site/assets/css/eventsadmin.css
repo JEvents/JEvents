@@ -248,7 +248,7 @@ div#jevents .adminform .countback {
     margin-top: 10px;
 }
 
-div#jevoverlapwarning {
+div#jevoverlapwarning, div#jevoverlaprepeatwarning {
     border: solid 1px red;
     padding: 5px;
     display: none;
@@ -656,6 +656,12 @@ td.ev_td_right ul.ev_ul {
     z-index: 9999;
     text-align: left;
     height:auto;
+}
+
+.jevbootstrap div.modal.show.hide {
+    visibility: visible;
+    display: block;
+    opacity: 1;
 }
 
 .jevbootstrap .ical_dialogJQ, .jevbootstrap .action_dialogJQ {

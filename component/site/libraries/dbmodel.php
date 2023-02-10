@@ -3754,6 +3754,12 @@ class JEventsDBModel
             $rpids = $db->loadColumn();
             $rpids = is_array($rpids) ? $rpids : array(0);
             $rpids[] = -1;
+	        if ($input->get('task') == 'icals.export')
+	        {
+		        //echo (string) $db->getQuery() . "<br>";
+				//var_dump($rpids);
+		        //exit();
+	        }
 
             $query = substr($query, 0, strpos($query, "WHERE "));
             $query .= "\n WHERE rpt.rp_id IN (" . implode(",", $rpids) . " ) GROUP BY rpt.rp_id";
@@ -3791,6 +3797,13 @@ class JEventsDBModel
 	    else
 	    {
 		    $rows = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag, $count);
+	    }
+
+	    if ($input->get('task') == 'icals.export')
+	    {
+		 //   echo $query . "<br>";
+		//	var_dump($rows);
+		 //   exit();
 	    }
 
 		$app->triggerEvent('onDisplayCustomFieldsMultiRowUncached', array(&$rows));

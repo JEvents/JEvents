@@ -162,7 +162,7 @@ $action = Factory::getApplication()->isClient('administrator') ? "index.php" : "
 				</div>
 			</div>
 
-			<div class="control-group"  >
+			<div class="control-group"   data-showon-gsl='[{"field":"createnewcategories","values":["0"],"sign":"=","op":""}]' >
 				<div class="control-label">
 					<strong><?php echo Text::_("JEV_FALLBACK_CATEGORY"); ?></strong><br>
 					<?php echo Text::_("JEV_FALLBACK_CATEGORY_2"); ?>

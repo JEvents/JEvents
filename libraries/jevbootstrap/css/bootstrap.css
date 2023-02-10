@@ -6183,6 +6183,11 @@
     top: 10%;
 }
 
+#jevents .jevbootstrap div.modal.show.hide {
+    visibility: visible;
+    display: block;
+    opacity: 1;
+}
 #myEditModal.modal.fade.in {
     top: 5%;
 }

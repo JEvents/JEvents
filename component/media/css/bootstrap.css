@@ -5777,6 +5777,12 @@
     display: block;
 }
 
+.jevbootstrap div.modal.show.hide {
+    visibility: visible;
+    display: block;
+    opacity: 1;
+}
+
 .jevbootstrap .invisible {
     visibility: hidden;
 }

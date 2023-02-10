@@ -347,7 +347,11 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			&& $hasLocationOrIsOnline
 		)
 		{
-			$template->value .= "<script type='application/ld+json'>{{Structured Data:LDJSON}}</script>";
+			$template->value .= "<script type='application/ld+json'>{{LDJSON}}</script>";
+			if (isset($template->matchesarray[0]))
+			{
+				$template->matchesarray[0][] = "{{LDJSON}}";
+			}
 		}
 
 		$template_value = $template->value;
@@ -458,6 +462,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				Factory::getDocument()->addScriptDeclaration($templateparams->customjs);
 			}
 		}
+
 
 		// non greedy replacement - because of the ?
 		$template_value = preg_replace_callback('|{{.*?}}|', 'cleanLabels', $template_value . implode("\n", $processedCss));
@@ -1908,7 +1913,6 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					&& $hasLocationOrIsOnline
 				)
 				{
-
 					$lddata = array();
 					$lddata["@context"] = "https://schema.org";
 					$lddata["@type"] =  "Event";
