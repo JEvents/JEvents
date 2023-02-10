@@ -823,14 +823,29 @@ SQL;
 			@$db->execute();
 		}
 
-
 		$sql = "SHOW COLUMNS FROM #__jevents_icsfile";
 		$db->setQuery($sql);
 		$cols = @$db->loadObjectList("Field");
 
+		$sql = "SHOW INDEX FROM #__jevents_icsfile";
+		$db->setQuery($sql);
+		$indexcols = @$db->loadObjectList("Key_name");
+
 		if (array_key_exists("label", $cols) && $cols["label"]->Type == "varchar(30)")
 		{
+
+			if (array_key_exists("label", $indexcols))
+			{
+				$sql = "alter table #__jevents_icsfile drop index label";
+				$db->setQuery($sql);
+				@$db->execute();
+			}
+
 			$sql = "ALTER TABLE #__jevents_icsfile MODIFY COLUMN label VARCHAR(200) NOT NULL default ''";
+			$db->setQuery($sql);
+			@$db->execute();
+
+			$sql = "ALTER TABLE #__jevents_icsfile ADD INDEX label (label (120))";
 			$db->setQuery($sql);
 			@$db->execute();
 		}
@@ -875,11 +890,7 @@ SQL;
 		$db->setQuery($sql);
 		$db->execute();
 
-		$sql = "SHOW INDEX FROM #__jevents_icsfile";
-		$db->setQuery($sql);
-		$cols = @$db->loadObjectList("Key_name");
-
-		if (!array_key_exists("stateidx", $cols))
+		if (!array_key_exists("stateidx", $indexcols))
 		{
 			$sql = "alter table #__jevents_icsfile add index stateidx (state)";
 			$db->setQuery($sql);
@@ -910,7 +921,6 @@ SQL;
 			$db->setQuery($sql);
 			@$db->execute();
 		}
-
 
 		$sql = "SHOW COLUMNS FROM #__jev_defaults";
 		$db->setQuery($sql);

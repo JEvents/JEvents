@@ -451,9 +451,11 @@ Default should be set by the custom field
 			<option value="2">JEV_CHECK_CLASHES_OPTION_ANY</option>
 		</field>
 
-
-		<field name="skipreferrer" type="jevboolean" class="gsl-button-group" default="0" menu="hide"
+		<field name="skipreferrer" type="jevboolean" class="gsl-button-group" default="1" menu="hide"
 		       label="JEV_SKIP_REFERRER_CHECK" description="JEV_SKIP_REFERRER_CHECK_DESC" difficulty="2"/>
+
+		<field name="checkoverlappingrepeats" type="jevboolean" default="1" menu="hide" label="JEV_CHECK_OVERLAPPING_REPEATS_BEFORE_SAVING"
+			   description="JEV_CHECK_OVERLAPPING_REPEATS_BEFORE_SAVING_TIP" difficulty="1" />
 
 		<field name="defaultstarttime" type="jevtext" default="08:00" menu="hide" size="5" label="JEV_DEFAULT_STARTTIME"
 		       description="JEV_DEFAULT_STARTTIME_TIP" difficulty="1"/>

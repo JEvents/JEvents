@@ -47,7 +47,7 @@
     left: 5%;
     max-height: 90%;
     margin: 0px;
-    z-index: 1050;
+    z-index: 99999;
     width: 90%;
     background-color: #ffffff;
     border: 1px solid #999;

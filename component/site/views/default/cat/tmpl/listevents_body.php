@@ -3,6 +3,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
 $cfg        = JEVConfig::getInstance();
 $data       = $this->datamodel->getCatData($this->catids, $cfg->get('com_showrepeats', 0), $this->limit, $this->limitstart);
@@ -17,7 +18,7 @@ $this->viewNavCatText($this->catids, JEV_COM_COMPONENT, 'cat.listevents', $this-
 
 if (\Joomla\String\StringHelper::strlen($data['catdesc']) > 0)
 {
-	echo "<div class='jev_catdesc'>" . $data['catdesc'] . "</div>";
+	echo "<div class='jev_catdesc'>" . HTMLHelper::_('content.prepare', $data ['catdesc']) . "</div>";
 }
 ?>
 	<table align="center" width="90%" cellspacing="0" cellpadding="5" class="ev_table">

@@ -1165,13 +1165,25 @@ function checkConflict(checkurl, pressbutton, jsontoken, client, repeatid,  redi
 			}
 		}
 		else {
+			//console.log(json);
 			if (json.allclear){
 				jevjq('#jevoverlapwarning').css("display",'none');
+				jevjq('#jevoverlaprepeatwarning').css("display",'none');
 				if (doRedirect) submit2(pressbutton);
 				else hasConflicts = false;
 			}
+			else if (json.overlappingRepeats) {
+				jevjq('#jevoverlapwarning').css("display",'none');
+				jevjq('#jevoverlaprepeatwarning').css("display",'block');
+				hasConflicts = true;
+				// Make sure the message is visible
+				//jQuery("#jevoverlapwarning").get(0).scrollIntoView();
+				//jQuery('html, body').animate({	scrollTop: jQuery("#jevoverlapwarning").offset().top	}, 200);
+				jQuery('html, body').animate({	scrollTop: jQuery("#jevents").offset().top-80	}, 200);
+			}
 			else {
 				jevjq('#jevoverlapwarning').css("display",'block');
+				jevjq('#jevoverlaprepeatwarning').css("display",'none');
 				var container = jevjq('#jevoverlaps');
 				container.html("");
 				jevjq(json.overlaps).each (function(index, overlap){
