@@ -131,7 +131,13 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 			ob_start();
 			parent::display($tpl);
 			$html = ob_get_clean();
+
 			// Convert what we can of Bootstrap to uikit using regexp
+			// Clumsy!!
+			if ($params->get('framework', 'bootstrap') == 'uikit3')
+			{
+				$html = str_replace('class="icon-print"', ' data-uk-icon="print" class="uk-icon" ', $html);
+			}
 			echo $html;
 			echo LayoutHelper::render('gslframework.footer');
 		}

@@ -14,6 +14,7 @@ defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Uri\Uri;
 
 jimport('joomla.application.component.controller');
 
@@ -73,6 +74,20 @@ class ListController extends Joomla\CMS\MVC\Controller\BaseController
 
 		// Set the layout
 		$this->view->setLayout('events');
+
+		if ($params->get("csvexport", 0))
+		{
+			$input = Factory::getApplication()->input;
+
+			$limit = $input->getInt("limit", 0);
+			$limitstart = 0;
+			if ( $limit < 1000)
+			{
+				$uri = Uri::getInstance();
+				$uri->setVar("limit", 99999);
+				$limit = 99999;
+			}
+		}
 
 		$this->view->Itemid     = $Itemid;
 		$this->view->limitstart = $limitstart;

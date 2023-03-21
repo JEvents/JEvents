@@ -92,7 +92,7 @@ class JFormFieldJeveditionrequiredfields extends JFormFieldList
 		if (!empty($optionsGroup))
 		{
 			$size = ($size < 10) ? $size : 10;
-			$attr = array('list.attr'   => 'multiple="true"' . 'size="' . $size . '"',
+			$attr = array('list.attr'   => 'multiple="true" class="gsl-select" size="' . $size . '"',
 			              'list.select' => $this->value, 'id' => $this->id);
 
 			$input = HTMLHelper::_('select.groupedlist', $optionsGroup, $this->name, $attr);

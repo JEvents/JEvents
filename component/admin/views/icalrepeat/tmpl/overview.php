@@ -101,7 +101,7 @@ $data['options'] = array_merge($customOptions, $data['options']);
 					$k = 1 - $k;
 				} ?>
 				<tr>
-					<th align="center" colspan="3" style="text-align:center;"><?php echo $this->pagination->getListFooter(); ?></th>
+					<th align="center" colspan="3" style="text-align:center;"><?php echo $this->pagination->getPaginationLinks('joomla.pagination.links', array('showLimitBox' => true, 'showPagesLinks'=> true, 'showLimitStart' => true)); ?></th>
 				</tr>
 			</table>
 			<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>

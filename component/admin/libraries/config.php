@@ -26,12 +26,13 @@ if (!defined("JEVCONFIG"))
 	{
 
 		// 1.6 mod
-		static function &getInstance($inifile = '')
+		static function & getInstance($inifile = '')
 		{
 
 			$params = ComponentHelper::getParams("com_jevents");
 
 			return $params;
 		}
+
 	}
 }

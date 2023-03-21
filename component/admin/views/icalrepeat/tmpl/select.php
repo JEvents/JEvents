@@ -75,7 +75,7 @@ $function = $input->getCmd('function', 'jSelectEvent');
 		}
 		?>
 		<tr>
-			<th align="center" colspan="9"><?php echo $this->pagination->getListFooter(); ?></th>
+			<th align="center" colspan="9"><?php echo $this->pagination->getPaginationLinks('joomla.pagination.links', array('showLimitBox' => true, 'showPagesLinks'=> true, 'showLimitStart' => true)); ?></th>
 		</tr>
 	</table>
 	<?php echo HTMLHelper::_('form.token'); ?>

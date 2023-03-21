@@ -9,7 +9,7 @@ function DefaultPaginationSearchForm($total, $limitstart, $limit)
 	?>
 	<div class="jev_pagination">
 		<?php
-		echo $pageNav->getListFooter();
+		echo $pageNav->getPaginationLinks('joomla.pagination.links', array('showLimitBox' => true, 'showPagesLinks'=> true, 'showLimitStart' => true));
 		?>
 	</div>
 	<?php

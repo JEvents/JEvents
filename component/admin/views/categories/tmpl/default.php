@@ -139,7 +139,7 @@ echo LayoutHelper::render('gslframework.header', null, JPATH_ADMINISTRATOR. "/co
 				<tfoot>
 					<tr>
 						<td colspan="<?php echo $columns; ?>">
-							<?php echo $this->pagination->getListFooter(); ?>
+							<?php echo $this->pagination->getPaginationLinks('joomla.pagination.links', array('showLimitBox' => true, 'showPagesLinks'=> true, 'showLimitStart' => true)); ?>
 						</td>
 					</tr>
 				</tfoot>

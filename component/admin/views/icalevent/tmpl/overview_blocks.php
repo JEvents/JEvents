@@ -214,7 +214,7 @@ $data['filters'] = $this->filters;
                     if (count($this->rows) === 0) {
                         echo '<div class="gsl-width-1-1">' . Text::_("JEV_NO_EVENTS_FOUND") . '</div>';
                     } ?>
-	                <div class="gsl-width-1-1" style="text-align:center"><?php echo $this->pagination->getListFooter();?></div>
+	                <div class="gsl-width-1-1" style="text-align:center"><?php echo $this->pagination->getPaginationLinks('joomla.pagination.links', array('showLimitBox' => true, 'showPagesLinks'=> true, 'showLimitStart' => true));?></div>
                 </div>
                 <input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>
                 <input type="hidden" name="task" value="icalevent.list"/>
