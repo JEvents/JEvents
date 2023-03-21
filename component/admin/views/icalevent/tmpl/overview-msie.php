@@ -195,7 +195,7 @@ $fullspan = 12;
 			}
 			?>
             <tr>
-                <th align="center" colspan="10"><?php echo $this->pagination->getListFooter(); ?></th>
+                <th align="center" colspan="10"><?php echo $this->pagination->getPaginationLinks('joomla.pagination.links', array('showLimitBox' => true, 'showPagesLinks'=> true, 'showLimitStart' => true)); ?></th>
             </tr>
         </table>
         <input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>" />

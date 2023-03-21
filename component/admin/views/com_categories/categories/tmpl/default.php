@@ -40,12 +40,27 @@ if ($jversion->isCompatible('4.0'))
 	}
 	Factory::getApplication()->getDocument()->addStyleDeclaration($style);
 
-
+	ob_start();
 	include(JPATH_COMPONENT_ADMINISTRATOR . "/tmpl/categories/default.php");
+	$output = ob_get_clean();
+
+	$output = str_replace("btn ", "gsl-button gsl-button-small ", $output);
+	$output = str_replace("btns ", " ", $output);
+	$output = str_replace(array('btn-success','badge-danger', 'btn-dark', 'btn-secondary'), array('gsl-button-primary', 'gsl-button-danger', 'gsl-button-secondary', 'gsl-button-default'), $output);
+	$output = str_replace(array("option=com_jevents", "filter[category_id]", "filter[published]", "filter[level]"), array("option=com_jevents&task=icalevent.list", "filter[catid]", "filter[state]", "filter[showpast]"), $output);
+	echo $output;
 }
 else
 {
+	ob_start();
 	include(JPATH_COMPONENT_ADMINISTRATOR . "/views/categories/tmpl/default.php");
+	$output = ob_get_clean();
+
+	$output = str_replace("badge ", "gsl-button gsl-button-small ", $output);
+	$output = str_replace("btns ", " ", $output);
+	$output = str_replace(array('badge-success','badge-important', 'badge-info', 'badge-inverse'), array('gsl-button-primary', 'gsl-button-secondary', 'gsl-button-danger', 'gsl-button-danger'), $output);
+	$output = str_replace(array("filter[category_id]", "filter[published]", "filter[level]"), array("filter[catid]", "filter[state]", "filter[showpast]"), $output);
+	echo $output;
 }
 
 echo LayoutHelper::render('gslframework.footer', null, JPATH_ADMINISTRATOR. "/components/com_jevents/layouts" );

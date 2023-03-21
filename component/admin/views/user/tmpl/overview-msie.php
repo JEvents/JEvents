@@ -91,7 +91,7 @@ $fullspan = 12;
                 <tfoot>
                 <tr>
                     <td colspan="16">
-						<?php echo $this->pagination->getListFooter(); ?>
+						<?php echo $this->pagination->getPaginationLinks('joomla.pagination.links', array('showLimitBox' => true, 'showPagesLinks'=> true, 'showLimitStart' => true)); ?>
                     </td>
                 </tr>
                 </tfoot>

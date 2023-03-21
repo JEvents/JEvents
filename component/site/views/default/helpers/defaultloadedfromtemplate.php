@@ -1231,8 +1231,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$rawreplace["{{ENDDATE}}"]      = $row->getUnixEndDate();
 						$rawreplace["{{STARTTIME}}"]    = $row->alldayevent() ? "" : $row->getUnixStartTime();
 						$rawreplace["{{ENDTIME}}"]      = ($row->noendtime() || $row->alldayevent()) ? "" : $row->getUnixEndTime();
-						$rawreplace["{{STARTTZ}}"]      = $row->yup() . "-" . $row->mup() . "-" . $row->dup() . " " . $row->hup() . ":" . $row->minup() . ":" . $row->sup();
-						$rawreplace["{{ENDTZ}}"]        = $row->ydn() . "-" . $row->mdn() . "-" . $row->ddn() . " " . $row->hdn() . ":" . $row->mindn() . ":" . $row->sdn();
+						$rawreplace["{{STARTTZ}}"]      = $row->alldayevent() ? "" : $row->yup() . "-" . $row->mup() . "-" . $row->dup() . " " . $row->hup() . ":" . $row->minup() . ":" . $row->sup();
+						$rawreplace["{{ENDTZ}}"]        = ($row->noendtime() || $row->alldayevent()) ? "" : $row->ydn() . "-" . $row->mdn() . "-" . $row->ddn() . " " . $row->hdn() . ":" . $row->mindn() . ":" . $row->sdn();
 						$rawreplace["{{MULTIENDDATE}}"] = $row->endDate() > $row->startDate() ? $row->getUnixEndDate() : "";
 
 						if (StringHelper::strpos($template_value, "{{ISOSTART}}") !== false || StringHelper::strpos($template_value, "{{ISOEND}}") !== false)
@@ -1285,8 +1285,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$rawreplace["{{ENDDATE}}"]      = $row->getUnixEndDate();
 						$rawreplace["{{STARTTIME}}"]    = $row->alldayevent() ? "" : $row->getUnixStartTime();
 						$rawreplace["{{ENDTIME}}"]      = ($row->noendtime() || $row->alldayevent()) ? "" : $row->getUnixEndTime();
-						$rawreplace["{{STARTTZ}}"]      = $row->yup() . "-" . $row->mup() . "-" . $row->dup() . " " . $row->hup() . ":" . $row->minup() . ":" . $row->sup();
-						$rawreplace["{{ENDTZ}}"]        = $row->ydn() . "-" . $row->mdn() . "-" . $row->ddn() . " " . $row->hdn() . ":" . $row->mindn() . ":" . $row->sdn();
+						$rawreplace["{{STARTTZ}}"]      = $row->alldayevent() ? "" : $row->yup() . "-" . $row->mup() . "-" . $row->dup() . " " . $row->hup() . ":" . $row->minup() . ":" . $row->sup();
+						$rawreplace["{{ENDTZ}}"]        = ($row->noendtime() || $row->alldayevent()) ? "" : $row->ydn() . "-" . $row->mdn() . "-" . $row->ddn() . " " . $row->hdn() . ":" . $row->mindn() . ":" . $row->sdn();
 						$rawreplace["{{MULTIENDDATE}}"] = $row->endDate() > $row->startDate() ? $row->getUnixEndDate() : "";
 
 						if (StringHelper::strpos($template_value, "{{ISOSTART}}") !== false || StringHelper::strpos($template_value, "{{ISOEND}}") !== false)

@@ -52,7 +52,8 @@ function DefaultPaginationForm($total, $limitstart, $limit, $keyword = "")
 			if ($task !== "crawler.listevents")
 			{
 				echo '<label class="sr-only" for="limit">' . Text::_("JEV_PAGINATION_LIMIT_LBL") . '</label>';
-				echo $pageNav->getListFooter();
+
+				echo $pageNav->getPaginationLinks('joomla.pagination.links', array('showLimitBox' => true, 'showPagesLinks'=> true, 'showLimitStart' => true));
 			}
 			else
 			{

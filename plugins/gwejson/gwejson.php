@@ -10,6 +10,9 @@
 defined('JPATH_BASE') or die;
 
 use Joomla\CMS\Factory;
+use Joomla\Filesystem\Folder;
+use Joomla\CMS\Filter\InputFilter;
+
 /*
   if (defined('_SC_START')){
   list ($usec, $sec) = explode(" ", microtime());
@@ -281,17 +284,34 @@ class PlgSystemGwejson extends JPlugin
 		exit();
 	}
 
-	/*
+
 	// Mechanism to inject theme specific config options into module and menu item config
 	// Problem is that the fields are not dynamically loaded when you change the theme
 	public function onContentPrepareForm($form, $data)
 	{
-		if ($form->name === "com_modules.module" && isset($data->module) && $data->module === "mod_jevents_latest")
+		if ($form->getName() === "com_modules.module" && isset($data->module) && $data->module === "mod_jevents_latest")
 		{
 
 		}
+		else if ($form->getName() === "com_menus.item" && isset($data->link) && strpos($data->link, "com_jevents&") > 0)
+		{
+			if (Factory::getApplication()->isClient('administrator'))
+			{
+				$menuConfigFiles = Folder::files(JPATH_SITE . "/components/com_jevents/views/", 'menuconfig.xml', true, true);
+
+				foreach ($menuConfigFiles as $menuConfigFile)
+				{
+					$theme = basename(dirname($menuConfigFile));
+					$langfile   = 'files_jevents' . str_replace('files_', '', strtolower(InputFilter::getInstance()->clean((string) $theme, 'cmd')))."layout";
+					$lang       = Factory::getLanguage();
+					$lang->load($langfile, JPATH_SITE, null, false, true);
+
+					$form->loadFile($menuConfigFile, false);
+				}
+			}
+		}
 	}
-	*/
+
 
 	public
 	function onAfterRender()

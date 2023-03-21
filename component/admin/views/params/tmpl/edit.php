@@ -18,6 +18,7 @@ use Joomla\CMS\Form\Form;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\String\StringHelper;
 use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Application\CMSApplication;
 
 // We need to get the params first
 
@@ -253,18 +254,27 @@ if (count($jevplugins))
 						json_encode(FormHelper::parseShowOnConditions($field->showon, $field->formControl, $field->group)) . '\'';
 				}
 				$html[] = "<div $class " . $showon . " >";
-				if (strtolower($field->type) == "note" || strtolower($field->type) == "jevinfo")
-                {
-	                $html[] = '<div class="gsl-width-1-1" >' . $field->label . "<div>" . $field->input . '<br></div></div>';
-                }
-				else if (!isset($field->label) || $field->label == "")
+				try
 				{
-					$html[] = '<div class="gsl-width-1-2"><span class="editlinktip">' . $field->label . '</span></div>';
-					$html[] = '<div class="gsl-width-1-2">' . $field->input . '</div>';
+					if (strtolower($field->type) == "note" || strtolower($field->type) == "jevinfo")
+	                {
+		                $html[] = '<div class="gsl-width-1-1" >' . $field->label . "<div>" . $field->input . '<br></div></div>';
+	                }
+					else if (!isset($field->label) || $field->label == "")
+					{
+						$html[] = '<div class="gsl-width-1-2"><span class="editlinktip">' . $field->label . '</span></div>'
+						. '<div class="gsl-width-1-2">' . $field->input . '</div>';
+					}
+					else
+					{
+						$html[] = '<div class="gsl-width-1-1" >' . $field->input . '</div>';
+					}
 				}
-				else
+				catch (Throwable $throwable)
 				{
-					$html[] = '<div class="gsl-width-1-1" >' . $field->input . '</div>';
+					$html[] = '<div class="gsl-width-1-1" >HERE IS THE PROBLEM</div>';
+
+					Factory::getApplication()->enqueueMessage("Problem With Configuration Of " . $field->fieldname . "<br>" . $throwable->getMessage(), CMSApplication::MSG_ERROR);
 				}
 				$label = $field->label;
 
@@ -644,7 +654,15 @@ SCRIPT;
 
 								$hasconfig = true;
 
-								$renderField = $field->renderField();
+								try
+								{
+									$renderField = $field->renderField();
+								}
+								catch (Throwable $throwable)
+								{
+									$renderField = $throwable->getMessage();
+
+								}
 
 								$renderField = str_replace('class="control-group"', 'class="gsl-grid"', $renderField);
 								$renderField = str_replace('class="control-label"', 'class="gsl-width-1-3"', $renderField);

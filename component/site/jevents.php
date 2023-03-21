@@ -126,6 +126,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 	$newparams->set('com_cache', 0);
 }
 
+// Menu item specific parameters
+$newParamsArray = $newparams->toArray();
+$keys = array_keys($newParamsArray);
+$mispecifics = preg_grep("/^mispecific_/", $keys);
+
+if ($mispecifics)
+{
+	foreach ($mispecifics as $mispecific)
+	{
+		$pattern = str_replace("mispecific_", "", $mispecific);
+		$mispecifics2 = preg_grep("/^mi" . $pattern . "_/", $keys);
+		if ($mispecifics2)
+		{
+			foreach ($mispecifics2 as $mispecific2)
+			{
+				$key = str_replace("mi" . $pattern . "_", "", $mispecific2);
+				$newparams->set($key, $newparams->get($mispecific2));
+			}
+		}
+	}
+}
 
 $params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 $component         = ComponentHelper::getComponent(JEV_COM_COMPONENT);

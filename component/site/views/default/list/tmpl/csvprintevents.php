@@ -3,21 +3,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Component\ComponentHelper;
 
-$input = Factory::getApplication()->input;
-
-if ($input->getInt("limit", 0) < 1000)
-{
-	$uri = Uri::getInstance();
-	$uri->setVar("limit", 99999);
-	global $mainframe;
-	$url = $uri->toString();
-	Factory::getApplication()->redirect($url);
-	//echo $url;
-	exit();
-}
 ob_end_clean();
 
 $data = $this->data;

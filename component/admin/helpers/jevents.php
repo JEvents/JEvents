@@ -173,7 +173,87 @@ class JEventsHelper
 			}
 		}
 
-		return;
+		$db = Factory::getDbo();
+
+		// Allow custom state / condition values and custom column names to support custom components
+		$counter_names = array(
+			'-1' => 'count_trashed',
+			'0'  => 'count_unpublished',
+			'1'  => 'count_published'
+		);
+
+		// Index category objects by their ID
+		$records = array();
+
+		foreach ($items as $item)
+		{
+			$records[(int) $item->id] = $item;
+		}
+
+		// The relation query does not return a value for cases without relations of a particular state / condition, set zero as default
+		foreach ($items as $item)
+		{
+			foreach ($counter_names as $n)
+			{
+				$item->{$n} = 0;
+			}
+		}
+
+		/**
+		 * Get relation counts for all category objects with single query
+		 * NOTE: 'state IN', allows counting specific states / conditions only, also prevents warnings with custom states / conditions, do not remove
+		 */
+
+		$params = ComponentHelper::getParams('com_jevents');
+		if ($params->get("multicategory", 0))
+		{
+			// Table alias for related data table below will be 'c', and state / condition column is inside related data table
+			$recid_col = $db->quoteName('map.catid');
+			$state_col = $db->quoteName('evt.state');
+
+			$query = $db->getQuery(true)
+				->from($db->quoteName('#__jevents_catmap', 'map'));
+
+			$query
+				->select($recid_col . ' AS catid, ' .  $state_col . ' AS state, COUNT(distinct map.evid) AS count')
+				->leftJoin($db->quoteName('#__jevents_vevent', 'evt') . ' ON evt.ev_id = map.evid')
+				->where($recid_col . ' IN (' . implode(',', array_keys($records)) . ')')
+				->where($state_col . ' IN (' . implode(',', array_keys($counter_names)) . ')')
+				->group( $recid_col . ', ' . $state_col);
+		}
+		else
+		{
+			// Table alias for related data table below will be 'c', and state / condition column is inside related data table
+			$recid_col = $db->quoteName('c.catid');
+			$state_col = $db->quoteName('c.state');
+
+			$query = $db->getQuery(true)
+				->from($db->quoteName('#__jevents_vevent', 'c'));
+
+			$query
+				->select($recid_col . ' AS catid, ' . $state_col . ' AS state, COUNT(distinct c.ev_id) AS count')
+				->where($recid_col . ' IN (' . implode(',', array_keys($records)) . ')')
+				->where($state_col . ' IN (' . implode(',', array_keys($counter_names)) . ')')
+				->group($recid_col . ', ' . $state_col);
+		}
+
+		$relationsAll = $db->setQuery($query)->loadObjectList();
+
+		// Loop through the DB data overwriting the above zeros with the found count
+		foreach ($relationsAll as $relation)
+		{
+			// Sanity check in case someone removes the state IN above ... and some views may start throwing warnings
+			if (isset($counter_names[$relation->state]))
+			{
+				$id = (int) $relation->catid;
+				$cn = $counter_names[$relation->state];
+
+				$records[$id]->{$cn} = $relation->count;
+			}
+		}
+
+		return $items;
+
 	}
 
 	/**

@@ -170,7 +170,7 @@ $fullspan = 12;
 			}
 			?>
             <tr>
-                <th align="center" colspan="10"><?php echo $this->pagination->getListFooter(); ?></th>
+                <th align="center" colspan="10"><?php echo $this->pagination->getPaginationLinks('joomla.pagination.links', array('showLimitBox' => true, 'showPagesLinks'=> true, 'showLimitStart' => true)); ?></th>
             </tr>
         </table>
 		<?php echo HTMLHelper::_('form.token'); ?>

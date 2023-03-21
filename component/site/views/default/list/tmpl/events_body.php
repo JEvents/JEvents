@@ -95,18 +95,20 @@ foreach ($infields as $infield)
 
 				if (!$closed)
 				{
-					$template .= "</td>";
+					$template .= "<span></span></td>";
 					$closed = true;
 				}
+
+				$title = htmlspecialchars($titles[$i]);
 
 				if ($col === 'COLOUR')
 				{
 					$bgStyle  = "style='background-color:{{xx:$col}}'";
-					$template .= "<td class='eventlist_col' $bgStyle> ";
+					$template .= '<td class="eventlist_col" data-label="' . $title . '" $bgStyle>';
 				}
 				else
 				{
-					$template .= "<td class='eventlist_col' $bgStyle>{{xx:$col}}";
+					$template .= '<td class="eventlist_col" data-label="' . $title . '"  ' . $bgStyle . ">{{xx:$col}}";
 				}
 				$closed = false;
 
@@ -114,7 +116,7 @@ foreach ($infields as $infield)
 			}
 			if (!$closed)
 			{
-				$template .= "</td>";
+				$template .= "<span></span></td>";
 			}
 
 			$template .= "</tr>";
@@ -143,12 +145,12 @@ foreach ($infields as $infield)
 	</div>
 </form>
 <script>
-	(function ($) {
-		if ($("table.eventlist th").length > 1) {
-			$("table.eventlist").resizableColumns(
-				{store: window.store}
-			);
-		}
-	})(jevjq);
+    (function ($) {
+        if ($("table.eventlist th").length > 1) {
+            $("table.eventlist").resizableColumns(
+                {store: window.store}
+            );
+        }
+    })(jevjq);
 </script>
 
