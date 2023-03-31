@@ -239,7 +239,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 				?>
 
                 Joomla.submitbutton = function (pressbutton) {
-                    if (pressbutton.substr(0, 6) == 'cancel' || !(pressbutton == 'icalevent.save' || pressbutton == 'icalrepeat.save' || pressbutton == 'icalevent.savenew' || pressbutton == 'icalrepeat.savenew' || pressbutton == 'icalevent.apply' || pressbutton == 'icalrepeat.apply')) {
+                    if (pressbutton.substr(0, 6) == 'cancel' || !(pressbutton == 'icalevent.save' || pressbutton == 'icalrepeat.save' || pressbutton == 'icalevent.savenew' || pressbutton == 'icalevent.savecopy' || pressbutton == 'icalrepeat.savenew' || pressbutton == 'icalevent.apply' || pressbutton == 'icalrepeat.apply')) {
                         if (document.adminForm['catid']) {
                             // restore catid to input value
                             document.adminForm['catid'].value = 0;

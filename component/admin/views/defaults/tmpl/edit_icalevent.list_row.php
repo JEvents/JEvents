@@ -87,6 +87,7 @@ defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_ICAL_SAVE",t
 defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_GOOGLE_SAVE",true);?>", "ICALGOOGLE");
 defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_MSOUTLOOK_SAVE",true);?>", "ICALOUTLOOK");
 defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_OUTLOOKLIVE_SAVE",true);?>", "ICALOUTLOOKLIVE");
+//defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_TZID",true);?>", "TZID");
 
 <?php
 // get list of enabled plugins

@@ -104,7 +104,7 @@ foreach ($infields as $infield)
 				if ($col === 'COLOUR')
 				{
 					$bgStyle  = "style='background-color:{{xx:$col}}'";
-					$template .= '<td class="eventlist_col" data-label="' . $title . '" $bgStyle>';
+					$template .= '<td class="eventlist_col" data-label="' . $title . '" ' . $bgStyle . '>';
 				}
 				else
 				{

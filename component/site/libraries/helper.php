@@ -1694,7 +1694,7 @@ class JEVHelper
 			if ($user->id == 0 && count($allowedcats) == 0)
 			{
 				$jevtask = $input->getString("task");
-				// This allows savenew through too!
+				// This allows savenew and savecopy through too!
 				if (strpos($jevtask, "icalevent.save") !== false || strpos($jevtask, "icalevent.apply") !== false)
 				{
 					$input->set("task", "icalevent.edit");
@@ -4452,7 +4452,7 @@ SCRIPT;
 							foreach ($sub_row as $key2 => $sub_sub_row)
 							{
 								//3 Deep row check
-								if (!is_array($sub_row))
+								if (!is_array($sub_sub_row))
 								{
 									$array[$key][$key1][$key2] = $filter->clean($sub_sub_row, 'HTML');
 								}
@@ -4461,7 +4461,7 @@ SCRIPT;
 									foreach ($sub_sub_row as $key3 => $sub_sub_sub_row)
 									{
 										//4 Deep row check
-										if (!is_array($sub_row))
+										if (!is_array($sub_sub_sub_row))
 										{
 											$array[$key][$key1][$key2][$key3] = $filter->clean($sub_sub_sub_row, 'HTML');
 										}

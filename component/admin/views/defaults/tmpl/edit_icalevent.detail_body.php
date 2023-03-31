@@ -89,6 +89,7 @@ $lang->load("mod_jevents_detail", JPATH_SITE);
         defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_MSOUTLOOK_SAVE",true);?>", "ICALOUTLOOK");
         defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_OUTLOOKLIVE_SAVE",true);?>", "ICALOUTLOOKLIVE");
 		//defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_JOOMLA_TAG",true);?>", "JOOMLATAGS");
+        //defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_TZID",true);?>", "TZID");
 
 <?php
 // get list of enabled plugins

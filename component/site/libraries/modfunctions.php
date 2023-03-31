@@ -202,7 +202,7 @@ function findAppropriateMenuID(&$catidsOut, &$modcatids, &$catidList, $modparams
 	$catidList = implode(",", $modcatids);
 	$catidsOut = str_replace("|", $separator, $catidsOut);
 
-	if ($myItemid == 0)
+	if ($myItemid == 0 && isset($modparams->target_itemid) && $modparams->target_itemid !== "")
 	{
 		// User has specified a non JEvents menu so catid filters won't work
 		$myItemid = intval($modparams->target_itemid);

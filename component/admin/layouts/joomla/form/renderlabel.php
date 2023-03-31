@@ -29,10 +29,11 @@ $title = '';
 
 if (!empty($description))
 {
+
+	JLoader::register('JevModal', JPATH_LIBRARIES."/jevents/jevmodal/jevmodal.php");
 	if ($text && $text !== $description)
 	{
 	//	JHtml::_('bootstrap.popover');
-        JLoader::register('JevModal',JPATH_LIBRARIES."/jevents/jevmodal/jevmodal.php");
 		JevModal::popover('.hasYsPopover', array("trigger" => "hover focus", "placement" => "top", "container" => "#jevents_body, body", "delay" => array("show" => 150, "hide" => 150)));
 
 		$classes[] = 'hasYsPopover';
