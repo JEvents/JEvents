@@ -4258,7 +4258,7 @@ SCRIPT;
 		{
 			$dom = new DOMDocument();
 			// see http://php.net/manual/en/domdocument.savehtml.php cathexis dot de ¶
-			$dom->loadHTML('<html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></head><body>' . $description . '</body>');
+			@$dom->loadHTML('<html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></head><body>' . $description . '</body>');
 
 			$links = $dom->getElementsByTagName('a');
 			foreach ($links as $link)

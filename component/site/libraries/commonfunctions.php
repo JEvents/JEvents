@@ -270,7 +270,7 @@ class JEV_CommonFunctions
 	 *
 	 * @return string formated string
 	 */
-	public static function jev_strftime($format = '', $timestamp = null)
+	public static function jev_strftime($format = '', $timestamp = null, $timezone = false, $datetime = false)
 	{
 
 		if (!$timestamp) $timestamp = time();
@@ -284,6 +284,15 @@ class JEV_CommonFunctions
 			$format = str_replace('%b', JEVHelper::getShortMonthName(date('n', $timestamp)), $format);
 		if (strpos($format, '%B') !== false)
 			$format = str_replace('%B', JEVHelper::getMonthName(date('n', $timestamp)), $format);
+		if (strpos($format, '%Z') !== false && $timezone)
+		{
+			$format = str_replace('%Z', $timezone->getName(), $format);
+		}
+		if (strpos($format, '%z') !== false && $timezone && $datetime)
+		{
+			$offset = $timezone->getOffset($datetime);
+			$format = str_replace('%z', $offset/3600 , $format);
+		}
 
 		if (IS_WIN)
 		{

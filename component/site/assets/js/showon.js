@@ -192,7 +192,8 @@ Joomla = window.Joomla || {};
                     linkedoptions($target);
 
                     // Attach events to referenced element, to check condition on change
-                    $fields.on('change', function() {
+                    // input event see https://w3c.github.io/uievents/#event-type-input
+                    $fields.on('change input', function() {
                         linkedoptions($target, true);
                     });
                 })();

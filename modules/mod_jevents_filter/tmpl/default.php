@@ -120,7 +120,6 @@ if ($params->get("customcss", false))
 if ($params->get("bootstrapchosen", 1) == 1)
 {
 	// Load Bootstrap
-	JevHtmlBootstrap::framework();
 	HTMLHelper::_('formbehavior.chosen', '.jevfiltermodule select');
 	require(ModuleHelper::getLayoutPath('mod_jevents_filter', 'default_chosenlayout'));
 }

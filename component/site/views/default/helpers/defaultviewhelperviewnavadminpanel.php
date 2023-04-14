@@ -43,11 +43,11 @@ function DefaultViewHelperViewNavAdminPanel($view)
 		{
 			if ($cfg->get("bootstrapchosen", 1))
 			{
-				// Load Bootstrap
-				JevHtmlBootstrap::framework();
 				$jversion = new Joomla\CMS\Version;
 				if (!$jversion->isCompatible('4.0'))
 				{
+					// Load Bootstrap
+					JevHtmlBootstrap::framework();
 					HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
 				}
 			}

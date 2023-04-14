@@ -132,8 +132,6 @@ $action = Factory::getApplication()->isClient('administrator') ? "index.php" : U
 	</div>
 <?php
 /*
-// Load Bootstrap
-JevHtmlBootstrap::framework();
 
 //HTMLHelper::_('behavior.formvalidation');
 $params = ComponentHelper::getParams(JEV_COM_COMPONENT);

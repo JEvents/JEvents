@@ -468,7 +468,8 @@ class SaveIcalEvent
 				$weekdays     = ArrayHelper::getValue($array, "weekdays", array());
 				$weeknums     = ArrayHelper::getValue($array, "weeknums", array());
 				$byday        = "";
-				if (count($weeknums) == 0)
+
+				if (count($weeknums) == 0 || ($freq !== "MONTHLY" && $freq !== "YEARLY"))
 				{
 					// special case for weekly repeats which don't specify week of a month
 					foreach ($weekdays as $wd)

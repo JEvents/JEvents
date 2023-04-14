@@ -87,6 +87,7 @@ class JFormFieldJevcolumns extends JFormFieldText
 		$collist[] = array(Text::_("JEV_FIELD_COLOUR", true), "COLOUR");
 		$collist[] = array(Text::_("JEV_FIELD_CALENDAR", true), "CALENDAR");
 		$collist[] = array(Text::_("JEV_FIELD_CREATIONDATE", true), "CREATED");
+		$collist[] = array(Text::_("JEV_FIELD_LINK_RAW", true), "LINK");
 		$collist[] = array(Text::_("JEV_FIELD_LINKSTART", true), "LINKSTART");
 		$collist[] = array(Text::_("JEV_FIELD_LINKEND", true), "LINKEND");
 		$collist[] = array(Text::_("JEV_FIELD_URL", true), "URL");

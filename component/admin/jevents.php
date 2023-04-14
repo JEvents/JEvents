@@ -68,7 +68,7 @@ HTMLHelper::_('behavior.core', true);
 HTMLHelper::_('jquery.framework');
 // AIM TO REMOVE THIS - loading of MooTools should not be necessary !!!
 // HTMLHelper::_('behavior.framework', true);
-JevHtmlBootstrap::framework();
+
 JEVHelper::script("jQnc.js", "components/com_jevents/assets/js/");
 
 

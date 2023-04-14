@@ -83,11 +83,16 @@ document.addEventListener('DOMContentLoaded', function () {
     var tips = document.querySelectorAll('.hasjevtip');
     tips.forEach(function (el)
     {
-        var dataAttr = el.getAttribute('data-content');
-        var dataTitleAttr = el.getAttribute('data-bs-original-title');
-        if (dataAttr)
+        var dataTitleAttr = el.getAttribute('data-title') || el.getAttribute('data-original-title') || el.getAttribute('title');
+        var dataContentAttr = el.getAttribute('data-content') || el.getAttribute('data-original-content');
+        if (dataTitleAttr)
         {
-            el.setAttribute('data-bs-original-title', (dataTitleAttr ? dataTitleAttr : '' ) + dataAttr);
+            el.setAttribute('data-bs-original-title', dataTitleAttr);
         }
+        if (dataContentAttr)
+        {
+            el.setAttribute('data-bs-original-content', dataContentAttr);
+        }
+
     })
 });

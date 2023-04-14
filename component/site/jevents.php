@@ -68,7 +68,10 @@ $newparams = Factory::getApplication('site')->getParams();
 
 if (strpos($params->get('framework', 'bootstrap'), 'bootstrap') === 0 || $params->get('framework', 'bootstrap') == 'native')
 {
-	JevHtmlBootstrap::framework();
+	if (version_compare(JVERSION, '4.0', 'lt'))
+	{
+		JevHtmlBootstrap::framework();
+	}
 	JevHtmlBootstrap::loadCss();
 	HTMLHelper::stylesheet('media/system/css/joomla-fontawesome.min.css');
 }

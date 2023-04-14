@@ -43,7 +43,7 @@ $cfg   = JEVConfig::getInstance();
 $assoc = false && Associations::isEnabled() && Factory::getApplication()->isClient('administrator');
 
 // Load Bootstrap
-JevHtmlBootstrap::framework();
+
 HTMLHelper::_('behavior.keepalive');
 //HTMLHelper::_('behavior.calendar');
 //HTMLHelper::_('behavior.formvalidation');

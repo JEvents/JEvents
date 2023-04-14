@@ -38,9 +38,6 @@ if (!empty($this->editor)) {
 	// $app->getDocument()->addScriptOptions('xtd-articles', array('editor' => $this->editor));
 }
 
-
-// Load Bootstrap
-JevHtmlBootstrap::framework();
 HTMLHelper::_('behavior.keepalive');
 
 // Do not load bootstrap
