@@ -6,8 +6,6 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 
-JevHtmlBootstrap::framework();
-
 JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
 
 HTMLHelper::stylesheet("com_jevents/bootstrap.css", array(), array());
@@ -104,7 +102,7 @@ foreach ($infields as $infield)
 				if ($col === 'COLOUR')
 				{
 					$bgStyle  = "style='background-color:{{xx:$col}}'";
-					$template .= '<td class="eventlist_col" data-label="' . $title . '" $bgStyle>';
+					$template .= '<td class="eventlist_col" data-label="' . $title . '" ' . $bgStyle . '>';
 				}
 				else
 				{

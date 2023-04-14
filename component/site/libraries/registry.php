@@ -19,6 +19,9 @@ if (!defined("JEVREGISTRY"))
 	class JevRegistry extends \Joomla\Registry\Registry
 	{
 
+		protected $jevregistry;
+		protected $jevDefaultNameSpace = 'default';
+
         static function &getInstance($id, $namespace = 'default')
 		{
 
@@ -84,7 +87,7 @@ if (!defined("JEVREGISTRY"))
 
 			if ($count < 2)
 			{
-				$namespace = $this->_defaultNameSpace;
+				$namespace = $this->jevDefaultNameSpace;
 			}
 			else
 			{
@@ -92,12 +95,12 @@ if (!defined("JEVREGISTRY"))
 				$count--;
 			}
 
-			if (!isset($this->_registry[$namespace]))
+			if (!isset($this->jevregistry[$namespace]))
 			{
 				$this->makeNameSpace($namespace);
 			}
 
-			$ns = &$this->_registry[$namespace]['data'];
+			$ns = &$this->jevregistry[$namespace]['data'];
 
 			$pathNodes = $count - 1;
 
@@ -136,7 +139,7 @@ if (!defined("JEVREGISTRY"))
 				$count = count($nodes);
 				if ($count < 2)
 				{
-					$namespace = $this->_defaultNameSpace;
+					$namespace = $this->jevDefaultNameSpace;
 					$nodes[1]  = $nodes[0];
 				}
 				else
@@ -144,9 +147,9 @@ if (!defined("JEVREGISTRY"))
 					$namespace = $nodes[0];
 				}
 
-				if (isset($this->_registry[$namespace]))
+				if (isset($this->jevregistry[$namespace]))
 				{
-					$ns        = &$this->_registry[$namespace]['data'];
+					$ns        = &$this->jevregistry[$namespace]['data'];
 					$pathNodes = $count - 1;
 
 					//for ($i = 0; $i < $pathNodes; $i ++) {
@@ -174,7 +177,7 @@ if (!defined("JEVREGISTRY"))
 		function makeNameSpace($namespace)
 		{
 
-			$this->_registry[$namespace] = array('data' => new stdClass());
+			$this->jevregistry[$namespace] = array('data' => new stdClass());
 
 			return true;
 		}

@@ -2593,9 +2593,9 @@ function jevSpecialDateFormatting($matches)
 			$indate->setTimezone($outputtz);
 			$offset2 = $indate->getOffset();
 
-			$indate = $indate->getTimestamp() + $offset2 - $offset1;
+			$inTimeStamp = $indate->getTimestamp() + $offset2 - $offset1;
 
-			return JEV_CommonFunctions::jev_strftime($fmt, intval($indate));
+			return JEV_CommonFunctions::jev_strftime($fmt, intval($inTimeStamp), $outputtz, $indate);
 		}
 		else
 		{

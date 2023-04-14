@@ -31,7 +31,12 @@ SCRIPT;
 jimport('joomla.filesystem.file');
 
 $isCodeMirror = false;
-if ($this->item->name == "month.calendar_cell" || $this->item->name == "month.calendar_tip" || $this->item->name == "icalevent.edit_page"  || $this->item->name == "icalevent.list_block3"  || $this->item->name == "icalevent.list_block4")
+if ($this->item->name == "month.calendar_cell"
+	|| $this->item->name == "month.calendar_tip"
+	|| $this->item->name == "icalevent.edit_page"
+	|| $this->item->name == "icalevent.list_block3"
+	|| $this->item->name == "icalevent.list_block4"
+	|| $this->item->name == "icalevent.list_row")
 {
 	$editor = Editor::getInstance("none");
 }

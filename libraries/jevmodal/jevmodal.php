@@ -1,4 +1,4 @@
-<?php
+\<?php
 /**
  *
  * @copyright   Copyright (C) 2015 - JEVENTS_COPYRIGHT GWE Systems Ltd. All rights reserved.
@@ -314,12 +314,30 @@ function jevPopover(selector, container) {
 			if ('$toolTipType' != "uikit"  || typeof UIkit == 'undefined' ) {
 			// Do not use this for YooTheme Pro templates otherwise you get strange behaviour!
 				if (jQuery(selector).popover )
-				{			
+				{	
+					// set data-title and data-content if not set or empty		
+					var hoveritems = document.querySelectorAll(selector);
+					hoveritems.forEach(function (hoveritem) {
+						var title = hoveritem.getAttribute('data-original-title') || hoveritem.getAttribute('title')  || '';
+						var body = hoveritem.getAttribute('data-original-content') || hoveritem.getAttribute('data-content') || '';
+						if (body == '')
+						{
+							hoveritem.setAttribute('data-original-content', 'hello kitty!');
+							hoveritem.setAttribute('data-content', 'hello kitty!');
+						}
+					});
 					jQuery(selector).popover(bsoptions);
 				}
 				else 
 				{
-					alert('problem with popovers!');
+					if ('$toolTipType' != "uikit")
+					{
+						alert("problem with popovers!  Failed to load Bootstrap popovers");
+					}
+					else 
+					{
+						alert("problem with popovers! Failed to load UIkit popovers");
+					}
 				}
 			}
 			else 

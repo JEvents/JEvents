@@ -727,6 +727,17 @@ SQL;
 
 	}
 
+	function savecopy($key = null, $urlVar = null)
+	{
+		$app   = Factory::getApplication();
+		$input = $app->input;
+		$input->set("old_evid", $input->getInt("evid", 0));
+		$input->set("evid", 0);
+		$input->set("rp_id", 0);
+		$input->set("uid", md5(uniqid(rand(), true)));
+		$this->save($key, $urlVar);
+	}
+
 	function save($key = null, $urlVar = null)
 	{
 

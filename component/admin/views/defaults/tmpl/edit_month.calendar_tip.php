@@ -51,6 +51,7 @@ defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_COLOUR",true
 defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_OPAQUE_COLOUR",true);?>", "RGBA");
 defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_CALENDAR",true);?>", "CALENDAR");
 defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_CREATIONDATE",true);?>", "CREATED");
+defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_LINK_RAW", true);?>", "LINK");
 defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_LINKSTART",true);?>", "LINKSTART");
 defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_LINKEND",true);?>", "LINKEND");
 defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_URL",true);?>", "URL");

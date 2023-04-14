@@ -34,7 +34,15 @@ class PlgActionlogJEvents extends \Joomla\CMS\Plugin\CMSPlugin
 		{
 			$dataModel  = new JEventsDataModel("JEventsAdminDBModel");
 			$queryModel = new JEventsDBModel($dataModel);
-			$events[]      = $queryModel->getEventById($id, 1, "icaldb");
+			$event      = $queryModel->getEventById($id, 1, "icaldb");
+			if ($event)
+			{
+				$events[] = $queryModel->getEventById($id, 1, "icaldb");
+			}
+		}
+		if (count($events) == 0)
+		{
+			return;
 		}
 
 		if ((int) $state === 1)

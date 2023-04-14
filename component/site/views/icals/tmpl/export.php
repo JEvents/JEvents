@@ -337,7 +337,11 @@ if (!empty($this->icalEvents))
 			else if ($a->_freq == "WEEKLY")
 			{
 				if ($a->_byday != "")
+				{
+					// must remove an extraneuous +/- and numbers
+					$a->_byday = str_replace(array("+", "-", "0", "1", "2", "3", "4", "5", "6"), "", $a->_byday);
 					$html .= ';BYDAY=' . $a->_byday;
+				}
 			}
 			else if ($a->_freq == "MONTHLY")
 			{
