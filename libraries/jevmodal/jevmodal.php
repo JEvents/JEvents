@@ -1,4 +1,4 @@
-\<?php
+<?php
 /**
  *
  * @copyright   Copyright (C) 2015 - JEVENTS_COPYRIGHT GWE Systems Ltd. All rights reserved.
