@@ -322,8 +322,8 @@ function jevPopover(selector, container) {
 						var body = hoveritem.getAttribute('data-original-content') || hoveritem.getAttribute('data-content') || '';
 						if (body == '')
 						{
-							hoveritem.setAttribute('data-original-content', 'hello kitty!');
-							hoveritem.setAttribute('data-content', 'hello kitty!');
+							//hoveritem.setAttribute('data-original-content', 'hello kitty!');
+							//hoveritem.setAttribute('data-content', 'hello kitty!');
 						}
 					});
 					jQuery(selector).popover(bsoptions);
