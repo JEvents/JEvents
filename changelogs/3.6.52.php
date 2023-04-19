@@ -9,3 +9,5 @@ $changelog[$extension][$version]["bugfixes"]        = array();
 
 
 $changelog[$extension][$version]["bugfixes"][]      = "Fix for import ical from URL in frontend in Joomla 4.x";
+$changelog[$extension][$version]["bugfixes"][]      = "remove stray tooptip diagnostic message for Joomla 3 sites using custom tooltips";
+
