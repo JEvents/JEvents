@@ -43,7 +43,7 @@ $action = Factory::getApplication()->isClient('administrator') ? "index.php" : U
 			</script>
 
 			<form name="ical" method="post" accept-charset="UTF-8" enctype="multipart/form-data"
-			      onsubmit="return submitbutton()" class="adminform">
+			      onsubmit="return submitbutton()" class="adminform"  id="adminForm">
 
 				<div>
 					<strong><?php echo Text::_("JEV_FROM_FILE"); ?></strong><br/>
