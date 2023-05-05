@@ -46,6 +46,14 @@
 						description="JEV_FILTER_ALWAYS_GO_TO_TARGET_MENU_ITEM_DESC"/>
 
 				<field
+						name="autosubmitonchange"
+						type="jevboolean" class="btn-group"
+						default="0"
+						label="MOD_JEV_FILTER_AUTO_SUMBIT_ON_FILTER_VALUE_CHANGE"
+						description="MOD_JEV_FILTER_AUTO_SUMBIT_ON_FILTER_VALUE_CHANGE_DESC"/>
+
+
+				<field
 						name="resetfilters"
 						type="list"
 						default="none"

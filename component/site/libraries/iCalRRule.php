@@ -952,7 +952,7 @@ class iCalRRule extends Joomla\CMS\Table\Table
 		}
 
 		// if we are saving a set of irregular repeats initially they have the same time so the duplicatecheck fails
-		// so spoof this for repeat sother than the first
+		// so spoof this for repeat other than the first
 		if (in_array($repeat, $this->_repetitions))
 		{
 			static $duplicates = 1;

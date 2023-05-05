@@ -14,7 +14,7 @@ $this->queryModel = new JEventsDBModel($this->dataModel);
 
 Factory::getDocument()->addStyleDeclaration("#main {min-height:auto;}");
 
-$action = Factory::getApplication()->isClient('administrator') ? "index.php" : Uri::root() . "index.php?option=" . JEV_COM_COMPONENT . "&Itemid=" . JEVHelper::getItemid();
+$action = Factory::getApplication()->isClient('administrator') ? "index.php?option=" . JEV_COM_COMPONENT . "&task=icals.importdata" : Uri::root() . "index.php?option=" . JEV_COM_COMPONENT . "&task=icals.importdata&Itemid=" . JEVHelper::getItemid();
 
 ?>
 	<div id="jevents">
@@ -42,7 +42,7 @@ $action = Factory::getApplication()->isClient('administrator') ? "index.php" : U
                 }
 			</script>
 
-			<form name="ical" method="post" accept-charset="UTF-8" enctype="multipart/form-data"
+			<form name="ical" method="post" accept-charset="UTF-8" enctype="multipart/form-data" action="<?php echo $action;?>"
 			      onsubmit="return submitbutton()" class="adminform"  id="adminForm">
 
 				<div>

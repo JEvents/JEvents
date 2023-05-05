@@ -478,12 +478,15 @@ class SaveIcalEvent
 						$byday .= $weekdayReverseMap[$wd];
 					}
 				}
-				foreach ($weeknums as $week)
+				if ($freq !== "WEEKLY")
 				{
-					foreach ($weekdays as $wd)
+					foreach ($weeknums as $week)
 					{
-						if (StringHelper::strlen($byday) > 0) $byday .= ",";
-						$byday .= $bd_direction . $week . $weekdayReverseMap[$wd];
+						foreach ($weekdays as $wd)
+						{
+							if (StringHelper::strlen($byday) > 0) $byday .= ",";
+							$byday .= $bd_direction . $week . $weekdayReverseMap[$wd];
+						}
 					}
 				}
 				$rrule["BYDAY"] = $byday;
