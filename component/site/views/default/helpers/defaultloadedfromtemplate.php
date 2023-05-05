@@ -1078,6 +1078,17 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				$replace[] = $created->toFormat(Text::_("DATE_FORMAT_CREATED"));
 				$blank[]   = "";
 				break;
+			case "{{MODIFIED}}":
+				$jtz        = $jevparams->get("icaltimezonelive", "");
+				if ($jtz == "")
+				{
+					$jtz = null;
+				}
+				$modified   = JevDate::getDate($event->modified(), $jtz);
+				$search[]  = "{{MODIFIED}}";
+				$replace[] = $modified->toFormat(Text::_("DATE_FORMAT_CREATED"));
+				$blank[]   = "";
+				break;
 			case "{{ICALSAVE}}":
 				$search[] = "{{ICALSAVE}}";
 				$replace[] = $event->vCalExportLink(false, true);

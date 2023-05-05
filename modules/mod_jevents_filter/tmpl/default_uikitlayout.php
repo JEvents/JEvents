@@ -31,6 +31,9 @@ if (count($filterHTML) > 0)
 		// This forces category settings in URL to reset too since they could be set by SEF
 		$script = "try {JeventsFilters.filters.push({id:'catidsfv',value:0});} catch (e) {}\n";
 
+		$autoSubmitFilter = (int) $params->get("autosubmitonchange", 0);
+		$script .= "var autoSubmitFilter = $autoSubmitFilter;\n";
+
 		$document = Factory::getDocument();
 		$document->addScriptDeclaration($script);
 		$style = <<<STYLE

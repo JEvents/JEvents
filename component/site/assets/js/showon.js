@@ -179,13 +179,13 @@ Joomla = window.Joomla || {};
             for (var is = 0, ls = $showonFields.length; is < ls; is++) {
                 // Use anonymous function to capture arguments
                 (function() {
-                    var $target = $($showonFields[is]), jsondata = $target.data('showon-gsl') || [],
-                        field, $fields = $();
+                    var $target = $($showonFields[is]), $jsondata = $target.data('showon-gsl') || [],
+                        $field, $fields = $();
 
                     // Collect an all referenced elements
-                    for (var ij = 0, lj = jsondata.length; ij < lj; ij++) {
-                        field   = jsondata[ij]['field'];
-                        $fields = $fields.add($('[name="' + field + '"], [name="' + field + '[]"]'));
+                    for (var ij = 0, lj = $jsondata.length; ij < lj; ij++) {
+                        $field   = $jsondata[ij]['field'];
+                        $fields = $fields.add($('[name="' + $field + '"], [name="' + $field + '[]"]'));
                     }
 
                     // Check current condition for element
@@ -193,10 +193,73 @@ Joomla = window.Joomla || {};
 
                     // Attach events to referenced element, to check condition on change
                     // input event see https://w3c.github.io/uievents/#event-type-input
-                    $fields.on('change input', function() {
+                    // we don't use 'input' as a trigger here since it fires too many events when editing the event title
+                    $fields.on('change ', function() {
                         linkedoptions($target, true);
                     });
                 })();
+
+                // Setup each 'showon' field onkeypress to mimic onchange
+                if (document.querySelectorAll) {
+                    let showonFields = container.querySelectorAll('[data-showon-gsl]');
+
+                    let target = showonFields[is];
+                    let jsondata = JSON.parse(target.getAttribute('data-showon-gsl')) || [],
+                        fields = [];
+
+                    if (typeof jsondata['AND'] !== 'undefined') {
+                        jsondata = jsondata['AND'];
+                    } else if (typeof jsondata['OR'] !== 'undefined') {
+                        jsondata = jsondata['OR'];
+                    } else {
+                        jsondata = jsondata;
+                    }
+
+                    // Collect an all referenced elements
+                    for (let ij = 0; ij < jsondata.length; ij++) {
+                        let field = jsondata[ij]['field'];
+                        let namefields = document.getElementById('jevents').querySelectorAll('[name="' + field + '"], [name="' + field + '[]"]');
+                        for (let nf = 0; nf < namefields.length; nf++) {
+                            fields.push(namefields[nf]);
+                        }
+                    }
+
+                    for (let f = 0; f < fields.length; f++) {
+                        let type = fields[f].getAttribute('type');
+                        if (type == 'text' || type == 'radio' || type == 'checkbox') {
+                            if (fields[f].value.length > 0) {
+                                fields[f].setAttribute('data-keyuplistener', 1);
+                            }
+                            fields[f].addEventListener('keyup', function (event) {
+                                let keyuplistener = this.getAttribute('data-keyuplistener') || -1;
+
+                                if (keyuplistener > 0 && this.value.length == 0) {
+                                    keyuplistener = -1;
+                                }
+                                if (keyuplistener == 0 && this.value.length > 0) {
+                                    keyuplistener = -1;
+                                }
+                                if (keyuplistener > -1) {
+                                    return;
+                                }
+
+                                this.setAttribute('data-keyuplistener', this.value.length);
+
+                                // Can't use new Event() because of MSIE :(
+                                // Create the event.
+                                let changeEvent = document.createEvent('Event');
+
+                                // Define that the event name is 'build'.
+                                changeEvent.initEvent('change', false, false);
+
+                                // target can be any Element or other EventTarget.
+                                this.dispatchEvent(changeEvent);
+
+                            });
+                        }
+                    }
+                }
+
             }
         }
 

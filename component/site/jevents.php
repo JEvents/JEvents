@@ -140,7 +140,8 @@ if ($mispecifics)
 	{
 		$pattern = str_replace("mispecific_", "", $mispecific);
 		$mispecifics2 = preg_grep("/^mi" . $pattern . "_/", $keys);
-		if ($mispecifics2)
+		// If this group of menu item specific parameters are enabled then use them
+		if ($mispecifics2 && $newparams->get($mispecific, 0))
 		{
 			foreach ($mispecifics2 as $mispecific2)
 			{
