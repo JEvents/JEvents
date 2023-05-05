@@ -315,6 +315,17 @@ function editicalGslStyling(container) {
 window.addEventListener('load', function() {
 	if (document.querySelectorAll) {
 
+		// repeatable fields
+		let repeatables = document.getElementById('jevents').querySelectorAll('div.subform-repeatable');
+		for (let r = 0; r < repeatables.length; r++)
+		{
+			jQuery(repeatables[r]).on('subform-row-add', function (event) {
+				editicalGslStyling(repeatables[r]);
+			});
+		}
+
+		// Moved to showon code itself!
+		/*
 		let showonFields = document.getElementById('jevents').querySelectorAll('[data-showon-gsl]');
 
 		// Setup each 'showon' field onkeypress to mimic onchange
@@ -375,16 +386,7 @@ window.addEventListener('load', function() {
 				}
 			}
 		}
-
-		// repeatable fields
-		let repeatables = document.getElementById('jevents').querySelectorAll('div.subform-repeatable');
-		for (let r = 0; r < repeatables.length; r++)
-		{
-			jQuery(repeatables[r]).on('subform-row-add', function (event) {
-				editicalGslStyling(repeatables[r]);
-			});
-		}
-
+		*/
 	}
 });
 
