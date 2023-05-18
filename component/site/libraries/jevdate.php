@@ -289,8 +289,10 @@ if (!defined("JEVDATE"))
 			return $return;
 		}
 
-		public static function rawStrftime($format, $timestamp = 'time()')
+		public static function rawStrftime($format, $timestamp = false)
 		{
+
+			$timestamp = $timestamp ?  $timestamp : time();
 
 			include_once JPATH_ADMINISTRATOR . "/components/com_jevents/libraries/strftime.php";
 
