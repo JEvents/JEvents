@@ -273,9 +273,35 @@ if (!defined("JEVDATE"))
 				date_default_timezone_set($date->mytz->getName());
 			}
 
-			$return = strftime($format, $timestamp);
+			include_once JPATH_ADMINISTRATOR . "/components/com_jevents/libraries/strftime.php";
+
+			try {
+				$return = PHP81_BC\strftime($format, $timestamp);
+			}
+			catch (Throwable $e)
+			{
+				$x = 1;
+				$return = PHP81_BC\strftime($format, $timestamp);
+			}
 
 			date_default_timezone_set($oldtz);
+
+			return $return;
+		}
+
+		public static function rawStrftime($format, $timestamp = 'time()')
+		{
+
+			include_once JPATH_ADMINISTRATOR . "/components/com_jevents/libraries/strftime.php";
+
+			try {
+				$return = PHP81_BC\strftime($format, $timestamp);
+			}
+			catch (Throwable $e)
+			{
+				$x = 1;
+				$return = PHP81_BC\strftime($format, $timestamp);
+			}
 
 			return $return;
 		}

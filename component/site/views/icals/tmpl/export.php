@@ -226,10 +226,10 @@ if (!empty($this->icalEvents))
 			}
 
 			// Do not use JevDate version since this sets timezone to config value!
-			$start = strftime($startformat, $start);
-			$end   = strftime($endformat, $end);
+			$start = JevDate::rawStrftime($startformat, $start);
+			$end   = JevDate::rawStrftime($endformat, $end);
 
-			$stamptime = strftime("%Y%m%dT%H%M%SZ", time());
+			$stamptime = JevDate::rawStrftime("%Y%m%dT%H%M%SZ", time());
 
 			// Change back
 			date_default_timezone_set($current_timezone);
@@ -314,14 +314,14 @@ if (!empty($this->icalEvents))
 			{
 				// Do not use JevDate version since this sets timezone to config value!
 				// GOOGLE HAS A PROBLEM WITH 235959!!!
-				//$html .= ';UNTIL=' . strftime("%Y%m%dT235959Z", $a->_until);
+				//$html .= ';UNTIL=' . JevDate::rawStrftime("%Y%m%dT235959Z", $a->_until);
 				if ($a->alldayevent())
 				{
-					$html .= ';UNTIL=' . strftime("%Y%m%dT000000Z", $a->_until );
+					$html .= ';UNTIL=' . JevDate::rawStrftime("%Y%m%dT000000Z", $a->_until );
 				}
 				else
 				{
-					$html .= ';UNTIL=' . strftime("%Y%m%dT000000Z", $a->_until + 86400);
+					$html .= ';UNTIL=' . JevDate::rawStrftime("%Y%m%dT000000Z", $a->_until + 86400);
 				}
 			}
 			else if ($a->_count != "")
@@ -389,7 +389,7 @@ if (!empty($this->icalEvents))
 							date_default_timezone_set("UTC");
 
 							// Do not use JevDate version since this sets timezone to config value!
-							$deletes[] = strftime("%Y%m%dT%H%M%SZ", $exceptiondate);
+							$deletes[] = JevDate::rawStrftime("%Y%m%dT%H%M%SZ", $exceptiondate);
 
 							// Change back
 							date_default_timezone_set($current_timezone);
@@ -476,9 +476,9 @@ if (!empty($this->icalEvents))
 					date_default_timezone_set("UTC");
 
 					// Do not use JevDate version since this sets timezone to config value!
-					$chstart       = strftime("%Y%m%dT%H%M%SZ", $chstart);
-					$chend         = strftime("%Y%m%dT%H%M%SZ", $chend);
-					$originalstart = strftime("%Y%m%dT%H%M%SZ", $originalstart);
+					$chstart       = JevDate::rawStrftime("%Y%m%dT%H%M%SZ", $chstart);
+					$chend         = JevDate::rawStrftime("%Y%m%dT%H%M%SZ", $chend);
+					$originalstart = JevDate::rawStrftime("%Y%m%dT%H%M%SZ", $originalstart);
 					// Change back
 					date_default_timezone_set($current_timezone);
 				}

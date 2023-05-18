@@ -69,7 +69,7 @@ class JFormFieldJevcustomlayout extends JFormFieldList
 					data-bs-content="Custom Format String customised by you">Current Value</a></li>
 					</ul>
 				</div>
-				DROPDOWN;
+DROPDOWN;
         } else {
             $html .= <<<DROPDOWN
 				<div class="dropdown btn-group" id="$id">
@@ -84,7 +84,7 @@ class JFormFieldJevcustomlayout extends JFormFieldList
 					data-content="Custom Format String customised by you">Current Value</a></li>
 					</ul>
 				</div>
-				DROPDOWN;
+DROPDOWN;
         }
 
 		return $html;

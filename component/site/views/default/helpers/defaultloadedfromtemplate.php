@@ -1077,6 +1077,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				$search[]  = "{{CREATED}}";
 				$replace[] = $created->toFormat(Text::_("DATE_FORMAT_CREATED"));
 				$blank[]   = "";
+				$rawreplace["{{CREATED}}"]    = $created->toUnix();
+
 				break;
 			case "{{MODIFIED}}":
 				$jtz        = $jevparams->get("icaltimezonelive", "");
@@ -1088,6 +1090,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				$search[]  = "{{MODIFIED}}";
 				$replace[] = $modified->toFormat(Text::_("DATE_FORMAT_CREATED"));
 				$blank[]   = "";
+				$rawreplace["{{MODIFIED}}"]      = $modified->toUnix();
+
 				break;
 			case "{{ICALSAVE}}":
 				$search[] = "{{ICALSAVE}}";
@@ -2266,7 +2270,18 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	// Date/time formats etc.
 	for ($s = 0; $s < count($search); $s++)
 	{
-		if (StringHelper::strpos($search[$s], "STARTDATE") > 0 || StringHelper::strpos($search[$s], "STARTTIME") > 0 || StringHelper::strpos($search[$s], "ENDDATE") > 0 || StringHelper::strpos($search[$s], "ENDTIME") > 0 || StringHelper::strpos($search[$s], "ENDTZ") > 0 || StringHelper::strpos($search[$s], "STARTTZ") > 0 || StringHelper::strpos($search[$s], "MULTIENDDATE") > 0 || StringHelper::strpos($search[$s], "FIRSTREPEATSTART") > 0 || StringHelper::strpos($search[$s], "LASTREPEATEND") > 0)
+		if (StringHelper::strpos($search[$s], "STARTDATE") > 0
+			|| StringHelper::strpos($search[$s], "STARTTIME") > 0
+			|| StringHelper::strpos($search[$s], "ENDDATE") > 0
+			|| StringHelper::strpos($search[$s], "ENDTIME") > 0
+			|| StringHelper::strpos($search[$s], "ENDTZ") > 0
+			|| StringHelper::strpos($search[$s], "STARTTZ") > 0
+			|| StringHelper::strpos($search[$s], "MULTIENDDATE") > 0
+			|| StringHelper::strpos($search[$s], "FIRSTREPEATSTART") > 0
+			|| StringHelper::strpos($search[$s], "LASTREPEATEND") > 0
+			|| StringHelper::strpos($search[$s], "CREATED") > 0
+			|| StringHelper::strpos($search[$s], "MODIFIED") > 0
+		)
 		{
 			global $tempreplace, $tempevent, $tempsearch, $tempblank;
 			$tempreplace = !empty($rawreplace[$search[$s]]) ? $rawreplace[$search[$s]] : $blank[$s];
@@ -2536,7 +2551,7 @@ function jevSpecialDateFormatting($matches)
 					$fmt = sprintf($fmtparts[1], $fmtparts[0]);
 				}
 			}
-			//return strftime($fmt, strtotime(strip_tags($tempreplace)));
+			//return JevDate::rawStrftime($fmt, strtotime(strip_tags($tempreplace)));
 			if (!is_int($tempreplace))
 			{
 				$tempreplace = strtotime(strip_tags($tempreplace));
@@ -2639,7 +2654,7 @@ function jevSpecialHandling2($matches)
 			{
 				return sprintf($parts[0], $tempreplace);
 			}
-			catch (Exception $e)
+			catch (throwable $e)
 			{
 				return "Invalid format string in custom layout <br>" . $matches[1] . "<br>Please report to site manager.";
 			}

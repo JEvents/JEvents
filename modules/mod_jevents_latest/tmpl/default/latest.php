@@ -740,7 +740,7 @@ $t_datenowSQL = $t_datenow->toMysql();
 				{
 					if ($debugLatest)
 					{
-						echo "checking for events on " . strftime("%Y-%m-%d",$date) . "<Br>";
+						echo "checking for events on " . JevDate::rawStrftime("%Y-%m-%d",$date) . "<Br>";
 					}
 
 					// get the events for this $date
@@ -839,9 +839,9 @@ $t_datenowSQL = $t_datenow->toMysql();
 					}
 
 					// Attempt to handle Brazil timezone changes which happen at midnight - go figure !!!
-					list($yy, $mm, $dd) = explode("-", strftime("%Y-%m-%d", $date));
+					list($yy, $mm, $dd) = explode("-", JevDate::rawStrftime("%Y-%m-%d", $date));
 					$date = JevDate::mktime(0, 0, 0, $mm, $dd + 1, $yy);
-					//echo strftime("%Y-%m-%d %H:%M<br/>", $date);
+					//echo JevDate::rawStrftime("%Y-%m-%d %H:%M<br/>", $date);
 					$i++;
 				}
 			}

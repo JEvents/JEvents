@@ -970,8 +970,8 @@ class JEventsDBModel
 
 		if (strpos($startdate, "-") === false || is_numeric($startdate))
 		{
-			$startdate = strftime('%Y-%m-%d 00:00:00', $startdate);
-			$enddate   = strftime('%Y-%m-%d 23:59:59', $enddate);
+			$startdate = JevDate::rawStrftime('%Y-%m-%d 00:00:00', $startdate);
+			$enddate   = JevDate::rawStrftime('%Y-%m-%d 23:59:59', $enddate);
 		}
 
 		// Use alternative data source
