@@ -218,7 +218,10 @@ Joomla = window.Joomla || {};
                     // Collect an all referenced elements
                     for (let ij = 0; ij < jsondata.length; ij++) {
                         let field = jsondata[ij]['field'];
-                        let namefields = document.getElementById('jevents').querySelectorAll('[name="' + field + '"], [name="' + field + '[]"]');
+                        let namefields = document.querySelectorAll(
+                            '#jevents [name="' + field + '"], #jevents [name="' + field + '[]"], ' +
+                            '.jevlocations #config [name="' + field + '"], .jevlocations #config [name="' + field + '[]"]'
+                        );
                         for (let nf = 0; nf < namefields.length; nf++) {
                             fields.push(namefields[nf]);
                         }
