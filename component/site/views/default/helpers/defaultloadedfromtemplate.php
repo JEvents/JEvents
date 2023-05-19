@@ -971,6 +971,10 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			case "{{ICALBUTTON}}":
 			case "{{EDITDIALOG}}":
 			case "{{EDITBUTTON}}":
+				if ($input->getInt('pop', 0) && $input->getInt('print', 0))
+					{
+						break;
+					}
 				// no need to repeat this for each of the matching 'case's
 				if (!in_array("{{EDITBUTTON}}", $search, false))
 				{

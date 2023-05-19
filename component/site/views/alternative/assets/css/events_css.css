@@ -690,7 +690,7 @@ div.jevtt_text {
     list-style-type: none;
     list-style-image: none;
     width: auto !important;
-
+    z-index : 999;
 }
 
 #jevents_header ul.actions li {
