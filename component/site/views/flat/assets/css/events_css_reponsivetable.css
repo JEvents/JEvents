@@ -738,7 +738,8 @@ span.hasjevtip {
     margin:5px 5px 2px 2px!important;
     list-style-type: none;
     list-style-image: none;
-    width:auto!important;	
+    width:auto!important;
+    z-index : 999;
 }
 #jevents_header ul.actions li {
     line-height:14px!important;	
