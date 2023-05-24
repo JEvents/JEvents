@@ -36,7 +36,7 @@ use InvalidArgumentException;
  */
 function strftime (string $format, $timestamp = null, ?string $locale = null) : string {
 	if (!($timestamp instanceof DateTimeInterface)) {
-		$timestamp = is_int($timestamp) ? '@' . $timestamp : (string) $timestamp;
+		$timestamp = is_numeric($timestamp) ? '@' . $timestamp : (string) $timestamp;
 
 		try {
 			$timestamp = new DateTime($timestamp);
