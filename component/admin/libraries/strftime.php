@@ -35,6 +35,10 @@ use InvalidArgumentException;
  * @author BohwaZ <https://bohwaz.net/>
  */
 function strftime (string $format, $timestamp = null, ?string $locale = null) : string {
+	if (version_compare(PHP_VERSION, "8.1", "lt"))
+	{
+		return @\strftime($format, $timestamp);
+	}
 	if (!($timestamp instanceof DateTimeInterface)) {
 		$timestamp = is_numeric($timestamp) ? '@' . $timestamp : (string) $timestamp;
 
