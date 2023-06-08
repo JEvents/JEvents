@@ -145,6 +145,10 @@ if (!defined("JEVDATE"))
 			{
 				$format = str_replace('%b', $this->monthToString(date('n', $time), true), $format);
 			}
+			if (strpos($format, '%h') !== false)
+			{
+				$format = str_replace('%h', $this->monthToString(date('n', $time), true), $format);
+			}
 			if (strpos($format, '%B') !== false)
 			{
 				$format = str_replace('%B', $this->monthToString(date('n', $time)), $format);

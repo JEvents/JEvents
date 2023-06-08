@@ -145,7 +145,10 @@ class JevExportHelper
 	    }
 
 	    $urlString['st']         = "startdt=" . $startDateFormatted;
-	    $urlString['et']         = "enddt=" . $endDateFormatted;
+		if (isset($endDateFormatted))
+		{
+			$urlString['et'] = "enddt=" . $endDateFormatted;
+		}
 	    $urlString['rawdetails'] = "body=" . $eventData['rawdetails'];
 	    $urlString['location']   = "location=" . $eventData['location'];
 

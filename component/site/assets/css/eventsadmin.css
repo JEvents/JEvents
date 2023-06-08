@@ -502,7 +502,7 @@ table.settings_level label#jform_com_difficulty-lbl {
 /** End of hiding links from print views **/
 
 /* Rockettheme workarounds */
-#jevents #adminForm label:not(.gsl-button) {
+#jevents #adminForm label:not(.gsl-button,.gsl-form-label) {
     width: auto;
     font-weight: bold;
     padding-left: 0;

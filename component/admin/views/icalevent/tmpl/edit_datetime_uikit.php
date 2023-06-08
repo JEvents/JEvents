@@ -177,32 +177,32 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
         $freq = strtoupper($this->row->freq());
         ?>
 		<fieldset class="gsl-button-group">
-			<legend><?php echo Text::_('JEV_EVENT_REPEATTYPE'); ?></legend>
-			<label for='NONE' class="gsl-button gsl-button-small gsl-button-default <?php echo $freq ==  "NONE" ? ' gsl-button-primary' : ''; ?>">
+			<legend class="gsl-margin-right gsl-text-bold" ><?php echo Text::_('JEV_EVENT_REPEATTYPE'); ?></legend>
+			<label for='NONE' class="gsl-button gsl-button-small gsl-button-default gsl-text-nowrap 	<?php echo $freq ==  "NONE" ? ' gsl-button-primary' : ''; ?>">
 				<input type="radio" name="freq" id="NONE" class="gsl-hidden"
 				       value="none" <?php if ($freq ==  "NONE") echo 'checked="checked"'; ?>
 				       onclick="toggleFreq('NONE');"/>
 				<?php echo Text::_('NO_REPEAT'); ?>
 			</label>
-            <label for='DAILY' class="gsl-button gsl-button-small gsl-button-default <?php echo $freq ==  "DAILY" ? ' gsl-button-primary' : ''; ?>">
+            <label for='DAILY' class="gsl-button gsl-button-small gsl-button-default gsl-text-nowrap <?php echo $freq ==  "DAILY" ? ' gsl-button-primary' : ''; ?>">
 				<input type="radio" name="freq" id="DAILY" class="gsl-hidden"
 				       value="DAILY" <?php if ($freq ==  "DAILY") echo 'checked="checked"'; ?>
 				       onclick="toggleFreq('DAILY');"/>
 				<?php echo Text::_('DAILY'); ?>
 			</label>
-            <label for='WEEKLY' class="gsl-button gsl-button-small gsl-button-default <?php echo $freq ==  "WEEKLY" ? ' gsl-button-primary' : ''; ?>">
+            <label for='WEEKLY' class="gsl-button gsl-button-small gsl-button-default gsl-text-nowrap <?php echo $freq ==  "WEEKLY" ? ' gsl-button-primary' : ''; ?>">
 				<input type="radio" name="freq" id="WEEKLY" class="gsl-hidden"
 				       value="WEEKLY" <?php if ($freq ==  "WEEKLY") echo 'checked="checked"'; ?>
 				       onclick="toggleFreq('WEEKLY');"/>
 				<?php echo Text::_('WEEKLY'); ?>
 			</label>
-            <label for='MONTHLY' class="gsl-button gsl-button-small gsl-button-default <?php echo $freq ==  "MONTHLY" ? ' gsl-button-primary' : ''; ?>">
+            <label for='MONTHLY' class="gsl-button gsl-button-small gsl-button-default gsl-text-nowrap <?php echo $freq ==  "MONTHLY" ? ' gsl-button-primary' : ''; ?>">
 				<input type="radio" name="freq" id="MONTHLY" class="gsl-hidden"
 				       value="MONTHLY" <?php if ($freq ==  "MONTHLY") echo 'checked="checked"'; ?>
 				       onclick="toggleFreq('MONTHLY');"/>
 				<?php echo Text::_('MONTHLY'); ?>
 			</label>
-            <label for='YEARLY' class="gsl-button gsl-button-small gsl-button-default <?php echo $freq ==  "YEARLY" ? ' gsl-button-primary' : ''; ?>">
+            <label for='YEARLY' class="gsl-button gsl-button-small gsl-button-default gsl-text-nowrap <?php echo $freq ==  "YEARLY" ? ' gsl-button-primary' : ''; ?>">
 				<input type="radio" name="freq" id="YEARLY" class="gsl-hidden"
 				       value="YEARLY" <?php if ($freq ==  "YEARLY") echo 'checked="checked"'; ?>
 				       onclick="toggleFreq('YEARLY');"/>
@@ -213,7 +213,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 			if ($params->get("dayselect", 0))
 			{
 				?>
-                <label for='IRREGULAR' class="gsl-button gsl-button-small gsl-button-default <?php echo $freq ==  "IRREGULAR" ? ' gsl-button-primary' : ''; ?>">
+                <label for='IRREGULAR' class="gsl-button gsl-button-small gsl-button-default gsl-text-nowrap <?php echo $freq ==  "IRREGULAR" ? ' gsl-button-primary' : ''; ?>">
 					<input type="radio" name="freq" id="IRREGULAR" value="IRREGULAR" class="gsl-hidden"
 					       onclick="toggleFreq('IRREGULAR');" <?php if ($freq ==  "IRREGULAR") echo 'checked="checked"'; ?>/>
 					<?php echo Text::_('IRREGULAR'); ?>
@@ -228,7 +228,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 		<div style="float:left">
 			<fieldset>
 				<legend><?php echo Text::_('REPEAT_INTERVAL') ?></legend>
-				<input class="inputbox" type="text" name="rinterval" id="rinterval" size="2" maxlength="2"
+				<input class="inputbox gsl-width-small" type="text" name="rinterval" id="rinterval" size="2" maxlength="2"
 				       value="<?php echo $this->row->interval(); ?>" onchange="checkInterval();"/><span
 						id='interval_label' style="margin-left:1em"></span>
 			</fieldset>
@@ -237,7 +237,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 			<fieldset >
 				<legend><input type="radio" name="countuntil" value="count" id="cuc" checked="checked"
 				               onclick="toggleCountUntil('cu_count');"/><?php echo Text::_('REPEAT_COUNT') ?></legend>
-				<input class="inputbox" type="text" name="count" id="count" size="3" maxlength="3"
+				<input class="inputbox gsl-width-small" type="text" name="count" id="count" size="3" maxlength="3"
 				       value="<?php echo $this->row->count(); ?>" onchange="checkInterval();"/><span id='count_label'
 				                                                                                     style="margin-left:1em"><?php echo Text::_('REPEATS'); ?></span>
 			</fieldset>
@@ -252,7 +252,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 				$minyear         = JEVHelper::getMinYear();
 				$maxyear         = JEVHelper::getMaxYear();
 				$inputdateformat = $params->get("com_editdateformat", "d.m.Y");
-				JEVHelper::loadElectricCalendar("until", "until", JevDate::strftime("%Y-%m-%d", $this->row->until()), $minyear, $maxyear, 'updateRepeatWarning();', "checkUntil();updateRepeatWarning();", $inputdateformat);
+				JEVHelper::loadElectricCalendar("until", "until", JevDate::strftime("%Y-%m-%d", $this->row->until()), $minyear, $maxyear, 'updateRepeatWarning();', "checkUntil();updateRepeatWarning();", $inputdateformat, array("class" => "gsl-width-small"));
 				?>
 				<input type="hidden" name="until2" id="until2" value=""/>
 
@@ -266,12 +266,12 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 				               onclick="toggleWhichBy('byyearday');"/><?php echo Text::_('BY_YEAR_DAY'); ?></legend>
 				<div>
 					<?php echo Text::_('COMMA_SEPARATED_LIST'); ?>
-					<input class="inputbox" type="text" name="byyearday" size="20" maxlength="100"
+					<input class="inputbox gsl-width-small" type="text" name="byyearday" size="20" maxlength="100"
 					       value="<?php echo $this->row->byyearday(); ?>" onchange="checkInterval();"/>
 				</div>
 				<div class="countback">
 					<?php echo Text::_('COUNT_BACK_YEAR'); ?>
-					<input type="checkbox" name="byd_direction"
+					<input type="checkbox" name="byd_direction"  class="gsl-checkbox gsl-margin-left"
 					       onclick="fixRepeatDates();" <?php echo $this->row->getByDirectionChecked("byyearday"); ?>/>
 				</div>
 			</fieldset>
@@ -281,7 +281,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 				<legend><input type="radio" name="whichby" id="jevbm" value="bm"
 				               onclick="toggleWhichBy('bymonth');"/><?php echo Text::_('BY_MONTH'); ?></legend>
 				<?php echo Text::_('COMMA_SEPARATED_LIST'); ?>
-				<input class="inputbox" type="text" name="bymonth" size="30" maxlength="20"
+				<input class="inputbox gsl-width-small" type="text" name="bymonth" size="30" maxlength="20"
 				       value="<?php echo $this->row->bymonth(); ?>" onchange="checkInterval();"/>
 			</fieldset>
 		</div>
@@ -290,9 +290,9 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 				<legend><input type="radio" name="whichby" id="jevbwn" value="bwn"
 				               onclick="toggleWhichBy('byweekno');"/><?php echo Text::_('BY_WEEK_NO'); ?></legend>
 				<?php echo Text::_('COMMA_SEPARATED_LIST'); ?>
-				<input class="inputbox" type="text" name="byweekno" size="20" maxlength="20"
+				<input class="inputbox gsl-width-small" type="text" name="byweekno" size="20" maxlength="20"
 				       value="<?php echo $this->row->byweekno(); ?>" onchange="checkInterval();"/>
-				<br/>Count back from year end<input type="checkbox"
+				<br/>Count back from year end<input type="checkbox"  class="gsl-checkbox gsl-margin-left"
 				                                    name="bwn_direction" <?php echo $this->row->getByDirectionChecked("byweekno"); ?> />
 			</fieldset>
 		</div>
@@ -302,12 +302,12 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 				               onclick="toggleWhichBy('bymonthday');"/><?php echo Text::_('BY_MONTH_DAY'); ?></legend>
 				<div>
 					<?php echo Text::_('COMMA_SEPARATED_LIST'); ?>
-					<input class="inputbox" type="text" name="bymonthday" size="30" maxlength="20"
+					<input class="inputbox gsl-width-small" type="text" name="bymonthday" size="30" maxlength="20"
 					       value="<?php echo $this->row->bymonthday(); ?>" onchange="checkInterval();"/>
 				</div>
 				<div class="countback">
-					<?php echo Text::_('COUNT_BACK'); ?><input type="checkbox" name="bmd_direction"
-					                                            onclick="fixRepeatDates();" <?php echo $this->row->getByDirectionChecked("bymonthday"); ?>/>
+					<?php echo Text::_('COUNT_BACK'); ?><input type="checkbox" name="bmd_direction"  class="gsl-checkbox gsl-margin-left"
+					                                           onclick="fixRepeatDates();" <?php echo $this->row->getByDirectionChecked("bymonthday"); ?>/>
 				</div>
 			</fieldset>
 		</div>
@@ -330,14 +330,14 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 				</div>
 				<div class="countback">
 					<?php echo Text::_('COUNT_BACK'); ?>
-					<input type="checkbox" name="bd_direction" <?php echo $this->row->getByDirectionChecked("byday"); ?>
+					<input type="checkbox" class="gsl-checkbox gsl-margin-left" name="bd_direction" <?php echo $this->row->getByDirectionChecked("byday"); ?>
 					       onclick="updateRepeatWarning();toggleWeeknumDirection();"/>
 				</div>
 			</fieldset>
 		</div>
 		<div id="byirregular">
 			<fieldset>
-				<legend><?php echo Text::_('JEV_SELECT_REPEAT_DATES'); ?></legend>
+				<legend class="gsl-text-bold"><?php echo Text::_('JEV_SELECT_REPEAT_DATES'); ?></legend>
 				<div class="irregularDateSelector">
 					<?php
 					$params           = ComponentHelper::getParams(JEV_COM_COMPONENT);
@@ -345,7 +345,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 					$maxyear          = JEVHelper::getMaxYear();
 					$inputdateformat  = $params->get("com_editdateformat", "d.m.Y");
 					$inputdateformat2 = str_replace(array("Y", "m", "d"), array("%Y", "%m", "%d"), $inputdateformat);
-					$attribs          = array("style" => "display:none;");
+					$attribs          = array("style" => "display:none;" , "class" => "gsl-width-small");
 					$irregulartimes   = $params->get("irregulartimes", 0);
 					if ($irregulartimes)
 					{

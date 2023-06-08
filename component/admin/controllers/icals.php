@@ -16,6 +16,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Session\Session;
 use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Component\ComponentHelper;
 
 class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
 {
@@ -179,8 +180,17 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
 		}
 		else
 		{
-
 			$redirect_task = "day.listevents";
+
+			// Cannot reload all in the frontend if import key is required
+			$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+			if ($params->get("icalkeyimport", 0))
+			{
+				$app->enqueueMessage('Fatal Error - You can only load these calendars one at a time with the appropriate security key set', 'error');
+
+				$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=$redirect_task", 'Fatal Error - You can only load these calendars one at a time with the appropriate security key set');
+				$this->redirect();
+			}
 		}
 
 		$query = "SELECT icsf.* FROM #__jevents_icsfile as icsf";
@@ -229,6 +239,7 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
 			Session::checkToken() or jexit('Invalid Token');
 		}
 
+
 		$user  = Factory::getUser();
 		$guest = (int) $user->get('guest');
 
@@ -249,6 +260,21 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
 
 		if ($icsid > 0)
 		{
+			$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+			if ($params->get("icalkeyimport", 0))
+			{
+				$icalkey = $params->get("icalkey", "secret phrase");
+				$icalkey = md5($icsid . "something really stupid" . $icalkey);
+
+				$k = $input->getString("k", "");
+
+				if ($k !== $icalkey)
+				{
+					throw new Exception( Text::_('ALERTNOTAUTH'), 403);
+					return false;
+				}
+			}
+
 			$query = "SELECT icsf.* FROM #__jevents_icsfile as icsf WHERE ics_id=$icsid";
 			$db    = Factory::getDbo();
 			$db->setQuery($query);

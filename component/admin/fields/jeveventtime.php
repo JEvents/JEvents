@@ -79,17 +79,17 @@ class FormFieldJeveventtime extends FormField
 		{
 
 			$btngroup  = "gsl-button-group";
-			$btn       = "gsl-button gsl-button-small gsl-button-default";
+			$btn       = "gsl-button gsl-button-medium gsl-button-default";
 			$timevalue = $event->$time24function();
 			list($h, $m) = explode(":", $timevalue);
 			?>
 			<div id="<?php echo $partname; ?>_24h_area" class="jev_inline">
-				<input class="inputbox" type="text" name="<?php echo $partname; ?>_time" id="<?php echo $name; ?>"
+				<input class="inputbox  gsl-width-small" type="text" name="<?php echo $partname; ?>_time" id="<?php echo $name; ?>"
 				       size="8" <?php echo $test ? "disabled='disabled'" : ""; ?> maxlength="8"
 				       value="<?php echo $event->$time24function(); ?>" onchange="checkTime(this);"/>
 			</div>
 			<div id="<?php echo $partname; ?>_12h_area" class="jev_inline">
-				<input class="inputbox" type="text" name="<?php echo $partname; ?>_12h" id="<?php echo $partname; ?>_12h"
+				<input class="inputbox  gsl-width-small" type="text" name="<?php echo $partname; ?>_12h" id="<?php echo $partname; ?>_12h"
 				       size="8" maxlength="8" <?php echo $test ? "disabled='disabled'" : ""; ?> value=""
 				       onchange="check12hTime(this);"/>
 				<div class="<?php echo $btngroup; ?> " id="<?php echo $partname; ?>_ampm">
@@ -118,12 +118,12 @@ class FormFieldJeveventtime extends FormField
 			list($h, $m) = explode(":", $timevalue);
 			?>
 			<div id="<?php echo $partname; ?>_24h_area" class="jev_inline">
-				<input class="inputbox" type="text" name="<?php echo $partname; ?>_time" id="<?php echo $name; ?>"
+				<input class="inputbox gsl-width-small" type="text" name="<?php echo $partname; ?>_time" id="<?php echo $name; ?>"
 				       size="8" <?php echo $test ? "disabled='disabled'" : ""; ?> maxlength="8"
 				       value="<?php echo $event->$time24function(); ?>" onchange="checkTime(this);"/>
 			</div>
 			<div id="<?php echo $partname; ?>_12h_area" class="jev_inline">
-				<input class="inputbox" type="text" name="<?php echo $partname; ?>_12h" id="<?php echo $partname; ?>_12h"
+				<input class="inputbox  gsl-width-small" type="text" name="<?php echo $partname; ?>_12h" id="<?php echo $partname; ?>_12h"
 				       size="8" maxlength="8" <?php echo $test ? "disabled='disabled'" : ""; ?> value=""
 				       onchange="check12hTime(this);"/>
 				<div class="radio <?php echo $btngroup; ?> " id="<?php echo $partname; ?>_ampm">

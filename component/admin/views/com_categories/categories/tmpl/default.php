@@ -47,7 +47,7 @@ if ($jversion->isCompatible('4.0'))
 	$output = str_replace("btn ", "gsl-button gsl-button-small ", $output);
 	$output = str_replace("btns ", " ", $output);
 	$output = str_replace(array('btn-success','badge-danger', 'btn-dark', 'btn-secondary'), array('gsl-button-primary', 'gsl-button-danger', 'gsl-button-secondary', 'gsl-button-default'), $output);
-	$output = str_replace(array("option=com_jevents", "filter[category_id]", "filter[published]", "filter[level]"), array("option=com_jevents&task=icalevent.list", "filter[catid]", "filter[state]", "filter[showpast]"), $output);
+	$output = str_replace(array("option=com_jevents", "filter[category_id]", "filter[published]"), array("option=com_jevents&task=icalevent.list", "filter[catid]", "filter[published]"), $output);
 	echo $output;
 }
 else

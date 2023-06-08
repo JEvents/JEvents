@@ -16,6 +16,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Component\ComponentHelper;
 
 HTMLHelper::_('behavior.multiselect');
 //HTMLHelper::_('behavior.modal', 'a.modal');
@@ -24,6 +25,7 @@ HTMLHelper::_('behavior.multiselect');
 HTMLHelper::_('stylesheet', 'jui/jquery.searchtools.css', array('version' => 'auto', 'relative' => true));
 HTMLHelper::_('script', 'jui/jquery.searchtools.min.js', array('version' => 'auto', 'relative' => true));
 
+$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 $db   = Factory::getDbo();
 $user = Factory::getUser();
 
@@ -125,9 +127,15 @@ $user = Factory::getUser();
                                     <?php
                                     if ($row->autorefresh)
                                     {
-                                        ?>
+	                                    $icalkey = "";
+										if ($params->get("icalkeyimport", 0))
+										{
+											$icalkey = $params->get("icalkey", "secret phrase");
+											$icalkey = "&k=" . md5($row->ics_id . "something really stupid" . $icalkey);
+										}
+	                                    ?>
                                         <br/><a
-                                            href="<?php echo Uri::root() . "index.php?option=" . JEV_COM_COMPONENT . "&icsid=" . $row->ics_id . "&task=icals.reload"; ?>"
+                                            href="<?php echo Uri::root() . "index.php?option=" . JEV_COM_COMPONENT . "&icsid=" . $row->ics_id . "&task=icals.reload" . $icalkey; ?>"
                                             title="<?php echo Text::_("JEV_AUTOREFRESH_LINK") ?>"><?php echo Text::_("JEV_AUTOREFRESH_LINK") ?></a>
                                         <?php
                                     }

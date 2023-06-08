@@ -387,7 +387,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
                     <?php
 				}
 				?>
-				<div class="row jevtitle" <?php JEventsHelper::showOnRel($this->form, 'title'); ?> >
+				<div class="row jevtitle gsl-grid" <?php JEventsHelper::showOnRel($this->form, 'title'); ?> >
 					<div class="gsl-width-1-6@m gsl-width-1-3"  >
 						<?php echo $this->form->getLabel("title"); ?>
 					</div>

@@ -9,33 +9,33 @@
  */
 
 document.addEventListener('DOMContentLoaded', function () {
-	editicalGslStyling(document.getElementById('jevents'));
+	editicalUikitStyling(document.getElementById('jevents'));
 });
 
-function editicalGslStyling(container) {
+function editicalUikitStyling(container) {
 
 	if (typeof container !== 'undefined' && document.querySelectorAll) {
 		let elems = container.querySelectorAll(' .btn-group,  .btn-group-ysts');
 		for (let e = 0; e < elems.length; e++) {
 			elems[e].classList.remove('btn-group');
 			elems[e].classList.remove('radio');
-			elems[e].classList.add('gsl-button-group');
+			elems[e].classList.add('uk-button-group');
 			let inputs = elems[e].querySelectorAll('.radio');
 			for (let i = 0; i < inputs.length; i++) {
 				inputs[i].classList.remove('radio');
 			}
 			inputs = elems[e].querySelectorAll("input[type='checkbox'], input[type='radio']");
 			for (let i = 0; i < inputs.length; i++) {
-				inputs[i].classList.add('gsl-hidden');
+				inputs[i].classList.add('uk-hidden');
 			}
 			// don't restrict to label.btn since jticketing and others don't put btn as class for label in their plugin!!
 			let labels = elems[e].querySelectorAll("label");
 			for (let l = 0; l < labels.length; l++) {
 				let label = labels[l];
 				label.classList.remove('btn');
-				label.classList.add('gsl-button');
-				label.classList.add('gsl-button-default');
-				label.classList.add('gsl-button-medium');
+				label.classList.add('uk-button');
+				label.classList.add('uk-button-default');
+				label.classList.add('uk-button-small');
 
 				let activeClass = false;
 				let input = container.querySelector('#' + label.getAttribute('for'));
@@ -58,19 +58,19 @@ function editicalGslStyling(container) {
 						activeClass = input.getAttribute('data-activeclass');
 						if (input.checked || label.classList.contains('active')) {
 							if (activeClass) {
-								label.classList.add('gsl-button-' + activeClass);
+								label.classList.add('uk-button-' + activeClass);
 							} else if (input.value == 0) {
-								label.classList.add('gsl-button-danger');
+								label.classList.add('uk-button-danger');
 							} else {
-								label.classList.add('gsl-button-primary');
+								label.classList.add('uk-button-primary');
 							}
 						} else {
 							if (activeClass) {
-								label.classList.remove('gsl-button-' + activeClass);
+								label.classList.remove('uk-button-' + activeClass);
 							}
-							label.classList.remove('gsl-button-success');
-							label.classList.remove('gsl-button-primary');
-							label.classList.remove('gsl-button-danger');
+							label.classList.remove('uk-button-success');
+							label.classList.remove('uk-button-primary');
+							label.classList.remove('uk-button-danger');
 						}
 					}
 				}
@@ -84,33 +84,33 @@ function editicalGslStyling(container) {
 				button.classList.remove('btn');
 				button.classList.remove('btn-mini');
 				button.classList.remove('button');
-				button.classList.add('gsl-button');
+				button.classList.add('uk-button');
 				if (button.closest('.subform-repeatable'))
 				{
-					button.classList.add('gsl-button-mini');
+					button.classList.add('uk-button-mini');
 				}
 				else {
-					button.classList.add('gsl-button-medium');
+					button.classList.add('uk-button-small');
 				}
 
 				if (button.classList.contains('btn-danger')) {
 					button.classList.remove('btn-danger');
-					button.classList.add('gsl-button-danger');
+					button.classList.add('uk-button-danger');
 				}
 				else if (button.classList.contains('btn-success')) {
 					button.classList.remove('btn-success');
-					button.classList.add('gsl-button-primary');
+					button.classList.add('uk-button-primary');
 				}
 				else if (button.classList.contains('btn-primary')) {
 					button.classList.remove('btn-primary');
-					button.classList.add('gsl-button-primary');
+					button.classList.add('uk-button-primary');
 				}
 				else if (button.classList.contains('btn-warning')) {
 					button.classList.remove('btn-warning');
-					button.classList.add('gsl-button-danger');
+					button.classList.add('uk-button-danger');
 				}
 				else {
-					button.classList.add('gsl-button-default');
+					button.classList.add('uk-button-default');
 				}
 			}
 		}
@@ -120,7 +120,7 @@ function editicalGslStyling(container) {
 			elems[e].classList.remove('checkbox-group');
 			elems[e].classList.remove('checkboxes');
 			elems[e].classList.remove('checkbox');
-			elems[e].classList.add('gsl-button-group');
+			elems[e].classList.add('uk-button-group');
 
 			let inputs = elems[e].querySelectorAll('.checkbox');
 			for (let i = 0; i < inputs.length; i++) {
@@ -128,15 +128,15 @@ function editicalGslStyling(container) {
 			}
 			inputs = elems[e].querySelectorAll("input[type='checkbox'], input[type='radio']");
 			for (let i = 0; i < inputs.length; i++) {
-				inputs[i].classList.add('gsl-hidden');
+				inputs[i].classList.add('uk-hidden');
 			}
 			let labels = elems[e].querySelectorAll("label");
 			for (let l = 0; l < labels.length; l++) {
 				let label = labels[l];
 				label.classList.remove('btn');
-				label.classList.add('gsl-button');
-				label.classList.add('gsl-button-default');
-				label.classList.add('gsl-button-medium');
+				label.classList.add('uk-button');
+				label.classList.add('uk-button-default');
+				label.classList.add('uk-button-small');
 
 				let activeClass = false;
 				let input = container.querySelector('#' + label.getAttribute('for'));
@@ -144,18 +144,18 @@ function editicalGslStyling(container) {
 					activeClass = input.getAttribute('data-activeclass');
 					if (input.checked || label.classList.contains('active')) {
 						if (activeClass) {
-							label.classList.add('gsl-button-' + activeClass);
+							label.classList.add('uk-button-' + activeClass);
 						} else if (input.value == 0) {
-							label.classList.add('gsl-button-danger');
+							label.classList.add('uk-button-danger');
 						} else {
-							label.classList.add('gsl-button-primary');
+							label.classList.add('uk-button-primary');
 						}
 					} else {
 						if (activeClass) {
-							label.classList.remove('gsl-button-' + activeClass);
+							label.classList.remove('uk-button-' + activeClass);
 						}
-						label.classList.remove('gsl-button-primary');
-						label.classList.remove('gsl-button-danger');
+						label.classList.remove('uk-button-primary');
+						label.classList.remove('uk-button-danger');
 					}
 				}
 
@@ -168,29 +168,29 @@ function editicalGslStyling(container) {
 			if (elems[e].classList.contains('icon-user'))
 			{
 				elems[e].classList.remove('icon-user');
-				elems[e].classList.add('gsl-icon');
-				elems[e].classList.add('gsl-margin-small-right');
-				elems[e].setAttribute('data-gsl-icon' , 'icon:user;ratio:0.7');
+				elems[e].classList.add('uk-icon');
+				elems[e].classList.add('uk-margin-small-right');
+				elems[e].setAttribute('data-uk-icon' , 'icon:user;ratio:0.7');
 			}
 			else if (elems[e].classList.contains('icon-calendar'))
 			{
 				elems[e].classList.remove('icon-calendar');
-				elems[e].classList.add('gsl-icon');
-				elems[e].setAttribute('data-gsl-icon' , 'icon:calendar;');
+				elems[e].classList.add('uk-icon');
+				elems[e].setAttribute('data-uk-icon' , 'icon:calendar;');
 			}
 			// repeatable fields
 			else if (elems[e].classList.contains('icon-plus'))
 			{
 				elems[e].classList.remove('icon-plus');
-				elems[e].classList.add('gsl-icon');
-				elems[e].setAttribute('data-gsl-icon' , 'icon:plus;ratio:0.7');
+				elems[e].classList.add('uk-icon');
+				elems[e].setAttribute('data-uk-icon' , 'icon:plus;ratio:0.7');
 			}
 			// repeatable fields
 			else if (elems[e].classList.contains('icon-minus'))
 			{
 				elems[e].classList.remove('icon-minus');
-				elems[e].classList.add('gsl-icon');
-				elems[e].setAttribute('data-gsl-icon' , 'icon:minus;ratio:0.7');
+				elems[e].classList.add('uk-icon');
+				elems[e].setAttribute('data-uk-icon' , 'icon:minus;ratio:0.7');
 			}
 		}
 
@@ -206,68 +206,67 @@ function editicalGslStyling(container) {
 		elems = container.querySelectorAll('.control-label');
 		for (let e = 0; e < elems.length; e++) {
 			elems[e].classList.remove('control-label');
-			elems[e].classList.add('gsl-form-label');
-			elems[e].classList.add('gsl-text-bold');
+			elems[e].classList.add('uk-form-label');
 		}
 
 		elems = container.querySelectorAll('.control-group');
 		for (let e = 0; e < elems.length; e++) {
 			elems[e].classList.remove('control-group');
-			elems[e].classList.add('gsl-margin-small-bottom');
+			elems[e].classList.add('uk-margin-small-bottom');
 		}
 
-		var inputs = container.querySelectorAll('button:not(.gsl-button)');
+		var inputs = container.querySelectorAll('button:not(.uk-button)');
 
 		inputs.forEach (function(elem){
 
-			elem.classList.add('gsl-button');
-			elem.classList.add('gsl-button-medium');
+			elem.classList.add('uk-button');
+			elem.classList.add('uk-button-small');
 			elem.classList.remove('button2-left')
 
 			if (elem.classList.contains('btn-danger')) {
 				elem.classList.remove('btn-danger');
-				elem.classList.add('gsl-button-danger');
+				elem.classList.add('uk-button-danger');
 			}
 			else if (elem.classList.contains('btn-primary')) {
 				elem.classList.remove('btn-primary');
-				elem.classList.add('gsl-button-primary');
+				elem.classList.add('uk-button-primary');
 			}
 			else if (elem.classList.contains('btn-success')) {
 				elem.classList.remove('btn-success');
-				elem.classList.add('gsl-button-primary');
+				elem.classList.add('uk-button-primary');
 			}
 			else if (elem.classList.contains('btn-warning')) {
 				elem.classList.remove('btn-warning');
-				elem.classList.add('gsl-button-danger');
+				elem.classList.add('uk-button-danger');
 			}
 			else
 			{
-				elem.classList.add('gsl-button-primary');
+				elem.classList.add('uk-button-primary');
 			}
 
 		})
 
-		var inputs = container.querySelectorAll('.button2-left a:not(.gsl-button)');
+		var inputs = container.querySelectorAll('.button2-left a:not(.uk-button)');
 		inputs.forEach (function(elem) {
 			var group = elem.closest('.button2-left');
 			group.classList.remove('button2-left');
-			group.classList.add('gsl-button-group');
-			elem.classList.add('gsl-button');
-			elem.classList.add('gsl-button-medium');
-			elem.classList.add('gsl-button-default');
-			elem.classList.add('gsl-margin-small-right');
+			group.classList.add('uk-button-group');
+			elem.classList.add('uk-button');
+			elem.classList.add('uk-button-small');
+			elem.classList.add('uk-button-default');
+			elem.classList.add('uk-margin-small-right');
 		})
 
-		var inputs = container.querySelectorAll('select:not(.gsl-select)');
+		var inputs = container.querySelectorAll('select:not(.uk-select)');
 		inputs.forEach (function(elem){
 
 			if (elem.hasAttribute('hidden') || window.getComputedStyle(elem,'display') == 'none')
 			{
 				return;
 			}
-			elem.classList.add('gsl-select');
-			//elem.classList.add('gsl-form-width-medium');
-			elem.classList.add('gsl-width-medium');
+			elem.classList.add('uk-select');
+			//elem.classList.add('uk-form-width-medium');
+			elem.classList.add('uk-width-medium');
 			elem.classList.remove('inputbox')
 			if (elem.getAttribute('size') == 1) {
 				elem.removeAttribute('size');
@@ -275,23 +274,21 @@ function editicalGslStyling(container) {
 
 		})
 
-		inputs = container.querySelectorAll('input[type="text"]:not(.gsl-input):not(.minicolors)');
+		inputs = container.querySelectorAll('input[type="text"]:not(.uk-input):not(.minicolors)');
 		inputs.forEach (function(elem){
-			elem.classList.add('gsl-input');
-			var classList = elem.classList;
-			if (!classList.contains('gsl-width-small') && !classList.contains('gsl-width-large')) {
-				elem.classList.add('gsl-width-medium');
-			}
+			elem.classList.add('uk-input');
+			//elem.classList.add('uk-form-width-medium');
+			elem.classList.add('uk-width-medium');
 			elem.classList.remove('inputbox')
 			elem.classList.remove('input-medium')
 			elem.removeAttribute('size');
 		})
 
-		inputs = container.querySelectorAll('textarea:not(.gsl-textarea)');
+		inputs = container.querySelectorAll('textarea:not(.uk-textarea)');
 		inputs.forEach (function(elem){
-			elem.classList.add('gsl-textarea');
-			//elem.classList.add('gsl-form-width-medium');
-			elem.classList.add('gsl-width-medium');
+			elem.classList.add('uk-textarea');
+			//elem.classList.add('uk-form-width-medium');
+			elem.classList.add('uk-width-medium');
 		})
 
 		/* field calendar height match */
@@ -323,18 +320,18 @@ window.addEventListener('load', function() {
 		for (let r = 0; r < repeatables.length; r++)
 		{
 			jQuery(repeatables[r]).on('subform-row-add', function (event) {
-				editicalGslStyling(repeatables[r]);
+				editicalUikitStyling(repeatables[r]);
 			});
 		}
 
 		// Moved to showon code itself!
 		/*
-		let showonFields = document.getElementById('jevents').querySelectorAll('[data-showon-gsl]');
+		let showonFields = document.getElementById('jevents').querySelectorAll('[data-showon-uk]');
 
 		// Setup each 'showon' field onkeypress to mimic onchange
 		for (let is = 0; is < showonFields.length; is++) {
 			let target = showonFields[is];
-			let jsondata = JSON.parse(target.getAttribute('data-showon-gsl')) || [],
+			let jsondata = JSON.parse(target.getAttribute('data-showon-uk')) || [],
 				fields = [];
 
 			if (typeof jsondata['AND'] !== 'undefined') {

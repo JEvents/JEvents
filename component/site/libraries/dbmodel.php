@@ -516,7 +516,7 @@ class JEventsDBModel
 			}
 
 			$q_published = $app->isClient('administrator') ? "\n AND c.published >= 0" : "\n AND c.published = 1";
-			$jevtask     = $input->getString("jevtask");
+			$jevtask     = $input->getString("jevtask", "");
 			$isedit      = false;
 			// not only for edit pages but for all backend changes we ignore the language filter on categories
 			if (strpos($jevtask, "icalevent.edit") !== false || strpos($jevtask, "icalrepeat.edit") !== false || $app->isClient('administrator') || $allLanguages)
@@ -701,6 +701,8 @@ class JEventsDBModel
 	public static function translateEvents(&$icalrows)
 	{
 
+		static $translationCache = array();
+
 		$is_array = true;
 		if (!is_array($icalrows))
 		{
@@ -728,12 +730,44 @@ class JEventsDBModel
 		if (count($translationids) > 0)
 		{
 			$db             = Factory::getDbo();
-			$translationids = implode(",", $translationids);
 
-			if (trim($translationids) != "")
+			if (count($translationids) > 0)
 			{
-				$db->setQuery("SELECT *, summary as title, description as content FROM #__jevents_translation WHERE evdet_id IN(" . $translationids . ") AND language=" . $db->quote($langtag));
-				$translations = $db->loadObjectList("evdet_id");
+				$translationidsList = array();
+
+				foreach ($translationids as $translationid)
+				{
+					if (array_key_exists($translationid, $translationCache))
+					{
+						$translations[$translationid] = $translationCache[$translationid];
+					}
+					else
+					{
+						$translationidsList[] = $translationid;
+					}
+				}
+
+				if (count($translationidsList))
+				{
+					$translationidsListString = implode(",", $translationidsList);
+
+					$db->setQuery("SELECT *, summary as title, description as content FROM #__jevents_translation WHERE evdet_id IN(" . $translationidsListString . ") AND language=" . $db->quote($langtag));
+					$newTranslations = $db->loadObjectList("evdet_id");
+
+					foreach ($translationidsList as $translationidsListItem)
+					{
+						if (isset($newTranslations[$translationidsListItem]))
+						{
+							$translationCache[$translationidsListItem] = $newTranslations[$translationidsListItem];
+						}
+						else
+						{
+							$translationCache[$translationidsListItem] = false;
+						}
+						$translations[$translationidsListItem] = $translationCache[$translationidsListItem];
+					}
+				}
+
 			}
 			else
 			{
@@ -744,7 +778,7 @@ class JEventsDBModel
 			{
 				for ($i = 0; $i < $icalcount; $i++)
 				{
-					if (array_key_exists($icalrows[$i]->_evdet_id, $translations))
+					if (array_key_exists($icalrows[$i]->_evdet_id, $translations) && is_object($translations[$icalrows[$i]->_evdet_id]))
 					{
 						foreach (get_object_vars($translations[$icalrows[$i]->_evdet_id]) as $k => $v)
 						{
