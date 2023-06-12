@@ -1250,8 +1250,8 @@ class jIcalEventDB extends jEventCal
 							// back into unix time using the  Jevents timezone
 							if ($truestarttime == JevDate::strftime("%H:%M:%S", JevDate::mktime($repeat2->hup(), $repeat2->minup(), $repeat2->sup(), 0, 0, 0)))
 							{
-								$truedtstart = JevDate::strftime("%Y-%m-%d %H:%M:%S", $this->dtstart());
-								$truedtend   = JevDate::strftime("%Y-%m-%d %H:%M:%S", $this->dtend());
+								$truedtstart = date("Y-m-d H:i:s", $this->dtstart());
+								$truedtend   = date("Y-m-d H:i:s", $this->dtend());
 
 								// switch timezone back to Jevents timezone
 								date_default_timezone_set($timezone);

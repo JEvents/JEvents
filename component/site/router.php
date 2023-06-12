@@ -747,16 +747,16 @@ function JEventsBuildRouteNew(&$query, $task)
 						$startday = 0;
 					}
 					$date       = mktime(5, 5, 5, $month, $day, $year);
-					$currentday = JevDate::rawStrftime("%w", $date);
+					$currentday = date("w", $date);
 					if ($currentday > $startday)
 					{
 						$date -= ($currentday - $startday) * 86400;
-						list($year, $month, $day) = explode("-", JevDate::rawStrftime("%Y-%m-%d", $date));
+						list($year, $month, $day) = explode("-", date("Y-m-d", $date));
 					}
 					else if ($currentday < $startday)
 					{
 						$date -= (7 + $currentday - $startday) * 86400;
-						list($year, $month, $day) = explode("-", JevDate::rawStrftime("%Y-%m-%d", $date));
+						list($year, $month, $day) = explode("-", date("Y-m-d", $date));
 					}
 				}
 

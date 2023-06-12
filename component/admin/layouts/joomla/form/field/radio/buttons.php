@@ -24,7 +24,7 @@ if (version_compare(JVERSION, "4", "gt")
 	return;
 }
 
-extract($displayData, null);
+extract($displayData);
 
 /**
  * Layout variables

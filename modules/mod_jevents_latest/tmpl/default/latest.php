@@ -740,7 +740,7 @@ $t_datenowSQL = $t_datenow->toMysql();
 				{
 					if ($debugLatest)
 					{
-						echo "checking for events on " . JevDate::rawStrftime("%Y-%m-%d",$date) . "<Br>";
+						echo "checking for events on " . date("Y-m-d",$date) . "<Br>";
 					}
 
 					// get the events for this $date
@@ -838,10 +838,32 @@ $t_datenowSQL = $t_datenow->toMysql();
 						break;
 					}
 
+					if (false && $debugLatest)
+					{
+						if (!defined('JEVSTRFTIME'))
+						{
+							define('JEVSTRFTIME', microtime(1));
+						}
+						if (microtime(1) - JEVSTRFTIME > 2.0)
+						{
+							echo debug_print_backtrace();
+							exit();
+						}
+
+						echo "date $date lastDate $lastDate<br>";
+					}
 					// Attempt to handle Brazil timezone changes which happen at midnight - go figure !!!
-					list($yy, $mm, $dd) = explode("-", JevDate::rawStrftime("%Y-%m-%d", $date));
-					$date = JevDate::mktime(0, 0, 0, $mm, $dd + 1, $yy);
-					//echo JevDate::rawStrftime("%Y-%m-%d %H:%M<br/>", $date);
+					list($yy, $mm, $dd) = explode("-", date("Y-m-d", $date));
+					$date = JevDate::mktime(0, 0, 0, (int) $mm, (int) $dd + 1, (int) $yy);
+					if (false && $debugLatest)
+					{
+						echo "$yy, $mm, $dd <br>";
+						echo "new Date => $date<br>";
+						echo "direct mktime => " . mktime(0, 0, 0, (int) $mm, (int) $dd + 1, (int) $yy) . "<br>";
+						echo "8 june " . mktime(0, 0, 0, 6, 8, 2023) . "<br>";
+						echo "9 june " . mktime(0, 0, 0, 6, 9, 2023) . "<br>";
+
+					}
 					$i++;
 				}
 			}

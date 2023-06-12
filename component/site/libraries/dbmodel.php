@@ -467,6 +467,11 @@ class JEventsDBModel
 				$catidList = JEVHelper::forceIntegerArray($catids, true);
 			}
 
+			if (is_null($catidList))
+			{
+				$catidList = "";
+			}
+
 			$catids   = is_array($catidList) ? $catidList : explode(",", $catidList);
 			$catwhere = array();
 			$hascatid = false;
@@ -1004,8 +1009,8 @@ class JEventsDBModel
 
 		if (strpos($startdate, "-") === false || is_numeric($startdate))
 		{
-			$startdate = JevDate::rawStrftime('%Y-%m-%d 00:00:00', $startdate);
-			$enddate   = JevDate::rawStrftime('%Y-%m-%d 23:59:59', $enddate);
+			$startdate = date('Y-m-d 00:00:00', $startdate);
+			$enddate   = date('Y-m-d 23:59:59', $enddate);
 		}
 
 		// Use alternative data source

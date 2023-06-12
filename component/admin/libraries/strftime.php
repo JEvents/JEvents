@@ -44,10 +44,10 @@ function strftime (string $format, $timestamp = null, ?string $locale = null) : 
 
 		try {
 			$timestamp = new DateTime($timestamp);
-		} catch (Exception $e) {
+		} catch (\Throwable $e) {
 			try {
 				$timestamp = new DateTime("@" . $timestamp);
-			} catch (Exception $e) {
+			} catch (\Throwable $e) {
 				throw new InvalidArgumentException('$timestamp ' . $timestamp . ' argument is neither a valid UNIX timestamp, a valid date-time string or a DateTime object.', 0, $e);
 			}
 

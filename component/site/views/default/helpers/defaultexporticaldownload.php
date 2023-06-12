@@ -15,7 +15,7 @@ function DefaultExportIcalDownload($view, $publiclink, $privatelink)
 ?>
 	<div class='ical_form_button export_public'>
 		<a style="text-decoration:none" href="<?php echo $publiclink; ?>"
-		   title="<?php echo Text::_("JEV_SAVEICAL") ?>">
+		   title="<?php echo Text::_("JEV_SAVEICAL") ?>" rel='nofollow'>
 			<span style="display:inline-block;width:24px;"><?php echo HTMLHelper::image('com_jevents/icons-32/ical_repeats.png', Text::_("JEV_SAVEICAL"), null, true); ?></span>
 			<span style="display:inline-block;"><?php echo Text::_("JEV_SAVEICAL"); ?></span>
 		</a>
