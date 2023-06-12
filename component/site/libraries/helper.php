@@ -566,7 +566,7 @@ class JEVHelper
 			}
 
 			// Make sure $day is not outside the month
-			$lastDayOfMonth = intval(strftime("%d", mktime(6, 0, 0, $month + 1, 1, $year) - 86400));
+			$lastDayOfMonth = intval(date("d", mktime(6, 0, 0, $month + 1, 1, $year) - 86400));
 			$day            = $lastDayOfMonth < $day ? $lastDayOfMonth : $day;
 
 			$data   = array();
@@ -651,7 +651,7 @@ class JEVHelper
 
 		if ($value == "")
 		{
-			$value = JevDate::rawStrftime("%Y-%m-%d");
+			$value = date("Y-m-d");
 		}
 
 		list ($yearpart, $monthpart, $daypart) = explode("-", $value);
@@ -702,7 +702,7 @@ class JEVHelper
 
 			if ($value == "")
 			{
-				$value = JevDate::rawStrftime("%Y-%m-%d");
+				$value = date("Y-m-d");
 			}
 			else
 			{
@@ -722,7 +722,7 @@ class JEVHelper
 
 
 			list ($yearpart, $monthpart, $daypart) = explode("-", $value);
-			$value = str_replace(array("Y", "m", "d"), array($yearpart, $monthpart, $daypart), $format);
+			$value = str_replace(array("Y", "m", "d", "h", "b", "B"), array($yearpart, $monthpart, $daypart, $monthpart, $monthpart, $monthpart), $format);
 			$attributes = $attribs;
 			// Build the attributes array.
 			empty($onchange) ? null : $attributes['onchange'] = $onchange;
@@ -745,7 +745,7 @@ class JEVHelper
 			}
 	*/
 			// switch back to strftime format to use Joomla calendar tool
-			$format = str_replace(array("Y", "m", "d"), array("%Y", "%m", "%d"), $format);
+			$format = str_replace(array("Y", "m", "d", "b", "B", "h"), array("%Y", "%m", "%d", "%b", "%b", "%B"), $format);
 
 			echo HTMLHelper::_('calendar', $yearpart . "-" . $monthpart . "-" . $daypart, $fieldname, $fieldid, $format, $attributes);
 			return;
@@ -792,7 +792,7 @@ class JEVHelper
 
 				if ($value == "")
 				{
-					$value = JevDate::rawStrftime("%Y-%m-%d");
+					$value = date("Y-m-d");
 				}
 				list ($yearpart, $monthpart, $daypart) = explode("-", $value);
 				$value = str_replace(array("Y", "m", "d"), array($yearpart, $monthpart, $daypart), $format);
@@ -3558,8 +3558,8 @@ SCRIPT;
 						if ($row->alldayevent())
 						{
 							$alldayprefix = ";VALUE=DATE";
-							$startformat  = "%Y%m%d";
-							$endformat    = "%Y%m%d";
+							$startformat  = "Ymd";
+							$endformat    = "Ymd";
 
 							// add 10 seconds to make sure its not midnight the previous night
 							$start += 10;
@@ -3569,15 +3569,15 @@ SCRIPT;
 						{
 							date_default_timezone_set("UTC");
 
-							$startformat = "%Y%m%dT%H%M%SZ";
-							$endformat   = "%Y%m%dT%H%M%SZ";
+							$startformat = "Ymd\THis";
+							$endformat   = "Ymd\THis";
 						}
 
 						// Do not use JevDate version since this sets timezone to config value!
-						$start = JevDate::rawStrftime($startformat, $start);
-						$end   = JevDate::rawStrftime($endformat, $end);
+						$start = date($startformat, $start);
+						$end   = date($endformat, $end);
 
-						$stamptime = JevDate::rawStrftime("%Y%m%dT%H%M%SZ", time());
+						$stamptime = date("Ymd\THis", time());
 
 						// Change back
 						date_default_timezone_set($current_timezone);
@@ -3600,8 +3600,8 @@ SCRIPT;
 						}
 						else
 						{
-							$startformat = "%Y%m%dT%H%M%S";
-							$endformat   = "%Y%m%dT%H%M%S";
+							$startformat = "Ymd\THis";
+							$endformat   = "Ymd\THis";
 						}
 
 						$start = JevDate::strftime($startformat, $start);
@@ -3612,13 +3612,13 @@ SCRIPT;
 							// Change timezone to UTC
 							$current_timezone = date_default_timezone_get();
 							date_default_timezone_set("UTC");
-							$stamptime = JevDate::strftime("%Y%m%dT%H%M%SZ", time());
+							$stamptime = date("Ymd\THis", time());
 							// Change back
 							date_default_timezone_set($current_timezone);
 						}
 						else
 						{
-							$stamptime = JevDate::strftime("%Y%m%dT%H%M%SZ", time());
+							$stamptime = date("Ymd\THis", time());
 						}
 
 						// in case the first repeat is changed
@@ -3654,8 +3654,7 @@ SCRIPT;
 						{
 							// Do not use JevDate version since this sets timezone to config value!
 							// GOOGLE HAS A PROBLEM WITH 235959!!!
-							//$html .= ';UNTIL=' . JevDate::rawStrftime("%Y%m%dT235959Z", $a->_until);
-							$html .= ';UNTIL=' . JevDate::rawStrftime("%Y%m%dT000000Z", $a->_until + 86400);
+							$html .= ';UNTIL=' . date("Ymd\T000000\Z", $a->_until + 86400);
 						}
 						else if ($row->_count != "")
 						{
@@ -3722,14 +3721,14 @@ SCRIPT;
 								date_default_timezone_set("UTC");
 
 								// Do not use JevDate version since this sets timezone to config value!
-								$deletes[] = JevDate::rawStrftime("%Y%m%dT%H%M%SZ", $exceptiondate);
+								$deletes[] = date("Ymd\THis", $exceptiondate);
 
 								// Change back
 								date_default_timezone_set($current_timezone);
 							}
 							else
 							{
-								$deletes[] = JevDate::strftime("%Y%m%dT%H%M%S", $exceptiondate);
+								$deletes[] = date("Ymd\THis", $exceptiondate);
 							}
 						}
 						else
@@ -3847,19 +3846,19 @@ SCRIPT;
 							date_default_timezone_set("UTC");
 
 							// Do not use JevDate version since this sets timezone to config value!
-							$chstart       = JevDate::rawStrftime("%Y%m%dT%H%M%SZ", $chstart);
-							$chend         = JevDate::rawStrftime("%Y%m%dT%H%M%SZ", $chend);
-							$stamptime     = JevDate::rawStrftime("%Y%m%dT%H%M%SZ", time());
-							$originalstart = JevDate::rawStrftime("%Y%m%dT%H%M%SZ", $originalstart);
+							$chstart       = date("Ymd\THis", $chstart);
+							$chend         = date("Ymd\THis", $chend);
+							$stamptime     = date("Ymd\THis", time());
+							$originalstart = date("Ymd\THis", $originalstart);
 							// Change back
 							date_default_timezone_set($current_timezone);
 						}
 						else
 						{
-							$chstart       = JevDate::strftime("%Y%m%dT%H%M%S", $chstart);
-							$chend         = JevDate::strftime("%Y%m%dT%H%M%S", $chend);
-							$stamptime     = JevDate::strftime("%Y%m%dT%H%M%S", time());
-							$originalstart = JevDate::strftime("%Y%m%dT%H%M%S", $originalstart);
+							$chstart       = date("Ymd\THis", $chstart);
+							$chend         = date("Ymd\THis", $chend);
+							$stamptime     = date("Ymd\THis", time());
+							$originalstart = date("Ymd\THis", $originalstart);
 						}
 						$html .= "DTSTAMP:" . $stamptime . "\r\n";
 						$html .= "DTSTART$tzid:" . $chstart . "\r\n";
@@ -3916,19 +3915,19 @@ SCRIPT;
 						date_default_timezone_set("UTC");
 
 						// Do not use JevDate version since this sets timezone to config value!
-						$chstart       = JevDate::rawStrftime("%Y%m%dT%H%M%SZ", $chstart);
-						$chend         = JevDate::rawStrftime("%Y%m%dT%H%M%SZ", $chend);
-						$stamptime     = JevDate::rawStrftime("%Y%m%dT%H%M%SZ", time());
-						$originalstart = JevDate::rawStrftime("%Y%m%dT%H%M%SZ", $originalstart);
+						$chstart       = date("Ymd\THis", $chstart);
+						$chend         = date("Ymd\THis", $chend);
+						$stamptime     = date("Ymd\THis", time());
+						$originalstart = date("Ymd\THis", $originalstart);
 						// Change back
 						date_default_timezone_set($current_timezone);
 					}
 					else
 					{
-						$chstart       = JevDate::strftime("%Y%m%dT%H%M%S", $chstart);
-						$chend         = JevDate::strftime("%Y%m%dT%H%M%S", $chend);
-						$stamptime     = JevDate::strftime("%Y%m%dT%H%M%S", time());
-						$originalstart = JevDate::strftime("%Y%m%dT%H%M%S", $originalstart);
+						$chstart       = date("Ymd\THis", $chstart);
+						$chend         = date("Ymd\THis", $chend);
+						$stamptime     = date("Ymd\THis", time());
+						$originalstart = date("Ymd\THis", $originalstart);
 					}
 					$html .= "DTSTAMP$tzid:" . $stamptime . "\r\n";
 					$html .= "DTSTART$tzid:" . $chstart . "\r\n";

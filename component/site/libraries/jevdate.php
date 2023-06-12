@@ -145,6 +145,10 @@ if (!defined("JEVDATE"))
 			{
 				$format = str_replace('%b', $this->monthToString(date('n', $time), true), $format);
 			}
+			if (strpos($format, '%h') !== false)
+			{
+				$format = str_replace('%h', $this->monthToString(date('n', $time), true), $format);
+			}
 			if (strpos($format, '%B') !== false)
 			{
 				$format = str_replace('%B', $this->monthToString(date('n', $time)), $format);
@@ -195,7 +199,8 @@ if (!defined("JEVDATE"))
 		public function toMySQL($local = false)
 		{
 
-			return $this->toFormat('%Y-%m-%d %H:%M:%S', $local);
+			return parent::toSql($local);
+			//return $this->toFormat('%Y-%m-%d %H:%M:%S', $local);
 
 		}
 

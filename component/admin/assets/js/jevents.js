@@ -33,8 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
     {
         button.classList.remove('btn');
         button.classList.add('gsl-button');
-        button.classList.add('gsl-button-small');
-
+        //  button.classList.add('gsl-button-small');
         if (!button.classList.contains('gsl-button-primary') && !button.classList.contains('gsl-button-danger') && !button.classList.contains('gsl-button-warning')  && !button.classList.contains('gsl-button-success'))
         {
             button.classList.add('gsl-button-default');

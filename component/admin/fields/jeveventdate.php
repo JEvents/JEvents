@@ -103,7 +103,7 @@ class FormFieldJeveventdate extends JFormFieldCalendar
 		}
 		ob_start();
 
-		$cal = JEVHelper::loadElectricCalendar($this->name, $this->name, $event->$eventfield(), $minyear, $maxyear, 'var elem =jevjq(this);'.$this->element['onhidestart'], "var elem = jevjq(this);".$this->element['onchange'], $inputdateformat, array(), $showtime);
+		$cal = JEVHelper::loadElectricCalendar($this->name, $this->name, $event->$eventfield(), $minyear, $maxyear, 'var elem =jevjq(this);'.$this->element['onhidestart'], "var elem = jevjq(this);".$this->element['onchange'], $inputdateformat, array("class" => "gsl-width-small"), $showtime);
 		echo $cal;
 		?>
 		<input type="hidden" name="<?php echo $this->name; ?>2" id="<?php echo $this->name; ?>2" value=""/>

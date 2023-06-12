@@ -258,6 +258,11 @@ function set12hTime(time24h){
 		ampm.parentNode.classList.add('gsl-button-primary');
 		inactive_ampm.parentNode.classList.remove('gsl-button-primary');
 	}
+	if (ampm.parentNode.classList.contains('uk-button'))
+	{
+		ampm.parentNode.classList.add('uk-button-primary');
+		inactive_ampm.parentNode.classList.remove('uk-button-primary');
+	}
 }
 
 
@@ -1021,12 +1026,15 @@ function fixRepeatDates(checkYearDay){
 	}
 
 	updateRepeatWarning();
-
 }
 
 function toggleWeekNums(newstate) {
 	var wn = document.adminForm["weeknums[]"];
 	if (parseInt(document.getElementById('evid').value) == 0) {
+		start_date = document.getElementById('publish_up');
+		startDate = new Date;
+		startDate = startDate.dateFromYMD(start_date.value);
+
 		for (var week = 0; week < wn.length; week++) {
 			var firstOfMonth = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
 			var weeknumber = startDate.getWeekNumber() - firstOfMonth.getWeekNumber();
@@ -1317,7 +1325,7 @@ function hideEmptyJevTabs() {
 			})
 		}
 		// new version
-		var uitabs = document.querySelectorAll("#adminForm .gsl-switcher > li");
+		var uitabs = document.querySelectorAll("#adminForm .gsl-switcher > li, #adminForm .uk-switcher > li");
 		var uitablabels = document.querySelectorAll("#adminForm #myEditTabs > li");
 
 		if (uitabs.length)

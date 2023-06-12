@@ -35,15 +35,19 @@ use InvalidArgumentException;
  * @author BohwaZ <https://bohwaz.net/>
  */
 function strftime (string $format, $timestamp = null, ?string $locale = null) : string {
+	if (version_compare(PHP_VERSION, "8.1", "lt"))
+	{
+		return @\strftime($format, $timestamp);
+	}
 	if (!($timestamp instanceof DateTimeInterface)) {
 		$timestamp = is_numeric($timestamp) ? '@' . $timestamp : (string) $timestamp;
 
 		try {
 			$timestamp = new DateTime($timestamp);
-		} catch (Exception $e) {
+		} catch (\Throwable $e) {
 			try {
 				$timestamp = new DateTime("@" . $timestamp);
-			} catch (Exception $e) {
+			} catch (\Throwable $e) {
 				throw new InvalidArgumentException('$timestamp ' . $timestamp . ' argument is neither a valid UNIX timestamp, a valid date-time string or a DateTime object.', 0, $e);
 			}
 

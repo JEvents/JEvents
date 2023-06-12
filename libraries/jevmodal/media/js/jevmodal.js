@@ -33,7 +33,7 @@ function jevModalSelector(sourceElement, params, evt) {
         if (typeof elementData.title !== 'undefined')
         {
             if (elementData.title !== "") {
-                modalHeader.style.display = 'block';
+              //  modalHeader.style.display = 'block';
             }
             modalTitle.innerHTML = elementData.title;
         }
@@ -101,7 +101,7 @@ function jevModalResize(id) {
     if (typeof elementData.title !== 'undefined')
     {
         if (elementData.title !== "") {
-            modalHeader.style.display = 'block';
+          //  modalHeader.style.display = 'block';
         }
         modalTitle.innerHTML = elementData.title;
     }

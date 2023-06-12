@@ -2555,7 +2555,7 @@ function jevSpecialDateFormatting($matches)
 					$fmt = sprintf($fmtparts[1], $fmtparts[0]);
 				}
 			}
-			//return JevDate::rawStrftime($fmt, strtotime(strip_tags($tempreplace)));
+
 			if (!is_int($tempreplace))
 			{
 				$tempreplace = strtotime(strip_tags($tempreplace));

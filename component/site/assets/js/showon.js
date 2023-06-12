@@ -21,7 +21,7 @@ Joomla = window.Joomla || {};
          */
         function linkedoptions(target, animate) {
             var showfield = true,
-                jsondata  = target.data('showon-gsl') || [],
+                jsondata  = target.data('showon-gsl') || target.data('showon-uk') || [],
                 itemval, condition, fieldName, $fields;
 
             // Check if target conditions are satisfied
@@ -121,10 +121,17 @@ Joomla = window.Joomla || {};
                 if (!target[0].classList.contains('gsl-animation-slide-bottom')) {
                    // target[0].classList.add('gsl-animation-slide-bottom');
                 }
+                if (!target[0].classList.contains('uk-animation-slide-bottom')) {
+                    // target[0].classList.add('uk-animation-slide-bottom');
+                }
 
                 if (showfield)
                 {
-                    var isGrid = target[0].classList.contains('gsl-grid') || target[0].parentNode.classList.contains('gsl-grid')  || target[0].classList.contains('control-group');
+                    var isGrid = target[0].classList.contains('gsl-grid')
+                        || target[0].parentNode.classList.contains('gsl-grid')
+                        || target[0].classList.contains('uk-grid')
+                        || target[0].parentNode.classList.contains('uk-grid')
+                        || target[0].classList.contains('control-group');
                     target[0].style.display = isGrid ? 'flex' : (target[0].nodeName.toLowerCase() == 'tr' ? 'table-row' : 'block');
                 }
                 else
@@ -134,7 +141,11 @@ Joomla = window.Joomla || {};
             } else {
                 if (showfield)
                 {
-                    var isGrid = target[0].classList.contains('gsl-grid') || target[0].parentNode.classList.contains('gsl-grid')  || target[0].classList.contains('control-group');
+                    var isGrid = target[0].classList.contains('gsl-grid')
+                        || target[0].parentNode.classList.contains('gsl-grid')
+                        || target[0].classList.contains('uk-grid')
+                        || target[0].parentNode.classList.contains('uk-grid')
+                        || target[0].classList.contains('control-group');
                     target[0].style.display = isGrid ? 'flex' : (target[0].nodeName.toLowerCase() == 'tr' ? 'table-row' : 'block');
                 }
                 else
@@ -161,6 +172,7 @@ Joomla = window.Joomla || {};
                 });
 
                 document.dispatchEvent(showonChanged);
+
             }
             catch (e) {
 
@@ -174,12 +186,12 @@ Joomla = window.Joomla || {};
         function setUpShowon(container) {
             container = container || document;
 
-            var $showonFields = $(container).find('[data-showon-gsl]');
+            var $showonFields = $(container).find('[data-showon-gsl],[data-showon-uk]');
             // Setup each 'showon' field
             for (var is = 0, ls = $showonFields.length; is < ls; is++) {
                 // Use anonymous function to capture arguments
                 (function() {
-                    var $target = $($showonFields[is]), $jsondata = $target.data('showon-gsl') || [],
+                    var $target = $($showonFields[is]), $jsondata = $target.data('showon-gsl') || $target.data('showon-uk') || [],
                         $field, $fields = $();
 
                     // Collect an all referenced elements
@@ -201,10 +213,10 @@ Joomla = window.Joomla || {};
 
                 // Setup each 'showon' field onkeypress to mimic onchange
                 if (document.querySelectorAll) {
-                    let showonFields = container.querySelectorAll('[data-showon-gsl]');
+                    let showonFields = container.querySelectorAll('[data-showon-gsl],[data-showon-uk]');
 
                     let target = showonFields[is];
-                    let jsondata = JSON.parse(target.getAttribute('data-showon-gsl')) || [],
+                    let jsondata = JSON.parse(target.getAttribute('data-showon-gsl')) || JSON.parse(target.getAttribute('data-showon-uk')) || [],
                         fields = [];
 
                     if (typeof jsondata['AND'] !== 'undefined') {
@@ -276,6 +288,7 @@ Joomla = window.Joomla || {};
             $(document).on('subform-row-add', function(event, row) {
                 var $row      = $(row),
                     $elements = $row.find('[data-showon-gsl]'),
+                    $elementsuk = $row.find('[data-showon-uk]'),
                     baseName  = $row.data('baseName'),
                     group     = $row.data('group'),
                     search    = new RegExp('\\[' + baseName + '\\]\\[' + baseName + 'X\\]', 'g'),
@@ -288,6 +301,12 @@ Joomla = window.Joomla || {};
                     showon = $elm.attr('data-showon-gsl').replace(search, replace);
 
                     $elm.attr('data-showon-gsl', showon);
+                }
+                for (var i = 0, l = $elementsuk.length; i < l; i++) {
+                    $elm   = $($elementsuk[i]);
+                    showon = $elm.attr('data-showon-uk').replace(search, replace);
+
+                    $elm.attr('data-showon-uk', showon);
                 }
 
                 setUpShowon(row);

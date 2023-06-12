@@ -135,7 +135,13 @@ SCRIPT;
 		else {
 			// Load jQuery
 			HTMLHelper::_('jquery.framework');
-			if (version_compare(JVERSION, '4', 'ge') && $jevparams->get('framework', 'native') == 'native')
+			if (version_compare(JVERSION, '4', 'ge') &&
+				(
+					$jevparams->get('framework', 'native') == 'native'
+					||
+					$jevparams->get('framework', 'native') == 'bootstrap5'
+				)
+			)
 			{
 				// Include the Bootstrap component
 				Factory::getApplication()

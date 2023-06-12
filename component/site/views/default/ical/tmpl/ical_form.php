@@ -120,7 +120,7 @@ if ($input->getString("submit", "") != "")
 		$privatelink = $link . "&pk=" . md5($icalkey . $catsImploded . $years . $user->password . $user->username . $user->id) . "&i=" . $user->id;
 	}
 
-	echo "<p><a href='$publiclink'>" . Text::_('JEV_REP_ICAL_PUBLIC') . "</a></p>";
+	echo "<p><a href='$publiclink' rel='nofollow'>" . Text::_('JEV_REP_ICAL_PUBLIC') . "</a></p>";
 	if ($user->id != 0)
 	{
 		echo "<p><a href='$privatelink'>" . Text::_('JEV_REP_ICAL_PRIVATE') . "</a></p>";
@@ -129,7 +129,7 @@ if ($input->getString("submit", "") != "")
 	if ($cfg->get("outlook2003icalexport", 1))
 	{
 		echo "<p>" . Text::_('Outlook 2003 specific links') . "</p>";
-		echo "<p><a href='$publiclink&outlook2003=1'>" . Text::_('JEV_REP_ICAL_PUBLIC') . "</a></p>";
+		echo "<p><a href='$publiclink&outlook2003=1' rel='nofollow'>" . Text::_('JEV_REP_ICAL_PUBLIC') . "</a></p>";
 		if ($user->id != 0)
 		{
 			echo "<p><a href='$privatelink&outlook2003='>" . Text::_('JEV_REP_ICAL_PRIVATE') . "</a></p>";

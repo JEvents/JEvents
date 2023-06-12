@@ -196,17 +196,28 @@
 
         //-->
         <!-- execute yarn scripts there -->
-        <exec command="yarn compile" dir="${uikitdir}" outputProperty="yarn.output" >
-        </exec>
+        <!--
+        <exec command="yarn compile" dir="${uikitdir}" outputProperty="yarn.output" >        </exec>
         <echo msg="${yarn.output}" />
-        <exec command="yarn prefix -p gsl " dir="${uikitdir}"  outputProperty="yarn.output2" >
-        </exec>
+        <exec command="yarn prefix -p gsl " dir="${uikitdir}"  outputProperty="yarn.output2" >        </exec>
         <echo msg="${yarn.output2}" />
-        <exec command="yarn scope cleanup" dir="${uikitdir}"  outputProperty="yarn.output3" >
-        </exec>
+        <exec command="yarn scope cleanup" dir="${uikitdir}"  outputProperty="yarn.output3" >        </exec>
         <echo msg="${yarn.output3}" />
-        <exec command="yarn scope -s 'gsl-scope'" dir="${uikitdir}"  outputProperty="yarn.output4" >
-        </exec>
+        <exec command="yarn scope -s 'gsl-scope'" dir="${uikitdir}"  outputProperty="yarn.output4" >        </exec>
+        <echo msg="${yarn.output4}" />
+        -->
+
+        <!-- execute pnpm scripts there -->
+        <exec command="pnpm compile" dir="${uikitdir}" outputProperty="yarn.output" >        </exec>
+        <echo msg="${yarn.output}" />
+        <!--
+        <exec command="pnpm prefix /-/- -p gsl " dir="${uikitdir}"  outputProperty="yarn.output2" >        </exec>
+        -->
+        <exec command="node build/prefix -p='gsl' " dir="${uikitdir}"  outputProperty="yarn.output2" >        </exec>
+        <echo msg="${yarn.output2}" />
+        <exec command="pnpm scope cleanup" dir="${uikitdir}"  outputProperty="yarn.output3" >        </exec>
+        <echo msg="${yarn.output3}" />
+        <exec command="pnpm scope -s='gsl-scope'" dir="${uikitdir}"  outputProperty="yarn.output4" >        </exec>
         <echo msg="${yarn.output4}" />
 
         <!-- copy the dist files back from uikit repository -->
@@ -220,6 +231,7 @@
         </copy>
 
         <!-- remove the requirejs and node module handling!    -->
+
         <exec command="find '${rootdir}/component/media/' -type f \( -iname 'uikit*.js' \)  -exec sed -ri 's/typeof exports ===/typeof GSL_exports_GSL ===/' '{}' +;" />
         <exec command="find '${rootdir}/component/media/' -type f \( -iname 'uikit*.js' \)  -exec sed -ri 's/typeof define ===/typeof GSL_define_GSL ===/' '{}' +;" />
 

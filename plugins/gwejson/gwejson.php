@@ -12,6 +12,8 @@ defined('JPATH_BASE') or die;
 use Joomla\CMS\Factory;
 use Joomla\Filesystem\Folder;
 use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
 
 /*
   if (defined('_SC_START')){
@@ -322,6 +324,110 @@ class PlgSystemGwejson extends JPlugin
 			$document = Factory::getApplication()->getDocument();
 			$wa      = $document->getWebAssetManager();
 			$scripts = $wa->getAssets('script');
+		}
+	}
+
+	// Experiment in manipulation of Joomla backend menu
+	public function XXXonPreprocessMenuItems($context, & $items, $params = null, $enabled = true)
+	{
+		if (version_compare(JVERSION, '4.0.0', 'ge') && Factory::getApplication()->isClient('administrator') && Factory::getApplication()->input->get('option') == "com_jevents")
+		{
+			$user = JFactory::getUser();
+
+			$jeventsItems = GslHelper::getLeftIconLinks();
+			$cloneRoot = false;
+			foreach ($items as $i => $item)
+			{
+				if ($item->element == 'com_jevents' && $item->level == 1)
+				{
+
+					if ($item->hasChildren())
+					{
+						$children    = $items[$i]->getChildren();
+
+						foreach ($children as $child)
+						{
+							if (!$cloneRoot)
+							{
+								$cloneRoot = clone $child;
+							}
+							else
+							{
+								// $item->removeChild($child);
+							}
+
+							if (strpos($child->link , "redirect.com_jevlocations") > 0)
+							{
+								$child->link = "index.php?option=com_jevlocations";
+							}
+							else if (strpos($child->link , "redirect.com_rsvppro") > 0)
+							{
+								$child->link = "index.php?option=com_rsvppro";
+							}
+							else if (strpos($child->link , "redirect.com_jeventstags") > 0)
+							{
+								$child->link = "index.php?option=com_jeventstags";
+							}
+							else if (strpos($child->link , "redirect.com_jevpeople") > 0)
+							{
+								$child->link = "index.php?option=com_jevpeople";
+							}
+							else if (strpos($child->link , "redirect.com_categories") > 0)
+							{
+								$child->link = "index.php?option=com_categories&view=categories&extension=com_jevents";
+							}
+						}
+					}
+					foreach ($jeventsItems as $jeventsItem)
+					{
+						if (strpos( $jeventsItem->link, "com_yoursites") > 0)
+						{
+							continue;
+						}
+						if (strpos( $jeventsItem->icon, "joomla") ===  0)
+						{
+							continue;
+						}
+						$matched = false;
+						foreach ($children as $child)
+						{
+							if ($jeventsItem->link == Route::_($child->link, true))
+							{
+								$child->title = $jeventsItem->label;
+
+								ob_start();
+								if (!empty($jeventsItem->icon)) {
+									?><span data-gsl-icon='icon: <?php echo $jeventsItem->icon; ?>' class='gsl-margin-small-right me-2'></span><?php
+								} else if (!empty($jeventsItem->iconSrc)) {
+									?><span class='gsl-margin-small-right me-2'><img src='<?php echo $jeventsItem->iconSrc; ?>' /></span><?php
+								}
+								$icon = ob_get_clean();
+
+								$icon = "<span aria-hidden='true' class='icon-fw icon-puzzle'></span>";
+								$child->title = $icon . $child->title;
+								// no use on child menu items!
+								//$child->class = "class:puzzle";
+
+								$matched = true;
+								break;
+							}
+
+							$x = 1;
+						}
+
+						if (!$matched)
+						{
+							$newClone = clone $cloneRoot;
+							$newClone->title = $jeventsItem->label;
+							$newClone->link = Uri::getInstance($jeventsItem->link);
+							$newClone->link = "index.php" . $newClone->link->toString(['query']);
+
+							$items[$i]->addChild($newClone);
+						}
+					}
+				}
+			}
+
 		}
 	}
 }

@@ -66,16 +66,20 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		$document = Factory::getDocument();
 		$user = Factory::getUser();
 
-		// Set editstrings var just incase and to avoid IDE reporting not set.
+		// Set editstrings var just in case and to avoid IDE reporting not set.
 		$editStrings = "";
 		include(JEV_ADMINLIBS . "/editStrings.php");
 		$document->addScriptDeclaration($editStrings);
 
 		JEVHelper::script('editicalJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
-		if (!GSLMSIE10 && $params->get("newfrontendediting", 1))
+		if (!GSLMSIE10 && $params->get("newfrontendediting", 1) == 1)
 		{
 			JEVHelper::script('editicalGSL.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
+		}
+		else if (!GSLMSIE10 && $params->get("newfrontendediting", 1) == 2)
+		{
+			JEVHelper::script('editicalUIKIT.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 		}
 		JEVHelper::script('JevStdRequiredFieldsJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 

@@ -95,7 +95,7 @@ function gslselect(selector) {
                     initialValue.appendChild(document.createTextNode(selectElement.getAttribute('data-placeholder')));
                 }
 
-                initialValue.style.padding    = '5px 0';
+                initialValue.style.padding    = '5px 0 5px 5px';
                 initialValue.style.lineHeight = '25px';
             }
             else {
@@ -150,7 +150,7 @@ function gslselect(selector) {
             let dropDownDiv = document.createElement('div', {});
             dropDownDiv.classList.add('gsl-dropdown');
             dropDownDiv.classList.add('gsl-margin-remove-top');
-            dropDownDiv.setAttribute('gsl-dropdown', "mode: click");
+            dropDownDiv.setAttribute('gsl-dropdown', "mode: click; flip: false;");
 
             inlineDiv.appendChild(dropDownDiv);
 
@@ -429,7 +429,7 @@ function gslselectSetupOptions(node, dropDownNav, dropDownDiv, selectElement, fi
                 initialValue.appendChild(document.createTextNode(selectElement.getAttribute('data-placeholder')));
             }
 
-            initialValue.style.padding    = '5px 0';
+            initialValue.style.padding    = '5px 0 5px 5px';
             initialValue.style.lineHeight ='25px';
         }
         else

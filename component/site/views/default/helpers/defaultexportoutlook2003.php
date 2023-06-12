@@ -34,7 +34,7 @@ function DefaultExportOutlook2003($view, $publiclink, $privatelink)
 	?>
 	<div class='ical_form_button export_public'>
 		<a style="text-decoration:none" href="<?php echo $publiclink1; ?>"
-		   title="<?php echo Text::_("JEV_SAVE_EVENT_IN_OUTLOOK_LIVE") ?>" target="_blank">
+		   title="<?php echo Text::_("JEV_SAVE_EVENT_IN_OUTLOOK_LIVE") ?>" target="_blank" rel='nofollow'>
 			<span style="display:inline-block;width:24px;"><?php echo HTMLHelper::image('com_jevents/icons-32/outlookicon31.png', Text::_("JEV_SAVE_EVENT_IN_OUTLOOK_LIVE"), null, true); ?></span>
 			<span style="display:inline-block;"><?php echo Text::_("JEV_SAVE_EVENT_IN_OUTLOOK_LIVE"); ?></span>
 		</a>
@@ -45,7 +45,7 @@ function DefaultExportOutlook2003($view, $publiclink, $privatelink)
 		?>
 		<div class='ical_form_button export_private'>
 			<a style="text-decoration:none" href="<?php echo $privatelink1; ?>"
-			   title="<?php echo Text::_("JEV_SAVE_EVENT_IN_OUTLOOK_LIVE") ?>" target="_blank">
+			   title="<?php echo Text::_("JEV_SAVE_EVENT_IN_OUTLOOK_LIVE") ?>" target="_blank" >
 				<span style="display:inline-block;width:24px;"><?php echo HTMLHelper::image('com_jevents/icons-32/outlookicon31.png', Text::_("JEV_SAVE_EVENT_IN_OUTLOOK_LIVE"), null, true); ?></span>
 				<span style="display:inline-block;"><?php echo Text::_("JEV_SAVE_EVENT_IN_OUTLOOK_LIVE"); ?></span>
 			</a>
@@ -55,7 +55,7 @@ function DefaultExportOutlook2003($view, $publiclink, $privatelink)
 	?>
 	<div class='ical_form_button export_public'>
 		<a style="text-decoration:none" href="<?php echo $publiclink2; ?>"
-		   title="<?php echo Text::_("JEV_SAVE_EVENT_IN_MSOUTLOOK") ?>" target="_blank">
+		   title="<?php echo Text::_("JEV_SAVE_EVENT_IN_MSOUTLOOK") ?>" target="_blank" rel='nofollow'>
 			<span style="display:inline-block;width:24px;"><?php echo HTMLHelper::image('com_jevents/icons-32/outlookicon31.png', Text::_("JEV_SAVE_EVENT_IN_MSOUTLOOK"), null, true); ?></span>
 			<span style="display:inline-block;"><?php echo Text::_("JEV_SAVE_EVENT_IN_MSOUTLOOK"); ?></span>
 		</a>

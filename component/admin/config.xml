@@ -337,17 +337,27 @@ Default should be set by the custom field
 
 
 	<fieldset name="JEV_EVENT_EDITING" difficulty="1">
-		<field name="newfrontendediting" type="jevboolean" class="gsl-button-group" default="1" menu="hide"
-			   label="JEV_USE_NEW_FRONTEND_EDITING_FORMATTING" description="JEV_USE_NEW_FRONTEND_EDITING_FORMATTING_DESC" difficulty="1"/>
+		<field name="newfrontendediting" type="radio" class="gsl-button-group"  default="1" menu="hide"
+			   label="JEV_USE_NEW_FRONTEND_EDITING_FORMATTING" description="JEV_USE_NEW_FRONTEND_EDITING_FORMATTING_DESC" difficulty="1">
+			<option value="0">JEV_NO</option>
+			<option value="1">JEV_YES</option>
+			<!--
+			<option value="2">JEV_NATIVE_UIKIT</option>
+			<option value="3">JEV_NATIVE_BOOTSTRAP5</option>
+			-->
+		</field>
+
+		<field name="customcssbackend" type="jevboolean" class="gsl-button-group" default="0" menu="hide"
+			   label="JEV_USE_CUSTOM_CSS_IN_BACKEND" description="JEV_USE_CUSTOM_CSS_IN_BACKEND_DESC" difficulty="1"/>
 
 		<field name="enableshowon" type="jevboolean" class="gsl-button-group" default="0" menu="hide"
 		   label="COM_JEVENT_ENABLE_SHOWON_EDITING" description="COM_JEVENT_ENABLE_SHOWON_EDITING_DESC" difficulty="1"
-			   showon="newfrontendediting:1"
+			   showon="newfrontendediting:1,2,3"
 		/>
 
 		<field name="titleplaceholder" type="jevtext" size="60" default='JEV_EVENT_TITLE_PLACEHOLDER' menu="hide" label="COM_JEVENTS_TITLE_PLACEHOLDER"
 			   description="COM_JEVENTS_TITLE_PLACEHOLDER_DESC" difficulty="1"
-			   showon="newfrontendediting:1[AND]enableshowon:1"
+			   showon="newfrontendediting:1,2,3[AND]enableshowon:1"
 		/>
 
 		<field name="com_calUseStdTime" type="jevboolean" class="gsl-button-group" default="1" menu="hide"
@@ -650,6 +660,9 @@ Default should be set by the custom field
 			   label="JEV_CONVERT_URLS_TO_LINKS_ON_IMPORT"
 			   description="JEV_CONVERT_URLS_TO_LINKS_ON_IMPORT_DESC"
 			   difficulty="3"/>
+		<field name="icalkeyimport" type="jevboolean" class="gsl-button-group" default="0" menu="hide"
+			   label="JEV_ICAL_KEY_IMPORT" description="JEV_ICAL_KEY_IMPORT_DESC" difficulty="3" showon="icalkey!:"/>
+
 
 </fieldset>
 

@@ -53,14 +53,14 @@ class JevExportHelper
 		$tz                 = $params->get("icaltimezonelive", "");
 		if ($tz)
 		{
-			$urlString['dates'] = JevDate::strftime("%Y%m%dT%H%M%S", $row->getUnixStartTime()) . "/" . JevDate::strftime("%Y%m%dT%H%M%S", $row->getUnixEndTime()) . "&ctz=" . $tz;
+			$urlString['dates'] = date("Ymd\THis", $row->getUnixStartTime()) . "/" . date("Ymd\THis", $row->getUnixEndTime()) . "&ctz=" . $tz;
 		}
 		else
 		{
-			$urlString['dates'] = JevDate::strftime("%Y%m%dT%H%M%SZ", $row->getUnixStartTime()) . "/" . JevDate::strftime("%Y%m%dT%H%M%SZ", $row->getUnixEndTime());
+			$urlString['dates'] = date("Ymd\THis", $row->getUnixStartTime()) . "/" . date("Ymd\THis", $row->getUnixEndTime());
 		}
-		$urlString['st']         = JevDate::strftime("%Y%m%dT%H%M%SZ", $row->getUnixStartTime());
-		$urlString['et']         = JevDate::strftime("%Y%m%dT%H%M%SZ", $row->getUnixEndTime());
+		$urlString['st']         = date("Ymd\THis", $row->getUnixStartTime());
+		$urlString['et']         = date("Ymd\THis", $row->getUnixEndTime());
 		$urlString['duration']   = (int) $row->getUnixEndTime() - (int) $row->getUnixStartTime();
 		$urlString['duration']   = (int) $row->getUnixEndTime() - (int) $row->getUnixStartTime();
 		$urlString['location']   = urlencode(isset($row->_locationaddress) ? $row->_locationaddress : $row->location());
@@ -145,7 +145,10 @@ class JevExportHelper
 	    }
 
 	    $urlString['st']         = "startdt=" . $startDateFormatted;
-	    $urlString['et']         = "enddt=" . $endDateFormatted;
+		if (isset($endDateFormatted))
+		{
+			$urlString['et'] = "enddt=" . $endDateFormatted;
+		}
 	    $urlString['rawdetails'] = "body=" . $eventData['rawdetails'];
 	    $urlString['location']   = "location=" . $eventData['location'];
 

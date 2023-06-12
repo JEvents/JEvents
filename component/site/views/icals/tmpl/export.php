@@ -117,7 +117,7 @@ if (!empty($this->icalEvents))
 				if ($testrepeat)
 				{
 					$enddatetime     = $a->getUnixStartTime() + ($testrepeat->getUnixEndTime() - $testrepeat->getUnixStartTime());
-					$a->_endrepeat   = JevDate::strftime("%Y-%m-%d %H:%M:%S", $enddatetime);
+					$a->_endrepeat   = date("Y-m-d H:i:s", $enddatetime);
 					$a->_dtend       = $enddatetime;
 					$a->_unixendtime = $enddatetime;
 				}
@@ -131,7 +131,7 @@ if (!empty($this->icalEvents))
 				{
 					$oldstart        = strtotime($exception->oldstartrepeat);
 					$enddatetime     = $oldstart + ($testrepeat->getUnixEndTime() - $testrepeat->getUnixStartTime());
-					$a->_endrepeat   = JevDate::strftime("%Y-%m-%d %H:%M:%S", $enddatetime);
+					$a->_endrepeat   = date("Y-m-d H:i:s", $enddatetime);
 					$a->_dtend       = $enddatetime;
 					$a->_unixendtime = $enddatetime;
 				}
@@ -143,7 +143,7 @@ if (!empty($this->icalEvents))
 		$html .= "CATEGORIES:" . $a->catname() . "\r\n";
 		if (!empty($a->_class))
 			$html .= "CLASS:" . $a->_class . "\r\n";
-		$html .= "CREATED:" . JevDate::strftime("%Y%m%dT%H%M%S", strtotime($a->_created)) . "\r\n";
+		$html .= "CREATED:" . date("Ymd\THis", strtotime($a->_created)) . "\r\n";
 		$html .= "SUMMARY:" . JEVHelper::iCalTitlePrefix($a) . $a->title() . "\r\n";
 		if ($a->location() != "")
 		{
@@ -210,8 +210,8 @@ if (!empty($this->icalEvents))
 			if ($a->alldayevent())
 			{
 				$alldayprefix = ";VALUE=DATE";
-				$startformat  = "%Y%m%d";
-				$endformat    = "%Y%m%d";
+				$startformat  = "Ymd";
+				$endformat    = "Ymd";
 
 				// add 10 seconds to make sure its not midnight the previous night
 				$start += 10;
@@ -221,15 +221,15 @@ if (!empty($this->icalEvents))
 			{
 				date_default_timezone_set("UTC");
 
-				$startformat = "%Y%m%dT%H%M%SZ";
-				$endformat   = "%Y%m%dT%H%M%SZ";
+				$startformat = "Ymd\THis";
+				$endformat   = "Ymd\THis";
 			}
 
 			// Do not use JevDate version since this sets timezone to config value!
-			$start = JevDate::rawStrftime($startformat, $start);
-			$end   = JevDate::rawStrftime($endformat, $end);
+			$start = date($startformat, $start);
+			$end   = date($endformat, $end);
 
-			$stamptime = JevDate::rawStrftime("%Y%m%dT%H%M%SZ", time());
+			$stamptime = date("Ymd\THis", time());
 
 			// Change back
 			date_default_timezone_set($current_timezone);
@@ -243,8 +243,8 @@ if (!empty($this->icalEvents))
 			if ($a->alldayevent())
 			{
 				$alldayprefix = ";VALUE=DATE";
-				$startformat  = "%Y%m%d";
-				$endformat    = "%Y%m%d";
+				$startformat  = "Ymd";
+				$endformat    = "Ymd";
 
 				// add 10 seconds to make sure its not midnight the previous night
 				$start += 10;
@@ -252,25 +252,25 @@ if (!empty($this->icalEvents))
 			}
 			else
 			{
-				$startformat = "%Y%m%dT%H%M%S";
-				$endformat   = "%Y%m%dT%H%M%S";
+				$startformat = "Ymd\THis";
+				$endformat   = "Ymd\THis";
 			}
 
-			$start = JevDate::strftime($startformat, $start);
-			$end   = JevDate::strftime($endformat, $end);
+			$start = date($startformat, $start);
+			$end   = date($endformat, $end);
 
 			if (is_callable("date_default_timezone_set"))
 			{
 				// Change timezone to UTC
 				$current_timezone = date_default_timezone_get();
 				date_default_timezone_set("UTC");
-				$stamptime = JevDate::strftime("%Y%m%dT%H%M%SZ", time());
+				$stamptime = date("Ymd\THis", time());
 				// Change back
 				date_default_timezone_set($current_timezone);
 			}
 			else
 			{
-				$stamptime = JevDate::strftime("%Y%m%dT%H%M%SZ", time());
+				$stamptime = date("Ymd\THis", time());
 			}
 
 			// in case the first repeat is changed
@@ -314,14 +314,13 @@ if (!empty($this->icalEvents))
 			{
 				// Do not use JevDate version since this sets timezone to config value!
 				// GOOGLE HAS A PROBLEM WITH 235959!!!
-				//$html .= ';UNTIL=' . JevDate::rawStrftime("%Y%m%dT235959Z", $a->_until);
 				if ($a->alldayevent())
 				{
-					$html .= ';UNTIL=' . JevDate::rawStrftime("%Y%m%dT000000Z", $a->_until );
+					$html .= ';UNTIL=' . date("Ymd\T000000\Z", $a->_until );
 				}
 				else
 				{
-					$html .= ';UNTIL=' . JevDate::rawStrftime("%Y%m%dT000000Z", $a->_until + 86400);
+					$html .= ';UNTIL=' . date("Ymd\T000000\Z", $a->_until + 86400);
 				}
 			}
 			else if ($a->_count != "")
@@ -389,14 +388,14 @@ if (!empty($this->icalEvents))
 							date_default_timezone_set("UTC");
 
 							// Do not use JevDate version since this sets timezone to config value!
-							$deletes[] = JevDate::rawStrftime("%Y%m%dT%H%M%SZ", $exceptiondate);
+							$deletes[] = date("Ymd\THis", $exceptiondate);
 
 							// Change back
 							date_default_timezone_set($current_timezone);
 						}
 						else
 						{
-							$deletes[] = JevDate::strftime("%Y%m%dT%H%M%S", $exceptiondate);
+							$deletes[] = date("Ymd\THis", $exceptiondate);
 						}
 					}
 					else
@@ -441,7 +440,7 @@ if (!empty($this->icalEvents))
 				$html .= "CATEGORIES:" . $a->catname() . "\r\n";
 				if (!empty($a->_class))
 					$html .= "CLASS:" . $a->_class . "\r\n";
-				$html .= "CREATED:" . JevDate::strftime("%Y%m%dT%H%M%S", strtotime($a->_created)) . "\r\n";
+				$html .= "CREATED:" . date("Ymd\THis", strtotime($a->_created)) . "\r\n";
 				$html .= "SUMMARY:" . $a->title() . "\r\n";
 				if ($a->location() != "") $html .= "LOCATION:" . $this->wraplines($this->replacetags($a->location())) . "\r\n";
 				// We Need to wrap this according to the specs
@@ -476,17 +475,17 @@ if (!empty($this->icalEvents))
 					date_default_timezone_set("UTC");
 
 					// Do not use JevDate version since this sets timezone to config value!
-					$chstart       = JevDate::rawStrftime("%Y%m%dT%H%M%SZ", $chstart);
-					$chend         = JevDate::rawStrftime("%Y%m%dT%H%M%SZ", $chend);
-					$originalstart = JevDate::rawStrftime("%Y%m%dT%H%M%SZ", $originalstart);
+					$chstart       = date("Ymd\THis", $chstart);
+					$chend         = date("Ymd\THis", $chend);
+					$originalstart = date("Ymd\THis", $originalstart);
 					// Change back
 					date_default_timezone_set($current_timezone);
 				}
 				else
 				{
-					$chstart       = JevDate::strftime("%Y%m%dT%H%M%S", $chstart);
-					$chend         = JevDate::strftime("%Y%m%dT%H%M%S", $chend);
-					$originalstart = JevDate::strftime("%Y%m%dT%H%M%S", $originalstart);
+					$chstart       = date("Ymd\THis", $chstart);
+					$chend         = date("Ymd\THis", $chend);
+					$originalstart = date("Ymd\THis", $originalstart);
 				}
 
 				if (is_callable("date_default_timezone_set"))
@@ -494,13 +493,13 @@ if (!empty($this->icalEvents))
 					// Change timezone to UTC
 					$current_timezone = date_default_timezone_get();
 					date_default_timezone_set("UTC");
-					$stamptime = JevDate::strftime("%Y%m%dT%H%M%SZ", time());
+					$stamptime = date("Ymd\THis", time());
 					// Change back
 					date_default_timezone_set($current_timezone);
 				}
 				else
 				{
-					$stamptime = JevDate::strftime("%Y%m%dT%H%M%SZ", time());
+					$stamptime = date("Ymd\THis", time());
 				}
 
 				$html .= "DTSTAMP:" . $stamptime . "\r\n";
