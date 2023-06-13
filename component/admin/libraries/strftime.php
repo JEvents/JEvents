@@ -236,10 +236,12 @@ function strftime (string $format, $timestamp = null, ?string $locale = null) : 
 		}
 
 		if (!isset($translation_table[$pattern])) {
-			throw new InvalidArgumentException(sprintf('Format "%s" is unknown in time format', $pattern));
+			$replace = str_replace("%", "", $pattern);
 		}
-
-		$replace = $translation_table[$pattern];
+		else
+		{
+			$replace = $translation_table[$pattern];
+		}
 
 		if (is_string($replace)) {
 			$result = $timestamp->format($replace);
