@@ -234,8 +234,10 @@
 
         <!-- remove the requirejs and node module handling!    -->
 
-        <exec command="find '${rootdir}/component/media/' -type f \( -iname 'uikit*.js' \)  -exec sed -ri 's/typeof exports ===/typeof GSL_exports_GSL ===/' '{}' +;" />
-        <exec command="find '${rootdir}/component/media/' -type f \( -iname 'uikit*.js' \)  -exec sed -ri 's/typeof define ===/typeof GSL_define_GSL ===/' '{}' +;" />
+        <!--
+                <exec command="find '${rootdir}/component/media/' -type f \( -iname 'uikit*.js' \)  -exec sed -ri 's/typeof exports ===/typeof GSL_exports_GSL ===/' '{}' +;" />
+                <exec command="find '${rootdir}/component/media/' -type f \( -iname 'uikit*.js' \)  -exec sed -ri 's/typeof define ===/typeof GSL_define_GSL ===/' '{}' +;" />
+        -->
 
         <!-- replace colours with CSS variables -->
         <!-- primary -->
