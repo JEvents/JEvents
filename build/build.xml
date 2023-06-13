@@ -207,6 +207,8 @@
         <echo msg="${yarn.output4}" />
         -->
 
+        <exec command="npm install " dir="${uikitdir}"  outputProperty="yarn.output2" >        </exec>
+
         <!-- execute pnpm scripts there -->
         <exec command="pnpm compile" dir="${uikitdir}" outputProperty="yarn.output" >        </exec>
         <echo msg="${yarn.output}" />
