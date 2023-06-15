@@ -74,3 +74,27 @@ function clickIcalButton() {
 function closeical() {
 }
 
+
+function printPage()
+{
+    var jevents = document.getElementById('jevents');
+    if (jevents)
+    {
+        parent = jevents.parentNode;
+        while (parent && parent.nodeName !== "HTML")
+        {
+            parent.classList.add('jeventsPrint');
+            parent = parent.parentNode;
+        }
+
+        window.print();
+
+        parent = jevents.parentNode;
+        while (parent && parent.nodeName !== "HTML")
+        {
+            parent.classList.remove('jeventsPrint');
+            parent = parent.parentNode;
+        }
+
+    }
+}

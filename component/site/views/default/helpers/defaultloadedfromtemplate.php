@@ -450,6 +450,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		{
 			if (!in_array($templateparams->customcss, $processedCss))
 			{
+				$templateparams->customcss = preg_replace_callback('|{{.*?}}|', 'cleanLabels', $templateparams->customcss);
 				$processedCss[] = $templateparams->customcss;
 				//Factory::getDocument()->addStyleDeclaration($templateparams->customcss);
 			}
@@ -463,9 +464,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			}
 		}
 
-
 		// non greedy replacement - because of the ?
-		$template_value = preg_replace_callback('|{{.*?}}|', 'cleanLabels', $template_value . implode("\n", $processedCss));
+		$template_value = preg_replace_callback('|{{.*?}}|', 'cleanLabels', $template_value);
 
 		$matchesarray = array();
 		preg_match_all('|{{.*?}}|', $template_value, $matchesarray);

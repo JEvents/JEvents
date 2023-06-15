@@ -81,7 +81,7 @@ function DefaultViewHelperHeader16($view)
 			?>
 			<ul class="actions">
 				<?php
-				if ($cfg->get('com_print_icon_view', 1))
+				if ($cfg->get('com_print_icon_view', 1) == 1)
 				{
 					$print_link = 'index.php?option=' . JEV_COM_COMPONENT
 						. '&task=' . $task
@@ -118,6 +118,20 @@ function DefaultViewHelperHeader16($view)
 						</li> <?php
 					}
 				}
+				else if ( $cfg->get('com_print_icon_view', 1) == 2)
+				{
+					?>
+					<li class="print-icon">
+						<a href="javascript:void(0);" rel="nofollow"
+						   onclick="printPage();return false;"
+						   title="<?php echo Text::_('JEV_CMN_PRINT'); ?>">
+							<span class="icon-print"> </span>
+						</a>
+					</li>
+					<?php
+
+				}
+
 				$jversion = new Joomla\CMS\Version;
 				if ($cfg->get('com_email_icon_view', 1) && !$jversion->isCompatible('4.0'))
 				{

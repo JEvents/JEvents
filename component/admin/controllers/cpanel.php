@@ -1004,6 +1004,8 @@ WHERE ics.ics_id is null
 		$app    = Factory::getApplication();
 		$input  = $app->input;
 
+		$force = false;
+
 		if (!JEVHelper::isAdminUser())
 		{
 			Factory::getApplication()->enqueueMessage( "Not Authorised - must be admin", 'warning');
@@ -1013,9 +1015,13 @@ WHERE ics.ics_id is null
 
 		$db = Factory::getDbo();
 		$db->setQuery("SHOW TABLES LIKE '" . $db->getPrefix() . "jev_%'");
-		$alltables = $db->loadResultArray();
+		$alltables = $db->loadAssocList();
 
 		// find collation for com_content
+		$db->setQuery("SHOW FULL COLUMNS FROM #__content");
+		$contentdata = $db->loadObjectList('Field');
+		$collation   = $contentdata['title']->Collation;
+
 		$db->setQuery("SHOW FULL COLUMNS FROM #__content");
 		$contentdata = $db->loadObjectList('Field');
 		$collation   = $contentdata['title']->Collation;
@@ -1027,9 +1033,9 @@ WHERE ics.ics_id is null
 		{
 			foreach ($tables as $tablename => $table)
 			{
-				if ($table->Collation != $collation)
+				if ($force || $table->Collation != $collation)
 				{
-					$db->setQuery("ALTER TABLE $tablename convert to character set utf8 collate $collation");
+					$db->setQuery("ALTER TABLE $tablename convert to character set utf8mb4 collate $collation");
 					$db->execute();
 				}
 			}
@@ -1041,7 +1047,7 @@ WHERE ics.ics_id is null
 		$fixtables = false;
 		foreach ($tables as $tablename => $table)
 		{
-			if ($table->Collation != $collation)
+			if ($force || $table->Collation != $collation)
 			{
 				echo "Table $tablename has collation " . $table->Collation . " it should probably be " . $collation . "<Br/>";
 				$fixtables = true;
@@ -1050,7 +1056,7 @@ WHERE ics.ics_id is null
 			$columndata = $db->loadObjectList('Field');
 			foreach ($columndata as $columnname => $columndata)
 			{
-				if ($columndata->Collation && $columndata->Collation != $collation)
+				if ($columndata->Collation && ($force || $columndata->Collation != $collation))
 				{
 					echo "Column $columnname in Table $tablename has collation " . $columndata->Collation . " it should probably be " . $collation . "<Br/>";
 				}

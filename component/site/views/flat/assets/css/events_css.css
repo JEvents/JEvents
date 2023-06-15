@@ -1275,3 +1275,12 @@ div#jumpto form {
 #jevents #jevents_body .cal_daylink .listview {
     display: none;
 }
+
+
+body.jeventsPrint *:not(
+body .jeventsPrint,
+body .jeventsPrint #jevents ,
+body .jeventsPrint #jevents *)
+{
+    display: none;
+}
