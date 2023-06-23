@@ -454,15 +454,18 @@ class jevFilter
 		// TODO chek this logic
 		if ((int) $input->getInt('filter_reset', 0))
 		{
+
 			$this->filter_value = $this->filterNullValue;
+
 			for ($v = 0; $v < $this->valueNum; $v++)
 			{
 				$this->filter_values[$v] = $this->filterNullValues[$v];
 			}
-			$this->filter_value = $app->setUserState($this->filterType . '_fv_ses', $this->filterNullValue);
+			$app->setUserState($this->filterType . '_fv_ses', $this->filterNullValue);
+
 			for ($v = 0; $v < $this->valueNum; $v++)
 			{
-				$this->filter_values[$v] = $app->setUserState($this->filterType . '_fvs_ses' . $v, $this->filterNullValues[$v]);
+				$app->setUserState($this->filterType . '_fvs_ses' . $v, $this->filterNullValues[$v]);
 			}
 		}
 		// if not logged in and using cache then do not use session data

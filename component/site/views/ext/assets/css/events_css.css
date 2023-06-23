@@ -917,3 +917,11 @@ table.ev_table {
 .popover div > div {
     color: inherit;
 }
+
+body.jeventsPrint *:not(
+body .jeventsPrint,
+body .jeventsPrint #jevents ,
+body .jeventsPrint #jevents *)
+{
+    display: none;
+}

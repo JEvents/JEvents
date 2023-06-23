@@ -199,7 +199,7 @@ if (!defined("JEVDATE"))
 		public function toMySQL($local = false)
 		{
 
-			return parent::toSql($local);
+			return self::toSql($local);
 			//return $this->toFormat('%Y-%m-%d %H:%M:%S', $local);
 
 		}

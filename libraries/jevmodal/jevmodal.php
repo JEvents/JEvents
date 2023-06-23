@@ -100,7 +100,7 @@ SCRIPT;
 		$jevparams = ComponentHelper::getParams('com_jevents');
 
 		// UIKit or Bootstrap
-		$jinput = JFactory::getApplication()->input;
+		$jinput = Factory::getApplication()->input;
 
 		$comMenus = $jinput->getCmd('option') == "com_menus";
 		$comModules = $jinput->getCmd('option') == "com_modules" || $jinput->getCmd('option') == "com_advancedmodules";
@@ -207,6 +207,15 @@ SCRIPT;
 		if(strpos($jevparams->get('framework', 'bootstrap'), 'uikit') === 0)
 		{
 			$toolTipType = 'uikit';
+		}
+
+		// UIKit or Bootstrap
+		$jinput = Factory::getApplication()->input;
+		$option = $jinput->getCmd('option');
+		$somethingElse = !in_array($option, array("com_jevents", "com_jevlocations", "com_jeventstags", "com_jevpeople",  "com_rsvppro"));
+		if ($somethingElse && Factory::getApplication()->isClient('administrator'))
+		{
+			$toolTipType = 'bootstrap';
 		}
 
 		// Migrate old MooTools tooltips - from old settings

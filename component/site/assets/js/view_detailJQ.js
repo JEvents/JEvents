@@ -74,3 +74,35 @@ function clickIcalButton() {
 function closeical() {
 }
 
+
+function printPage()
+{
+    var jevents = document.getElementById('jevents');
+    if (jevents)
+    {
+        parent = jevents.parentNode;
+        while (parent && parent.nodeName !== "HTML")
+        {
+            parent.classList.add('jeventsPrint');
+            parent = parent.parentNode;
+        }
+
+        var jeventsBody = document.getElementById("jevents_body");
+        var jeventsBodyParent = jeventsBody.parentNode;
+        var sizex = jeventsBodyParent.offsetWidth;
+
+        var body = document.getElementsByTagName('body')[0];
+        body.setAttribute('data-jeventswidth', 10);
+
+        window.print();
+
+        parent = jevents.parentNode;
+        while (parent && parent.nodeName !== "HTML")
+        {
+            parent.classList.remove('jeventsPrint');
+            parent = parent.parentNode;
+        }
+        body.removeAttribute('data-jeventswidth', 10);
+
+    }
+}

@@ -136,8 +136,12 @@
 		</field>
 		<field name="com_byview" type="jevboolean" class="gsl-button-group" default="1" menu="hide" label="JEV_VIEW_BY"
 		       description="" difficulty="1"/>
-		<field name="com_print_icon_view" type="jevboolean" class="gsl-button-group" default="1" menu="hide"
-		       label="JEV_SHOW_PRINT_ICON" description="JEV_SHOW_PRINT_ICON_TIP" difficulty="1"/>
+		<field name="com_print_icon_view" type="radio" class="gsl-button-group" default="1" menu="hide"
+		       label="JEV_SHOW_PRINT_ICON" description="JEV_SHOW_PRINT_ICON_TIP" difficulty="1">
+			<option value="0">JEV_NO</option>
+			<option value="1">JEV_YES</option>
+			<option value="2">JEV_INLINE_PRINT_MECHANISM</option>
+		</field>
 		<field name="com_email_icon_view" type="jevboolean" class="gsl-button-group" default="1" menu="hide"
 		       label="JEV_SHOW_EMAIL_ICON" description="JEV_SHOW_EMAIL_ICON_TIP" difficulty="1"/>
 		<field name="fixjquery" type="jevboolean" class="gsl-button-group" default="1" label="JEV_FIX_JQUERY"

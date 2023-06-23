@@ -691,6 +691,9 @@ class JEventsDBModel
 		}
 		else
 		{
+            //echo (string) $db->getQuery();
+            //exit();
+
 			$row = null;
 		}
 

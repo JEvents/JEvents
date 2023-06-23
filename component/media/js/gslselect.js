@@ -55,6 +55,12 @@ function gslselect(selector) {
                     multiSelected.setAttribute('data-value', checkedOption.value);
                     multiSelected.setAttribute('data-index', checkedOption.index);
 
+                    if (checkedOption.hasAttribute('data-colour'))
+                    {
+                        let catColour = checkedOption.getAttribute('data-colour');
+                        multiSelected.setAttribute('style', "margin-left:2px;border-left:solid 2px  " + catColour);
+                    }
+
                     // unselect item in the summary set of buttons
                     if (!checkedOption.disabled) {
                         multiSelected.addEventListener('click', function (e) {
@@ -266,6 +272,18 @@ function gslselectSetupOptions(node, dropDownNav, dropDownDiv, selectElement, fi
 
     let optionLink = document.createElement('a', {href: '#'});
     optionLink.innerHTML = text;
+
+    if (node.hasAttribute('data-colour'))
+    {
+        let catColour = node.getAttribute('data-colour');
+        if (catColour != "#000000")
+        {
+            style += ";border-left:solid 2px  " + catColour ;
+            optionLink.setAttribute('data-colour', catColour);
+        }
+    }
+    style += ";padding-left:2px;";
+
     if (style !== '')
     {
         optionLink.setAttribute('style',  style );
@@ -273,6 +291,11 @@ function gslselectSetupOptions(node, dropDownNav, dropDownDiv, selectElement, fi
     optionLink.setAttribute('data-value', node.value || '');
     optionLink.setAttribute('data-index', (node.index == 0 ? node.index : (node.index || -1)));
     optionReplacement.appendChild(optionLink);
+
+    if (node.hasAttribute('data-level'))
+    {
+        optionReplacement.classList.add('gsl-level-' + node.getAttribute('data-level') );
+    }
 
     optionLink.classList.add('gsl-si-' + (node.index == 0 ? node.index : (node.index || -1)));
 
@@ -399,6 +422,12 @@ function gslselectSetupOptions(node, dropDownNav, dropDownDiv, selectElement, fi
                 multiSelected.setAttribute('data-value', checkedOption.value);
                 multiSelected.setAttribute('data-index', checkedOption.index);
 
+                if (checkedOption.hasAttribute('data-colour'))
+                {
+                    let catColour = checkedOption.getAttribute('data-colour');
+                    multiSelected.setAttribute('style', "margin-left:2px;border-left:solid 2px  " + catColour);
+                }
+
                 // unselect item
                 multiSelected.addEventListener('click', function (e) {
                     selectElement.options[multiSelected.getAttribute('data-index')].selected = false;
@@ -451,7 +480,7 @@ function gslselectSetupOptions(node, dropDownNav, dropDownDiv, selectElement, fi
 
         }
 
-        if (optionLink.getAttribute('style')) {
+        if (optionLink.getAttribute('style') && !selectElement.multiple) {
             filter.setAttribute('style', optionLink.getAttribute('style'));
         }
         filter.innerHTML = "";
