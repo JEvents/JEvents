@@ -17,6 +17,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Registry\Registry;
 
 // TODO replace with JevDate
 
@@ -236,7 +237,7 @@ class JEventsHTML
         $groups = implode(',', $user->getAuthorisedViewLevels());
 
         $query = $db->getQuery(true)
-            ->select('a.id, a.title, a.level, a.language, a.parent_id')
+            ->select('a.id, a.title, a.level, a.language, a.parent_id, a.params')
             ->from('#__categories AS a')
             ->where('a.parent_id > 0');
 
@@ -284,6 +285,8 @@ class JEventsHTML
 
             $option = HTMLHelper::_('select.option', $item->id, $item->title);
             $option->level = $item->level;
+			$itemParams = new Registry($item->params);
+			$option->attr  = ['data-level' => $item->level, 'data-colour' => $itemParams->get('catcolour', 'transparent')];
             $option->parent_id = $item->parent_id;
             if ($option->parent_id > 1 && !array_key_exists($option->parent_id, $parents))
             {
@@ -483,8 +486,15 @@ class JEventsHTML
 				<option value="" <?php echo $catid == "" ? 'selected="true" ' : '';?> ><?php echo $t_first_entry; ?></option>
 				<?php
 			}
+            // Get options from the parameters
+            $optionParameters['option.key']     = 'value';
+            $optionParameters['option.text']    = 'text';
+			$optionParameters['option.attr']    = 'attr';
+            $optionParameters['list.select']    = $catid;
+            $optionParameters['list.translate'] = false;
+
 			?>
-			<?php echo HTMLHelper::_('select.options', $options, 'value', 'text', $catid); ?>
+			<?php echo HTMLHelper::_('select.options', $options, $optionParameters); ?>
 		    </select>
 		    <?php
 		    $html = ob_get_clean();

@@ -169,6 +169,7 @@
         </copy>
 
         <!-- delete dist files -->
+        <echo msg="deleting UI Kit distribution files ..." />
         <if>
             <available file='${uikitdir}/dist/css/uikit.css' type='file' property="cssexits"/>
             <then>
@@ -207,7 +208,11 @@
         <echo msg="${yarn.output4}" />
         -->
 
-        <exec command="npm install " dir="${uikitdir}"  outputProperty="yarn.output2" >        </exec>
+        <echo msg="executing uikit build steps ..." />
+        <!--
+        <exec command="pnpm install " dir="${uikitdir}"  outputProperty="yarn.output2" >        </exec>
+        <echo msg="${yarn.output2}" />
+        -->
 
         <!-- execute pnpm scripts there -->
         <exec command="pnpm compile" dir="${uikitdir}" outputProperty="yarn.output" >        </exec>
@@ -459,6 +464,8 @@
 
         <delete dir="${builddir}" includeemptydirs="true" verbose="false" failonerror="true" />
 
+
+        <echo msg="Note that uikit build steps is skipping pnpm install step - do this when we have a change in uikit dependencies ..." />
 
     </target>
 

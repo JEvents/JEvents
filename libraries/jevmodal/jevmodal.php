@@ -232,7 +232,7 @@ SCRIPT;
             $popoverStyling = <<< SCRIPT
 document.addEventListener('DOMContentLoaded', function() {
    var elements = document.querySelectorAll("$selector");
-   elements.forEach(function()
+   elements.forEach(function(myPopoverTrigger)
    {
         myPopoverTrigger.addEventListener('show.bs.popover', function () {
             var title = myPopoverTrigger.getAttribute('data-bs-original-title') || false;

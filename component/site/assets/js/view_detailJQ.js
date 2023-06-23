@@ -87,6 +87,13 @@ function printPage()
             parent = parent.parentNode;
         }
 
+        var jeventsBody = document.getElementById("jevents_body");
+        var jeventsBodyParent = jeventsBody.parentNode;
+        var sizex = jeventsBodyParent.offsetWidth;
+
+        var body = document.getElementsByTagName('body')[0];
+        body.setAttribute('data-jeventswidth', 10);
+
         window.print();
 
         parent = jevents.parentNode;
@@ -95,6 +102,7 @@ function printPage()
             parent.classList.remove('jeventsPrint');
             parent = parent.parentNode;
         }
+        body.removeAttribute('data-jeventswidth', 10);
 
     }
 }
