@@ -816,7 +816,10 @@ span.hasjevtip {
         background-color: white !important;
     }
 
-    div.ev_navigation {
+    #jevents_body .ev_navigation,
+    #jevents_body .new-navigation,
+    #jevents_body > button
+    {
         display: none;
     }
 
@@ -1284,3 +1287,10 @@ body .jeventsPrint #jevents *)
 {
     display: none;
 }
+body.jeventsPrint #jevents_body .ev_navigation,
+body.jeventsPrint #jevents_body .new-navigation,
+body.jeventsPrint #jevents_body > button
+{
+    display: none;
+}
+

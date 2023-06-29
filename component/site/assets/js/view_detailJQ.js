@@ -92,7 +92,7 @@ function printPage()
         var sizex = jeventsBodyParent.offsetWidth;
 
         var body = document.getElementsByTagName('body')[0];
-        body.setAttribute('data-jeventswidth', 10);
+        body.setAttribute('data-jeventswidth', sizex);
 
         window.print();
 
@@ -102,7 +102,7 @@ function printPage()
             parent.classList.remove('jeventsPrint');
             parent = parent.parentNode;
         }
-        body.removeAttribute('data-jeventswidth', 10);
+        body.removeAttribute('data-jeventswidth');
 
     }
 }

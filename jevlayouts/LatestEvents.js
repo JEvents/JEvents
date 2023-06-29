@@ -109,10 +109,10 @@ jevpreview.push({
 		'                        <div class=\'uk-width-expand\'>\n' +
 		'                            <div class=\'exportlabel\'>Export Event to Your Calendar</div>\n' +
 		'                            <div>\n' +
-		'                                <a href=\'${ICALGOOGLE}\' title=\'Save to Google Calendar\'>\n' +
+		'                                <a href=\'${ICALGOOGLE}\' title=\'Save to Google Calendar\' rel=\'nofollow\'>\n' +
 		'                                    <span uk-icon=\'icon: google\'></span>\n' +
 		'                                </a>\n' +
-		'                                <a href=\'${ICALSAVE}\' title=\'Save to Calendar\'>\n' +
+		'                                <a href=\'${ICALSAVE}\' title=\'Save to Calendar\'  rel=\'nofollow\'>\n' +
 		'                                    <span uk-icon=\'icon: calendar\'></span>\n' +
 		'                                </a>\n' +
 		'                            </div>\n' +
