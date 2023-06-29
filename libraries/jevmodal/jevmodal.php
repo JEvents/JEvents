@@ -227,6 +227,7 @@ SCRIPT;
 		if (version_compare(JVERSION, '4', 'ge') && $toolTipType !== 'uikit')
 		{
 
+            $params["template"] = '<div class="popover" role="tooltip"><div class="popover-arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>';
 			// For Joomla 4 we need to change the data attribute - use the native popover method unless specifically using UIKit
 			HTMLHelper::_('bootstrap.popover', $selector, $params);
             $popoverStyling = <<< SCRIPT
@@ -234,18 +235,31 @@ document.addEventListener('DOMContentLoaded', function() {
    var elements = document.querySelectorAll("$selector");
    elements.forEach(function(myPopoverTrigger)
    {
-        myPopoverTrigger.addEventListener('show.bs.popover', function () {
+        myPopoverTrigger.addEventListener('inserted.bs.popover', function () {
             var title = myPopoverTrigger.getAttribute('data-bs-original-title') || false;
-            if (title)
+            const popover = bootstrap.Popover.getInstance(myPopoverTrigger);
+            if (popover.tip) 
             {
-                const popover = bootstrap.Popover.getInstance(myPopoverTrigger);
-                if (popover.tip) 
+                var header = popover.tip.querySelector('.popover-header');
+                var body = popover.tip.querySelector('.popover-body');
+                var popoverContent = "";
+                if (title)
                 {
-                    var header = popover.tip.querySelector('.popover-header');
-                    if (header) {
-                        header.outerHTML = title;
-                    }
+                    popoverContent += title;
                 }
+                var content = myPopoverTrigger.getAttribute('data-bs-original-content') || false;
+                if (content)
+                {
+                    popoverContent += content;
+                }
+
+                if (header) {
+                    header.outerHTML = popoverContent;
+                }
+                else if (body) {
+                    body.outerHTML = popoverContent;
+                }
+
             }
         })
    });

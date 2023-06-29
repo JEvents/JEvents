@@ -1053,3 +1053,18 @@ td.no_events_found {
 .popover div > div {
     color: inherit;
 }
+
+body.jeventsPrint *:not(
+body .jeventsPrint,
+body .jeventsPrint #jevents ,
+body .jeventsPrint #jevents *)
+{
+    display: none;
+}
+body.jeventsPrint #jevents_body .ev_navigation,
+body.jeventsPrint #jevents_body .new-navigation,
+body.jeventsPrint #jevents_body > button
+{
+    display: none;
+}
+
