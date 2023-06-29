@@ -9,3 +9,4 @@ $changelog[$extension][$version]["bugfixes"]        = array();
 
 
 $changelog[$extension][$version]["features"][]      = "New inline printing mechanism that doesn't use popup window - config driven";
+$changelog[$extension][$version]["bugfixes"][]      = "Minor tooltip improvements for Bootstrap 5 in Joomla 4";
