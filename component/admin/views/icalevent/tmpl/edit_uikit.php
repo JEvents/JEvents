@@ -43,6 +43,7 @@ HTMLHelper::_('behavior.keepalive');
 // Do not load bootstrap
 
 // use Route to preseve language selection
+//$action = Factory::getApplication()->isClient('administrator') ? "index.php" : Route::_("index.php?option=" . JEV_COM_COMPONENT );
 $action = Factory::getApplication()->isClient('administrator') ? "index.php" : Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=" . JEVHelper::getItemid());
 
 $user         = Factory::getUser();

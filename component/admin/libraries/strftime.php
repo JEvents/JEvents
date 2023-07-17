@@ -164,11 +164,11 @@ function strftime (string $format, $timestamp = null) : string {
         },
         '%d' => 'd',
         '%e' => function ($timestamp) {
-            return sprintf('% 2u', $timestamp->format('j'));
+            return sprintf('% 2u', date('j', $timestamp));
         },
         '%j' => function ($timestamp) {
             // Day number in year, 001 to 366
-            return sprintf('%03d', $timestamp->format('z')+1);
+            return sprintf('%03d', date('z', $timestamp) + 1);
         },
         '%u' => 'N',
         '%w' => 'w',
@@ -176,14 +176,14 @@ function strftime (string $format, $timestamp = null) : string {
         // Week
         '%U' => function ($timestamp) {
             // Number of weeks between date and first Sunday of year
-            $day = new DateTime(sprintf('%d-01 Sunday', $timestamp->format('Y')));
-            return sprintf('%02u', 1 + ($timestamp->format('z') - $day->format('z')) / 7);
+            $day = new DateTime(sprintf('%d-01 Sunday', date('Y', $timestamp)));
+            return sprintf('%02u', 1 + (date('z', $timestamp) - $day->format('z')) / 7);
         },
         '%V' => 'W',
         '%W' => function ($timestamp) {
             // Number of weeks between date and first Monday of year
-            $day = new DateTime(sprintf('%d-01 Monday', $timestamp->format('Y')));
-            return sprintf('%02u', 1 + ($timestamp->format('z') - $day->format('z')) / 7);
+            $day = new DateTime(sprintf('%d-01 Monday', date('Y', $timestamp)));
+            return sprintf('%02u', 1 + (date('z', $timestamp) - $day->format('z')) / 7);
         },
 
         // Month
@@ -201,10 +201,10 @@ function strftime (string $format, $timestamp = null) : string {
         // Year
         '%C' => function ($timestamp) {
             // Century (-1): 19 for 20th century
-            return floor($timestamp->format('Y') / 100);
+            return floor(date('Y', $timestamp) / 100);
         },
         '%g' => function ($timestamp) {
-            return substr($timestamp->format('o'), -2);
+            return substr(date('0', $timestamp), -2);
         },
         '%G' => 'o',
         '%y' => 'y',
@@ -213,11 +213,11 @@ function strftime (string $format, $timestamp = null) : string {
         // Time
         '%H' => 'H',
         '%k' => function ($timestamp) {
-            return sprintf('% 2u', $timestamp->format('G'));
+            return sprintf('% 2u', date('G', $timestamp));
         },
         '%I' => 'h',
         '%l' => function ($timestamp) {
-            return sprintf('% 2u', $timestamp->format('g'));
+            return sprintf('% 2u', date('g', $timestamp));
         },
         '%M' => 'i',
         '%p' => 'A', // AM PM (this is reversed on purpose!)

@@ -83,11 +83,11 @@ class ToolbarButtonJev extends ToolbarButton
 		$submitbutton = "Joomla.submitbutton";
 		if ($list)
 		{
-			$cmd = "javascript:if(document.adminForm.boxchecked.value==0){alert('$message');}else{  $submitbutton('$task')};return false;";
+			$cmd = "if(document.adminForm.boxchecked.value==0){alert('$message');}else{  $submitbutton('$task')};return false;";
 		}
 		else
 		{
-			$cmd = "javascript:$submitbutton('$task');return false;";
+			$cmd = "$submitbutton('$task');return false;";
 		}
 
 
@@ -238,7 +238,7 @@ class ToolbarButtonJevconfirm extends ToolbarButton
 		{
 			if ($list)
 			{
-				$cmd = "javascript:if(document.adminForm.boxchecked.value==0){
+				$cmd = "if(document.adminForm.boxchecked.value==0){
 					alert('$message');
 				}
 				else{
@@ -254,8 +254,7 @@ class ToolbarButtonJevconfirm extends ToolbarButton
 			}
 			else
 			{
-				$cmd = "javascript:
-					if($jstestvar==1) {
+				$cmd = "if($jstestvar==1) {
 						if (confirm('$msg')){
 							$submitbutton('$task');
 						}
@@ -269,7 +268,7 @@ class ToolbarButtonJevconfirm extends ToolbarButton
 		{
 			if ($list)
 			{
-				$cmd = "javascript:if(document.adminForm.boxchecked.value==0){
+				$cmd = "if(document.adminForm.boxchecked.value==0){
 					alert('$message');
 				}
 				else{
@@ -284,7 +283,7 @@ class ToolbarButtonJevconfirm extends ToolbarButton
 			}
 			else
 			{
-				$cmd = "javascript:
+				$cmd = "
 				if($jstestvar==1) {
 					if (confirm('$msg')){
 						$submitbutton('$task');

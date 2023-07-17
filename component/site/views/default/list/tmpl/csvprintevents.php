@@ -74,7 +74,7 @@ $document->setMimeEncoding("text/csv");
 $data = exportAsCSV($rows);
 
 // Finally, generate a file
-$size = strlen($data);
+$size = strlen($data . pack('CCC', 0xef, 0xbb, 0xbf));
 
 @ob_end_clean();
 
