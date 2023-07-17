@@ -44,6 +44,19 @@ function Defaultgetstartenddates($view)
 	$startdate = $app->getUserStateFromRequest('range_startdate' . $Itemid, 'startdate', $input->getString("startdate"));
 	$enddate   = $app->getUserStateFromRequest('range_enddate' . $Itemid, 'enddate', $input->getString("enddate"));
 
+    if (strpos($startdate, " 23:59:59") > 0)
+    {
+        $tempdate = new Joomla\CMS\Date\Date($startday);
+        $tempdate->add(new DateInterval('PT1S'));
+        $startdate = $tempdate->format("Y-m-d");
+    }
+    if (strpos($enddate, " 23:59:59") > 0)
+    {
+        $tempdate = new Joomla\CMS\Date\Date($enddate);
+        $tempdate->add(new DateInterval('PT1S'));
+        $enddate = $tempdate->format("Y-m-d");
+    }
+
 	if ($jevtask == "day.listevents" && empty($input->get('enddate', '')) && empty($input->get('range_startdate', '')))
 	{
 		list($year, $month, $day) = JEVHelper::getYMD();
@@ -54,7 +67,8 @@ function Defaultgetstartenddates($view)
 	if ($startdate != "")
 	{
 		// WE have specified a start date in the URL so we should use it!
-		list($startyear, $startmonth, $startday) = explode("-", $startdate);
+
+        list($startyear, $startmonth, $startday) = explode("-", $startdate);
 		$view->month    = $startmonth;
 		$view->day      = $startday;
 		$view->year     = $startyear;

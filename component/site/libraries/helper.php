@@ -706,15 +706,16 @@ class JEVHelper
 			}
 			else
 			{
-				$datetime = date_create_from_format($format, $value);
+                $dcff_format = str_replace(array("B",), array("M"), $format);
+				$datetime = date_create_from_format($dcff_format, $value);
 				// This is probably because we have mysql formatted value
 				if (!$datetime)
 				{
 					$datetime = date_create_from_format('Y-m-d', $value);
 					if (!$datetime)
 					{
-						$value    = date($format);
-						$datetime = date_create_from_format($format, $value);
+						$value    = date($dcff_format);
+						$datetime = date_create_from_format($dcff_format, $value);
 					}
 				}
 				$value = $datetime->format("Y-m-d");
