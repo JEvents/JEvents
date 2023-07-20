@@ -41,17 +41,27 @@ document.addEventListener('DOMContentLoaded', function ()
         filters.forEach(function(filter, index)
         {
             if (
-                filter.onchange
-                || filter.getAttribute('type') == 'hidden'
+                filter.getAttribute('type') == 'hidden'
                 || filter.getAttribute('type') == 'submit'
                 || filter.getAttribute('type') == 'reset'
             )
             {
                 return;
             }
-            console.log(filter);
-            ['input'].forEach( evt =>
+            ['change'].forEach( evt =>
                 filter.addEventListener(evt, function() {
+                    if (filter.getAttribute('data-changing'))
+                    {
+                        return;
+                    }
+
+                    filter.setAttribute('data-changing', 1)
+                    if (filter.onchange)
+                    {
+                        let event = new Event('change');
+                        filter.dispatchEvent(event);
+                    }
+                    filter.removeAttribute('data-changing')
                     document.querySelector('form.jevfiltermodule').submit()
                 })
             );
