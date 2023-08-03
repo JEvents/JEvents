@@ -453,7 +453,8 @@ else $this->_detail = false;
 		// TODO - rather than deleting the repetition I should save the new detail and report it as cancelled
 		// this would make subsequent export easier
 		$eventid = $this->ev_id;
-		$start   = iCalImport::unixTime($this->recurrence_id);
+        $icimport        = new iCalImport();
+		$start   = $icimport->unixTime($this->recurrence_id);
 
 		// TODO CHECK THIS logic - an make it more abstract since a few functions do the same !!!
 

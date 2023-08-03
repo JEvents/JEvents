@@ -4929,7 +4929,7 @@ class JEventsDBModel
 		$query .= $extrawhere;
 		$query .= $having;
 		$db->setQuery($query);
-		//echo $db->explain();
+		//echo (string) $db->getQuery();
 		$total += intval($db->loadResult());
 
 		if ($total < $limitstart)

@@ -1147,6 +1147,8 @@ class JEventsDataModel
 
 		$data = array();
 
+        $searchKeyword = $keyword;
+
 		$lang = Factory::getLanguage();
 
 		$user   = Factory::getUser();
@@ -1159,15 +1161,15 @@ class JEventsDataModel
 
 		if ($useRegX)
 		{
-			$keyword = preg_replace("/[[:space:]]+/", ' +', $keyword);
+			$searchKeyword = preg_replace("/[[:space:]]+/", ' +', $searchKeyword);
 		}
-		$keyword       = trim($keyword);
-		$keyword       = preg_replace("/\++/", '+', $keyword);
-		$keywordcheck  = preg_replace("/ |\+/", '', $keyword);
+		$searchKeyword       = trim($searchKeyword);
+		$searchKeyword       = preg_replace("/\++/", '+', $searchKeyword);
+		$searchKeywordcheck  = preg_replace("/ |\+/", '', $searchKeyword);
 		$searchisValid = false;
 		$total         = 0;
 
-		if (empty($keyword) || StringHelper::strlen($keywordcheck) < 2 || $keyword == '%%' || $keywordcheck == '')
+		if (empty($searchKeyword) || StringHelper::strlen($searchKeywordcheck) < 2 || $searchKeyword == '%%' || $searchKeywordcheck == '')
 		{
 			$keyword            = Text::_('JEV_KEYWORD_NOT_VALID');
 			$num_events         = 0;
@@ -1181,7 +1183,7 @@ class JEventsDataModel
 		{
 			$searchisValid = true;
 
-			$rows               = $this->queryModel->listEventsByKeyword($keyword, 'catid , rpt.startrepeat ', $limit, $limitstart, $total, $useRegX);
+			$rows               = $this->queryModel->listEventsByKeyword($searchKeyword, 'catid , rpt.startrepeat ', $limit, $limitstart, $total, $useRegX);
 			$data['total']      = $total;
 			$data['limit']      = $limit;
 			$data['limitstart'] = $limitstart;

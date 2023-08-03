@@ -999,6 +999,13 @@ WHERE ics.ics_id is null
 
 	}
 
+    public function dbfix()
+    {
+        include_once JPATH_COMPONENT_ADMINISTRATOR . "/install.php";
+        $installer = new com_jeventsInstallerScript();
+        $installer->update(false);
+    }
+
 	public function fixcollations()
 	{
 		$app    = Factory::getApplication();
@@ -1018,10 +1025,6 @@ WHERE ics.ics_id is null
 		$alltables = $db->loadAssocList();
 
 		// find collation for com_content
-		$db->setQuery("SHOW FULL COLUMNS FROM #__content");
-		$contentdata = $db->loadObjectList('Field');
-		$collation   = $contentdata['title']->Collation;
-
 		$db->setQuery("SHOW FULL COLUMNS FROM #__content");
 		$contentdata = $db->loadObjectList('Field');
 		$collation   = $contentdata['title']->Collation;
