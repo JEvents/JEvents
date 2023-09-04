@@ -279,7 +279,7 @@ class jevFilterProcessing
 		return $this->needsgroupby;
 	}
 
-	function getFilterHTML($allowAutoSubmit = true)
+	function getFilterHTML($allowAutoSubmit = true, $indexed = false)
 	{
 
 		if (isset($this->filterHTML))
@@ -300,7 +300,7 @@ class jevFilterProcessing
 			}
 			else
 			{
-				$filterHTML = $filter->_createfilterHTML();
+				$filterHTML = $filter->_createfilterHTML($indexed);
 			}
 			if (!is_array($filterHTML))
 			{
@@ -316,7 +316,14 @@ class jevFilterProcessing
 				{
 					continue;
 				}
-				$this->filterHTML[] = $filterHTML;
+                if ($indexed)
+                {
+                    $this->filterHTML[$filter->filterField] = $filterHTML;
+                }
+                else
+                {
+                    $this->filterHTML[] = $filterHTML;
+                }
 			}
 		}
 

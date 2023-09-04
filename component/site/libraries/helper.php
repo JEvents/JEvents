@@ -718,16 +718,32 @@ class JEVHelper
 						$datetime = date_create_from_format($dcff_format, $value);
 					}
 				}
-				$value = $datetime->format("Y-m-d");
+                if ($showtime) {
+                    $value = $datetime->format("Y-m-d H:i");
+                }
+                else {
+                    $value = $datetime->format("Y-m-d");
+                }
 			}
 
 
 			list ($yearpart, $monthpart, $daypart) = explode("-", $value);
-			$value = str_replace(array("Y", "m", "d", "h", "b", "B"), array($yearpart, $monthpart, $daypart, $monthpart, $monthpart, $monthpart), $format);
+            if ($showtime)
+            {
+                $hourpart = '00';
+                $minpart = '00';
+                list($daypart, $timepart) = explode(" ", $daypart);
+                if ($timepart)
+                {
+                    list($hourpart, $minpart) = explode(":", $timepart);
+                }
+            }
+			$value = str_replace(array("Y", "m", "d", "h", "b", "B", "H", "i"), array($yearpart, $monthpart, $daypart, $monthpart, $monthpart, $monthpart, $hourpart, $minpart), $format);
 			$attributes = $attribs;
 			// Build the attributes array.
 			empty($onchange) ? null : $attributes['onchange'] = $onchange;
 			empty($onchange) ? null : $attributes['onChange'] = $onchange;
+            $attributes["showTime"] = $showtime;
 			//$attributes['onselect']="function{this.hide();}";
 			/*
 			empty($this->size)      ? null : $attributes['size'] = $this->size;
@@ -746,9 +762,9 @@ class JEVHelper
 			}
 	*/
 			// switch back to strftime format to use Joomla calendar tool
-			$format = str_replace(array("Y", "m", "d", "b", "B", "h"), array("%Y", "%m", "%d", "%b", "%b", "%B"), $format);
+			$format = str_replace(array("Y", "m", "d", "b", "B", "h", "H", "i"), array("%Y", "%m", "%d", "%b", "%b", "%B", "%H", "%M"), $format);
 
-			echo HTMLHelper::_('calendar', $yearpart . "-" . $monthpart . "-" . $daypart, $fieldname, $fieldid, $format, $attributes);
+			echo HTMLHelper::_('calendar', $value, $fieldname, $fieldid, $format, $attributes);
 			return;
 		}
 		$document           = Factory::getDocument();

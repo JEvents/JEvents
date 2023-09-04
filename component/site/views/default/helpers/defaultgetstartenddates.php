@@ -56,6 +56,16 @@ function Defaultgetstartenddates($view)
         $tempdate->add(new DateInterval('PT1S'));
         $enddate = $tempdate->format("Y-m-d");
     }
+    if (strpos($startdate, " 00:00:00") > 0)
+    {
+        $tempdate = new Joomla\CMS\Date\Date($startday);
+        $startdate = $tempdate->format("Y-m-d");
+    }
+    if (strpos($enddate, " 00:00:00") > 0)
+    {
+        $tempdate = new Joomla\CMS\Date\Date($enddate);
+        $enddate = $tempdate->format("Y-m-d");
+    }
 
 	if ($jevtask == "day.listevents" && empty($input->get('enddate', '')) && empty($input->get('range_startdate', '')))
 	{

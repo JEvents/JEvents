@@ -109,7 +109,7 @@ if (
 
 $allowAutoSubmit = true;
 $filters->modParams = $params;
-$filterHTML      = $filters->getFilterHTML($allowAutoSubmit);
+$filterHTML      = $filters->getFilterHTML($allowAutoSubmit, true);
 
 if ($params->get("customcss", false))
 {

@@ -250,7 +250,16 @@ if (!defined("JEVDATE"))
 			$name = "mktime";
 			if (is_callable($name) && count($arg) > 0)
 			{
-				return call_user_func_array($name, $arg);
+                try
+                {
+                    return call_user_func_array( $name, $arg );
+                }
+                catch (Throwable $e)
+                {
+                    echo $e->getMessage() . "<Br>";
+                    var_dump($arg);
+                    exit(0);
+                }
 			}
 			else
 			{

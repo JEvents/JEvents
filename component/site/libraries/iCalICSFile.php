@@ -491,8 +491,9 @@ RAWTEXT;
 			if (!is_null($vevent) && ($vevent->isCancelled() || $vevent->isRecurrence()))
 			{
 				// if existing category then use it
-				if (StringHelper::strlen($vevent->_detail->categories) > 0)
+                if (!$this->ignoreembedcat && StringHelper::strlen($vevent->_detail->categories) > 0)
 				{
+                    $evcat = explode(",", $vevent->_detail->categories);
 					if (count($evcat) > 0)
 					{
 						include_once(JEV_ADMINLIBS . "categoryClass.php");

@@ -236,7 +236,7 @@ class iCalEventDetail extends Joomla\CMS\Table\Table
 				$field                       = StringHelper::substr($key, 7);
 				$this->_customFields[$field] = $value;
 			}
-			else if (strtoupper($key) === "key" && strpos($key, "X-") === 0)
+			else if (strtoupper($key) === $key && strpos($key, "X-") === 0)
 			{
 				$field                       = strtolower(StringHelper::substr($key, 2));
 				$this->_customFields[$field] = $value;
