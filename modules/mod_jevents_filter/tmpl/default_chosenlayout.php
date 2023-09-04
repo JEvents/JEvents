@@ -235,12 +235,12 @@ STYLE;
 					<li>
 						<div class="jevfilterinput">
 							<input class="modfilter_button" type="button" onclick="JeventsFilters.reset(this.form)"
-							       value="<?php echo Text::_('RESET'); ?>"/>
+							       value="<?php echo Text::_('MOD_JEV_FILTER_MODULE_RESET'); ?>"/>
 							<?php if ($params->get("showlabels", 1)) { ?>
 						</div>
 						<div class="jevfilterinput">
 							<?php } ?>
-							<input class="modfilter_button" type="submit" value="<?php echo Text::_('ok'); ?>"
+							<input class="modfilter_button" type="submit" value="<?php echo Text::_('MOD_JEV_FILTER_MODULE_SUBMIT'); ?>"
 							       name="jevents_filter_submit"/>
 						</div>
 					</li>
@@ -252,7 +252,41 @@ STYLE;
 				}
 				break;
 
-			default:
+            case "custom":
+                $HTML = $params->get("customlayout", "<p>{Search LBL}{Search}</p><p>{Category LBL}{Category}</p><p>{SUBMIT_BUTTON}</p><p>{RESET_BUTTON}</p>");
+                $hasreset = false;
+                foreach ($filterHTML as $filterId => $filter)
+                {
+                    if (empty($filterId))
+                    {
+                        continue;
+                    }
+                    if ($filterId == "catid")
+                    {
+                        $filterId = "Category";
+                    }
+                    $HTML = str_replace(array("{" . $filterId ."}", "{" . $filterId ." LBL}"), array($filter["html"], $filter["title"]), $HTML);
+                }
+                ob_start();?>
+				<button class="modfilter_button " type="button" onclick="JeventsFilters.reset(this.form)">
+                    <?php echo Text::_('RESET'); ?>
+				</button>
+                <?php
+                $reset = ob_get_clean();
+                $HTML = str_replace("{RESET_BUTTON}", $reset, $HTML );
+
+                ob_start();?>
+				<button class="modfilter_button " type="submit" name="jevents_filter_submit">
+                    <?php echo Text::_('ok'); ?>
+				</button>
+                <?php
+                $submit = ob_get_clean();
+                $HTML = str_replace("{SUBMIT_BUTTON}", $submit, $HTML );
+                echo $HTML;
+                break;
+
+            default:
+
 				$hasreset = false;
 				break;
 		}

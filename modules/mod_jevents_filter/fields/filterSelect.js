@@ -19,6 +19,8 @@ function setupFilterChoices() {
                 setupFilterLis();
             }
             setupCustomFilterField();
+
+            setupCustomfieldSelection();
         });
     });
 }
@@ -38,6 +40,8 @@ function setupFilterLis() {
             setTimeout(function () {
                 colsbeingsorted = false;
                 setupCustomFilterField();
+
+                setupCustomfieldSelection();
             }, 200);
         },
     }));
@@ -68,6 +72,9 @@ function setupFilterLis() {
                 setupFilterChoices();
             }
             setupCustomFilterField();
+
+            setupCustomfieldSelection();
+
         });
     });
 }
@@ -87,7 +94,46 @@ function setupCustomFilterField() {
     });
 }
 
-jQuery(window).on("load", function () {
+function setupCustomfieldSelection() {
+
+    var filterMatches = document.querySelectorAll('#filtermatches div');
+    let customLayoutField = document.getElementById('customlayoutfield');
+    customLayoutField.innerHTML = "";
+
+    let option = document.createElement('option');
+    option.setAttribute('value', "");
+    option.innerText = "Insert Filter or Filter Label";
+    customLayoutField.appendChild(option);
+
+    filterMatches.forEach(function(filterMatch) {
+
+        let option = document.createElement('option');
+        option.setAttribute('value', "{" + filterMatch.innerText + " LBL}");
+        option.innerText = filterMatch.innerText + " Label";
+        customLayoutField.appendChild(option);
+
+        option = document.createElement('option');
+        option.setAttribute('value', "{" + filterMatch.innerText + "}");
+        option.innerText = filterMatch.innerText;
+        customLayoutField.appendChild(option);
+
+    });
+
+    option = document.createElement('option');
+    option.setAttribute('value', "{SUBMIT_BUTTON}");
+    option.innerText = 'Submit';
+    customLayoutField.appendChild(option);
+
+    option = document.createElement('option');
+    option.setAttribute('value', "{RESET_BUTTON}");
+    option.innerText = 'Reset';
+    customLayoutField.appendChild(option);
+
+}
+
+window.addEventListener("load", function () {
     setupFilterChoices(true);
     setupFilterLis(true);
+    setupCustomfieldSelection();
+
 });

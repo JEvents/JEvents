@@ -1024,7 +1024,7 @@ class JEventsHTML
 				    {
 					    //return JevDate::strftime("%A, %e. %B %Y",$datestp);
 					    // %e not supported by windows
-					    return sprintf(JEV_CommonFunctions::jev_strftime("%A, %%s. %B %Y", $datestp), intval(JEV_CommonFunctions::jev_strftime('%d', $datestp)));
+					    return sprintf(JEV_CommonFunctions::jev_strftime("%A, %d. %B %Y", $datestp), intval(JEV_CommonFunctions::jev_strftime('%d', $datestp)));
 					    // De style : Montag, 3. Juli 2003
 				    }
 				    break;

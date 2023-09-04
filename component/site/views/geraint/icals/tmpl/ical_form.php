@@ -110,6 +110,16 @@ else
 		<form id="ical" name="ical" method="post" class="<?php isset($_POST['submit']) ? 'icalexportresults' : ''; ?>">
 			<?php
 			$categories = JEV_CommonFunctions::getCategoryData();
+            if (isset($this->datamodel->catids) && count($this->datamodel->catids))
+            {
+                foreach ( $categories as $catid => $category)
+                {
+                    if (!in_array($catid, $this->datamodel->catids))
+                    {
+                        unset($categories[$catid]);
+                    }
+                }
+            }
 
 			?>
 			<div class='choosecat' style='float:left;width:300px;'>

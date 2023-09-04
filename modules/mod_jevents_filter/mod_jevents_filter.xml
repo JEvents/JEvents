@@ -112,6 +112,7 @@
 					<option value="ht">JEV_FILTER_HORIZONTAL_HTML_TABLE</option>
 					<option value="ul">JEV_FILTER_UNORDEREDLIST</option>
 					<option value="ful">JEV_FILTER_LEFT_FLOAT_UNORDEREDLIST</option>
+					<option value="custom">JEV_FILTER_CUSTOM</option>
 				</field>
 
 				<field
@@ -130,6 +131,26 @@
 					   default=''
 					   label="MOD_JEV_FILTER_MODULE_CUSTOM_CSS"
 					   description="MOD_JEV_FILTER_MODULE_CUSTOM_CSS_TIP"
+				/>
+
+				<field name="customlayoutfield"
+					   type="jevdynamicfield"
+					   source="filters"
+					   editor="jform_params_customlayout"
+					   label="MOD_JEV_CUSTOM_LAYOUT_FIELD"
+					   description="MOD_JEV_CUSTOM_LAYOUT_FIELD_DESC"
+					   showon="filterlayout:custom"
+					   />
+
+				<field name="customlayout"
+					   type="editor"
+					   filter="safehtml"
+					   class="jeveditor"
+					   default=''
+					   buttons="no"
+					   label="MOD_JEV_CUSTOM_LAYOUT"
+					   description="MOD_JEV_CUSTOM_LAYOUT_DESC"
+					   showon="filterlayout:custom"
 				/>
 
 			</fieldset>

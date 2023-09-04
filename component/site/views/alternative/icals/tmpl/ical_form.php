@@ -1,4 +1,4 @@
-<?php
+'<?php
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
@@ -111,6 +111,16 @@ else
 		<form id="ical" name="ical" method="post" class="<?php isset($_POST['submit']) ? 'icalexportresults' : ''; ?>">
 			<?php
 			$categories = JEV_CommonFunctions::getCategoryData();
+            if (isset($this->datamodel->catids) && count($this->datamodel->catids))
+            {
+                foreach ( $categories as $catid => $category)
+                {
+                    if (!in_array($catid, $this->datamodel->catids))
+                    {
+                        unset($categories[$catid]);
+                    }
+                }
+            }
 
 			?>
 			<div class='choosecat' style='float:left;width:300px;'>
@@ -176,13 +186,24 @@ else
 				<div id='otheryears' <?php echo $checked ? 'style="display:none;max-height:100px;overflow-y:auto;"' : ''; ?> >
 					<?php
 					//consturc years array, easy to add own kind of selection
-					$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
-					$year   = array();
-					for ($y = JEVHelper::getMinYear(); $y <= JEVHelper::getMaxYear(); $y++)
-					{
-						if (!in_array($y, $year))
-							$year[] = $y;
-					}
+                    $params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+                    $year = array();
+                    if(method_exists("JEVHelper", "getMinYear"))
+                    {
+                        $minyear =  JEVHelper::getMinYear();
+                        $maxyear = JEVHelper::getMaxYear();
+                    }
+                    else
+                    {
+                        $minyear = $params->get("com_earliestyear", 1970);
+                        $maxyear = $params->get("com_latestyear", 2150);
+                    }
+                    Factory::getApplication()->triggerEvent('onGetExportYears', array(& $minyear, & $maxyear));
+                    for ($y = $minyear; $y <= $maxyear; $y++)
+                    {
+                        if (!in_array($y, $year))
+                            $year[] = $y;
+                    }
 
 					foreach ($year AS $y)
 					{

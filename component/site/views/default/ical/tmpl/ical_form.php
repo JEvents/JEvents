@@ -206,13 +206,24 @@ if ($input->getString("submit", "") != "")
 		<div id='otheryears' <?php echo $checked ? '' : ''; ?> >
 			<?php
 			//consturc years array, easy to add own kind of selection
-			$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
-			$year   = array();
-			for ($y = JEVHelper::getMinYear(); $y <= JEVHelper::getMaxYear(); $y++)
-			{
-				if (!in_array($y, $year))
-					$year[] = $y;
-			}
+            $params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+            $year = array();
+            if(method_exists("JEVHelper", "getMinYear"))
+            {
+                $minyear =  JEVHelper::getMinYear();
+                $maxyear = JEVHelper::getMaxYear();
+            }
+            else
+            {
+                $minyear = $params->get("com_earliestyear", 1970);
+                $maxyear = $params->get("com_latestyear", 2150);
+            }
+            Factory::getApplication()->triggerEvent('onGetExportYears', array(& $minyear, & $maxyear));
+            for ($y = $minyear; $y <= $maxyear; $y++)
+            {
+                if (!in_array($y, $year))
+                    $year[] = $y;
+            }
 
 			foreach ($year AS $y)
 			{
