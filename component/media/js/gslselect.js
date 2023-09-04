@@ -193,6 +193,11 @@ function gslselect(selector) {
 
             gslUIkit.util.on(dropDownDiv, 'show', function () {
                     searchInput.focus();
+                    if (dropDownDiv.offsetHeight > document.body.offsetHeight - 200)
+                    {
+                        dropDownDiv.style.maxHeight = Math.max(200, document.body.offsetHeight - 500) + 'px';
+                        dropDownDiv.style.overflowY = 'auto';
+                    }
             });
 
             // Use Try/Catch for browsers with no support
