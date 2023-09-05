@@ -41,12 +41,12 @@ function Defaultgetstartenddates($view)
 		$app->setUserState('active_filter_menu ', 0);
 	}
 
-	$startdate = $app->getUserStateFromRequest('range_startdate' . $Itemid, 'startdate', $input->getString("startdate"));
-	$enddate   = $app->getUserStateFromRequest('range_enddate' . $Itemid, 'enddate', $input->getString("enddate"));
+	$startdate = $app->getUserStateFromRequest('range_startdate' . $Itemid, 'startdate', $input->getString("startdate", ''));
+	$enddate   = $app->getUserStateFromRequest('range_enddate' . $Itemid, 'enddate', $input->getString("enddate", ''));
 
     if (strpos($startdate, " 23:59:59") > 0)
     {
-        $tempdate = new Joomla\CMS\Date\Date($startday);
+        $tempdate = new Joomla\CMS\Date\Date($startdate);
         $tempdate->add(new DateInterval('PT1S'));
         $startdate = $tempdate->format("Y-m-d");
     }
@@ -58,7 +58,7 @@ function Defaultgetstartenddates($view)
     }
     if (strpos($startdate, " 00:00:00") > 0)
     {
-        $tempdate = new Joomla\CMS\Date\Date($startday);
+        $tempdate = new Joomla\CMS\Date\Date($startdate);
         $startdate = $tempdate->format("Y-m-d");
     }
     if (strpos($enddate, " 00:00:00") > 0)
