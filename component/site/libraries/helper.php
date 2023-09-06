@@ -728,10 +728,10 @@ class JEVHelper
 
 
 			list ($yearpart, $monthpart, $daypart) = explode("-", $value);
+            $hourpart = '00';
+            $minpart = '00';
             if ($showtime)
             {
-                $hourpart = '00';
-                $minpart = '00';
                 list($daypart, $timepart) = explode(" ", $daypart);
                 if ($timepart)
                 {
@@ -764,6 +764,7 @@ class JEVHelper
 			// switch back to strftime format to use Joomla calendar tool
 			$format = str_replace(array("Y", "m", "d", "b", "B", "h", "H", "i"), array("%Y", "%m", "%d", "%b", "%b", "%B", "%H", "%M"), $format);
 
+            $value = "$yearpart-$monthpart-$daypart $hourpart:$minpart";
 			echo HTMLHelper::_('calendar', $value, $fieldname, $fieldid, $format, $attributes);
 			return;
 		}
