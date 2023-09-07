@@ -694,6 +694,70 @@ class JEVHelper
 
 		if (version_compare(JVERSION, '4.0.0', '>='))
 		{
+            // make sure not an strftime format
+            $informat = $format;
+            $invalue  = $value;
+
+            // Aggregates
+            $format = str_replace(
+                array(          '%r',     '%R',        '%T',       '%D' ,      '%F'),
+                array( '%I:%M:%S %p',  '%H:%M',  '%H:%M:%S', '%m/%d/%y', '%Y-%m-%d'),
+                $format);
+            // Not supporting
+
+            // ToDo Trim double spaces in value if using %k etc. which have preceeding spaces
+            // Year
+            $format = str_replace(
+                array('%G', '%y', '%Y'),
+                array( 'o',  'y',  'Y'),
+                $format);
+            // Not supporting %c %g
+
+            // Month
+            $format = str_replace(
+                array('%b', '%B', '%h', '%m'),
+                array( 'M',  'F',  'M',  'm'),
+                $format);
+            // Not supporting
+
+            // Day
+            $format = str_replace(
+                array('%a', '%A', '%d', '%e' ),
+                array( 'D',  'l',  'd',  'j'),
+                $format);
+            // Not supporting %u %w %j
+
+            // AM/PM
+            $format = str_replace(
+                array('%P', '%p'),
+                array( 'a',  'A'),
+                $format);
+            // Not supporting %u %w %j
+
+            // Hour
+            $format = str_replace(
+                array('%H', '%k', '%I', '%l' ),
+                array( 'H',  'G',  'h',  'g'),
+                $format);
+            // Not supporting %u %w %j
+
+            // Minute
+            $format = str_replace(
+                array('%M'),
+                array( 'i'),
+                $format);
+            // Not supporting
+
+            // Second
+            $format = str_replace(
+                array('%s'),
+                array( 's'),
+                $format);
+            // Not supporting
+
+            $formatHasTime = preg_match("#a|A|g|h|G|H|i|s|v|u|U#", $format);
+            $showtime = $showtime && $formatHasTime;
+
 			$document           = Factory::getDocument();
 			$component          = "com_jevents";
 			$params             = ComponentHelper::getParams($component);
@@ -706,8 +770,28 @@ class JEVHelper
 			}
 			else
 			{
-                $dcff_format = str_replace(array("B",), array("M"), $format);
+                $dcff_format = $format;
 				$datetime = date_create_from_format($dcff_format, $value);
+                // leading spaces!
+                $spaceMapping = array();
+                $spaceMapping[] = array("g", " g");
+                $spaceMapping[] = array("d", " d");
+                $spaceMapping[] = array(array('g', 'd'),   array(" g", "d"));
+                $spaceMapping[] = array(array('g', 'd'),   array("g", " d"));
+                $spaceMapping[] = array(array('g', 'd'), array("  g", " d"));
+                if (!$datetime && (strpos($dcff_format, 'g') !== false || strpos($dcff_format, 'd') !== false))
+                {
+                    foreach ($spaceMapping as $spaceMap)
+                    {
+                        $dcff_format = str_replace( $spaceMap[0], $spaceMap[1], $format );
+                        $datetime = date_create_from_format( $dcff_format, $value );
+                        if ($datetime)
+                        {
+                            break;
+                        }
+                    }
+                }
+
 				// This is probably because we have mysql formatted value
 				if (!$datetime)
 				{
@@ -738,35 +822,82 @@ class JEVHelper
                     list($hourpart, $minpart) = explode(":", $timepart);
                 }
             }
-			$value = str_replace(array("Y", "m", "d", "h", "b", "B", "H", "i"), array($yearpart, $monthpart, $daypart, $monthpart, $monthpart, $monthpart, $hourpart, $minpart), $format);
+
+            $value = str_replace(array("Y", "m", "d", "h", "b", "B", "H", "i"), array($yearpart, $monthpart, $daypart, $monthpart, $monthpart, $monthpart, $hourpart, $minpart), $format);
+
 			$attributes = $attribs;
 			// Build the attributes array.
 			empty($onchange) ? null : $attributes['onchange'] = $onchange;
-			empty($onchange) ? null : $attributes['onChange'] = $onchange;
+
             $attributes["showTime"] = $showtime;
-			//$attributes['onselect']="function{this.hide();}";
-			/*
-			empty($this->size)      ? null : $attributes['size'] = $this->size;
-			empty($this->maxlength) ? null : $attributes['maxlength'] = $this->maxlength;
-			empty($this->class)     ? null : $attributes['class'] = $this->class;
-			!$this->readonly        ? null : $attributes['readonly'] = 'readonly';
-			!$this->disabled        ? null : $attributes['disabled'] = 'disabled';
-			empty($hint)            ? null : $attributes['placeholder'] = $hint;
-			$this->autocomplete     ? null : $attributes['autocomplete'] = 'off';
-			!$this->autofocus       ? null : $attributes['autofocus'] = '';
 
-			if ($this->required)
-			{
-				$attributes['required'] = '';
-				$attributes['aria-required'] = 'true';
-			}
-	*/
-			// switch back to strftime format to use Joomla calendar tool
-			$format = str_replace(array("Y", "m", "d", "b", "B", "h", "H", "i"), array("%Y", "%m", "%d", "%b", "%b", "%B", "%H", "%M"), $format);
+			// Remove text based format for Joomla calendar tool
+            $xformat = str_replace(
+                array( "D", "l", "F", "M"),
+                array( "N", "w", "m", 'm'),
+                $format);
 
-            $value = "$yearpart-$monthpart-$daypart $hourpart:$minpart";
-			echo HTMLHelper::_('calendar', $value, $fieldname, $fieldid, $format, $attributes);
-			return;
+            // Switch back to strftime formats for javascript!
+            // Year
+            $format = str_replace(
+                array( 'o',  'y',  'Y'),
+                array('%G', '%y', '%Y'),
+                $format);
+            // Not supporting %c %g
+
+            // Month
+            $format = str_replace(
+                array( 'M',  'F',  'M',  'm'),
+                array('%b', '%B', '%h', '%m'),
+                $format);
+            // Not supporting
+
+            // Day
+            $format = str_replace(
+                array( 'D',  'l',  'd',  'j'),
+                array('%a', '%A', '%d', '%e' ),
+                $format);
+            // Not supporting %u %w %j
+
+            // AM/PM
+            $format = str_replace(
+                array( 'a',  'A'),
+                array('%P', '%p'),
+                $format);
+            // Not supporting %u %w %j
+
+            // Hour
+            $format = str_replace(
+                array( 'H',  'G',  'h',  'g'),
+                array('%H', '%k', '%I', '%l' ),
+                $format);
+            // Not supporting %u %w %j
+
+            // Minute
+            $format = str_replace(
+                array( 'i'),
+                array('%M'),
+                $format);
+            // Not supporting
+
+            // Second
+            $format = str_replace(
+                array( 's'),
+                array('%s'),
+                $format);
+            // Not supporting
+
+            if ($showtime)
+            {
+                $value = "$yearpart-$monthpart-$daypart $hourpart:$minpart";
+            }
+            else
+            {
+                $value = "$yearpart-$monthpart-$daypart";
+            }
+            echo HTMLHelper::_('calendar', $value, $fieldname, $fieldid, $format, $attributes);
+
+            return;
 		}
 		$document           = Factory::getDocument();
 		$component          = "com_jevents";
