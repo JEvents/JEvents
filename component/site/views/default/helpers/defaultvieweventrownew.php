@@ -25,7 +25,7 @@ function DefaultViewEventRowNew($view, $row, $args = "")
 	}
 	*/
 
-	$jevtask = $input->getString("jevtask");
+	$jevtask = $input->getString("jevtask", "");
 	$jevtask = str_replace(".listevents", "", $jevtask);
 
 	$showyeardate = $cfg->get("showyeardate", 0);

@@ -1325,7 +1325,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						{
 
 							$cfg     = JEVConfig::getInstance();
-							$jevtask = $input->getString("jevtask");
+							$jevtask = $input->getString("jevtask", "");
 							$jevtask = str_replace(".listevents", "", $jevtask);
 
 							$showyeardate = $cfg->get("showyeardate", 0);

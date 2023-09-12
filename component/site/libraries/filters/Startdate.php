@@ -119,7 +119,7 @@ class jevStartdateFilter extends jevFilter
 		if (!$this->filterField) return "";
 
 		// only works on admin list events pages
-		if (Factory::getApplication()->input->getCmd("jevtask") != "admin.listevents")
+		if (Factory::getApplication()->input->getCmd("jevtask", "") != "admin.listevents")
 		{
 			$filterList          = array();
 			$filterList["title"] = "";

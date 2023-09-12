@@ -52,7 +52,7 @@ class CatController extends Joomla\CMS\MVC\Controller\BaseController
 
 		$catids = $input->getString('catids', "");
 		$catids = explode("|", $catids);
-		\Joomla\Utilities\ArrayHelper::toInteger($catids);
+        $catids = \Joomla\Utilities\ArrayHelper::toInteger($catids);
 
 		$Itemid = JEVHelper::getItemid();
 

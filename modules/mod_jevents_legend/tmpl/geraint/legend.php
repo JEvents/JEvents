@@ -103,7 +103,7 @@ class GeraintModLegendView extends DefaultModLegendView
 		$catidsIn = $input->getString('catids', "NONE");
 		if ($catidsIn != "NONE" && $catidsIn != "0") $catidsGP = explode($separator, $catidsIn);
 		else $catidsGP = array();
-		ArrayHelper::toInteger($catidsGP);
+        $catidsGP = ArrayHelper::toInteger($catidsGP);
 		$catidsGPList = implode(",", $catidsGP);
 
 		// This produces a full tree of categories

@@ -698,62 +698,7 @@ class JEVHelper
             $informat = $format;
             $invalue  = $value;
 
-            // Aggregates
-            $format = str_replace(
-                array(          '%r',     '%R',        '%T',       '%D' ,      '%F'),
-                array( '%I:%M:%S %p',  '%H:%M',  '%H:%M:%S', '%m/%d/%y', '%Y-%m-%d'),
-                $format);
-            // Not supporting
-
-            // ToDo Trim double spaces in value if using %k etc. which have preceeding spaces
-            // Year
-            $format = str_replace(
-                array('%G', '%y', '%Y'),
-                array( 'o',  'y',  'Y'),
-                $format);
-            // Not supporting %c %g
-
-            // Month
-            $format = str_replace(
-                array('%b', '%B', '%h', '%m'),
-                array( 'M',  'F',  'M',  'm'),
-                $format);
-            // Not supporting
-
-            // Day
-            $format = str_replace(
-                array('%a', '%A', '%d', '%e' ),
-                array( 'D',  'l',  'd',  'j'),
-                $format);
-            // Not supporting %u %w %j
-
-            // AM/PM
-            $format = str_replace(
-                array('%P', '%p'),
-                array( 'a',  'A'),
-                $format);
-            // Not supporting %u %w %j
-
-            // Hour
-            $format = str_replace(
-                array('%H', '%k', '%I', '%l' ),
-                array( 'H',  'G',  'h',  'g'),
-                $format);
-            // Not supporting %u %w %j
-
-            // Minute
-            $format = str_replace(
-                array('%M'),
-                array( 'i'),
-                $format);
-            // Not supporting
-
-            // Second
-            $format = str_replace(
-                array('%s'),
-                array( 's'),
-                $format);
-            // Not supporting
+            $format = JEVHelper::mapStrftimeFormatToDateFormat($format);
 
             $formatHasTime = preg_match("#a|A|g|h|G|H|i|s|v|u|U#", $format);
             $showtime = $showtime && $formatHasTime;
@@ -814,7 +759,7 @@ class JEVHelper
 			list ($yearpart, $monthpart, $daypart) = explode("-", $value);
             $hourpart = '00';
             $minpart = '00';
-            if ($showtime)
+            if ($showtime && strpos($daypart, " ") !== false)
             {
                 list($daypart, $timepart) = explode(" ", $daypart);
                 if ($timepart)
@@ -827,7 +772,8 @@ class JEVHelper
 
 			$attributes = $attribs;
 			// Build the attributes array.
-			empty($onchange) ? null : $attributes['onchange'] = $onchange;
+			empty($onchange) ? null : $attributes['onChange'] = $onchange;
+            empty($onchange) ? null : $attributes['onchange'] = $onchange;
 
             $attributes["showTime"] = $showtime;
 
@@ -1077,7 +1023,7 @@ class JEVHelper
 			$btn_style = $disabled ? ' style="display:none;"' : '';
 			$div_class = !$disabled ? ' class="input-group"' : '';
 
-			$jevtask = Factory::getApplication()->input->getString("jevtask");
+			$jevtask = Factory::getApplication()->input->getString("jevtask", "");
 			$isedit = (strpos($jevtask, "icalevent.edit") !== false || strpos($jevtask, "icalrepeat.edit") !== false );
 
 			echo '<div class=" field-calendar">'
@@ -1385,7 +1331,7 @@ class JEVHelper
 			// wierd bug in Joomla when SEF is disabled but with xhtml urls sometimes &amp;Itemid is misinterpretted !!!
 			if ($Itemid == 0)
 				$Itemid = $input->getInt("amp;Itemid", 0);
-			if ($option == JEV_COM_COMPONENT && $Itemid > 0 && $input->getCmd("task") != "crawler.listevents" && $input->getCmd("jevtask") != "crawler.listevents")
+			if ($option == JEV_COM_COMPONENT && $Itemid > 0 && $input->getCmd("task") != "crawler.listevents" && $input->getCmd("jevtask", "") != "crawler.listevents")
 			{
 				$jevitemid[$evid] = $Itemid;
 
@@ -5038,5 +4984,89 @@ SCRIPT;
 		}
 
 	}
+
+    public static
+    function dateFromStrftimeFormat($strftime, $datetime = null)
+    {
+        if (is_null($datetime))
+        {
+            $datetime = time();
+        }
+        $format = JEVHelper::mapStrftimeFormatToDateFormat($strftime);
+        return date($format, $datetime);
+    }
+
+    public static
+    function mapStrftimeFormatToDateFormat($strftime)
+    {
+
+        $informat = $format = $strftime;
+
+        // Escape Timezone!
+        $format = str_replace(
+            array(  '%dT',  '%SZ'),
+            array( '%d\T', '%S\Z'),
+            $format);
+
+        // Aggregates
+        $format = str_replace(
+            array(          '%r',     '%R',        '%T',       '%D' ,      '%F'),
+            array( '%I:%M:%S %p',  '%H:%M',  '%H:%M:%S', '%m/%d/%y', '%Y-%m-%d'),
+            $format);
+        // Not supporting
+
+        // ToDo Trim double spaces in value if using %k etc. which have preceeding spaces
+        // Year
+        $format = str_replace(
+            array('%G', '%y', '%Y'),
+            array( 'o',  'y',  'Y'),
+            $format);
+        // Not supporting %c %g
+
+        // Month
+        $format = str_replace(
+            array('%b', '%B', '%h', '%m'),
+            array( 'M',  'F',  'M',  'm'),
+            $format);
+        // Not supporting
+
+        // Day
+        $format = str_replace(
+            array('%a', '%A', '%d', '%e' ),
+            array( 'D',  'l',  'd',  'j'),
+            $format);
+        // Not supporting %u %w %j
+
+        // AM/PM
+        $format = str_replace(
+            array('%P', '%p'),
+            array( 'a',  'A'),
+            $format);
+        // Not supporting %u %w %j
+
+        // Hour
+        $format = str_replace(
+            array('%H', '%k', '%I', '%l' ),
+            array( 'H',  'G',  'h',  'g'),
+            $format);
+        // Not supporting %u %w %j
+
+        // Minute
+        $format = str_replace(
+            array('%M'),
+            array( 'i'),
+            $format);
+        // Not supporting
+
+        // Second
+        $format = str_replace(
+            array('%s'),
+            array( 's'),
+            $format);
+        // Not supporting
+
+        return $format;
+    }
+
 
 }
