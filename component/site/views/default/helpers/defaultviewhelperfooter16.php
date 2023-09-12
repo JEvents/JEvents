@@ -26,7 +26,7 @@ function DefaultViewHelperFooter16($view)
 	<?php
 	$app->triggerEvent('onJEventsFooter');
 
-	$task = $input->getString("jevtask");
+	$task = $input->getString("jevtask", "");
 	$view->loadModules("jevpostjevents");
 	$view->loadModules("jevpostjevents_" . $task);
 

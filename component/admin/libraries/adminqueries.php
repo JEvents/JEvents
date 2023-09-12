@@ -95,7 +95,7 @@ class JEventsAdminDBModel extends JEventsDBModel
 					$inaccessiblecats[] = -1;
 					$inaccessiblecats   = implode(",", $inaccessiblecats);
 
-					$jevtask = $input->getString("jevtask");
+					$jevtask = $input->getString("jevtask", "");
 					$isedit  = false;
 					// not only for edit pages but for all backend changes we ignore the language filter on categories
 					if (strpos($jevtask, "icalevent.edit") !== false || strpos($jevtask, "icalrepeat.edit") !== false || $app->isClient('administrator') || !$user->get("isRoot"))

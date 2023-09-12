@@ -1178,7 +1178,7 @@ SCRIPT;
 
 		$this->form->jevdata["creator"]["users"] = false;
 		if (($input->getCmd("task") == "icalevent.edit" || $input->getCmd("task") == "icalevent.editcopy"
-				|| $input->getCmd("jevtask") == "icalevent.edit" || $input->getCmd("jevtask") == "icalevent.editcopy") && isset($this->users))
+				|| $input->getCmd("jevtask", "") == "icalevent.edit" || $input->getCmd("jevtask", "") == "icalevent.editcopy") && isset($this->users))
 		{
 			$this->form->jevdata["creator"]["users"] = $this->users;
 		}

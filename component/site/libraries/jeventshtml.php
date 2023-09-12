@@ -270,7 +270,7 @@ class JEventsHTML
             $repeat = ($item->level - 1 >= 0) ? $item->level - 1 : 0;
             $item->title = str_repeat('- ', $repeat) . $item->title;
 
-			$jevtask = $input->getString("jevtask");
+			$jevtask = $input->getString("jevtask", "");
 			if (strpos($jevtask, "icalevent.edit") !== false || strpos($jevtask, "icalrepeat.edit") !== false)
 			{
 	            if ($item->language !== '*' && $item->language != $lang->getTag())
@@ -345,7 +345,7 @@ class JEventsHTML
 
 		// Thanks to ssobada
 		// when editing events we restrict the available list!
-		$jevtask = $input->getString("jevtask");
+		$jevtask = $input->getString("jevtask", "");
 		if (strpos($jevtask, "icalevent.edit") !== false || strpos($jevtask, "icalrepeat.edit") !== false)
 		{
 			$user = Factory::getUser();

@@ -24,7 +24,7 @@ function DefaultViewHelperShowNavTableBar($view)
 	$today_date = clone($this_date);
 	$today_date->setDate($regs[1], $regs[2], $regs[3]);
 
-	$task = $input->getString("jevtask");
+	$task = $input->getString("jevtask", "");
 	if ($task == "")
 	{
 		// I think xdebug messes up this variable in the memory so when debugging this is helpful
