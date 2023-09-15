@@ -22,7 +22,9 @@ if (count($filterHTML) > 0)
 	ob_start();
 
 	JEVHelper::script("mod_jevents_filter.js", "modules/mod_jevents_filter/", false);
-	?>
+    JEVHelper::script("ukselect.js", "modules/mod_jevents_filter/assets/js/", false);
+
+    ?>
 	<form action="<?php echo $form_link; ?>" id="jeventspost" name="jeventspost<?php echo $module->id; ?>" method="post"
 	      class="jevfiltermodule">
 		<input type='hidden' name='catids' id='catidsfv' value='<?php echo trim($datamodel->catidsOut); ?>'/>

@@ -3803,7 +3803,7 @@ class JEventsDBModel
 		        //exit();
 	        }
 
-            $query = substr($query, 0, strpos($query, "WHERE "));
+            $query = substr($query, 0, strrpos($query, "WHERE "));
             $query .= "\n WHERE rpt.rp_id IN (" . implode(",", $rpids) . " ) GROUP BY rpt.rp_id";
 
            // $query .= "\n GROUP BY ev.ev_id";

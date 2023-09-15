@@ -17,6 +17,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Component\ComponentHelper;
 
 $datamodel = new JEventsDataModel();
 
@@ -86,6 +87,12 @@ $form_link = Route::_($form_link
 	, false);
 
 $filters = $jevhelper->getFilters();
+
+$compparams = ComponentHelper::getParams('com_jevents');
+if ($compparams->get('framework', 'native') === 'uikit3')
+{
+    $params->set("bootstrapchosen", 2);
+}
 
 $option = $input->getCmd("option");
 if ($params->get("disablenonjeventspages", 0) && $option != "com_jevents" && $option != "com_jevlocations" && $option != "com_jevpeople" && $option != "com_rsvppro" && $option != "com_jevtags")

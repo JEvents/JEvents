@@ -768,7 +768,18 @@ class JEVHelper
                 }
             }
 
-            $value = str_replace(array("Y", "m", "d", "h", "b", "B", "H", "i"), array($yearpart, $monthpart, $daypart, $monthpart, $monthpart, $monthpart, $hourpart, $minpart), $format);
+            $value = str_replace(
+                array("Y",
+                "m", "M", "n", "F",
+                "d", "D", "j",
+                "h", "H",
+                "i"),
+                array($yearpart,
+                $monthpart, $monthpart, $monthpart, $monthpart,
+                $daypart, $daypart,$daypart,
+                $hourpart, $hourpart,
+                $minpart),
+                $format);
 
 			$attributes = $attribs;
 			// Build the attributes array.

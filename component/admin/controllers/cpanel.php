@@ -169,6 +169,8 @@ class AdminCpanelController extends AdminController
 		$this->view->setLayout('cpanel');
 		$this->view->title = Text::_('CONTROL_PANEL');
 
+        $this->checkcollations();
+
 		$this->view->display();
 
 	}
@@ -1006,6 +1008,50 @@ WHERE ics.ics_id is null
         $installer->update(false);
     }
 
+    public function checkcollations()
+    {
+        $force = false;
+        $app    = Factory::getApplication();
+        $db = Factory::getDbo();
+
+        if (!JEVHelper::isAdminUser())
+        {
+            return;
+        }
+
+        // find collation for com_content
+        $db->setQuery("SHOW FULL COLUMNS FROM #__content");
+        $contentdata = $db->loadObjectList('Field');
+        $collation   = $contentdata['title']->Collation;
+
+        $db->setQuery("SHOW TABLE STATUS LIKE '" . $db->getPrefix() . "jev%'");
+        $tables = $db->loadObjectList('Name');
+
+        $fixtables = false;
+        foreach ($tables as $tablename => $table)
+        {
+            if ($force || $table->Collation != $collation)
+            {
+                $fixtables = true;
+                break;
+            }
+            $db->setQuery("SHOW FULL COLUMNS FROM $tablename");
+            $columndata = $db->loadObjectList('Field');
+            foreach ($columndata as $columnname => $columndata)
+            {
+                if ($columndata->Collation && ($force || $columndata->Collation != $collation))
+                {
+                    $fixtables = true;
+                    break;
+                }
+            }http://ubu.j41.net/administrator/index.php?option=com_jevents&task=params.edit&component=com_jevents&view=component
+        }
+        if ($fixtables)
+        {
+            $app->enqueueMessage(Text::_("COM_JEVENTS_COLLATIONS_NEED_UPDATING" ) ,   "warning"      );
+        }
+    }
+
 	public function fixcollations()
 	{
 		$app    = Factory::getApplication();
@@ -1015,21 +1061,19 @@ WHERE ics.ics_id is null
 
 		if (!JEVHelper::isAdminUser())
 		{
-			Factory::getApplication()->enqueueMessage( "Not Authorised - must be admin", 'warning');
-			Factory::getApplication()->redirect("index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.cpanel");
+			$app->enqueueMessage( "Not Authorised - must be admin", 'warning');
+			$app->redirect("index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.cpanel");
 			return;
 		}
 
 		$db = Factory::getDbo();
-		$db->setQuery("SHOW TABLES LIKE '" . $db->getPrefix() . "jev_%'");
-		$alltables = $db->loadAssocList();
 
 		// find collation for com_content
 		$db->setQuery("SHOW FULL COLUMNS FROM #__content");
 		$contentdata = $db->loadObjectList('Field');
 		$collation   = $contentdata['title']->Collation;
 
-		$db->setQuery("SHOW TABLE STATUS LIKE '" . $db->getPrefix() . "jev_%'");
+		$db->setQuery("SHOW TABLE STATUS LIKE '" . $db->getPrefix() . "jev%'");
 		$tables = $db->loadObjectList('Name');
 
 		if ($input->getInt("ft", 0))
@@ -1042,10 +1086,12 @@ WHERE ics.ics_id is null
 					$db->execute();
 				}
 			}
+
+            $db->setQuery("SHOW TABLE STATUS LIKE '" . $db->getPrefix() . "jev%'");
+            $tables = $db->loadObjectList('Name');
+
 		}
 
-		$db->setQuery("SHOW TABLE STATUS LIKE '" . $db->getPrefix() . "jev_%'");
-		$tables = $db->loadObjectList('Name');
 
 		$fixtables = false;
 		foreach ($tables as $tablename => $table)
@@ -1062,14 +1108,17 @@ WHERE ics.ics_id is null
 				if ($columndata->Collation && ($force || $columndata->Collation != $collation))
 				{
 					echo "Column $columnname in Table $tablename has collation " . $columndata->Collation . " it should probably be " . $collation . "<Br/>";
+                    $fixtables = true;
 				}
 			}
 		}
-		if ($fixtables)
-		{
-			echo "<hr/><br/><strong><a href='" . Uri::root() . "/administrator/index.php?option=com_jevents&task=cpanel.fixcollations&ft=1" . "'>Click here to fix these tables</a></strong>
-				<h2 class='gsl-h2'>MAKE SURE YOU DATABASE IS BACKED UP BEFORE YOU DO THIS</h2>";
-		}
+        if (!$fixtables)
+        {
+            $app->enqueueMessage(Text::_("COM_JEVENTS_COLLATIONS_UPDATED_SUCCESSFULLY" ) ,   "info"      );
+        }
+
+        $app->redirect("index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.cpanel");
+
 	}
 
 	private function checkLanguagePackages()
