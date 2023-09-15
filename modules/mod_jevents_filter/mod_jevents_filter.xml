@@ -13,6 +13,7 @@
 		<filename module="mod_jevents_filter">mod_jevents_filter.php</filename>
 		<filename>mod_jevents_filter.js</filename>
 		<filename>helper.php</filename>
+		<folder>assets</folder>
 		<folder>tmpl</folder>
 		<folder>fields</folder>
 	</files>

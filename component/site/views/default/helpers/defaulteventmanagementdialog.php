@@ -122,11 +122,11 @@ function DefaultEventManagementDialog($view, $row, $mask, $bootstrap = false)
 		{
 			?>
 			<div id="action_dialogJQ<?php echo $row->rp_id(); ?>" class="action_dialogUI" tabindex="-1" data-uk-modal
-			     role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			     role="dialog" aria-labelledby="myModalManageLabel" aria-hidden="true">
 				<div class="uk-modal-dialog">
 					<button type="button" class="uk-modal-close-default"      data-uk-close ></button>
 					<div class="uk-modal-header">
-						<h4 class="uk-modal-title" id="myModalLabel"><?php echo Text::_("JEV_MANAGE_EVENT"); ?></h4>
+						<h4 class="uk-modal-title" id="myModalManageLabel"><?php echo Text::_("JEV_MANAGE_EVENT"); ?></h4>
 					</div>
 					<div class="uk-modal-body">
 						<?php
@@ -200,7 +200,7 @@ function DefaultEventManagementDialog($view, $row, $mask, $bootstrap = false)
 		{
 		?>
 		<div id="action_dialogJQ<?php echo $row->rp_id(); ?>" class="action_dialogJQ modal hide fade" tabindex="-1"
-		     role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		     role="dialog" aria-labelledby="myModalManageLabel" aria-hidden="true">
 			<div class="modal-dialog modal-sm">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -209,14 +209,14 @@ function DefaultEventManagementDialog($view, $row, $mask, $bootstrap = false)
 							if ($jversion->isCompatible('4.0'))
 							{
 						?>
-							<h4 class="modal-title" id="myModalLabel"><?php echo Text::_("JEV_MANAGE_EVENT"); ?></h4>
+							<h4 class="modal-title" id="myModalManageLabel"><?php echo Text::_("JEV_MANAGE_EVENT"); ?></h4>
 							<button type="button" class="close btn-close uk-modal-close-default" data-dismiss="modal" data-bs-dismiss="modal" aria-hidden="true"></button>
 								<?php
 							}
 							else {
 								?>
 						<button type="button" class="close uk-modal-close-default" data-dismiss="modal" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="myModalLabel"><?php echo Text::_("JEV_MANAGE_EVENT"); ?></h4>
+						<h4 class="modal-title" id="myModalManageLabel"><?php echo Text::_("JEV_MANAGE_EVENT"); ?></h4>
 								<?php
 							}
 							?>
