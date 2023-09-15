@@ -516,6 +516,8 @@ function() {
 SCRIPT;
             Factory::getDocument()->addScriptDeclaration($script);
 
+            $settingWarnings = array();
+
 			$i = 0;
 			foreach ($jevplugins as $plugin)
 			{
@@ -628,7 +630,27 @@ SCRIPT;
 								}
 
 								// Set the value for the form
-								$paramsval = $pluginparams->get($field->fieldname, $field->default);
+								$paramsval = $pluginparams->get($field->fieldname, $field->getAttribute('default'));
+								if (is_string($paramsval) && strpos($paramsval, "htmlspecialchars()") > 0)
+                                {
+									if (!isset($settingWarnings[$safename]))
+                                    {
+                                        $settingWarnings[$safename] = array();
+                                    }
+                                    $settingWarnings[$safename][] = strip_tags($field->label);
+                                    $paramsval = $field->getAttribute('default', '');
+                                }
+								/*
+                                if (is_string($paramsval) && strpos($paramsval, "Deprecated") > 0)
+                                {
+                                    if (!isset($settingWarnings[$safename]))
+                                    {
+                                        $settingWarnings[$safename] = array();
+                                    }
+                                    $settingWarnings[$safename][] = strip_tags($field->label);
+                                    $paramsval = $field->getAttribute('default', '');
+                                }
+								*/
 								if (is_object($paramsval))
 								{
 									// Need this for subform to work
@@ -701,6 +723,18 @@ SCRIPT;
 					<?php
 				}
 			}
+            if (count($settingWarnings))
+            {
+                $warningMessage  = "<strong>" .  Text::_("COM_JEVENTS_CHECK_PLUGIN_PARAMETERS") . "</strong><br>";
+                $warningMessage .=  Text::_("COM_JEVENTS_CHECK_PLUGIN_PARAMETERS_DESC") . "<br><br>";
+                array_walk($settingWarnings, function($pluginWarnings, $pluginName) use (& $warningMessage) {
+                    $warningMessage .= "<strong>" . $pluginName . "</strong><br>" ;
+                    $warningMessage .= implode(", ",  $pluginWarnings) ;
+                    $warningMessage .= "<br>";
+                });
+                Factory::getApplication()->enqueueMessage($warningMessage, "notice");
+            }
+
 			?>
                 </ul>
             </li>

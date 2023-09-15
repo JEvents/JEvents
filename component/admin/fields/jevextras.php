@@ -83,10 +83,6 @@ class FormFieldJevextras extends FormField
 		// load any custom fields
 		PluginHelper::importPlugin("jevents");
 		$id = $this->id;
-		if (version_compare(JVERSION, '3.3.0', '<'))
-		{
-			$res = Factory::getApplication()->triggerEvent('onEditMenuItem', array(&$this->data, &$this->value, $this->type, $this->name, $this->id, $this->form));
-		}
 		if (isset($this->data[$id]))
 		{
 			$this->element['label'] = $this->data[$id]->label;
@@ -110,10 +106,11 @@ class FormFieldJevextras extends FormField
 		PluginHelper::importPlugin("jevents");
 		$id = $this->id;
 
-		if (version_compare(JVERSION, '3.3.0', '>='))
-		{
-			$res = Factory::getApplication()->triggerEvent('onEditMenuItem', array(&$this->data, &$this->value, $this->type, $this->name, $this->id, $this->form));
-		}
+        if (is_null($this->value))
+        {
+            $this->value = "";
+        }
+		$res = Factory::getApplication()->triggerEvent('onEditMenuItem', array(&$this->data, &$this->value, $this->type, $this->name, $this->id, $this->form));
 
 		Factory::getDocument()->addStyleDeclaration('
 		.control-group .controls, .control-group .controls > *,
