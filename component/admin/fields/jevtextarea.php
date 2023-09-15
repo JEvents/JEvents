@@ -19,7 +19,10 @@ class FormFieldJevtextarea extends JFormFieldTextarea
 {
 	protected function getInput()
 	{
-
+        if (is_null($this->value))
+        {
+            $this->value = "";
+        }
 		$this->value = str_replace('<br />', "\n", strpos($this->value, " ") > 0 ? $this->value : Text::_($this->value));
 
 		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");

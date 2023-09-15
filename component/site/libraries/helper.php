@@ -5071,7 +5071,7 @@ SCRIPT;
 
         // Second
         $format = str_replace(
-            array('%s'),
+            array('%S'),
             array( 's'),
             $format);
         // Not supporting
