@@ -18,6 +18,9 @@ use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\String\StringHelper;
+use Joomla\Registry\Registry;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Filesystem\Path;
 
 jimport('joomla.filesystem.folder');
 jimport('joomla.html.html');
@@ -108,15 +111,47 @@ class JFormFieldJevfilters extends JFormFieldText
 					{
 						continue;
 					}
-					$filters[$filtername] = $path . "/" . $filter;
+                    if ($filtername == "Customfield")
+                    {
+                        $jevcustomfields = PluginHelper::getPlugin("jevents", 'jevcustomfields');
+                        JLoader::register('jevFilterProcessing', JEV_PATH . "/libraries/filters.php");
+                        JLoader::register('plgJEventsJevcustomfields', JPATH_ROOT . '/plugins/jevents/jevcustomfields/jevcustomfields.php');
+
+                        $customFilters = jevFilterProcessing::getInstance(array('Customfield'), JPATH_ROOT . '/plugins/jevents/filters/');
+
+                        $filterFile = 'Customfield.php';
+
+                        $filterFilePath = Path::find(JPATH_ROOT . '/plugins/jevents/jevcustomfields/filters/', $filterFile);
+
+                        if ($filterFilePath)
+                        {
+                            include_once($filterFilePath);
+                        }
+                        else
+                        {
+                            echo "Missing filter file $filterFile<br/>";
+                            continue;
+                        }
+
+                        $theFilter       = new jevCustomfieldfilter("", $filtername);
+                        $filterHTML = $theFilter->_createfilterHTML(true);
+                        foreach ($filterHTML['merge'] as $key => $cffilter)
+                        {
+                            $filters[$filtername . ":" . str_replace("_", " ", $key)] = $path . "/" . $filter . ":" . $key;
+                        }
+                    }
+                    else
+                    {
+                        $filters[$filtername] = $path . "/" . $filter;
+                    }
 				}
 			}
 		}
 
-		$validvalues = array();
+        $validvalues = array();
 		$input       = '<div style="clear:left"></div><table><tr valign="top">
 			<td><div style="font-weight:bold">' . Text::_("JEV_CLICK_TO_ADD_FILTER") . '</div>
-			<div id="filterchoices" style="width:150px;margin-top:10px;height:100px;border:solid 1px #ccc;overflow-y:auto" >';
+			<div id="filterchoices" style="width:300px;margin-top:10px;height:100px;border:solid 1px #ccc;overflow-y:auto" >';
 		foreach ($filters as $filter => $filterpath)
 		{
 			if (!in_array($filter, $invalue) && !in_array(strtolower($filter), $invalue))

@@ -41,7 +41,7 @@ function ukselect(selector) {
         filter.style.overflow = "hidden";
       }
       if (checkboxes) {
-        filter.classList.add('uk-input');
+       // filter.classList.add('uk-input');
       } else {
         filter.classList.add('uk-select');
         filter.classList.add('uk-padding-small');
@@ -65,9 +65,9 @@ function ukselect(selector) {
           }
 
           let multiSelected = document.createElement('div', {});
-          multiSelected.classList.add('uk-button');
-          multiSelected.classList.add('uk-button-default');
-          multiSelected.classList.add('uk-button-small');
+          multiSelected.classList.add('uk-badge');
+       //   multiSelected.classList.add('uk-badge-default');
+        //  multiSelected.classList.add('uk-badge-small');
           multiSelected.style.marginRight = '2px';
           multiSelected.appendChild(document.createTextNode(checkedOption.getAttribute('data-content') || checkedOption.text))
           multiSelected.setAttribute('data-value', checkedOption.value);
@@ -83,16 +83,13 @@ function ukselect(selector) {
             multiSelected.addEventListener('click', function (e) {
               selectElement.options[multiSelected.getAttribute('data-index')].selected = false;
               let link = multiSelected.parentNode.parentNode.parentNode.querySelector(replacementSelector + '.uk-si-' + multiSelected.getAttribute('data-index'));
-              link.classList.remove('uk-text-bold');
-              multiSelected.parentElement.removeChild(multiSelected);
-
-              if (selectElement.options[link.getAttribute('data-index')].disabled) {
+              if (link)
+              {
+                // deselect the option by using the same event as clicking the checkbox
+                let event = new Event('click');
+                link.dispatchEvent(event);
                 return;
               }
-
-              let event = new Event('change');
-              selectElement.dispatchEvent(event);
-              selectElement.style.display = 'block';
             });
 
             let icon = document.createElement('span', {});
@@ -274,9 +271,9 @@ function ukselect(selector) {
                     selectElement.options[link.getAttribute('data-index')].selected = true;
                     link.classList.add('uk-text-bold');
                     let multiSelected = document.createElement('div', {});
-                    multiSelected.classList.add('uk-button');
-                    multiSelected.classList.add('uk-button-default');
-                    multiSelected.classList.add('uk-button-small');
+                    multiSelected.classList.add('uk-badge');
+                 //   multiSelected.classList.add('uk-badge-default');
+                //    multiSelected.classList.add('uk-badge-small');
                     multiSelected.style.marginRight = '2px';
                     multiSelected.appendChild(document.createTextNode(optionLink.getAttribute('data-content') || optionLink.text))
                     multiSelected.setAttribute('data-value', optionLink.value);
@@ -290,15 +287,15 @@ function ukselect(selector) {
               });
 
               initialValue = document.createElement('div');
-              //initialValue.classList.add('uk-button-group');
+              //initialValue.classList.add('uk-badge-group');
               // why checked and not selected I don't know!
               let checkedOptions = selectElement.querySelectorAll('option:checked');
               initialValue = document.createElement('div');
               checkedOptions.forEach(function (checkedOption) {
                 let multiSelected = document.createElement('div', {});
-                multiSelected.classList.add('uk-button');
-                multiSelected.classList.add('uk-button-default');
-                multiSelected.classList.add('uk-button-small');
+                multiSelected.classList.add('uk-badge');
+       //         multiSelected.classList.add('uk-badge-default');
+        //        multiSelected.classList.add('uk-badge-small');
                 multiSelected.style.marginRight = '2px';
                 multiSelected.appendChild(document.createTextNode(checkedOption.getAttribute('data-content') || checkedOption.text))
                 multiSelected.setAttribute('data-value', checkedOption.value);

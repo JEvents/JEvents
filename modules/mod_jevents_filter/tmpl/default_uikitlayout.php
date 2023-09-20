@@ -255,6 +255,17 @@ STYLE;
                     }
                     $HTML = str_replace(array("{" . $filterId ."}", "{" . $filterId ." LBL}"), array($filter["html"], $filter["title"]), $HTML);
                 }
+
+                // second pass to deal with special case if custom field
+                foreach ($filterHTML as $filterId => $filter)
+                {
+                    if (empty($filterId) || $filterId == "catid")
+                    {
+                        continue;
+                    }
+                    $filterId = "Customfield:" . str_replace("_", " ", $filterId);
+                    $HTML = str_replace(array("{" . $filterId ."}", "{" . $filterId ." LBL}"), array($filter["html"], $filter["title"]), $HTML);
+                }
                 ob_start();?>
 				<button class="modfilter_button uk-button uk-button-danger" type="button" onclick="JeventsFilters.reset(this.form)">
                     <?php echo Text::_('MOD_JEV_FILTER_MODULE_RESET'); ?>

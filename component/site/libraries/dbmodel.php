@@ -4818,6 +4818,9 @@ class JEventsDBModel
 		$params   = ComponentHelper::getParams("com_jevents");
 		$this->daymultiday             = intval($params->get('daymultiday', 0));
 
+        $lang    = Factory::getLanguage();
+        $langtag = $lang->getTag();
+
 		$keyword = $db->escape($keyword, true);
 
 		// Use alternative data source
@@ -4891,6 +4894,8 @@ class JEventsDBModel
 			$catwhere     = "\n WHERE 1 ";
 		}
 
+        $extrajoin[] = "\n #__jevents_translation as trans ON trans.evdet_id = det.evdet_id AND trans.language=" . $db->quote($langtag);
+
 		$extrajoin  = (count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '');
 		$extrawhere = (count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '');
 
@@ -4898,6 +4903,14 @@ class JEventsDBModel
 		$extrasearchfields = array();
 		$app->triggerEvent('onSearchEvents', array(& $extrasearchfields, & $extrajoin, & $needsgroup));
 
+        if ($useRegX)
+        {
+            $extrasearchfields[] = "trans.summary RLIKE '$keyword' OR trans.description RLIKE '$keyword' OR trans.extra_info RLIKE '$keyword'";
+        }
+        else
+        {
+            $extrasearchfields[] = " MATCH (trans.summary, trans.description, trans.extra_info) AGAINST ('$keyword' IN BOOLEAN MODE)";
+        }
 
 		if (count($extrasearchfields) > 0)
 		{
