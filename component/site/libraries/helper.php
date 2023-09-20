@@ -25,6 +25,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Layout\LayoutHelper;
 
 jimport('joomla.access.access');
 
@@ -852,7 +853,8 @@ class JEVHelper
             {
                 $value = "$yearpart-$monthpart-$daypart";
             }
-            echo HTMLHelper::_('calendar', $value, $fieldname, $fieldid, $format, $attributes);
+            //echo HTMLHelper::_('calendar', $value, $fieldname, $fieldid, $format, $attributes);
+            echo JEVHelper::j4calendar($value, $fieldname, $fieldid, $format, $attributes);
 
             return;
 		}
@@ -1123,6 +1125,126 @@ class JEVHelper
 		}
 
 	}
+
+    /**
+     * Displays a calendar control field
+     *
+     * @param   string  $value    The date value
+     * @param   string  $name     The name of the text field
+     * @param   string  $id       The id of the text field
+     * @param   string  $format   The date format
+     * @param   mixed   $attribs  Additional HTML attributes
+     *                            The array can have the following keys:
+     *                            readonly      Sets the readonly parameter for the input tag
+     *                            disabled      Sets the disabled parameter for the input tag
+     *                            autofocus     Sets the autofocus parameter for the input tag
+     *                            autocomplete  Sets the autocomplete parameter for the input tag
+     *                            filter        Sets the filter for the input tag
+     *
+     * @return  string  HTML markup for a calendar field
+     *
+     * @since   1.5
+     *
+     */
+    public static function j4calendar($value, $name, $id, $format = '%Y-%m-%d', $attribs = [])
+    {
+        $app       = Factory::getApplication();
+        $lang      = $app->getLanguage();
+        $tag       = $lang->getTag();
+        $calendar  = $lang->getCalendar();
+        $direction = strtolower($app->getDocument()->getDirection());
+
+        // Get the appropriate file for the current language date helper
+        $helperPath = 'system/fields/calendar-locales/date/gregorian/date-helper.min.js';
+
+        if ($calendar && is_dir(JPATH_ROOT . '/media/system/js/fields/calendar-locales/date/' . strtolower($calendar))) {
+            $helperPath = 'system/fields/calendar-locales/date/' . strtolower($calendar) . '/date-helper.min.js';
+        }
+
+        $readonly     = isset($attribs['readonly']) && $attribs['readonly'] === 'readonly';
+        $disabled     = isset($attribs['disabled']) && $attribs['disabled'] === 'disabled';
+        $autocomplete = isset($attribs['autocomplete']) && $attribs['autocomplete'] === '';
+        $autofocus    = isset($attribs['autofocus']) && $attribs['autofocus'] === '';
+        $required     = isset($attribs['required']) && $attribs['required'] === '';
+        $filter       = isset($attribs['filter']) && $attribs['filter'] === '';
+        $todayBtn     = $attribs['todayBtn'] ?? true;
+        $weekNumbers  = $attribs['weekNumbers'] ?? true;
+        $showTime     = $attribs['showTime'] ?? false;
+        $fillTable    = $attribs['fillTable'] ?? true;
+        $timeFormat   = $attribs['timeFormat'] ?? 24;
+        $singleHeader = $attribs['singleHeader'] ?? false;
+        $hint         = $attribs['placeholder'] ?? '';
+        $class        = $attribs['class'] ?? '';
+        $onchange     = $attribs['onChange'] ?? '';
+        $minYear      = $attribs['minYear'] ?? null;
+        $maxYear      = $attribs['maxYear'] ?? null;
+
+        $showTime     = ($showTime) ? "1" : "0";
+        $todayBtn     = ($todayBtn) ? "1" : "0";
+        $weekNumbers  = ($weekNumbers) ? "1" : "0";
+        $fillTable    = ($fillTable) ? "1" : "0";
+        $singleHeader = ($singleHeader) ? "1" : "0";
+
+        // Format value when not nulldate ('0000-00-00 00:00:00'), otherwise blank it as it would result in 1970-01-01.
+        if ($value && $value !== Factory::getDbo()->getNullDate() && strtotime($value) !== false) {
+            $tz = date_default_timezone_get();
+            date_default_timezone_set('UTC');
+
+            /**
+             * Try to convert strftime format to date format, if success, use DateTimeImmutable to format
+             * the passed datetime to avoid deprecated warnings on PHP 8.1. We only support converting most
+             * common used format here.
+             */
+            //$dateFormat = self::strftimeFormatToDateFormat($format);
+            $dateFormat = self::mapStrftimeFormatToDateFormat($format);
+
+            if ($dateFormat !== false) {
+                $date       = \DateTimeImmutable::createFromFormat('U', strtotime($value));
+                $inputValue = $date->format($dateFormat);
+            } else {
+                $inputValue = strftime($format, strtotime($value));
+            }
+
+            date_default_timezone_set($tz);
+        } else {
+            $inputValue = '';
+        }
+
+        $data = [
+            'id'             => $id,
+            'name'           => $name,
+            'class'          => $class,
+            'value'          => $inputValue,
+            'format'         => $format,
+            'filter'         => $filter,
+            'required'       => $required,
+            'readonly'       => $readonly,
+            'disabled'       => $disabled,
+            'hint'           => $hint,
+            'autofocus'      => $autofocus,
+            'autocomplete'   => $autocomplete,
+            'todaybutton'    => $todayBtn,
+            'weeknumbers'    => $weekNumbers,
+            'showtime'       => $showTime,
+            'filltable'      => $fillTable,
+            'timeformat'     => $timeFormat,
+            'singleheader'   => $singleHeader,
+            'tag'            => $tag,
+            'helperPath'     => $helperPath,
+            'direction'      => $direction,
+            'onchange'       => $onchange,
+            'minYear'        => $minYear,
+            'maxYear'        => $maxYear,
+            'dataAttribute'  => '',
+            'dataAttributes' => '',
+            'calendar'       => $calendar,
+            'firstday'       => $lang->getFirstDay(),
+            'weekend'        => explode(',', $lang->getWeekEnd()),
+        ];
+
+        return LayoutHelper::render('joomla.form.field.calendar', $data, null, null);
+    }
+
 
 	/**
 	 * Loads all necessary files for JS Overlib tooltips
@@ -1685,7 +1807,7 @@ class JEVHelper
 
 			PluginHelper::importPlugin("jevents");
 
-			Factory::getApplication()->triggerEvent('isEventCreator', array(& $isEventCreator));
+			Factory::getApplication()->triggerEvent('onIsEventCreator', array(& $isEventCreator));
 		}
 		if (is_null($isEventCreator)) $isEventCreator = false;
 
@@ -2364,7 +2486,7 @@ class JEVHelper
 				$isEventPublisher[$type] = true;
 			}
 
-			Factory::getApplication()->triggerEvent('isEventPublisher', array($type, & $isEventPublisher[$type]));
+			Factory::getApplication()->triggerEvent('onIsEventPublisher', array($type, & $isEventPublisher[$type]));
 		}
 
 

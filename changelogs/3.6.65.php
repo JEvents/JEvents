@@ -11,3 +11,5 @@ $changelog[$extension][$version]["features"][]      = "Add warning to event admi
 $changelog[$extension][$version]["features"][]      = "Accessibility enhancement by ensuring modal popups have unique identifiers ";
 
 $changelog[$extension][$version]["bugfixes"][]      = "Further minor fix to popup calendar formatting";
+$changelog[$extension][$version]["bugfixes"][]      = "Fix for plugin parameters not picking up default values in JEvents config causing deprecation notice when error reporting was enabled";
+$changelog[$extension][$version]["bugfixes"][]      = "Fix for transaction date and hence transaction saving in RSVP Pro ";

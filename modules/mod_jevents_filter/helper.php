@@ -45,6 +45,20 @@ class modJeventsFilterHelper
 		JLoader::register('jevFilterProcessing', JEV_PATH . "/libraries/filters.php");
 		$pluginsDir = JPATH_ROOT . '/' . 'plugins' . '/' . 'jevents';
 		$filterlist = explode(",", str_replace(" ", "", $this->params->get('filters', "search")));
+        foreach ( $filterlist as $index => $filterlistitem )
+        {
+            if (strpos($filterlistitem, "Customfield:") === 0)
+            {
+                if (in_array("Customfield", $filterlist))
+                {
+                    unset($filterlist[$index]);
+                }
+                else
+                {
+                    $filterlist[$index] = "Customfield";
+                }
+            }
+        }
 		//$filters = jevFilterProcessing::getInstance(array("artist","category","reset"),$pluginsDir.'/'."filters".'/');
 		$filters = jevFilterProcessing::getInstance($filterlist, $pluginsDir . '/' . "filters" . '/');
 

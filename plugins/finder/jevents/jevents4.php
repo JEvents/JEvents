@@ -279,12 +279,12 @@ class plgFinderJEvents extends Adapter
 
 		// Initialize the item parameters.
 		$registry = new JevRegistry;
-		$registry->loadString($item->params);
+		$registry->loadString(isset($item->params) ? $item->params : "");
 		$item->params = ComponentHelper::getParams('com_jevents', true);
 		$item->params->merge($registry);
 
 		$registry = new JevRegistry;
-		$registry->loadString($item->metadata);
+		$registry->loadString(isset($item->metadata) ? $item->metadata : "");
 		$item->metadata = $registry;
 
 		// Trigger the onContentPrepare event.
