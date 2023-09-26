@@ -138,7 +138,7 @@ class ExtModCalView extends DefaultModCalView
 		}
 		else
 		{
-			$scriptlinks['linkprevious']  = "";
+			$scriptlinks['linkprevious']  = $linkprevious = "";
 		}
 
 		if ($this->minical_actmonth == 1)
@@ -169,7 +169,7 @@ class ExtModCalView extends DefaultModCalView
 		}
 		else
 		{
-			$scriptlinks['linknext']  = "";
+			$scriptlinks['linknext']  = $linknext = "";
 		}
 
 		$content = <<<START

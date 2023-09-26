@@ -526,7 +526,7 @@ class plgFinderJEvents extends Adapter
 		// Check if we can use the supplied SQL query.
 		$sql = $db->getQuery(true);
 		$sql->select('det.evdet_id, det.summary as title, det.description  AS summary, det.description  AS body');
-		$sql->select('det.state, det.modified ');
+		$sql->select('det.modified ');
 		$sql->select('rpt.rp_id, rpt.eventid ');
 		$sql->select('evt.catid, evt.icsid, evt.created_by, evt.access ');
 		$sql->select('c.title AS category, c.published AS cat_state, c.access AS cat_access');

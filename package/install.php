@@ -22,6 +22,7 @@ jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
 jimport('joomla.application.component.helper');
 
+#[\AllowDynamicProperties]
 class Pkg_JeventsInstallerScript
 {
 	public function preflight($type, $parent)

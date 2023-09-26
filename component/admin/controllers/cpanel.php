@@ -44,7 +44,7 @@ class AdminCpanelController extends AdminController
 	function cpanel()
 	{
 
-		$app    = Factory::getApplication();
+        $app    = Factory::getApplication();
 		$db     = Factory::getDbo();
 
 		// Make sure RSVP Pro and RSVP are not both enabled
@@ -1027,9 +1027,32 @@ WHERE ics.ics_id is null
         $db->setQuery("SHOW TABLE STATUS LIKE '" . $db->getPrefix() . "jev%'");
         $tables = $db->loadObjectList('Name');
 
+        foreach ($tables as $tablename => $table)
+        {
+            if (
+                strpos($tablename, $db->getPrefix() . "jev_customfields") === 0
+                || strpos($tablename, $db->getPrefix() . "jev_tags") === 0
+                || strpos($tablename, $db->getPrefix() . "jevents_filtermap") === 0
+            )
+            {
+                unset($tables[$tablename]);
+            }
+        }
+
         $fixtables = false;
         foreach ($tables as $tablename => $table)
         {
+            /*
+            $db->setQuery("SHOW INDEX FROM $tablename");
+            $indexdata = $db->loadObjectList();
+            foreach ($indexdata as $index)
+            {
+                if (isset($index->Sub_part) && intval($index->Sub_part) > 200)
+                {
+                    $app->enqueueMessage("The index for column '" . $index->Column_name . "' on table '$tablename' May be too long - please report this to the developers" ,   "warning"      );
+                }
+            }
+            */
             if ($force || $table->Collation != $collation)
             {
                 $fixtables = true;
@@ -1044,12 +1067,13 @@ WHERE ics.ics_id is null
                     $fixtables = true;
                     break;
                 }
-            }http://ubu.j41.net/administrator/index.php?option=com_jevents&task=params.edit&component=com_jevents&view=component
+            }
         }
         if ($fixtables)
         {
             $app->enqueueMessage(Text::_("COM_JEVENTS_COLLATIONS_NEED_UPDATING" ) ,   "warning"      );
         }
+
     }
 
 	public function fixcollations()
@@ -1076,14 +1100,37 @@ WHERE ics.ics_id is null
 		$db->setQuery("SHOW TABLE STATUS LIKE '" . $db->getPrefix() . "jev%'");
 		$tables = $db->loadObjectList('Name');
 
+        foreach ($tables as $tablename => $table)
+        {
+            if (
+                strpos($tablename, $db->getPrefix() . "jev_customfields") === 0
+                || strpos($tablename, $db->getPrefix() . "jev_tags") === 0
+                || strpos($tablename, $db->getPrefix() . "jevents_filtermap") === 0
+            )
+            {
+                unset($tables[$tablename]);
+            }
+        }
+
 		if ($input->getInt("ft", 0))
 		{
 			foreach ($tables as $tablename => $table)
 			{
 				if ($force || $table->Collation != $collation)
 				{
-					$db->setQuery("ALTER TABLE $tablename convert to character set utf8mb4 collate $collation");
-					$db->execute();
+
+                    $db->setQuery("SHOW FULL COLUMNS FROM $tablename");
+                    $columndata = $db->loadObjectList('Field');
+
+                    $db->setQuery("ALTER TABLE $tablename convert to character set utf8mb4 collate $collation");
+                    try
+                    {
+                        $db->execute();
+                    }
+                    catch (Throwable $e)
+                    {
+                        $app->enqueueMessage($tablename . " could not be converted : " . $e->getMessage() ,   "error"      );
+                    }
 				}
 			}
 
@@ -1103,6 +1150,7 @@ WHERE ics.ics_id is null
 			}
 			$db->setQuery("SHOW FULL COLUMNS FROM $tablename");
 			$columndata = $db->loadObjectList('Field');
+
 			foreach ($columndata as $columnname => $columndata)
 			{
 				if ($columndata->Collation && ($force || $columndata->Collation != $collation))
