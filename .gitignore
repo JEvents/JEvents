@@ -13,3 +13,5 @@
 /component/media/css/jevcustom.css
 /component/site/views/clean/
 component/site/views/clean
+component/admin/install.php
+component/admin/manifest.xml

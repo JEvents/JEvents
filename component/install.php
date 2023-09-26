@@ -223,7 +223,7 @@ CREATE TABLE IF NOT EXISTS #__jevents_vevdetail(
 	noendtime tinyint(3) NOT NULL default 0,
 		
 	PRIMARY KEY  (evdet_id),
-	INDEX (location(240))
+	INDEX (location(190))
 ) $charset;
 SQL;
 		$db->setQuery($sql);
@@ -451,7 +451,7 @@ CREATE TABLE IF NOT EXISTS #__jevents_filtermap (
         name varchar(255) $rowcharset NOT NULL default "",                        
 	md5 VARCHAR(255) NOT NULL,
 	PRIMARY KEY  (fid),
-	INDEX (md5)
+	INDEX (md5(190))
 ) $charset;
 SQL;
 		$db->setQuery($sql);
@@ -611,7 +611,7 @@ SQL;
 			$db->setQuery($sql);
 			@$db->execute();
 
-			$sql = "ALTER TABLE #__jevents_vevdetail ADD INDEX location (location (240))";
+			$sql = "ALTER TABLE #__jevents_vevdetail ADD INDEX location (location (190))";
 			$db->setQuery($sql);
 			@$db->execute();
 		}
@@ -689,10 +689,24 @@ SQL;
 
 		if (!array_key_exists("location", $indexcols))
 		{
-			$sql = "ALTER TABLE #__jevents_vevdetail ADD INDEX location (location (240))";
+			$sql = "ALTER TABLE #__jevents_vevdetail ADD INDEX location (location (190))";
 			$db->setQuery($sql);
 			@$db->execute();
 		}
+        else
+        {
+            $index = $indexcols["location"];
+            if ( isset($index->Sub_part) && intval($index->Sub_part) > 190)
+            {
+                $sql = "alter table #__jevents_vevdetail drop index location";
+                $db->setQuery( $sql );
+                @$db->execute();
+
+                $sql = "ALTER TABLE #__jevents_vevdetail ADD INDEX location (location (190))";
+                $db->setQuery( $sql );
+                @$db->execute();
+            }
+        }
 
 		if (!array_key_exists("multiday", $indexcols))
 		{
@@ -731,6 +745,10 @@ SQL;
 		$db->setQuery($sql);
 		$cols = @$db->loadObjectList("Field");
 
+        $sql = "SHOW INDEX FROM #__jevents_filtermap";
+        $db->setQuery($sql);
+        $indexcols = @$db->loadObjectList("Key_name");
+
 		if (!array_key_exists("andor", $cols))
 		{
 			$sql = "ALTER TABLE #__jevents_filtermap ADD COLUMN andor tinyint(3) NOT NULL default 0";
@@ -751,6 +769,21 @@ SQL;
 			$db->setQuery($sql);
 			@$db->execute();
 		}
+
+        if (array_key_exists("md5", $indexcols))
+        {
+            $index = $indexcols["md5"];
+            if ( isset($index->Sub_part) && intval($index->Sub_part) > 190)
+            {
+                $sql = "alter table #__jevents_filtermap drop index md5";
+                $db->setQuery( $sql );
+                @$db->execute();
+
+                $sql = "ALTER TABLE #__jevents_filtermap ADD INDEX md5 (location (190))";
+                $db->setQuery( $sql );
+                @$db->execute();
+            }
+        }
 
 		$sql = "SHOW INDEX FROM #__jevents_repetition";
 		$db->setQuery($sql);
