@@ -201,7 +201,8 @@ class ICalsController extends AdminIcalsController
 		$cats = JEVHelper::forceIntegerArray($cats, false);
 		if ($cats != array(0))
 		{
-			$input->set("catids", implode("|", $cats));
+			$separator = $params->get("catseparator", "|");
+			$input->set("catids", implode($separator, $cats));
 		}
 		else
 		{
@@ -213,7 +214,6 @@ class ICalsController extends AdminIcalsController
 		// All years
 		if ($years == 0)
 		{
-			$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 			$years  = array();
 			for ($y = JEVHelper::getMinYear(); $y <= JEVHelper::getMaxYear(); $y++)
 			{
