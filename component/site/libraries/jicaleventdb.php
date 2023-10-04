@@ -1291,7 +1291,7 @@ class jIcalEventDB extends jEventCal
 	{
 
 		$db    = Factory::getDbo();
-		$query = "SELECT ev.*, rpt.*, rr.*, det.* "
+		$query = "SELECT ev.*, rpt.*, rr.*, det.*,  ev.state as published  "
 			. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
 			. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
 			. "\n , HOUR(rpt.startrepeat) as hup, MINUTE(rpt.startrepeat ) as minup, SECOND(rpt.startrepeat ) as sup"
