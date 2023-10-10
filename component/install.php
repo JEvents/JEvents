@@ -121,8 +121,8 @@ SQL;
 
 		if (version_compare(JVERSION, "3.3", 'ge'))
 		{
-			$charset    = ($db->hasUTFSupport()) ? ' DEFAULT CHARACTER SET `utf8`' : '';
-			$rowcharset = ($db->hasUTFSupport()) ? 'CHARACTER SET utf8' : '';
+			$charset    = ($db->hasUTFSupport()) ? ' DEFAULT CHARACTER SET `utf8mb4` DEFAULT COLLATE=utf8mb4_unicode_ci' : '';
+			$rowcharset = ($db->hasUTFSupport()) ? 'CHARACTER SET utf8mb4' : '';
 		}
 		else
 		{
@@ -503,8 +503,8 @@ SQL;
 
 		if (version_compare(JVERSION, "3.3", 'ge'))
 		{
-			$charset    = ($db->hasUTFSupport()) ? ' DEFAULT CHARACTER SET `utf8`' : '';
-			$rowcharset = ($db->hasUTFSupport()) ? 'CHARACTER SET utf8' : '';
+			$charset    = ($db->hasUTFSupport()) ? ' DEFAULT CHARACTER SET `utf8mb4` DEFAULT COLLATE=utf8mb4_unicode_ci' : '';
+			$rowcharset = ($db->hasUTFSupport()) ? 'CHARACTER SET utf8mb4' : '';
 		}
 		else
 		{

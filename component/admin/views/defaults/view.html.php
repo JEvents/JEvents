@@ -41,9 +41,9 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 
 		// Set toolbar items for the page
 		JToolbarHelper::title(Text::_('JEV_LAYOUT_DEFAULTS'), 'jevents');
-		//JToolbarHelper::addNew('icalevent.edit');
 
-
+        JToolbarHelper::publishList('defaults.publish');
+        JToolbarHelper::unpublishList('defaults.unpublish');
 
 		$db  = Factory::getDbo();
 		$uri = \Joomla\CMS\Uri\Uri::getInstance();
@@ -54,6 +54,8 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		$total     = $this->get('Total');
 		$languages = $this->get('Languages');
 		$catids    = $this->get('Categories');
+
+        $orphans   = $this->get('OrphanData');
 
 		$language = $app->getUserStateFromRequest("jevdefaults.filter_language", 'filter_language', "*");
 		$this->language     = $language;
@@ -88,6 +90,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		$user = Factory::getUser();
 		$this->user     = $user;
 		$this->items    = $items;
+		$this->orphans  = $orphans;
 
 	}
 

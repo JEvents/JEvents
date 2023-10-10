@@ -324,9 +324,9 @@ class plgFinderJEvents extends FinderIndexerAdapter
 
 		JLoader::register('JevDate', JPATH_SITE . "/components/com_jevents/libraries/jevdate.php");
 
-		if ($this->params->get("future", -1) != -1 && $theevent)
+		if ($this->params->get("past", -1) != -1 && $theevent)
 		{
-			$past                     = str_replace('-', '', $this->params->get("past", -1));
+			$past                     = str_replace(array('-', '+' , ''), '', $this->params->get("past", -1));
 			$date                     = new Date($theevent->startDate() . " - $past days");
 			$item->publish_start_date = $date->toSql();
 		}
@@ -334,9 +334,9 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		{
 			$item->publish_start_date	= isset($item->modified) ?$item->modified : "2010-01-01 00:00:00" ;
 		}
-		if ($this->params->get("past", -1) != -1  && $theevent)
+		if ($this->params->get("future", -1) != -1  && $theevent)
 		{
-			$future                 = str_replace('+', '', $this->params->get("future", -1));
+			$future                 = str_replace(array('-', '+' , ''), '', $this->params->get("future", -1));
 			$date                   = new Date($theevent->endDate() . " + $future days");
 			$item->publish_end_date = $date->toSql();
 		}
