@@ -410,7 +410,14 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
 		// I need a better check and expiry information etc.
 		if (StringHelper::strlen($uploadURL) > 0)
 		{
-			$icsFile = iCalICSFile::newICSFileFromURL($uploadURL, $icsid, $catid, $access, $state, $icsLabel, $autorefresh, $ignoreembedcat, $createnewcategories);
+            try
+            {
+                $icsFile = iCalICSFile::newICSFileFromURL( $uploadURL, $icsid, $catid, $access, $state, $icsLabel, $autorefresh, $ignoreembedcat, $createnewcategories );
+            }
+            catch (Throwable $exception)
+            {
+                $icsFile = false;
+            }
 		}
 		else if (isset($_FILES['upload']) && is_array($_FILES['upload']))
 		{
@@ -442,7 +449,70 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
             $icsFileid = $icsFile->store();
 			$message   = Text::_('ICS_FILE_IMPORTED');
 		}
-		if ($input->getCmd("task") !== "icals.reloadall")
+        else if ($icsid > 0)
+        {
+            if ( isset( $currentICS ) && $currentICS->created_by > 0 )
+            {
+                $created_by = $currentICS->created_by;
+                if ( $created_by > 0 )
+                {
+                    $params        = ComponentHelper::getParams( JEV_COM_COMPONENT );
+                    $mail          = Factory::getMailer();
+                    $sender_config = $params->get( 'sender_config', 9 );
+
+                    $author = JEVHelper::getUser( $created_by );
+
+                    if ( $author )
+                    {
+                        $authorname  = $author->name;
+                        $authoremail = $author->email;
+
+                        try
+                        {
+                            if ( $sender_config == 0 )
+                            {
+
+                                $mail->setSender( array( 0 => $authoremail, 1 => $authorname ) );
+
+                            }
+                            elseif ( $sender_config == 1 )
+                            {
+
+                                $mail->setSender( array( 0 => $config->mailfrom, 1 => $config->fromname ) );
+
+                            }
+                            else
+                            {
+                                $mail->setSender( array(
+                                    0 => $params->get( 'sender_email', '' ),
+                                    1 => $params->get( 'sender_name', '' )
+                                ) );
+                            }
+
+                            $mail->addRecipient( $authoremail );
+                            $mail->setSubject( Text::_( 'COM_JEVENTS_ICAL_UPDATE_FAILED' ) );
+                            $mail->setBody( Text:: sprintf( 'COM_JEVENTS_ICAL_UPDATE_FAILED_DETAIL', $currentICS->label) );
+                            $mail->IsHTML( true );
+                            try
+                            {
+                                $mail->send();
+                            }
+                            catch ( Exception $e )
+                            {
+                                $app->enqueueMessage( "JERROR_SENDING_EMAIL", 'warning' );
+                            }
+
+                        }
+                        catch ( Exception $e )
+                        {
+                            // $app->enqueueMessage("JEV_UNABLE_TO_SET_EMAIL_SENDER_OR_REPLY_TO", 'warning');
+                        }
+                    }
+                }
+            }
+        }
+
+        if ($input->getCmd("task") !== "icals.reloadall")
 		{
 			$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=$redirect_task";
 

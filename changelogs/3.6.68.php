@@ -9,6 +9,7 @@ $changelog[$extension][$version]["bugfixes"]        = array();
 
 $changelog[$extension][$version]["features"][]      = "Add ability to clean up orphaned latest events module custom layouts";
 $changelog[$extension][$version]["features"][]      = "Let Float theme be used on more menu item types - day list, week list and month calendar";
+$changelog[$extension][$version]["features"][]      = "Add notification to calendar owner if auto-update didn't succeed";
 
 $changelog[$extension][$version]["bugfixes"][]      = "Include published state when fetching first repeat of events - the field is needed by some addons";
 $changelog[$extension][$version]["bugfixes"][]      = "Skip collations update for RSVP Pro invitee list and jev_notifications tables";
