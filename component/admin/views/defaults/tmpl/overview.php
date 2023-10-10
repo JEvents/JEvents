@@ -118,11 +118,26 @@ if (!$jversion->isCompatible('4.0'))
                                 <?php echo HTMLHelper::_('grid.id', $i, $row->id); ?>
                             </td>
                             <td>
-                                        <span class="editlinktip hasYsPopover"
-                                              data-yspoptitle="<?php echo Text::_('JEV_Edit_Layout', true); ?>" data-yspopcontent="<?php echo $this->escape(Text::_($row->title, true)); ?>" >
-                                            <a href="<?php echo $link; ?>">
-                                        <?php echo $this->escape(Text::_($row->title)); ?></a>
-                                        </span>
+                                <span class="editlinktip hasYsPopover"
+                                      data-yspoptitle="<?php echo Text::_('JEV_Edit_Layout', true); ?>" data-yspopcontent="<?php echo $this->escape(Text::_($row->title, true)); ?>" >
+                                    <a href="<?php echo $link; ?>">
+                                <?php echo $this->escape(Text::_($row->title)); ?></a>
+                                </span>
+                                <?php
+                                if (array_key_exists($row->name, $this->orphans))
+                                {
+									$modid =
+                                    $deleteLink = Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=defaults.deletemodulelayout&mid=' . $row->modid );
+                                    ?>
+		                            <span class="editlinktip hasYsPopover ms-2"
+		                                  data-yspoptitle="<?php echo Text::_('JEV_Delete_OrphanLayout', true); ?>" data-yspopcontent="<?php echo Text::_('JEV_DELETE_ORPHANLAYOUT_DESC', true); ?>" >
+                                        <a href="<?php echo $deleteLink; ?>">
+                                            <span class="icon-trash"></span>
+                                        </a>
+                                    </span>
+                                    <?php
+                                }
+                                ?>
                             </td>
                             <td>
                                 <?php echo $this->escape($row->name); ?>

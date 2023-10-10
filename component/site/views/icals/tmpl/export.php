@@ -17,6 +17,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Profiler\Profiler;
 
 $params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 $app    = Factory::getApplication();
@@ -430,7 +431,9 @@ if (!empty($this->icalEvents))
 			}
 
 			ob_start();
+           // !JDEBUG ?: Profiler::getInstance('Application')->mark('before onDisplayCustomFieldsMultiRow');
 			$app->triggerEvent('onDisplayCustomFieldsMultiRow', array(&$changedrows));
+           // !JDEBUG ?: Profiler::getInstance('Application')->mark('after onDisplayCustomFieldsMultiRow');
 			ob_end_clean();
 
 			foreach ($changedrows as $a)

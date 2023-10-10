@@ -1033,6 +1033,8 @@ WHERE ics.ics_id is null
                 strpos($tablename, $db->getPrefix() . "jev_customfields") === 0
                 || strpos($tablename, $db->getPrefix() . "jev_tags") === 0
                 || strpos($tablename, $db->getPrefix() . "jevents_filtermap") === 0
+                || strpos($tablename, $db->getPrefix() . "jev_invitelist") === 0
+                || strpos($tablename, $db->getPrefix() . "jev_notifications") === 0
             )
             {
                 unset($tables[$tablename]);
@@ -1106,6 +1108,8 @@ WHERE ics.ics_id is null
                 strpos($tablename, $db->getPrefix() . "jev_customfields") === 0
                 || strpos($tablename, $db->getPrefix() . "jev_tags") === 0
                 || strpos($tablename, $db->getPrefix() . "jevents_filtermap") === 0
+                || strpos($tablename, $db->getPrefix() . "jev_invitelist") === 0
+                || strpos($tablename, $db->getPrefix() . "jev_notifications") === 0
             )
             {
                 unset($tables[$tablename]);

@@ -103,7 +103,43 @@ class DefaultsModelDefaults extends BaseDatabaseModel
 		return $this->_data;
 	}
 
-	function getLanguages()
+    /*
+     * Orphan layouts
+     */
+    function getOrphanData() {
+
+        $orphans = array();
+        // Lets load the content if it doesn't already exist
+        if ( empty( $this->_data ) )
+        {
+            $this->getData();
+        }
+        $db = Factory::getDbo();
+
+        // get the list of modules to eliminate against
+        $query = $db->getQuery(true);
+        $query->select("m.*");
+        $query->from("#__modules as m");
+        $query->where("m.module = 'mod_jevents_latest'");
+        $db->setQuery($query, 0,0);
+        $modules = $db->loadObjectList('id');
+
+        foreach ( $this->_data as $datum)
+        {
+            if (strpos($datum->name, 'module.latest_event.') === 0)
+            {
+                $modid = (int) str_replace('module.latest_event.', '', $datum->name);
+                if (!array_key_exists($modid, $modules))
+                {
+                    $datum->modid = $modid;
+                    $orphans[$datum->name] = $datum;
+                }
+            }
+        }
+        return $orphans;
+    }
+
+    function getLanguages()
 	{
 
 		static $languages;

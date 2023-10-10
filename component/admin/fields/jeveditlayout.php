@@ -61,7 +61,8 @@ class JFormFieldJEVEditlayout extends JFormFieldSpacer
 		$node         = $this->element;
 		if ($id)
 		{
-			$value    = "<a href='index.php?option=com_jevents&task=defaults.edit&type=module.latest_event&modid=$id' target='_blank' ><span class='icon-pencil' ></span></a>";
+			//$value    = "<a href='index.php?option=com_jevents&task=defaults.edit&type=module.latest_event&modid=$id' target='_blank' ><span class='icon-pencil' ></span></a>";
+            $value    = "<button type='button' class='btn btn-primary' onclick=\"window.open('index.php?option=com_jevents&task=defaults.edit&type=module.latest_event&modid=$id');return false;\" ><span class='icon-pencil' ></span></button>";
 			return $value;
 		}
 		else

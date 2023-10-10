@@ -19,6 +19,7 @@ use Joomla\String\StringHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Profiler\Profiler;
 
 // load language constants
 JEVHelper::loadLanguage('front');
@@ -342,7 +343,9 @@ class JEventsDBModel
 
 		JEventsDBModel::translateEvents($rows);
 
+      //  !JDEBUG ?: Profiler::getInstance('Application')->mark('dbmodel before onDisplayCustomFieldsMultiRowUncached');
 		$app->triggerEvent('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
+       // !JDEBUG ?: Profiler::getInstance('Application')->mark('dbmodel after onDisplayCustomFieldsMultiRowUncached');
 
 		return $rows;
 
@@ -571,7 +574,9 @@ class JEventsDBModel
 		if ($rpid < 0)
 		{
 			$rows       = array();
-			Factory::getApplication()->triggerEvent('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
+           // !JDEBUG ?: Profiler::getInstance('Application')->mark('dbmodel before onDisplayCustomFieldsMultiRowUncached');
+            Factory::getApplication()->triggerEvent('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
+          //  !JDEBUG ?: Profiler::getInstance('Application')->mark('dbmodel after onDisplayCustomFieldsMultiRowUncached');
 
 			if (count($rows) == 1)
 			{
@@ -994,7 +999,9 @@ class JEventsDBModel
 
 		JEventsDBModel::translateEvents($rows);
 
-		$app->triggerEvent('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
+        //!JDEBUG ?: Profiler::getInstance('Application')->mark('dbmodel before onDisplayCustomFieldsMultiRowUncached');
+        $app->triggerEvent('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
+       // !JDEBUG ?: Profiler::getInstance('Application')->mark('dbmodel after onDisplayCustomFieldsMultiRowUncached');
 
 		return $rows;
 
@@ -1218,7 +1225,9 @@ class JEventsDBModel
 			$rows = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
 		}
 
-		$app->triggerEvent('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
+       // !JDEBUG ?: Profiler::getInstance('Application')->mark('dbmodel before onDisplayCustomFieldsMultiRowUncached');
+        $app->triggerEvent('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
+      //  !JDEBUG ?: Profiler::getInstance('Application')->mark('dbmodel after onDisplayCustomFieldsMultiRowUncached');
 
 		return $rows;
 
@@ -2094,7 +2103,9 @@ class JEventsDBModel
 
 		JEventsDBModel::translateEvents($rows);
 
-		$app->triggerEvent('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
+        //!JDEBUG ?: Profiler::getInstance('Application')->mark('dbmodel before onDisplayCustomFieldsMultiRowUncached');
+        $app->triggerEvent('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
+       // !JDEBUG ?: Profiler::getInstance('Application')->mark('dbmodel after onDisplayCustomFieldsMultiRowUncached');
 
 		//list ($usec, $sec) = explode(" ", microtime());
 		//$time_end = (float) $usec + (float) $sec;
@@ -2910,7 +2921,9 @@ class JEventsDBModel
 			}
 		}
 
-		$app->triggerEvent('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
+      //  !JDEBUG ?: Profiler::getInstance('Application')->mark('dbmodel before onDisplayCustomFieldsMultiRowUncached');
+        $app->triggerEvent('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
+       // !JDEBUG ?: Profiler::getInstance('Application')->mark('dbmodel after onDisplayCustomFieldsMultiRowUncached');
 
 		return $rows;
 
@@ -3212,7 +3225,9 @@ class JEventsDBModel
 
 		}
 
-		$app->triggerEvent('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
+        //!JDEBUG ?: Profiler::getInstance('Application')->mark('dbmodel before onDisplayCustomFieldsMultiRowUncached');
+        $app->triggerEvent('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
+       // !JDEBUG ?: Profiler::getInstance('Application')->mark('dbmodel after onDisplayCustomFieldsMultiRowUncached');
 
 		if ($debuginfo)
 		{
@@ -3613,7 +3628,9 @@ class JEventsDBModel
 
 		if (!$count)
 		{
-			$app->triggerEvent('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
+           // !JDEBUG ?: Profiler::getInstance('Application')->mark('dbmodel before onDisplayCustomFieldsMultiRowUncached');
+            $app->triggerEvent('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
+           // !JDEBUG ?: Profiler::getInstance('Application')->mark('dbmodel after onDisplayCustomFieldsMultiRowUncached');
 		}
 
 		return $rows;
@@ -3848,7 +3865,9 @@ class JEventsDBModel
 		 //   exit();
 	    }
 
-		$app->triggerEvent('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
+        //!JDEBUG ?: Profiler::getInstance('Application')->mark('dbmodel before onDisplayCustomFieldsMultiRowUncached');
+        $app->triggerEvent('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
+        //!JDEBUG ?: Profiler::getInstance('Application')->mark('dbmodel after onDisplayCustomFieldsMultiRowUncached');
 
 		$secretmodule = JevRegistry::getInstance("secretmodule");
 		if ($secretmodule->get("storedata", 0))
@@ -4664,7 +4683,9 @@ class JEventsDBModel
 			$rows = $cache->call(array($this, '_cachedlistIcalEvents'), $query, $langtag);
 		}
 
-		$app->triggerEvent('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
+       // !JDEBUG ?: Profiler::getInstance('Application')->mark('dbmodel before onDisplayCustomFieldsMultiRowUncached');
+        $app->triggerEvent('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
+       // !JDEBUG ?: Profiler::getInstance('Application')->mark('dbmodel after onDisplayCustomFieldsMultiRowUncached');
 
 		return $rows;
 
@@ -5020,7 +5041,9 @@ class JEventsDBModel
 
 		JEVHelper::onDisplayCustomFieldsMultiRow($icalrows);
 
-		$app->triggerEvent('onDisplayCustomFieldsMultiRowUncached', array(&$icalrows));
+       // !JDEBUG ?: Profiler::getInstance('Application')->mark('dbmodel before onDisplayCustomFieldsMultiRowUncached');
+        $app->triggerEvent('onDisplayCustomFieldsMultiRowUncached', array(&$icalrows));
+       // !JDEBUG ?: Profiler::getInstance('Application')->mark('dbmodel after onDisplayCustomFieldsMultiRowUncached');
 
 		return $icalrows;
 

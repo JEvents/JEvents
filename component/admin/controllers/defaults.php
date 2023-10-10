@@ -14,6 +14,7 @@ defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
+use Joomla\Utilities\ArrayHelper;
 
 jimport('joomla.application.component.controllerform');
 
@@ -546,21 +547,45 @@ function edit($key = null, $urlVar = null)
 
 		$db  = Factory::getDbo();
 		$cid = $input->get("cid", array(), "array");
-		if (count($cid) != 1)
+		if (count($cid) < 1)
 		{
 			$this->setRedirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.overview", false));
 			$this->redirect();
 
 			return;
 		}
-		$name = $cid[0];
-		$sql  = "UPDATE #__jev_defaults SET state=0 where id=" . $db->Quote($name);
+        $cid = ArrayHelper::toInteger($cid);
+        $cid = implode(",", $cid);
+
+		$sql  = "UPDATE #__jev_defaults SET state=0 where id IN (" . $cid . ")";
 		$db->setQuery($sql);
 		$db->execute();
 
 		$this->setRedirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.overview", false));
 		$this->redirect();
 	}
+
+    function deletemodulelayout()
+    {
+
+        $input = Factory::getApplication()->input;
+
+        $db  = Factory::getDbo();
+        $mid = $input->getInt("mid", 0);
+        if ($mid < 1)
+        {
+            $this->setRedirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.overview", false));
+            $this->redirect();
+            return;
+        }
+
+        $sql  = "DELETE FROM  #__jev_defaults where name LIKE 'module.%.$mid'";
+        $db->setQuery($sql);
+        $db->execute();
+
+        $this->setRedirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.overview", false));
+        $this->redirect();
+    }
 
 	function publish()
 	{
@@ -569,47 +594,57 @@ function edit($key = null, $urlVar = null)
 		$input = Factory::getApplication()->input;
 
 		$cid = $input->get("cid", array(), "array");
-		if (count($cid) != 1)
+		if (count($cid) < 1)
 		{
 			$this->setRedirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.overview", false));
 			$this->redirect();
 
 			return;
 		}
-		$name = $cid[0];
+        $cid = ArrayHelper::toInteger($cid);
+        $cid = implode(",", $cid);
 
 		// Check if the layout is the same as the default value - if it is then do NOT publish it
-		$sql = "SELECT * FROM #__jev_defaults where id=" . $db->Quote($name);
+		$sql = "SELECT * FROM #__jev_defaults where  id IN (" . $cid . ")";
 		$db->setQuery($sql);
-		$value = $db->loadObject();
+		$values = $db->loadObjectList();
 
-		$defaultvalue  = "";
-		$componentname = explode(".", $value->name, 2);
-		$componentname = $componentname[0];
+        $newcid = array();
+        foreach ( $values as $value)
+        {
 
-		if ($defaultvalue == "" && file_exists(JPATH_ADMINISTRATOR . '/components/' . $componentname . '/views/defaults/tmpl/' . $value->name . ".3.html"))
-		{
-			$defaultvalue = file_get_contents(JPATH_ADMINISTRATOR . '/components/' . $componentname . '/views/defaults/tmpl/' . $value->name . ".3.html");
-		}
+            $defaultvalue  = "";
+            $componentname = explode( ".", $value->name, 2 );
+            $componentname = $componentname[0];
 
-		if ($defaultvalue == "" && file_exists(JPATH_ADMINISTRATOR . '/components/' . $componentname . '/views/defaults/tmpl/' . $value->name . ".html"))
-		{
-			$defaultvalue = file_get_contents(JPATH_ADMINISTRATOR . '/components/' . $componentname . '/views/defaults/tmpl/' . $value->name . ".html");
-		}
+            if ( $defaultvalue == "" && file_exists( JPATH_ADMINISTRATOR . '/components/' . $componentname . '/views/defaults/tmpl/' . $value->name . ".3.html" ) )
+            {
+                $defaultvalue = file_get_contents( JPATH_ADMINISTRATOR . '/components/' . $componentname . '/views/defaults/tmpl/' . $value->name . ".3.html" );
+            }
 
-		if (str_replace(" ", "", $defaultvalue) == str_replace(" ", "", $value->value) || $value->value == "")
-		{
-			Factory::getApplication()->enqueueMessage(Text::_("JEV_LAYOUT_IS_DEFAULT_NOT_PUBLISHED", "WARNING"));
-			$this->setRedirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.overview", false));
-			$this->redirect();
+            if ( $defaultvalue == "" && file_exists( JPATH_ADMINISTRATOR . '/components/' . $componentname . '/views/defaults/tmpl/' . $value->name . ".html" ) )
+            {
+                $defaultvalue = file_get_contents( JPATH_ADMINISTRATOR . '/components/' . $componentname . '/views/defaults/tmpl/' . $value->name . ".html" );
+            }
 
-			return;
-		}
+            if ( str_replace( " ", "", $defaultvalue ) == str_replace( " ", "", $value->value ) || $value->value == "" )
+            {
+                Factory::getApplication()->enqueueMessage( Text::_( "JEV_LAYOUT_IS_DEFAULT_NOT_PUBLISHED", "WARNING" ) );
+                continue;
+            }
 
-		$sql = "UPDATE #__jev_defaults SET state=1 where id=" . $db->Quote($name);
-		$db->setQuery($sql);
-		$db->execute();
+            $newcid[] = $value->id;
+        }
 
+        if (count($newcid) > 0)
+        {
+            $cid = ArrayHelper::toInteger( $newcid );
+            $cid = implode( ",", $cid );
+
+            $sql = "UPDATE #__jev_defaults SET state=1 where id IN (" . $cid . ")";
+            $db->setQuery( $sql );
+            $db->execute();
+        }
 		$this->setRedirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.overview", false));
 		$this->redirect();
 	}

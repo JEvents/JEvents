@@ -26,6 +26,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Profiler\Profiler;
 
 jimport('joomla.access.access');
 
@@ -4021,7 +4022,9 @@ SCRIPT;
 
 
 					ob_start();
-					Factory::getApplication()->triggerEvent('onDisplayCustomFieldsMultiRow', array(&$changedrows));
+                   // !JDEBUG ?: Profiler::getInstance('Application')->mark('before onDisplayCustomFieldsMultiRow');
+                    Factory::getApplication()->triggerEvent('onDisplayCustomFieldsMultiRow', array(&$changedrows));
+                   // !JDEBUG ?: Profiler::getInstance('Application')->mark('after onDisplayCustomFieldsMultiRow');
 					ob_end_clean();
 
 					// TODO look at removing events as array as we will only handle ONE event in mail generation.
@@ -4400,7 +4403,9 @@ SCRIPT;
 			if (count($rows))
 			{
 				PluginHelper::importPlugin('jevents');
+               // !JDEBUG ?: Profiler::getInstance('Application')->mark('before onDisplayCustomFieldsMultiRow');
 				Factory::getApplication()->triggerEvent('onDisplayCustomFieldsMultiRow', array(&$rows));
+              //  !JDEBUG ?: Profiler::getInstance('Application')->mark('after onDisplayCustomFieldsMultiRow');
 				foreach ($rows as $k => $row)
 				{
 					$id   = md5($row->rp_id() . " onDisplayCustomFieldsMultiRow " . $row->uid() . " " . $row->title() . "-" . $cachegroups . $lang);
@@ -4428,7 +4433,9 @@ SCRIPT;
 		else
 		{
 			PluginHelper::importPlugin('jevents');
+           // !JDEBUG ?: Profiler::getInstance('Application')->mark('before onDisplayCustomFieldsMultiRow');
 			Factory::getApplication()->triggerEvent('onDisplayCustomFieldsMultiRow', array(&$icalrows));
+           // !JDEBUG ?: Profiler::getInstance('Application')->mark('after onDisplayCustomFieldsMultiRow');
 		}
 
 	}

@@ -380,5 +380,7 @@ function ukselect(selector) {
 };
 
 document.addEventListener('DOMContentLoaded', function () {
-  ukselect('.jevfiltermodule select');
+  if (typeof UIkit !== 'undefined') {
+    ukselect('.jevfiltermodule select');
+  }
 })
