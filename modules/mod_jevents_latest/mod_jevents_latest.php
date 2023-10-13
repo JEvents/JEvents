@@ -29,6 +29,29 @@ $theme = $modtheme;
 
 PluginHelper::importPlugin("jevents");
 
+// Module specific parameters
+$componentparams = ComponentHelper::getParams(JEV_COM_COMPONENT);
+$paramsArray = $params->toArray();
+$keys = array_keys($paramsArray);
+$mispecifics = preg_grep("/^mispecific_/", $keys);
+if ($mispecifics)
+{
+    foreach ($mispecifics as $mispecific)
+    {
+        $pattern = str_replace("mispecific_", "", $mispecific);
+        $mispecifics2 = preg_grep("/^mi" . $pattern . "_/", $keys);
+        // If this group of menu item specific parameters are enabled then use them
+        if ($mispecifics2 && $params->get($mispecific, 0))
+        {
+            foreach ($mispecifics2 as $mispecific2)
+            {
+                $key = str_replace("mi" . $pattern . "_", "", $mispecific2);
+                $componentparams->set($key, $params->get($mispecific2));
+            }
+        }
+    }
+}
+
 // record what is running - used by the filters
 $registry = JevRegistry::getInstance("jevents");
 $registry->set("jevents.activeprocess", "mod_jevents_latest");

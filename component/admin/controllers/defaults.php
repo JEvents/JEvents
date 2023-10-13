@@ -159,6 +159,28 @@ class AdminDefaultsController extends Joomla\CMS\MVC\Controller\FormController
 				}
 		*/
 
+        $path = JPATH_COMPONENT_SITE . "/views/float";
+        foreach (Folder::files($path, ".html", true, true) as $layoutname)
+        {
+            $d1 = basename(dirname($layoutname));
+            if ( $d1  == "defaults" && basename($layoutname) !==  "index.html" && strpos($layoutname, ".php") === false)
+            {
+                $layoutIdentifier = str_replace(".html", "",basename($layoutname));
+
+                if (!isset($defaults[$layoutIdentifier]) && strpos($layoutname, ".module") === false)
+                {
+                    $title = $db->Quote("JEV_FLOAT_LAYOUT_" . strtoupper(str_replace(array("icalevent.list_", ".module"), array("", "_MODULE"), $layoutIdentifier)));
+                    //echo $layoutname . " " . $layoutIdentifier . "<br>";
+                    $db->setQuery( "INSERT INTO  #__jev_defaults set name = " . $db->Quote( $layoutIdentifier ) . ",
+						title=" . $title . ",
+						subject='',
+						value='',
+						state=0,
+						params='{}'" );
+                    $db->execute();
+                }
+            }
+        }
 	}
 
 	/**

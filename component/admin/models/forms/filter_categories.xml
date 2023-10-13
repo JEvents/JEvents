@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fields name="filter">
+		<field
+				name="hasevents"
+				type="list"
+				label="COM_JEVENTS_DOES_CATEGORY_HAVE_EVENTS_LABEL"
+				class="js-select-submit-on-change"
+				default="-1"
+		>
+			<option value="-1">COM_JEVENTS_DOES_CATEGORY_HAVE_EVENTS</option>
+			<option value="0">COM_JEVENTS_HAS_NO_EVENTS</option>
+			<option value="1">COM_JEVENTS_HAS_EVENTS</option>
+		</field>
+
+	</fields>
+</form>
