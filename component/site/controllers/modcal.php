@@ -159,6 +159,9 @@ class ModCalController extends Joomla\CMS\MVC\Controller\BaseController
 		}
 		else if ($input->getInt("json") == 1)
 		{
+			$document = Factory::getApplication()->getDocument();
+            $document->setType('json');
+
 			$encoded = json_encode($json);
 			if ($encoded === false && json_last_error() == JSON_ERROR_UTF8)
 			{

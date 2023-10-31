@@ -104,6 +104,18 @@
 			       description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'/>
 			<field name="extras15" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'
 			       description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'/>
+			<field name="extras16" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'
+				   description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'/>
+			<field name="extras16" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'
+				   description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'/>
+			<field name="extras17" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'
+				   description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'/>
+			<field name="extras18" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'
+				   description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'/>
+			<field name="extras19" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'
+				   description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'/>
+			<field name="extras20" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'
+				   description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'/>
 
 			<field name="showyearpast" type="radio" class="btn-group" default="1" label="JEV_SHOW_YEARPAST"
 			       description="JEV_SHOW_YEARPAST_TIP">

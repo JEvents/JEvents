@@ -5209,4 +5209,15 @@ SCRIPT;
     }
 
 
+    public static function redirectMissingEvent($Itemid)
+    {
+        $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
+        $missingmenu = (int) $params->get("missingmenu", 0);
+        if ($missingmenu)
+        {
+            $Itemid = $missingmenu;
+        }
+        Factory::getApplication()->enqueueMessage(Text::_("JEV_SORRY_UPDATED"), 'warning');
+        Factory::getApplication()->redirect(Route::_("index.php?Itemid=$Itemid", false));
+    }
 }

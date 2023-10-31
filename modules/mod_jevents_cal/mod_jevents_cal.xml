@@ -135,6 +135,20 @@
 				       description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC"/>
 				<field name="extras13" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS"
 				       description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC"/>
+				<field name="extras14" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS"
+					   description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC"/>
+				<field name="extras15" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS"
+					   description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC"/>
+				<field name="extras16" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS"
+					   description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC"/>
+				<field name="extras17" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS"
+					   description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC"/>
+				<field name="extras18" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS"
+					   description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC"/>
+				<field name="extras19" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS"
+					   description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC"/>
+				<field name="extras20" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS"
+					   description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC"/>
 			</fieldset>
 			<fieldset name="JEV_THEME_AND_SIZES" addfieldpath="/administrator/components/com_jevents/fields/">
 				<field name="com_calViewName" type="jevview" except="float" default="" label="JEV_VIEWNAME"

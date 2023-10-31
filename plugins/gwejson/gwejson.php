@@ -322,6 +322,34 @@ class PlgSystemGwejson extends JPlugin
 					$form->loadFile($menuConfigFile, false);
 				}
 			}
+
+
+			$afterfields = $form->getXml()->xpath('//*[@after]');
+			foreach ($afterfields as $afterfield)
+            {
+
+				$field1Xml = $form->getFieldXml($afterfield->attributes()->name, $afterfield->attributes()->thisgroup);
+                $field2Xml = $form->getFieldXml($afterfield->attributes()->after, $afterfield->attributes()->aftergroup);
+	            
+				if ($field1Xml && $field2Xml)
+                {
+                    $followingField = dom_import_simplexml( $field1Xml );
+                    $fieldToFollow  = dom_import_simplexml( $field2Xml );
+
+                    if ( $fieldToFollow && $followingField )
+                    {
+                        if ( $fieldToFollow->nextSibling )
+                        {
+                            $x = $fieldToFollow->parentNode->insertBefore( $followingField, $fieldToFollow->nextSibling );
+                        }
+                        else
+                        {
+                            $x = $fieldToFollow->parentNode->appendChild( $followingField );
+                        }
+                    }
+                }
+            }
+
 		}
 	}
 

@@ -114,7 +114,35 @@ if (strpos($this->item->name, "module.") === 0
 	&& file_exists(dirname(__FILE__) . '/' . preg_replace("#\.[0-9]+#", "", $this->item->name) . ".html")
 )
 {
-	$this->item->value = file_get_contents(dirname(__FILE__) . '/' . preg_replace("#\.[0-9]+#", "", $this->item->name) . ".html");
+	if (isset($this->item->module)
+	    && $this->item->module->params->get('com_calViewName', 'default') == 'float'
+        && $this->item->module->params->get('mispecific_float', '0') == 1
+        && $this->item->module->params->get('mifloat_floatmoduleuseformatstring', '0') == 0
+	)
+    {
+		if ($this->item->module->params->get('mifloat_float_timeline', '0') == 1)
+        {
+            $floatStyle = $this->item->module->params->get('mifloat_float_timeline', '5');
+        }
+		else
+        {
+            $floatStyle = $this->item->module->params->get('mifloat_float_style', '1');
+        }
+        if (file_exists(JPATH_COMPONENT_SITE . "/views/float/defaults/icalevent.list_block" . $floatStyle . ".module.html"))
+        {
+            $item_bodycore = file_get_contents( JPATH_COMPONENT_SITE . "/views/float/defaults/icalevent.list_block" . $floatStyle . ".module.html" );
+        }
+        else
+        {
+            $item_bodycore = file_get_contents( JPATH_COMPONENT_SITE . "/views/float/defaults/icalevent.list_block" . $floatStyle . ".html" );
+        }
+
+        $this->item->value = $item_bodycore;
+    }
+	else
+    {
+        $this->item->value = file_get_contents( dirname( __FILE__ ) . '/' . preg_replace( "#\.[0-9]+#", "", $this->item->name ) . ".html" );
+    }
 }
 
 $this->replaceLabels($this->item->value);

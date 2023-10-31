@@ -57,7 +57,8 @@ class JFormFieldJevfilters extends JFormFieldText
 
 		jimport('joomla.filesystem.folder');
 
-		$invalue = str_replace(" ", "", $this->value);
+		//$invalue = str_replace(" ", "", $this->value);
+        $invalue = $this->value;
 		$invalue = explode(",", $invalue);
 
 		$pluginsDir = JPATH_ROOT . '/plugins/jevents';

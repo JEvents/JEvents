@@ -127,6 +127,29 @@ $data['filters'] = $this->filters;
                                 <a href="index.php?option=com_jevents&task=icalevent.edit&cid=<?php echo $row->ev_id(); ?>"
                                    onclick="return Joomla.listItemTask('cb<?php echo $i; ?>','icalevent.edit')"
                                    title="<?php echo Text::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->title(); ?></a>
+	                            <?php
+	                            $catids = $row->catids();
+								if (count($catids))
+                                {
+									?>
+									<br><br>[<?php
+	                                $firstCat = true;
+	                                foreach ($catids as $catid)
+                                    {
+										if (!$firstCat)
+                                        {
+											echo ", ";
+                                        }
+										if (array_key_exists($catid, $this->categories))
+                                        {
+											?>
+	                                        <a href="javascript:try{document.getElementById('filter[catid]').value=<?php echo $catid;?>;document.getElementById('adminForm').submit();}catch(e){}"><?php echo $this->categories[$catid]->title;?></a><?php
+                                        }
+                                        $firstCat = false;
+                                    }
+									echo "]";
+                                }
+	                            ?>
                             </td>
                             <td class="center">
                                 <?php
