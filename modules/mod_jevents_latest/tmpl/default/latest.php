@@ -83,6 +83,50 @@ class DefaultModLatestView
 	var
 		$catout = null;
 
+	var 
+		$myItemid = null;
+
+	var 
+		$langtag = null;
+
+	var 
+		$jevlayout = null;
+
+	var 
+		$startNow = null;
+
+	var 
+		$pastOnly = null;
+
+	var 
+		$repeatdisplayoptions = null;
+
+	var 
+		$multiday = null;
+
+	var 
+		$floatmoduleuseformatstring = null;
+
+	var 
+		$template = null;
+	var 
+		$jeventsUIkit = null;
+	var 
+		$now = null;
+	var 
+		$now_Y_m_d = null;
+	var 
+		$now_d = null;
+	var 
+		$now_m = null;
+	var 
+		$now_Y = null;
+	var 
+		$now_w = null;
+
+	var $eventsByRelDay = null;
+	var $splitCustomFormat = null;
+
 	function __construct($params, $modid)
 	{
 

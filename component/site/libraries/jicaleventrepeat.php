@@ -27,6 +27,10 @@ class jIcalEventRepeat extends jIcalEventDB
 	private
 		$_prevRepeat = null;
 
+	var $_startday = null;
+	var $_startday_plus1 = null;
+	var $_endday = null;
+
 	function checkRepeatMonth($cellDate, $year, $month)
 	{
 

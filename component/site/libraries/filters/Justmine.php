@@ -23,6 +23,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 class jevJustmineFilter extends jevFilter
 {
 	const filterType = "justmine";
+	var $filterLabel = "";
+	var $filterLabelEscaped = "";
 	var $label = "";
 	var $yesLabel = "";
 	var $noLabel = "";

@@ -20,6 +20,13 @@ class jevCategoryFilter extends jevFilter
 {
 	const filterType = "category";
 
+	var $datamodel = null;
+	var $filterLabel = "";
+	var $filterValue = null;
+	var $filterNullValue = null;
+	var $allAccessibleCategories = null;
+	var $accessibleCategories = null;
+
 	function __construct($tablename, $filterfield, $isstring = true)
 	{
 

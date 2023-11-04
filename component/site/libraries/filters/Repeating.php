@@ -19,6 +19,10 @@ class jevRepeatingFilter extends jevBooleanFilter
 {
 	const filterType = "repeating";
 
+	var $filterLabel = "";
+	var $filterField = "";
+	var $filter_value = "";
+
 	function __construct($tablename, $filterfield, $isstring = true, $yesLabel = "Jev_Yes", $noLabel = "Jev_No")
 	{
 
