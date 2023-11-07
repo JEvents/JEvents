@@ -277,7 +277,8 @@ if (!empty($this->icalEvents))
 			// in case the first repeat is changed
 			if (array_key_exists($a->_eventid, $exceptiondata) && array_key_exists($a->rp_id(), $exceptiondata[$a->_eventid]))
 			{
-				$start = JevDate::strftime($startformat, JevDate::strtotime($exceptiondata[$a->_eventid][$a->rp_id()]->oldstartrepeat));
+				$start = date($startformat, JevDate::strtotime($exceptiondata[$a->_eventid][$a->rp_id()]->oldstartrepeat));
+                $this->withrepeats = true;
 			}
 		}
 

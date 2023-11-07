@@ -34,8 +34,18 @@ $isCodeMirror = false;
 if ($this->item->name == "month.calendar_cell"
 	|| $this->item->name == "month.calendar_tip"
 	|| $this->item->name == "icalevent.edit_page"
+    || $this->item->name == "icalevent.list_block1"
+    || $this->item->name == "icalevent.list_block2"
 	|| $this->item->name == "icalevent.list_block3"
 	|| $this->item->name == "icalevent.list_block4"
+    || $this->item->name == "icalevent.list_block5"
+    || $this->item->name == "icalevent.list_block6"
+    || $this->item->name == "icalevent.list_block1.module"
+    || $this->item->name == "icalevent.list_block2.module"
+    || $this->item->name == "icalevent.list_block3.module"
+    || $this->item->name == "icalevent.list_block4.module"
+    || $this->item->name == "icalevent.list_block5.module"
+    || $this->item->name == "icalevent.list_block6.module"
 	|| $this->item->name == "icalevent.list_row")
 {
 	$editor = Editor::getInstance("none");
@@ -63,20 +73,24 @@ if ($this->item->value == "" && file_exists(dirname(__FILE__) . '/' . $this->ite
 if ($this->item->value == "" && file_exists(dirname(__FILE__) . '/' . $this->item->name . ".html"))
 	$this->item->value = file_get_contents(dirname(__FILE__) . '/' . $this->item->name . ".html");
 
-//Float layout check to load default value
-if ($this->item->name == 'icalevent.list_block1' && $this->item->value == "" && Jfile::exists(JPATH_SITE . '/components/com_jevents/views/float/defaults/icalevent.list_block1.html'))
+if (strpos($this->item->title, "JEV_FLOAT") === 0)
 {
-	$this->item->value = file_get_contents(JPATH_SITE . '/components/com_jevents/views/float/defaults/icalevent.list_block1.html');
-}
-if ($this->item->name == 'icalevent.list_block2' && $this->item->value == "" && Jfile::exists(JPATH_SITE . '/components/com_jevents/views/float/defaults/icalevent.list_block2.html'))
-{
-	$this->item->value = file_get_contents(JPATH_SITE . '/components/com_jevents/views/float/defaults/icalevent.list_block2.html');
-}
-if ($this->item->name == 'icalevent.list_block3' && $this->item->value == "" && Jfile::exists(JPATH_SITE . '/components/com_jevents/views/float/defaults/icalevent.list_block3.html')) {
-	$this->item->value = file_get_contents(JPATH_SITE . '/components/com_jevents/views/float/defaults/icalevent.list_block3.html');
-}
-else if ($this->item->name == 'icalevent.list_block4' && $this->item->value == "" && Jfile::exists(JPATH_SITE . '/components/com_jevents/views/float/defaults/icalevent.list_block4.html')) {
-	$this->item->value = file_get_contents(JPATH_SITE . '/components/com_jevents/views/float/defaults/icalevent.list_block4.html');
+    $iname = $this->item->name;
+
+    $this->_addPath('template', JPATH_SITE . "/components/com_jevents/views/float/defaults");
+    if ($this->item->value == "" && file_exists(JPATH_SITE . "/components/com_jevents/views/float/defaults/" . $iname . ".html"))
+    {
+        $this->item->value = file_get_contents(JPATH_SITE . "/components/com_jevents/views/float/defaults/" . $iname . ".html");
+    }
+
+	if (strpos($iname, ".module") > 0){
+        $iname = str_replace(".module", "", $iname);
+        if ($this->item->value == "" && file_exists(JPATH_SITE . "/components/com_jevents/views/float/defaults/" . $iname . ".html"))
+        {
+            $this->item->value = file_get_contents(JPATH_SITE . "/components/com_jevents/views/float/defaults/" . $iname . ".html");
+        }
+	}
+
 }
 
 
@@ -100,7 +114,35 @@ if (strpos($this->item->name, "module.") === 0
 	&& file_exists(dirname(__FILE__) . '/' . preg_replace("#\.[0-9]+#", "", $this->item->name) . ".html")
 )
 {
-	$this->item->value = file_get_contents(dirname(__FILE__) . '/' . preg_replace("#\.[0-9]+#", "", $this->item->name) . ".html");
+	if (isset($this->item->module)
+	    && $this->item->module->params->get('com_calViewName', 'default') == 'float'
+        && $this->item->module->params->get('mispecific_float', '0') == 1
+        && $this->item->module->params->get('mifloat_floatmoduleuseformatstring', '0') == 0
+	)
+    {
+		if ($this->item->module->params->get('mifloat_float_timeline', '0') == 1)
+        {
+            $floatStyle = $this->item->module->params->get('mifloat_float_timeline', '5');
+        }
+		else
+        {
+            $floatStyle = $this->item->module->params->get('mifloat_float_style', '1');
+        }
+        if (file_exists(JPATH_COMPONENT_SITE . "/views/float/defaults/icalevent.list_block" . $floatStyle . ".module.html"))
+        {
+            $item_bodycore = file_get_contents( JPATH_COMPONENT_SITE . "/views/float/defaults/icalevent.list_block" . $floatStyle . ".module.html" );
+        }
+        else
+        {
+            $item_bodycore = file_get_contents( JPATH_COMPONENT_SITE . "/views/float/defaults/icalevent.list_block" . $floatStyle . ".html" );
+        }
+
+        $this->item->value = $item_bodycore;
+    }
+	else
+    {
+        $this->item->value = file_get_contents( dirname( __FILE__ ) . '/' . preg_replace( "#\.[0-9]+#", "", $this->item->name ) . ".html" );
+    }
 }
 
 $this->replaceLabels($this->item->value);
@@ -222,7 +264,11 @@ $this->item->params = json_encode($templateparams);
 					<?php
 					$pattern   = "#.*([0-9]*).*#";
 					$name      = preg_replace("#\.[0-9]+#", "", $this->item->name);
-					$selectbox = $this->loadTemplate($name);
+                    if (strpos($name, ".module") > 0)
+                    {
+                        $name = str_replace( ".module", "", $name );
+                    }
+                    $selectbox = $this->loadTemplate($name);
 					echo $selectbox;
 					?>
 				</div>

@@ -296,6 +296,20 @@
 				       description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC"/>
 				<field name="extras13" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS"
 				       description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC"/>
+				<field name="extras14" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS"
+					   description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC"/>
+				<field name="extras15" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS"
+					   description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC"/>
+				<field name="extras16" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS"
+					   description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC"/>
+				<field name="extras17" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS"
+					   description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC"/>
+				<field name="extras18" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS"
+					   description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC"/>
+				<field name="extras19" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS"
+					   description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC"/>
+				<field name="extras20" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS"
+					   description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC"/>
 			</fieldset>
 		</fields>
 	</config>

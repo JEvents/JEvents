@@ -17,6 +17,7 @@ use Joomla\CMS\Session\Session;
 use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Uri\Uri;
 
 class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
 {
@@ -491,7 +492,7 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
 
                             $mail->addRecipient( $authoremail );
                             $mail->setSubject( Text::_( 'COM_JEVENTS_ICAL_UPDATE_FAILED' ) );
-                            $mail->setBody( Text:: sprintf( 'COM_JEVENTS_ICAL_UPDATE_FAILED_DETAIL', $currentICS->label) );
+                            $mail->setBody( Text:: sprintf( 'COM_JEVENTS_ICAL_UPDATE_FAILED_DETAIL', $currentICS->label) . "<br>" . Uri::root());
                             $mail->IsHTML( true );
                             try
                             {

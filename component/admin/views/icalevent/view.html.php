@@ -161,6 +161,9 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			$this->filters['tag'] = str_replace('<option value="0">Select Tag(s)</option>', '<option value="">' . Text::_("JEV_SELECT_TAG") . ' </option>', $tagFilterHtml) . $earchBtn ;
 		}
 
+        Factory::getDbo()->setQuery("SELECT * FROM #__categories WHERE extension='com_jevents'");
+        $this->categories = Factory::getDbo()->loadObjectList('id');
+
 		$this->languages = $this->get('Languages');
 
 		$this->filterForm    = $this->get('FilterForm');

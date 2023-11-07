@@ -93,7 +93,7 @@ class DefaultsModelDefaults extends BaseDatabaseModel
 			}
 
 
-			$query->order("def.title asc");
+			$query->order("def.id asc");
 			$db->setQuery($query);
 			$this->_data = $db->loadObjectList();
 			//echo $db->getQuery();

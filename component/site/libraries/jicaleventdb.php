@@ -132,7 +132,8 @@ class jIcalEventDB extends jEventCal
 			$this->_alldayevent = 1;
 		}
 		// TODO Make this an option in the config
-		if (trim($this->_color) !== "")
+        // check for null valie since getfirstrepeat doesn't always have the color set
+		if (!is_null($this->_color) && trim($this->_color) !== "")
 		{
 			$this->_useCatColor = 0;
 			$this->_color_bar   = $this->_color;

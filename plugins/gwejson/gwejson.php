@@ -291,12 +291,23 @@ class PlgSystemGwejson extends JPlugin
 	// Problem is that the fields are not dynamically loaded when you change the theme
 	public function onContentPrepareForm($form, $data)
 	{
-		if ($form->getName() === "com_modules.module" && isset($data->module) && $data->module === "mod_jevents_latest")
-		{
+        $input = Factory::getApplication()->input;
+        $inputFormData = $input->post->get('jform', [], 'array');
 
-		}
-		else if ($form->getName() === "com_menus.item" && isset($data->link) && strpos($data->link, "com_jevents&") > 0)
+		// this doesn't work yet since there is no way to inject filtering into the category model
+		if (false && $form->getName() === "com_categories.categories.jevents.filter" && Factory::getApplication()->isClient('administrator'))
 		{
+            $jeventsCategoriesFilters = Folder::files(JPATH_ADMINISTRATOR . "/components/com_jevents/models/forms/", 'filter_categories.xml', true, true);
+			foreach ($jeventsCategoriesFilters as $jeventsCategoriesFilter)
+            {
+                $form->loadFile( $jeventsCategoriesFilter, false );
+            }
+		}
+		else if ( ($form->getName() === "com_menus.item" && isset($data->link) && strpos($data->link, "com_jevents&") > 0)
+		|| ($form->getName() === "com_modules.module" &&
+		    (isset($data->module) && $data->module == "mod_jevents_latest")|| (isset($inputFormData["module"]) && $inputFormData["module"] == "mod_jevents_latest"))
+        )
+        	{
 			if (Factory::getApplication()->isClient('administrator'))
 			{
 				$menuConfigFiles = Folder::files(JPATH_SITE . "/components/com_jevents/views/", 'menuconfig.xml', true, true);
@@ -311,6 +322,34 @@ class PlgSystemGwejson extends JPlugin
 					$form->loadFile($menuConfigFile, false);
 				}
 			}
+
+
+			$afterfields = $form->getXml()->xpath('//*[@after]');
+			foreach ($afterfields as $afterfield)
+            {
+
+				$field1Xml = $form->getFieldXml($afterfield->attributes()->name, $afterfield->attributes()->thisgroup);
+                $field2Xml = $form->getFieldXml($afterfield->attributes()->after, $afterfield->attributes()->aftergroup);
+	            
+				if ($field1Xml && $field2Xml)
+                {
+                    $followingField = dom_import_simplexml( $field1Xml );
+                    $fieldToFollow  = dom_import_simplexml( $field2Xml );
+
+                    if ( $fieldToFollow && $followingField )
+                    {
+                        if ( $fieldToFollow->nextSibling )
+                        {
+                            $x = $fieldToFollow->parentNode->insertBefore( $followingField, $fieldToFollow->nextSibling );
+                        }
+                        else
+                        {
+                            $x = $fieldToFollow->parentNode->appendChild( $followingField );
+                        }
+                    }
+                }
+            }
+
 		}
 	}
 

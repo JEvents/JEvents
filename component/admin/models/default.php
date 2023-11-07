@@ -5,6 +5,8 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\Registry\Registry;
 
 jimport('joomla.application.component.model');
 
@@ -86,6 +88,7 @@ class DefaultsModelDefault extends BaseDatabaseModel
 		// Lets load the content if it doesn't already exist
 		if (empty($this->_data))
 		{
+            $modid = 0;
 			if ($this->_id > 0)
 			{
 				$query = 'SELECT d.* , c.title as category_title FROM #__jev_defaults as d ' .
@@ -135,8 +138,27 @@ class DefaultsModelDefault extends BaseDatabaseModel
 					$db->execute();
 				}
 				$this->_data = $defaults[ $layoutname ];
+            }
 
-			}
+            if ($this->_data && strpos($this->_data->name, "module.") === 0)
+            {
+                $this->modid = str_replace('module.latest_event.', '' , $this->_data->name);
+                if ($this->modid > 0)
+                {
+                    $query = $this->_db->getQuery( true );
+                    $query->select( '*' )
+                          ->from( '#__modules' )
+                          ->where( 'id = ' . intval( $this->modid ) );
+                    $this->_db->setQuery( $query );
+                    $module = $this->_db->loadObject();
+                    if ( $module )
+                    {
+                        $module->params = new Registry( $module->params );
+                    }
+                    $this->_data->module = $module;
+                }
+
+            }
 
 			return (boolean) $this->_data;
 		}
