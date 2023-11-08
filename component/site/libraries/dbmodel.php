@@ -3637,13 +3637,13 @@ class JEventsDBModel
 
 	}
 
-	function countIcalEventsByRange($startdate, $enddate, $showrepeats = true)
+	function countIcalEventsByRange($startdate, $enddate, $showrepeats = true, $repeatType = 'any')
 	{
 
-		return $this->listIcalEventsByRange($startdate, $enddate, "", "", $showrepeats, "", false, "", "", true);
+		return $this->listIcalEventsByRange($startdate, $enddate, "", "", $showrepeats, "", false, "", "", true, $repeatType);
 	}
 
-	function listIcalEventsByRange($startdate, $enddate, $limitstart, $limit, $showrepeats = true, $order = "rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC", $filters = false, $extrafields = "", $extratables = "", $count = false)
+	function listIcalEventsByRange($startdate, $enddate, $limitstart, $limit, $showrepeats = true, $order = "rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC", $filters = false, $extrafields = "", $extratables = "", $count = false, $repeatType = 'any')
     {
 
 	    $params   = ComponentHelper::getParams("com_jevents");
@@ -3726,6 +3726,18 @@ class JEventsDBModel
 
 	    }
 
+        if ($repeatType !== 'any')
+        {
+            if (strpos($repeatType, "!") === false)
+            {
+                $extrawhere[] = " rr.freq = '" . $repeatType . "'";
+            }
+            else
+            {
+                $extrawhere[] = " rr.freq <> '" . str_replace("!", "", $repeatType) . "'";
+            }
+        }
+
 	    $extrajoin = (count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '');
         $extrawhere = (count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '');
         $extrawhere2 = (count($extrawhere2) ? ' AND ' . implode(' AND ', $extrawhere2) : '');
@@ -3791,6 +3803,7 @@ class JEventsDBModel
         } else {
             $query .= "\n FROM #__jevents_repetition as rpt ";
         }
+
         $query .= "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
             . "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
             . "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"

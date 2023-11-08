@@ -280,3 +280,120 @@ body.com_categories.view-categories #gslc.gsl-scope:not(.gsl-hide-sidebar) .left
   }
 }
 /** end Joomla 4**/
+/** Joomla 5 dark mode **/
+@media (prefers-color-scheme: dark) {
+  #gslc.gsl-scope.j5plus {
+    background-color: #fff;
+    color: #111;
+  }
+  #gslc.gsl-scope.j5plus joomla-alert,
+  #gslc.gsl-scope.j5plus .js-stools-container-filters,
+  #gslc.gsl-scope.j5plus .dropdown-menu,
+  #gslc.gsl-scope.j5plus .form-control,
+  #gslc.gsl-scope.j5plus .form-select,
+  #gslc.gsl-scope.j5plus details,
+  #gslc.gsl-scope.j5plus div.gsl-modal {
+    background-color: #fff;
+    background-image: none;
+    color: #111;
+  }
+  #gslc.gsl-scope.j5plus joomla-alert::placeholder,
+  #gslc.gsl-scope.j5plus .js-stools-container-filters::placeholder,
+  #gslc.gsl-scope.j5plus .dropdown-menu::placeholder,
+  #gslc.gsl-scope.j5plus .form-control::placeholder,
+  #gslc.gsl-scope.j5plus .form-select::placeholder,
+  #gslc.gsl-scope.j5plus details::placeholder,
+  #gslc.gsl-scope.j5plus div.gsl-modal::placeholder {
+    color: #999;
+  }
+  #gslc.gsl-scope.j5plus joomla-field-permissions {
+    background-color: #fff;
+    background-image: none;
+    color: #111;
+  }
+  #gslc.gsl-scope.j5plus joomla-field-permissions joomla-tab {
+    background-color: #fff;
+    background-image: none;
+    color: #111;
+  }
+  #gslc.gsl-scope.j5plus joomla-field-permissions joomla-tab joomla-tab-element,
+  #gslc.gsl-scope.j5plus joomla-field-permissions joomla-tab th,
+  #gslc.gsl-scope.j5plus joomla-field-permissions joomla-tab td,
+  #gslc.gsl-scope.j5plus joomla-field-permissions joomla-tab button {
+    background-color: #fff;
+    background-image: none;
+    color: #111;
+  }
+  #gslc.gsl-scope.j5plus joomla-field-permissions joomla-tab joomla-tab-element[aria-expanded="true"],
+  #gslc.gsl-scope.j5plus joomla-field-permissions joomla-tab th[aria-expanded="true"],
+  #gslc.gsl-scope.j5plus joomla-field-permissions joomla-tab td[aria-expanded="true"],
+  #gslc.gsl-scope.j5plus joomla-field-permissions joomla-tab button[aria-expanded="true"] {
+    background-color: #ddd;
+    background-image: none;
+    color: #333;
+  }
+  #gslc.gsl-scope.j5plus joomla-field-permissions joomla-tab joomla-tab-element label,
+  #gslc.gsl-scope.j5plus joomla-field-permissions joomla-tab th label,
+  #gslc.gsl-scope.j5plus joomla-field-permissions joomla-tab td label,
+  #gslc.gsl-scope.j5plus joomla-field-permissions joomla-tab button label {
+    color: #111;
+  }
+  #gslc.gsl-scope.j5plus .table > :not(caption) > * > * {
+    background-color: #fff;
+  }
+  #gslc.gsl-scope.j5plus joomla-field-fancy-select {
+    background-color: #fff;
+    background-image: none;
+    color: #111;
+  }
+  #gslc.gsl-scope.j5plus joomla-field-fancy-select .choices {
+    background-color: #fff;
+    background-image: none;
+    color: #111;
+  }
+  #gslc.gsl-scope.j5plus joomla-field-fancy-select .choices * {
+    background-color: #fff;
+    background-image: none;
+    color: #111;
+  }
+  #gslc.gsl-scope.j5plus joomla-field-fancy-select *::placeholder {
+    color: #999;
+  }
+  #gslc.gsl-scope.j5plus label,
+  #gslc.gsl-scope.j5plus .form-text {
+    color: #132f53;
+  }
+  #gslc.gsl-scope.j5plus joomla-tab {
+    background-color: #fff;
+    background-image: none;
+    color: #111;
+  }
+  #gslc.gsl-scope.j5plus joomla-tab joomla-tab-element,
+  #gslc.gsl-scope.j5plus joomla-tab th,
+  #gslc.gsl-scope.j5plus joomla-tab td,
+  #gslc.gsl-scope.j5plus joomla-tab button,
+  #gslc.gsl-scope.j5plus joomla-tab legend,
+  #gslc.gsl-scope.j5plus joomla-tab div {
+    background-color: #fff;
+    background-image: none;
+    color: #111;
+  }
+  #gslc.gsl-scope.j5plus joomla-tab joomla-tab-element[aria-expanded="true"],
+  #gslc.gsl-scope.j5plus joomla-tab th[aria-expanded="true"],
+  #gslc.gsl-scope.j5plus joomla-tab td[aria-expanded="true"],
+  #gslc.gsl-scope.j5plus joomla-tab button[aria-expanded="true"],
+  #gslc.gsl-scope.j5plus joomla-tab legend[aria-expanded="true"],
+  #gslc.gsl-scope.j5plus joomla-tab div[aria-expanded="true"] {
+    background-color: #ddd;
+    background-image: none;
+    color: #333;
+  }
+  #gslc.gsl-scope.j5plus joomla-tab joomla-tab-element label,
+  #gslc.gsl-scope.j5plus joomla-tab th label,
+  #gslc.gsl-scope.j5plus joomla-tab td label,
+  #gslc.gsl-scope.j5plus joomla-tab button label,
+  #gslc.gsl-scope.j5plus joomla-tab legend label,
+  #gslc.gsl-scope.j5plus joomla-tab div label {
+    color: #111;
+  }
+}

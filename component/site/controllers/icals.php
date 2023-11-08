@@ -254,28 +254,47 @@ class ICalsController extends AdminIcalsController
 		// And then the real work
 		// Force all only the one repeat
 		$cfg = JEVConfig::getInstance();
-		$cfg->set('com_showrepeats', 0);
 		$icalEvents = array();
 		foreach ($years as $year)
-		{
-			$startdate = $year . "-01-01";
-			$enddate   = $year . "-12-31";
-			$rows      = $this->dataModel->getRangeData($startdate, $enddate, 0, 0);
-			if (!isset($rows["rows"]))
-				continue;
-			foreach ($rows["rows"] as $row)
-			{
-				if (!array_key_exists($row->ev_id(), $icalEvents))
-				{
+        {
+            $startdate     = $year . "-01-01";
+            $enddate       = $year . "-12-31";
+            $cfg->set('com_showrepeats', 0);
+            $rows          = $this->dataModel->getRangeData( $startdate, $enddate, 0, 0, "rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC", '!irregular'  );
+            $cfg->set('com_showrepeats', 1);
+            $irregularrows = $this->dataModel->getRangeData( $startdate, $enddate, 0, 0, "rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC", 'irregular' );
+            if ( isset( $rows["rows"] ) )
+            {
+                foreach ( $rows["rows"] as $row )
+                {
+                    if ( ! array_key_exists( $row->ev_id(), $icalEvents ) )
+                    {
 
-					$app->triggerEvent('onExportRow', array(&$row));
-					$icalEvents[$row->ev_id()] = $row;
+                        $app->triggerEvent( 'onExportRow', array( &$row ) );
+                        $icalEvents[$row->ev_id()] = $row;
 
-					// Parse Content Plugins for Description
-                    			$row->_description = HTMLHelper::_('content.prepare', $row->_content);
-				}
-			}
-			unset($rows);
+                        // Parse Content Plugins for Description
+                        $row->_description = HTMLHelper::_( 'content.prepare', $row->_content );
+                    }
+                }
+                unset( $rows );
+            }
+            if ( isset( $irregularrows["rows"] ) )
+            {
+                foreach ( $irregularrows["rows"] as $row )
+                {
+                    if ( ! array_key_exists( $row->ev_id() . "_" .  $row->rp_id(), $icalEvents ) )
+                    {
+
+                        $app->triggerEvent( 'onExportRow', array( &$row ) );
+                        $icalEvents[$row->ev_id() . "_" .  $row->rp_id()] = $row;
+
+                        // Parse Content Plugins for Description
+                        $row->_description = HTMLHelper::_( 'content.prepare', $row->_content );
+                    }
+                }
+                unset( $irregularrows );
+            }
 		}
 
 		if ($userid)

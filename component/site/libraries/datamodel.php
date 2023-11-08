@@ -605,7 +605,7 @@ class JEventsDataModel
 		return $data;
 	}
 
-	function getRangeData($start, $end, $limit, $limitstart, $order = "rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC")
+	function getRangeData($start, $end, $limit, $limitstart, $order = "rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC", $repeatType = 'any')
 	{
 
 		$data = array();
@@ -621,7 +621,7 @@ class JEventsDataModel
 		if ($data ["limit"] > 0)
 		{
 
-			$counter = $this->queryModel->countIcalEventsByRange($start, $end, $cfg->get('com_showrepeats'));
+			$counter = $this->queryModel->countIcalEventsByRange($start, $end, $cfg->get('com_showrepeats'), $repeatType);
 
 			$data["total"] = $counter;
 
@@ -638,7 +638,7 @@ class JEventsDataModel
 		}
 
 
-		$data["rows"] = $this->queryModel->listIcalEventsByRange($start, $end, $data ["limitstart"], $data ["limit"], $cfg->get('com_showrepeats'), $order);
+		$data["rows"] = $this->queryModel->listIcalEventsByRange($start, $end, $data ["limitstart"], $data ["limit"], $cfg->get('com_showrepeats'), $order,  false,  "", "", false, $repeatType);
 
 		return $data;
 	}

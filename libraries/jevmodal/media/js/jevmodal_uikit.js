@@ -93,15 +93,38 @@ function jevModalNoTitle(id, url) {
 }
 
 function launchJevModal_uikit(selector, url) {
+    // is it an image?
+    var isImage = url.match(/\.(jpeg|jpg|gif|png|svg|JPEG|JPG|GIF|PNG|SVG)$/) != null;
+
     // Clear the old page!
     var iframe = document.querySelector(selector + ' iframe');
-    if (iframe) {
-        document.querySelector(selector + ' iframe').src = "";
-        UIkit.util.on(selector, 'show', function () {
-            if (url) {
-                document.querySelector(selector + ' iframe').src = url;
-            }
-        });
+    var img = document.querySelector(selector + ' img');
+
+    if (iframe && img) {
+        if (isImage) {
+            iframe.setAttribute("hidden", "hidden");
+            img.removeAttribute("hidden");
+
+            document.querySelector(selector + ' img').src = "";
+            document.querySelector(selector + ' img').closest('.uk-modal-body').style.overflowY = 'auto';
+
+            UIkit.util.on(selector, 'show', function () {
+                if (url) {
+                    document.querySelector(selector + ' img').src = url;
+                }
+            });
+        }
+        else {
+            img.setAttribute("hidden", "hidden");
+            iframe.removeAttribute("hidden");
+
+            document.querySelector(selector + ' iframe').src = "";
+            UIkit.util.on(selector, 'show', function () {
+                if (url) {
+                    document.querySelector(selector + ' iframe').src = url;
+                }
+            });
+        }
     }
 
     UIkit.util.on(selector, 'hide', function () {
@@ -121,6 +144,7 @@ function addJevModalHtml_uikit(id) {
             + '<h4 class="uk-modal-title" id="' + id + 'Label"></h4>'
             + '<button type="button" class="uk-modal-close-default" uk-close aria-label="Close"></button>'
             + '<iframe src="//about:blank;" class="uk-width-expand " style="height: calc(100% - 75px);"></iframe>'
+            + '<img src="" hidden="hidden" class="uk-width-expand uk-height-expand"  />'
             + '</div>'
             + '</div>';
 
