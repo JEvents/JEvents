@@ -266,3 +266,91 @@ body.com_categories.view-categories {
 }
 
 /** end Joomla 4**/
+
+/** Joomla 5 dark mode **/
+@media (prefers-color-scheme: dark) {
+  #gslc.gsl-scope.j5plus {
+    background-color: #fff;
+    color: #111;
+    joomla-alert,
+    .js-stools-container-filters,
+    .dropdown-menu,
+    .form-control, .form-select,
+    details, div.gsl-modal {
+      background-color: #fff;
+      background-image: none;
+      color: #111;
+      &::placeholder{
+        color:#999;
+      }
+    }
+    joomla-field-permissions {
+      background-color: #fff;
+      background-image: none;
+      color: #111;
+      joomla-tab {
+        background-color: #fff;
+        background-image: none;
+        color: #111;
+        joomla-tab-element, th, td, button {
+          background-color: #fff;
+          background-image: none;
+          color: #111;
+          &[aria-expanded="true"] {
+            background-color: #ddd;
+            background-image: none;
+            color: #333;
+          }
+          label {
+            color: #111;
+
+          }
+        }
+      }
+    }
+    .table > :not(caption) > * > * {
+      background-color: #fff;
+    }
+    joomla-field-fancy-select {
+      background-color: #fff;
+      background-image: none;
+      color: #111;
+      .choices {
+        background-color: #fff;
+        background-image: none;
+        color: #111;
+        * {
+          background-color: #fff;
+          background-image: none;
+          color: #111;
+        }
+      }
+      *::placeholder{
+        color:#999;
+      }
+    }
+    label, .form-text  {
+      color: #132f53;
+    }
+    joomla-tab {
+      background-color: #fff;
+      background-image: none;
+      color: #111;
+      joomla-tab-element, th, td, button, legend, div {
+        background-color: #fff;
+        background-image: none;
+        color: #111;
+
+        &[aria-expanded="true"] {
+          background-color: #ddd;
+          background-image: none;
+          color: #333;
+        }
+
+        label {
+          color: #111;
+        }
+      }
+    }
+  }
+}

@@ -60,8 +60,11 @@ include_once($componentpath . "/helpers/gslhelper.php");
 GslHelper::loadAssets();
 $app = Factory::getApplication();
 $tmpl = $app->input->getCmd('tmpl', '');
+
+$j5plus = version_compare(JVERSION, "5.0", "ge") ? "j5plus" : "";
 ?>
-<div class="gsl-scope" id="gslc"> <!-- Open Custom UiKit Container -->
+<div class="gsl-scope <?php echo $j5plus;?>" id="gslc"> <!-- Open Custom UiKit Container -->
+
     <?php
     GslHelper::renderModal();
     ?>

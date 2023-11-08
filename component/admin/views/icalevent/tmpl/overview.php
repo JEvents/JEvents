@@ -129,7 +129,7 @@ $data['filters'] = $this->filters;
                                    title="<?php echo Text::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->title(); ?></a>
 	                            <?php
 	                            $catids = $row->catids();
-								if (count($catids))
+								if ($catids && count($catids))
                                 {
 									?>
 									<br><br>[<?php
@@ -148,6 +148,12 @@ $data['filters'] = $this->filters;
                                         $firstCat = false;
                                     }
 									echo "]";
+                                }
+								else
+                                {
+                                    ?>
+	                            <br><br>[No valid categories - edit the event to check]<br>
+									<?php
                                 }
 	                            ?>
                             </td>

@@ -47,18 +47,18 @@ $filters = $data['view']->filterForm->getGroup('filter');
 				$search_input = str_replace('<input ', '<input class="hasYsPopover gsl-input" ' . $tooltip . ' ', $search_input);
             endif;
 			echo trim($search_input);
-			?><button type="submit" class="gsl-button ys-tooltip"
+			?><button type="submit" class="gsl-button ys-tooltip gsl-button-primary"
                     title="<?php echo HTMLHelper::_('tooltipText', 'JSEARCH_FILTER_SUBMIT'); ?>"
                     aria-label="<?php echo Text::_('JSEARCH_FILTER_SUBMIT'); ?>">
 				<span gsl-icon="icon: search" aria-hidden="true"></span>
 			</button>
         <?php if ($filterButton) : ?>
-            <button type="button" class=" gsl-button ys-tooltip  js-stools-btn-filter"
+            <button type="button" class=" gsl-button ys-tooltip  js-stools-btn-filter  gsl-button-primary"
                         title="<?php echo HTMLHelper::_('tooltipText', 'JSEARCH_FILTER'); ?>">
                 <?php echo Text::_(version_compare(JVERSION, "4.0", "ge") ? 'JFILTER_OPTIONS' : 'JSEARCH_TOOLS');?> <span gsl-icon="icon: triangle-down"></span>
 				</button>
 		<?php endif; ?>
-			<button type="button" class="gsl-button ys-tooltip js-stools-btn-clear"
+			<button type="button" class="gsl-button ys-tooltip js-stools-btn-clear  gsl-button-warning"
                     title="<?php echo HTMLHelper::_('tooltipText', 'JSEARCH_FILTER_CLEAR'); ?>">
 				<?php echo Text::_('JSEARCH_FILTER_CLEAR');?>
 			</button>
