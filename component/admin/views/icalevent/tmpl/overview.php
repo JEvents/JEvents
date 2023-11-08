@@ -129,6 +129,10 @@ $data['filters'] = $this->filters;
                                    title="<?php echo Text::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->title(); ?></a>
 	                            <?php
 	                            $catids = $row->catids();
+								if (!$catids)
+                                {
+                                    $catids = array($row->catid());
+                                }
 								if ($catids && count($catids))
                                 {
 									?>
