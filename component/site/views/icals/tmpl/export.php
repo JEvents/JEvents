@@ -517,6 +517,176 @@ if (!empty($this->icalEvents))
 			}
 		}
 	}
+
+    // Now handle the irregular repeats as a series of one off events
+    foreach ($this->icalEvents as $a)
+    {
+        // if NOT an irregular repeat then skip it :(
+        if (!isset($a->_freq) || $a->_freq !== "IRREGULAR")
+        {
+            continue;
+        }
+
+        $html .= "BEGIN:VEVENT\r\n";
+        $html .= "UID:" . $a->uid() . "RR" . $a->rp_id() . "\r\n";
+        $html .= "CATEGORIES:" . $a->catname() . "\r\n";
+        if (!empty($a->_class))
+            $html .= "CLASS:" . $a->_class . "\r\n";
+        $html .= "CREATED:" . date("Ymd\THis", strtotime($a->_created)) . "\r\n";
+        $html .= "SUMMARY:" . JEVHelper::iCalTitlePrefix($a) . $a->title() . "\r\n";
+        if ($a->location() != "")
+        {
+            if (!is_numeric($a->location()))
+            {
+                $html .= "LOCATION:" . $this->wraplines(str_replace(array(","), array("\,"), $this->replacetags($a->location()))) . "\r\n";
+            }
+            else if (isset($a->_loc_title))
+            {
+                $html .= "LOCATION:" . $this->wraplines(str_replace(array(","), array("\,"), $this->replacetags($a->_loc_title))) . "\r\n";
+            }
+            else
+            {
+                $html .= "LOCATION:" . $this->wraplines(str_replace(array(","), array("\,"), $this->replacetags($a->location()))) . "\r\n";
+            }
+        }
+        // We Need to wrap this according to the specs
+        /* $html .= "DESCRIPTION:".preg_replace("'<[\/\!]*?[^<>]*?>'si","",preg_replace("/\n|\r\n|\r$/","",$a->content()))."\n"; */
+
+        //Check if we should include the link to the event
+        if ($params->get('source_url', 0) == 1)
+        {
+            $link = $a->viewDetailLink($a->yup(), $a->mup(), $a->dup(), true, $params->get('default_itemid', 0));
+            $uri  = Uri::getInstance(Uri::base());
+            $root = $uri->toString(array('scheme', 'host', 'port'));
+            $html .= "URL;VALUE=URI:" . $this->wraplines($root . Route::_($link, true, -1)) . "\r\n";
+            //$html .= $this->setDescription($a->content() . ' ' . Text::_('JEV_EVENT_IMPORTED_FROM') . $root . Route::_($link, true, -1)) . "\r\n";
+        }
+        $html .= $this->setDescription($a->content()) . "\r\n";
+
+        if ($a->hasContactInfo())
+        {
+            $html .= "CONTACT:" . $this->replacetags($a->contact_info()) . "\r\n";
+        }
+
+        if ($a->hasExtraInfo())
+        {
+            $html .= "X-EXTRAINFO:" . $this->wraplines($this->replacetags($a->_extra_info)) . "\r\n";
+        }
+
+        if ($a->hasColor())
+        {
+            $html .= "X-COLOR:" . $this->wraplines(strip_tags($a->_color)) . "\r\n";
+        }
+
+        $alldayprefix = "";
+        // No doing true timezones!
+        if ($tzid == "" && is_callable("date_default_timezone_set"))
+        {
+            // UTC!
+            $start = $a->getUnixStartTime();
+            $end   = $a->getUnixEndTime();
+
+            // Change timezone to UTC
+            $current_timezone = date_default_timezone_get();
+
+            // If all day event then don't show the start time or end time either
+            if ($a->alldayevent())
+            {
+                $alldayprefix = ";VALUE=DATE";
+                $startformat  = "Ymd";
+                $endformat    = "Ymd";
+
+                // add 10 seconds to make sure its not midnight the previous night
+                $start += 10;
+                $end   += 10;
+            }
+            else
+            {
+                date_default_timezone_set("UTC");
+
+                $startformat = "Ymd\THis";
+                $endformat   = "Ymd\THis";
+            }
+
+            // Do not use JevDate version since this sets timezone to config value!
+            $start = date($startformat, $start);
+            $end   = date($endformat, $end);
+
+            $stamptime = date("Ymd\THis", time());
+
+            // Change back
+            date_default_timezone_set($current_timezone);
+        }
+        else
+        {
+            $start = $a->getUnixStartTime();
+            $end   = $a->getUnixEndTime();
+
+            // If all day event then don't show the start time or end time either
+            if ($a->alldayevent())
+            {
+                $alldayprefix = ";VALUE=DATE";
+                $startformat  = "Ymd";
+                $endformat    = "Ymd";
+
+                // add 10 seconds to make sure its not midnight the previous night
+                $start += 10;
+                $end   += 10;
+            }
+            else
+            {
+                $startformat = "Ymd\THis";
+                $endformat   = "Ymd\THis";
+            }
+
+            $start = date($startformat, $start);
+            $end   = date($endformat, $end);
+
+            if (is_callable("date_default_timezone_set"))
+            {
+                // Change timezone to UTC
+                $current_timezone = date_default_timezone_get();
+                date_default_timezone_set("UTC");
+                $stamptime = date("Ymd\THis", time());
+                // Change back
+                date_default_timezone_set($current_timezone);
+            }
+            else
+            {
+                $stamptime = date("Ymd\THis", time());
+            }
+
+        }
+
+        $html .= "DTSTAMP:" . $stamptime . "\r\n";
+        $html .= "DTSTART$tzid$alldayprefix:" . $start . "\r\n";
+        // events with no end time don't give a DTEND
+        if ($a->noendtime())
+        {
+            // special case for no-end time over multiple days
+            if ($a->start_date != $a->stop_date)
+            {
+                $alldayprefix = ";VALUE=DATE";
+                $endformat    = "%Y%m%d";
+                // add 10 seconds to make sure its not midnight the previous night
+                $end  = JevDate::strftime($endformat, $a->getUnixEndTime() + 10);
+                $html .= "DTEND$tzid$alldayprefix:" . $end . "\r\n";
+            }
+        }
+        else
+        {
+            $html .= "DTEND$tzid$alldayprefix:" . $end . "\r\n";
+        }
+
+        $html              .= "SEQUENCE:" . $a->_sequence . "\r\n";
+
+        // TREAT AS NOT REPEATING
+
+        $html .= "TRANSP:OPAQUE\r\n";
+        $html .= "END:VEVENT\r\n";
+
+    }
+
 }
 
 

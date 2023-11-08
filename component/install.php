@@ -130,18 +130,6 @@ SQL;
 			$rowcharset = ($db->hasUTF()) ? 'CHARACTER SET utf8' : '';
 		}
 
-        // avoid problem on uid index if it exists
-        $sql = "alter table #__jevents_vevent drop index uid";
-        $db->setQuery($sql);
-        try
-        {
-            $db->execute();
-        }
-        catch (Throwable $e)
-        {
-
-        }
-
         /**
 		 * create table if it doesn't exit
 		 *
@@ -189,6 +177,17 @@ SQL;
 			echo $e;
 		}
 
+        // avoid problem on uid index if it exists
+        $sql = "alter table #__jevents_vevent drop index uid";
+        $db->setQuery($sql);
+        try
+        {
+            $db->execute();
+        }
+        catch (Throwable $e)
+        {
+
+        }
 
 		/**
 		 * create table if it doesn't exit

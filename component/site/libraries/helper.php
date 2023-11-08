@@ -4502,11 +4502,11 @@ SCRIPT;
 				$text = $link->textContent;
 				if ($text == $href || empty($href))
 				{
-					$fragment->appendXML($link->textContent);
+					$fragment->appendXML( htmlspecialchars($link->textContent) );
 				}
 				else
 				{
-					$fragment->appendXML($link->textContent . " (" . $href . ")");
+					$fragment->appendXML( htmlspecialchars($link->textContent . " (" . $href . ")") );
 				}
 
 				$link->parentNode->replaceChild($fragment, $link);

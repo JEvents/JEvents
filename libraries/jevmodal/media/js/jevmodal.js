@@ -57,23 +57,6 @@ function jevModalSelector(sourceElement, params, evt) {
         modal.style.maxHeight = '90%';
 
         var href = elementData.href  || sourceElement.href;
-/*
-        var iframe = document.querySelector('#' + id + ' iframe');
-        iframe.addEventListener('load', function () {
-            var iframe = document.querySelector('#' + id + ' iframe');
-            if(iframe.src == href) {
-                // add 20 to hide scroll bars that are not needed
-                iframe.style.height = iframe.contentWindow.document.body.scrollHeight + 20 + 'px';
-                window.setTimeout(function () {
-                    var padding = parseInt(window.getComputedStyle(modalBody).getPropertyValue('padding-top'))
-                        + parseInt(window.getComputedStyle(modalBody).getPropertyValue('padding-bottom'));
-                    modalBody.style.maxHeight = (modal.offsetHeight - modalHeader.offsetHeight - padding) + 'px';
-                    iframe.style.maxHeight = (modalBody.offsetHeight - padding) + 'px';
-
-                }, 100);
-            }
-        });
-*/
         launchJevModal('#' + id, href);
     }
     else
@@ -167,33 +150,73 @@ function jevModalNoTitle(id, url) {
 }
 
 function launchJevModal(selector, url) {
+
+    // is it an image?
+    var isImage = url.match(/\.(jpeg|jpg|gif|png|svg|JPEG|JPG|GIF|PNG|SVG)$/) != null;
     // Clear the old page!
     var iframe = document.querySelector(selector + ' iframe');
-    if (iframe) {
+    var img = document.querySelector(selector + ' img');
+
+    if (iframe && img) {
         iframe.src = "";
-        iframe.addEventListener('load', function () {
-            var iframe = document.querySelector(selector + ' iframe');
-            if (iframe.src.indexOf(url) >= 0) {
+        img.src = "";
+        if (isImage)
+        {
+            iframe.setAttribute("hidden", "hidden");
+            img.removeAttribute("hidden");
 
-                var modal = document.querySelector(selector);
-                var modalHeader = modal.querySelector('.modal-header ');
-                var modalBody = modal.querySelector('.modal-body ');
-                var modalContent = modal.querySelector('.modal-content ');
-                var modalDialog = modal.querySelector('.modal-dialog ');
+            img.addEventListener('load', function () {
+                var img = document.querySelector(selector + ' img');
+                if (img.src.indexOf(url) >= 0) {
 
-                window.addEventListener('resize', function () {
-                    jevIframeSizing(iframe, modal, modalHeader, modalBody, modalContent, modalDialog);
-                })
+                    var modal = document.querySelector(selector);
+                    var modalHeader = modal.querySelector('.modal-header ');
+                    var modalBody = modal.querySelector('.modal-body ');
+                    var modalContent = modal.querySelector('.modal-content ');
+                    var modalDialog = modal.querySelector('.modal-dialog ');
 
-                window.setTimeout(function () {
-                    jevIframeSizing(iframe, modal, modalHeader, modalBody, modalContent, modalDialog);
-                }, 500);
-            }
-        });
+                    window.addEventListener('resize', function () {
+                        jevImageSizing(img, modal, modalHeader, modalBody, modalContent, modalDialog);
+                    })
+
+                    window.setTimeout(function () {
+                        jevImageSizing(img, modal, modalHeader, modalBody, modalContent, modalDialog);
+                    }, 500);
+                }
+            });
+        }
+        else {
+            img.setAttribute("hidden", "hidden");
+            iframe.removeAttribute("hidden");
+
+            iframe.addEventListener('load', function () {
+                var iframe = document.querySelector(selector + ' iframe');
+                if (iframe.src.indexOf(url) >= 0) {
+
+                    var modal = document.querySelector(selector);
+                    var modalHeader = modal.querySelector('.modal-header ');
+                    var modalBody = modal.querySelector('.modal-body ');
+                    var modalContent = modal.querySelector('.modal-content ');
+                    var modalDialog = modal.querySelector('.modal-dialog ');
+
+                    window.addEventListener('resize', function () {
+                        jevIframeSizing(iframe, modal, modalHeader, modalBody, modalContent, modalDialog);
+                    })
+
+                    window.setTimeout(function () {
+                        jevIframeSizing(iframe, modal, modalHeader, modalBody, modalContent, modalDialog);
+                    }, 500);
+                }
+            });
+        }
     }
 
     jQuery(selector).off('show shown.bs.modal');
     jQuery(selector).on('show shown.bs.modal', function () {
+
+        // is it an image?
+        var isImage = url.match(/\.(jpeg|jpg|gif|png|svg|JPEG|JPG|GIF|PNG|SVG)$/) != null;
+
         var modal = document.querySelector(selector);
         if (modal.classList.contains('fade'))
         {
@@ -210,7 +233,7 @@ function launchJevModal(selector, url) {
           //  position: 'fixed'
         });
         if (url) {
-            jQuery(selector + ' iframe').attr("src", url);
+            jQuery(selector + (isImage ? ' img' :  ' iframe') ).attr("src", url);
         }
     });
     jQuery(selector).on('hide hidden.bs.modal', function () {
@@ -278,6 +301,36 @@ function jevIframeSizing(iframe, modal, modalHeader, modalBody, modalContent, mo
 */
 }
 
+function jevImageSizing(img, modal, modalHeader, modalBody, modalContent, modalDialog) {
+    if (!img)
+    {
+        return;
+    }
+    // add 20 to hide scroll bars that are not needed
+    var extraHeight = (img.scrollHeight > img.offsetHeight) ? 20 : 0;
+    // if extraheight is 20 then there will be a scroll bar visible
+    var extraWidth = (img.scrollWidth > img.offsetWidth || extraHeight == 20) ? 20 : 0;
+
+    img.style.height = (img.scrollHeight + extraHeight) + 'px';
+    img.style.width  = (img.scrollWidth  + extraWidth) + 'px';
+
+    if(modalBody.offsetWidth > img.scrollWidth  + extraWidth)
+    {
+        modalBody.style.width = img.scrollWidth  + extraWidth + 'px';
+        modalContent.style.width = img.scrollWidth  + extraWidth +  10 + 'px';
+        modalDialog.style.width = img.scrollWidth  + extraWidth +  20 + 'px';
+        modalDialog.parentNode.style.width = 'fit-content';
+    }
+    if(modalBody.offsetHeight > img.scrollHeight  + extraHeight)
+    {
+        modalBody.style.height = img.scrollHeight  + extraHeight + 'px';
+        modalContent.style.height = img.scrollHeight  + extraHeight +  10 + 'px';
+        modalDialog.style.height = img.scrollHeight  + extraHeight +  20 + 'px';
+        modalDialog.parentNode.style.height = 'fit-content';
+    }
+
+}
+
 function addJevModalHtml(id) {
     /** Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap */
     var bootstrap5 = false;
@@ -306,6 +359,7 @@ function addJevModalHtml(id) {
                 + '</div>'
                 + '<div class="modal-body">'
                 + '<iframe src="" ></iframe>'
+                + '<img src="" hidden="hidden" />'
                 + '</div>'
                 + '</div>'
                 + '</div>'
@@ -321,6 +375,7 @@ function addJevModalHtml(id) {
                 + '</div>'
                 + '<div class="modal-body">'
                 + '<iframe src="" ></iframe>'
+                + '<img src="" hidden="hidden" />'
                 + '</div>'
                 + '</div>'
                 + '</div>'
@@ -336,6 +391,7 @@ function addJevModalHtml(id) {
                 + '</div>'
                 + '<div class="modal-body">'
                 + '<iframe src=""></iframe>'
+                + '<img src="" hidden="hidden" />'
                 + '</div>'
                 + '</div>'
                 + '</div>'
