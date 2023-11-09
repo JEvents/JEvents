@@ -91,6 +91,10 @@ function jevModalNoTitle(id, url) {
 }
 
 function launchJevModal_gsl(selector, url) {
+    if (typeof url == 'undefined')
+    {
+        url = '';
+    }
     // Clear the old page!
     var iframe = document.querySelector(selector + ' iframe');
     if (iframe) {

@@ -93,6 +93,11 @@ function jevModalNoTitle(id, url) {
 }
 
 function launchJevModal_uikit(selector, url) {
+    if (typeof url == 'undefined')
+    {
+        url = '';
+    }
+
     // is it an image?
     var isImage = url.match(/\.(jpeg|jpg|gif|png|svg|JPEG|JPG|GIF|PNG|SVG)$/) != null;
 
