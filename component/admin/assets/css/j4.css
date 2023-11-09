@@ -100,7 +100,10 @@ body.com_fields.with-joomla-sidebar header.header .header-title .page-title {
 }
 body.com_jevents button.navbar-toggler.toggler-toolbar,
 body.com_categories button.navbar-toggler.toggler-toolbar,
-body.com_fields button.navbar-toggler.toggler-toolbar {
+body.com_fields button.navbar-toggler.toggler-toolbar,
+body.com_jevents #subhead-container,
+body.com_categories #subhead-container,
+body.com_fields #subhead-container {
   display: none;
 }
 body.com_jevents .container-main::after,
