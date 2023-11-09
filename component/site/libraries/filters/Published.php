@@ -24,8 +24,11 @@ class jevPublishedFilter extends jevFilter
 	const filterType = "published";
 	var $label = "";
 	var $yesLabel = "";
+	var $allLabel = "";
 	var $noLabel = "";
 	var $isEventAdmin = false;
+	var $filterLabel = false;
+	var $filterLabelEscaped = false;
 
 	function __construct($tablename, $filterfield, $isstring = true, $yesLabel = "Jev_Yes", $noLabel = "Jev_No")
 	{

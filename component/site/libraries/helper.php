@@ -49,6 +49,9 @@ class JEVHelper
 	protected static
 		$loaded = array();
 
+	var $rsvpdata = null;
+	var $_ydn = null;
+
 	/**
 	 * load language file
 	 *

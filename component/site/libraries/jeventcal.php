@@ -31,6 +31,7 @@ class jEventCal
 	var $_published = "";
 	var $_multiday = -1;
 	var $_noendtime = 0;
+	var $_bgcolor = "";
 
 	// default values
 	var $_catid = 0;

@@ -18,6 +18,7 @@ if (!defined("JEVDATE"))
 	{
 
 		public $mytz;
+		public $_tz;
 
 		/**
 		 * Constructor.
