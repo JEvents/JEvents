@@ -100,10 +100,15 @@ class jevFilterProcessing
 
 			foreach (self::$visiblefilters as $filtername)
 			{
-				$filter = "jev" . ucfirst($filtername) . "Filter";
+                $filterClassName = $filtername;
+                if (strpos($filterClassName, ":") > 0)
+                {
+                    $filterClassName = substr($filterClassName, 0, strpos($filterClassName, ":"));
+                }
+				$filter = "jev" . ucfirst($filterClassName) . "Filter";
 				if (!class_exists($filter))
 				{
-					$filterFile = ucfirst($filtername) . '.php';
+					$filterFile = ucfirst($filterClassName) . '.php';
 
 					$filterFilePath = Path::find($this->filterpath, $filterFile);
 					if ($filterFilePath)

@@ -3279,7 +3279,7 @@ class JEventsDBModel
 				$db->execute();
 
 				return $db->getNumRows();
-			} catch (Exception $e) {
+			} catch (Throwable $e) {
 				$error = $e;
 			}
 		}
@@ -3287,8 +3287,9 @@ class JEventsDBModel
 		try
 		{
 			$icalrows = $db->loadObjectList();
-		} catch (Exception $e) {
-			$error .= $e;
+		} catch (Throwable $e) {
+			$error .= (string) $$db->getQuery() . "<br>";
+            $error .= $e . "<br>";
 			$icalrows = [];
 		}
 
@@ -4144,7 +4145,7 @@ class JEventsDBModel
 		try
 		{
 			$icalrows = $db->loadObjectList();
-		} catch (Exception $e) {
+		} catch (Throwable $e) {
 			echo $e;
 		}
 
@@ -4817,7 +4818,7 @@ class JEventsDBModel
 		{
 			$db->setQuery($query);
 		}
-		catch (Exception $e)
+		catch (Throwable $e)
 		{
 			if (JDEBUG)
 			{

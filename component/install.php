@@ -62,9 +62,11 @@ SQL;
 
 		try {
 			$db->execute();
-		} catch (Exception $e) {
-			echo $e;
-		}
+		} catch (Throwable $e) {
+			echo $e . "<br>";
+            echo "Problem altering #__jevents_repetition<br>";
+
+        }
 
 		// Fix auto incremental values on event table
 		$query = $db
@@ -85,8 +87,9 @@ SQL;
 
 		try {
 			$db->execute();
-		} catch (Exception $e) {
-			echo $e;
+		} catch (Throwable $e) {
+            echo $e . "<br>";
+            echo "Problem altering #__jevents_vevent<br>";
 		}
 
 		// Fix auto incremental values on event detail table
@@ -108,8 +111,9 @@ SQL;
 
 		try {
 			$db->execute();
-		} catch (Exception $e) {
-			echo $e;
+		} catch (Throwable $e) {
+            echo $e . "<br>";
+            echo "Problem altering #__jevents_vevdetail<br>";
 		}
 
 	}
@@ -129,6 +133,17 @@ SQL;
 			$charset    = ($db->hasUTF()) ? ' DEFAULT CHARACTER SET `utf8`' : '';
 			$rowcharset = ($db->hasUTF()) ? 'CHARACTER SET utf8' : '';
 		}
+
+        // avoid problem on uid index if it exists
+        $sql = "alter table #__jevents_vevent drop index uid";
+        $db->setQuery($sql);
+        try
+        {
+            $db->execute();
+        }
+        catch (Throwable $e)
+        {
+        }
 
         /**
 		 * create table if it doesn't exit
@@ -173,7 +188,8 @@ SQL;
 
 		try {
 			$db->execute();
-		} catch (Exception $e) {
+		} catch (Throwable $e) {
+            echo "Problem creating #__jevents_vevent<br>";
 			echo $e;
 		}
 
@@ -186,7 +202,7 @@ SQL;
         }
         catch (Throwable $e)
         {
-
+            // silent!
         }
 
 		/**
@@ -240,8 +256,9 @@ SQL;
 		$db->setQuery($sql);
 		try {
 			$db->execute();
-		} catch (Exception $e) {
-			echo $e;
+		} catch (Throwable $e) {
+            echo $e . "<br>";
+            echo "Problem creating #__jevents_vevdetail<br>";
 		}
 
 		$sql = <<<SQL
@@ -271,8 +288,9 @@ SQL;
 		$db->setQuery($sql);
 		try {
 			$db->execute();
-		} catch (Exception $e) {
-			echo $e;
+		} catch (Throwable $e) {
+            echo $e . "<br>";
+            echo "Problem creating #__jevents_rrule<br>";
 		}
 
 
@@ -298,8 +316,9 @@ SQL;
 		$db->setQuery($sql);
 		try {
 			$db->execute();
-		} catch (Exception $e) {
-			echo $e;
+		} catch (Throwable $e) {
+            echo $e . "<br>";
+            echo "Problem creating #__jevents_repetition<br>";
 		}
 
 		// exception_type 0=delete, 1=other exception
@@ -321,8 +340,9 @@ SQL;
 		$db->setQuery($sql);
 		try {
 			$db->execute();
-		} catch (Exception $e) {
-			echo $e;
+		} catch (Throwable $e) {
+            echo $e . "<br>";
+            echo "Problem creating #__jevents_exception<br>";
 		}
 
 		/**
@@ -365,8 +385,9 @@ SQL;
 		$db->setQuery($sql);
 		try {
 			$db->execute();
-		} catch (Exception $e) {
-			echo $e;
+		} catch (Throwable $e) {
+            echo $e . "<br>";
+            echo "Problem creating #__jevents_icsfile<br>";
 		}
 
 		// 1. Make sure users table exists
@@ -405,8 +426,9 @@ SQL;
 		$db->setQuery($sql);
 		try {
 			$db->execute();
-		} catch (Exception $e) {
-			echo $e;
+		} catch (Throwable $e) {
+            echo $e . "<br>";
+            echo "Problem creating #__jev_users<br>";
 		}
 
 		$sql = <<<SQL
@@ -429,8 +451,9 @@ SQL;
 		$db->setQuery($sql);
 		try {
 			$db->execute();
-		} catch (Exception $e) {
-			echo $e;
+		} catch (Throwable $e) {
+            echo $e . "<br>";
+            echo "Problem creating #__jev_defaults<br>";
 		}
 
 
@@ -446,8 +469,9 @@ SQL;
 		$db->setQuery($sql);
 		try {
 			$db->execute();
-		} catch (Exception $e) {
-			echo $e;
+		} catch (Throwable $e) {
+            echo $e . "<br>";
+            echo "Problem creating #__jevents_catmap<br>";
 		}
 
 		// Filter module mapping table
@@ -468,8 +492,9 @@ SQL;
 		$db->setQuery($sql);
 		try {
 			$db->execute();
-		} catch (Exception $e) {
-			echo $e;
+		} catch (Throwable $e) {
+            echo $e . "<br>";
+            echo "Problem creating #__jevents_filtermap<br>";
 		}
 
 		/**
@@ -501,8 +526,9 @@ SQL;
 		$db->setQuery($sql);
 		try {
 			$db->execute();
-		} catch (Exception $e) {
-			echo $e;
+		} catch (Throwable $e) {
+            echo $e . "<br>";
+            echo "Problem creating #__jevents_translation<br>";
 		}
 
 	}
