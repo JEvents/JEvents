@@ -118,6 +118,35 @@ $allowAutoSubmit = true;
 $filters->modParams = $params;
 $filterHTML      = $filters->getFilterHTML($allowAutoSubmit, true);
 
+// strip out the filters we don't need!
+$filterlist = explode(",", str_replace(" ", "", $params->get('filters', "search")));
+foreach ($filterHTML as $filterindex => $filter)
+{
+
+    if ( isset( $filter["filterType"] ) && ! empty( $filter["filterType"] ) && $filter["filterType"] === "Customfield" )
+    {
+        $activeFilter = ucfirst( $filter["filterType"] );
+        $activeFilter .= ":" . str_replace( "_", "", $filterindex );
+
+        if ( ! in_array( $activeFilter, $filterlist ) )
+        {
+            unset( $filterHTML[$filterindex] );
+        }
+        continue;
+    }
+
+
+    if (
+        ! in_array( $filterindex, $filterlist )
+        && ! ( isset( $filter["filterType"] ) && ! empty( $filter["filterType"] ) && in_array( ucfirst( $filter["filterType"] ), $filterlist ) )
+        && ! ( isset( $filter["filterField"] ) && ! empty( $filter["filterField"] ) && in_array( ucfirst( $filter["filterField"] ), $filterlist ) )
+    )
+    {
+        unset( $filterHTML[$filterindex] );
+    }
+}
+
+
 if ($params->get("customcss", false))
 {
 	$css = $params->get("customcss", false);

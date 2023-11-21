@@ -321,6 +321,8 @@ class jevFilterProcessing
 				{
 					continue;
 				}
+                $filterHTML["filterType"] = $filter->filterType;
+                $filterHTML["filterField"] = $filter->filterField;
                 if ($indexed)
                 {
                     $this->filterHTML[$filter->filterField] = $filterHTML;

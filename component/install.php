@@ -145,6 +145,9 @@ SQL;
         {
         }
 
+        $db->setQuery("SHOW TABLES LIKE '" . $db->getPrefix() . "jev%'");
+        $tables = $db->loadColumn();
+
         /**
 		 * create table if it doesn't exit
 		 *
@@ -154,7 +157,11 @@ SQL;
 		 *
 		 * Separate tables for rrule and exrule
 		 */
-		$sql = <<<SQL
+
+        $exists = in_array( $db->getPrefix() . "jevents_vevent", $tables );
+        if (!$exists)
+        {
+            $sql = <<<SQL
 CREATE TABLE IF NOT EXISTS #__jevents_vevent(
 	ev_id int(12) NOT NULL auto_increment,
 	icsid int(12) NOT NULL default 0,
@@ -184,25 +191,17 @@ CREATE TABLE IF NOT EXISTS #__jevents_vevent(
         INDEX evaccess (access)                        
 ) $charset;
 SQL;
-		$db->setQuery($sql);
+            $db->setQuery( $sql );
 
-		try {
-			$db->execute();
-		} catch (Throwable $e) {
-            echo "Problem creating #__jevents_vevent<br>";
-			echo $e;
-		}
-
-        // avoid problem on uid index if it exists
-        $sql = "alter table #__jevents_vevent drop index uid";
-        $db->setQuery($sql);
-        try
-        {
-            $db->execute();
-        }
-        catch (Throwable $e)
-        {
-            // silent!
+            try
+            {
+                $db->execute();
+            }
+            catch ( Throwable $e )
+            {
+                echo "Problem creating #__jevents_vevent<br>";
+                echo $e;
+            }
         }
 
 		/**
@@ -214,7 +213,10 @@ SQL;
 		 *
 		 * Separate tables for rrule and exrule
 		 */
-		$sql = <<<SQL
+        $exists = in_array( $db->getPrefix() . "jevents_vevdetail", $tables );
+        if (!$exists)
+        {
+            $sql = <<<SQL
 CREATE TABLE IF NOT EXISTS #__jevents_vevdetail(
 	evdet_id int(12) NOT NULL auto_increment,
 
@@ -253,15 +255,22 @@ CREATE TABLE IF NOT EXISTS #__jevents_vevdetail(
 	INDEX (location(190))
 ) $charset;
 SQL;
-		$db->setQuery($sql);
-		try {
-			$db->execute();
-		} catch (Throwable $e) {
-            echo $e . "<br>";
-            echo "Problem creating #__jevents_vevdetail<br>";
-		}
+            $db->setQuery( $sql );
+            try
+            {
+                $db->execute();
+            }
+            catch ( Throwable $e )
+            {
+                echo "Problem creating #__jevents_vevdetail<br>";
+                echo $e . "<br>";
+            }
+        }
 
-		$sql = <<<SQL
+        $exists = in_array( $db->getPrefix() . "jevents_rrule", $tables );
+        if (!$exists)
+        {
+            $sql = <<<SQL
 CREATE TABLE IF NOT EXISTS #__jevents_rrule (
 	rr_id int(12) NOT NULL auto_increment,
 	eventid int(12) NOT NULL default 1,
@@ -285,16 +294,22 @@ CREATE TABLE IF NOT EXISTS #__jevents_rrule (
 	INDEX (eventid)
 ) $charset;
 SQL;
-		$db->setQuery($sql);
-		try {
-			$db->execute();
-		} catch (Throwable $e) {
-            echo $e . "<br>";
-            echo "Problem creating #__jevents_rrule<br>";
-		}
+            $db->setQuery( $sql );
+            try
+            {
+                $db->execute();
+            }
+            catch ( Throwable $e )
+            {
+                echo "Problem creating #__jevents_rrule<br>";
+                echo $e . "<br>";
+            }
+        }
 
-
-		$sql = <<<SQL
+        $exists = in_array( $db->getPrefix() . "jevents_repetition", $tables );
+        if (!$exists)
+        {
+            $sql = <<<SQL
 CREATE TABLE IF NOT EXISTS #__jevents_repetition (
 	rp_id int(12) NOT NULL auto_increment,
 	eventid int(12) NOT NULL default 1,
@@ -313,16 +328,23 @@ CREATE TABLE IF NOT EXISTS #__jevents_repetition (
 	
 ) $charset;
 SQL;
-		$db->setQuery($sql);
-		try {
-			$db->execute();
-		} catch (Throwable $e) {
-            echo $e . "<br>";
-            echo "Problem creating #__jevents_repetition<br>";
-		}
+            $db->setQuery( $sql );
+            try
+            {
+                $db->execute();
+            }
+            catch ( Throwable $e )
+            {
+                echo "Problem creating #__jevents_repetition<br>";
+                echo $e . "<br>";
+            }
+        }
 
 		// exception_type 0=delete, 1=other exception
-		$sql = <<<SQL
+        $exists = in_array( $db->getPrefix() . "jevents_exception", $tables );
+        if (!$exists)
+        {
+            $sql = <<<SQL
 CREATE TABLE IF NOT EXISTS #__jevents_exception (
 	ex_id int(12) NOT NULL auto_increment,
 	rp_id int(12) NOT NULL default 0,
@@ -337,13 +359,17 @@ CREATE TABLE IF NOT EXISTS #__jevents_exception (
 	KEY (rp_id)
 ) $charset;
 SQL;
-		$db->setQuery($sql);
-		try {
-			$db->execute();
-		} catch (Throwable $e) {
-            echo $e . "<br>";
-            echo "Problem creating #__jevents_exception<br>";
-		}
+            $db->setQuery( $sql );
+            try
+            {
+                $db->execute();
+            }
+            catch ( Throwable $e )
+            {
+                echo "Problem creating #__jevents_exception<br>";
+                echo $e . "<br>";
+            }
+        }
 
 		/**
 		 * create table if it doesn't exit
@@ -356,7 +382,10 @@ SQL;
 		 * Separate tables for rrule and exrule
 		 *
 		 */
-		$sql = <<<SQL
+        $exists = in_array( $db->getPrefix() . "jevents_icsfile", $tables );
+        if (!$exists)
+        {
+            $sql = <<<SQL
 CREATE TABLE IF NOT EXISTS #__jevents_icsfile(
 	ics_id int(12) NOT NULL auto_increment,
 	srcURL VARCHAR(500) NOT NULL default "",
@@ -382,16 +411,23 @@ CREATE TABLE IF NOT EXISTS #__jevents_icsfile(
 	
 ) $charset;
 SQL;
-		$db->setQuery($sql);
-		try {
-			$db->execute();
-		} catch (Throwable $e) {
-            echo $e . "<br>";
-            echo "Problem creating #__jevents_icsfile<br>";
-		}
+            $db->setQuery( $sql );
+            try
+            {
+                $db->execute();
+            }
+            catch ( Throwable $e )
+            {
+                echo "Problem creating #__jevents_icsfile<br>";
+                echo $e . "<br>";
+            }
+        }
 
 		// 1. Make sure users table exists
-		$sql = <<<SQL
+        $exists = in_array( $db->getPrefix() . "jev_users", $tables );
+        if (!$exists)
+        {
+            $sql = <<<SQL
 CREATE TABLE IF NOT EXISTS #__jev_users (
 	id int( 11 ) unsigned NOT NULL AUTO_INCREMENT ,
 	user_id int( 11 ) NOT NULL default '0',
@@ -423,15 +459,22 @@ CREATE TABLE IF NOT EXISTS #__jev_users (
 	KEY user (user_id  )
 ) $charset;
 SQL;
-		$db->setQuery($sql);
-		try {
-			$db->execute();
-		} catch (Throwable $e) {
-            echo $e . "<br>";
-            echo "Problem creating #__jev_users<br>";
-		}
+            $db->setQuery( $sql );
+            try
+            {
+                $db->execute();
+            }
+            catch ( Throwable $e )
+            {
+                echo "Problem creating #__jev_users<br>";
+                echo $e . "<br>";
+            }
+        }
 
-		$sql = <<<SQL
+        $exists = in_array( $db->getPrefix() . "jev_defaults", $tables );
+        if (!$exists)
+        {
+            $sql = <<<SQL
 CREATE TABLE IF NOT EXISTS #__jev_defaults (
 	id int( 11 ) unsigned NOT NULL AUTO_INCREMENT ,
 	title varchar(100) NOT NULL default "",
@@ -448,17 +491,24 @@ CREATE TABLE IF NOT EXISTS #__jev_defaults (
 
 ) $charset;
 SQL;
-		$db->setQuery($sql);
-		try {
-			$db->execute();
-		} catch (Throwable $e) {
-            echo $e . "<br>";
-            echo "Problem creating #__jev_defaults<br>";
-		}
+            $db->setQuery( $sql );
+            try
+            {
+                $db->execute();
+            }
+            catch ( Throwable $e )
+            {
+                echo "Problem creating #__jev_defaults<br>";
+                echo $e . "<br>";
+            }
+        }
 
 
 		// Multi-category Mapping table
-		$sql = <<<SQL
+        $exists = in_array( $db->getPrefix() . "jevents_catmap", $tables );
+        if (!$exists)
+        {
+            $sql = <<<SQL
 CREATE TABLE IF NOT EXISTS #__jevents_catmap(
 	evid int(12) NOT NULL auto_increment,
 	catid int(11) NOT NULL default 1,
@@ -466,17 +516,24 @@ CREATE TABLE IF NOT EXISTS #__jevents_catmap(
 	UNIQUE KEY `key_event_category` (`evid`,`catid`)
 ) $charset;
 SQL;
-		$db->setQuery($sql);
-		try {
-			$db->execute();
-		} catch (Throwable $e) {
-            echo $e . "<br>";
-            echo "Problem creating #__jevents_catmap<br>";
-		}
+            $db->setQuery( $sql );
+            try
+            {
+                $db->execute();
+            }
+            catch ( Throwable $e )
+            {
+                echo "Problem creating #__jevents_catmap<br>";
+                echo $e . "<br>";
+            }
+        }
 
 		// Filter module mapping table
 		// Maps filter values to URL keys
-		$sql = <<<SQL
+        $exists = in_array( $db->getPrefix() . "jevents_filtermap", $tables );
+        if (!$exists)
+        {
+            $sql = <<<SQL
 CREATE TABLE IF NOT EXISTS #__jevents_filtermap (
 	fid int(12) NOT NULL auto_increment,
 	userid int(12) NOT NULL default 0,
@@ -489,13 +546,17 @@ CREATE TABLE IF NOT EXISTS #__jevents_filtermap (
 	INDEX (md5(190))
 ) $charset;
 SQL;
-		$db->setQuery($sql);
-		try {
-			$db->execute();
-		} catch (Throwable $e) {
-            echo $e . "<br>";
-            echo "Problem creating #__jevents_filtermap<br>";
-		}
+            $db->setQuery( $sql );
+            try
+            {
+                $db->execute();
+            }
+            catch ( Throwable $e )
+            {
+                echo "Problem creating #__jevents_filtermap<br>";
+                echo $e . "<br>";
+            }
+        }
 
 		/**
 		 * create table if it doesn't exit
@@ -506,7 +567,10 @@ SQL;
 		 *
 		 * Separate tables for rrule and exrule
 		 */
-		$sql = <<<SQL
+        $exists = in_array( $db->getPrefix() . "jevents_translation", $tables );
+        if (!$exists)
+        {
+            $sql = <<<SQL
 CREATE TABLE IF NOT EXISTS #__jevents_translation (
 	translation_id int(12) NOT NULL auto_increment,
 	evdet_id int(12) NOT NULL default 0,
@@ -523,14 +587,17 @@ CREATE TABLE IF NOT EXISTS #__jevents_translation (
 	INDEX langdetail (evdet_id, language)
 ) $charset;
 SQL;
-		$db->setQuery($sql);
-		try {
-			$db->execute();
-		} catch (Throwable $e) {
-            echo $e . "<br>";
-            echo "Problem creating #__jevents_translation<br>";
-		}
-
+            $db->setQuery( $sql );
+            try
+            {
+                $db->execute();
+            }
+            catch ( Throwable $e )
+            {
+                echo "Problem creating #__jevents_translation<br>";
+                echo $e . "<br>";
+            }
+        }
 	}
 
 	private function updateTables()

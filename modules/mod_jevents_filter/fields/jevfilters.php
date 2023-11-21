@@ -187,6 +187,7 @@ class JFormFieldJevfilters extends JFormFieldText
 
 		// Initialize some field attributes.
 		$size      = $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
+        $size      = "";
 		$maxLength = $this->element['maxlength'] ? ' maxlength="' . (int) $this->element['maxlength'] . '"' : '';
 		$class     = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
 		$readonly  = ((string) $this->element['readonly'] == 'true') ? ' readonly="readonly"' : '';
