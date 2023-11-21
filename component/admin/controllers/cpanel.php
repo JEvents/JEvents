@@ -1020,9 +1020,17 @@ WHERE ics.ics_id is null
         }
 
         // find collation for com_content
-        $db->setQuery("SHOW FULL COLUMNS FROM #__content");
-        $contentdata = $db->loadObjectList('Field');
-        $collation   = $contentdata['title']->Collation;
+        $db->setQuery("SHOW TABLE STATUS WHERE Name = '" . $db->getPrefix() . "content'");
+        $contentTable = $db->loadObject();
+        $collation = "";
+        if ($contentTable)
+        {
+            $collation =$contentTable->Collation;
+        }
+        if (empty($collation))
+        {
+            return;
+        }
 
         $db->setQuery("SHOW TABLE STATUS LIKE '" . $db->getPrefix() . "jev%'");
         $tables = $db->loadObjectList('Name');
@@ -1058,18 +1066,21 @@ WHERE ics.ics_id is null
             if ($force || $table->Collation != $collation)
             {
                 $fixtables = true;
+               //  $app->enqueueMessage("Table  $tablename collation needs updating" ,   "warning"      );
                 break;
             }
+/*
             $db->setQuery("SHOW FULL COLUMNS FROM $tablename");
             $columndata = $db->loadObjectList('Field');
             foreach ($columndata as $columnname => $columndata)
             {
                 if ($columndata->Collation && ($force || $columndata->Collation != $collation))
                 {
+                    $app->enqueueMessage("Table  $tablename and column $columnname has a collation that needs updating" ,   "warning"      );
                     $fixtables = true;
-                    break;
                 }
             }
+*/
         }
         if ($fixtables)
         {
@@ -1080,10 +1091,10 @@ WHERE ics.ics_id is null
 
 	public function fixcollations()
 	{
+        $force = 0;
+
 		$app    = Factory::getApplication();
 		$input  = $app->input;
-
-		$force = false;
 
 		if (!JEVHelper::isAdminUser())
 		{
@@ -1094,10 +1105,18 @@ WHERE ics.ics_id is null
 
 		$db = Factory::getDbo();
 
-		// find collation for com_content
-		$db->setQuery("SHOW FULL COLUMNS FROM #__content");
-		$contentdata = $db->loadObjectList('Field');
-		$collation   = $contentdata['title']->Collation;
+        // find collation for com_content
+        $db->setQuery("SHOW TABLE STATUS WHERE Name = '" . $db->getPrefix() . "content'");
+        $contentTable = $db->loadObject();
+        $collation = "";
+        if ($contentTable)
+        {
+            $collation =$contentTable->Collation;
+        }
+        if (empty($collation))
+        {
+            return;
+        }
 
 		$db->setQuery("SHOW TABLE STATUS LIKE '" . $db->getPrefix() . "jev%'");
 		$tables = $db->loadObjectList('Name');
@@ -1122,10 +1141,6 @@ WHERE ics.ics_id is null
 			{
 				if ($force || $table->Collation != $collation)
 				{
-
-                    $db->setQuery("SHOW FULL COLUMNS FROM $tablename");
-                    $columndata = $db->loadObjectList('Field');
-
                     $db->setQuery("ALTER TABLE $tablename convert to character set utf8mb4 collate $collation");
                     try
                     {
@@ -1134,24 +1149,24 @@ WHERE ics.ics_id is null
                     catch (Throwable $e)
                     {
                         $app->enqueueMessage($tablename . " could not be converted : " . $e->getMessage() ,   "error"      );
+                        $fixtables = true;
                     }
 				}
-			}
+            }
 
             $db->setQuery("SHOW TABLE STATUS LIKE '" . $db->getPrefix() . "jev%'");
             $tables = $db->loadObjectList('Name');
-
 		}
-
 
 		$fixtables = false;
 		foreach ($tables as $tablename => $table)
 		{
 			if ($force || $table->Collation != $collation)
 			{
-				echo "Table $tablename has collation " . $table->Collation . " it should probably be " . $collation . "<Br/>";
+                $app->enqueueMessage( "Table $tablename still has collation " . $table->Collation . " it should probably be " . $collation , "warning");
 				$fixtables = true;
 			}
+/*
 			$db->setQuery("SHOW FULL COLUMNS FROM $tablename");
 			$columndata = $db->loadObjectList('Field');
 
@@ -1159,10 +1174,19 @@ WHERE ics.ics_id is null
 			{
 				if ($columndata->Collation && ($force || $columndata->Collation != $collation))
 				{
-					echo "Column $columnname in Table $tablename has collation " . $columndata->Collation . " it should probably be " . $collation . "<Br/>";
-                    $fixtables = true;
+                    $db->setQuery("ALTER TABLE $tablename convert to character set utf8mb4 collate $collation");
+                    try
+                    {
+                        $db->execute();
+                    }
+                    catch (Throwable $e)
+                    {
+                        $app->enqueueMessage("Column $columnname could not be converted : " . $e->getMessage() ,   "error"      );
+                        $fixtables = true;
+                    }
 				}
 			}
+*/
 		}
         if (!$fixtables)
         {

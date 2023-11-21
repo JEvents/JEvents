@@ -3280,7 +3280,10 @@ class JEventsDBModel
 
 				return $db->getNumRows();
 			} catch (Throwable $e) {
-				$error = $e;
+                $error .= "Database error  " . $e->getCode() . "<br>";
+                $error .= $e->getMessage() . "<br>";
+                $error .= "<pre>" . (string) $db->getQuery() . "</pre><br>";
+
 			}
 		}
 
@@ -3288,8 +3291,9 @@ class JEventsDBModel
 		{
 			$icalrows = $db->loadObjectList();
 		} catch (Throwable $e) {
-			$error .= (string) $$db->getQuery() . "<br>";
-            $error .= $e . "<br>";
+            $error .= "Database error  " . $e->getCode() . "<br>";
+            $error .= $e->getMessage() . "<br>";
+			$error .= "<pre>" . (string) $db->getQuery() . "</pre><br>";
 			$icalrows = [];
 		}
 
@@ -3834,10 +3838,56 @@ class JEventsDBModel
 		        //exit();
 	        }
 
-            $query = substr($query, 0, strrpos($query, "WHERE "));
-            $query .= "\n WHERE rpt.rp_id IN (" . implode(",", $rpids) . " ) GROUP BY rpt.rp_id";
+            // Reconstitute the query with the additional conditionality
 
-           // $query .= "\n GROUP BY ev.ev_id";
+            // This version picks the details from the details table
+            if ($count) {
+                if (!$showrepeats) {
+                    $query = "SELECT count(distinct ev.ev_id)";
+                } else {
+                    $query = "SELECT count(distinct rpt.rp_id)";
+                }
+            } else {
+                $query = "SELECT ev.*, rpt.*, rr.*, det.*, ev.state as published, ev.created as created $extrafields"
+                         . "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
+                         . "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
+                         . "\n , HOUR(rpt.startrepeat) as hup, MINUTE(rpt.startrepeat ) as minup, SECOND(rpt.startrepeat ) as sup"
+                         . "\n , HOUR(rpt.endrepeat  ) as hdn, MINUTE(rpt.endrepeat   ) as mindn, SECOND(rpt.endrepeat   ) as sdn";
+            }
+            if (!$showrepeats && !$count) {
+                $fullselect = $query;
+
+                // suggest an index to ensure the group by gets the correct row
+                $query .= "\n FROM #__jevents_repetition as rpt  use INDEX (eventstart)";
+            } else {
+                $query .= "\n FROM #__jevents_repetition as rpt ";
+            }
+
+            $query .= "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
+                      . "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
+                      . "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
+                      . "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+                      . $extrajoin
+                      . $catwhere
+
+                      // new conditionality
+                      . "\n AND rpt.rp_id IN (" . implode(",", $rpids) . " ) "
+
+                      . ($this->subquery ? $daterange2 : $daterange)
+                      . ($this->subquery ? "" : $multidate)
+                      . $extrawhere
+                      . $extrawhere2
+                      . "\n AND ev.access IN (" . JEVHelper::getAid($user) . ")"
+                      . "  AND icsf.state=1 AND icsf.access IN (" . JEVHelper::getAid($user) . ")";
+
+            $query .= "\n GROUP BY rpt.rp_id";
+
+            // This is FAR topo simplistic!
+            /*
+            $query = substr($query, 0, strpos($query, "WHERE "));
+            $query .= "\n WHERE rpt.rp_id IN (" . implode(",", $rpids) . " ) GROUP BY rpt.rp_id";
+            */
+
         } else if ($needsgroup && !$count) {
             $query .= "\n GROUP BY rpt.rp_id";
         }

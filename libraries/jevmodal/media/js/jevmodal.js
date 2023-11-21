@@ -330,6 +330,7 @@ function jevImageSizing(img, modal, modalHeader, modalBody, modalContent, modalD
         modalContent.style.height = img.scrollHeight  + extraHeight +  10 + 'px';
         modalDialog.style.height = img.scrollHeight  + extraHeight +  20 + 'px';
         modalDialog.parentNode.style.height = 'fit-content';
+        modalDialog.parentNode.style.minHeight = img.scrollHeight  + extraHeight +  40 + 'px';
     }
 
 }

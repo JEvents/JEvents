@@ -389,7 +389,7 @@ public function getCal($modid = 0)
 
 				if ($this->minical_nextmonth)
 				{
-					$linknext    = htmlentities(Uri::base() . "index.php?option=$$option&task=modcal.ajax&day=1&month=$base_next_month&year=$base_next_month_year&modid=$this->_modid&tmpl=component" . $this->cat);
+					$linknext    = htmlentities(Uri::base() . "index.php?option=$option&task=modcal.ajax&day=1&month=$base_next_month&year=$base_next_month_year&modid=$this->_modid&tmpl=component" . $this->cat);
 					$scriptlinks['linknext']  = $linknext;
 					$content     .= $this->monthYearNavigation($basefirst_of_month, "+1 month", '&gt;', Text::_('JEV_CLICK_TOSWITCH_NM'));
 				}

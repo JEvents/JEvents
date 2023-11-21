@@ -30,7 +30,7 @@
 						type="jevfilters"
 						default="search"
 						label="JEV_SELECT_FILTERS"
-						size="50"
+						size="999"
 						description="JEV_SELECT_FILTERS_DESC"/>
 				<field
 						name="target_itemid"
