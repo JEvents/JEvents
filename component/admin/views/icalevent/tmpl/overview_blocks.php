@@ -202,7 +202,7 @@ $data['filters'] = $this->filters;
 	                            <div class="gsl-card gsl-card-default gsl-card-body" >
 	                            <?php
 	                            echo Text::_('JEV_MODIFIED') . ' : <br><br>';
-	                            echo StringHelper::substr($row->modified, 0, 10);
+                                echo str_replace(" ", "<span class='modifiedseconds'> ", $row->modified()) . "<span>";
 	                            ?>
                                 </div>
                             </div>

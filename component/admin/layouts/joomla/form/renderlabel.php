@@ -34,7 +34,7 @@ if (!empty($description))
 	if ($text && $text !== $description)
 	{
 	//	JHtml::_('bootstrap.popover');
-		JevModal::popover('.hasYsPopover', array("trigger" => "hover focus", "placement" => "top", "container" => "#jevents_body, body", "delay" => array("show" => 150, "hide" => 150)));
+		JevModal::popover('.hasYsPopover', array("trigger" => "hover focus", "placement" => "top", "container" => "body", "delay" => array("show" => 150, "hide" => 150)));
 
 		$classes[] = 'hasYsPopover';
 		$title     = ' data-yspoptitle="' . htmlspecialchars(trim($text, ':')) . '"'
@@ -53,7 +53,7 @@ if (!empty($description))
 	}
 	else
 	{
-		JevModal::popover('.hasYsTooltip', array("trigger" => "hover focus", "placement" => "top", "container" => "#jevents_body, body", "delay" => array("show" => 150, "hide" => 150)));
+		JevModal::popover('.hasYsTooltip', array("trigger" => "hover focus", "placement" => "top", "container" => "body", "delay" => array("show" => 150, "hide" => 150)));
 
 		$classes[] = 'hasYsTooltip';
 		$title     = ' data-yspopcontent="' .htmlspecialchars($description . $text) . '"';

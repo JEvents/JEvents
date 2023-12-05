@@ -1328,3 +1328,12 @@ body.admin.com_jevents [class^="icon-"] {
     background-position: 0;
 }
 
+
+
+/* Menu options in the backend */
+joomla-tab div.control-group div.control-label label {
+    max-height:max-content;
+}
+joomla-tab div.control-group div.control-label:has(> label:empty) {
+    display: none;
+}

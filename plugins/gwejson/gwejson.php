@@ -14,6 +14,7 @@ use Joomla\Filesystem\Folder;
 use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Plugin\CMSPlugin;
 
 /*
   if (defined('_SC_START')){
@@ -29,7 +30,7 @@ use Joomla\CMS\Uri\Uri;
  *
  * @since  2.5
  */
-class PlgSystemGwejson extends JPlugin
+class PlgSystemGwejson extends CMSPlugin
 {
 
 	public function __construct(&$subject, $config)

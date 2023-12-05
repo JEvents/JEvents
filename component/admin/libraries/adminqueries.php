@@ -556,7 +556,8 @@ class JEventsAdminDBModel extends JEventsDBModel
 	{
 		if (! PluginHelper::isEnabled("jevents", "jevrsvppro"))
 		{
-			return array(0,0,0);
+            $data = array('start' => array(), 'title' => array(), 'count' => array(), 'link' => array());
+            return $data;
 		}
 
 		$db                   = Factory::getDbo();
