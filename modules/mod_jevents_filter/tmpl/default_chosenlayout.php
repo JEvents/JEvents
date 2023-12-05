@@ -286,6 +286,17 @@ STYLE;
                 $reset = ob_get_clean();
                 $HTML = str_replace("{RESET_BUTTON}", $reset, $HTML );
 
+                // second pass to deal with special case if custom field
+                foreach ($filterHTML as $filterId => $filter)
+                {
+                    if (empty($filterId) || $filterId == "catid")
+                    {
+                        continue;
+                    }
+                    $filterId = "Customfield:" . str_replace("_", " ", $filterId);
+                    $HTML = str_replace(array("{" . $filterId ."}", "{" . $filterId ." LBL}"), array($filter["html"], $filter["title"]), $HTML);
+                }
+
                 ob_start();?>
 				<button class="modfilter_button " type="submit" name="jevents_filter_submit">
                     <?php echo Text::_('ok'); ?>

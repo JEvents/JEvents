@@ -134,17 +134,6 @@ SQL;
 			$rowcharset = ($db->hasUTF()) ? 'CHARACTER SET utf8' : '';
 		}
 
-        // avoid problem on uid index if it exists
-        $sql = "alter table #__jevents_vevent drop index uid";
-        $db->setQuery($sql);
-        try
-        {
-            $db->execute();
-        }
-        catch (Throwable $e)
-        {
-        }
-
         $db->setQuery("SHOW TABLES LIKE '" . $db->getPrefix() . "jev%'");
         $tables = $db->loadColumn();
 
@@ -166,7 +155,7 @@ CREATE TABLE IF NOT EXISTS #__jevents_vevent(
 	ev_id int(12) NOT NULL auto_increment,
 	icsid int(12) NOT NULL default 0,
 	catid int(11) NOT NULL default 1,
-	uid varchar(255) $rowcharset NOT NULL UNIQUE default "",
+	uid varchar(255) $rowcharset NOT NULL default "",
 	refreshed datetime  NOT NULL default '0000-00-00 00:00:00',
 	created datetime  NOT NULL default '0000-00-00 00:00:00',
 	created_by int(11) unsigned NOT NULL default '0',
@@ -183,12 +172,13 @@ CREATE TABLE IF NOT EXISTS #__jevents_vevent(
 	author_notified tinyint(3) NOT NULL default 0,
 	access int(11) unsigned NOT NULL default 0,
 	
-        tzid varchar(100) NOT NULL default '',
+    tzid varchar(100) NOT NULL default '',
                         
 	PRIMARY KEY  (ev_id),
+    UNIQUE KEY (uid(200)),
 	INDEX (icsid),
 	INDEX stateidx (state),
-        INDEX evaccess (access)                        
+    INDEX evaccess (access)                        
 ) $charset;
 SQL;
             $db->setQuery( $sql );
@@ -199,8 +189,8 @@ SQL;
             }
             catch ( Throwable $e )
             {
-                echo "Problem creating #__jevents_vevent<br>";
-                echo $e;
+                Factory::getApplication()->enqueueMessage( "Problem creating #__jevents_vevent");
+                Factory::getApplication()->enqueueMessage($e->getMessage());
             }
         }
 
@@ -262,8 +252,8 @@ SQL;
             }
             catch ( Throwable $e )
             {
-                echo "Problem creating #__jevents_vevdetail<br>";
-                echo $e . "<br>";
+                Factory::getApplication()->enqueueMessage( "Problem creating #__jevents_vevdetail");
+                Factory::getApplication()->enqueueMessage($e->getMessage());
             }
         }
 
@@ -301,8 +291,8 @@ SQL;
             }
             catch ( Throwable $e )
             {
-                echo "Problem creating #__jevents_rrule<br>";
-                echo $e . "<br>";
+                Factory::getApplication()->enqueueMessage( "Problem creating #__jevents_rrule");
+                Factory::getApplication()->enqueueMessage($e->getMessage());
             }
         }
 
@@ -335,8 +325,8 @@ SQL;
             }
             catch ( Throwable $e )
             {
-                echo "Problem creating #__jevents_repetition<br>";
-                echo $e . "<br>";
+                Factory::getApplication()->enqueueMessage( "Problem creating #__jevents_repetition");
+                Factory::getApplication()->enqueueMessage($e->getMessage());
             }
         }
 
@@ -366,8 +356,8 @@ SQL;
             }
             catch ( Throwable $e )
             {
-                echo "Problem creating #__jevents_exception<br>";
-                echo $e . "<br>";
+                Factory::getApplication()->enqueueMessage( "Problem creating #__jevents_exception");
+                Factory::getApplication()->enqueueMessage($e->getMessage());
             }
         }
 
@@ -418,8 +408,8 @@ SQL;
             }
             catch ( Throwable $e )
             {
-                echo "Problem creating #__jevents_icsfile<br>";
-                echo $e . "<br>";
+                Factory::getApplication()->enqueueMessage( "Problem creating #__jevents_icsfile");
+                Factory::getApplication()->enqueueMessage($e->getMessage());
             }
         }
 
@@ -466,8 +456,8 @@ SQL;
             }
             catch ( Throwable $e )
             {
-                echo "Problem creating #__jev_users<br>";
-                echo $e . "<br>";
+                Factory::getApplication()->enqueueMessage( "Problem creating #__jev_users");
+                Factory::getApplication()->enqueueMessage($e->getMessage());
             }
         }
 
@@ -498,8 +488,8 @@ SQL;
             }
             catch ( Throwable $e )
             {
-                echo "Problem creating #__jev_defaults<br>";
-                echo $e . "<br>";
+                Factory::getApplication()->enqueueMessage( "Problem creating #__jev_defaults");
+                Factory::getApplication()->enqueueMessage($e->getMessage());
             }
         }
 
@@ -523,8 +513,8 @@ SQL;
             }
             catch ( Throwable $e )
             {
-                echo "Problem creating #__jevents_catmap<br>";
-                echo $e . "<br>";
+                Factory::getApplication()->enqueueMessage( "Problem creating #__jevents_catmap");
+                Factory::getApplication()->enqueueMessage($e->getMessage());
             }
         }
 
@@ -553,8 +543,8 @@ SQL;
             }
             catch ( Throwable $e )
             {
-                echo "Problem creating #__jevents_filtermap<br>";
-                echo $e . "<br>";
+                Factory::getApplication()->enqueueMessage( "Problem creating #__jevents_filtermap");
+                Factory::getApplication()->enqueueMessage($e->getMessage());
             }
         }
 
@@ -594,8 +584,8 @@ SQL;
             }
             catch ( Throwable $e )
             {
-                echo "Problem creating #__jevents_translation<br>";
-                echo $e . "<br>";
+                Factory::getApplication()->enqueueMessage( "Problem creating #__jevents_translation");
+                Factory::getApplication()->enqueueMessage($e->getMessage());
             }
         }
 	}
@@ -650,7 +640,7 @@ SQL;
 
 		if (!array_key_exists("uid", $cols))
 		{
-			$sql = "ALTER TABLE #__jevents_vevent modify uid varchar(255) $rowcharset NOT NULL default '' UNIQUE";
+			$sql = "ALTER TABLE #__jevents_vevent modify uid varchar(255) $rowcharset NOT NULL default ''";
 			$db->setQuery($sql);
 			@$db->execute();
 		}
@@ -666,15 +656,23 @@ SQL;
 			@$db->execute();
 		}
 
-		foreach ($icols as $index => $key)
-		{
-			if (strpos($index, "uid") === 0)
-			{
-				$sql = "alter table #__jevents_vevent drop index $index";
-				$db->setQuery($sql);
-				@$db->execute();
-			}
-		}
+        if (!array_key_exists("uid", $icols))
+        {
+            $sql = "alter table #__jevents_vevent add UNIQUE KEY (uid(200))";
+            $db->setQuery($sql);
+            @$db->execute();
+        }
+        else if ((int) $icols["uid"]->Sub_part == 0)
+        {
+            $sql = "alter table #__jevents_vevent drop index uid";
+            $db->setQuery($sql);
+            @$db->execute();
+
+            $sql = "alter table #__jevents_vevent add UNIQUE KEY (uid(200))";
+            $db->setQuery($sql);
+            @$db->execute();
+
+        }
 
 		if (!array_key_exists("evaccess", $icols))
 		{
@@ -1243,9 +1241,9 @@ SQL;
 			return false;
 		}
 
-		$this->createTables();
+        $this->createTables();
 
-		$this->updateTables();
+        $this->updateTables();
 
 		$this->fixAutoIncrementals();
 

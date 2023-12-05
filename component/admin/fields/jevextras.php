@@ -126,7 +126,11 @@ class FormFieldJevextras extends FormField
 				return $item->html;
 		}
 		else
-			return "";
+        {
+            $this->hidden = true;
+            $this->labelclass = $this->parentclass = $this->class = 'hidden';
+            return "";
+        }
 
 	}
 

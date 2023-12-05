@@ -395,7 +395,7 @@ function jevPopover(selector, container) {
 					if (hoveritem.hasAttribute('title')) {
 						hoveritem.removeAttribute('title');
 					}
-			
+					
 					UIkit.tooltip(hoveritem, options);
 				});
 			}	

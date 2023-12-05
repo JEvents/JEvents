@@ -221,7 +221,7 @@ $data['filters'] = $this->filters;
                                 ?>
                             </td>
                             <td><?php echo str_replace(" ", "<span class='createdseconds'> ", $row->created()) . "<span>"; ?> </td>
-                            <td><?php echo StringHelper::substr($row->modified, 0, 10); ?> </td>
+                            <td><?php echo StringHelper::substr($row->modified, 0, 10); ?><br><?php echo trim(StringHelper::substr($row->modified, 10)); ?></td>
                             <td><?php echo $row->_groupname; ?></td>
                         </tr>
                         <?php
