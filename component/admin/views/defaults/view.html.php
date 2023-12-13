@@ -231,11 +231,11 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 
 					<li>
 						<span
-								class="editlinktip hasYsPopover <?php echo ' label label-association label-' . $item->sef . ($hasTranslation ? " hastranslation" : "");?>"
+								class="editlinktip hasYsPopover <?php echo ' label label-association label-' . $item->sef . ($hasTranslation ? " hastransflation" : "");?>"
 						      data-yspoptitle="<?php echo Text::_('JEV_TRANSLATE_LAYOUT', array('jsSafe'=>true)); ?>"
 						      data-yspopcontent="<?php echo Text::sprintf('JEV_TRANSLATE_LAYOUT_INTO', addslashes($item->title) . " " . htmlspecialchars($img), array('jsSafe'=>true)); ?>"
 						>
-							<a href="<?php echo $url;?>" >
+							<a href="<?php echo $url;?>" class="gsl-button gsl-button-small <?php echo ($hasTranslation ? " gsl-button-success " : " gsl-button-primary")?> gsl-text-decoration-none">
 								<?php echo $text;?>
 							</a>
 						</span>

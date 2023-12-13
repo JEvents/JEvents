@@ -737,7 +737,15 @@ class iCalImport
 			else if ($tz != false && $tz != "")
 			{
 				// really should use the timezone of the inputted date
-				$tz = new DateTimeZone($tz);
+                try
+                {
+                    $tz = new DateTimeZone( $tz );
+                }
+                catch (Throwable $exception)
+                {
+                    Factory::getApplication()->enqueueMessage('Invalid Timezone : ' . $tz, 'warning');
+                    $tz = new DateTimeZone('UTC');
+                }
 				$t  = new JevDate($ical_date, $tz);
 				echo "icaldate = " . $ical_date . " imported date=" . $t->toMySQL() . "<br/>";
 

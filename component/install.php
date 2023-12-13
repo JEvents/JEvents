@@ -175,7 +175,7 @@ CREATE TABLE IF NOT EXISTS #__jevents_vevent(
     tzid varchar(100) NOT NULL default '',
                         
 	PRIMARY KEY  (ev_id),
-    UNIQUE KEY (uid(200)),
+    UNIQUE KEY (uid(190)),
 	INDEX (icsid),
 	INDEX stateidx (state),
     INDEX evaccess (access)                        
@@ -658,7 +658,7 @@ SQL;
 
         if (!array_key_exists("uid", $icols))
         {
-            $sql = "alter table #__jevents_vevent add UNIQUE KEY (uid(200))";
+            $sql = "alter table #__jevents_vevent add UNIQUE KEY (uid(190))";
             $db->setQuery($sql);
             @$db->execute();
         }
@@ -668,7 +668,7 @@ SQL;
             $db->setQuery($sql);
             @$db->execute();
 
-            $sql = "alter table #__jevents_vevent add UNIQUE KEY (uid(200))";
+            $sql = "alter table #__jevents_vevent add UNIQUE KEY (uid(190))";
             $db->setQuery($sql);
             @$db->execute();
 
