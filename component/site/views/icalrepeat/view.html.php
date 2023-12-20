@@ -26,6 +26,7 @@ use Joomla\CMS\Component\ComponentHelper;
  */
 include_once(JEV_ADMINPATH . "/views/icalrepeat/view.html.php");
 
+#[\AllowDynamicProperties]
 class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 {
 	var $jevlayout = null;

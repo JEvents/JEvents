@@ -23,6 +23,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 jimport('joomla.form.helper');
 FormHelper::loadFieldClass('text');
 
+#[\AllowDynamicProperties]
 class JFormFieldJevdynamicfield extends JFormFieldText
 {
 

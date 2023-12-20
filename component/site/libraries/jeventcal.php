@@ -19,6 +19,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
 
+#[\AllowDynamicProperties]
 class jEventCal
 {
 	var $data;

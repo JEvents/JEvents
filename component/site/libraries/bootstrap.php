@@ -22,6 +22,7 @@ use Joomla\CMS\Component\ComponentHelper;
  * @subpackage  HTML
  * @since       3.0
  */
+#[\AllowDynamicProperties]
 class JevHtmlBootstrap
 {
 	/**

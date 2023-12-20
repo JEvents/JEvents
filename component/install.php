@@ -11,6 +11,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Component\ComponentHelper;
 
+#[\AllowDynamicProperties]
 class com_jeventsInstallerScript
 {
 
@@ -175,7 +176,7 @@ CREATE TABLE IF NOT EXISTS #__jevents_vevent(
     tzid varchar(100) NOT NULL default '',
                         
 	PRIMARY KEY  (ev_id),
-    UNIQUE KEY (uid(200)),
+    UNIQUE KEY (uid(190)),
 	INDEX (icsid),
 	INDEX stateidx (state),
     INDEX evaccess (access)                        
@@ -301,7 +302,7 @@ SQL;
         {
             $sql = <<<SQL
 CREATE TABLE IF NOT EXISTS #__jevents_repetition (
-	rp_id int(12) NOT NULL auto_increment,
+	rp_id bigint NOT NULL auto_increment,
 	eventid int(12) NOT NULL default 1,
 	eventdetail_id int(12) NOT NULL default 0,	
 	duplicatecheck varchar(32) NOT NULL UNIQUE default "",
@@ -337,7 +338,7 @@ SQL;
             $sql = <<<SQL
 CREATE TABLE IF NOT EXISTS #__jevents_exception (
 	ex_id int(12) NOT NULL auto_increment,
-	rp_id int(12) NOT NULL default 0,
+	rp_id bigint NOT NULL default 0,
 	eventid int(12) NOT NULL default 1,
 	eventdetail_id int(12) NOT NULL default 0,	
 	exception_type int(2) NOT NULL default 0,
@@ -658,7 +659,7 @@ SQL;
 
         if (!array_key_exists("uid", $icols))
         {
-            $sql = "alter table #__jevents_vevent add UNIQUE KEY (uid(200))";
+            $sql = "alter table #__jevents_vevent add UNIQUE KEY (uid(190))";
             $db->setQuery($sql);
             @$db->execute();
         }
@@ -668,7 +669,7 @@ SQL;
             $db->setQuery($sql);
             @$db->execute();
 
-            $sql = "alter table #__jevents_vevent add UNIQUE KEY (uid(200))";
+            $sql = "alter table #__jevents_vevent add UNIQUE KEY (uid(190))";
             $db->setQuery($sql);
             @$db->execute();
 
@@ -691,7 +692,27 @@ SQL;
 			@$db->execute();
 		}
 
-		$sql = "SHOW COLUMNS FROM #__jevents_vevdetail";
+        $sql = "SHOW COLUMNS FROM #__jevents_repetition";
+        $db->setQuery($sql);
+        $cols = @$db->loadObjectList("Field");
+        if (array_key_exists("rp_id", $cols) && strtoupper($cols['rp_id']->Type) !== "BIGINT")
+        {
+            $sql = "ALTER TABLE #__jevents_repetition MODIFY COLUMN rp_id BIGINT NOT NULL auto_increment";
+            $db->setQuery($sql);
+            @$db->execute();
+        }
+
+        $sql = "SHOW COLUMNS FROM #__jevents_exception";
+        $db->setQuery($sql);
+        $cols = @$db->loadObjectList("Field");
+        if (array_key_exists("rp_id", $cols) && strtoupper($cols['rp_id']->Type) !== "BIGINT")
+        {
+            $sql = "ALTER TABLE #__jevents_exception MODIFY COLUMN rp_id BIGINT NOT NULL";
+            $db->setQuery($sql);
+            @$db->execute();
+        }
+
+        $sql = "SHOW COLUMNS FROM #__jevents_vevdetail";
 		$db->setQuery($sql);
 		$cols = @$db->loadObjectList("Field");
 

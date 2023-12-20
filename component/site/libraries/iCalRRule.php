@@ -55,7 +55,7 @@ class iCalRRule extends Joomla\CMS\Table\Table
 		$temp = new iCalRRule($db);
 
 		$temp->data = $rrule;
-		$temp->freq = $temp->data['FREQ'];
+		$temp->freq = isset($temp->data['FREQ']) && !empty($temp->data['FREQ']) ? $temp->data['FREQ'] : 'none';
 
 		// Should really test count
 		$temp->processField("count", 10);

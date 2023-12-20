@@ -20,6 +20,7 @@ use Joomla\CMS\Component\ComponentHelper;
  *
  * @static
  */
+#[\AllowDynamicProperties]
 class DefaultViewList extends JEventsDefaultView
 {
 

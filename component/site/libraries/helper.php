@@ -3754,7 +3754,7 @@ SCRIPT;
 					$ilink = $row->viewDetailLink($row->yup(), $row->mup(), $row->dup(), true, $params->get('default_itemid', 0));
 					$iuri  = Uri::getInstance(Uri::base());
 					$iroot = $iuri->toString(array('scheme', 'host', 'port'));
-					$html .= " URL;VALUE=URI:" . self::wraplines($iroot . Route::_($ilink, true, -1)) . "\r\n";
+					$html .= "URL;VALUE=URI:" . self::wraplines($iroot . Route::_($ilink, true, -1)) . "\r\n";
 
 					// We Need to wrap this according to the specs
 					$html .= self::setDescription($row->content()) . "\r\n";
@@ -4052,7 +4052,7 @@ SCRIPT;
 						$ilink = $a->viewDetailLink($a->yup(), $a->mup(), $a->dup(), true, $params->get('default_itemid', 0));
 						$iuri  = Uri::getInstance(Uri::base());
 						$iroot = $iuri->toString(array('scheme', 'host', 'port'));
-						$html .= " URL;VALUE=URI:" . self::wraplines($iroot . Route::_($ilink, true, -1)) . "\r\n";
+						$html .= "URL;VALUE=URI:" . self::wraplines($iroot . Route::_($ilink, true, -1)) . "\r\n";
 
 						if ($a->hasContactInfo())
 							$html .= "CONTACT:" . self::replacetags($a->contact_info()) . "\r\n";
@@ -4122,7 +4122,7 @@ SCRIPT;
 					$ilink = $a->viewDetailLink($a->yup(), $a->mup(), $a->dup(), true, $params->get('default_itemid', 0));
 					$iuri  = Uri::getInstance(Uri::base());
 					$iroot = $iuri->toString(array('scheme', 'host', 'port'));
-					$html .= " URL;VALUE=URI:" . self::wraplines($iroot . Route::_($ilink, true, -1)) . "\r\n";
+					$html .= "URL;VALUE=URI:" . self::wraplines($iroot . Route::_($ilink, true, -1)) . "\r\n";
 
 					if ($a->hasContactInfo())
 						$html .= "CONTACT:" . self::replacetags($a->contact_info()) . "\r\n";

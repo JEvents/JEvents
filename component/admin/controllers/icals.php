@@ -19,6 +19,7 @@ use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
 
+#[\AllowDynamicProperties]
 class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
 {
 
@@ -417,6 +418,7 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
             }
             catch (Throwable $exception)
             {
+                $app->enqueueMessage(Text::_('COM_JEVENTS_ICAL_UPDATE_FAILED'), 'warning');
                 $icsFile = false;
             }
 		}

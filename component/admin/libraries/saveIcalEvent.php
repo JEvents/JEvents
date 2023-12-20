@@ -19,6 +19,7 @@ use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 
+#[\AllowDynamicProperties]
 class SaveIcalEvent
 {
 

@@ -18,6 +18,7 @@ use Joomla\CMS\Factory;
 
 include_once(JPATH_SITE . "/modules/mod_jevents_latest/tmpl/default/latest.php");
 
+#[\AllowDynamicProperties]
 class AlternativeModLatestView extends DefaultModLatestView
 {
 

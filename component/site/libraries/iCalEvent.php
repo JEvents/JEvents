@@ -75,7 +75,7 @@ class iCalEvent extends Joomla\CMS\Table\Table
 		$db         = Factory::getDbo();
 		$temp       = new iCalEvent($db);
 		$temp->data = $ice;
-		if (array_key_exists("RRULE", $temp->data))
+		if (array_key_exists("RRULE", $temp->data) && !empty($temp->data['RRULE']))
 		{
 			$temp->rrule = iCalRRule::iCalRRuleFromData($temp->data['RRULE']);
 		}

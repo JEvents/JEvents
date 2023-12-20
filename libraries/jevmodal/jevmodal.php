@@ -15,6 +15,7 @@ use Joomla\CMS\Component\ComponentHelper;
  * Utility class for Bootstrap or UIKit Modal Popups especially URL based Modals which bootstrap usually fails on
  *
  */
+#[\AllowDynamicProperties]
 class JevModal
 {
 	/**

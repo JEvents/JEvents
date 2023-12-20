@@ -18,6 +18,7 @@ use Joomla\CMS\Uri\Uri;
 
 jimport('joomla.application.component.controller');
 
+#[\AllowDynamicProperties]
 class ListController extends Joomla\CMS\MVC\Controller\BaseController
 {
 

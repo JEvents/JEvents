@@ -3823,12 +3823,18 @@ class JEventsDBModel
             . "  AND icsf.state=1 AND icsf.access IN (" . JEVHelper::getAid($user) . ")";
 
         if (!$showrepeats && !$count) {
-            $minselect = "SELECT MIN(rpt.rp_id) as minrpt ";
+//            $minselect = "SELECT MIN(rpt.rp_id) as minrpt ";
+//           $subquery = str_replace($fullselect, $minselect, $query);
 
-            $subquery = str_replace($fullselect, $minselect, $query);
+            // Need to do it this way - the previous way didn't work for irregular repeats where the repeat id was not in sequence!
+            $minselect = "SELECT rpt2.rp_id as minrpt , MIN(rpt.startrepeat)";
+            $newjoin = "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid\n LEFT JOIN #__jevents_repetition as rpt2 ON rpt.rp_id = rpt2.rp_id";
+            $subquery = str_replace("\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid", $newjoin, $query);
+
+            $subquery = str_replace($fullselect, $minselect, $subquery);
 
             $db->setQuery("$subquery GROUP BY ev.ev_id");
-            $rpids = $db->loadColumn();
+            $rpids = $db->loadColumn(0);
             $rpids = is_array($rpids) ? $rpids : array(0);
             $rpids[] = -1;
 	        if ($input->get('task') == 'icals.export')

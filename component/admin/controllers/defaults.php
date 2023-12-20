@@ -19,6 +19,7 @@ use Joomla\CMS\Filesystem\Folder;
 
 jimport('joomla.application.component.controllerform');
 
+#[\AllowDynamicProperties]
 class AdminDefaultsController extends Joomla\CMS\MVC\Controller\FormController
 {
 	/**

@@ -1,6 +1,6 @@
 <?php
-$version                                            = "3.6.75";
-$date                                               = "2023-11-17";
+$version                                            = "3.6.76";
+$date                                               = "2023-12-06";
 $extension                                          = "package_jevents";
 $changelog[$extension][$version]                    = array();
 $changelog[$extension][$version]["date"]            = $date;

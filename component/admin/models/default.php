@@ -10,6 +10,7 @@ use Joomla\Registry\Registry;
 
 jimport('joomla.application.component.model');
 
+#[\AllowDynamicProperties]
 class DefaultsModelDefault extends BaseDatabaseModel
 {
 	/**

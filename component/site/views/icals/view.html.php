@@ -21,6 +21,7 @@ use Joomla\CMS\Component\ComponentHelper;
  *
  * @static
  */
+#[\AllowDynamicProperties]
 class ICalsViewIcals extends JEventsAbstractView
 {
 

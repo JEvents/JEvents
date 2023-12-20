@@ -36,6 +36,7 @@ require_once JPATH_ADMINISTRATOR . '/components/com_finder/helpers/indexer/adapt
  * @subpackage  Finder.JEvents
  * @since       2.5
  */
+#[\AllowDynamicProperties]
 class plgFinderJEvents extends Adapter
 {
 	/**

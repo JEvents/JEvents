@@ -20,6 +20,7 @@ use Joomla\CMS\Router\Route;
 
 include_once(JPATH_SITE . "/modules/mod_jevents_cal/tmpl/default/calendar.php");
 
+#[\AllowDynamicProperties]
 class FlatModCalView extends DefaultModCalView
 {
 	function _displayCalendarMod($time, $startday, $linkString, &$day_name, $monthMustHaveEvent = false, $basedate = false)

@@ -23,6 +23,7 @@ jimport('joomla.form.formfield');
 
 include_once(JPATH_ADMINISTRATOR . "/components/com_jevents/jevents.defines.php");
 
+#[\AllowDynamicProperties]
 class FormFieldJevextras extends FormField
 {
 

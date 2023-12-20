@@ -13,6 +13,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+#[\AllowDynamicProperties]
 class modJeventsFilterHelper
 {
 	private $params = null;

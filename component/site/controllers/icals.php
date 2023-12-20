@@ -24,6 +24,7 @@ use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
 
+#[\AllowDynamicProperties]
 class ICalsController extends AdminIcalsController
 {
 

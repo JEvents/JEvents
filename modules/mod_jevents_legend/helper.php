@@ -18,6 +18,7 @@ use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Factory;
 use Joomla\String\StringHelper;
 
+#[\AllowDynamicProperties]
 class modJeventsLegendHelper
 {
 
