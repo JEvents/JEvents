@@ -30,6 +30,7 @@ use Joomla\CMS\Plugin\CMSPlugin;
  *
  * @since  2.5
  */
+#[\AllowDynamicProperties]
 class PlgSystemGwejson extends CMSPlugin
 {
 

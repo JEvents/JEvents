@@ -17,6 +17,7 @@ use Joomla\CMS\Router\Route;
  *
  * @static
  */
+#[\AllowDynamicProperties]
 class DefaultModCalView
 {
 	var $_modid = null;

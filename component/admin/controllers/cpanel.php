@@ -24,6 +24,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
 
+#[\AllowDynamicProperties]
 class AdminCpanelController extends AdminController
 {
 

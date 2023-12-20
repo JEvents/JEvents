@@ -22,6 +22,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Helper\TagsHelper;
 
+#[\AllowDynamicProperties]
 class JEventsDataModel
 {
 

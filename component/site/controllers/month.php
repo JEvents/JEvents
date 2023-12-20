@@ -15,6 +15,7 @@ use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.controller');
 
+#[\AllowDynamicProperties]
 class MonthController extends Joomla\CMS\MVC\Controller\BaseController
 {
 

@@ -30,6 +30,7 @@ FormHelper::loadFieldClass('text');
 
 include_once(JPATH_ADMINISTRATOR . "/components/com_jevents/jevents.defines.php");
 
+#[\AllowDynamicProperties]
 class JFormFieldJevfilters extends JFormFieldText
 {
 

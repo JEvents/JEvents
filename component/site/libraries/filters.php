@@ -18,6 +18,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Helper\ModuleHelper;
 
+#[\AllowDynamicProperties]
 class jevFilterProcessing
 {
 	static public $visiblefilters;
@@ -394,6 +395,7 @@ class jevFilterProcessing
 
 }
 
+#[\AllowDynamicProperties]
 class jevFilter
 {
 	var $filterNullValue;
@@ -606,6 +608,7 @@ class jevFilter
 
 }
 
+#[\AllowDynamicProperties]
 class jevBooleanFilter extends jevFilter
 {
 	var $label = "";
@@ -663,6 +666,7 @@ class jevBooleanFilter extends jevFilter
 
 }
 
+#[\AllowDynamicProperties]
 class jevTitleFilter extends jevFilter
 {
 	public function __construct($tablename, $filterfield, $isstring = true)

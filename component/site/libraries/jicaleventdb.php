@@ -17,6 +17,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\String\StringHelper;
 use Joomla\CMS\Component\ComponentHelper;
 
+#[\AllowDynamicProperties]
 class jIcalEventDB extends jEventCal
 {
 

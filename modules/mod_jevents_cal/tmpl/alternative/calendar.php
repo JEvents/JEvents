@@ -14,6 +14,7 @@ defined('_JEXEC') or die();
 include_once(JPATH_SITE . "/modules/mod_jevents_cal/tmpl/default/calendar.php");
 
 
+#[\AllowDynamicProperties]
 class AlternativeModCalView extends DefaultModCalView
 {
 

@@ -15,6 +15,7 @@ FormHelper::loadFieldClass('textarea');
 //include_once(JPATH_SITE . "/libraries/joomla/form/fields/textarea.php");
 //J4 = include_once(JPATH_SITE . "/libraries/src/Form/Field/TextareaField.php");
 
+#[\AllowDynamicProperties]
 class FormFieldJevtextarea extends JFormFieldTextarea
 {
 	protected function getInput()

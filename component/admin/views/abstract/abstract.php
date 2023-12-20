@@ -24,6 +24,7 @@ use Joomla\CMS\Filesystem\File;
 
 jimport('joomla.application.component.view');
 
+#[\AllowDynamicProperties]
 class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 {
 

@@ -17,6 +17,7 @@ use Joomla\CMS\Uri\Uri;
  */
 include_once(JPATH_SITE . "/modules/mod_jevents_latest/tmpl/default/latest.php");
 
+#[\AllowDynamicProperties]
 class ExtModLatestView extends DefaultModLatestView
 {
 	function displayLatestEvents()

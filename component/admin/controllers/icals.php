@@ -19,6 +19,7 @@ use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
 
+#[\AllowDynamicProperties]
 class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
 {
 
