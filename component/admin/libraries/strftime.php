@@ -131,7 +131,19 @@ function strftime (string $format, $timestamp = null) : string {
             // remove trailing part not supported by ext-intl locale
             $locale = preg_replace('/[^\w-].*$/', '', $locale);
 
-            return (new IntlDateFormatter($locale, $date_type, $time_type, $tz, $calendar, $pattern))->format($timestamp);
+            try
+            {
+                $dateFormatter = new IntlDateFormatter( $locale, $date_type, $time_type, $tz, $calendar, $pattern );
+                $iFormat       = $dateFormatter->format( $timestamp );
+            }
+            catch (\Throwable $e)
+            {
+                echo $e->getMessage() . "<br>";
+                echo "Locale = $locale<br>";
+                echo "pattern = $pattern<br>";
+                return 'Y-m-d H:i:s';
+            }
+            return $iFormat;
         }
         else
         {

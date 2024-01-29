@@ -136,9 +136,10 @@ class plgFinderJEvents extends Adapter
 			// Just in case we don't have JEvents plugins registered yet
 			PluginHelper::importPlugin("jevents");
 
-			Factory::getApplication()->triggerEvent('onJEventsFinderResult', array(& $result, & $query));
+			$output = Factory::getApplication()->triggerEvent('onJEventsFinderResult', array(& $result, & $query));
 
 		}
+        $x = 1;
 	}
 
 

@@ -385,6 +385,7 @@ class iCalImport
 		}
 
 		$rawkey = "";
+        $rawtarget = "";
 		if (StringHelper::stristr($key, "DTSTART") || StringHelper::stristr($key, "DTEND") || StringHelper::stristr($key, "EXDATE"))
 		{
 			list($key, $value, $rawkey, $rawvalue) = $this->handleDate($key, $value);
@@ -520,6 +521,34 @@ class iCalImport
 					}
 				}
 
+                // use x-alt-desc if present!
+                if ($key == "X-ALT-DESC" && isset($parts[1]) && $parts[1] == "FMTTYPE=text/html")
+                {
+                    if (strpos($value, "<body>") !== false)
+                    {
+                        $dom = new DOMDocument();
+                        try
+                        {
+                            if ( @$dom->loadHTML( $value ) )
+                            {
+                                $body       = $dom->getElementsByTagName( 'body' )->item( 0 );
+                                $cellString = '';
+                                $children   = $body->childNodes;
+                                foreach ( $children as $child )
+                                {
+                                    $cellString .= $child->ownerDocument->saveXML( $child );
+                                }
+
+                                $value = $cellString;
+                            }
+                        }
+                        catch ( \Throwable $e )
+                        {
+
+                        }
+                    }
+
+                }
 
 				// Strip http:// from UID !!!
 				if ($key == "UID" && StringHelper::strpos($value, "http://") !== false)

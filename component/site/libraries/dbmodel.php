@@ -399,6 +399,14 @@ class JEventsDBModel
 			$index = $aid . '+';
 		}
 
+        if ($allLanguages)
+        {
+         //   $index .= "*";
+        }
+        else
+        {
+           // $index .= Factory::getLanguage()->getTag();
+        }
 		$db = Factory::getDbo();
 
 		$where = "";

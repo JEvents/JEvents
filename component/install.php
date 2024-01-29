@@ -639,16 +639,23 @@ SQL;
 			@$db->execute();
 		}
 
+        $sql = "SHOW INDEX FROM #__jevents_vevent";
+        $db->setQuery($sql);
+        $icols = @$db->loadObjectList("Key_name");
+
+        if (array_key_exists("uid", $icols) && ((int) $icols["uid"]->Sub_part == 0 || (int) $icols["uid"]->Sub_part !== 190))
+        {
+            $sql = "alter table #__jevents_vevent drop index uid";
+            $db->setQuery($sql);
+            @$db->execute();
+        }
+
 		if (!array_key_exists("uid", $cols))
 		{
 			$sql = "ALTER TABLE #__jevents_vevent modify uid varchar(255) $rowcharset NOT NULL default ''";
 			$db->setQuery($sql);
 			@$db->execute();
 		}
-
-		$sql = "SHOW INDEX FROM #__jevents_vevent";
-		$db->setQuery($sql);
-		$icols = @$db->loadObjectList("Key_name");
 
 		if (!array_key_exists("stateidx", $icols))
 		{
@@ -663,12 +670,8 @@ SQL;
             $db->setQuery($sql);
             @$db->execute();
         }
-        else if ((int) $icols["uid"]->Sub_part == 0)
+        else if (array_key_exists("uid", $icols) && ((int) $icols["uid"]->Sub_part == 0 || (int) $icols["uid"]->Sub_part !== 190))
         {
-            $sql = "alter table #__jevents_vevent drop index uid";
-            $db->setQuery($sql);
-            @$db->execute();
-
             $sql = "alter table #__jevents_vevent add UNIQUE KEY (uid(190))";
             $db->setQuery($sql);
             @$db->execute();

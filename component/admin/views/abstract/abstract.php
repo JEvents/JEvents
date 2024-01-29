@@ -1165,46 +1165,55 @@ SCRIPT;
 		}
 
 		// Make data available to the form
-		$this->form->jevdata["catid"]["dataModel"]            = $this->dataModel;
-		$this->form->jevdata["catid"]["with_unpublished_cat"] = $this->with_unpublished_cat;
-		$this->form->jevdata["catid"]["repeatId"]             = $this->repeatId;
-		$this->form->jevdata["catid"]["excats"]               = false;
+        $jevdata = array();
+		$jevdata["catid"]["dataModel"]            = $this->dataModel;
+		$jevdata["catid"]["with_unpublished_cat"] = $this->with_unpublished_cat;
+		$jevdata["catid"]["repeatId"]             = $this->repeatId;
+		$jevdata["catid"]["excats"]               = false;
 		if ($input->getCmd("task") == "icalevent.edit" && isset($this->excats))
 		{
-			$this->form->jevdata["catid"]["excats"] = $this->excats;
+			$jevdata["catid"]["excats"] = $this->excats;
 		}
 		$this->form->setValue("catid", null, $this->catid);
 
-		$this->form->jevdata["primarycatid"] = $this->primarycatid;
+		$jevdata["primarycatid"] = $this->primarycatid;
 
-		$this->form->jevdata["creator"]["users"] = false;
+		$jevdata["creator"]["users"] = false;
 		if (($input->getCmd("task") == "icalevent.edit" || $input->getCmd("task") == "icalevent.editcopy"
 				|| $input->getCmd("jevtask", "") == "icalevent.edit" || $input->getCmd("jevtask", "") == "icalevent.editcopy") && isset($this->users))
 		{
-			$this->form->jevdata["creator"]["users"] = $this->users;
+			$jevdata["creator"]["users"] = $this->users;
 		}
 
-		$this->form->jevdata["ics_id"]["clist"]       = $this->clist;
-		$this->form->jevdata["ics_id"]["clistChoice"] = $this->clistChoice;
-		$this->form->jevdata["ics_id"]["thisCal"]     = $thisCal;
-		$this->form->jevdata["ics_id"]["native"]      = $native;
-		$this->form->jevdata["ics_id"]["nativeCals"]  = $this->nativeCals;
+		$jevdata["ics_id"]["clist"]       = $this->clist;
+		$jevdata["ics_id"]["clistChoice"] = $this->clistChoice;
+		$jevdata["ics_id"]["thisCal"]     = $thisCal;
+		$jevdata["ics_id"]["native"]      = $native;
+		$jevdata["ics_id"]["nativeCals"]  = $this->nativeCals;
 
-		$this->form->jevdata["lockevent"]["offerlock"] = isset($this->offerlock) ? 1 : 0;
+		$jevdata["lockevent"]["offerlock"] = isset($this->offerlock) ? 1 : 0;
 
-		$this->form->jevdata["access"]["event"] = $this->row;
-		//$this->form->jevdata["access"]["glist"] = isset($this->glist) ? $this->glist : false;
+		$jevdata["access"]["event"] = $this->row;
+		//$jevdata["access"]["glist"] = isset($this->glist) ? $this->glist : false;
 
-		$this->form->jevdata["state"]["ev_id"]     = $this->ev_id;
-		$this->form->jevdata["published"]["ev_id"] = $this->ev_id;
+		$jevdata["state"]["ev_id"]     = $this->ev_id;
+		$jevdata["published"]["ev_id"] = $this->ev_id;
 
-		$this->form->jevdata["location"]["event"]     = $this->row;
-		$this->form->jevdata["publish_up"]["event"]   = $this->row;
-		$this->form->jevdata["publish_down"]["event"] = $this->row;
-		$this->form->jevdata["start_time"]["event"]   = $this->row;
-		$this->form->jevdata["end_time"]["event"]     = $this->row;
+		$jevdata["location"]["event"]     = $this->row;
+		$jevdata["publish_up"]["event"]   = $this->row;
+		$jevdata["publish_down"]["event"] = $this->row;
+		$jevdata["start_time"]["event"]   = $this->row;
+		$jevdata["end_time"]["event"]     = $this->row;
 
-		//custom requiredfields selected by the user in configuration
+		/*
+        $jevdatamap = isset($_SESSION['jevdatamap']) ? $_SESSION['jevdatamap'] : new WeakMap();
+        $jevdatamap[$this->form] = $jevdata;
+        $_SESSION['jevdatamap'] = $jevdatamap;
+		*/
+
+        $this->form->jevdata = $jevdata;
+
+        //custom requiredfields selected by the user in configuration
 		$requiredFields = $params->get('com_jeveditionrequiredfields', array());
 
 		// replacement values

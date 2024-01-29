@@ -865,6 +865,11 @@ class JEVHelper
 		$forcepopupcalendar = $params->get("forcepopupcalendar", 1);
 		$offset             = $params->get("com_starday", 1);
 
+        $format = JEVHelper::mapStrftimeFormatToDateFormat($format);
+
+        $formatHasTime = preg_match("#a|A|g|h|G|H|i|s|v|u|U#", $format);
+        $showtime = $showtime && $formatHasTime;
+
 		$app    = Factory::getApplication();
 
 		if ($showtime)
