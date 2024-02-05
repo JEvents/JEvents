@@ -2,12 +2,12 @@
 <extension type="package" version="2.5" method="upgrade">
 	<name>JEV_PACKAGE_TITLE</name>
 	<packagename>jevents</packagename>
-	<version>3.6.77</version>
+	<version>3.6.78</version>
 	<url>http://www.jevents.net</url>
-	<creationDate>December 2023</creationDate>
+	<creationDate>February 2024</creationDate>
 	<author>GWE Systems Ltd</author>
-	<copyright>(C) 2012-2023 GWE Systems Ltd</copyright>
-	<copyrightYear>2023</copyrightYear>
+	<copyright>(C) 2012-2024 GWE Systems Ltd</copyright>
+	<copyrightYear>2024</copyrightYear>
 	<authorEmail></authorEmail>
 	<authorUrl>www.gwesystems.com</authorUrl>
 	<packager>GWE Systems Ltd</packager>

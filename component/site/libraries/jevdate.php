@@ -14,6 +14,7 @@ if (!defined("JEVDATE"))
 {
 	define("JEVDATE", 1);
 
+    #[\AllowDynamicProperties]
 	class JevDate extends Date
 	{
 

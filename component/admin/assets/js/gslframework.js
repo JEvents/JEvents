@@ -247,7 +247,10 @@ document.addEventListener('DOMContentLoaded', function () {
 		}
 
 		// Hide the sidebar
-		document.getElementById('sidebar-wrapper').classList.add('gsl-hide-sidebar');
+		var sidebarWrapper = document.getElementById('sidebar-wrapper');
+		if (sidebarWrapper) {
+			sidebarWrapper.classList.add('gsl-hide-sidebar');
+		}
 		document.getElementById('gslc').classList.add('gsl-hide-sidebar');
 		/*
 		document.getElementById('sidebar-wrapper').addEventListener('mouseout', () => {

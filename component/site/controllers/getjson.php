@@ -95,7 +95,7 @@ class GetjsonController extends Joomla\CMS\MVC\Controller\BaseController
 		$document->setMimeEncoding('application/json');
 
 		// Change the suggested filename.
-		JResponse::setHeader('Content-Disposition', 'attachment;filename="eventdata.json"');
+        Factory::getApplication()->setHeader('Content-Disposition', 'attachment;filename="eventdata.json"');
 
 		// Output the JSON data.
 		echo json_encode($events);

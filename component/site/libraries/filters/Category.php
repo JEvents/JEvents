@@ -179,7 +179,7 @@ class jevCategoryFilter extends jevFilter
 		}
 
 		$filterList          = array();
-		$filterList["title"] = "<label class='evcategory_label' for='" . $this->filterType . "_fv'>" . Text::_("SELECT_CATEGORY") . "</label>";
+		$filterList["title"] = "<label class='evcategory_label' for='" . $this->filterType . "_fv'>" . Text::_("JEV_SELECT_CATEGORY") . "</label>";
 
 		if ($allowAutoSubmit)
 		{
@@ -258,7 +258,7 @@ SCRIPT;
 		}
 
 		$filterList          = array();
-		$filterList["title"] = "<label  for='" . $this->filterType . "_fv'>" . Text::_("SELECT_CATEGORY") . "</label>";
+		$filterList["title"] = "<label  for='" . $this->filterType . "_fv'>" . Text::_("JEV_SELECT_CATEGORY") . "</label>";
 
 		if ($allowAutoSubmit)
 		{

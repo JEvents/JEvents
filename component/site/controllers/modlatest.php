@@ -61,11 +61,8 @@ class ModLatestController extends Joomla\CMS\MVC\Controller\BaseController
 		$joomlaconf = Factory::getConfig();
 		$useCache   = intval($cfg->get('com_cache', 0)) && $joomlaconf->get('caching', 1);
 		$user       = Factory::getUser();
-		// Stupid Joomla 3.1 problem where its not possible to use the view cache on RSS feed output!
-		if ($user->get('id') || !$useCache)
-		{
-			$this->view->rss();
-		}
+		$this->view->rss();
+
 	}
 
 

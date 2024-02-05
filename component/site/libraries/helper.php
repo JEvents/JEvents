@@ -865,6 +865,11 @@ class JEVHelper
 		$forcepopupcalendar = $params->get("forcepopupcalendar", 1);
 		$offset             = $params->get("com_starday", 1);
 
+        $format = JEVHelper::mapStrftimeFormatToDateFormat($format);
+
+        $formatHasTime = preg_match("#a|A|g|h|G|H|i|s|v|u|U#", $format);
+        $showtime = $showtime && $formatHasTime;
+
 		$app    = Factory::getApplication();
 
 		if ($showtime)
@@ -4556,7 +4561,14 @@ SCRIPT;
 			$description = $desc;
 		}
 
-		// wraplines	from vCard class
+        // convert relative to absolute URLs
+        $htmlDesc = preg_replace('#(href|src|action|background)[ ]*=[ ]*\"(?!(https?://|\#|mailto:|/))(?:\.\./|\./)?#', '$1="' . JURI::root(), $htmlDesc);
+        $htmlDesc = preg_replace('#(href|src|action|background)[ ]*=[ ]*\"(?!(https?://|\#|mailto:))/#', '$1="' . JURI::root(), $htmlDesc);
+
+        $htmlDesc = preg_replace("#(href|src|action|background)[ ]*=[ ]*\'(?!(https?://|\#|mailto:|/))(?:\.\./|\./)?#", "$1='" . JURI::root(), $htmlDesc);
+        $htmlDesc = preg_replace("#(href|src|action|background)[ ]*=[ ]*\'(?!(https?://|\#|mailto:))/#", "$1='" . JURI::root(), $htmlDesc);
+
+        // wraplines	from vCard class
 		$cfg = JEVConfig::getInstance();
 		$return = "";
 		if ($cfg->get("outlook2003icalexport", 1))

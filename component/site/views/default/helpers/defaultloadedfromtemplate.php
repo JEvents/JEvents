@@ -2678,99 +2678,93 @@ if (!class_exists("InvalidHtmlException"))
 
 }
 
-if (!class_exists("Truncator") && !function_exists('ht_strlen'))
+if (!class_exists("Truncator"))
 {
-	if (function_exists('grapheme_strlen'))
-	{
-		function ht_strlen($string)
-		{
+	if ( !function_exists('ht_strlen'))
+    {
+        if ( function_exists( 'grapheme_strlen' ) )
+        {
+            function ht_strlen( $string ) {
 
-			return grapheme_strlen($string);
-		}
+                return grapheme_strlen( $string );
+            }
 
-		function ht_substr($string, $from, $to = 2147483647)
-		{
+            function ht_substr( $string, $from, $to = 2147483647 ) {
 
-			return grapheme_substr($string, $from, $to);
-		}
+                return grapheme_substr( $string, $from, $to );
+            }
 
-	}
-	else if (function_exists('mb_strlen'))
-	{
-		function ht_strlen($string)
-		{
+        }
+        else if ( function_exists( 'mb_strlen' ) )
+        {
+            function ht_strlen( $string ) {
 
-			return mb_strlen($string);
-		}
+                return mb_strlen( $string );
+            }
 
-		function ht_substr($string, $from, $to = 2147483647)
-		{
+            function ht_substr( $string, $from, $to = 2147483647 ) {
 
-			return mb_substr($string, $from, $to);
-		}
+                return mb_substr( $string, $from, $to );
+            }
 
-	}
-	else if (function_exists('iconv_strlen'))
-	{
-		function ht_strlen($string)
-		{
+        }
+        else if ( function_exists( 'iconv_strlen' ) )
+        {
+            function ht_strlen( $string ) {
 
-			return iconv_strlen($string);
-		}
+                return iconv_strlen( $string );
+            }
 
-		function ht_substr($string, $from, $to = 2147483647)
-		{
+            function ht_substr( $string, $from, $to = 2147483647 ) {
 
-			return iconv_substr($string, $from, $to);
-		}
+                return iconv_substr( $string, $from, $to );
+            }
 
-	}
-	else
-	{
-		function ht_strlen($string)
-		{
+        }
+        else
+        {
+            function ht_strlen( $string ) {
 
-			return strlen($string);
-		}
+                return strlen( $string );
+            }
 
-		function ht_substr($string, $from, $to = 2147483647)
-		{
+            function ht_substr( $string, $from, $to = 2147483647 ) {
 
-			return substr($string, $from, $to);
-		}
+                return substr( $string, $from, $to );
+            }
 
-	}
+        }
+    }
+    if ( !function_exists('ht_strtolower'))
+    {
 
-	if (function_exists('mb_strtolower'))
-	{
-		function ht_strtolower($string)
-		{
+        if ( function_exists( 'mb_strtolower' ) )
+        {
+            function ht_strtolower( $string ) {
 
-			return mb_strtolower($string);
-		}
+                return mb_strtolower( $string );
+            }
 
-		function ht_strtoupper($string)
-		{
+            function ht_strtoupper( $string ) {
 
-			return mb_strtoupper($string);
-		}
+                return mb_strtoupper( $string );
+            }
 
-	}
-	else
-	{
-		function ht_strtolower($string)
-		{
+        }
+        else
+        {
+            function ht_strtolower( $string ) {
 
-			return strtolower($string);
-		}
+                return strtolower( $string );
+            }
 
-		function ht_strtoupper($string)
-		{
+            function ht_strtoupper( $string ) {
 
-			return strtoupper($string);
-		}
+                return strtoupper( $string );
+            }
 
-	}
+        }
+    }
 
 	class Truncator
 	{

@@ -27,6 +27,9 @@ class FormFieldJeveventcategory extends FormField
 	 */
 	protected function getInput()
 	{
+      //  $jevdatamap = isset($_SESSION['jevdatamap']) ? $_SESSION['jevdatamap'] : new WeakMap();
+
+       // $jevdata = $jevdatamap[$this->form];
 
 		if (!isset($this->form->jevdata[$this->name]["excats"]))
 		{
