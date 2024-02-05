@@ -4561,7 +4561,14 @@ SCRIPT;
 			$description = $desc;
 		}
 
-		// wraplines	from vCard class
+        // convert relative to absolute URLs
+        $htmlDesc = preg_replace('#(href|src|action|background)[ ]*=[ ]*\"(?!(https?://|\#|mailto:|/))(?:\.\./|\./)?#', '$1="' . JURI::root(), $htmlDesc);
+        $htmlDesc = preg_replace('#(href|src|action|background)[ ]*=[ ]*\"(?!(https?://|\#|mailto:))/#', '$1="' . JURI::root(), $htmlDesc);
+
+        $htmlDesc = preg_replace("#(href|src|action|background)[ ]*=[ ]*\'(?!(https?://|\#|mailto:|/))(?:\.\./|\./)?#", "$1='" . JURI::root(), $htmlDesc);
+        $htmlDesc = preg_replace("#(href|src|action|background)[ ]*=[ ]*\'(?!(https?://|\#|mailto:))/#", "$1='" . JURI::root(), $htmlDesc);
+
+        // wraplines	from vCard class
 		$cfg = JEVConfig::getInstance();
 		$return = "";
 		if ($cfg->get("outlook2003icalexport", 1))

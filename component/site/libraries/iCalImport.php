@@ -500,7 +500,7 @@ class iCalImport
 				// See https://gist.github.com/winzig/8894715
 				//$value = preg_replace('@(https?:\/{1,3})?((?:(?:[\w.\-]+\.(?:[a-z]{2,13})|(?<=http:\/\/|https:\/\/)[\w.\-]+)\/)(?:[^\s()<>{}\[\]]+|\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\))+(?:\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\)|[^\s`!()\[\]{};:\'\".,<>?«»“”‘’])|(?:(?<!@)(?:\w+(?:[.\-]+\w+)*\.(?:[a-z]{2,13})|(?:(?:[0-9](?!\d)|[1-9][0-9](?!\d)|1[0-9]{2}(?!\d)|2[0-4][0-9](?!\d)|25[0-5](?!\d))[.]?){4})\b\/?(?!@)(?:[^\s()<>{}\[\]]+|\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\))*(?:\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\)|[^\s`!()\[\]{};:\'\".,<>?«»“”‘’])?))@gi', '<a href="$1$2">$1</a>', $value);
 
-				if  ($params->get("converturlstolinksonimport", 1) && is_string($value) && $key!="UID" && $key!="X-EXTRAINFO" && $key!="ATTACH"){
+				if  ($params->get("converturlstolinksonimport", 1) && is_string($value) && $key!="UID" && $key!="X-EXTRAINFO" && $key!="ATTACH" && $key!="X-ALT-DESC"){
 					if (StringHelper::strpos(str_replace(" ","",StringHelper::strtolower($value)),"<ahref=")===false && StringHelper::strpos(str_replace(" ","",StringHelper::strtolower($value)),"<img")===false && (StringHelper::strpos(StringHelper::strtolower($value),"http://")!==false || StringHelper::strpos(StringHelper::strtolower($value),"https://")!==false)){
                             // See http://stackoverflow.com/questions/8414675/preg-replace-for-url-and-download-links and http://regexr.com/3bup3 to test this
                             $value = preg_replace('@(https?://([\w\-.]+)+(:\d+)?(/([\w/_\.%\-+~=]*(\?\S+)?)?)?)@u', '<a href="$1">$1</a>', $value);
@@ -536,10 +536,10 @@ class iCalImport
                                 $children   = $body->childNodes;
                                 foreach ( $children as $child )
                                 {
-                                    $cellString .= $child->ownerDocument->saveXML( $child );
+                                    $cellString .= $child->ownerDocument->saveHTML( $child );
                                 }
 
-                                $value = $cellString;
+                                $value = str_replace('\n', '', $cellString);
                             }
                         }
                         catch ( \Throwable $e )
@@ -959,7 +959,12 @@ class iCalImport
 		$value = str_replace('P', '', $value);
 		// split it out intyo W D H M S
 		preg_match("/([0-9]*W)*([0-9]*D)*T?([0-9]*H)*([0-9]*M)*([0-9]*S)*/", $value, $details);
-		@list($temp, $w, $d, $h, $min, $s) = $details;
+        if (count($details) < 6)
+        {
+            $details = array_pad($details, 6, '');
+        }
+        @list($temp, $w, $d, $h, $min, $s) = $details;
+
 		$duration   = 0;
 		$multiplier = 1;
 		$duration   += intval(str_replace('S', '', $s)) * $multiplier;

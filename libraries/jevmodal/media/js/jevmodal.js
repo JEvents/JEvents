@@ -404,6 +404,15 @@ function addJevModalHtml(id) {
         // see http://stackoverflow.com/questions/10636667/bootstrap-modal-appearing-under-background
         jQuery(myModal).appendTo("body");
     }
+    else
+    {
+        let iframe = document.getElementById(id).querySelector('iframe');
+        if (iframe && iframe.src != "")
+        {
+            iframe.src = "";
+            iframe.outerHTML = iframe.outerHTML;
+        }
+    }
 }
 
 // Polyfills for MSIE

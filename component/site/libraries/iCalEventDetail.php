@@ -162,7 +162,7 @@ class iCalEventDetail extends Joomla\CMS\Table\Table
 
 		$this->processField("x-color", "", "color");
 
-        $this->processField("x-alt-desc", "", 'description');
+        $this->processField("x-alt-desc", $this->description, 'description');
 
 		// To make DB searches easier I set the dtend regardless
 		if ($this->dtend == 0 && $this->duration > 0)

@@ -376,7 +376,7 @@ body.com_categories.view-categories #gslc.gsl-scope:not(.gsl-hide-sidebar) .left
   #gslc.gsl-scope.j5plus joomla-tab td,
   #gslc.gsl-scope.j5plus joomla-tab button,
   #gslc.gsl-scope.j5plus joomla-tab legend,
-  #gslc.gsl-scope.j5plus joomla-tab div {
+  #gslc.gsl-scope.j5plus joomla-tab div:not(.minicolors-panel, .minicolors-panel div) {
     background-color: #fff;
     background-image: none;
     color: #111;
@@ -386,7 +386,7 @@ body.com_categories.view-categories #gslc.gsl-scope:not(.gsl-hide-sidebar) .left
   #gslc.gsl-scope.j5plus joomla-tab td[aria-expanded="true"],
   #gslc.gsl-scope.j5plus joomla-tab button[aria-expanded="true"],
   #gslc.gsl-scope.j5plus joomla-tab legend[aria-expanded="true"],
-  #gslc.gsl-scope.j5plus joomla-tab div[aria-expanded="true"] {
+  #gslc.gsl-scope.j5plus joomla-tab div:not(.minicolors-panel, .minicolors-panel div)[aria-expanded="true"] {
     background-color: #ddd;
     background-image: none;
     color: #333;
@@ -396,7 +396,7 @@ body.com_categories.view-categories #gslc.gsl-scope:not(.gsl-hide-sidebar) .left
   #gslc.gsl-scope.j5plus joomla-tab td label,
   #gslc.gsl-scope.j5plus joomla-tab button label,
   #gslc.gsl-scope.j5plus joomla-tab legend label,
-  #gslc.gsl-scope.j5plus joomla-tab div label {
+  #gslc.gsl-scope.j5plus joomla-tab div:not(.minicolors-panel, .minicolors-panel div) label {
     color: #111;
   }
 }
