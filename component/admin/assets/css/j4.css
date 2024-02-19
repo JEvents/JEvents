@@ -344,6 +344,9 @@ body.com_categories.view-categories #gslc.gsl-scope:not(.gsl-hide-sidebar) .left
   #gslc.gsl-scope.j5plus .table > :not(caption) > * > * {
     background-color: #fff;
   }
+  #gslc.gsl-scope.j5plus div.calendar-container table > :not(caption) > * > * {
+    background-color: unset;
+  }
   #gslc.gsl-scope.j5plus joomla-field-fancy-select {
     background-color: #fff;
     background-image: none;
