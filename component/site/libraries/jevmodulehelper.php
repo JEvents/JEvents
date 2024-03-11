@@ -18,7 +18,10 @@ class JevModuleHelper extends ModuleHelper
 
 	static public function getVisibleModules()
 	{
-
+        if (PHP_SAPI === "cli")
+        {
+            return array();
+        }
 		return self::load();
 
 	}

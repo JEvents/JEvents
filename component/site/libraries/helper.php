@@ -99,8 +99,10 @@ class JEVHelper
 				//$inibase = JPATH_SITE . '/components/' . JEV_COM_COMPONENT;
 				//$lang->load(JEV_COM_COMPONENT, $inibase);
 				// Load Site specific language overrides
-				$lang->load(JEV_COM_COMPONENT, JPATH_THEMES . '/' . Factory::getApplication('site')->getTemplate());
-
+                if (PHP_SAPI !== "cli")
+                {
+                    $lang->load( JEV_COM_COMPONENT, JPATH_THEMES . '/' . Factory::getApplication( 'site' )->getTemplate() );
+                }
 				break;
 
 			case 'admin':

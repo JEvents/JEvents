@@ -159,7 +159,7 @@ class EventCalendarCell_flat extends EventCalendarCell_default
 
 				}
 
-				JevModal::popover('.hasjevtip', array("trigger" => "hover focus", "placement" => "top", "container" => "#jevents_body", "delay" => array("show" => 0, "hide" => 0)));
+				JevModal::popover('.hasjevtip', array("trigger" => "hover focus", "placement" => "top", "container" => "#jevents_body", "delay" => array("show" => 150, "hide" => 150)));
 
 				$tooltip = $this->loadOverride("tooltip");
 				// allow fallback to old method

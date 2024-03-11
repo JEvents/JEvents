@@ -402,4 +402,10 @@ body.com_categories.view-categories #gslc.gsl-scope:not(.gsl-hide-sidebar) .left
   #gslc.gsl-scope.j5plus joomla-tab div:not(.minicolors-panel, .minicolors-panel div) label {
     color: #111;
   }
+  .bootstrap-timepicker-widget table td a {
+    color: #eee;
+  }
+  .bootstrap-timepicker-widget table td a:hover {
+    color: #333;
+  }
 }

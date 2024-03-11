@@ -156,9 +156,17 @@ class GetjsonController extends Joomla\CMS\MVC\Controller\BaseController
 			foreach ($day_index['events'] as $event)
 			{
 				$eventArray['date']  = $day_index['year'] . "-" . $day_index['month'] . "-" . $day_index['d0'] . " " . date("H:i", $event->getUnixStartTime());
-				$eventArray['title'] = $event->title();
-				$link                = $event->viewDetailLink($day_index['year'], $day_index['month'], $day_index['d0'], false, $myItemid);
-				$eventArray['link']  = Route::_($link . $this->datamodel->getCatidsOutLink());
+                $eventArray['enddate'] = $day_index['year'] ."-".$day_index['month']."-".$day_index['d0']. " " .date("H:i",$event->getUnixEndTime());
+                $eventArray['alldayevent'] = $event->alldayevent();
+                $eventArray['noendtime'] = $event->noendtime();
+
+                $title = str_replace("'", "&#39;", $event->title());
+                $eventArray['title'] = str_replace('"', "&#34;", $title);
+                $eventArray['safeTitle'] = addslashes($event->title());
+
+                $link                = $event->viewDetailLink($day_index['year'], $day_index['month'], $day_index['d0'], false, $myItemid) . $this->datamodel->getCatidsOutLink();
+                $eventArray['link']  = Route::_($link );
+                $eventArray['linkInPopup'] = Route::_($link . "&tmpl=component");
 				$events[]            = $eventArray;
 			}
 		}

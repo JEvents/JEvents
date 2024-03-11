@@ -956,6 +956,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 		// Disable general showon effects if using a customised event editing form
 		$template_value = str_replace("data-showon-gsl", "data-showon-gsl-disabled", $template_value);
 		$template_value = str_replace("data-showon-2gsl", "data-showon-gsl", $template_value);
+        $template_value = str_replace("data-showon=", "data-showon-gsl=", $template_value);
 
 		echo $template_value;
 

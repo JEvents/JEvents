@@ -39,7 +39,7 @@ class JevExportHelper
 		$urlString['trp']         = "trp=false";
 		$urlString['websiteName'] = "sprop=" . $eventData['sitename'];
 		$urlString['websiteURL']  = "sprop=name:" . $eventData['siteurl'];
-		$urlString['details']     = "details=" . $eventData['details'];
+		$urlString['details']     = "details=" . $eventData['rawdetails'];
 		$link                     = "http://www.google.com/calendar/event?action=TEMPLATE&" . implode("&", $urlString);
 
 		return $link;
@@ -66,22 +66,36 @@ class JevExportHelper
 		$urlString['location']   = urlencode(isset($row->_locationaddress) ? $row->_locationaddress : $row->location());
 		$urlString['sitename']   = urlencode(Factory::getApplication()->get('sitename'));
 		$urlString['siteurl']    = urlencode(Uri::root());
-		$urlString['rawdetails'] = urlencode($row->get('description'));
-		$urlString['details']    = strip_tags($row->get('description'));
+
+        $htmlDesc = $row->get('description');
+        // convert relative to absolute URLs
+        $htmlDesc = preg_replace('#(href|src|action|background)[ ]*=[ ]*\"(?!(https?://|\#|mailto:|/))(?:\.\./|\./)?#', '$1="' . JURI::root(), $htmlDesc);
+        $htmlDesc = preg_replace('#(href|src|action|background)[ ]*=[ ]*\"(?!(https?://|\#|mailto:))/#', '$1="' . JURI::root(), $htmlDesc);
+
+        $htmlDesc = preg_replace("#(href|src|action|background)[ ]*=[ ]*\'(?!(https?://|\#|mailto:|/))(?:\.\./|\./)?#", "$1='" . JURI::root(), $htmlDesc);
+        $htmlDesc = preg_replace("#(href|src|action|background)[ ]*=[ ]*\'(?!(https?://|\#|mailto:))/#", "$1='" . JURI::root(), $htmlDesc);
+
+		$urlString['details']    = strip_tags($htmlDesc);
+        $urlString['rawdetails'] = $htmlDesc;
+
 		if (StringHelper::strlen($urlString['details']) > 500)
 		{
 			$urlString['details'] = StringHelper::substr($urlString['details'], 0, 500) . ' ...';
 
-			//Check if we should include the link to the event
-			if ($params->get('source_url', 0) == 1)
-			{
-				$link                 = $row->viewDetailLink($row->yup(), $row->mup(), $row->dup(), true, $params->get('default_itemid', 0));
-				$uri                  = Uri::getInstance(Uri::base());
-				$root                 = $uri->toString(array('scheme', 'host', 'port'));
-				$urlString['details'] .= ' ' . Text::_('JEV_EVENT_IMPORTED_FROM') . $root . Route::_($link, true, -1);
-			}
 		}
-		$urlString['details'] = urlencode($urlString['details']);
+
+        //Check if we should include the link to the event
+        if ($params->get('source_url', 0) == 1)
+        {
+            $link                 = $row->viewDetailLink($row->yup(), $row->mup(), $row->dup(), true, $params->get('default_itemid', 0));
+            $uri                  = Uri::getInstance(Uri::base());
+            $root                 = $uri->toString(array('scheme', 'host', 'port'));
+            $urlString['rawdetails'] .= ' ' .  Text::_('JEV_EVENT_IMPORTED_FROM') . ' <a href="'. $root . Route::_($link, true, -1) . '">' . $root . Route::_($link, true, -1) . "</a>";
+            $urlString['details'] .= ' ' . Text::_('JEV_EVENT_IMPORTED_FROM') . $root . Route::_($link, true, -1);
+        }
+
+        $urlString['rawdetails'] = urlencode($urlString['rawdetails']);
+        $urlString['details']    = urlencode($urlString['details']);
 
 		return $urlString;
 	}

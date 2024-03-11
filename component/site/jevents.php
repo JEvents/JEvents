@@ -358,7 +358,8 @@ JEVHelper::parameteriseJoomlaCache();
 //echo  "JEvents component pre task = ".round($time_end - $starttime, 4)."<br/>";
 
 //HTMLHelper::_('bootstrap.popover', '.hasjevtip');
-JevModal::popover('.hasjevtip' , array("trigger"=>"hover focus", "placement"=>"top", "container"=>"#jevents_body",  "html" => true,  "delay"=> array( "show"=> 150, "hide"=> 150 )));
+// focus event is causing problems on Apple devices!!
+JevModal::popover('.hasjevtip' , array("trigger"=>"hover", "placement"=>"top", "container"=>"#jevents_body",  "html" => true,  "delay"=> array( "show"=> 150, "hide"=> 150 )));
 
 // Perform the Request task
 $controller->execute($task);

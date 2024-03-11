@@ -60,7 +60,7 @@ class JFormFieldJevpeople extends JFormFieldList
         }
         else
         {
-	        $options[] = JHTML::_('select.option', '0', Text::_('JEV_STRUCTURED_DATA_OUTPUT_REQUIRES_IMAGES_ADDON'));
+	        $options[] = JHTML::_('select.option', '0', Text::_('JEV_STRUCTURED_DATA_OUTPUT_REQUIRES_PEOPLE_TYPES_SET_UP'));
 
         }
 
