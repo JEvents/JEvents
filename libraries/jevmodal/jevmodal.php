@@ -239,7 +239,7 @@ document.addEventListener('DOMContentLoaded', function() {
         myPopoverTrigger.addEventListener('inserted.bs.popover', function () {
             var title = myPopoverTrigger.getAttribute('data-bs-original-title') || false;
             const popover = bootstrap.Popover.getInstance(myPopoverTrigger);
-            if (popover.tip) 
+            if (popover && popover.tip) 
             {
                 var header = popover.tip.querySelector('.popover-header');
                 var body = popover.tip.querySelector('.popover-body');
@@ -261,10 +261,30 @@ document.addEventListener('DOMContentLoaded', function() {
                     body.outerHTML = popoverContent;
                 }
 
+                if (popover.tip.querySelector('.jev-click-to-open a') && 'ontouchstart' in document.documentElement)
+                {
+                    popover.tip.addEventListener('touchstart', function() {
+                       document.location = popover.tip.querySelector('.jev-click-to-open a').href;
+                    });
+                }
             }
-        })
+        });
+
+        var title = myPopoverTrigger.getAttribute('data-bs-original-title') || false;
+        const popover = bootstrap.Popover.getInstance(myPopoverTrigger);
+        if (popover && (popover.tip || title)) 
+        {
+            if ('ontouchstart' in document.documentElement) {        
+                myPopoverTrigger.addEventListener('click', preventPopoverTriggerClick);
+            }
+        }
    });
 });
+function preventPopoverTriggerClick(event)
+{
+    event.preventDefault();
+}
+
 SCRIPT;
             Factory::getApplication()
                 ->getDocument()

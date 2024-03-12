@@ -444,7 +444,14 @@ class jevFilter
 		$input  = $app->input;
 
 		// Is the filter module setup to reset automatically
-		$module = ModuleHelper::getModule("mod_jevents_filter");
+        if (PHP_SAPI === "cli")
+        {
+            $module = false;
+        }
+        else
+        {
+            $module = ModuleHelper::getModule( "mod_jevents_filter" );
+        }
 		if ($module)
 		{
 			$modparams = new JevRegistry($module->params);

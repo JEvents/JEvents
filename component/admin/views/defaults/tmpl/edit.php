@@ -280,22 +280,39 @@ $this->item->params = json_encode($templateparams);
 				</div>
 			</div>
 			<div class="gsl-grid gsl-grid small">
-				<div class="layouteditor">
+				<div class="layouteditor gsl-width-1-1">
 					<?php
 					// parameters : areaname, content, hidden field, width, height, rows, cols
-					echo $editor->display('value', htmlspecialchars($this->item->value, ENT_QUOTES, 'UTF-8'), 700, 450, '70', '15', false);
+					echo $editor->display('value', htmlspecialchars($this->item->value, ENT_QUOTES, 'UTF-8'), '90%', 450, '70', '15', false, 'value');
 
 					// This allow us to highlight the JEvents fields and their formats in codemirror
 					if ($isCodeMirror)
-					{
-						// In Joomla 3 this works
-						//HTMLHelper::script('media/editors/codemirror/addon/mode/overlay.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => false));
-						// In Joomla 4 we can't seem to add the overlay after the event without a timeout!
-						//HTMLHelper::script('media/vendor/codemirror/addon/mode/overlay.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
-						HTMLHelper::script('media/com_jevents/js/codemirror_overlay.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
-						if (version_compare(JVERSION, '4.0.0', 'ge'))
-						{
-							Factory::getApplication()->getDocument()->addStyleDeclaration(<<< STYLE
+                    {
+                        if ( version_compare( JVERSION, '5.0.0', 'ge' ) )
+                        {
+/*
+ ?>
+ 					<div id="#editor-placeholder">xxx</div>
+<?php
+                            HTMLHelper::script( 'media/com_jevents/js/codemirror_overlay5.js', array(
+                                'version'  => JEventsHelper::JEvents_Version( false ),
+                                'relative' => false
+                            ), array( 'defer' => true , 'type' => 'module', 'data-asset-dependencies' => 'codemirror' ) );
+*/
+                        }
+                        else
+                        {
+                            // In Joomla 3 this works
+                            //HTMLHelper::script('media/editors/codemirror/addon/mode/overlay.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => false));
+                            // In Joomla 4 we can't seem to add the overlay after the event without a timeout!
+                            //HTMLHelper::script('media/vendor/codemirror/addon/mode/overlay.js', array('version' => JEventsHelper::JEvents_Version(false), 'relative' => false), array('defer' => true));
+                            HTMLHelper::script( 'media/com_jevents/js/codemirror_overlay.js', array(
+                                'version'  => JEventsHelper::JEvents_Version( false ),
+                                'relative' => false
+                            ), array( 'defer' => true ) );
+                            if ( version_compare( JVERSION, '4.0.0', 'ge' ) )
+                            {
+                                Factory::getApplication()->getDocument()->addStyleDeclaration( <<< STYLE
 .cm-mustache {color: #0a5e46;background-color: #eee}
 .cm-mustache-hash-1 {color: #1e87f0;background-color: #eee}
 .cm-mustache-hash-2 {color: #bc19d3;background-color: #eee}
@@ -308,19 +325,19 @@ $this->item->params = json_encode($templateparams);
   content: "\\f133";
 }
 STYLE
-							);
-						}
-						else
-						{
-							Factory::getApplication()->getDocument()->addStyleDeclaration(<<< STYLE
+                                );
+                            }
+                            else
+                            {
+                                Factory::getApplication()->getDocument()->addStyleDeclaration( <<< STYLE
 .cm-mustache {color: #0a5e46;background-color: #eee}
 .cm-mustache-hash-1 {color: #1e87f0;background-color: #eee}
 .cm-mustache-hash-2 {color: #bc19d3;background-color: #eee}}
 STYLE
-							);
-						}
+                                );
+                            }
 
-						Factory::getApplication()->getDocument()->addScriptDeclaration(<<< SCRIPT
+                            Factory::getApplication()->getDocument()->addScriptDeclaration( <<< SCRIPT
 
 document.addEventListener('DOMContentLoaded', function() {
 	window.setTimeout(function () {
@@ -367,8 +384,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	}, 1000);
 });
 SCRIPT
-);
-					}
+                            );
+                        }
+                    }
 					?>
 				</div>
 			</div>
@@ -422,7 +440,7 @@ SCRIPT
 					<div class="gsl-grid gsl-grid small">
 						<div class="form-group gsl-width-expand@m">
 							<label for="title"><?php echo Text::_('JEV_DEFAULTS_MODULE_OUTPUT'); ?>:</label>
-							<?php echo $modeditor->display('params[modval][' . $count . "]", htmlspecialchars($modvals[$count], ENT_QUOTES, 'UTF-8'), 700, 450, '70', '15', false, 'modval' . $count); ?>
+							<?php echo $modeditor->display('params[modval][' . $count . "]", htmlspecialchars($modvals[$count], ENT_QUOTES, 'UTF-8'), '90%', 450, '70', '15', false, 'modval' . $count); ?>
 						</div>
 					</div>
 					<div class="gsl-grid gsl-grid small">
@@ -447,7 +465,7 @@ SCRIPT
 				<div class="gsl-grid gsl-grid small">
 					<div class="form-group gsl-width-expand@m">
 						<label for="title"><?php echo Text::_('JEV_DEFAULTS_MODULE_OUTPUT'); ?>:</label>
-						<?php echo $modeditor->display('params[modval][' . $count . "]", htmlspecialchars("", ENT_QUOTES, 'UTF-8'), 700, 450, '70', '15', false, 'modval' . $count); ?>
+						<?php echo $modeditor->display('params[modval][' . $count . "]", htmlspecialchars("", ENT_QUOTES, 'UTF-8'), '90%', 450, '70', '15', false, 'modval' . $count); ?>
 					</div>
 				</div>
 				<div class="gsl-grid gsl-grid small">
@@ -471,7 +489,7 @@ SCRIPT
 					<div class="form-group gsl-width-expand@m">
 						<h3><?php echo Text::_("JEV_DEFAULTS_HTML_HEADER");?></h3>
 						<?php
-						echo $editor->display('params[header]', htmlspecialchars($headerhtml, ENT_QUOTES, 'UTF-8'), 600, 450, '70', '15', false);
+						echo $editor->display('params[header]', htmlspecialchars($headerhtml, ENT_QUOTES, 'UTF-8'), '80%', 450, '70', '15', false, 'params_header');
 						?>
 					</div>
 				</div>
@@ -479,7 +497,7 @@ SCRIPT
 					<div class="form-group gsl-width-expand@m">
 						<h3><?php echo Text::_("JEV_DEFAULTS_HTML_FOOTER");?></h3>
 						<?php
-						echo $editor->display('params[footer]' , htmlspecialchars($footerhtml, ENT_QUOTES, 'UTF-8'), 600, 450, '70', '15', false);
+						echo $editor->display('params[footer]' , htmlspecialchars($footerhtml, ENT_QUOTES, 'UTF-8'), '80%', 450, '70', '15', false, 'params_footer');
 						?>
 					</div>
 				</div>

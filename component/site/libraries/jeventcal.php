@@ -481,14 +481,29 @@ class jEventCal
 			$res = array();
 			foreach ($data as $cat)
 			{
-				$res[] = strpos($cat->name, "JEV_") === 0 ? Text::_($cat->name) : $cat->name;
+
+                $categoryName = trim($cat->name);
+                if (strtoupper($categoryName) === $categoryName
+                    && strpos(" ", $categoryName) === false)
+                {
+                    $categoryName = Text::_($categoryName);
+                }
+
+				$res[] = $categoryName;
 			}
 
 			return implode(", ", $res);
 		}
 		if ($data)
 		{
-			return strpos($data->name, "JEV_") === 0 ? Text::_($data->name) : $data->name;
+            $categoryName = trim($data->name);
+            if (strtoupper($categoryName) === $categoryName
+                && strpos(" ", $categoryName) === false)
+            {
+                $categoryName = Text::_($categoryName);
+            }
+
+            return $categoryName;
 		}
 
 		return "";

@@ -347,7 +347,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			&& $hasLocationOrIsOnline
 		)
 		{
-			$template->value .= "<script type='application/ld+json'>{{LDJSON}}</script>";
+			//$template->value .= "<script type='application/ld+json'>{{LDJSON}}</script>";
+            $template->value .= "{{LDJSON}}";
 			if (isset($template->matchesarray[0]))
 			{
 				$template->matchesarray[0][] = "{{LDJSON}}";
@@ -1932,7 +1933,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					&& $hasLocationOrIsOnline
 				)
 				{
-					$lddata = array();
+                    $lddata = array();
 					$lddata["@context"] = "https://schema.org";
 					$lddata["@type"] =  "Event";
 					$lddata["name"] =  $event->title();
@@ -2148,9 +2149,16 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 					$search[]  = "{{LDJSON}}";
 					// Structured data needs a valid address
-					$replace[] = isset($lddata["location"]) ? json_encode($lddata) : "";
+					//$replace[] = isset($lddata["location"]) ? json_encode($lddata) : "";
+                    $replace[] = "";
+					if (isset($lddata["location"]))
+                    {
+						Factory::getDocument()->addScriptDeclaration(json_encode($lddata), 'application/ld+json');
+                    }
 					$blank[]   = "";
-				}
+
+
+                }
 				break;
 
 			default:

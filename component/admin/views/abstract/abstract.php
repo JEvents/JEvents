@@ -953,10 +953,10 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
-
 		// Disable general showon effects if using a customised event editing form
 		$template_value = str_replace("data-showon-gsl", "data-showon-gsl-disabled", $template_value);
 		$template_value = str_replace("data-showon-2gsl", "data-showon-gsl", $template_value);
+        $template_value = str_replace("data-showon=", "data-showon-gsl=", $template_value);
 
 		echo $template_value;
 
@@ -1377,22 +1377,42 @@ SCRIPT;
 			// this echos the showon
 			JEventsHelper::showOnRel($this->form, 'customfields');
 			$showon = ob_get_clean();
-			if (isset($this->customfields[$key]["showon"]) && !empty($this->customfields[$key]["showon"]))
+			if (isset($this->customfields[$key]["showon"]) && !empty($this->customfields[$key]["showon"]) &&  strpos($this->customfields[$key]["showon"], "data-showon-gsl='") !== false)
 			{
 				// merge a copy for custom fields since for customised layouts we loose the general showon handling!
 				$originalShowon = $this->customfields[$key]["showon"];
+                $originalShowon2 = str_replace("data-showon-gsl=", "data-showon-2gsl=", $originalShowon);
 				$originalShowon = trim($originalShowon);
-				$originalShowon = str_replace("data-showon-gsl='[", "", $originalShowon);
-				$originalShowon = substr($originalShowon, 0, strlen($originalShowon) - 2);
-				if (strpos($originalShowon, "{") === 0 && strrpos($originalShowon, "}") === (strlen($originalShowon)-1))
-				{
-					$originalShowon = str_replace('"op":""', '"op":"AND"', $originalShowon);
-					$showon = substr($showon, 0, strlen($showon) - 2) . "," . $originalShowon . "]'";
-					//$showon = str_replace("data-showon-gsl='[", "data-showon-gsl='[" . $originalShowon . ",", $showon);
+				$originalShowon = str_replace("data-showon-gsl='", "", $originalShowon);
+				$originalShowon = substr($originalShowon, 0, strlen($originalShowon) - 1);
+				try
+                {
+                    $originalShowon = @json_decode( $originalShowon );
+                    if ( $originalShowon )
+                    {
+                        $lastShowon = count( $originalShowon ) - 1;
+                        if ( strlen( $showon ) > 0 )
+                        {
+                            $originalShowon[$lastShowon]->op = "AND";
+                            $showon = str_replace("data-showon-gsl='", "", $showon);
+                            $showon = substr($showon, 0, strlen($showon) - 1);
+                            $showon = @json_decode( $showon );
+                            $showon  = array_merge( $showon, $originalShowon );
+                        }
+                        $showon = json_encode( $showon );
 
-					// replace the custom field showon attribute so that direct editing pages pick up the adjusted value
-					$this->customfields[$key]["showon"] = $showon;
-				}
+                        $showon = ' data-showon-gsl=\'' . $showon . '\' ';
+						// preserve the custom fields version
+                        $showon .= ' ' . $originalShowon2;
+
+                        // replace the custom field showon attribute so that direct editing pages pick up the adjusted value
+                        $this->customfields[$key]["showon"] = $showon;
+                    }
+                }
+				catch (\Throwable $e)
+                {
+
+                }
 			}
 			?>
 			<div class=" gsl-margin-small-top gsl-child-width-1-1 gsl-grid  jevplugin_<?php echo $key; ?>" <?php echo $showon; ?>>
