@@ -1,6 +1,6 @@
 <?php
 $version                                            = "3.6.79";
-$date                                               = "2023-03-1";
+$date                                               = "2023-03-12";
 $extension                                          = "package_jevents";
 $changelog[$extension][$version]                    = array();
 $changelog[$extension][$version]["date"]            = $date;
@@ -19,3 +19,4 @@ $changelog[$extension][$version]["bugfixes"][]      = "catch problem with finder
 $changelog[$extension][$version]["bugfixes"][]      = "Category name is now translatable without the need for JEV_ in the name - just capitalised and translation existing is enough";
 $changelog[$extension][$version]["bugfixes"][]      = "Fix for popovers in main calendar on Apple touch devices ";
 $changelog[$extension][$version]["bugfixes"][]      = "Editor sizing in layout editor";
+$changelog[$extension][$version]["bugfixes"][]      = "Disable filter options when called from Joomla CLI";
