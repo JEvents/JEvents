@@ -551,7 +551,18 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				if (!in_array("{{LINK}}", $search, false))
 				{
 					// Title link
-					$rowlink = $event->viewDetailLink($event->yup(), $event->mup(), $event->dup(), false);
+                    // Is this being called from the latest events module - if so then use the target item instead of current Itemid
+                    $reg       = JevRegistry::getinstance("jevents");
+                    $modparams = $reg->get("jevents.moduleparams", new Registry);
+                    $modItemid = $modparams->get("target_itemid", 0);
+                    if ($modItemid > 0)
+                    {
+                        $rowlink = $event->viewDetailLink( $event->yup(), $event->mup(), $event->dup(), false, $modItemid );
+                    }
+					else
+                    {
+                        $rowlink = $event->viewDetailLink( $event->yup(), $event->mup(), $event->dup(), false );
+                    }
 					if ($view)
 					{
 						$rowlink = Route::_($rowlink . $view->datamodel->getCatidsOutLink());
