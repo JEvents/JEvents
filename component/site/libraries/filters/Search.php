@@ -19,6 +19,12 @@ class jevSearchFilter extends jevFilter
 {
 	const filterType = "search";
 
+	var $filterLabel = "";
+	var $filterNullValue = "";
+	var $extrasearchfields = "";
+	var $extrajoin = "";
+	var $needsgroup = "";
+
 	function __construct($tablename, $filterfield, $isstring = true)
 	{
 
