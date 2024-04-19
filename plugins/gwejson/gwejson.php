@@ -15,6 +15,8 @@ use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Session\Session;
+use Joomla\Filesystem\File;
 
 /*
   if (defined('_SC_START')){
@@ -133,14 +135,13 @@ class PlgSystemGwejson extends CMSPlugin
 			}
 		}
 
-		jimport('joomla.filesystem.file');
 		// Check for a custom version of the file first!
 		$custom_file = str_replace("gwejson_", "gwejson_custom_", $file);
-		if (JFile::exists($path . $custom_file . ".php"))
+		if (file_exists($path . $custom_file . ".php"))
 		{
 			$file = $custom_file;
 		}
-		if (!JFile::exists($path . $file . ".php"))
+		if (!file_exists($path . $file . ".php"))
 		{
 			PlgSystemGwejson::throwerror("Whoops we could not find the action file");
 
@@ -151,7 +152,7 @@ class PlgSystemGwejson extends CMSPlugin
 
 		if (!function_exists("gwejson_skiptoken") || !gwejson_skiptoken())
 		{
-			$token = JSession::getFormToken();;
+			$token = Session::getFormToken();;
 			if ($token != $input->get('token', '', 'string'))
 			{
 				if ($input->get('json', '', 'raw'))
@@ -373,7 +374,7 @@ class PlgSystemGwejson extends CMSPlugin
 	{
 		if (version_compare(JVERSION, '4.0.0', 'ge') && Factory::getApplication()->isClient('administrator') && Factory::getApplication()->input->get('option') == "com_jevents")
 		{
-			$user = JFactory::getUser();
+			$user = Factory::getUser();
 
 			$jeventsItems = GslHelper::getLeftIconLinks();
 			$cloneRoot = false;
