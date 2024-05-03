@@ -6,6 +6,9 @@
  * @license    GNU General Public License version 3 or later; see LICENSE.txt
  */
 
+// Build to see changes because files are in media folder! */
+// see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
+// https://stackoverflow.com/questions/36016327/how-to-make-promises-work-in-ie11#36018899
 'use strict';
 var j3 = true;
 j3 = typeof j3php == "undefined" ? j3 : j3php;
@@ -364,6 +367,12 @@ document.addEventListener('DOMContentLoaded', function () {
 	ys_setuptooltip(".hasYsTooltip");
 
 	// toggle radio buttons and check box highlighting
+	setupGslRadioCheckboxes();
+
+});
+
+function setupGslRadioCheckboxes()
+{
 	let inputNodes = document.querySelectorAll('input.gsl-hidden');
 	for (let i = 0; i < inputNodes.length; i++) {
 		inputNodes[i].addEventListener('change', function() {
@@ -391,9 +400,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			});
 		}
 	}
-
-
-});
+}
 
 function changeHiddenInput(input)
 {
@@ -598,7 +605,8 @@ function stickyScroll() {
 
 	// Get the table header
 	let table = document.querySelector(".mainlist table.gsl-table ");
-	let thead = document.querySelector(".mainlist table.gsl-table thead");
+	let thead = document.querySelector(".mainlist table.gsl-table thead, #adminForm .js-stools");
+	//let thead = document.querySelector(".mainlist table.gsl-table thead");
 
 	if (!table || !thead || !tophead)
 	{
@@ -611,8 +619,7 @@ function stickyScroll() {
 	// ('oldtop : ' + oldtop + ' windowy: ' + window.pageYOffset + ' sticky: ' + sticky);
 	// Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
 	if ( window.pageYOffset >= sticky ) {
-		// ('sticky 1');
-		if (window.pageYOffset != oldtop) {
+		if (window.pageYOffset != oldtop ) {
 			oldtop =  window.pageYOffset;
 			// console.log('sticky 2');
 			if (window.getComputedStyle(tophead).getPropertyValue('position') == "fixed") {
@@ -622,7 +629,8 @@ function stickyScroll() {
 				// console.log('Not fixed');
 				thead.style.top = '0px';
 			}
-			thead.classList.add("sticky")
+			thead.classList.add("sticky");
+			thead.classList.add("gsl-background-default");
 		}
 		thead.style.width = table.offsetWidth + 'px';
 

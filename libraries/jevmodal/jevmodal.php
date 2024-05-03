@@ -233,6 +233,8 @@ SCRIPT;
 			HTMLHelper::_('bootstrap.popover', $selector, $params);
             $popoverStyling = <<< SCRIPT
 document.addEventListener('DOMContentLoaded', function() {
+   // bootstrap may not be available if this module is loaded remotely
+    if (typeof bootstrap === 'undefined') return;
    var elements = document.querySelectorAll("$selector");
    elements.forEach(function(myPopoverTrigger)
    {
