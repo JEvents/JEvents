@@ -76,6 +76,12 @@ class ICalEventController extends AdminIcaleventController
 			{
 				$evid = $input->getInt("old_evid", 0);
 			}
+            if ($evid == 0)
+            {
+                $this->setRedirect('index.php?option=' . JEV_COM_COMPONENT , Text::_("JEV_NO_EVENTS_FOUND"));
+                $this->redirect();
+                return;
+            }
 			// In this case I do not have a repeat id so I find the first one that matches
 			$datamodel = new JEventsDataModel("JEventsAdminDBModel");
 			$vevent    = $datamodel->queryModel->getVEventById($evid);

@@ -75,15 +75,10 @@ class GeraintModLatestView extends DefaultModLatestView
 					foreach ($this->splitCustomFormat as $condtoken)
 					{
 
-						if (isset($condtoken['cond']))
-						{
-							if ($condtoken['cond'] == 'a' && !$dayEvent->alldayevent()) continue;
-							else if ($condtoken['cond'] == '!a' && $dayEvent->alldayevent()) continue;
-							else if ($condtoken['cond'] == 'e' && !($dayEvent->noendtime() || $dayEvent->alldayevent())) continue;
-							else if ($condtoken['cond'] == '!e' && ($dayEvent->noendtime() || $dayEvent->alldayevent())) continue;
-							else if ($condtoken['cond'] == '!m' && $dayEvent->getUnixStartDate() != $dayEvent->getUnixEndDate()) continue;
-							else if ($condtoken['cond'] == 'm' && $dayEvent->getUnixStartDate() == $dayEvent->getUnixEndDate()) continue;
-						}
+                        if ($this->conditionNotMet($condtoken, $dayEvent))
+                        {
+                            continue;
+                        }
 						foreach ($condtoken['data'] as $token)
 						{
 							unset($match);

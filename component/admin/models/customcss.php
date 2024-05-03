@@ -90,7 +90,7 @@ class CustomcssModelCustomcss extends FormModel
 
 			if (!Path::isOwner($filePath))
 			{
-				$app->enqueueMessage(Text::spritf('COM_JEVENTS_CUSTOM_CSS_FILE_CHECK_OVWNERSHIP', $filePath), 'warning');
+				$app->enqueueMessage(Text::sprintf('COM_JEVENTS_CUSTOM_CSS_FILE_CHECK_OVWNERSHIP', $filePath), 'warning');
 			}
 
 			return false;

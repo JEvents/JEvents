@@ -171,7 +171,7 @@ if (!empty($this->icalEvents))
 			$uri  = Uri::getInstance(Uri::base());
 			$root = $uri->toString(array('scheme', 'host', 'port'));
 			$html .= "URL;VALUE=URI:" . $this->wraplines($root . Route::_($link, true, -1)) . "\r\n";
-			$html .= $this->setDescription($a->content() . ' <a href="'. $root . Route::_($link, true, -1) . '">' . Text::_('JEV_EVENT_IMPORTED_FROM') . $root . Route::_($link, true, -1)) . "</a>\r\n";
+			$html .= $this->setDescription($a->content() . ' <a href="'. $root . Route::_($link, true, -1) . '">' . Text::_('JEV_EVENT_IMPORTED_FROM') . $root . Route::_($link, true, -1). "</a>\r\n");
 		}
         else {
             $html .= $this->setDescription($a->content()) . "\r\n";

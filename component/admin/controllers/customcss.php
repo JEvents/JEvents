@@ -142,7 +142,14 @@ class CustomCssController extends Joomla\CMS\MVC\Controller\BaseController
 		if (!$model->save($data))
 		{
 			// Redirect back to the edit screen.
-			$this->setMessage(Text::sprintf('JERROR_SAVE_FAILED', $model->getError()), 'warning');
+            try
+            {
+                $this->setMessage( Text::sprintf( 'JERROR_SAVE_FAILED', $model->getError() ), 'warning' );
+            }
+            catch (Throwable $e)
+            {
+                $this->setMessage( Text::sprintf( 'JERROR_SAVE_FAILED', '' ), 'warning' );
+            }
 			$url = 'index.php?option=com_jevents&view=customcss';
 			$this->setRedirect(Route::_($url, false));
 

@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Editor\Editor;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Plugin\PluginHelper;
 
 $jversion = new Joomla\CMS\Version;
 if (!$jversion->isCompatible('4.0'))
@@ -31,13 +32,14 @@ SCRIPT;
 jimport('joomla.filesystem.file');
 
 $isCodeMirror = false;
-if ($this->item->name == "month.calendar_cell"
-	|| $this->item->name == "month.calendar_tip"
-	|| $this->item->name == "icalevent.edit_page"
+if (
+    $this->item->name == "month.calendar_cell"
+    || $this->item->name == "month.calendar_tip"
+    || $this->item->name == "icalevent.edit_page"
     || $this->item->name == "icalevent.list_block1"
     || $this->item->name == "icalevent.list_block2"
-	|| $this->item->name == "icalevent.list_block3"
-	|| $this->item->name == "icalevent.list_block4"
+    || $this->item->name == "icalevent.list_block3"
+    || $this->item->name == "icalevent.list_block4"
     || $this->item->name == "icalevent.list_block5"
     || $this->item->name == "icalevent.list_block6"
     || $this->item->name == "icalevent.list_block1.module"
@@ -46,15 +48,31 @@ if ($this->item->name == "month.calendar_cell"
     || $this->item->name == "icalevent.list_block4.module"
     || $this->item->name == "icalevent.list_block5.module"
     || $this->item->name == "icalevent.list_block6.module"
-	|| $this->item->name == "icalevent.list_row")
+    || $this->item->name == "icalevent.list_row"
+)
 {
-	$editor = Editor::getInstance("none");
+    if ( PluginHelper::getPlugin( 'editors', 'none' ) )
+    {
+        $editor = Editor::getInstance( "none" );
+        $isCodeMirror = false;
+    }
+    else if ( PluginHelper::getPlugin( 'editors', 'codemirror' ) )
+    {
+        $editor = Editor::getInstance( "codemirror" );
+        $isCodeMirror = true;
+    }
+    else
+    {
+        $editor = Factory::getConfig()->get( 'editor' );
+        $editor = Editor::getInstance( $editor );
+        $isCodeMirror = false;
+    }
 }
 else
 {
-	$editor = Factory::getConfig()->get('editor');
-	$isCodeMirror = $editor == "codemirror";
-	$editor = Editor::getInstance($editor);
+    $editor       = Factory::getConfig()->get( 'editor' );
+    $isCodeMirror = $editor == "codemirror";
+    $editor       = Editor::getInstance( $editor );
 }
 
 if (strpos($this->item->name, "com_") === 0)
