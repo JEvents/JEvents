@@ -164,6 +164,11 @@ else if ($params->get("bootstrapchosen", 1) == 2)
 	// Load Bootstrap
 	require(ModuleHelper::getLayoutPath('mod_jevents_filter', 'default_uikitlayout'));
 }
+else if ($params->get("bootstrapchosen", 1) == 3)
+{
+    // Load Bootstrap
+    require(ModuleHelper::getLayoutPath('mod_jevents_filter', 'default_bs5layout'));
+}
 else
 {
 	//Check if creating / editing an event

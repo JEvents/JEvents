@@ -87,6 +87,7 @@
 					<option value="1">MOD_JEV_FILTER_MODULE_LOAD_BOOTSTRAP_CHOSEN</option>
 					<option value="0">MOD_JEV_FILTER_MODULE_NATIVE_HTML</option>
 					<option value="2">MOD_JEV_FILTER_MODULE_LOAD_UIKIT_STYLE</option>
+					<option value="3">MOD_JEV_FILTER_MODULE_LOAD_BS5_STYLE</option>
 				</field>
 
 				<field

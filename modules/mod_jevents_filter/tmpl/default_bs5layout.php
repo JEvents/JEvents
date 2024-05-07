@@ -19,22 +19,11 @@ use Joomla\String\StringHelper;
 
 if (count($filterHTML) > 0)
 {
-    ob_start();
-	// chosen is already setup within default.php
-	/*
-	if ($params->get("bootstrapchosen", 1))
-	{
-		$jversion = new Joomla\CMS\Version;
-		if (!$jversion->isCompatible('4.0'))
-		{
-			HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
-		}
-	}
-	 */
-	JevHtmlBootstrap::loadCss();
+	ob_start();
 
 	JEVHelper::script("mod_jevents_filter.js", "modules/mod_jevents_filter/", false);
-	?>
+
+    ?>
 	<form action="<?php echo $form_link; ?>" id="jeventspost" name="jeventspost<?php echo $module->id; ?>" method="post"
 	      class="jevfiltermodule">
 		<input type='hidden' name='catids' id='catidsfv' value='<?php echo trim($datamodel->catidsOut); ?>'/>
@@ -64,7 +53,7 @@ if (count($filterHTML) > 0)
 .jevfilterlist .jevfilterinput .chzn-container, .jevfilterlist .jevfilterinput input {
 	max-width:100%;
 }
-   .jevfilterfloatlist li {
+.jevfilterfloatlist li {
 	float:left;
 	margin-right:5px;
 }
@@ -77,7 +66,7 @@ STYLE;
 		{
 			case "vt":
 				?>
-				<table class="jevfiltertable">
+				<table class="jevfiltertable table">
 					<?php
 					$hasreset = false;
 					foreach ($filterHTML as $filter)
@@ -87,12 +76,12 @@ STYLE;
 							continue;
 						}
 						?>
-						<tr>
+						<tr class="control-group">
 							<?php
 							if (StringHelper::strlen($filter["title"]) > 0 && $params->get("showlabels", 1))
 							{
 								?>
-								<td><?php echo $filter["title"]; ?></td>
+								<td class="control-label"><?php echo $filter["title"]; ?></td>
 								<?php
 							}
 							else if ($params->get("showlabels", 1))
@@ -102,7 +91,7 @@ STYLE;
 								<?php
 							}
 							?>
-							<td><?php echo $filter["html"] ?></td>
+							<td  class="controls"><?php echo $filter["html"] ?></td>
 						</tr>
 						<?php
 						if (strpos($filter["html"], 'filter_reset') > 0)
@@ -112,14 +101,14 @@ STYLE;
 					}
 					?>
 					<tr>
-						<td><input class="modfilter_button" type="button" onclick="JeventsFilters.reset(this.form)"
-						           value="<?php echo Text::_('RESET'); ?>"/>
-							<?php if ($params->get("showlabels", 1)) { ?>
+						<td colspan="<?php echo $params->get("showlabels", 1) ? 2 : 1;?> ?>">
+							<div class="btn-group">
+								<input class="modfilter_button btn btn-danger" type="button" onclick="JeventsFilters.reset(this.form)"
+							           value="<?php echo Text::_('RESET'); ?>"/>
+								<input class="modfilter_button btn btn-primary" type="submit" value="<?php echo Text::_('ok'); ?>"
+								       name="jevents_filter_submit"/>
+							</div>
 						</td>
-						<td>
-							<?php } ?>
-							<input class="modfilter_button" type="submit" value="<?php echo Text::_('ok'); ?>"
-							       name="jevents_filter_submit"/></td>
 					</tr>
 				</table>
 				<?php
@@ -127,7 +116,7 @@ STYLE;
 
 			case "ht":
 				?>
-				<table class="jevfiltertable">
+				<table class="jevfiltertable table">
 					<tr>
 						<?php
 						$hasreset = false;
@@ -160,7 +149,7 @@ STYLE;
 						if ($params->get("showlabels", 1))
 						{
 							?>
-							<td><input class="modfilter_button" type="button" onclick="JeventsFilters.reset(this.form)"
+							<td><input class="modfilter_button btn btn-danger" type="button" onclick="JeventsFilters.reset(this.form)"
 							           value="<?php echo Text::_('RESET'); ?>"/></td>
 						<?php } ?>
 					</tr>
@@ -180,14 +169,15 @@ STYLE;
 								$hasreset = true;
 							}
 						}
-						if (!$params->get("showlabels", 1))
-						{
-							?>
-							<td><input class="modfilter_button" type="button" onclick="JeventsFilters.reset(this.form)"
-							           value="<?php echo Text::_('RESET'); ?>"/></td>
-						<?php } ?>
-						<td><input class="modfilter_button" type="submit" value="<?php echo Text::_('ok'); ?>"
-						           name="jevents_filter_submit"/></td>
+						?>
+						<td colspan="<?php echo $params->get("showlabels", 1) ? 2 : 1;?> ?>">
+							<div class="btn btn-group">
+								<input class="modfilter_button btn btn-danger" type="button" onclick="JeventsFilters.reset(this.form)"
+							           value="<?php echo Text::_('RESET'); ?>"/>
+								<input class="modfilter_button btn btn-primary" type="submit" value="<?php echo Text::_('ok'); ?>"
+								       name="jevents_filter_submit"/>
+							</div>
+						</td>
 					</tr>
 				</table>
 
@@ -197,7 +187,7 @@ STYLE;
 			case "ul":
 			case "ful":
 				?>
-				<ul class="<?php echo $params->get("filterlayout", "vt") == "ul" ? "jevfilterlist" : "jevfilterfloatlist"; ?>">
+				<ul class="<?php echo $params->get("filterlayout", "vt") == "ul" ? "jevfilterlist" : "jevfilterfloatlist"; ?> uk-list">
 					<?php
 					$hasreset = false;
 					foreach ($filterHTML as $filter)
@@ -207,12 +197,17 @@ STYLE;
 							continue;
 						}
 						?>
-						<li>
+						<li  class="control-group">
 							<?php
 							if (StringHelper::strlen($filter["title"]) > 0 && $params->get("showlabels", 1))
 							{
+								$label = $filter["title"];
+								if ($label == strip_tags($label))
+                                {
+                                    $label = '<div class="">' . $label . '</div>';
+                                }
 								?>
-								<?php echo $filter["title"]; ?>
+								<?php echo str_replace('class="', 'class="form-label ',str_replace("class='", "class='form-label ", $label)); ?>
 								<?php
 							}
 							else if ($params->get("showlabels", 1))
@@ -222,7 +217,7 @@ STYLE;
 								<?php
 							}
 							?>
-							<div class="jevfilterinput">
+							<div class="jevfilterinput controls">
 								<?php echo $filter["html"] ?>
 							</div>
 						</li>
@@ -234,14 +229,10 @@ STYLE;
 					}
 					?>
 					<li>
-						<div class="jevfilterinput">
-							<input class="modfilter_button" type="button" onclick="JeventsFilters.reset(this.form)"
-							       value="<?php echo Text::_('MOD_JEV_FILTER_MODULE_RESET'); ?>"/>
-							<?php if ($params->get("showlabels", 1)) { ?>
-						</div>
-						<div class="jevfilterinput">
-							<?php } ?>
-							<input class="modfilter_button" type="submit" value="<?php echo Text::_('MOD_JEV_FILTER_MODULE_SUBMIT'); ?>"
+						<div class="jevfilterinput btn btn-group">
+							<input class="modfilter_button btn btn-danger" type="button" onclick="JeventsFilters.reset(this.form)"
+							       value="<?php echo Text::_('RESET'); ?>"/>
+							<input class="modfilter_button btn btn-primary" type="submit" value="<?php echo Text::_('ok'); ?>"
 							       name="jevents_filter_submit"/>
 						</div>
 					</li>
@@ -280,27 +271,16 @@ STYLE;
                     $HTML = str_replace(array("{" . $filterId ."}", "{" . $filterId ." LBL}"), array($filter["html"], $filter["title"]), $HTML);
                 }
                 ob_start();?>
-				<button class="modfilter_button " type="button" onclick="JeventsFilters.reset(this.form)">
-                    <?php echo Text::_('RESET'); ?>
+				<button class="modfilter_button btn btn-danger" type="button" onclick="JeventsFilters.reset(this.form)">
+                    <?php echo Text::_('MOD_JEV_FILTER_MODULE_RESET'); ?>
 				</button>
                 <?php
                 $reset = ob_get_clean();
                 $HTML = str_replace("{RESET_BUTTON}", $reset, $HTML );
 
-                // second pass to deal with special case if custom field
-                foreach ($filterHTML as $filterId => $filter)
-                {
-                    if (empty($filterId) || $filterId == "catid")
-                    {
-                        continue;
-                    }
-                    $filterId = "Customfield:" . str_replace("_", " ", $filterId);
-                    $HTML = str_replace(array("{" . $filterId ."}", "{" . $filterId ." LBL}"), array($filter["html"], $filter["title"]), $HTML);
-                }
-
                 ob_start();?>
-				<button class="modfilter_button " type="submit" name="jevents_filter_submit">
-                    <?php echo Text::_('ok'); ?>
+				<button class="modfilter_button btn btn-primary" type="submit" name="jevents_filter_submit">
+                    <?php echo Text::_('MOD_JEV_FILTER_MODULE_SUBMIT'); ?>
 				</button>
                 <?php
                 $submit = ob_get_clean();
@@ -320,34 +300,54 @@ STYLE;
 		?>
 	</form>
 	<?php
-	if (Factory::getApplication()->input->getCmd("jevents_filter_submit") == "ok")
+	$output = ob_get_clean();
+
+	$output = str_replace("gsl-", "uk-", $output);
+
+	$dom        = new DOMDocument();
+	// see http://php.net/manual/en/domdocument.savehtml.php cathexis dot de ¶
+	@$dom->loadHTML('<html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></head><body>' . $output . '</body>');
+
+	$selects = $dom->getElementsByTagName('select');
+	foreach ($selects as $select)
 	{
-		//	Factory::getApplication()->enqueueMessage("Search Filters applied successfully");
+		$select->setAttribute('class', $select->getAttribute('class') . ' form-select');
 	}
-    $output = ob_get_clean();
 
-    $output = str_replace("gsl-", "uk-", $output);
+	$buttons = $dom->getElementsByTagName('button');
+	foreach ($buttons as $button)
+	{
+		$class = $button->getAttribute('class');
+		$class = str_replace('btn-', 'btn', $class);
+		$button->setAttribute('class', ' btn ' . $class);
+	}
 
-    $dom        = new DOMDocument();
-    // see http://php.net/manual/en/domdocument.savehtml.php cathexis dot de ¶
-    @$dom->loadHTML('<html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></head><body>' . $output . '</body>');
+	$textareas = $dom->getElementsByTagName('textarea');
+	foreach ($textareas as $textarea)
+	{
+		$textarea->setAttribute('class', $textarea->getAttribute('class') . ' form-textarea');
+	}
 
-    $inputs = $dom->getElementsByTagName('input');
-    foreach ($inputs as $input)
-    {
-        switch ($input->getAttribute('type'))
-        {
-            case 'text':
-            case 'email':
-                $input->setAttribute('class', $input->getAttribute('class') . ' form-control');
+	$inputs = $dom->getElementsByTagName('input');
+	foreach ($inputs as $input)
+	{
+		switch ($input->getAttribute('type'))
+		{
+			case 'text':
+			case 'email':
+				$input->setAttribute('class', $input->getAttribute('class') . ' form-control');
+				break;
+            case 'radio':
+                $input->setAttribute('class', $input->getAttribute('class') . ' form-check-input');
+                break;
+            case 'checkbox':
+                $input->setAttribute('class', $input->getAttribute('class') . ' form-check-input');
                 break;
 
-        }
-    }
+		}
+	}
 
-    $output = $dom->saveHTML($dom->getElementsByTagName('body')[0]);
+	$output = $dom->saveHTML($dom->getElementsByTagName('body')[0]);
 
-    echo $output;
-
-
+	echo $output;
 }
