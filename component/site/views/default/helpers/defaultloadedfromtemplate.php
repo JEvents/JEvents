@@ -998,7 +998,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				if (!in_array("{{EDITBUTTON}}", $search, false))
 				{
 
-					if ($jevparams->get("showicalicon", 0) && !$jevparams->get("disableicalexport", 0))
+					if ($jevparams->get("showicalicon", 0) && !$jevparams->get("disableicalexport", 0) && $view !== false)
 					{
 						$cssloaded = true;
 						ob_start();
@@ -1037,7 +1037,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$replace[] = "";
 						$blank[] = "";
 					}
-					if ((JEVHelper::canEditEvent($event) || JEVHelper::canPublishEvent($event) || JEVHelper::canDeleteEvent($event)))
+					if ($view !== false && (JEVHelper::canEditEvent($event) || JEVHelper::canPublishEvent($event) || JEVHelper::canDeleteEvent($event)))
 					{
 						ob_start();
 						$view->eventManagementButton($event);

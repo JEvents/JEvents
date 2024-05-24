@@ -9,10 +9,6 @@
 
 defined('JPATH_PLATFORM') or die;
 
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Session\Session;
-
 /**
  * Utility class for Bootstrap elements.
  *
@@ -50,14 +46,14 @@ class JevTypeahead
 		}
 
 		// Load jQuery
-        HTMLHelper::_('jquery.framework');
-        HTMLHelper::stylesheet('com_jevents/lib_jevtypeahead/jevtypeahead.css',array(),true);
-        HTMLHelper::script('com_jevents/lib_jevtypeahead/typeahead.bundle.min.js',array("framework"=>false,"relative"=>true));
+		JHtml::_('jquery.framework');
+		JHtml::stylesheet('com_jevents/lib_jevtypeahead/jevtypeahead.css',array(),true);
+		JHtml::script('com_jevents/lib_jevtypeahead/typeahead.bundle.min.js',array("framework"=>false,"relative"=>true));
 
 		// If no debugging value is set, use the configuration setting
 		if ($debug === null)
 		{
-			$config = Factory::getConfig();
+			$config = JFactory::getConfig();
 			$debug = (boolean) $config->get('debug');
 		}
 		
@@ -112,7 +108,7 @@ class JevTypeahead
 			$opt['json']	= isset($params['json']) ?  $params['json'] : '';
 
 			if ($opt['scrollable']){
-				Factory::getDocument()->addStyleDeclaration( ".scrollable-dropdown-menu .tt-menu, .scrollable-dropdown-menu .tt-dropdown-menu, #scrollable-dropdown-menu .tt-menu, #scrollable-dropdown-menu .tt-dropdown-menu{max-height: 150px; overflow-y: auto; background-color: #fff;}");
+				JFactory::getDocument()->addStyleDeclaration( ".scrollable-dropdown-menu .tt-menu, .scrollable-dropdown-menu .tt-dropdown-menu, #scrollable-dropdown-menu .tt-menu, #scrollable-dropdown-menu .tt-dropdown-menu{max-height: 150px; overflow-y: auto; background-color: #fff;}");
 			}
 
 			$options = json_encode($opt);
@@ -128,7 +124,7 @@ class JevTypeahead
 				if($opt['prefetch'])
 				{
 					$typeaheadLoad .= "prefetch: {
-							url:'".$opt['prefetch']."&token=".Session::getFormToken()."',
+							url:'".$opt['prefetch']."&token=".JSession::getFormToken()."',
 							ttl:10000 // 10 seconds cache time - increase in production
 							},";
 				}
@@ -150,7 +146,7 @@ class JevTypeahead
                 settings.url = settings.url.replace(settings.wildcard, encodeURIComponent(query));
                 settings.dataType = 'json';
                 settings.type = 'POST';
-                settings.data = {json:" .$opt['json']. ", typeahead:query, token:'".Session::getFormToken()."'};
+                settings.data = {json:" .$opt['json']. ", typeahead:query, token:'".JSession::getFormToken()."'};
                 return settings;
             },
 ";
@@ -160,7 +156,7 @@ class JevTypeahead
 				if($opt['remote'])
 				{
 					$typeaheadLoad .= "remote: {
-										url: '".$opt['remote']."&token=".Session::getFormToken()."&typeahead=PQRZYX',
+										url: '".$opt['remote']."&token=".JSession::getFormToken()."&typeahead=PQRZYX',
 										wildcard: 'PQRZYX'
 										$callback
 										$prepare
@@ -202,7 +198,7 @@ class JevTypeahead
 			}
 
 			// Attach script to document
-			Factory::getDocument()->addScriptDeclaration($typeaheadLoad);
+			JFactory::getDocument()->addScriptDeclaration($typeaheadLoad);
 
 			// Set static array
 			static::$loaded[__METHOD__][$selector] = true;

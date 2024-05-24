@@ -1941,7 +1941,8 @@ SCRIPT;
         {
             $a = $dayEvent->alldayevent();
             $e = $dayEvent->noendtime() || $dayEvent->alldayevent();
-            $m = $dayEvent->getUnixStartDate() == $dayEvent->getUnixEndDate();
+            $m = $dayEvent->getUnixStartDate() != $dayEvent->getUnixEndDate();
+            //$m = $dayEvent->startDate() != $dayEvent->endDate();
 
             //$conditionParts = preg_split('#([!+a|!+e|!+m|[^!]a|[^!]e|[^!]m])#', $condtoken['cond'], -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
             $conditionParts = preg_split('#(!?a|!?e|!?m)#', $condtoken['cond'], -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);

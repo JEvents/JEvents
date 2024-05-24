@@ -114,7 +114,7 @@ if (
 	return;
 }
 
-$allowAutoSubmit = true;
+$allowAutoSubmit = $params->get("autosubmitonchange", 1);
 $filters->modParams = $params;
 $filterHTML      = $filters->getFilterHTML($allowAutoSubmit, true);
 
