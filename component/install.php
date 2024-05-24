@@ -468,7 +468,7 @@ SQL;
             $sql = <<<SQL
 CREATE TABLE IF NOT EXISTS #__jev_defaults (
 	id int( 11 ) unsigned NOT NULL AUTO_INCREMENT ,
-	title varchar(100) NOT NULL default "",
+	title varchar(250) NOT NULL default "",
 	name varchar(50) NOT NULL default "",
 	subject text NOT NULL ,
 	value text NOT NULL ,
@@ -1084,6 +1084,14 @@ SQL;
 		$sql = "SHOW COLUMNS FROM #__jev_defaults";
 		$db->setQuery($sql);
 		$cols = @$db->loadObjectList("Field");
+
+        if (array_key_exists("title", $cols) && strtoupper($cols['title']->Type) !== "VARCHAR(250)")
+        {
+            $sql = "ALTER TABLE #__jev_defaults MODIFY COLUMN title VARCHAR(250) NOT NULL default ''";
+            $db->setQuery($sql);
+            @$db->execute();
+
+        }
 
 		if (!array_key_exists("params", $cols))
 		{
