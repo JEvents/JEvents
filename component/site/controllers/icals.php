@@ -454,7 +454,7 @@ class ICalsController extends AdminIcalsController
 			$icalList   = array();
 			$icalList[] = HTMLHelper::_('select.option', '0', Text::_('JEV_EVENT_CHOOSE_ICAL'), 'ics_id', 'label');
 			$icalList   = array_merge($icalList, $nativeCals);
-			$clist      = HTMLHelper::_('select.genericlist', $icalList, 'icsid', " onchange='preselectCategory(this);'", 'ics_id', 'label', 0);
+			$clist      = HTMLHelper::_('select.genericlist', $icalList, 'icsid', " onchange='preselectCategory(this);' class='form-select w-75 uk-select' ", 'ics_id', 'label', 0);
 			$this->view->clistChoice    = true;
 			$this->view->defaultCat     = 0;
 		}
@@ -505,7 +505,18 @@ class ICalsController extends AdminIcalsController
 
 	function importdata()
 	{
+		/*
+        $app    = Factory::getApplication();
 
+        $token = Session::getFormToken();
+		echo "token should be " . $token ."<br>";
+
+		echo "POST<br>";
+		var_dump($app->getInput()->getArray(array(), null, 'RAW'));
+		echo "<br><br>";
+
+		exit();
+		*/
 		// Check for request forgeries
 		Session::checkToken() or jexit('Invalid Token');
 

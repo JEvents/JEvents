@@ -362,7 +362,7 @@ JEVHelper::parameteriseJoomlaCache();
 JevModal::popover('.hasjevtip' , array("trigger"=>"hover", "placement"=>"top", "container"=>"#jevents_body",  "html" => true,  "delay"=> array( "show"=> 150, "hide"=> 150 )));
 
 // Perform the Request task
-$controller->execute($task);
+ $controller->execute($task);
 
 //list ($usec, $sec) = explode(" ", microtime());
 //$time_end = (float) $usec + (float) $sec;

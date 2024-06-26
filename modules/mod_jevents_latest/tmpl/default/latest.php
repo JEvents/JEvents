@@ -600,7 +600,7 @@ $t_datenowSQL = $t_datenow->toMysql();
 		$reg->set("jev.modparams", $this->modparams);
 
 		//We get filter value to set it up again after getting the module data adn set the published_fv value to 0
-		$filter_value = $app->getUserStateFromRequest('published_fv_ses', 'published_fv', "0");
+		$filter_value = $app->getUserStateFromRequest('published_fv_session', 'published_fv', "0");
 		$input->set('published_fv', "0");
 		if ($this->dispMode == 5)
 		{

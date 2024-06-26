@@ -22,6 +22,7 @@ use Joomla\CMS\Session\Session;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Toolbar\ToolbarButton;
 
 // Skip Chosen in Joomla 4.x+
 $jversion = new Version;
@@ -183,7 +184,9 @@ $j5plus = version_compare(JVERSION, "5.0", "ge") ? "j5plus" : "";
                             $toolbarButtons = $bar->getItems();
                         }
 
-                        foreach ($toolbarButtons as $toolbarButton)
+                        $len = count($toolbarButtons);
+
+                        foreach ($toolbarButtons as $i => $toolbarButton)
                         {
                             if (is_array($toolbarButton))
                             {
@@ -192,7 +195,19 @@ $j5plus = version_compare(JVERSION, "5.0", "ge") ? "j5plus" : "";
                             else
                             {
                                 // Joomla 4 in com_fields etc.
-                                $buttonoutput = $toolbarButton->render();
+                                if ($toolbarButton instanceof ToolbarButton) {
+                                    $isChild = false; //!empty($options['is_child']);
+
+                                    // Child dropdown only support new syntax
+                                    $toolbarButton->setOption('is_child', $isChild);
+                                    $toolbarButton->setOption('is_first_child', $i === 0);
+                                    $toolbarButton->setOption('is_last_child', $i === $len - 1);
+                                    $buttonoutput = $toolbarButton->render();
+                                } else {
+                                    // B/C
+                                    $buttonoutput = $toolbarButton->render();
+                                }
+
                             }
 	                        $buttonoutput = str_replace("btn-danger", "gsl-button gsl-button-danger   ", $buttonoutput);
                             $buttonoutput = str_replace("btn ", "gsl-button gsl-button-primary  ", $buttonoutput);
@@ -214,6 +229,6 @@ $j5plus = version_compare(JVERSION, "5.0", "ge") ? "j5plus" : "";
 
 	        <div id="ysts_system_messages"></div>
 
-            <div class="gsl-content  <?php echo Factory::getApplication()->isClient('administrator') ? "gsl-backend" : "gsl-frontend";?>" data-gsl-height-viewport="expand: true;mode: slide">
+            <div class="gsl-content  <?php echo Factory::getApplication()->isClient('administrator') ? "gsl-backend" : "gsl-frontend";?>"  style="max-height: 100%;height:fit-content;">
 
 
