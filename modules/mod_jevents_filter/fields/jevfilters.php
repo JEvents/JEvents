@@ -137,6 +137,10 @@ class JFormFieldJevfilters extends JFormFieldText
 
                         $theFilter       = new jevCustomfieldfilter("", $filtername);
                         $filterHTML = $theFilter->_createfilterHTML(true);
+                        if (!array_key_exists("merge", $filterHTML))
+                        {
+                            continue;
+                        }
                         foreach ($filterHTML['merge'] as $key => $cffilter)
                         {
                             $filters[$filtername . ":" . str_replace("_", " ", $key)] = $path . "/" . $filter . ":" . $key;

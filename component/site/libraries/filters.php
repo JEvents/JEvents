@@ -452,7 +452,7 @@ class jevFilter
         {
             $module = ModuleHelper::getModule( "mod_jevents_filter" );
         }
-		if ($module)
+		if ($module && $module->id)
 		{
 			$modparams = new JevRegistry($module->params);
 			$option    = $input->getCmd("option");
