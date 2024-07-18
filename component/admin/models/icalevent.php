@@ -40,6 +40,7 @@ class JEventsModelicalevent extends ListModel
 				'catid', 'a.' . $db->quoteName('catid'), 'a.catid',
 				'showpast', 'a.' . $db->quoteName('showpast'), 'a.showpast',
 				'state', 'a.' . $db->quoteName('state'), 'a.state',
+                'published', 'a.' . $db->quoteName('published'), 'a.published',
 				'ordering', 'a.' . $db->quoteName('ordering'), ' a.ordering',
 				'created_by', 'a.' . $db->quoteName('created_by'), 'a.created_by',
 				'modified_by', 'a.' . $db->quoteName('modified_by'), 'a.modified_by',
@@ -73,6 +74,8 @@ class JEventsModelicalevent extends ListModel
 		$id .= ':' . $this->getState('list.ordering');
 		$id .= ':' . $this->getState('list.direction');
 		$id .= ':' . $this->getState('filter.showpast');
+        $id .= ':' . $this->getState('filter.state');
+        $id .= ':' . $this->getState('filter.published');
 
 		return md5($this->context . ':' . $id);
 	}
@@ -105,6 +108,15 @@ class JEventsModelicalevent extends ListModel
 		{
 			$this->setState('filter.icsFile', (int) $this->getState('filter.icsFile', '£$%$£'));
 		}
+
+        // links from categories
+        $state = $this->getState('filter.state', 3);
+        $published = (int) $this->getState('filter.published', 3);
+        if ( (int) $state == 3 && $published != 3)
+        {
+            $this->setState('filter.state', $published);
+        }
+
 	}
 		/**
 	 * Method to get an array of data items.
@@ -127,6 +139,7 @@ class JEventsModelicalevent extends ListModel
 
 		$icsFile = intval($this->getState('filter.icsFile', 0));
 		$state = $this->getState('filter.state', 3);
+
 		$created_by = $this->getState('filter.created_by', "");
 		if ($created_by !== '')
 		{
@@ -710,6 +723,13 @@ class JEventsModelicalevent extends ListModel
 			}
 		}
 
+        $state = $this->getState('filter.state', 3);
+        if ($state !== 3 && is_object($data)) {
+            $data->filter['state'] = $state;
+        }
+        else if ($state !== 3 && is_array($data)) {
+            $data['filter']['state'] = $state;
+        }
 		parent::preprocessForm($form, $data, $group);
 	}
 

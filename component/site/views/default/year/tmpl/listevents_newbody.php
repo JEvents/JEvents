@@ -54,3 +54,4 @@ echo '</table><br />' . "\n";
 //if ($data["total"]>$data["limit"]){
 $this->paginationForm($data["total"], $data["limitstart"], $data["limit"]);
 //}
+$this->eventsLegend();

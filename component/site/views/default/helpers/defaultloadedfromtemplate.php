@@ -2338,7 +2338,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	{
 		global $tempreplace, $tempevent, $tempsearch, $tempblank;
 		$tempreplace    = $replace[$s];
-		$tempblank      = $blank[$s];
+		// no blank value for module position etc.
+        $tempblank      = $blank[$s] ?? "";
 		$tempsearch     = str_replace("}}", "#", $search[$s]);
 		$tempevent      = $event;
 		$template_value = preg_replace_callback("|$tempsearch(.+?)}}|", 'jevSpecialHandling2', $template_value);

@@ -83,3 +83,4 @@ if (!$hasevents)
 	</div>
 <?php
 $this->paginationForm($data["total"], $data["limitstart"], $data["limit"]);
+$this->eventsLegend();

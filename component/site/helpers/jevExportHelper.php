@@ -63,7 +63,42 @@ class JevExportHelper
 		$urlString['et']         = date("Ymd\THis", $row->getUnixEndTime());
 		$urlString['duration']   = (int) $row->getUnixEndTime() - (int) $row->getUnixStartTime();
 		$urlString['duration']   = (int) $row->getUnixEndTime() - (int) $row->getUnixStartTime();
-		$urlString['location']   = urlencode(isset($row->_locationaddress) ? $row->_locationaddress : $row->location());
+        if (!isset($row->_locationaddress)  && is_object($row->location()))
+        {
+            $location = $row->location();
+
+            $addressfields = array();
+
+            if ($location->title != "")
+            {
+                $addressfields[] = $location->title;
+            }
+
+            if ($location->street != "")
+            {
+                $addressfields[] = $location->street;
+            }
+
+            if ($location->state != "")
+            {
+                $addressfields[] = $location->state;
+            }
+
+            if ($location->postcode != "")
+            {
+                $addressfields[] = $location->postcode;
+            }
+
+            if ($location->country != "")
+            {
+                $addressfields[] = $location->country;
+            }
+
+            $row->_locationaddress = implode(", ", $addressfields);
+        }
+
+        $urlString['location'] = urlencode( isset( $row->_locationaddress ) ? $row->_locationaddress : $row->location() );
+
 		$urlString['sitename']   = urlencode(Factory::getApplication()->get('sitename'));
 		$urlString['siteurl']    = urlencode(Uri::root());
 

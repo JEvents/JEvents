@@ -318,7 +318,7 @@ STYLE;
 	foreach ($buttons as $button)
 	{
 		$class = $button->getAttribute('class');
-		$class = str_replace('btn-', 'btn', $class);
+		//$class = str_replace('btn-', 'btn', $class);
 		$button->setAttribute('class', ' btn ' . $class);
 	}
 

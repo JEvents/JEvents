@@ -64,6 +64,7 @@ $lang->load("mod_jevents_detail", JPATH_SITE);
 		defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_EXTRAINFO",true);?>", "EXTRAINFO");
 		defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_CATEGORY",true);?>", "CATEGORY");
 		defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_ALL_CATEGORIES",true);?>", "ALLCATEGORIES");
+        defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_CATEGORY_ID",true);?>", "CATID");
 		defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_CATEGORY_LINK",true);?>", "CATEGORYLNK");
 		defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_CATEGORY_IMAGE",true);?>", "CATEGORYIMG");
 		defaultsEditorPlugin.node(optgroup , "<?php echo Text::_("JEV_FIELD_CATEGORY_IMAGES",true);?>", "CATEGORYIMGS");

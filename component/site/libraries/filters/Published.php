@@ -15,6 +15,7 @@ defined('_JEXEC') or die('Direct Access to this location is not allowed.');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * Filters events to restrict events for administration - used for administration of events in the frontend
@@ -36,11 +37,26 @@ class jevPublishedFilter extends jevFilter
 		$task             = $input->get('view', '') . '.' . $input->get('layout', '');
 		if ($task == "admin.listevents")
 		{
-			$default_filter = "-1";
+            $params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+            $showpublished = $params->get("showpublished", "published");
+            switch ($showpublished)
+            {
+                case "both":
+                    $default_filter = "-1";
+                    break;
+                case "published":
+                    $default_filter = "0";
+                    break;
+                case "unpublished":
+                    $default_filter = "1";
+                    break;
+            }
+            $admin = "_admin";
 		}
 		else
 		{
 			$default_filter = "0";
+			$admin = "";
 		}
 
 		$this->filterNullValue = $default_filter;
@@ -52,13 +68,22 @@ class jevPublishedFilter extends jevFilter
 
 		// this is a special filter - we always want memory here since only used in frontend management
 
-		$this->filter_value = Factory::getApplication()->getUserStateFromRequest($this->filterType . '_fv_ses', $this->filterType . '_fv', $this->filterNullValue);
+        $registry      = JevRegistry::getInstance("jevents");
+        $activeprocess = $registry->get("jevents.activeprocess", "");
+        if ($activeprocess == "component")
+        {
+            $this->filter_value = Factory::getApplication()->getUserStateFromRequest( $this->filterType . '_fv_ses' . $admin, $this->filterType . '_fv', $this->filterNullValue );
+        }
+        else
+        {
+            $this->filter_value = Factory::getApplication()->getUserStateFromRequest( $this->filterType . '_fv_ses', $this->filterType . '_fv', $this->filterNullValue );
+        }
 		$input->set($this->filterType . '_fv', $this->filter_value);
 
 		parent::__construct($tablename, "state", $isstring);
 
 		// event creators can look at their own unpublished events
-		if (!JEVHelper::isEventCreator())
+		if (!JEVHelper::isEventCreator() && $task != "admin.listevents")
 		{
 			$this->filter_value = $this->filterNullValue;
 		}
