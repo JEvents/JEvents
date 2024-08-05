@@ -532,6 +532,11 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				$replace[] = $event->title();
 				$blank[]   = "";
 				break;
+            case "{{TITLE_ADDSLASHES}}":
+                $search[]  = "{{TITLE_ADDSLASHES}}";
+                $replace[] = addslashes($event->title());
+                $blank[]   = "";
+                break;
 			case "{{TRUNCATED_TITLE}}":
 				$search[]  = "{{TRUNCATED_TITLE:.*?}}";
 				$replace[] = $event->title();
