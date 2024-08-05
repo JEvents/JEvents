@@ -410,7 +410,7 @@ class DefaultModLatestView
 
 		if ($this->displayRSS)
 		{
-			$rssimg       = Uri::root() . "media/system/images/livemarks.png";
+			$rssimg       = Uri::root() . "media/com_jevents/images/livemarks.png";
 			$callink_HTML = '<div class="mod_events_latest_rsslink">'
 				. '<a href="' . $this->rsslink . '" title="' . Text::_("RSS_FEED") . '" target="_blank">'
 				. '<img src="' . $rssimg . '" alt="' . Text::_("RSS_FEED") . '" />'
