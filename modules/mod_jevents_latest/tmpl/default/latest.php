@@ -347,21 +347,10 @@ class DefaultModLatestView
 					foreach ($this->splitCustomFormat as $condtoken)
 					{
 
-						if (isset($condtoken['cond']))
-						{
-							if ($condtoken['cond'] == 'a' && !$dayEvent->alldayevent())
-								continue;
-							else if ($condtoken['cond'] == '!a' && $dayEvent->alldayevent())
-								continue;
-							else if ($condtoken['cond'] == 'e' && !($dayEvent->noendtime() || $dayEvent->alldayevent()))
-								continue;
-							else if ($condtoken['cond'] == '!e' && ($dayEvent->noendtime() || $dayEvent->alldayevent()))
-								continue;
-							else if ($condtoken['cond'] == '!m' && $dayEvent->getUnixStartDate() != $dayEvent->getUnixEndDate())
-								continue;
-							else if ($condtoken['cond'] == 'm' && $dayEvent->getUnixStartDate() == $dayEvent->getUnixEndDate())
-								continue;
-						}
+                        if ($this->conditionNotMet($condtoken, $dayEvent))
+                        {
+                            continue;
+                        }
 						foreach ($condtoken['data'] as $token)
 						{
 							unset($match);
@@ -611,7 +600,7 @@ $t_datenowSQL = $t_datenow->toMysql();
 		$reg->set("jev.modparams", $this->modparams);
 
 		//We get filter value to set it up again after getting the module data adn set the published_fv value to 0
-		$filter_value = $app->getUserStateFromRequest('published_fv_ses', 'published_fv', "0");
+		$filter_value = $app->getUserStateFromRequest('published_fv_session', 'published_fv', "0");
 		$input->set('published_fv', "0");
 		if ($this->dispMode == 5)
 		{
@@ -1163,11 +1152,14 @@ SCRIPT;
 		);
 		$keywords_or = implode('|', $keywords);
 		$whsp        = '[\t ]*'; // white space
-		$datefm      = '\([^\)]*\)'; // date formats
+		$datefm      = '\([^\)]*\)'; // date formats[m: - ${endDate(%d %b %Y)}]
 		//$modifiers	= '(?::[[:alnum:]]*)';
 
 		$pattern      = '/(\$\{' . $whsp . '(?:' . $keywords_or . ')(?:' . $datefm . ')?' . $whsp . '\})/'; // keyword pattern
-		$cond_pattern = '/(\[!?[[:alnum:]]+:[^\]]*])/'; // conditional string pattern e.g. [!a: blabla ${endDate(%a)}]
+		//$cond_pattern = '/(\[!?[[:alnum:]]+:[^\]]*])/'; // conditional string pattern e.g. [!a: blabla ${endDate(%a)}]
+
+        // This allows multiple conditions
+        $cond_pattern = '/(\[[!aem]+:[^\]]*])/'; // conditional string pattern e.g. [!a: blabla ${endDate(%a)}]
 		// tokenize conditional strings
 		$splitTerm = preg_split($cond_pattern, $customFormat, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
 
@@ -1786,7 +1778,7 @@ SCRIPT;
 										ob_start();
 										// false at the end to stop it running through the plugins
 										$part = "{{Dummy Label:" . implode("#", $formattedparts) . "}}";
-										DefaultLoadedFromTemplate(false, false, $dayEvent, 0, $part, false, true, $this->floatmoduleuseformatstring);
+										DefaultLoadedFromTemplate(false, false, $dayEvent, 0, $part, false, true, true);
 										$newpart = ob_get_clean();
 										if ($newpart != $part)
 										{
@@ -1943,6 +1935,57 @@ SCRIPT;
 
 	}
 
+    public function conditionNotMet($condtoken, $dayEvent)
+    {
+        if (isset($condtoken['cond']))
+        {
+            $a = $dayEvent->alldayevent();
+            $e = $dayEvent->noendtime() || $dayEvent->alldayevent();
+            $m = $dayEvent->getUnixStartDate() != $dayEvent->getUnixEndDate();
+            //$m = $dayEvent->startDate() != $dayEvent->endDate();
+
+            //$conditionParts = preg_split('#([!+a|!+e|!+m|[^!]a|[^!]e|[^!]m])#', $condtoken['cond'], -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+            $conditionParts = preg_split('#(!?a|!?e|!?m)#', $condtoken['cond'], -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+            usort($conditionParts, function ($a, $b)
+            {
+                return strcmp(str_replace("!", "", $a), str_replace("!", "", $b));
+            });
+            $condition = implode("", $conditionParts);
+
+            if      ($condition == 'a'  && !$a) return true;
+            else if ($condition == '!a' &&  $a) return true;
+            else if ($condition == 'e'  && !$e) return true;
+            else if ($condition == '!e' &&  $e) return true;
+            else if ($condition == 'm'  && !$m) return true;
+            else if ($condition == '!m' &&  $m) return true;
+
+            else if ($condition == 'ae'   &&  !( $a &&  $e)) return true;
+            else if ($condition == '!ae'  &&  !(!$a &&  $e)) return true;
+            else if ($condition == 'a!e ' &&  !( $a && !$e)) return true;
+            else if ($condition == '!a!e' &&  !(!$a && !$e)) return true;
+
+            else if ($condition == 'am'   &&  !( $a &&  $m)) return true;
+            else if ($condition == '!am'  &&  !(!$a &&  $m)) return true;
+            else if ($condition == 'a!m'  &&  !( $a && !$m)) return true;
+            else if ($condition == '!a!m' &&  !(!$a && !$m)) return true;
+
+            else if ($condition == 'em'   &&  !( $e &&  $m)) return true;
+            else if ($condition == '!em'  &&  !(!$e &&  $m)) return true;
+            else if ($condition == 'e!m'  &&  !( $e && !$m)) return true;
+            else if ($condition == '!e!m' &&  !(!$e && !$m)) return true;
+
+            else if ($condition == 'aem'    &&  !( $a &&  $e &&  $m)) return true;
+            else if ($condition == '!aem'   &&  !(!$a &&  $e &&  $m)) return true;
+            else if ($condition == 'a!em'   &&  !( $a && !$e &&  $m)) return true;
+            else if ($condition == 'ae!m'   &&  !( $a &&  $e && !$m)) return true;
+            else if ($condition == '!a!em'  &&  !(!$a && !$e &&  $m)) return true;
+            else if ($condition == '!ae!m'  &&  !(!$a &&  $e && !$m)) return true;
+            else if ($condition == 'a!e!m'  &&  !( $a && !$e && !$m)) return true;
+            else if ($condition == '!a!e!m' &&  !(!$a && !$e && !$m)) return true;
+        }
+        return false;
+
+    }
 }
 
 // end of class

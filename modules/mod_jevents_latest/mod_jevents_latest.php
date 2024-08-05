@@ -57,6 +57,7 @@ $registry = JevRegistry::getInstance("jevents");
 $registry->set("jevents.activeprocess", "mod_jevents_latest");
 $registry->set("jevents.moduleid", $module->id);
 $registry->set("jevents.moduleparams", $params);
+$registry->set("jevents.latestmoduleparams", $params);
 
 $viewclass = $jevhelper->getViewClass($theme, 'mod_jevents_latest', $theme . '/' . "latest", $params);
 

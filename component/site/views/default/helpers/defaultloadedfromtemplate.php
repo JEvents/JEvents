@@ -13,7 +13,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Layout\LayoutHelper;
 
-function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $template_value = false, $runplugins = true, $skipfiles = false)
+function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $template_value = false, $runplugins = true, $skipfiles = false, $sef = true)
 {
 	static $processedCss = array();
 	static $processedJs = array();
@@ -558,8 +558,11 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					// Title link
                     // Is this being called from the latest events module - if so then use the target item instead of current Itemid
                     $reg       = JevRegistry::getinstance("jevents");
-                    $modparams = $reg->get("jevents.moduleparams", new Registry);
+                    $modparams = $reg->get("jevents.latestmoduleparams", new Registry);
                     $modItemid = $modparams->get("target_itemid", 0);
+//					echo "<div style='display:none;'>";
+//					var_dump($modparams);
+//                    echo "</div>";
                     if ($modItemid > 0)
                     {
                         $rowlink = $event->viewDetailLink( $event->yup(), $event->mup(), $event->dup(), false, $modItemid );
@@ -572,6 +575,10 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					{
 						$rowlink = Route::_($rowlink . $view->datamodel->getCatidsOutLink());
 					}
+					else if ($sef)
+                    {
+                        $rowlink = Route::_($rowlink);
+                    }
 					ob_start();
 					?>
                     <a class="ev_link_row" href="<?php echo $rowlink; ?>" title="<?php echo JEventsHTML::special($event->title()); ?>">
@@ -996,7 +1003,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				if (!in_array("{{EDITBUTTON}}", $search, false))
 				{
 
-					if ($jevparams->get("showicalicon", 0) && !$jevparams->get("disableicalexport", 0))
+					if ($jevparams->get("showicalicon", 0) && !$jevparams->get("disableicalexport", 0) && $view !== false)
 					{
 						$cssloaded = true;
 						ob_start();
@@ -1035,7 +1042,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$replace[] = "";
 						$blank[] = "";
 					}
-					if ((JEVHelper::canEditEvent($event) || JEVHelper::canPublishEvent($event) || JEVHelper::canDeleteEvent($event)))
+					if ($view !== false && (JEVHelper::canEditEvent($event) || JEVHelper::canPublishEvent($event) || JEVHelper::canDeleteEvent($event)))
 					{
 						ob_start();
 						$view->eventManagementButton($event);
@@ -2336,7 +2343,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	{
 		global $tempreplace, $tempevent, $tempsearch, $tempblank;
 		$tempreplace    = $replace[$s];
-		$tempblank      = $blank[$s];
+		// no blank value for module position etc.
+        $tempblank      = $blank[$s] ?? "";
 		$tempsearch     = str_replace("}}", "#", $search[$s]);
 		$tempevent      = $event;
 		$template_value = preg_replace_callback("|$tempsearch(.+?)}}|", 'jevSpecialHandling2', $template_value);
@@ -2399,6 +2407,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			}
 		}
 		$reg->set("dynamicmodules", $dynamicmodules);
+        $reg->set("dynamicmodules_event", $event);
 	}
 
 	// non greedy replacement - because of the ?

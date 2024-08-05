@@ -122,7 +122,7 @@ function addJevModalHtml_gsl(id) {
             + '<div class="gsl-modal-dialog gsl-modal-body gsl-height-1-1">'
             + '<h4 class="gsl-modal-title" id="' + id + 'Label"></h4>'
             + '<button type="button" class="gsl-modal-close-default" gsl-close aria-label="Close"></button>'
-            + '<iframe src="//about:blank;" class="gsl-width-expand " style="height: calc(100% - 75px);"></iframe>'
+            + '<iframe src="//about:blank;" class="gsl-width-expand gsl-height-1-1 gsl-margin-large-bottom" ></iframe>'
             + '</div>'
             + '</div>';
 

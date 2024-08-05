@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Editor\Editor;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Plugin\PluginHelper;
 
 $jversion = new Joomla\CMS\Version;
 if (!$jversion->isCompatible('4.0'))
@@ -50,12 +51,12 @@ if (
     || $this->item->name == "icalevent.list_row"
 )
 {
-    if ( JPluginHelper::getPlugin( 'editors', 'none' ) )
+    if ( PluginHelper::getPlugin( 'editors', 'none' ) )
     {
         $editor = Editor::getInstance( "none" );
         $isCodeMirror = false;
     }
-    else if ( JPluginHelper::getPlugin( 'editors', 'codemirror' ) )
+    else if ( PluginHelper::getPlugin( 'editors', 'codemirror' ) )
     {
         $editor = Editor::getInstance( "codemirror" );
         $isCodeMirror = true;

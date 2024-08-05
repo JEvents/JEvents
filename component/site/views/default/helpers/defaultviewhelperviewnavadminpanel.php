@@ -69,7 +69,7 @@ function DefaultViewHelperViewNavAdminPanel($view)
 						</a>
 						<?php
 						// offer frontend import ?
-						if ($params->get("feimport", 0))
+						if ($user->id > 0 && $params->get("feimport", 0))
 						{
 							$importLink = Route::_('index.php?option=' . JEV_COM_COMPONENT
 								. '&task=icals.importform&tmpl=component&Itemid=' . $view->Itemid, true);
@@ -194,7 +194,7 @@ function DefaultViewHelperViewNavAdminPanel($view)
 						</a>
 						<?php
 						// offer frontend import ?
-						if ($params->get("feimport", 0))
+                        if ($user->id > 0 && $params->get("feimport", 0))
 						{
 							$importLink = Route::_('index.php?option=' . JEV_COM_COMPONENT
 								. '&task=icals.importform&tmpl=component&Itemid=' . $view->Itemid, true);

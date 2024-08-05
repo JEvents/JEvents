@@ -4502,12 +4502,13 @@ SCRIPT;
 			@$dom->loadHTML('<html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></head><body>' . $description . '</body>');
 
 			$links = $dom->getElementsByTagName('a');
-			foreach ($links as $link)
-			{
+            // see https://www.php.net/manual/en/class.domnodelist.php#83390
+            for ($i = $links->length; --$i >= 0; ) {
+                $link = $links[$i];
 				$fragment = $dom->createDocumentFragment();
 				$href = $link->getAttribute('href');
 				$text = $link->textContent;
-				if ($text == $href || empty($href))
+				if (strpos($text, $href !== false) || empty($href))
 				{
 					$fragment->appendXML( htmlspecialchars($link->textContent) );
 				}
@@ -5158,8 +5159,8 @@ SCRIPT;
 
         // Escape Timezone!
         $format = str_replace(
-            array(  '%dT',  '%SZ'),
-            array( '%d\T', '%S\Z'),
+            array(  '%dT',  '%SZ',  '000000Z'),
+            array( '%d\T', '%S\Z',  '000000\Z'),
             $format);
 
         // Aggregates

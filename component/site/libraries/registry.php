@@ -22,9 +22,12 @@ if (!defined("JEVREGISTRY"))
 		protected $jevregistry;
 		protected $jevDefaultNameSpace = 'default';
 
+        static protected $jevInstances = array();
+        static protected $jevInstancesWithReferences = array();
+
         static function &getInstance($id, $namespace = 'default')
 		{
-
+/*
             $rc = new ReflectionClass('JevRegistry');
             $rc = $rc->getParentClass();
             if($rc->hasMethod('getInstance'))
@@ -47,32 +50,32 @@ if (!defined("JEVREGISTRY"))
 			{
 				$instances = array();
 			}
-
-			if (empty($instances[$id]))
+*/
+			if (empty(JevRegistry::$jevInstances[$id]))
 			{
-				$instances[$id] = new JevRegistry($namespace);
+				JevRegistry::$jevInstances[$id] = new JevRegistry($namespace);
 			}
 
-			return $instances[$id];
+			return JevRegistry::$jevInstances[$id];
 
 		}
 
         static function &getInstanceWithReferences($id, $namespace = 'default')
         {
-
+/*
             static $instances;
 
             if (!isset($instances))
             {
                 $instances = array();
             }
-
-            if (empty($instances[$id]))
+*/
+            if (empty(JevRegistry::$jevInstancesWithReferences[$id]))
             {
-                $instances[$id] = new JevRegistry($namespace);
+                JevRegistry::$jevInstancesWithReferences[$id] = new JevRegistry($namespace);
             }
 
-            return $instances[$id];
+            return JevRegistry::$jevInstancesWithReferences[$id];
 
         }
 

@@ -39,6 +39,21 @@ document.addEventListener('DOMContentLoaded', function() {
             button.classList.add('gsl-button-default');
         }
     });
+
+    let formchecks = gslUIkit.container.querySelectorAll('.form-check');
+    formchecks.forEach(function(formcheck)
+    {
+        formcheck.classList.remove("form-check");
+    })
+
+    try {
+        setupGslRadioCheckboxes();
+    }
+    catch (e)
+    {
+
+    }
+
 })
 
 ys_popover(".hasYsPopover, .hasPopover");

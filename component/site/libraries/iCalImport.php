@@ -460,6 +460,10 @@ class iCalImport
 
 				// Special treatment of
 				if($key=="ATTACH") {
+                    if (count($parts) == 2 && stripos($parts[1], "FMTTYPE=image") === 0)
+                    {
+
+                    }
 					$this->cal[$parent][$this->eventCount][$key][] = $value;
 				}
 				elseif (StringHelper::strpos($key, "EXDATE") === false)
