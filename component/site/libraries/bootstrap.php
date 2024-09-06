@@ -171,7 +171,7 @@ class JevHtmlBootstrap
 					HTMLHelper::_('stylesheet', 'com_jevents/bootstrap-responsive.css', $attribs, true);
 					break;
 				case 2:
-					HtmlBootstrap::loadCss();
+					Bootstrap::loadCss();
 					break;
 			}
 			//HTMLHelper::_('stylesheet', 'com_jevents/jevbootstrap/bootstrap-extended.css', $attribs, true);
