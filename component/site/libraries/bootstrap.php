@@ -14,6 +14,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\HTML\Helpers\Bootstrap;
 
 /**
  * Utility class for Bootstrap elements.
@@ -170,7 +171,7 @@ class JevHtmlBootstrap
 					HTMLHelper::_('stylesheet', 'com_jevents/bootstrap-responsive.css', $attribs, true);
 					break;
 				case 2:
-					JHtmlBootstrap::loadCss();
+					HtmlBootstrap::loadCss();
 					break;
 			}
 			//HTMLHelper::_('stylesheet', 'com_jevents/jevbootstrap/bootstrap-extended.css', $attribs, true);

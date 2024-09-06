@@ -14,16 +14,18 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\String\StringHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\Helpers\Sidebar;
 
 JEventsHelper::addSubmenu();
-$this->sidebar = JHtmlSidebar::render();
+$this->sidebar = Sidebar::render();
 
 global   $task;
 $db	= Factory::getDbo();
 $user = Factory::getUser();
 
-$pathIMG = JURI::Root() . 'administrator/images/';
-$pathJeventsIMG = JURI::Root() . "administrator/components/".JEV_COM_COMPONENT."/images/";
+$pathIMG = Uri::Root() . 'administrator/images/';
+$pathJeventsIMG = Uri::Root() . "administrator/components/".JEV_COM_COMPONENT."/images/";
 $mainspan = 10;
 $fullspan = 12;
 ?>

@@ -6,12 +6,11 @@ use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Form\Field\CalendarField;
 
 jimport('joomla.html.html');
 
-FormHelper::loadFieldClass('calendar');
-
-class FormFieldJeveventdate extends JFormFieldCalendar
+class FormFieldJeveventdate extends CalendarField
 {
 
 	/**

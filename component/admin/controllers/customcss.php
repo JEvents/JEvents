@@ -14,6 +14,7 @@ defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Session\Session;
 
 jimport('joomla.application.component.controlleradmin');
 
@@ -83,7 +84,7 @@ class CustomCssController extends Joomla\CMS\MVC\Controller\BaseController
 	{
 
 		// Check for request forgeries.
-		\Joomla\CMS\Session\Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
 		$app          = Factory::getApplication();
 		$data         = $this->input->post->get('jform', array(), 'array');

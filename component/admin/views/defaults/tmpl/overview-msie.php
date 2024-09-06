@@ -5,9 +5,10 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\HTML\Helpers\Sidebar;
 
 JEventsHelper::addSubmenu();
-$this->sidebar = JHtmlSidebar::render();
+$this->sidebar = Sidebar::render();
 
 HtmlHelper::_('behavior.core');
 HtmlHelper::_('bootstrap.tooltip');

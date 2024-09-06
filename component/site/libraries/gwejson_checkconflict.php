@@ -219,7 +219,7 @@ function simulateSaveEvent($requestObject)
 
 	// If the allow HTML flag is set, apply a safe HTML filter to the variable
 	$safeHtmlFilter = InputFilter::getInstance(array(), array(), 1, 1);
-	$array          = $safeHtmlFilter->clean($formdata, null);
+	$array          = $safeHtmlFilter->clean($formdata, '');
 
 
 	$dataModel  = new JEventsDataModel("JEventsAdminDBModel");
@@ -282,7 +282,7 @@ function simulateSaveRepeat($requestObject)
 	}
 
 	$safeHtmlFilter = InputFilter::getInstance(array(), array(), 1, 1);
-	$array          = $safeHtmlFilter->clean($formdata, null);
+	$array          = $safeHtmlFilter->clean($formdata, '');
 
 	if (!array_key_exists("rp_id", $array) || intval($array["rp_id"]) <= 0)
 	{

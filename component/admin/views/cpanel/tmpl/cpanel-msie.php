@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\String\StringHelper;
 
 $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
 $version = JEventsVersion::getInstance();
@@ -30,7 +31,7 @@ if (!empty($this->sidebar))
 		//Version Checking etc
 		?>
 		<div class="jev_version">
-			<?php echo Text::sprintf('JEV_CURRENT_VERSION', Joomla\String\StringHelper::substr($version->getShortVersion(), 1)); ?>
+			<?php echo Text::sprintf('JEV_CURRENT_VERSION', StringHelper::substr($version->getShortVersion(), 1)); ?>
 		</div>
 	</div>
 	<?php

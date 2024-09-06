@@ -4,13 +4,14 @@ use Joomla\Registry\Registry;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Form\Field\ListField;
 
 defined('JPATH_BASE') or die;
 
 jimport('joomla.html.html');
-jimport('joomla.form.formfield.list');
 
-class JFormFieldJevimagename extends JFormFieldList
+class JFormFieldJevimagename extends ListField
 {
 
 	/**
@@ -29,7 +30,7 @@ class JFormFieldJevimagename extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$plugin = JPluginHelper::getPlugin('jevents', 'jevfiles');
+		$plugin = PluginHelper::getPlugin('jevents', 'jevfiles');
 
 		$options = array();
 
@@ -39,23 +40,23 @@ class JFormFieldJevimagename extends JFormFieldList
 	        $params = new Registry($plugin->params);
 	        if ($params->get('imnum', 0))
             {
-	            $options[] = JHTML::_('select.option', '0', Text::_('JEV_STRUCTURED_DATA_SELECT_IMAGE'));
+	            $options[] = HTMLHelper::_('select.option', '0', Text::_('JEV_STRUCTURED_DATA_SELECT_IMAGE'));
 
 	            Factory::getLanguage()->load('plg_jevents_jevfiles', JPATH_ADMINISTRATOR);
 
 	            for ($i=1; $i<=$params->get('imnum', 0); $i++)
                 {
-	                $options[] = JHTML::_('select.option', $i, Text::_('JEV_STANDARD_IMAGE_' . $i) );
+	                $options[] = HTMLHelper::_('select.option', $i, Text::_('JEV_STANDARD_IMAGE_' . $i) );
                 }
             }
             else
             {
-	            $options[] = JHTML::_('select.option', '0', Text::_('JEV_STRUCTURED_DATA_OUTPUT_REQUIRES_IMAGES_ADDON_CONFIGURED_PROPERLY'));
+	            $options[] = HTMLHelper::_('select.option', '0', Text::_('JEV_STRUCTURED_DATA_OUTPUT_REQUIRES_IMAGES_ADDON_CONFIGURED_PROPERLY'));
             }
         }
         else
         {
-	        $options[] = JHTML::_('select.option', '0', Text::_('JEV_STRUCTURED_DATA_OUTPUT_REQUIRES_IMAGES_ADDON'));
+	        $options[] = HTMLHelper::_('select.option', '0', Text::_('JEV_STRUCTURED_DATA_OUTPUT_REQUIRES_IMAGES_ADDON'));
 
 		}
 

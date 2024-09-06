@@ -18,6 +18,8 @@ use Joomla\CMS\Filesystem\Path;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\String\StringHelper;
 
 /**
  * HTML View class for the component frontend
@@ -62,14 +64,14 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 		$document->setTitle(Text::_('EDIT_ICAL_REPEAT'));
 
 		// Set toolbar items for the page
-		JToolbarHelper::title(Text::_('EDIT_ICAL_REPEAT'), 'jevents');
+		ToolbarHelper::title(Text::_('EDIT_ICAL_REPEAT'), 'jevents');
 
 		$bar = JToolBar::getInstance('toolbar');
 		if (JEVHelper::isEventEditor())
 		{
-			JToolbarHelper::apply('icalrepeat.apply', "JEV_SAVE");
+			ToolbarHelper::apply('icalrepeat.apply', "JEV_SAVE");
 		}
-		JToolbarHelper::apply('icalrepeat.save', "JEV_SAVE_CLOSE");
+		ToolbarHelper::apply('icalrepeat.save', "JEV_SAVE_CLOSE");
 
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		if ($params->get("editpopup", 0) && JEVHelper::isEventCreator())
@@ -83,7 +85,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 			$this->toolbarButton("icalevent.detail", 'cancel', 'cancel', 'JEV_SUBMITCANCEL', false);
 		}
 
-		//JToolbarHelper::help( 'screen.icalrepeat.edit', true);
+		//ToolbarHelper::help( 'screen.icalrepeat.edit', true);
 
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
@@ -235,7 +237,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 
 		if (strpos($name, "_") === 0)
 		{
-			$name = "ViewHelper" . ucfirst(\Joomla\String\StringHelper::substr($name, 1));
+			$name = "ViewHelper" . ucfirst(StringHelper::substr($name, 1));
 		}
 		$helper = ucfirst($this->jevlayout) . ucfirst($name);
 		if (!$this->loadHelper($helper))

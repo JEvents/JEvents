@@ -14,6 +14,7 @@ defined('_JEXEC') or die();
 
 use Joomla\CMS\Filesystem\Path;
 use Joomla\CMS\Factory;
+use Joomla\String\StringHelper;
 
 // Option masks
 define('MASK_BACKTOLIST', 0x0001);
@@ -149,7 +150,7 @@ class JEventsDefaultView extends JEventsAbstractView
 
 		if (strpos($name, "_") === 0)
 		{
-			$name = "ViewHelper" . ucfirst(\Joomla\String\StringHelper::substr($name, 1));
+			$name = "ViewHelper" . ucfirst(StringHelper::substr($name, 1));
 		}
 		$helper = ucfirst($this->jevlayout) . ucfirst($name);
 		if (!$this->loadHelper($helper))

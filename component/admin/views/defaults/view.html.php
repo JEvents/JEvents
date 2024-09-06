@@ -18,12 +18,15 @@ use Joomla\String\StringHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Service\Provider\Toolbar;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * HTML View class for the component
  *
  * @static
  */
+#[\AllowDynamicProperties]
 class AdminDefaultsViewDefaults extends JEventsAbstractView
 {
 
@@ -40,13 +43,13 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		$document->setTitle(Text::_('JEV_LAYOUT_DEFAULTS'));
 
 		// Set toolbar items for the page
-		JToolbarHelper::title(Text::_('JEV_LAYOUT_DEFAULTS'), 'jevents');
+		ToolbarHelper::title(Text::_('JEV_LAYOUT_DEFAULTS'), 'jevents');
 
-        JToolbarHelper::publishList('defaults.publish');
-        JToolbarHelper::unpublishList('defaults.unpublish');
+        ToolbarHelper::publishList('defaults.publish');
+        ToolbarHelper::unpublishList('defaults.unpublish');
 
 		$db  = Factory::getDbo();
-		$uri = \Joomla\CMS\Uri\Uri::getInstance();
+		$uri = Uri::getInstance();
 
 		// Get data from the model
 		$model     = $this->getModel();
@@ -111,11 +114,11 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		}
 
 		// Set toolbar items for the page
-		JToolbarHelper::title(Text::_('JEV_LAYOUT_DEFAULT_EDIT'), 'jevents');
+		ToolbarHelper::title(Text::_('JEV_LAYOUT_DEFAULT_EDIT'), 'jevents');
 
-		JToolbarHelper::apply("defaults.apply");
-		JToolbarHelper::save("defaults.save");
-		JToolbarHelper::cancel("defaults.cancel");
+		ToolbarHelper::apply("defaults.apply");
+		ToolbarHelper::save("defaults.save");
+		ToolbarHelper::cancel("defaults.cancel");
 
 		// Get data from the model
 		$item  = $this->get('Data');

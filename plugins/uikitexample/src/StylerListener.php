@@ -4,7 +4,7 @@ namespace Ysts;
 use YOOtheme\Config;
 use YOOtheme\Path;
 use YOOtheme\Theme\Styler;
-use Joomla\Filesystem\File;
+use Joomla\CMS\Filesystem\File;
 
 class StylerListener
 {

@@ -13,6 +13,7 @@ use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\HTML\Helpers\Bootstrap;
 
 /**
  * Utility class for Bootstrap elements.
@@ -91,7 +92,7 @@ class JevLibHtmlBootstrap
 	public static function framework($debug = null)
 	{
 
-		JHtmlBootstrap::framework($debug);
+		HtmlBootstrap::framework($debug);
 		return;
 	}
 
@@ -675,7 +676,7 @@ class JevLibHtmlBootstrap
 	public static function addSlide($selector, $text, $id, $class = '')
 	{
 
-		$in    = (static::$loaded['JHtmlBootstrap::startAccordion']['active'] == $id) ? ' in' : '';
+		$in    = (static::$loaded['HtmlBootstrap::startAccordion']['active'] == $id) ? ' in' : '';
 		$class = (!empty($class)) ? ' ' . $class : '';
 
 		$html = '<div class="accordion-group' . $class . '">'
@@ -775,7 +776,7 @@ class JevLibHtmlBootstrap
 		$tabScriptLayout = is_null($tabScriptLayout) ? new FileLayout('libraries.cms.html.bootstrap.addtabscript') : $tabScriptLayout;
 		$tabLayout       = is_null($tabLayout) ? new FileLayout('libraries.cms.html.bootstrap.addtab') : $tabLayout;
 
-		$active = (static::$loaded['JHtmlBootstrap::startTabSet'][$selector]['active'] == $id) ? ' active' : '';
+		$active = (static::$loaded['HtmlBootstrap::startTabSet'][$selector]['active'] == $id) ? ' active' : '';
 
 		// Inject tab into UL
 		Factory::getDocument()

@@ -20,7 +20,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\String\StringHelper;
 use Joomla\CMS\Component\ComponentHelper;
-
+use Joomla\CMS\Layout\FileLayout;
 
 class ToolbarButtonJev extends ToolbarButton
 {
@@ -341,9 +341,9 @@ class ToolbarButtonJevconfirmvar extends ToolbarButtonJevconfirm
 	 */
 	public function fetchButton($type = 'Confirmvar', $msgvar = '', $name = '', $text = '', $task = '', $list = true, $hideMenu = false, $btnClass = false, $tooltiptitle = "", $tooltipcontent = "")
 	{
-		// Store all data to the options array for use with JLayout
+		// Store all data to the options array for use with Joomla Layout
 		$options           = array();
-		$options['text']   = \JText::_($text);
+		$options['text']   = Text::_($text);
 		$options['msgvar'] = $msgvar;
 
 		// We want to make sure carriage returns in the message are respected
@@ -366,15 +366,15 @@ class ToolbarButtonJevconfirmvar extends ToolbarButtonJevconfirm
 		$tooltip = '';
 		if ($tooltiptitle && $tooltipcontent)
 		{
-			$tooltip = ' data-yspoptitle = "' . \JText::_($tooltiptitle, true) . '"'
-				. '  data-yspopcontent = "' . \JText::_($tooltipcontent, true) . '" '
+			$tooltip = ' data-yspoptitle = "' . Text::_($tooltiptitle, true) . '"'
+				. '  data-yspopcontent = "' . Text::_($tooltipcontent, true) . '" '
 				. ' data-yspopoptions= \'{"mode" : "hover", "offset" : 20,"delayHide" : 200, "pos" : "right"}\'';
 
 			$options['btnClass'] .= " hasYsPopover";
 		}
 		$options['tooltip'] = $tooltip;
 
-		// Instantiate a new JLayoutFile instance and render the layout
+		// Instantiate a new FileLayout instance and render the layout
 		$layout = new FileLayout('joomla.toolbar.confirmvar');
 
 		$output =  $layout->render($options);
@@ -385,7 +385,7 @@ class ToolbarButtonJevconfirmvar extends ToolbarButtonJevconfirm
 
 	protected function getButtonCommand($msgvar, $name, $task, $list)
 	{
-		\JText::script('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST');
+		Text::script('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST');
 
 		$msgvar = str_replace("\\n", "<br>", $msgvar);
 		$msgvar = str_replace("\n", "<br>", $msgvar);
@@ -404,7 +404,7 @@ class ToolbarButtonJevconfirmvar extends ToolbarButtonJevconfirm
 
 		if ($list)
 		{
-			$alert = "alert(Joomla.JText._('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST'));";
+			$alert = "alert(Joomla.Text._('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST'));";
 			$cmd   = "if (document.adminForm.boxchecked.value == 0) { " . $alert . " } else { " . $cmd . " }";
 		}
 

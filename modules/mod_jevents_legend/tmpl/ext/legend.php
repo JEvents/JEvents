@@ -19,7 +19,7 @@ use Joomla\CMS\Component\ComponentHelper;
  * @static
  */
 include_once(JPATH_SITE . "/modules/mod_jevents_legend/tmpl/default/legend.php");
-
+#[\AllowDynamicProperties]
 class ExtModLegendView extends DefaultModLegendView
 {
 

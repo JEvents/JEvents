@@ -11,10 +11,10 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
-
+use Joomla\CMS\HTML\Helpers\Sidebar;
 
 JEventsHelper::addSubmenu();
-$this->sidebar = JHtmlSidebar::render();
+$this->sidebar = Sidebar::render();
 
 $mainspan = 10;
 $fullspan = 12;

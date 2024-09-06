@@ -510,7 +510,7 @@ class GslHelper
 						$sublink->class       = "gsl-button gsl-small gsl-button-secondary gsl-padding-remove gsl-text-left ";
 						$sublink->icon        = 'joomla';
 						$sublink->iconclass   = "gsl-margin-small-right gsl-display-inline-block";
-						$sublink->label       = JText::_('COM_JEVENTS_JOOMLA_CUSTOM_FIELDS');
+						$sublink->label       = Text::_('COM_JEVENTS_JOOMLA_CUSTOM_FIELDS');
 						$iconLink->sublinks[] = $sublink;
 					}
 				}
@@ -540,7 +540,7 @@ class GslHelper
 		$db->setQuery("SELECT enabled FROM #__extensions WHERE element = 'com_yoursites' AND type='component' ");
 		$is_enabled = $db->loadResult();
 		// Availability and access check .
-		if ($is_enabled && JFactory::getUser()->authorise('core.manage', 'com_yoursites'))
+		if ($is_enabled && Factory::getUser()->authorise('core.manage', 'com_yoursites'))
 		{
 			Factory::getLanguage()->load("com_yoursites", JPATH_ADMINISTRATOR);
 

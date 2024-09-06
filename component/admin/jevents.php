@@ -99,7 +99,7 @@ $user           = Factory::getUser();
 //Stop if user is not authorised to access JEvents CPanel
 if (!$authorisedonly && !$user->authorise('core.manage', 'com_jevents'))
 {
-	throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'));
+	throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'));
 }
 $spcolourscheme = $params->get('spcolourscheme', '');
 $disablesmartphone = (int) $params->get('disablesmartphone', 1);

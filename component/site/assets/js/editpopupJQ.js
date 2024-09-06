@@ -8,7 +8,7 @@ function jevEditPopup(url) {
 
     /** see http://stackoverflow.com/questions/16152275/how-to-resize-twitter-bootstrap-modal-dynamically-based-on-the-content */
     jQuery('#myEditModal .modal-header').css({'display': 'block'});
-    jQuery('#myEditModal .modal-title').html(Joomla.JText._("JEV_ADD_EVENT"));
+    jQuery('#myEditModal .modal-title').html(Joomla.Text._("JEV_ADD_EVENT"));
     /** jQuery('#myEditModal .modal-body').css({  'overflow-y':'auto'}); */
     launchModal('#myEditModal', url);
 

@@ -22,7 +22,10 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Form\Form;
 
+#[\AllowDynamicProperties]
 class AdminParamsController extends AdminController
 {
 
@@ -132,7 +135,7 @@ class AdminParamsController extends AdminController
 	{
 
 		// Check for request forgeries
-		\Joomla\CMS\Session\Session::checkToken() or jexit('Invalid Token');
+		Session::checkToken() or jexit('Invalid Token');
 		//echo $this->getTask();
 		//exit;
 		$component = JEV_COM_COMPONENT;

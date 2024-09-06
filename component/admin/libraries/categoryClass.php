@@ -17,6 +17,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Filter\OutputFilter;
 
 class JEventsCategory extends Joomla\CMS\Table\Category
 {
@@ -78,7 +79,7 @@ class JEventsCategory extends Joomla\CMS\Table\Category
 		$array['id'] = isset($array['id']) ? intval($array['id']) : 0;
 
 		if(empty($array['alias'])) {
-			$array['alias'] = JFilterOutput::stringURLSafe($array['title']);
+			$array['alias'] = OutputFilter::stringURLSafe($array['title']);
 		}
 
 		parent::bind($array);

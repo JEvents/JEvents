@@ -17,13 +17,13 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Form\Field\ListField;
 
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 jimport('joomla.form.helper');
-FormHelper::loadFieldClass('list');
 
-class JFormFieldJEVmenu extends JFormFieldList
+class JFormFieldJEVmenu extends ListField
 {
 
 	protected $type = 'JEVmenu';

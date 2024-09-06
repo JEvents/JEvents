@@ -20,7 +20,7 @@ use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Layout\FileLayout;
 
-FormHelper::loadFieldClass('radio');
+use Joomla\CMS\Form\Field\RadioField;
 
 /**
  * JEVMenu Field class for the JEvents Component
@@ -29,7 +29,7 @@ FormHelper::loadFieldClass('radio');
  * @subpackage     com_banners
  * @since          1.6
  */
-class FormFieldJevBoolean extends JFormFieldRadio
+class FormFieldJevBoolean extends RadioField
 {
 
 	/**

@@ -22,7 +22,9 @@ use Joomla\CMS\Language\Associations;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\CMS\Language\LanguageHelper;
 use Joomla\Component\Menus\Administrator\Helper\MenusHelper;
+use Joomla\CMS\Language\Multilanguage;
 
 /**
  * Content Component Association Helper
@@ -78,8 +80,8 @@ abstract class JEventsHelperAssociation extends CategoryHelperAssociation
 
 				return $returnData[$rp_id];
 			}
-			$sitelangs = JLanguageHelper::getInstalledLanguages(0);
-			$multilang = JLanguageMultilang::isEnabled();
+			$sitelangs = LanguageHelper::getInstalledLanguages(0);
+			$multilang = Multilanguage::isEnabled();
 
 			$return = array();
 			if ($multilang && count($sitelangs) > 1 )

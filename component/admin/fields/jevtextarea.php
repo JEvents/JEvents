@@ -10,13 +10,13 @@ defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormHelper;
 
-FormHelper::loadFieldClass('textarea');
+use Joomla\CMS\Form\Field\TextareaField;
 
 //include_once(JPATH_SITE . "/libraries/joomla/form/fields/textarea.php");
 //J4 = include_once(JPATH_SITE . "/libraries/src/Form/Field/TextareaField.php");
 
 #[\AllowDynamicProperties]
-class FormFieldJevtextarea extends JFormFieldTextarea
+class FormFieldJevtextarea extends TextareaField
 {
 	protected function getInput()
 	{

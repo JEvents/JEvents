@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * HTML View class for the component
@@ -31,12 +32,12 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 		$document->setTitle(Text::_('ICAL_EVENT_REPEATS'));
 
 		// Set toolbar items for the page
-		JToolbarHelper::title(Text::_('ICAL_EVENT_REPEATS'), 'jevents');
+		ToolbarHelper::title(Text::_('ICAL_EVENT_REPEATS'), 'jevents');
 
-		JToolbarHelper::addNew('icalrepeat.addRepeat', 'Add repeat');
-		JToolbarHelper::editList('icalrepeat.edit');
-		JToolbarHelper::deleteList('Delete this repeat?', 'icalrepeat.delete');
-		JToolbarHelper::cancel('icalevent.list');
+		ToolbarHelper::addNew('icalrepeat.addRepeat', 'Add repeat');
+		ToolbarHelper::editList('icalrepeat.edit');
+		ToolbarHelper::deleteList('Delete this repeat?', 'icalrepeat.delete');
+		ToolbarHelper::cancel('icalevent.list');
 
 		$this->filterForm    = $this->get('FilterForm');
 		$this->activeFilters = $this->get('ActiveFilters');
@@ -44,8 +45,8 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 		// This is actually HIDE PAST so switch boolean values
 		$showpast = intval($this->getModel()->getState("filter.showpast", 0));
 		$options   = array();
-		$options[] = HTMLHelper::_('select.option', '0', JText::_('JEV_NO'));
-		$options[] = HTMLHelper::_('select.option', '1', JText::_('JEV_YES'));
+		$options[] = HTMLHelper::_('select.option', '0', Text::_('JEV_NO'));
+		$options[] = HTMLHelper::_('select.option', '1', Text::_('JEV_YES'));
 
 		$this->filters =
 			array('showpast' =>
@@ -75,14 +76,14 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 		$document->setTitle(Text::_('EDIT_ICAL_REPEAT'));
 
 		// Set toolbar items for the page
-		JToolbarHelper::title(Text::_('EDIT_ICAL_REPEAT'), 'jevents');
+		ToolbarHelper::title(Text::_('EDIT_ICAL_REPEAT'), 'jevents');
 
-		JToolbarHelper::apply('icalrepeat.apply', "JEV_SAVE");
-		JToolbarHelper::apply('icalrepeat.save', "JEV_SAVE_CLOSE");
+		ToolbarHelper::apply('icalrepeat.apply', "JEV_SAVE");
+		ToolbarHelper::apply('icalrepeat.save', "JEV_SAVE_CLOSE");
 
 
-		JToolbarHelper::cancel('icalrepeat.list');
-		//JToolbarHelper::help( 'screen.icalrepeat.edit', true);
+		ToolbarHelper::cancel('icalrepeat.list');
+		//ToolbarHelper::help( 'screen.icalrepeat.edit', true);
 
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$section = $params->get("section",0);

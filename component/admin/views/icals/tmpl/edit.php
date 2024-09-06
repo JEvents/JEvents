@@ -14,6 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Editor\Editor;
 
 $app    = Factory::getApplication();
 $params = ComponentHelper::getParams(JEV_COM_COMPONENT);
@@ -27,7 +28,7 @@ global $task, $catid;
 $db     = Factory::getDbo();
 
 $uEditor    = Factory::getUser()->getParam('editor',  Factory::getConfig()->get('editor', 'none'));
-$editor = \Joomla\CMS\Editor\Editor::getInstance($uEditor);
+$editor = Editor::getInstance($uEditor);
 
 // clean any existing cache files
 $cache = Factory::getCache(JEV_COM_COMPONENT);

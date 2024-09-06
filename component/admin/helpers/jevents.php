@@ -13,6 +13,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\Helpers\Sidebar;
 
 /**
  * JEvents component helper.
@@ -28,10 +29,10 @@ class JEventsHelper
 	public static function validateSection($context, $form = null)
 	{
 		// only called from com_fields
-		if (JFactory::getApplication()->input->getCmd('option', 'com_jevents') == "com_fields")
+		if (Factory::getApplication()->input->getCmd('option', 'com_jevents') == "com_fields")
 		{
-			$vName      = JFactory::getApplication()->input->getCmd('view', 'fields');
-			$jversion = new JVersion;
+			$vName      = Factory::getApplication()->input->getCmd('view', 'fields');
+			$jversion = new Version;
 
 			// Must load admin language files
 			$lang = Factory::getLanguage();
@@ -56,7 +57,7 @@ class JEventsHelper
 				{
 					// disable com_fields styling until we can get the toolbar buttons working!
 					//return 'site';
-					$app        = JFactory::getApplication();
+					$app        = Factory::getApplication();
 					$dispatcher = $app->bootComponent('com_fields')->getDispatcher($app);
 					$controller = $dispatcher->getController('display', 'Administrator', array('option' => 'com_fields'));
 
@@ -65,7 +66,7 @@ class JEventsHelper
 				}
 				else
 				{
-					$controller = JControllerLegacy::getInstance("Fields");
+					$controller = BaseController::getInstance("Fields");
 
 					$view = $controller->getView($vName, 'html', 'fieldsView');
 					$view->addTemplatePath(JPATH_ADMINISTRATOR . "/components/com_jevents/views/com_fields/$vName/tmpl/");
@@ -342,21 +343,21 @@ STYLE;
 		// could be called from categories component
 		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
 
-		JHtmlSidebar::addEntry(
+		Sidebar::addEntry(
 			Text::_('CONTROL_PANEL'), 'index.php?option=com_jevents', $vName == 'cpanel.cpanel'
 		);
 
-		JHtmlSidebar::addEntry(
+		Sidebar::addEntry(
 			Text::_('JEV_ADMIN_ICAL_EVENTS'), 'index.php?option=com_jevents&task=icalevent.list', $vName == 'icalevent.list'
 		);
 
 		if (JEVHelper::isAdminUser())
 		{
-			JHtmlSidebar::addEntry(
+			Sidebar::addEntry(
 				Text::_('JEV_ADMIN_ICAL_SUBSCRIPTIONS'), 'index.php?option=com_jevents&task=icals.list', $vName == 'icals.list'
 			);
 		}
-		JHtmlSidebar::addEntry(
+		Sidebar::addEntry(
 			Text::_('JEV_INSTAL_CATS'), "index.php?option=com_categories&view=categories&extension=com_jevents", $vName == 'categories'
 		);
 		if (JEVHelper::isAdminUser())
@@ -364,22 +365,22 @@ STYLE;
 			$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 			if ($params->get("authorisedonly", 0))
 			{
-				JHtmlSidebar::addEntry(
+				Sidebar::addEntry(
 					Text::_('JEV_MANAGE_USERS'), 'index.php?option=com_jevents&task=user.list', $vName == 'user.list'
 				);
 			}
-			JHtmlSidebar::addEntry(
+			Sidebar::addEntry(
 				Text::_('JEV_INSTAL_CONFIG'), 'index.php?option=com_jevents&task=params.edit', $vName == 'params.edit'
 			);
-			JHtmlSidebar::addEntry(
+			Sidebar::addEntry(
 				Text::_('JEV_LAYOUT_DEFAULTS'), 'index.php?option=com_jevents&task=defaults.list', in_array($vName, array('defaults.list', 'defaults.overview'))
 			);
 
 			//Support & CSS Customs should only be for Admins really.
-			JHtmlSidebar::addEntry(
+			Sidebar::addEntry(
 				Text::_('SUPPORT_INFO'), 'index.php?option=com_jevents&task=cpanel.support', $vName == 'cpanel.support'
 			);
-			JHtmlSidebar::addEntry(
+			Sidebar::addEntry(
 				Text::_('JEV_CUSTOM_CSS'), 'index.php?option=com_jevents&view=customcss', $vName == 'customcss'
 			);
 
@@ -392,7 +393,7 @@ STYLE;
 			{
 				$link = "index.php?option=com_jevlocations";
 				Factory::getLanguage()->load("com_jevlocations", JPATH_ADMINISTRATOR);
-				JHtmlSidebar::addEntry(
+				Sidebar::addEntry(
 					Text::_('COM_JEVLOCATIONS'), $link, $vName == 'cpanel.managed_locations'
 				);
 			}
@@ -405,7 +406,7 @@ STYLE;
 			{
 				$link = "index.php?option=com_jevpeople";
 				Factory::getLanguage()->load("com_jevpeople", JPATH_ADMINISTRATOR);
-				JHtmlSidebar::addEntry(
+				Sidebar::addEntry(
 					Text::_('COM_JEVPEOPLE'), $link, $vName == 'cpanel.managed_people'
 				);
 
@@ -418,7 +419,7 @@ STYLE;
 			{
 				$link = "index.php?option=com_rsvppro";
 				Factory::getLanguage()->load("com_rsvppro", JPATH_ADMINISTRATOR);
-				JHtmlSidebar::addEntry(
+				Sidebar::addEntry(
 					Text::_('COM_RSVPPRO'), $link, $vName == 'cpanel.rsvppro'
 				);
 
@@ -435,7 +436,7 @@ STYLE;
 				{
 					$link = "index.php?option=com_jevents&task=plugin.jev_customfields.overview";
 					Factory::getLanguage()->load("plg_jevents_jevcustomfields", JPATH_ADMINISTRATOR);
-					JHtmlSidebar::addEntry(
+					Sidebar::addEntry(
 						Text::_('JEV_CUSTOM_FIELDS'), $link, $vName == 'plugin.jev_customfields.overview'
 					);
 				}

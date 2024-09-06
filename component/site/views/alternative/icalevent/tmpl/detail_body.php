@@ -4,6 +4,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
+use Joomla\String\StringHelper;
 
 $cfg    = JEVConfig::getInstance();
 $app    = Factory::getApplication();
@@ -51,7 +52,7 @@ if (array_key_exists('row', $this->data))
 				<?php
 				foreach ($customresults as $result)
 				{
-					if (is_string($result) && \Joomla\String\StringHelper::strlen($result) > 0)
+					if (is_string($result) && StringHelper::strlen($result) > 0)
 					{
 						echo "<div>" . $result . "</div>";
 					}

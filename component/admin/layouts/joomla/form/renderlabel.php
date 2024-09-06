@@ -9,6 +9,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
 extract($displayData);
 
 /**
@@ -33,7 +36,7 @@ if (!empty($description))
 	JLoader::register('JevModal', JPATH_LIBRARIES."/jevents/jevmodal/jevmodal.php");
 	if ($text && $text !== $description)
 	{
-	//	JHtml::_('bootstrap.popover');
+	//	HTMLHelper::_('bootstrap.popover');
 		JevModal::popover('.hasYsPopover', array("trigger" => "hover focus", "placement" => "top", "container" => "body", "delay" => array("show" => 150, "hide" => 150)));
 
 		$classes[] = 'hasYsPopover';
@@ -46,7 +49,7 @@ if (!empty($description))
 				. ' data-content="'. htmlspecialchars($description) . '"';
 		}
 
-		if (!$position && JFactory::getLanguage()->isRtl())
+		if (!$position && Factory::getLanguage()->isRtl())
 		{
 			$position = ' data-placement="left" ';
 		}
@@ -87,7 +90,7 @@ if (!empty($description))
 		$title     = ' data-yspoptitle="' . htmlspecialchars(trim($text, ':')) . '"'
 			. ' data-yspopcontent="'. htmlspecialchars($description) . '"';
 
-		if (!$position && JFactory::getLanguage()->isRtl())
+		if (!$position && Factory::getLanguage()->isRtl())
 		{
 			$position = ' data-placement="left" ';
 		}
@@ -97,7 +100,7 @@ if (!empty($description))
 		JevModal::popover('.hasPopover', array("trigger" => "hover focus", "placement" => "top", "container" => "#jevents_body", "delay" => array("show" => 150, "hide" => 150)));
 
 		$classes[] = 'hasTooltip';
-		$title     = ' data-yspoptitle="' . JHtml::_('tooltipText', trim($text, ':'), $description, 0) . '"';
+		$title     = ' data-yspoptitle="' . HTMLHelper::_('tooltipText', trim($text, ':'), $description, 0) . '"';
 	}
 }
 

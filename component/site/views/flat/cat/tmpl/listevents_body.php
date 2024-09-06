@@ -3,6 +3,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\String\StringHelper;
 
 $cfg = JEVConfig::getInstance();
 
@@ -22,7 +23,7 @@ $Itemid = JEVHelper::getItemid();
 			?>
 		</div>
 		<?php
-		if (\Joomla\String\StringHelper::strlen($data ['catdesc']) > 0)
+		if (StringHelper::strlen($data ['catdesc']) > 0)
 		{
 			echo "<div class='jev_catdesc'>" . HTMLHelper::_('content.prepare', $data ['catdesc']) . "</div>";
 		}

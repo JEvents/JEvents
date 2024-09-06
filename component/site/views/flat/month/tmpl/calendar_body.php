@@ -2,7 +2,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
-
+use Joomla\String\StringHelper;
 
 $cfg	 = JEVConfig::getInstance();
 
@@ -49,7 +49,7 @@ $precedingMonth = $this->datamodel->getPrecedingMonth($this->data);
 					$cleaned_day = strip_tags($dayname, '');?>
 					<td class="cal_daysnames">
 						<span class="<?php echo strtolower($cleaned_day); ?>">
-                            <?php echo Joomla\String\StringHelper::substr($cleaned_day, 0, 3);?>
+                            <?php echo StringHelper::substr($cleaned_day, 0, 3);?>
                         </span>
 					</td>
                     <?php

@@ -5,7 +5,7 @@ defined('JPATH_BASE') or die;
 
 use Joomla\CMS\Date\Date;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\Database\DatabaseDriver ;
+use Joomla\Database\DatabaseDriver;
 
 
 // on some servers with Xcache both classes seem to be 'compiled' and it throws an error but if we add this second test its ok - go figure .
@@ -591,7 +591,7 @@ if (!defined("JEVDATE"))
             }
 
             // Timezone aware version!!
-            public function toSql( $local = false, JDatabaseDriver $db = null ) {
+            public function toSql( $local = false, DatabaseDriver $db = null ) {
 
                 return $this->toFormat( '%Y-%m-%d %H:%M:%S', $local );
 

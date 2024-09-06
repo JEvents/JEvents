@@ -19,11 +19,11 @@ use Joomla\CMS\Form\Form;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Form\Field\TextField;
 
 jimport('joomla.form.helper');
-FormHelper::loadFieldClass('text');
 
-class JFormFieldJevcolumns extends JFormFieldText
+class JFormFieldJevcolumns extends TextField
 {
 
 	protected

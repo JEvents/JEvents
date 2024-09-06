@@ -10,6 +10,16 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\Registry\Registry;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\String\StringHelper;
+
 jimport('joomla.html.html.bootstrap');
 // We need to get the params first
 
@@ -19,16 +29,6 @@ if (!$jversion->isCompatible('4.0'))
 {
 	HTMLHelper::_('formbehavior.chosen', '#adminForm select.chosen');
 }
-
-use Joomla\Registry\Registry;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Plugin\PluginHelper;
-use Joomla\CMS\Filter\InputFilter;
-use Joomla\CMS\Form\Form;
-use Joomla\CMS\Factory;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Filesystem\File;
-use Joomla\String\StringHelper;
 
 $version = JEventsVersion::getInstance();
 
@@ -594,7 +594,7 @@ SCRIPT;
     <input type="hidden" name="controller" value="component" />
     <input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>" />
     <input type="hidden" name="task" value="" />
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo HTMLHelper::_('form.token'); ?>
 
 </form>
 

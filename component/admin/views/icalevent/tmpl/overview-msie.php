@@ -14,6 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\String\StringHelper;
+use Joomla\CMS\Uri\Uri;
 
 // we would use this to add custom data to the output here
 //JEVHelper::onDisplayCustomFieldsMultiRow($this->rows);
@@ -28,7 +29,7 @@ $cfg = JEVConfig::getInstance();
 $this->_largeDataSet = $cfg->get('largeDataSet', 0);
 $orderdir = Factory::getApplication()->getUserStateFromRequest("eventsorderdir", "filter_order_Dir", 'asc');
 $order = Factory::getApplication()->getUserStateFromRequest("eventsorder", "filter_order", 'start');
-$pathIMG = JURI::root() . 'administrator/images/';
+$pathIMG = Uri::root() . 'administrator/images/';
 $mainspan = 10;
 $fullspan = 12;
 ?>
@@ -75,7 +76,7 @@ $fullspan = 12;
 					<?php echo HTMLHelper::_('grid.checkall'); ?>
                 </th>
                 <th class="title" width="40%" nowrap="nowrap">
-					<?php echo JHTML::_('grid.sort', 'JEV_ICAL_SUMMARY', 'title', $orderdir, $order, "icalevent.list"); ?>
+					<?php echo HTMLHelper::_('grid.sort', 'JEV_ICAL_SUMMARY', 'title', $orderdir, $order, "icalevent.list"); ?>
                 </th>
                 <th width="10%" nowrap="nowrap"><?php echo Text::_('REPEATS'); ?></th>
                 <th width="10%" nowrap="nowrap"><?php echo Text::_('JEV_EVENT_CREATOR'); ?></th>
@@ -94,13 +95,13 @@ $fullspan = 12;
 				?>
                 <th width="10%" nowrap="nowrap"><?php echo Text::_('JEV_PUBLISHED'); ?></th>
                 <th width="20%" nowrap="nowrap">
-					<?php echo JHTML::_('grid.sort', 'JEV_TIME_SHEET', 'starttime', $orderdir, $order, "icalevent.list"); ?>
+					<?php echo HTMLHelper::_('grid.sort', 'JEV_TIME_SHEET', 'starttime', $orderdir, $order, "icalevent.list"); ?>
                 </th>
                 <th width="20%" nowrap="nowrap">
-					<?php echo JHTML::_('grid.sort', 'JEV_FIELD_CREATIONDATE', 'created', $orderdir, $order, "icalevent.list"); ?>
+					<?php echo HTMLHelper::_('grid.sort', 'JEV_FIELD_CREATIONDATE', 'created', $orderdir, $order, "icalevent.list"); ?>
                 </th>
                 <th width="20%" nowrap="nowrap">
-					<?php echo JHTML::_('grid.sort', 'JEV_MODIFIED', 'modified', $orderdir, $order, "icalevent.list"); ?>
+					<?php echo HTMLHelper::_('grid.sort', 'JEV_MODIFIED', 'modified', $orderdir, $order, "icalevent.list"); ?>
                 </th>
                 <th width="10%" nowrap="nowrap"><?php echo Text::_('JEV_ACCESS'); ?></th>
             </tr>
@@ -152,13 +153,13 @@ $fullspan = 12;
                     <td align="center">
 						<?php
 						if ($row->state()==1){
-							$img = JHTML::_('image', 'admin/tick.png', '', array('title' => ''), true) ;
+							$img = HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) ;
 						}
 						else  if ($row->state()==0){
-							$img =  JHTML::_('image', 'admin/publish_x.png', '', array('title' => ''), true) ;
+							$img =  HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true) ;
 						}
 						else {
-							$img =  JHTML::_('image', 'admin/trash.png', '', array('title' => ''), true) ;
+							$img =  HTMLHelper::_('image', 'admin/trash.png', '', array('title' => ''), true) ;
 						}
 						?>
                         <a href="javascript: void(0);" onclick="return Joomla.listItemTask('cb<?php echo $i; ?>','<?php echo $row->state() ? 'icalevent.unpublish' : 'icalevent.publish'; ?>')" class="btn btn-micro" >

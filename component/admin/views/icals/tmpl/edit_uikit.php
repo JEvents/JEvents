@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Editor\Editor;
 
 global $task, $catid;
 $db = Factory::getDbo();
@@ -22,7 +23,7 @@ JEVHelper::script('showon.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/'
 
 $uEditor = Factory::getUser()->getParam('editor', Factory::getConfig()->get('editor', 'none'));
 
-$editor = \Joomla\CMS\Editor\Editor::getInstance($uEditor);
+$editor = Editor::getInstance($uEditor);
 
 // clean any existing cache files
 $cache = Factory::getCache(JEV_COM_COMPONENT);

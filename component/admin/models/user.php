@@ -16,6 +16,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Pagination\Pagination;
 
 jimport('joomla.application.component.model');
 JLoader::import("jevuser", JPATH_COMPONENT_ADMINISTRATOR . "/tables/");
@@ -90,7 +91,7 @@ class AdminUserModelUser extends BaseDatabaseModel
 		if (empty($this->_pagination))
 		{
 			jimport('joomla.html.pagination');
-			$this->_pagination = new \Joomla\CMS\Pagination\Pagination($this->getTotal(), $this->getState('limitstart'), $this->getState('limit'));
+			$this->_pagination = new Pagination($this->getTotal(), $this->getState('limitstart'), $this->getState('limit'));
 		}
 
 		return $this->_pagination;

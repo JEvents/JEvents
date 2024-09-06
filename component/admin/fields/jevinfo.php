@@ -20,7 +20,7 @@ use Joomla\CMS\Form\FormHelper;
 use Joomla\String\StringHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 
-FormHelper::loadFieldClass('spacer');
+use Joomla\CMS\Form\Field\SpacerField;
 
 // Must load admin language files
 $lang = Factory::getLanguage();
@@ -33,7 +33,7 @@ $lang->load("com_jevents", JPATH_ADMINISTRATOR);
  * @subpackage     com_banners
  * @since          1.6
  */
-class JFormFieldJEVInfo extends JFormFieldSpacer
+class JFormFieldJEVInfo extends SpacerField
 {
 
 	/**

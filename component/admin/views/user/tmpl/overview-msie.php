@@ -15,19 +15,20 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\Helpers\Sidebar;
 
 $db = Factory::getDbo();
 
 JEventsHelper::addSubmenu();
-$this->sidebar = JHtmlSidebar::render();
+$this->sidebar = Sidebar::render();
 
 $option = JEV_COM_COMPONENT;
 
 $jinput = Factory::getApplication()->input;
 
 $user = Factory::getUser();
-$pathIMG = JURI::root() . 'administrator/images/';
+$pathIMG = Uri::root() . 'administrator/images/';
 $orderdir = $jinput->getCmd("filter_order_Dir", 'asc');
 $order = $jinput->getCmd("filter_order", 'tl.id');
 
@@ -71,21 +72,21 @@ $fullspan = 12;
                     <th width="20">
 						<?php echo HTMLHelper::_('grid.checkall'); ?>
                     </th>
-                    <th class="title" width="20%" align="left"  nowrap="nowrap"><?php echo JHTML::_('grid.sort', Text::_('NAME'), 'jname', $orderdir, $order, "user.list"); ?></th>
-                    <th width="20%" align="left" nowrap="nowrap"><?php echo JHTML::_('grid.sort', Text::_('USERNAME'), 'username', $orderdir, $order, "user.list"); ?></th>
-                    <th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', Text::_('ENABLED'), 'published', $orderdir, $order, "user.list"); ?></th>
-                    <th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', Text::_('CREATE'), 'cancreate', $orderdir, $order, "user.list"); ?></th>
-                    <th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', Text::_('MAX_EVENTS'), 'eventslimit', $orderdir, $order, "user.list"); ?></th>
-                    <th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', Text::_('PUBLISH_OWN'), 'canpublishown', $orderdir, $order, "user.list"); ?></th>
-                    <th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', Text::_('DELETE_OWN'), 'candeleteown', $orderdir, $order, "user.list"); ?></th>
-                    <th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', Text::_('EDIT_ALL'), 'canedit', $orderdir, $order, "user.list"); ?></th>
-                    <th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', Text::_('PUBLISH_ALL'), 'canpublishall', $orderdir, $order, "user.list"); ?></th>
-                    <th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', Text::_('DELETE_ALL'), 'candeleteall', $orderdir, $order, "user.list"); ?></th>
-                    <th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', Text::_('UPLOAD_IMAGES'), 'canuploadimages', $orderdir, $order, "user.list"); ?></th>
-                    <th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', Text::_('UPLOAD_FILES'), 'canuploadmovies', $orderdir, $order, "user.list"); ?></th>
-                    <th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', Text::_('CREATE_OWN_EXTRAS'), 'cancreateown', $orderdir, $order, "user.list"); ?></th>
-                    <th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', Text::_('CREATE_GLOBAL_EXTRAS'), 'cancreateglobal', $orderdir, $order, "user.list"); ?></th>
-                    <th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', Text::_('MAX_EXTRAS'), 'extraslimit', $orderdir, $order, "user.list"); ?></th>
+                    <th class="title" width="20%" align="left"  nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', Text::_('NAME'), 'jname', $orderdir, $order, "user.list"); ?></th>
+                    <th width="20%" align="left" nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', Text::_('USERNAME'), 'username', $orderdir, $order, "user.list"); ?></th>
+                    <th align="center" nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', Text::_('ENABLED'), 'published', $orderdir, $order, "user.list"); ?></th>
+                    <th align="center" nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', Text::_('CREATE'), 'cancreate', $orderdir, $order, "user.list"); ?></th>
+                    <th align="center" nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', Text::_('MAX_EVENTS'), 'eventslimit', $orderdir, $order, "user.list"); ?></th>
+                    <th align="center" nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', Text::_('PUBLISH_OWN'), 'canpublishown', $orderdir, $order, "user.list"); ?></th>
+                    <th align="center" nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', Text::_('DELETE_OWN'), 'candeleteown', $orderdir, $order, "user.list"); ?></th>
+                    <th align="center" nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', Text::_('EDIT_ALL'), 'canedit', $orderdir, $order, "user.list"); ?></th>
+                    <th align="center" nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', Text::_('PUBLISH_ALL'), 'canpublishall', $orderdir, $order, "user.list"); ?></th>
+                    <th align="center" nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', Text::_('DELETE_ALL'), 'candeleteall', $orderdir, $order, "user.list"); ?></th>
+                    <th align="center" nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', Text::_('UPLOAD_IMAGES'), 'canuploadimages', $orderdir, $order, "user.list"); ?></th>
+                    <th align="center" nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', Text::_('UPLOAD_FILES'), 'canuploadmovies', $orderdir, $order, "user.list"); ?></th>
+                    <th align="center" nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', Text::_('CREATE_OWN_EXTRAS'), 'cancreateown', $orderdir, $order, "user.list"); ?></th>
+                    <th align="center" nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', Text::_('CREATE_GLOBAL_EXTRAS'), 'cancreateglobal', $orderdir, $order, "user.list"); ?></th>
+                    <th align="center" nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort', Text::_('MAX_EXTRAS'), 'extraslimit', $orderdir, $order, "user.list"); ?></th>
                 </tr>
                 </thead>
                 <tfoot>
@@ -114,7 +115,7 @@ $fullspan = 12;
                         </td>
 
 						<?php
-						$img = $row->published ? JHTML::_('image', 'admin/tick.png', '', array('title' => ''), true) : JHTML::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+						$img = $row->published ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
 
 						$href = '';
 						if ($row->published >= 0)
@@ -126,13 +127,13 @@ $fullspan = 12;
 						}
 						else
 						{
-							$href = '<img src="' . JURI::root() . $img . '" width="12" height="12" border="0" alt="" />';
+							$href = '<img src="' . Uri::root() . $img . '" width="12" height="12" border="0" alt="" />';
 						}
 						?>
                         <td align="center"><?php echo $href; ?></td>
 
 						<?php
-						$img = $row->cancreate ? JHTML::_('image', 'admin/tick.png', '', array('title' => ''), true) : JHTML::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+						$img = $row->cancreate ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
 
 						$href = '';
 						if ($row->cancreate >= 0)
@@ -152,7 +153,7 @@ $fullspan = 12;
                         <td align="center"><?php echo $row->eventslimit; ?></td>
 
 						<?php
-						$img = $row->canpublishown ? JHTML::_('image', 'admin/tick.png', '', array('title' => ''), true) : JHTML::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+						$img = $row->canpublishown ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
 
 						$href = '';
 						if ($row->canpublishown >= 0)
@@ -170,7 +171,7 @@ $fullspan = 12;
                         <td align="center"><?php echo $href; ?></td>
 
 						<?php
-						$img = $row->candeleteown ? JHTML::_('image', 'admin/tick.png', '', array('title' => ''), true) : JHTML::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+						$img = $row->candeleteown ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
 
 						$href = '';
 						if ($row->candeleteown >= 0)
@@ -188,7 +189,7 @@ $fullspan = 12;
                         <td align="center"><?php echo $href; ?></td>
 
 						<?php
-						$img = $row->canedit ? JHTML::_('image', 'admin/tick.png', '', array('title' => ''), true) : JHTML::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+						$img = $row->canedit ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
 
 						$href = '';
 						if ($row->canedit >= 0)
@@ -206,7 +207,7 @@ $fullspan = 12;
                         <td align="center"><?php echo $href; ?></td>
 
 						<?php
-						$img = $row->canpublishall ? JHTML::_('image', 'admin/tick.png', '', array('title' => ''), true) : JHTML::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+						$img = $row->canpublishall ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
 
 						$href = '';
 						if ($row->canpublishall >= 0)
@@ -224,7 +225,7 @@ $fullspan = 12;
                         <td align="center"><?php echo $href; ?></td>
 
 						<?php
-						$img = $row->candeleteall ? JHTML::_('image', 'admin/tick.png', '', array('title' => ''), true) : JHTML::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+						$img = $row->candeleteall ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
 
 						$href = '';
 						if ($row->candeleteall >= 0)
@@ -242,7 +243,7 @@ $fullspan = 12;
                         <td align="center"><?php echo $href; ?></td>
 
 						<?php
-						$img = $row->canuploadimages ? JHTML::_('image', 'admin/tick.png', '', array('title' => ''), true) : JHTML::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+						$img = $row->canuploadimages ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
 						$href = '';
 						if ($row->canuploadimages >= 0)
 						{
@@ -259,7 +260,7 @@ $fullspan = 12;
                         <td align="center"><?php echo $href; ?></td>
 
 						<?php
-						$img = $row->canuploadmovies ? JHTML::_('image', 'admin/tick.png', '', array('title' => ''), true) : JHTML::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+						$img = $row->canuploadmovies ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
 
 						$href = '';
 						if ($row->canuploadmovies >= 0)
@@ -277,7 +278,7 @@ $fullspan = 12;
                         <td align="center"><?php echo $href; ?></td>
 
 						<?php
-						$img = $row->cancreateown ? JHTML::_('image', 'admin/tick.png', '', array('title' => ''), true) : JHTML::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+						$img = $row->cancreateown ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
 
 						$href = '';
 						if ($row->cancreateown >= 0)
@@ -295,7 +296,7 @@ $fullspan = 12;
                         <td align="center"><?php echo $href; ?></td>
 
 						<?php
-						$img = $row->cancreateglobal ? JHTML::_('image', 'admin/tick.png', '', array('title' => ''), true) : JHTML::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+						$img = $row->cancreateglobal ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
 
 						$href = '';
 						if ($row->cancreateglobal >= 0)
@@ -322,7 +323,7 @@ $fullspan = 12;
 				<?php } ?>
                 </tbody>
             </table>
-			<?php echo JHTML::_('form.token'); ?>
+			<?php echo HTMLHelper::_('form.token'); ?>
             <input type="hidden" name="hidemainmenu" value="" />
             <input type="hidden" name="boxchecked" id="boxchecked" value="0" />
             <input type="hidden" name="task" value='user.overview' />

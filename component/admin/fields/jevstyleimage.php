@@ -10,10 +10,10 @@ defined('_JEXEC') or die();
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Uri\Uri;
 
-FormHelper::loadFieldClass('hidden');
+use Joomla\CMS\Form\Field\HiddenField;
 
 
-class FormFieldJevstyleimage extends JFormFieldHidden
+class FormFieldJevstyleimage extends HiddenField
 {
 	protected function getInput()
 	{

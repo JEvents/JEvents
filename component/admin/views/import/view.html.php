@@ -17,6 +17,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * HTML View class for the component
@@ -33,14 +34,14 @@ class importViewimport extends JEventsAbstractView
 		$document->setTitle(Text::_('ICALS'));
 
 		// Set toolbar items for the page
-		JToolbarHelper::title(Text::_('ICALS'), 'jevents');
+		ToolbarHelper::title(Text::_('ICALS'), 'jevents');
 
-		JToolbarHelper::publishList('icals.publish');
-		JToolbarHelper::unpublishList('icals.unpublish');
-		JToolbarHelper::addNew('icals.edit');
-		JToolbarHelper::editList('icals.edit');
-		JToolbarHelper::deleteList(Text::_("COM_JEVENTS_MANAGE_CALENDARS_OVERVIEW_DELETE_WARNING", true), 'icals.delete');
-		JToolbarHelper::spacer();
+		ToolbarHelper::publishList('icals.publish');
+		ToolbarHelper::unpublishList('icals.unpublish');
+		ToolbarHelper::addNew('icals.edit');
+		ToolbarHelper::editList('icals.edit');
+		ToolbarHelper::deleteList(Text::_("COM_JEVENTS_MANAGE_CALENDARS_OVERVIEW_DELETE_WARNING", true), 'icals.delete');
+		ToolbarHelper::spacer();
 
 
 
@@ -60,16 +61,16 @@ class importViewimport extends JEventsAbstractView
 		$document->setTitle(Text::_('EDIT_ICS'));
 
 		// Set toolbar items for the page
-		JToolbarHelper::title(Text::_('EDIT_ICS'), 'jevents');
+		ToolbarHelper::title(Text::_('EDIT_ICS'), 'jevents');
 
-		//JToolbarHelper::save('icals.save');
+		//ToolbarHelper::save('icals.save');
 		$bar = JToolBar::getInstance('toolbar');
 		if ($this->editItem && isset($this->editItem->ics_id) && $this->editItem->ics_id > 0)
 		{
-			JToolbarHelper::save('icals.savedetails');
+			ToolbarHelper::save('icals.savedetails');
 		}
-		JToolbarHelper::cancel('icals.list');
-		//JToolbarHelper::help( 'screen.icals.edit', true);
+		ToolbarHelper::cancel('icals.list');
+		//ToolbarHelper::help( 'screen.icals.edit', true);
 
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$section = $params->get("section",0);

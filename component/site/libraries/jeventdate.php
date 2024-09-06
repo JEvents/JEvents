@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 
 // TODO replace with JevDate
 
+#[\AllowDynamicProperties]
 class JEventDate
 {
 	var $year = null;
