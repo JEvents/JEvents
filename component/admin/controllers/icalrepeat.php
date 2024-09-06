@@ -157,7 +157,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 		$ev_id = $db->loadResult();
 		if ($ev_id == 0 || $id == 0)
 		{
-			$this->setRedirect(Rout::_('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $ev_id), "ICal repeat does not exist");
+			$this->setRedirect(Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $ev_id), "ICal repeat does not exist");
 			$this->redirect();
 		}
 
