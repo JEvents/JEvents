@@ -18,13 +18,13 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Form\Field\ListField;
 
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 jimport('joomla.form.helper');
-FormHelper::loadFieldClass('list');
 
-class JFormFieldJEVuser extends JFormFieldList
+class JFormFieldJEVuser extends ListField
 {
 
 	protected $type = 'JEVuser';

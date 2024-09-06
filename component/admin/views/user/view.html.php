@@ -18,6 +18,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 jimport('joomla.filesystem.file');
 jimport('joomla.application.component.view');
@@ -42,14 +43,14 @@ class AdminUserViewUser extends JEventsAbstractView
 		$input = Factory::getApplication()->input;
 
 		// Set toolbar items for the page
-		JToolbarHelper::title(Text::_('USERS'), 'jevents');
-		JToolbarHelper::addNew("user.edit");
-		JToolbarHelper::editList("user.edit");
-		//JToolbarHelper::publish("user.publish");
-		//JToolbarHelper::unpublish("user.unpublish");
-		JToolbarHelper::deleteList("ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_USER", "user.remove");
-		//JToolbarHelper::preferences(JEV_COM_COMPONENT, '580', '750');
-		JToolbarHelper::spacer();
+		ToolbarHelper::title(Text::_('USERS'), 'jevents');
+		ToolbarHelper::addNew("user.edit");
+		ToolbarHelper::editList("user.edit");
+		//ToolbarHelper::publish("user.publish");
+		//ToolbarHelper::unpublish("user.unpublish");
+		ToolbarHelper::deleteList("ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_USER", "user.remove");
+		//ToolbarHelper::preferences(JEV_COM_COMPONENT, '580', '750');
+		ToolbarHelper::spacer();
 
 
 
@@ -80,12 +81,12 @@ class AdminUserViewUser extends JEventsAbstractView
 		$document->setTitle(Text::_('JEVENTS') . ' :: ' . Text::_('JEVENTS'));
 
 		// Set toolbar items for the page
-		JToolbarHelper::title(Text::_('JEV_EDIT_USER'), 'jevents');
+		ToolbarHelper::title(Text::_('JEV_EDIT_USER'), 'jevents');
 
-		JToolbarHelper::save("user.save");
-		JToolbarHelper::cancel("user.overview");
+		ToolbarHelper::save("user.save");
+		ToolbarHelper::cancel("user.overview");
 
-		//JToolbarHelper::help( 'edit.user', true);
+		//ToolbarHelper::help( 'edit.user', true);
 
 		$option = Factory::getApplication()->input->getCmd('option', JEV_COM_COMPONENT);
 

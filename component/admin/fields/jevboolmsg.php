@@ -17,11 +17,11 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Form\Field\RadioField;
 
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 jimport('joomla.form.helper');
-FormHelper::loadFieldClass('radio');
 
 /**
  * JEVMenu Field class for the JEvents Component
@@ -30,7 +30,7 @@ FormHelper::loadFieldClass('radio');
  * @subpackage     com_banners
  * @since          1.6
  */
-class JFormFieldJevBoolmsg extends JFormFieldRadio
+class JFormFieldJevBoolmsg extends RadioField
 {
 	/**
 	 * The form field type.s

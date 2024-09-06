@@ -153,7 +153,7 @@ SCRIPT;
 			else if (version_compare(JVERSION, '4', 'lt') && $jevparams->get('framework', 'native') == 'native')
 			{
 				// Include Bootstrap framework
-				JHtml::_('bootstrap.framework');
+                HTMLHelper::_('bootstrap.framework');
 			}
 
 			HTMLHelper::stylesheet('com_jevents/lib_jevmodal/jevmodal.css', array('relative' => true));
@@ -309,8 +309,8 @@ SCRIPT;
 
 		if ($toolTipType !== 'uikit')
 		{
-			JHtml::_('jquery.framework');
-			JHtml::_('bootstrap.framework');
+            HTMLHelper::_('jquery.framework');
+            HTMLHelper::_('bootstrap.framework');
             JLoader::register('JevHtmlBootstrap', JPATH_SITE . "/components/com_jevents/libraries/bootstrap.php");
             JevHtmlBootstrap::loadCss();
 		}

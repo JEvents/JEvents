@@ -21,12 +21,16 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Editor\Editor;
 
 jimport('joomla.application.component.view');
 
 #[\AllowDynamicProperties]
 class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 {
+
+	protected $language;
 
 	function __construct($config = null)
 	{
@@ -1059,7 +1063,7 @@ SCRIPT;
 
 		$uEditor    = Factory::getUser()->getParam('editor',  Factory::getConfig()->get('editor', 'none'));
 
-		$this->editor = \Joomla\CMS\Editor\Editor::getInstance($uEditor);
+		$this->editor = Editor::getInstance($uEditor);
 
 		// clean any existing cache files
 		$cache = Factory::getCache(JEV_COM_COMPONENT);

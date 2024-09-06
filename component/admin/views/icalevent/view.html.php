@@ -18,7 +18,10 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
-
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\HTML\Helpers\Sidebar;
+use Joomla\CMS\Pagination\Pagination;
+use Joomla\CMS\Editor\Editor;
 /**
  * HTML View class for the component
  *
@@ -40,18 +43,18 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		jimport('joomla.html.pagination');
 		$limit      = intval($this->getModel()->getState("list.limit", $app->getCfg('list_limit', 10)));
 		$limitstart = intval($this->getModel()->getState("list.start", 0));
-		$this->pagination = new \Joomla\CMS\Pagination\Pagination($total, $limitstart, $limit);
+		$this->pagination = new Pagination($total, $limitstart, $limit);
 
 		$document = Factory::getDocument();
 		$document->setTitle(Text::_('ICAL_EVENTS'));
 
 		// Set toolbar items for the page
-		JToolbarHelper::title(Text::_('ICAL_EVENTS'), 'jevents');
-		JToolbarHelper::addNew('icalevent.edit');
-		JToolbarHelper::editList('icalevent.edit');
-		JToolbarHelper::publishList('icalevent.publish');
-		JToolbarHelper::unpublishList('icalevent.unpublish');
-		JToolbarHelper::custom('icalevent.editcopy', 'copy.png', 'copy.png', 'JEV_ADMIN_COPYEDIT');
+		ToolbarHelper::title(Text::_('ICAL_EVENTS'), 'jevents');
+		ToolbarHelper::addNew('icalevent.edit');
+		ToolbarHelper::editList('icalevent.edit');
+		ToolbarHelper::publishList('icalevent.publish');
+		ToolbarHelper::unpublishList('icalevent.unpublish');
+		ToolbarHelper::custom('icalevent.editcopy', 'copy.png', 'copy.png', 'JEV_ADMIN_COPYEDIT');
 
 		// Get fields from request if they exist
 		$state      = (int) $this->getModel()->getState('filter.state', 0);
@@ -65,22 +68,22 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		if (!$state)
 		{
 			$state = 3;
-			JToolbarHelper::trash('icalevent.delete');
+			ToolbarHelper::trash('icalevent.delete');
 		} else if ($state == -2){
-			JToolbarHelper::deleteList("JEV_EMPTY_TRASH_DELETE_EVENT_AND_ALL_REPEATS", 'icalevent.emptytrash',"JTOOLBAR_EMPTY_TRASH");
+			ToolbarHelper::deleteList("JEV_EMPTY_TRASH_DELETE_EVENT_AND_ALL_REPEATS", 'icalevent.emptytrash',"JTOOLBAR_EMPTY_TRASH");
 		}
 		else {
-			JToolbarHelper::trash('icalevent.delete');
+			ToolbarHelper::trash('icalevent.delete');
 		}
 
-		JToolbarHelper::spacer();
+		ToolbarHelper::spacer();
 
 
 		$showUnpublishedICS = JEVHelper::isAdminUser();
 
 		$db = Factory::getDbo();
 
-		JHtmlSidebar::setAction('index.php?option=com_jevents&task=icalevent.list');
+		Sidebar::setAction('index.php?option=com_jevents&task=icalevent.list');
 
 		// Get list of ics Files
 		$query = "SELECT ics.ics_id as value, ics.label as text , ics.state FROM #__jevents_icsfile as ics ";
@@ -125,8 +128,8 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		}
 		$this->filters['catid'] = $clist;
 
-		$options[] = HTMLHelper::_('select.option', '1', JText::_('JEV_HIDE_PAST_EVENTS_NO'));
-		$options[] = HTMLHelper::_('select.option', '0', JText::_('JEV_HIDE_PAST_EVENTS_YES'));
+		$options[] = HTMLHelper::_('select.option', '1', Text::_('JEV_HIDE_PAST_EVENTS_NO'));
+		$options[] = HTMLHelper::_('select.option', '0', Text::_('JEV_HIDE_PAST_EVENTS_YES'));
 		$plist     = HTMLHelper::_('select.genericlist', $options, 'filter[showpast]', 'class="gsl-select"  onchange="document.adminForm.submit();"', 'value', 'text', $showpast);
 		$this->filters['showpast'] = $plist;
 
@@ -173,25 +176,25 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		{
 			JEventsHelper::addSubmenu();
 
-			JHtmlSidebar::setAction('index.php?option=com_jevents&task=icalevent.list');
-			JHtmlSidebar::addFilter(
+			Sidebar::setAction('index.php?option=com_jevents&task=icalevent.list');
+			Sidebar::addFilter(
 				Text::_('ALL_ICS_FILES'), 'filter[icsFile]', HTMLHelper::_('select.options', $icsfiles, 'value', 'text', $icsFile)
 			);
 
 			$options = array();
-			$options[] = JHTML::_('select.option', '3', Text::_('JOPTION_SELECT_PUBLISHED'));
-			$options[] = JHTML::_('select.option', '1', Text::_('PUBLISHED'));
-			$options[] = JHTML::_('select.option', '2', Text::_('UNPUBLISHED'));
-			$options[] = JHTML::_('select.option', '-1', Text::_('JTRASH'));
+			$options[] = HTMLHelper::_('select.option', '3', Text::_('JOPTION_SELECT_PUBLISHED'));
+			$options[] = HTMLHelper::_('select.option', '1', Text::_('PUBLISHED'));
+			$options[] = HTMLHelper::_('select.option', '2', Text::_('UNPUBLISHED'));
+			$options[] = HTMLHelper::_('select.option', '-1', Text::_('JTRASH'));
 			$state = (int) $this->getModel()->getState('filter.state', 3);
-			JHtmlSidebar::addFilter(
+			Sidebar::addFilter(
 				Text::_('ALL_EVENTS'), 'filter[state]', HTMLHelper::_('select.options', $options, 'value', 'text', $state)
 			);
-			JHtmlSidebar::addFilter(
+			Sidebar::addFilter(
 				Text::_('JEV_EVENT_CREATOR'), 'filter[created_by]', HTMLHelper::_('select.options', $userOptions, 'value', 'text', $created_by)
 			);
 
-			$this->sidebar = JHtmlSidebar::render();
+			$this->sidebar = Sidebar::render();
 
 			$this->pageNage = $this->pagination;
 			$this->plist    = $this->filters['showpast'];
@@ -228,7 +231,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		{
 			$document->setTitle(Text::_('CREATE_ICAL_EVENT'));
 			// Set toolbar items for the page
-			JToolbarHelper::title(Text::_('CREATE_ICAL_EVENT'), 'jevents');
+			ToolbarHelper::title(Text::_('CREATE_ICAL_EVENT'), 'jevents');
 
 			// Set default noendtime
 			$this->row->noendtime((int) $params->get('default_noendtime', '0'));
@@ -238,7 +241,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			$document->setTitle(Text::_('EDIT_ICAL_EVENT'));
 
 			// Set toolbar items for the page
-			JToolbarHelper::title(Text::_('EDIT_ICAL_EVENT'), 'jevents');
+			ToolbarHelper::title(Text::_('EDIT_ICAL_EVENT'), 'jevents');
 		}
 
 		if ($this->id > 0)
@@ -282,8 +285,8 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		}
 
 
-		JToolbarHelper::cancel('icalevent.cancel');
-		//JToolbarHelper::help( 'screen.icalevent.edit', true);
+		ToolbarHelper::cancel('icalevent.cancel');
+		//ToolbarHelper::help( 'screen.icalevent.edit', true);
 
 		// TODO move this into Form field type!
 		$this->setCreatorLookup();
@@ -309,7 +312,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 		$uEditor    = Factory::getUser()->getParam('editor',  Factory::getConfig()->get('editor', 'none'));
 
-		$this->editor = \Joomla\CMS\Editor\Editor::getInstance($uEditor);
+		$this->editor = Editor::getInstance($uEditor);
 
 		// Get the form && data
 		$this->form = $this->get('TranslateForm');
@@ -353,10 +356,10 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 	{
 		Factory::getApplication()->input->set('hidemainmenu', true);
 
-		JToolbarHelper::title(JText::_('ICAL_EVENTS'), 'jevents');
+		ToolbarHelper::title(Text::_('ICAL_EVENTS'), 'jevents');
 
-		JToolbarHelper::save('icalevent.savetranslation');
-		JToolbarHelper::cancel('icalevent.close');
+		ToolbarHelper::save('icalevent.savetranslation');
+		ToolbarHelper::cancel('icalevent.close');
 
 		$bar =  JToolBar::getInstance('toolbar');
 
@@ -372,9 +375,9 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		$document->setTitle(Text::_('CSV_IMPORT'));
 
 		// Set toolbar items for the page
-		JToolbarHelper::title(Text::_('CSV_IMPORT'), 'jevents');
+		ToolbarHelper::title(Text::_('CSV_IMPORT'), 'jevents');
 
-		JToolbarHelper::cancel('icalevent.list');
+		ToolbarHelper::cancel('icalevent.list');
 
 
 

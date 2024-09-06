@@ -253,7 +253,7 @@ class ICalEventController extends AdminIcaleventController
 
 		if ($ref == $fallback)
 		{
-			$ref = JRoute::_("index.php?option=com_jevents&task=" . $fallback);
+			$ref = Route::_("index.php?option=com_jevents&task=" . $fallback);
 		}
 		$this->setRedirect($ref);
 		$this->redirect();

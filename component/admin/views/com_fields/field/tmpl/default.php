@@ -9,6 +9,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Version;
 
 /*
 GWE mods
@@ -22,7 +23,7 @@ GWE mods
 
 echo LayoutHelper::render('gslframework.header', null, JPATH_ADMINISTRATOR. "/components/com_jevents/layouts" );
 
-$jversion = new JVersion;
+$jversion = new Version;
 
 if ($jversion->isCompatible('4.0'))
 {

@@ -20,6 +20,8 @@ use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Helper\TagsHelper;
+use Joomla\String\StringHelper;
+use Joomla\CMS\Pagination\Pagination;
 
 #[\AllowDynamicProperties]
 class AdminIcaleventController extends Joomla\CMS\MVC\Controller\AdminController
@@ -857,7 +859,7 @@ SQL;
 			if ($event && $event->state())
 			{
 				list($year, $month, $day) = JEVHelper::getYMD();
-				$this->setRedirect($event->viewDetailLink($year, $month, $day, false, $Itemid), $msg);
+				$this->setRedirect($event->viewDetailLink($year, $month, $day, true, $Itemid), $msg);
 				$this->redirect();
 			}
 			else
@@ -1486,7 +1488,7 @@ SQL;
 			$db->setQuery($query);
 			$db->execute();
 
-			if (\Joomla\String\StringHelper::strlen($detailidstring) > 0)
+			if (StringHelper::strlen($detailidstring) > 0)
 			{
 				$query = "DELETE FROM #__jevents_vevdetail WHERE evdet_id IN ($detailidstring)";
 				$db->setQuery($query);
@@ -1816,8 +1818,8 @@ SQL;
 		}
 		$userlist = HTMLHelper::_('select.genericlist', $userOptions, 'created_by', 'class="inputbox" size="1"  onchange="document.adminForm.submit();"', 'value', 'text', $created_by);
 
-		$options[] = HTMLHelper::_('select.option', '0', JText::_('JEV_NO'));
-		$options[] = HTMLHelper::_('select.option', '1', JText::_('JEV_YES'));
+		$options[] = HTMLHelper::_('select.option', '0', Text::_('JEV_NO'));
+		$options[] = HTMLHelper::_('select.option', '1', Text::_('JEV_YES'));
 		$plist     = HTMLHelper::_('select.genericlist', $options, 'showpast', 'class="gsl-select"  onchange="document.adminForm.submit();"', 'value', 'text', $showpast);
 
 		$menulist = $this->targetMenu(0, "Itemid");
@@ -1825,7 +1827,7 @@ SQL;
 		$catData = JEV_CommonFunctions::getCategoryData();
 
 		jimport('joomla.html.pagination');
-		$pagination = new \Joomla\CMS\Pagination\Pagination($total, $limitstart, $limit);
+		$pagination = new Pagination($total, $limitstart, $limit);
 
 		// Set the layout
 		$this->view->setLayout('select');

@@ -99,7 +99,7 @@ class iCalImport
 				}
 
 				// Set proxy if enabled
-				$jConfig =  JFactory::getConfig();
+				$jConfig =  Factory::getConfig();
 
 				if($jConfig->get('proxy_enable') == 1) {
 					curl_setopt($ch, CURLOPT_PROXY, $jConfig->get('proxy_host') . ":" . $jConfig->get('proxy_port'));
@@ -326,8 +326,8 @@ class iCalImport
 							$parent = "VCALENDAR";
 							break;
 
-						default:
-							// skip unknown BEGIN/END blocks
+                        default:
+							// skip unknown BEGIN/END blocks e.g. BEGIN:VALARM
 							if ($this->key == 'BEGIN')
 							{
 								$skipuntil = 'END:' . $value;
@@ -454,7 +454,7 @@ class iCalImport
 								$value = quoted_printable_decode($value);
 							}
 						}
-						// drop other ibts like language etc.
+						// drop other bits like language etc.
 					}
 				}
 
@@ -473,7 +473,10 @@ class iCalImport
 				}
 				else
 				{
-
+                    if (!isset($this->cal[$parent][$this->eventCount]))
+                    {
+                        $this->cal[$parent][$this->eventCount] = array();
+                    }
 					if (!array_key_exists("EXDATE", $this->cal[$parent][$this->eventCount]))
 					{
 						$this->cal[$parent][$this->eventCount]["EXDATE"]    = array();

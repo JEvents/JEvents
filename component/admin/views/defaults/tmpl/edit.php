@@ -116,7 +116,7 @@ if (strpos($this->item->name, "module.") === 0)
 {
 
 	// Get the plugin
-	if (JPluginHelper::getPlugin('editors', 'codemirror'))
+	if (PluginHelper::getPlugin('editors', 'codemirror'))
 	{
 		$editor = Editor::getInstance("codemirror");
 		$isCodeMirror = true;

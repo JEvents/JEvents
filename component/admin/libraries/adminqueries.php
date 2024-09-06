@@ -619,7 +619,7 @@ class JEventsAdminDBModel extends JEventsDBModel
 			$data['start'][] = $row->startrepeat;
 			$data['title'][] = $row->title; // . '\n' . $row->startrepeat;
 			$data['count'][] = $row->atdcount;
-			$data['link'][] = JRoute::_("index.php?option=com_rsvppro&task=attendees.overview&atd_id[]=" . $row->atd_id . "|" . $row->rp_id . "&repeating=" . $row->repeating, false);
+			$data['link'][] = Route::_("index.php?option=com_rsvppro&task=attendees.overview&atd_id[]=" . $row->atd_id . "|" . $row->rp_id . "&repeating=" . $row->repeating, false);
 		}
 		return $data;
 

@@ -9,6 +9,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
 extract($displayData);
 
 /**
@@ -31,21 +34,21 @@ if (!empty($description))
 {
 	if ($text && $text !== $description)
 	{
-		//JHtml::_('bootstrap.popover');
+		//HTMLHelper::_('bootstrap.popover');
 		$classes[] = 'hasYsPopover';
 		$title     = ' title="' . htmlspecialchars(trim($text, ':')) . '"'
 			. ' data-content="'. htmlspecialchars($description) . '"';
 
-		if (!$position && JFactory::getLanguage()->isRtl())
+		if (!$position && Factory::getLanguage()->isRtl())
 		{
 			$position = ' data-placement="left" ';
 		}
 	}
 	else
 	{
-		//JHtml::_('bootstrap.tooltip');
+		//HTMLHelper::_('bootstrap.tooltip');
 		$classes[] = 'hasTooltip';
-		$title     = ' title="' . JHtml::_('tooltipText', trim($text, ':'), $description, 0) . '"';
+		$title     = ' title="' . HTMLHelper::_('tooltipText', trim($text, ':'), $description, 0) . '"';
 	}
 }
 

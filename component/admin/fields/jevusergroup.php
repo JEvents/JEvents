@@ -17,10 +17,10 @@ use Joomla\CMS\Form\FormHelper;
 
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
-jimport('joomla.form.helper');
-FormHelper::loadFieldClass('usergrouplist');
+use Joomla\CMS\Form\Field\UsergrouplistField;
 
-class JFormFieldJevusergroup extends JFormFieldUsergrouplist
+
+class JFormFieldJevusergroup extends UsergrouplistField
 {
 
 	protected $type = 'Jevusergroup';

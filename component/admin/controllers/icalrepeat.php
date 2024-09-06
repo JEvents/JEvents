@@ -20,7 +20,9 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
-
+use Joomla\CMS\Session\Session;
+use Joomla\String\StringHelper;
+use Joomla\CMS\Pagination\Pagination;
 
 class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 {
@@ -76,7 +78,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 		jimport('joomla.html.pagination');
 		$limit      = intval($model->getState('list.limit', 10));
 		$limitstart = intval($model->getState('list.start', 10));
-		$pagination = new \Joomla\CMS\Pagination\Pagination($total, $limitstart, $limit);
+		$pagination = new Pagination($total, $limitstart, $limit);
 
 		$input = Factory::getApplication()->input;
 
@@ -688,7 +690,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 	function select()
 	{
 
-		\Joomla\CMS\Session\Session::checkToken('request') or jexit('Invalid Token');
+		Session::checkToken('request') or jexit('Invalid Token');
 
 		$app    = Factory::getApplication();
 		$input = $app->input;
@@ -755,7 +757,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 		$menulist = $this->targetMenu($input->getInt("Itemid"), "Itemid");
 
 		jimport('joomla.html.pagination');
-		$pagination = new \Joomla\CMS\Pagination\Pagination($total, $limitstart, $limit);
+		$pagination = new Pagination($total, $limitstart, $limit);
 
 		// get the view
 		$this->view = $this->getView("icalrepeat", "html");
@@ -887,7 +889,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 		{
 			if (strpos($key, "_") == 0)
 			{
-				$data[\Joomla\String\StringHelper::substr($key, 1)] = $val;
+				$data[StringHelper::substr($key, 1)] = $val;
 			}
 		}
 		echo var_export($data, true);

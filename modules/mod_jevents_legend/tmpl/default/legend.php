@@ -18,6 +18,7 @@ use Joomla\Utilities\ArrayHelper;
  *
  * @static
  */
+#[\AllowDynamicProperties]
 class DefaultModLegendView
 {
 

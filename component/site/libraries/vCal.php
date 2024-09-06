@@ -17,7 +17,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Object\CMSObject;
-
+use Joomla\CMS\Factory;
 
 // borrow encoding stuff from bitfolge.vcard
 

@@ -8,7 +8,7 @@
  */
 defined('JPATH_BASE') or die;
 
-use \Joomla\CMS\Factory;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 
 $leftIconLinks = GslHelper::getLeftIconLinks();

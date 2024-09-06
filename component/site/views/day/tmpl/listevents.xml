@@ -111,6 +111,7 @@
 				<option value="-1">USE_GLOBAL</option>
 				<option value="0">JEV_NO</option>
 				<option value="1">JEV_YES</option>
+				<option value="2">COM_JEVENTS_ONLY_FIRST_REPEAT</option>
 			</field>
 			<field name="overridelayout" type="text" default="" label='OVERRIDE_LAYOUT'
 			       description="OVERRIDE_LAYOUT_DESC"/>

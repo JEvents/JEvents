@@ -15,6 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\String\StringHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Session\Session;
 
 /**
  * HTML View class for the module  frontend
@@ -184,13 +185,13 @@ class DefaultModLatestView
 		$this->jeventsUIkit = $compparams->get("floatuikit", 0);
 		if (is_array($this->template) && isset($this->template[0]))
 		{
-			JFactory::getDocument()->addScriptDeclaration($this->template[0]->params->get('customjs', ''));
+			Factory::getDocument()->addScriptDeclaration($this->template[0]->params->get('customjs', ''));
 			$css = $this->template[0]->params->get('customcss', '');
 			if ($this->jeventsUIkit)
 			{
 				$css = str_replace('uk-', 'gsl-', $css);
 			}
-			JFactory::getDocument()->addStyleDeclaration($css);
+			Factory::getDocument()->addStyleDeclaration($css);
 		}
 		else if ($myparam->get("modlatest_customcss", false))
 		{
@@ -848,7 +849,7 @@ $t_datenowSQL = $t_datenow->toMysql();
 					if (false && $debugLatest)
 					{
 						echo "$yy, $mm, $dd <br>";
-						echo "new Date => $date<br>";
+						echo "new theDate => $date<br>";
 						echo "direct mktime => " . mktime(0, 0, 0, (int) $mm, (int) $dd + 1, (int) $yy) . "<br>";
 						echo "8 june " . mktime(0, 0, 0, 6, 8, 2023) . "<br>";
 						echo "9 june " . mktime(0, 0, 0, 6, 9, 2023) . "<br>";
@@ -1050,7 +1051,7 @@ $t_datenowSQL = $t_datenow->toMysql();
 			{
 				define('_JEVM_SCRIPTLOADED', 1);
 				$root   = Uri::root();
-				$token  = \Joomla\CMS\Session\Session::getFormToken();
+				$token  = Session::getFormToken();
 				$script = <<<SCRIPT
 function fetchMoreLatestEvents(modid, direction)
 {        
@@ -1338,12 +1339,12 @@ SCRIPT;
 
 			case 'today' :
 				if($dayEvent->getUnixStartDate() === strtotime(date( 'Y-m-d'))) {
-					$content .= JText::_('JEV_EVENT_TODAY');
+					$content .= Text::_('JEV_EVENT_TODAY');
 				}
 				break;
 			case 'tomorrow' :
 				if($dayEvent->getUnixStartDate() === strtotime(date( 'Y-m-d') . '+1 day')) {
-					$content .= JText::_('JEV_EVENT_TOMORROW');
+					$content .= Text::_('JEV_EVENT_TOMORROW');
 				}
 				break;
 

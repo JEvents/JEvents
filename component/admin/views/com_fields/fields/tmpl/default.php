@@ -9,6 +9,8 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Version;
 
 /*
 GWE mods
@@ -24,10 +26,10 @@ echo LayoutHelper::render('gslframework.header', null, JPATH_ADMINISTRATOR. "/co
 
 // Not sure why thse are not loaded by com_fields
 // Load the jQuery plugin && CSS
-JHtml::_('script', 'jui/jquery.searchtools.min.js', array('version' => 'auto', 'relative' => true));
-JHtml::_('stylesheet', 'jui/jquery.searchtools.css', array('version' => 'auto', 'relative' => true));
+HTMLHelper::_('script', 'jui/jquery.searchtools.min.js', array('version' => 'auto', 'relative' => true));
+HTMLHelper::_('stylesheet', 'jui/jquery.searchtools.css', array('version' => 'auto', 'relative' => true));
 
-$jversion = new JVersion;
+$jversion = new Version;
 
 if ($jversion->isCompatible('4.0'))
 {

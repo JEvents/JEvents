@@ -20,6 +20,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\String\StringHelper;
 
 // Joomla 1.5
 // tasker/controller
@@ -247,7 +248,7 @@ class JEV_CommonFunctions
 	public static function jEventsDoLink($url = "", $alt = "alt", $attr = array())
 	{
 
-		if (Joomla\String\StringHelper::strlen($url) == 0) $url = "javascript:void(0)";
+		if (StringHelper::strlen($url) == 0) $url = "javascript:void(0)";
 		$link = "<a href='" . $url . "' ";
 		if (count($attr) > 0)
 		{

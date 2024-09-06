@@ -16,11 +16,10 @@ defined('JPATH_BASE') or die;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Form\Field\SpacerField;
 
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
-jimport('joomla.form.helper');
-FormHelper::loadFieldClass('spacer');
 
 /**
  * JevModule Load Language class for the JEvents Component
@@ -29,7 +28,7 @@ FormHelper::loadFieldClass('spacer');
  * @subpackage   modules
  * @since        1.6
  */
-class JFormFieldJevloadlang extends JFormFieldSpacer
+class JFormFieldJevloadlang extends SpacerField
 {
 	protected $type = 'jevloadlang';
 

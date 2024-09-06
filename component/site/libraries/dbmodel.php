@@ -3444,6 +3444,11 @@ class JEventsDBModel
 		$extrawhere  = (count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '');
 		$extrawhere2 = (count($extrawhere2) ? ' AND ' . implode(' AND ', $extrawhere2) : '');
 
+        // Only the first repeat!
+        if ($showrepeats == 2) {
+            $extrawhere .= "\n AND rpt.startrepeat = (SELECT MIN(rptf.startrepeat) FROM #__jevents_repetition as rptf WHERE rptf.eventid = rpt.eventid) " ;
+        }
+
 		$daterange = "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$enddate'";
 		// Must suppress multiday events that have already started
 		$multidate  = "\n AND NOT (rpt.startrepeat < '$startdate' AND det.multiday=0) ";
@@ -3567,6 +3572,11 @@ class JEventsDBModel
 
 		$extrajoin  = (count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '');
 		$extrawhere = (count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '');
+
+        // Only the first repeat!
+        if ($showrepeats == 2) {
+            $extrawhere .= "\n AND rpt.startrepeat = (SELECT MIN(rptf.startrepeat) FROM #__jevents_repetition as rptf WHERE rptf.eventid = rpt.eventid) " ;
+        }
 
 		// This version picks the details from the details table
 		if ($count)
@@ -3755,6 +3765,11 @@ class JEventsDBModel
         $extrawhere = (count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '');
         $extrawhere2 = (count($extrawhere2) ? ' AND ' . implode(' AND ', $extrawhere2) : '');
 
+        // Only the first repeat!
+        if ($showrepeats == 2) {
+            $extrawhere .= "\n AND rpt.startrepeat = (SELECT MIN(rptf.startrepeat) FROM #__jevents_repetition as rptf WHERE rptf.eventid = rpt.eventid) " ;
+        }
+
         // Do we want to only use start or end dates in the range?
         $usedates = $params->get("usedates", "both");
         if ($usedates == "both") {
@@ -3794,6 +3809,7 @@ class JEventsDBModel
                 . $multidate2
                 . ")";
         }
+
         // This version picks the details from the details table
         if ($count) {
             if (!$showrepeats) {
@@ -4659,6 +4675,11 @@ class JEventsDBModel
 		$extrajoin  = (count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '');
 		$extrawhere = (count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '');
 
+        // Only the first repeat!
+        if ($showrepeats == 2) {
+            $extrawhere .= "\n AND rpt.startrepeat = (SELECT MIN(rptf.startrepeat) FROM #__jevents_repetition as rptf WHERE rptf.eventid = rpt.eventid) " ;
+        }
+
 		if ($limit > 0 || $limitstart > 0)
 		{
 			if (empty($limitstart) || !$limitstart)
@@ -4822,6 +4843,11 @@ class JEventsDBModel
 
 		$extrajoin  = (count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '');
 		$extrawhere = (count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '');
+
+        // Only the first repeat!
+        if ($showrepeats == 2) {
+            $extrawhere .= "\n AND rpt.startrepeat = (SELECT MIN(rptf.startrepeat) FROM #__jevents_repetition as rptf WHERE rptf.eventid = rpt.eventid) " ;
+        }
 
 		// Get the count
 		if ($showrepeats)

@@ -20,6 +20,7 @@ use Joomla\Utilities\ArrayHelper;
  */
 include_once(JPATH_SITE . "/modules/mod_jevents_legend/tmpl/default/legend.php");
 
+#[\AllowDynamicProperties]
 class FlatModLegendView extends DefaultModLegendView
 {
 

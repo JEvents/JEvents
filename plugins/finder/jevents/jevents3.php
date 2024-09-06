@@ -472,9 +472,9 @@ class plgFinderJEvents extends FinderIndexerAdapter
 	/**
 	 * Method to get the SQL query used to retrieve the list of jevents items.
 	 *
-	 * @param   mixed $sql A JDatabaseQuery object or null.
+	 * @param   mixed $sql A DatabaseQuery object or null.
 	 *
-	 * @return  JDatabaseQuery  A database object.
+	 * @return  DatabaseQuery  A database object.
 	 *
 	 * @since   2.5
 	 */
@@ -510,7 +510,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 	 * Method to get a SQL query to load the published and access states for
 	 * an article and category.
 	 *
-	 * @return  JDatabaseQuery  A database object.
+	 * @return  DatabaseQuery  A database object.
 	 *
 	 * @since   2.5
 	 */

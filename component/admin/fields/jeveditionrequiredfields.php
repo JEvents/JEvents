@@ -16,10 +16,11 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Form\Field\ListField;
 
 jimport('joomla.form.formfield');
 
-class JFormFieldJeveditionrequiredfields extends JFormFieldList
+class JFormFieldJeveditionrequiredfields extends ListField
 {
 	/**
 	 * The form field type.

@@ -13,6 +13,7 @@ defined('_VALID_MOS') or defined('_JEXEC') or die('No Direct Access');
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
 
 // searches event
 class jevSearchFilter extends jevFilter

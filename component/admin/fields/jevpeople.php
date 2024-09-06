@@ -3,13 +3,14 @@
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Form\Field\ListField;
 
 defined('JPATH_BASE') or die;
 
 jimport('joomla.html.html');
-jimport('joomla.form.formfield.list');
 
-class JFormFieldJevpeople extends JFormFieldList
+class JFormFieldJevpeople extends ListField
 {
 
 	/**
@@ -44,23 +45,23 @@ class JFormFieldJevpeople extends JFormFieldList
             if (!empty($types))
             {
 
-	            $options[] = JHTML::_('select.option', '0', Text::_('JEV_SELECT_PERSON_TYPE_AS_PERFORMER'));
+	            $options[] = HTMLHelper::_('select.option', '0', Text::_('JEV_SELECT_PERSON_TYPE_AS_PERFORMER'));
 
 	            Factory::getLanguage()->load('plg_jevents_jevfiles', JPATH_ADMINISTRATOR);
 
 	            foreach($types as $type)
                 {
-	                $options[] = JHTML::_('select.option', $type->type_id, Text::_($type->title) );
+	                $options[] = HTMLHelper::_('select.option', $type->type_id, Text::_($type->title) );
                 }
             }
             else
             {
-	            $options[] = JHTML::_('select.option', '0', Text::_('JEV_STRUCTURED_DATA_OUTPUT_REQUIRES_PEOPLE_TYPES_SET_UP'));
+	            $options[] = HTMLHelper::_('select.option', '0', Text::_('JEV_STRUCTURED_DATA_OUTPUT_REQUIRES_PEOPLE_TYPES_SET_UP'));
             }
         }
         else
         {
-	        $options[] = JHTML::_('select.option', '0', Text::_('JEV_STRUCTURED_DATA_OUTPUT_REQUIRES_PEOPLE_TYPES_SET_UP'));
+	        $options[] = HTMLHelper::_('select.option', '0', Text::_('JEV_STRUCTURED_DATA_OUTPUT_REQUIRES_PEOPLE_TYPES_SET_UP'));
 
         }
 

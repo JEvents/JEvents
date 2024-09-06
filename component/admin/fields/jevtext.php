@@ -5,14 +5,12 @@
  */
 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\Field\TextField;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
-JLoader::register('JFormFieldText', JPATH_SITE . '/libraries/joomla/form/fields/text.php');
-//J4 = JLoader::register('JFormFieldText', JPATH_SITE . '/libraries/src/Form/Field/TextField.php');
-
-class JFormFieldJevtext extends JFormFieldText
+class JFormFieldJevtext extends TextField
 {
 	protected function getInput()
 	{
