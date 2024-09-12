@@ -118,7 +118,6 @@ class AdminCpanelController extends AdminController
 		if ($params->get("installlayouts", 0))
 		{
 
-			// RSH Fix to allow the installation to work with J!1.6 11/19/10 - Adapater is now a subclass of JAdapterInstance!
 			$jevlayout_file = 'jevlayout.php';
 
 			jimport('joomla.filesystem.file');

@@ -685,8 +685,8 @@ class JEventsModelicalevent extends ListModel
 	 * @return  void
 	 * @since    3.0
 	 */
-	// MUST use JForm here otherwise won't run in Joomla 3.9
-	protected function preprocessForm(\JForm $form, $data, $group = 'content')
+
+	protected function preprocessForm(Form $form, $data, $group = 'content')
 	{
 
 		// Association content items

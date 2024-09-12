@@ -17,14 +17,15 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\HTML\Helpers\Sidebar;
+use Joomla\CMS\Uri\Uri;
 
 if (defined("EDITING_JEVENT"))
 	return;
 define("EDITING_JEVENT", 1);
 
 JEventsHelper::addSubmenu();
-$this->sidebar = JHtmlSidebar::render();
+$this->sidebar = Sidebar::render();
 
 $params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 // get configuration object
@@ -302,7 +303,7 @@ $accesslevels = "jeval".implode(" jeval", array_unique($accesslevels));
 						$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 						if (  $params->get("checkconflicts", 0) ||  $params->get("checkoverlappingrepeats", 1) )
 						{
-						$checkURL = JURI::root() . "components/com_jevents/libraries/checkconflict.php";
+						$checkURL = Uri::root() . "components/com_jevents/libraries/checkconflict.php";
 						$urlitemid = JEVHelper::getItemid()>0 ?  "&Itemid=".JEVHelper::getItemid() : "";
 						$ttitemid = JEVHelper::getItemid()>0 ?  "&ttItemid=".JEVHelper::getItemid() : "";
 						$checkURL = Route::_("index.php?option=com_jevents&ttoption=com_jevents&typeaheadtask=gwejson&file=checkconflict&token=". Session::getFormToken().$urlitemid.$ttitemid, false);

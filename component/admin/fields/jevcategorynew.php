@@ -18,11 +18,11 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Form\Field\ListField;
 
 jimport('joomla.form.helper');
-FormHelper::loadFieldClass('list');
 
-class JFormFieldJevcategorynew extends JFormFieldList
+class JFormFieldJevcategorynew extends ListField
 {
 
 	protected $type = 'Jevcategorynew';

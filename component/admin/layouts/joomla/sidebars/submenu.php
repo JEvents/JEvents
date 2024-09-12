@@ -5,6 +5,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\HTML\Helpers\Behavior;
 
 /**
  * @package     Joomla.Site
@@ -16,13 +17,14 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 defined('JPATH_BASE') or die;
 
+
 if (!GSLMSIE10)
 {
 	return;
 }
 
 HTMLHelper::_('jquery.framework');
-JHtmlBehavior::core();
+Behavior::core();
 
 Factory::getDocument()->addScriptDeclaration('
 	jQuery(document).ready(function($)

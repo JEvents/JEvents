@@ -18,13 +18,13 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Factory;
 
-jimport('joomla.base.adapterinstance');
+use Joomla\CMS\Adapter\AdapterInstance;
 
 /**
  * JevLayout installer
  *
  */
-class JInstallerJevlayout extends JAdapterInstance
+class JInstallerJevlayout extends AdapterInstance
 {
 
 	protected $manifest = null;

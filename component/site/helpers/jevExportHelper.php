@@ -104,11 +104,11 @@ class JevExportHelper
 
         $htmlDesc = $row->get('description');
         // convert relative to absolute URLs
-        $htmlDesc = preg_replace('#(href|src|action|background)[ ]*=[ ]*\"(?!(https?://|\#|mailto:|/))(?:\.\./|\./)?#', '$1="' . JURI::root(), $htmlDesc);
-        $htmlDesc = preg_replace('#(href|src|action|background)[ ]*=[ ]*\"(?!(https?://|\#|mailto:))/#', '$1="' . JURI::root(), $htmlDesc);
+        $htmlDesc = preg_replace('#(href|src|action|background)[ ]*=[ ]*\"(?!(https?://|\#|mailto:|/))(?:\.\./|\./)?#', '$1="' . Uri::root(), $htmlDesc);
+        $htmlDesc = preg_replace('#(href|src|action|background)[ ]*=[ ]*\"(?!(https?://|\#|mailto:))/#', '$1="' . Uri::root(), $htmlDesc);
 
-        $htmlDesc = preg_replace("#(href|src|action|background)[ ]*=[ ]*\'(?!(https?://|\#|mailto:|/))(?:\.\./|\./)?#", "$1='" . JURI::root(), $htmlDesc);
-        $htmlDesc = preg_replace("#(href|src|action|background)[ ]*=[ ]*\'(?!(https?://|\#|mailto:))/#", "$1='" . JURI::root(), $htmlDesc);
+        $htmlDesc = preg_replace("#(href|src|action|background)[ ]*=[ ]*\'(?!(https?://|\#|mailto:|/))(?:\.\./|\./)?#", "$1='" . Uri::root(), $htmlDesc);
+        $htmlDesc = preg_replace("#(href|src|action|background)[ ]*=[ ]*\'(?!(https?://|\#|mailto:))/#", "$1='" . Uri::root(), $htmlDesc);
 
 		$urlString['details']    = strip_tags($htmlDesc);
         $urlString['rawdetails'] = $htmlDesc;

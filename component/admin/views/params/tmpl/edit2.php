@@ -601,7 +601,6 @@ SCRIPT;
 						. '</label>'
 						. '</div>';
 
-
 					if ($hasfields)
 					{
 

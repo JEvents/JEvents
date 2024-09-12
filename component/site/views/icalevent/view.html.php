@@ -19,6 +19,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\String\StringHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 if (File::exists(JPATH_ADMINISTRATOR . '/includes/toolbar.php')) {
     require_once(JPATH_ADMINISTRATOR . '/includes/toolbar.php');
@@ -86,13 +87,13 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		if (strlen($this->row->title()) > 0)
 		{
 			// Set toolbar items for the page
-			JToolbarHelper::title(Text::_('EDIT_ICAL_EVENT'), 'jevents');
+			ToolbarHelper::title(Text::_('EDIT_ICAL_EVENT'), 'jevents');
 			$document->setTitle(Text::_('EDIT_ICAL_EVENT'));
 		}
 		else
 		{
 			// Set toolbar items for the page
-			JToolbarHelper::title(Text::_('CREATE_ICAL_EVENT'), 'jevents');
+			ToolbarHelper::title(Text::_('CREATE_ICAL_EVENT'), 'jevents');
 			$document->setTitle(Text::_('CREATE_ICAL_EVENT'));
 		}
 

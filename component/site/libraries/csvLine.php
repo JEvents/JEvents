@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
+use Joomla\String\StringHelper;
 
 /**
  * Class for objects containing lines of converted CSV file to iCal format
@@ -355,7 +356,7 @@ class CsvLine
 
 		$newdatetime = JevDate::strtotime($datetime);
 		$tempdate    = new JevDate($newdatetime);
-		if (Joomla\String\StringHelper::strlen($datetime) <= 10 && $tempdate->toFormat("%H:%M:%S") == "00:00:00")
+		if (StringHelper::strlen($datetime) <= 10 && $tempdate->toFormat("%H:%M:%S") == "00:00:00")
 		{
 			// in this case we have not time element so don't set it otherwise iCal import will think a time is actually set and not process all day or no end time events correctly
 			return date("Ymd", $newdatetime);

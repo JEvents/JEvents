@@ -12,6 +12,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * HTML View class for the component frontend
@@ -20,6 +21,7 @@ use Joomla\CMS\Component\ComponentHelper;
  */
 include_once(JPATH_SITE . "/modules/mod_jevents_legend/tmpl/default/legend.php");
 
+#[\AllowDynamicProperties]
 class GeraintModLegendView extends DefaultModLegendView
 {
 
@@ -246,7 +248,7 @@ class GeraintModLegendView extends DefaultModLegendView
 		$cat = $row->id > 0 ? "&catids=$row->id" : "";
 		//$rowparams = new JevRegistry(isset($row->params)?$row->params:null);
 		//$image = $rowparams->get("image",false);
-		//$image = $image? "<img src = '".JURI::root().$image."' class='catimage'  alt='categoryimage' />" : "";
+		//$image = $image? "<img src = '".Uri::root().$image."' class='catimage'  alt='categoryimage' />" : "";
 		$content = '<div class="event_legend_item ' . $catclass . '" style="border-color:' . $row->color . '">';
 		$content .= '<div class="event_legend_name" style="border-color:' . $row->color . '">'
 			. '<a href="' . Route::_("index.php?option=" . JEV_COM_COMPONENT . "$cat$itm$tsk") . '" title="' . JEventsHTML::special($row->name) . '">'

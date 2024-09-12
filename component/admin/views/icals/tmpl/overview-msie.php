@@ -13,6 +13,8 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\HTML\Helpers\Sidebar;
+use Joomla\CMS\Uri\Uri;
 
 $db = Factory::getDbo();
 
@@ -22,15 +24,15 @@ $this->search= $db->escape( trim( strtolower( $this->search ) ) );
 
 JEventsHelper::addSubmenu();
 
-$this->sidebar = JHtmlSidebar::render();
+$this->sidebar = Sidebar::render();
 
 $user = Factory::getUser();
 
 // get configuration object
 $cfg = JEVConfig::getInstance();
 
-$pathIMG = JURI::root() . 'administrator/images/';
-$pathJeventsIMG = JURI::root() . "administrator/components/" . JEV_COM_COMPONENT . "/assets/images/";
+$pathIMG = Uri::root() . 'administrator/images/';
+$pathJeventsIMG = Uri::root() . "administrator/components/" . JEV_COM_COMPONENT . "/assets/images/";
 
 global $task;
 
@@ -116,7 +118,7 @@ $fullspan = 12;
                     </td>
                     <td align="center">
 						<?php
-						$img = $row->state ? JHTML::_('image', 'admin/tick.png', '', array('title' => ''), true) : JHTML::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+						$img = $row->state ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
 						?>
                         <a href="javascript: void(0);" onclick="return Joomla.listItemTask('cb<?php echo $i; ?>','<?php echo $row->state ? 'icals.unpublish' : 'icals.publish'; ?>')">
 							<?php echo $img; ?>
@@ -126,7 +128,7 @@ $fullspan = 12;
 						<?php
 						if ($row->icaltype == 0)
 						{
-							$img = $row->autorefresh ? JHTML::_('image', 'admin/tick.png', '', array('title' => ''), true) : JHTML::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+							$img = $row->autorefresh ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
 							?>
                             <a href="javascript: void(0);" onclick="return Joomla.listItemTask('cb<?php echo $i; ?>','<?php echo $row->autorefresh ? 'icals.noautorefresh' : 'icals.autorefresh'; ?>')">
 								<?php echo $img; ?>
@@ -135,7 +137,7 @@ $fullspan = 12;
 							if ($row->autorefresh)
 							{
 								?>
-                                <br/><a href="<?php echo JURI::root() . "index.php?option=" . JEV_COM_COMPONENT . "&icsid=" . $row->ics_id . "&task=icals.reload"; ?>" title="<?php echo Text::_("JEV_AUTOREFRESH_LINK") ?>"><?php echo Text::_("JEV_AUTOREFRESH_LINK") ?></a>
+                                <br/><a href="<?php echo Uri::root() . "index.php?option=" . JEV_COM_COMPONENT . "&icsid=" . $row->ics_id . "&task=icals.reload"; ?>" title="<?php echo Text::_("JEV_AUTOREFRESH_LINK") ?>"><?php echo Text::_("JEV_AUTOREFRESH_LINK") ?></a>
 								<?php
 							}
 						}
@@ -149,7 +151,7 @@ $fullspan = 12;
 						<?php
 						if ($row->icaltype == 2)
 						{
-							$img = $row->isdefault ? JHTML::_('image', 'admin/tick.png', '', array('title' => ''), true) : JHTML::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+							$img = $row->isdefault ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
 							?>
                             <a href="javascript: void(0);" onclick="return Joomla.listItemTask('cb<?php echo $i; ?>','<?php echo $row->isdefault ? 'icals.notdefault' : 'icals.isdefault'; ?>')">
 								<?php echo $img; ?>

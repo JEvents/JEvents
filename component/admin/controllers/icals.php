@@ -18,6 +18,7 @@ use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Pagination\Pagination;
 
 #[\AllowDynamicProperties]
 class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
@@ -92,7 +93,7 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
 		$filters['catid'] = $clist;
 
 		jimport('joomla.html.pagination');
-		$pagination = new \Joomla\CMS\Pagination\Pagination($total, $limitstart, $limit);
+		$pagination = new Pagination($total, $limitstart, $limit);
 
 		// Set the layout
 		$this->view->setLayout('overview');

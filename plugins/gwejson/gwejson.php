@@ -10,13 +10,13 @@
 defined( 'JPATH_BASE' ) or die;
 
 use Joomla\CMS\Factory;
-use Joomla\Filesystem\Folder;
+use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Session\Session;
-use Joomla\Filesystem\File;
+use Joomla\CMS\Filesystem\File;
 
 /*
   if (defined('_SC_START')){
@@ -34,6 +34,8 @@ use Joomla\Filesystem\File;
  */
 #[\AllowDynamicProperties]
 class PlgSystemGwejson extends CMSPlugin {
+
+	protected $doc;
 
     public function __construct( &$subject, $config ) {
         parent::__construct( $subject, $config );
@@ -314,6 +316,9 @@ class PlgSystemGwejson extends CMSPlugin {
             if ( Factory::getApplication()->isClient( 'administrator' ) )
             {
                 $menuConfigFiles = Folder::files( JPATH_SITE . "/components/com_jevents/views/", 'menuconfig.xml', true, true );
+
+                $lang = Factory::getLanguage();
+                $lang->load("com_jevents", JPATH_SITE);
 
                 foreach ( $menuConfigFiles as $menuConfigFile )
                 {

@@ -16,6 +16,9 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Editor\Editor;
 
 /**
  * HTML View class for the component
@@ -29,26 +32,24 @@ class AdminParamsViewParams extends JEventsAbstractView
 	{
 		$uEditor    = Factory::getUser()->getParam('editor',  Factory::getConfig()->get('editor', 'none'));
 
-		$this->editor = \Joomla\CMS\Editor\Editor::getInstance($uEditor);
+		$this->editor = Editor::getInstance($uEditor);
 
 		$document = Factory::getDocument();
 		$document->setTitle(Text::_('COM_JEVENTS_CONFIGURATION'));
 
 		// Set toolbar items for the page
-		JToolbarHelper::title(Text::_('COM_JEVENTS_CONFIGURATION'), 'jevents');
+		ToolbarHelper::title(Text::_('COM_JEVENTS_CONFIGURATION'), 'jevents');
 
-		JToolbarHelper::apply('params.apply');
-		JToolbarHelper::save('params.save');
+		ToolbarHelper::apply('params.apply');
+		ToolbarHelper::save('params.save');
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		$landingpage = $params->get("landingpage", 'cpanel.cpanel');
-		JToolbarHelper::cancel($landingpage);
+		ToolbarHelper::cancel($landingpage);
 
 		$model = $this->getModel();
 
-		jimport('joomla.form.form');
-
 		// Add the search path for the admin component config.xml file.
-		\Joomla\CMS\Form\Form::addFormPath(JPATH_ADMINISTRATOR . '/components/' . JEV_COM_COMPONENT);
+		Form::addFormPath(JPATH_ADMINISTRATOR . '/components/' . JEV_COM_COMPONENT);
 
 		// Get the form.
 		// Some plugins called by the form can wreck the layout by outputting things here like &#65279; !!
@@ -80,10 +81,10 @@ class AdminParamsViewParams extends JEventsAbstractView
 		$document->setTitle(Text::_('DB_SETUP'));
 
 		// Set toolbar items for the page
-		JToolbarHelper::title(Text::_('DB_SETUP'), 'jevents');
+		ToolbarHelper::title(Text::_('DB_SETUP'), 'jevents');
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		$landingpage = $params->get("landingpage", 'cpanel.cpanel');
-		JToolbarHelper::cancel($landingpage);
+		ToolbarHelper::cancel($landingpage);
 
 	}
 }

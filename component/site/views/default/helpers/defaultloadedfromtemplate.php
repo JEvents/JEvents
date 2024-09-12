@@ -705,13 +705,13 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 				if (!isset($allcat_catids))
 				{
-					$db         = JFactory::getDbo();
+					$db         = Factory::getDbo();
 					$catsql     = "SELECT cat.id, cat.title AS name, cat.alias AS slug, cat.params FROM #__categories  AS cat WHERE cat.extension='com_jevents' ";
 					$db->setQuery($catsql);
 					$allcat_catids = $db->loadObjectList('id');
 				}
 
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 				$db->setQuery("Select catid from #__jevents_catmap  WHERE evid = " . $event->ev_id());
 				$allcat_eventcats = $db->loadColumn();
 
@@ -1191,12 +1191,12 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			case "{{TOMORROW}}" :
 				if(strtotime($event->startDate()) === strtotime(date( 'Y-m-d'))) {
 					$search[]   = '{{TODAY}}';
-					$replace[]  = JText::_('JEV_EVENT_TODAY');
+					$replace[]  = Text::_('JEV_EVENT_TODAY');
 				}
 
 				if(strtotime($event->startDate()) === strtotime(date( 'Y-m-d') . '+1 day')) {
 					$search[]   = '{{TOMORROW}}';
-					$replace[]  = JText::_('JEV_EVENT_TOMORROW');
+					$replace[]  = Text::_('JEV_EVENT_TOMORROW');
 				}
 				break;
 
@@ -1774,7 +1774,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				$search[] = "{{CREATOR_DISPLAY_BEFORE_FIRST_SPACE}}";
 				if ($jevparams->get("com_byview", 1))
 				{
-					$value      = JFactory::getUser($event->created_by())->name;
+					$value      = Factory::getUser($event->created_by())->name;
 					$expParts   = explode(' ', $value);
 					$newValue   = $expParts[0];
 					$replace[]  = $newValue;
@@ -1789,7 +1789,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				$search[] = "{{CREATOR_DISPLAY_AFTER_FIRST_SPACE}}";
 				if ($jevparams->get("com_byview", 1))
 				{
-					$value      = JFactory::getUser($event->created_by())->name;
+					$value      = Factory::getUser($event->created_by())->name;
 					$expParts   = explode(' ', $value);
 					$newValue   = $expParts[0];
 					$replace[]  = $newValue;
@@ -2032,7 +2032,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 								$lddata["image"] = substr($lddata["image"], 1);
 							}
 							// no need to add host details to call to getSizedImage Url
-							$lddata["image"] = array(JURI::root(false)  . $lddata["image"]);
+							$lddata["image"] = array(Uri::root(false)  . $lddata["image"]);
 						}
 
 						if ($resetparams)

@@ -141,7 +141,7 @@ function DefaultEventIcalDialog($view, $row, $mask, $bootstrap = false)
 						</div>
 						<?php
 					}
-					$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+					$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 					if ($params->get("icalformatted", 1) == 1)
 					{
 						?>
@@ -296,7 +296,7 @@ function DefaultEventIcalDialog($view, $row, $mask, $bootstrap = false)
 						</div>
 						<?php
 					}
-					$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+					$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 					if ($params->get("icalformatted", 1) == 1)
 					{
 					?>

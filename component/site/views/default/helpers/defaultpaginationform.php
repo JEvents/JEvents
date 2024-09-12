@@ -6,6 +6,8 @@ use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\String\StringHelper;
+use Joomla\CMS\Pagination\Pagination;
 
 function DefaultPaginationForm($total, $limitstart, $limit, $keyword = "")
 {
@@ -14,7 +16,7 @@ function DefaultPaginationForm($total, $limitstart, $limit, $keyword = "")
 
 	$input = Factory::getApplication()->input;
 
-	$pageNav = new \Joomla\CMS\Pagination\Pagination($total, $limitstart, $limit);
+	$pageNav = new Pagination($total, $limitstart, $limit);
 	if ($keyword != "" && method_exists($pageNav, "setAdditionalUrlParam"))
 	{
 		$pageNav->setAdditionalUrlParam("keyword", urlencode($keyword));
@@ -24,7 +26,7 @@ function DefaultPaginationForm($total, $limitstart, $limit, $keyword = "")
 	$task   = $input->get("jevtask", null, null);
 	// include catids to make sure not lost when category is pre-selected
 	$catids = $input->getString("catids", $input->getString("category_fv", ""));
-	if (\Joomla\String\StringHelper::strlen($catids) > 0)
+	if (StringHelper::strlen($catids) > 0)
 	{
 		$catids = explode("|", $catids);
 		$catids = ArrayHelper::toInteger($catids);

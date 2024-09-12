@@ -18,6 +18,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
 
 $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
@@ -511,7 +512,7 @@ SCRIPT;
         <input type="hidden" name="redirecturl" value=""/>
         <input type="hidden" name="boxchecked" id="boxchecked" value="0"/>
         <input type="hidden" name="form_submitted" value="1"/>
-        <input type="hidden" name="baseurl" id="baseurl" value="<?php echo JURI::root(); ?>"/>
+        <input type="hidden" name="baseurl" id="baseurl" value="<?php echo Uri::root(); ?>"/>
         <input type="hidden" name="listlayout" id="listlayout"  value=""/>
         <input type="hidden" id="ystscomponent" value="dashboard"/>
 		<?php echo HTMLHelper::_('form.token', array('id' => "tokenid")); ?>

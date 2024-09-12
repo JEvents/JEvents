@@ -26,12 +26,12 @@ jimport('joomla.filesystem.folder');
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
-FormHelper::loadFieldClass('text');
+use Joomla\CMS\Form\Field\TextField;
 
 include_once(JPATH_ADMINISTRATOR . "/components/com_jevents/jevents.defines.php");
 
 #[\AllowDynamicProperties]
-class JFormFieldJevfilters extends JFormFieldText
+class JFormFieldJevfilters extends TextField
 {
 
 	protected

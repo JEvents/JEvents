@@ -20,7 +20,9 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
-
+use Joomla\CMS\Session\Session;
+use Joomla\String\StringHelper;
+use Joomla\CMS\Pagination\Pagination;
 
 class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 {
@@ -76,7 +78,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 		jimport('joomla.html.pagination');
 		$limit      = intval($model->getState('list.limit', 10));
 		$limitstart = intval($model->getState('list.start', 10));
-		$pagination = new \Joomla\CMS\Pagination\Pagination($total, $limitstart, $limit);
+		$pagination = new Pagination($total, $limitstart, $limit);
 
 		$input = Factory::getApplication()->input;
 
@@ -155,7 +157,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 		$ev_id = $db->loadResult();
 		if ($ev_id == 0 || $id == 0)
 		{
-			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $ev_id, "ICal repeat does not exist");
+			$this->setRedirect(Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $ev_id), "ICal repeat does not exist");
 			$this->redirect();
 		}
 
@@ -279,7 +281,9 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 					exit();
 				}
 			}
-			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=icalrepeat.detail&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day", "" . Text::_("JEV_ICAL_RPT_UPDATED") . "");
+			$url = 'index.php?option=' . JEV_COM_COMPONENT . "&task=icalrepeat.detail&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day";
+			$url = Route::_($url);
+			$this->setRedirect($url, "" . Text::_("JEV_ICAL_RPT_UPDATED") . "");
 			$this->redirect();
 		}
 
@@ -408,7 +412,10 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 			$rp_id = (int) $cid[0];
 		if ($rp_id == 0)
 		{
-			$this->setRedirect('index.php?option=' . $option . '&task=icalrepeat.list&cid[]=' . $rp_id, "1Cal rpt NOT SAVED");
+            $url = 'index.php?option=' . $option . '&task=icalrepeat.list&cid[]=' . $rp_id;
+            $url = Route::_($url);
+
+            $this->setRedirect($url, "1Cal rpt NOT SAVED");
 			$this->redirect();
 		}
 
@@ -618,7 +625,10 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 			{
 				list($year, $month, $day) = JEVHelper::getYMD();
 				$rettask = $input->getString("rettask", "day.listevents");
-				$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day", "" . Text::_("JEV_COULD_NOT_SAVE_REPEAT_SAME_START_END") . "", "error");
+                $url = 'index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day";
+                $url = Route::_($url);
+
+                $this->setRedirect($url, "" . Text::_("JEV_COULD_NOT_SAVE_REPEAT_SAME_START_END") . "", "error");
 				$this->redirect();
 			}
 		}
@@ -679,7 +689,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 				exit();
 			}
 			// return to the event repeat
-			$this->setRedirect(Route::_('index.php?option=' . JEV_COM_COMPONENT . "&task=icalrepeat.edit&evid=" . $rpt->rp_id . "&year=$year&month=$month&day=$day&Itemid=" . JEVHelper::getItemid(), false), $msg);
+            $this->setRedirect(Route::_('index.php?option=' . JEV_COM_COMPONENT . "&task=icalrepeat.edit&evid=" . $rpt->rp_id . "&year=$year&month=$month&day=$day&Itemid=" . JEVHelper::getItemid(), false), $msg);
 			$this->redirect();
 		}
 
@@ -688,7 +698,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 	function select()
 	{
 
-		\Joomla\CMS\Session\Session::checkToken('request') or jexit('Invalid Token');
+		Session::checkToken('request') or jexit('Invalid Token');
 
 		$app    = Factory::getApplication();
 		$input = $app->input;
@@ -755,7 +765,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 		$menulist = $this->targetMenu($input->getInt("Itemid"), "Itemid");
 
 		jimport('joomla.html.pagination');
-		$pagination = new \Joomla\CMS\Pagination\Pagination($total, $limitstart, $limit);
+		$pagination = new Pagination($total, $limitstart, $limit);
 
 		// get the view
 		$this->view = $this->getView("icalrepeat", "html");
@@ -887,7 +897,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 		{
 			if (strpos($key, "_") == 0)
 			{
-				$data[\Joomla\String\StringHelper::substr($key, 1)] = $val;
+				$data[StringHelper::substr($key, 1)] = $val;
 			}
 		}
 		echo var_export($data, true);
@@ -964,7 +974,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 		{
 			list($year, $month, $day) = JEVHelper::getYMD();
 			$rettask = $input->getString("rettask", "day.listevents");
-			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day", "" . Text::_("JEV_ICAL_RPT_UPDATED") . "");
+			$this->setRedirect(Route::_('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day"), "" . Text::_("JEV_ICAL_RPT_UPDATED") . "");
 			$this->redirect();
 		}
 

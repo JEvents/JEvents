@@ -26,6 +26,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\String\StringHelper;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\HTML\Helpers\Sidebar;
 
 /**
  * HTML View class for the component
@@ -48,13 +50,13 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		$document->setTitle(Text::_('JEVENTS_DASHBOARD'));
 
 		// Set toolbar items for the page
-		JToolbarHelper::title(Text::_('JEVENTS_DASHBOARD'), 'jevents');
+		ToolbarHelper::title(Text::_('JEVENTS_DASHBOARD'), 'jevents');
 
 		JEventsHelper::addSubmenu();
 
 		if (GSLMSIE10)
 		{
-			$this->sidebar = JHtmlSidebar::render();
+			$this->sidebar = Sidebar::render();
 		}
 
 		$this->checkForAddons();
@@ -142,7 +144,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 	{
 
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
-		if ($params->get("clubcode", "") && Joomla\String\StringHelper::strlen($params->get("clubcode", "")) > 10)
+		if ($params->get("clubcode", "") && StringHelper::strlen($params->get("clubcode", "")) > 10)
 		{
 			return;
 		}
@@ -604,7 +606,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		$document = Factory::getDocument();
 		$document->setTitle(Text::_('JEVENTS') . ' :: ' . Text::_('JEVENTS'));
 
-		JToolbarHelper::title(Text::_('JEVENTS') . ' :: ' . Text::_('JEVENTS'), 'jevents');
+		ToolbarHelper::title(Text::_('JEVENTS') . ' :: ' . Text::_('JEVENTS'), 'jevents');
 
 
 

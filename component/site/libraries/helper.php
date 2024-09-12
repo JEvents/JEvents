@@ -4565,11 +4565,11 @@ SCRIPT;
 		}
 
         // convert relative to absolute URLs
-        $htmlDesc = preg_replace('#(href|src|action|background)[ ]*=[ ]*\"(?!(https?://|\#|mailto:|/))(?:\.\./|\./)?#', '$1="' . JURI::root(), $htmlDesc);
-        $htmlDesc = preg_replace('#(href|src|action|background)[ ]*=[ ]*\"(?!(https?://|\#|mailto:))/#', '$1="' . JURI::root(), $htmlDesc);
+        $htmlDesc = preg_replace('#(href|src|action|background)[ ]*=[ ]*\"(?!(https?://|\#|mailto:|/))(?:\.\./|\./)?#', '$1="' . Uri::root(), $htmlDesc);
+        $htmlDesc = preg_replace('#(href|src|action|background)[ ]*=[ ]*\"(?!(https?://|\#|mailto:))/#', '$1="' . Uri::root(), $htmlDesc);
 
-        $htmlDesc = preg_replace("#(href|src|action|background)[ ]*=[ ]*\'(?!(https?://|\#|mailto:|/))(?:\.\./|\./)?#", "$1='" . JURI::root(), $htmlDesc);
-        $htmlDesc = preg_replace("#(href|src|action|background)[ ]*=[ ]*\'(?!(https?://|\#|mailto:))/#", "$1='" . JURI::root(), $htmlDesc);
+        $htmlDesc = preg_replace("#(href|src|action|background)[ ]*=[ ]*\'(?!(https?://|\#|mailto:|/))(?:\.\./|\./)?#", "$1='" . Uri::root(), $htmlDesc);
+        $htmlDesc = preg_replace("#(href|src|action|background)[ ]*=[ ]*\'(?!(https?://|\#|mailto:))/#", "$1='" . Uri::root(), $htmlDesc);
 
         // wraplines	from vCard class
 		$cfg = JEVConfig::getInstance();
@@ -4743,7 +4743,7 @@ SCRIPT;
             'cachebase'    => JPATH_ADMINISTRATOR . '/cache',
             'lifetime'     => 30
         );
-        $cache   = JCache::getInstance('', $options);
+        $cache   = Cache::getInstance('', $options);
         $cache->setCaching(true);
 
         $alreadyUpdated = $cache->get('alreadyUpdated', 'jevents_updateurls');
@@ -4875,7 +4875,7 @@ SCRIPT;
 
         );
 
-        //JFactory::getApplication()->enqueueMessage("CHANGE UPDATESERVER", 'warning');
+        //Factory::getApplication()->enqueueMessage("CHANGE UPDATESERVER", 'warning');
         $debug = "XDEBUG_SESSION_START=PHPSTORM&";
         //$updateDomain = "http://ubu.j33jq.com";
         $debug = "";

@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+#[\AllowDynamicProperties]
 class catLegend
 {
 	function __construct($id, $name, $color, $description, $parent_id = 0)

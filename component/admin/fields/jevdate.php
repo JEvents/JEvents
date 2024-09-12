@@ -14,15 +14,14 @@
 defined('JPATH_BASE') or die;
 
 use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Form\Field\CalendarField;
 
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
-jimport('joomla.form.helper');
-FormHelper::loadFieldClass('calendar');
 
-class JFormFieldJEVDate extends JFormFieldCalendar
+class JFormFieldJEVDate extends CalendarField
 {
-	public $type = 'JEVDate';  // must be public as per JFormFieldCalendar!!
+	public $type = 'JEVDate';  // must be public as per CalendarField!!
 
 	public function getInput()
 	{

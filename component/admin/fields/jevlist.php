@@ -12,9 +12,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Form\Field\ListField;
+
 jimport('joomla.form.formfield');
 
-class JFormFieldJevlist extends JFormFieldList
+class JFormFieldJevlist extends ListField
 {
 	/**
 	 * The form field type.

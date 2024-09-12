@@ -10,7 +10,7 @@
 defined('JPATH_BASE') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Language\Text;
 if (GSLMSIE10)
 {
 	include (JPATH_SITE . "/layouts/joomla/toolbar/" .  basename(__FILE__));
@@ -32,7 +32,7 @@ if (!$doTask && $task)
 	$doTask = "Joomla.submitbutton('" . $task . "')";
 	if ($listCheck)
 	{
-		$doTask = "if ( document.getElementById('boxchecked').value > 0 ) { " . $doTask . " } else alert ('" . JText::_('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST', true) . "');";
+		$doTask = "if ( document.getElementById('boxchecked').value > 0 ) { " . $doTask . " } else alert ('" . Text::_('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST', true) . "');";
 
 	}
 }

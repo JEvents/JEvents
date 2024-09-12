@@ -5,9 +5,9 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Component\ComponentHelper;
 
-FormHelper::loadFieldClass('text');
+use Joomla\CMS\Form\Field\TextField;
 
-class FormFieldJeveventtext extends JFormFieldText
+class FormFieldJeveventtext extends TextField
 {
 
 	/**

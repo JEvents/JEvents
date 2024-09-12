@@ -10,11 +10,8 @@ defined('_JEXEC') or die();
 
 use Joomla\CMS\Form\Field\RadioField;
 
-if(file_exists(JPATH_SITE . "/libraries/joomla/form/fields/radio.php")) {
-    include_once(JPATH_SITE . "/libraries/joomla/form/fields/radio.php");
-}
 
-class JFormFieldJevradio extends JFormFieldRadio
+class JFormFieldJevradio extends RadioField
 {
 	protected function getInput()
 	{

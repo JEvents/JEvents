@@ -107,7 +107,7 @@ $function = $input->getCmd('function', 'jSelectEvent');
 			  $link = $router->build($link)->toString(array('path', 'query', 'fragment'));
 
 			  // SEF URL !
-			  $link = JURI::root().str_replace('/administrator/', '', $link);
+			  $link = Uri::root().str_replace('/administrator/', '', $link);
 			 */
 
 			// non-sef URL

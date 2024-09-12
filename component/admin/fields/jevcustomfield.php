@@ -3,13 +3,14 @@
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Form\Field\ListField;
 
 defined('JPATH_BASE') or die;
 
 jimport('joomla.html.html');
-jimport('joomla.form.formfield.list');
 
-class JFormFieldJevcustomfield extends JFormFieldList
+class JFormFieldJevcustomfield extends ListField
 {
 
 	/**
@@ -73,24 +74,24 @@ class JFormFieldJevcustomfield extends JFormFieldList
 
 	            	if ($customfield['fieldtype'] == $fieldtype )
 		            {
-			            $options[] = JHTML::_('select.option', $customfield['name'], $customfield['label']);
+			            $options[] = HTMLHelper::_('select.option', $customfield['name'], $customfield['label']);
 		            }
 	            }
 
 	            if (count($options) > 1)
 	            {
-		            array_unshift($options, JHTML::_('select.option', '0', Text::_( (string) $this->element['selectmessage'] )));
+		            array_unshift($options, HTMLHelper::_('select.option', '0', Text::_( (string) $this->element['selectmessage'] )));
 	            }
 
             }
             else
             {
-	            $options[] = JHTML::_('select.option', '0', Text::_((string) $this->element['badconfigmessage'] ));
+	            $options[] = HTMLHelper::_('select.option', '0', Text::_((string) $this->element['badconfigmessage'] ));
             }
         }
         if (count($options) == 0)
         {
-	        $options[] = JHTML::_('select.option', '0',  Text::_((string) $this->element['badconfigmessage'] ));
+	        $options[] = HTMLHelper::_('select.option', '0',  Text::_((string) $this->element['badconfigmessage'] ));
 
         }
 

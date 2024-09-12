@@ -564,6 +564,7 @@ class jIcalEventRepeat extends jIcalEventDB
 		$Itemid = JEVHelper::getItemid();
 		list($year, $month, $day) = JEVHelper::getYMD();
 		$this->datamodel = new JEventsDataModel();
+        $this->datamodel->setupComponentCatids();
 
 		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
 		if (method_exists("JEVHelper", "getMinYear"))

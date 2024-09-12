@@ -6,6 +6,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\HTML\Helpers\Bootstrap;
 
 $cfg = JEVConfig::getInstance();
 
@@ -161,7 +163,7 @@ if ($params->get("bootstrapcss", 1)==1)
 }
 else if ($params->get("bootstrapcss", 1)==2)
 {
-	JHtmlBootstrap::loadCss();
+	Bootstrap::loadCss();
 }
 
 */

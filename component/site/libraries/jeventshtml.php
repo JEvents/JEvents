@@ -21,6 +21,7 @@ use Joomla\Registry\Registry;
 
 // TODO replace with JevDate
 
+#[\AllowDynamicProperties]
 class JEventsHTML
 {
 	public static function buildReccurDaySelect($reccurday, $tag_name, $args)
