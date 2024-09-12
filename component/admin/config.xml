@@ -479,6 +479,8 @@ Default should be set by the custom field
 
 		<field name="multicategory" type="jevboolean" class="gsl-button-group" default="0" menu="hide"
 		       label='JEV_MULTICATEGORY_EVENTS' description='JEV_MULTICATEGORY_EVENTS_DESC' difficulty="2"/>
+		<field name="strictcategorylanguage" type="jevboolean" class="gsl-button-group" default="0" menu="hide"
+			   label='JEV_STRICT_CATEGORY_LANGUAGE' description='JEV_STRICT_CATEGORY_LANGUAGE_DESC' difficulty="2"/>
 		<field name="blocktoplevelcategories" type="jevboolean" class="gsl-button-group" default="0" menu="hide"
 		       label='JEV_BLOCK_TOP_LEVEL_CATEGORIES' description='JEV_BLOCK_TOP_LEVEL_CATEGORIES_DESC' difficulty="2"/>
 		<field name="bootstrapchosen" type="jevboolean" class="gsl-button-group" default="1" label="JEV_LOAD_BOOTSTRAP_CHOSEN"

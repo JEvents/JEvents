@@ -255,6 +255,18 @@ class JEventsHTML
             $query->where('a.published NOT IN (-2,2)');
         }
 
+        $params = ComponentHelper::getParams($input->getCmd("option", "com_jevents"));
+
+		$lang = Factory::getLanguage();
+        $jevtask = $input->getString("jevtask", "");
+        if (
+                $params->get("strictcategorylanguage", 0) &&
+                (strpos($jevtask, "icalevent.edit") !== false || strpos($jevtask, "icalrepeat.edit") !== false)
+            )
+        {
+            $query->where('a.language IN ("*", "' . $lang->getTag() . '")');
+        }
+
         $query->order('a.lft');
 
         $db->setQuery($query);
@@ -264,7 +276,6 @@ class JEventsHTML
         $options = array();
         $parents = array();
 
-		$lang = Factory::getLanguage();
         foreach ($items as &$item)
         {
             $repeat = ($item->level - 1 >= 0) ? $item->level - 1 : 0;
@@ -310,7 +321,6 @@ class JEventsHTML
 		}
 
 		// Needs to be ordered so that selected values appear first when editing an event with sortable multiple categories
-		$params = ComponentHelper::getParams($input->getCmd("option", "com_jevents"));
 		if ($allowMultiCat || ($eventediting && $params->get("multicategory", 0)))
 		{
 			if (is_string($catid) && !empty($catid))
