@@ -31,6 +31,14 @@ class JEventsHelper
 		// only called from com_fields
 		if (Factory::getApplication()->input->getCmd('option', 'com_jevents') == "com_fields")
 		{
+            if (version_compare(JVERSION, '4.0.1', 'lt'))
+            {
+                ?>
+				<h3>This version of JEvents is designed for Joomla 4.x and later.</h3>
+                <?php
+                return;
+            }
+
 			$vName      = Factory::getApplication()->input->getCmd('view', 'fields');
 			$jversion = new Version;
 

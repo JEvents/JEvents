@@ -123,6 +123,7 @@
 		<field name="color"
 			   type="jevcolor"
 			   default=""
+			   class="gsl-input"
 			   layoutfield="COLOUR"
 			   label="JEV_EVENT_COLOR"
 			   size="30"

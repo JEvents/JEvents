@@ -24,6 +24,7 @@ use Joomla\CMS\Session\Session;
 use Joomla\String\StringHelper;
 use Joomla\CMS\Pagination\Pagination;
 
+#[AllowDynamicProperties]
 class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 {
 

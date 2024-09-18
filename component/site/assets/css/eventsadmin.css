@@ -1195,12 +1195,12 @@ span.hasnotranslation {
 
 /* colour picker */
 div#jevents .jevcolour .minicolors-theme-bootstrap .minicolors-input {
-    font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
-    font-size: 14px;
-    height: 19px;
+    /*font-family: Monaco, Menlo, Consolas, "Courier New", monospace;*/
+    /*font-size: 14px;*/
+    /*height: 19px;*/
     margin: 0;
-    padding: 4px 6px 4px 30px;
-    width: 65px;
+    padding: 4px 6px 4px 50px;
+    width: 120px;
 }
 
 /* Event editing irregular dates */

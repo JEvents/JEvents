@@ -1215,6 +1215,9 @@ SCRIPT;
         $_SESSION['jevdatamap'] = $jevdatamap;
 		*/
 
+		// This is how we could pass custom form data without depcrecation message
+        //$formData = $this->form->getData();
+        //$formData->set('jevData', $jevdata);
         $this->form->jevdata = $jevdata;
 
         //custom requiredfields selected by the user in configuration

@@ -46,7 +46,11 @@ class iCalImport
 	function import($filename, $rawtext = "")
 	{
 
-		@ini_set("max_execution_time", 600);
+        $earliestyear = JEVHelper::getMinYear();
+        $earliestyearTime = mktime(0, 0, 1, 12, 31, $earliestyear -1);
+        $latestyear   = JEVHelper::getMaxYear();
+
+        @ini_set("max_execution_time", 600);
 
 		echo Text::sprintf("Importing events from ical file %s", $filename) . "<br/>";
 		$cfg    = JEVConfig::getInstance();
@@ -365,6 +369,12 @@ class iCalImport
 				{
 					$vevent["UID"] = md5(uniqid(rand(), true));
 				}
+                /*
+                if (isset($vevent["DTEND"]) && $vevent["DTEND"] < $earliestyearTime)
+                {
+                    continue;
+                }
+                */
 				$this->vevents[] = iCalEvent::iCalEventFromData($vevent);
 			}
 		}
