@@ -358,7 +358,7 @@ function jevPopover(selector, container) {
 	if (bsoptions.mouseonly && 'ontouchstart' in document.documentElement) {
 		return;
 	}
-	if (jQuery(selector).length){
+	if (document.querySelectorAll(selector).length){
 		try {
 			ys_setuppopover(selector, uikitoptions);
 		}

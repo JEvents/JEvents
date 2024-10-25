@@ -142,8 +142,10 @@
 			<option value="1">JEV_YES</option>
 			<option value="2">JEV_INLINE_PRINT_MECHANISM</option>
 		</field>
+		<!--
 		<field name="com_email_icon_view" type="jevboolean" class="gsl-button-group" default="1" menu="hide"
 		       label="JEV_SHOW_EMAIL_ICON" description="JEV_SHOW_EMAIL_ICON_TIP" difficulty="1"/>
+		-->
 		<field name="fixjquery" type="jevboolean" class="gsl-button-group" default="1" label="JEV_FIX_JQUERY"
 		       description="JEV_FIX_JQUERY_TIP" difficulty="2" maxjoomlaversion="3.99.99"/>
 		<!--

@@ -293,6 +293,7 @@ class JEventsDataModel
 		{
 			$rows = array();
 		}
+        $data['rows'] = $icalrows;
 		$rowcount = count($rows);
 
 		if (StringHelper::strlen($this->catidsOut) > 0)
