@@ -22,6 +22,8 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Helper\TagsHelper;
 
+use Joomla\CMS\Application\ApplicationHelper;
+
 #[\AllowDynamicProperties]
 class JEventsDataModel
 {
@@ -869,6 +871,17 @@ class JEventsDataModel
 
 			// Process the new plugins
 			$app->triggerEvent('onGetEventData', array(& $row));
+
+            $rowTitle = StringHelper::substr( ApplicationHelper::stringURLSafe( $row->title() ), 0, 150 );
+            $urlTitle = $input->getString('title', '');
+            $rowTitleLegacy = preg_replace('/-/', ':', $rowTitle, 1);
+            $compparams = ComponentHelper::getParams(JEV_COM_COMPONENT);
+
+            if ($compparams->get('stricturls', 0) && $rowTitle !== $urlTitle && $rowTitleLegacy !== $urlTitle)
+            {
+                $row = null;
+                return;
+            }
 
 			$params           = new JevRegistry(null);
 			$row->contactlink = JEventsHTML::getUserMailtoLink($row->id(), $row->created_by(), false, $row);

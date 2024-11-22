@@ -299,16 +299,24 @@ class plgFinderJEvents extends Adapter
 		{
 			$itemid = $item->params->get("permatarget", 0);
 		}
-		if (false && (int) $item->getElement('rp_id'))
+        if ($itemid !== 0)
+        {
+            $itemid = "&Itemid=" . $itemid;
+        }
+        else
+        {
+            $itemid = "";
+        }
+        if (false && (int) $item->getElement('rp_id'))
 		{
 			$rpid = (int) $item->getElement('rp_id');
-			$item->url   = "index.php?option=com_jevents&task=icalrepeat.detail&evid=" . $rpid . "&Itemid=" . $itemid;//$this->getURL($item->id, $this->extension, $this->layout);
-			$item->route = "index.php?option=com_jevents&task=icalrepeat.detail&evid=" . $rpid . "&Itemid=" . $itemid;
+			$item->url   = "index.php?option=com_jevents&task=icalrepeat.detail&evid=" . $rpid .  $itemid;//$this->getURL($item->id, $this->extension, $this->layout);
+			$item->route = "index.php?option=com_jevents&task=icalrepeat.detail&evid=" . $rpid .  $itemid;
 		}
 		else
 		{
-			$item->url   = "index.php?option=com_jevents&task=icalevent.detail&evid=" . $item->eventid . "&Itemid=" . $itemid;//$this->getURL($item->id, $this->extension, $this->layout);
-			$item->route = "index.php?option=com_jevents&task=icalevent.detail&evid=" . $item->eventid . "&Itemid=" . $itemid;
+			$item->url   = "index.php?option=com_jevents&task=icalevent.detail&evid=" . $item->eventid .  $itemid;//$this->getURL($item->id, $this->extension, $this->layout);
+			$item->route = "index.php?option=com_jevents&task=icalevent.detail&evid=" . $item->eventid .  $itemid;
 		}
 
 		include_once(JPATH_SITE . "/components/com_jevents/jevents.defines.php");

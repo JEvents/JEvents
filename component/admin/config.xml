@@ -755,6 +755,9 @@ Default should be set by the custom field
 		<field name="subquery" type="jevboolean" class="gsl-button-group" default="0" menu="hide"
 		       label="JEV_USE_SUBQUERIES_NOT_JOINS" description="JEV_USE_SUBQUERIES_NOT_JOINS_DESC" difficulty="3"/>
 
+		<field name="stricturls" type="jevboolean" class="gsl-button-group" default="0" menu="hide"
+			   label="JEV_STRICT_MATCHING_TITLES_DETAIL_VIEW" description="JEV_STRICT_MATCHING_TITLES_DETAIL_VIEW_DESC"/>
+
 	</fieldset>
 	<fieldset name="JEV_MODULE_CONFIG" difficulty="3">
 		<field name="spacer_cm2" type="jevinfo" default="JEV_MODULE_CONFIG_FROM_COMPONENT_WARNING" menu="hide" label=""
