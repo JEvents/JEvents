@@ -14,7 +14,7 @@ function DefaultViewHelperFooter16($view)
 	{ ?>
 		<div class="ev_noprint"><p align="center">
 				<a href="#close"
-				   onclick="if (window.parent==window){self.close();} else {try {window.parent.closeJevModalBySelector('#myEditModal,#myDetailModal,#myTranslationModal');}catch (e){}try {window.parent.SqueezeBox.close(); return false;} catch(e) {self.close();return false;}}"
+				   onclick="if (window.parent==window){self.close();} else {try {window.parent.closeJevModalBySelector('#myEditModal,#myDetailModal,.jevmodal,#myTranslationModal');}catch (e){}try {window.parent.SqueezeBox.close(); return false;} catch(e) {self.close();return false;}}"
 				   title="<?php echo Text::_('JEV_CLOSE'); ?>"><?php echo Text::_('JEV_CLOSE'); ?></a>
 			</p></div>
 		<?php
