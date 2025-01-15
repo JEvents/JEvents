@@ -21,6 +21,7 @@ use Joomla\CMS\Component\ComponentHelper;
 
 include_once(JEV_ADMINPATH . "/controllers/icalrepeat.php");
 
+#[\AllowDynamicProperties]
 class ICalRepeatController extends AdminIcalrepeatController
 {
 

@@ -17,6 +17,7 @@ use Joomla\String\StringHelper;
 
 include_once(JEV_VIEWS . "/default/month/tmpl/calendar_cell.php");
 
+#[\AllowDynamicProperties]
 class EventCalendarCell_alternative extends EventCalendarCell_default
 {
 

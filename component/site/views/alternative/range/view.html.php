@@ -19,6 +19,7 @@ use Joomla\CMS\Component\ComponentHelper;
  *
  * @static
  */
+#[\AllowDynamicProperties]
 class AlternativeViewRange extends JEventsAlternativeView
 {
 

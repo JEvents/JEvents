@@ -138,7 +138,21 @@ class plgFinderJEvents extends Adapter
 
 			$output = Factory::getApplication()->triggerEvent('onJEventsFinderResult', array(& $result, & $query));
 
-		}
+            include_once(JPATH_SITE . "/components/com_jevents/jevents.defines.php");
+
+            // get the data and query models
+            $dataModel  = new JEventsDataModel();
+            $queryModel = new JEventsDBModel($dataModel);
+
+            // get the repeat (allowing for it to be unpublished)
+            $theevent = $queryModel->listEventsById($result->getElement('rp_id'));
+            if ($theevent)
+            {
+                $result->setElement('event', $theevent);
+            }
+
+
+        }
         $x = 1;
 	}
 
@@ -397,11 +411,16 @@ class plgFinderJEvents extends Adapter
 			$compparams = ComponentHelper::getParams(JEV_COM_COMPONENT);
 			$jtz = $compparams->get("icaltimezonelive", "");
 
+            $tz = (isset($theevent->_tzid) && !empty($theevent->_tzid)) ? $theevent->_tzid : $jtz;
+            if (empty($tz))
+            {
+                $tz = null;
+            }
 			if ($theevent->timelimits->startlimit !== '') {
 				//$date = new JevDate($theevent->timelimits->startlimit);
 				//$sql = $date->toMySQL(true);
 
-				$date = new Date($theevent->timelimits->startlimit, (isset($theevent->_tzid) && !empty($theevent->_tzid)) ? $theevent->_tzid : $jtz);
+				$date = new Date($theevent->timelimits->startlimit, $tz);
 				$gmtsql = $date->format('Y-m-d H:i:s');
 
 				$item->publish_start_date   = $gmtsql;
@@ -410,7 +429,7 @@ class plgFinderJEvents extends Adapter
 				//$date = new JevDate($theevent->timelimits->endlimit, $jtz);
 				//$sql = $date->toMySQL();
 
-				$date = new Date($theevent->timelimits->endlimit, (isset($theevent->_tzid) && !empty($theevent->_tzid)) ? $theevent->_tzid : $jtz);
+				$date = new Date($theevent->timelimits->endlimit, $tz);
 				$gmtsql = $date->format('Y-m-d H:i:s');
 
 				$item->publish_end_date     = $gmtsql;

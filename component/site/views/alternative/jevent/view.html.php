@@ -24,6 +24,7 @@ include_once(dirname(__FILE__) . "/../icalevent/view.html.php");
  *
  * @static
  */
+#[\AllowDynamicProperties]
 class DefaultJevent extends DefaultICalEvent
 {
 	function __construct($config = null)

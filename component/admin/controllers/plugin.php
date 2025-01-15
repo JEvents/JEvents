@@ -18,6 +18,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 
 jimport('joomla.application.component.controlleradmin');
 
+#[\AllowDynamicProperties]
 class AdminPluginController extends AdminController
 {
 

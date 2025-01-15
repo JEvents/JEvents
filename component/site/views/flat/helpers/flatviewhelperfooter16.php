@@ -19,7 +19,7 @@ function FlatViewHelperFooter16($view)
 				<a href="#close" onclick="if (window.parent == window) {
 									self.close();
 								} else
-									try {window.parent.closeJevModalBySelector('#myEditModal,#myDetailModal,.jevmodal,#myTranslationModal');}catch (e){}
+									try {window.parent.closeJevModalBySelector('#myEditModal,#myDetailModal,#myTranslationModal');}catch (e){}
 									try {
 										window.parent.SqueezeBox.close();
 										return false;

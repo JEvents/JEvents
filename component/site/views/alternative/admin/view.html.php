@@ -23,6 +23,7 @@ JLoader::register('DefaultViewAdmin', JEV_PATH . "/views/default/admin/view.html
  *
  * @static
  */
+#[\AllowDynamicProperties]
 class AlternativeViewAdmin extends JEventsAlternativeView
 {
 

@@ -188,7 +188,7 @@ STYLE;
 			case "ul":
 			case "ful":
 				?>
-				<ul class="<?php echo $params->get("filterlayout", "vt") == "ul" ? "jevfilterlist" : "jevfilterfloatlist"; ?> uk-list">
+				<ul class="<?php echo $params->get("filterlayout", "vt") == "ul" ? "jevfilterlist" : "jevfilterfloatlist uk-list-collapse"; ?> uk-list">
 					<?php
 					$hasreset = false;
 					foreach ($filterHTML as $filter)
@@ -202,9 +202,11 @@ STYLE;
 							<?php
 							if (StringHelper::strlen($filter["title"]) > 0 && $params->get("showlabels", 1))
 							{
-								?>
-								<?php echo $filter["title"]; ?>
-								<?php
+								if (strpos($filter["title"], '<label') === false)
+                                {
+                                    $filter["title"] = '<label>' . $filter["title"] . '</label>';
+                                }
+								echo $filter["title"];
 							}
 							else if ($params->get("showlabels", 1))
 							{
@@ -225,12 +227,28 @@ STYLE;
 					}
 					?>
 					<li>
+						<?php
+                        if ($params->get("showlabels", 1))
+                        {
+                            ?>
+							<label>&nbsp;</label><div>
+                            <?php
+                        }
+						?>
 						<div class="jevfilterinput uk-button uk-button-group">
 							<input class="modfilter_button uk-button uk-button-danger" type="button" onclick="JeventsFilters.reset(this.form)"
 							       value="<?php echo Text::_('RESET'); ?>"/>
 							<input class="modfilter_button uk-button uk-button-primary" type="submit" value="<?php echo Text::_('ok'); ?>"
 							       name="jevents_filter_submit"/>
 						</div>
+                        <?php
+                        if ($params->get("showlabels", 1))
+                        {
+                        ?>
+						</div>
+                        <?php
+                        }
+                        ?>
 					</li>
 				</ul>
 				<?php
@@ -302,7 +320,7 @@ STYLE;
 
 	$dom        = new DOMDocument();
 	// see http://php.net/manual/en/domdocument.savehtml.php cathexis dot de ¶
-	@$dom->loadHTML('<html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></head><body>' . $output . '</body>');
+	@$dom->loadHTML('<html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></head><body>' . $output . '</body></html>');
 
 	$selects = $dom->getElementsByTagName('select');
 	foreach ($selects as $select)
@@ -338,6 +356,7 @@ STYLE;
 	}
 
 	$output = $dom->saveHTML($dom->getElementsByTagName('body')[0]);
-
+    $output = substr($output, 6);
+    $output = substr($output, 0, strlen($output) - 7);
 	echo $output;
 }

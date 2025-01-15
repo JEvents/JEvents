@@ -18,6 +18,7 @@ use Joomla\CMS\Component\ComponentHelper;
 
 jimport('joomla.application.component.controller');
 
+#[\AllowDynamicProperties]
 class AdminController extends Joomla\CMS\MVC\Controller\BaseController
 {
 
