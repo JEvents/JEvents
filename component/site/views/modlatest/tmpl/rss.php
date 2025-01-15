@@ -139,7 +139,8 @@ foreach ($this->eventsByRelDay as $relDay => $ebrd)
 		$item->category    = $item_type;
 
 		$eventcreated = new JevDate($row->created());
-		$item->date   = $eventcreated->toUnix(true);
+
+        $item->date   = $eventcreated->toUnix(true);
 
 		// add item info to RSS document
 		$doc->addItem($item);

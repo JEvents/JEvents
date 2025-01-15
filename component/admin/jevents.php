@@ -18,6 +18,17 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Router\Route;
+
+if (version_compare(JVERSION, '4.0.1', 'lt'))
+{
+    Factory::getApplication()->enqueueMessage("*** This version of JEvents is designed for Joomla 4.x and later. ***", 'error');
+	$url = 'index.php';
+    Factory::getApplication()->redirect(Route::_($url, false));
+
+	return false;
+
+}
 
 ob_start();
 

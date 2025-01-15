@@ -1059,20 +1059,20 @@ function JEventsParseRouteNew( &$segments, $task ) {
                         if ( ! $params->get( "nocatindetaillink", 0 ) )
                         {
                             // note that URI decoding swaps /-/ for :
-                            if ( count( $segments ) > $slugcount && $segments[$slugcount] != ":" )
+                            if ( $count > $slugcount && $segments[$slugcount] != ":" )
                             {
                                 $vars['catids'] = $segments[$slugcount];
                                 unset( $segments[$slugcount] );
                                 $slugcount ++;
                             }
-                            if ( count( $segments ) > $slugcount && $segments[$slugcount] == ":" )
+                            if ( $count > $slugcount && $segments[$slugcount] == ":" )
                             {
                                 unset( $segments[$slugcount] );
                                 $slugcount ++;
                             }
                         }
                         // do we have the title?
-                        if ( count( $segments ) > $slugcount && $segments[$slugcount] != "" && $segments[$slugcount] != "-" )
+                        if ( $count > $slugcount && $segments[$slugcount] != "" && $segments[$slugcount] != "-" )
                         {
                             $vars['title'] = $segments[$slugcount];
                             unset( $segments[$slugcount] );

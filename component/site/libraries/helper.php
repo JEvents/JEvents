@@ -1459,7 +1459,18 @@ class JEVHelper
 			$menu             = $app->getMenu();
 			$active           = $menu->getActive();
 			$Itemid           = $input-> getInt("Itemid");
-			if (is_null($active))
+
+            $registry     = \JevRegistry::getinstance( "jevents" );
+            $moduleparams = $registry->get( "jevents.moduleparams", false);
+
+            if ($moduleparams && $moduleparams->get("target_itemid", 0) > 0)
+            {
+                $Itemid           =  $moduleparams->get("target_itemid", 0);
+                $jevitemid[$evid] = $Itemid;
+                return $Itemid;
+            }
+
+            if (is_null($active))
 			{
 				// wierd bug in Joomla when SEF is disabled but with xhtml urls sometimes &amp;Itemid is misinterpretted !!!
 				$Itemid = $input->getInt("Itemid");
@@ -1575,7 +1586,7 @@ class JEVHelper
 
 							if ($forcecheck)
 							{
-								$mparams = is_string($jevitem->params) ? new JevRegistry($jevitem->params) : $jevitem->params;
+                                $mparams = is_string($jevitem->getParams()) ? new JevRegistry($jevitem->getParams()) : $jevitem->getParams();
 								$mcatids = array();
 								// New system
 								$newcats = $mparams->get("catidnew", false);

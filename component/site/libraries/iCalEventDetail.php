@@ -275,25 +275,21 @@ class iCalEventDetail extends Joomla\CMS\Table\Table
 		$date           = JevDate::getDate();
 		$this->modified = $date->toMySQL();
 
-		if ($this->dtstart < 0 || $this->dtend < 0)
-		{
-			$sql = "SHOW COLUMNS FROM #__jevents_vevdetail";
-			$db  = Factory::getDbo();
-			$db->setQuery($sql);
-			$cols = @$db->loadObjectList("Field");
+        $sql = "SHOW COLUMNS FROM #__jevents_vevdetail";
+        $db  = Factory::getDbo();
+        $db->setQuery($sql);
+        $cols = @$db->loadObjectList("Field");
 
-			if (array_key_exists("dtstart", $cols) && strtolower($cols["dtstart"]->Type) == "int")
-			{
-				$sql = "ALTER TABLE #__jevents_vevdetail modify dtstart bigint NOT NULL";
-				$db->setQuery($sql);
-				@$db->execute();
+        if (array_key_exists("dtstart", $cols) && strtoupper($cols["dtstart"]->Type) !== "BIGINT")
+        {
+            $sql = "ALTER TABLE #__jevents_vevdetail MODIFY dtstart BIGINT NOT NULL";
+            $db->setQuery($sql);
+            @$db->execute();
 
-				$sql = "ALTER TABLE #__jevents_vevdetail modify dtend bigint NOT NULL";
-				$db->setQuery($sql);
-				@$db->execute();
-			}
-
-		}
+            $sql = "ALTER TABLE #__jevents_vevdetail MODIFY dtend BIGINT NOT NULL";
+            $db->setQuery($sql);
+            @$db->execute();
+        }
 
 		try {
 

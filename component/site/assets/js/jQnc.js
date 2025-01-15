@@ -80,7 +80,8 @@ document.addEventListener('DOMContentLoaded', function () {
     },  200);
 
     // Setup tooltip migrations if needed
-    var tips = document.querySelectorAll('.hasjevtip');
+    var tips = document.querySelectorAll('.hasjevtip, .hasjevtipmod');
+
     tips.forEach(function (el)
     {
         var dataTitleAttr = el.getAttribute('data-title') || el.getAttribute('data-original-title') || el.getAttribute('title');

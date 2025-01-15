@@ -18,6 +18,7 @@ use Joomla\CMS\Session\Session;
 
 jimport('joomla.application.component.controlleradmin');
 
+#[\AllowDynamicProperties]
 class CustomCssController extends Joomla\CMS\MVC\Controller\BaseController
 {
 

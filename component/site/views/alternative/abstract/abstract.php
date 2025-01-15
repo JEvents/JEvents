@@ -21,6 +21,7 @@ use Joomla\CMS\Factory;
  */
 JLoader::register('JEventsDefaultView', JEV_VIEWS . "/default/abstract/abstract.php");
 
+#[\AllowDynamicProperties]
 class JEventsAlternativeView extends JEventsDefaultView
 {
 	var $jevlayout = null;

@@ -132,6 +132,12 @@ class ExtViewNavTableBarIconic
 								</td>
 							<?php } ?>
 
+                            <?php if (in_array("bymonth", $this->iconstoshow))   { ?>
+                                <?php
+                                echo $this->_viewJumptoIcon($view_date, $viewimages);
+                                ?>
+                            <?php } ?>
+
 							<?php if ($cfg->get('com_hideshowbycats', 0) == '0')
 							{ ?>
 								<?php if (in_array("bycat", $this->iconstoshow))
@@ -165,9 +171,61 @@ class ExtViewNavTableBarIconic
 
 				</td>
 			</tr>
+            <?php
+            if (in_array("bymonth", $this->iconstoshow))   echo $this->_viewHiddenJumpto($view_date, $view, $Itemid);
+            ?>
 		</table>
 		<?php
 
 	}
+
+    function _viewJumptoIcon($today_date, $viewimages)
+    {
+        ?>
+		<td class="buttontext" align="center"  nowrap="nowrap" >
+			<a href="#" onclick="if (jevjq('#jumpto').hasClass('jev_none')) {jevjq('#jumpto').removeClass('jev_none');} else {jevjq('#jumpto').addClass('jev_none')};return false;" title="<?php echo   Text::_('JEV_JUMPTO');?>">
+				<img src="<?php echo $viewimages;?>/jumpto.gif" alt="<?php echo Text::_('JEV_JUMPTO', true);?>" /><br/>
+                <?php echo Text::_('JEV_JUMPTO');?></a>
+		</td>
+        <?php
+    }
+
+    function _viewHiddenJumpto($this_date, $view,$Itemid){
+        $cfg = JEVConfig::getInstance();
+        $hiddencat	= "";
+        if ($view->datamodel->catidsOut!=0){
+            $hiddencat = '<input type="hidden" name="catids" value="'.$view->datamodel->catidsOut.'"/>';
+        }
+        ?>
+		<tr align="center" valign="top">
+            <?php   if($cfg->get('com_calUseIconic', 1) != 2){ ?>
+			<td colspan="10" align="center" valign="top">
+                <?php }
+                else {?>
+			<td colspan="6" align="center" valign="top">
+                <?php }
+                $index = Route::_("index.php");
+                ?>
+				<div id="jumpto"  class="jev_none">
+					<form name="BarNav" action="<?php echo $index;?>" method="get">
+						<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT;?>" />
+						<input type="hidden" name="task" value="month.calendar" />
+                        <?php
+                        echo $hiddencat;
+                        /*Day Select*/
+                        // JEventsHTML::buildDaySelect( $this_date->getYear(1), $this_date->getMonth(1), $this_date->getDay(1), ' style="font-size:10px;"' );
+                        /*Month Select*/
+                        JEventsHTML::buildMonthSelect( $this_date->getMonth(1), 'class="extp_month_select"');
+                        /*Year Select*/
+                        JEventsHTML::buildYearSelect( $this_date->getYear(1), 'class="extp_year_select"' ); ?>
+						<button onclick="submit(this.form)"><?php echo   Text::_('JEV_JUMPTO');?></button>
+						<input type="hidden" name="Itemid" value="<?php echo $Itemid; ?>" />
+					</form>
+				</div>
+			</td>
+		</tr>
+        <?php
+    }
+
 
 }

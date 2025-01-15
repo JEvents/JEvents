@@ -19,6 +19,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 use Joomla\Utilities\ArrayHelper;
 
+#[\AllowDynamicProperties]
 class AdminUserController extends Joomla\CMS\MVC\Controller\BaseController
 {
 

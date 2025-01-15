@@ -15,6 +15,7 @@ use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.controller');
 
+#[\AllowDynamicProperties]
 class ModLatestController extends Joomla\CMS\MVC\Controller\BaseController
 {
 

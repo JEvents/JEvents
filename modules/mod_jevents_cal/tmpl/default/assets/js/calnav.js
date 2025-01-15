@@ -39,7 +39,7 @@ function callNavigation(link, datatype) {
             try {
                 if (typeof jevPopover == "function")
                 {
-                    jevPopover('.hasjevtip', modbody);
+                    jevPopover('.hasjevtip, .hasjevtipmod', modbody);
                 }
                 else {
                     // Joomla 4/Bootstrap 5 changes
@@ -63,13 +63,13 @@ function callNavigation(link, datatype) {
                     };
                     if (bootstrap5)
                     {
-                        modbody.querySelectorAll('.hasjevtip').forEach(function (el) {
+                        modbody.querySelectorAll('.hasjevtip, .hasjevtipmod').forEach(function (el) {
                             var pop = new window.bootstrap.Popover(el, popoveroptions);
                         });
                     }
                     else {
                         if (typeof jQuery !== 'undefined') {
-                            jQuery(modbody).find('.hasjevtip').popover(popoveroptions);
+                            jQuery(modbody).find('.hasjevtip, .hasjevtipmod').popover(popoveroptions);
                         }
                     }
                 }

@@ -21,6 +21,7 @@ use Joomla\CMS\Component\ComponentHelper;
 
 include_once(JEV_ADMINPATH . "/controllers/icalrepeat.php");
 
+#[\AllowDynamicProperties]
 class ICalRepeatController extends AdminIcalrepeatController
 {
 
@@ -30,6 +31,8 @@ class ICalRepeatController extends AdminIcalrepeatController
 		parent::__construct($config);
 		// TODO get this from config
 		$this->registerDefaultTask('detail');
+        //$this->registerTask('yootooltip', 'detail');
+        //$this->registerTask('yoocalendarcell', 'detail');
 
 		// Load abstract "view" class
 		$cfg   = JEVConfig::getInstance();
@@ -164,8 +167,25 @@ class ICalRepeatController extends AdminIcalrepeatController
 		$this->view->jevtype    = "icaldb";
 		$this->view->uid        = $uid;
 
-		// View caching logic -- simple... are we logged in?
-
+		/*
+		try {
+            $yooConfig = YOOtheme\app(YOOtheme\Config::class);
+            if ($yooConfig->get('app.isCustomizer', false) || !empty($input->getString("customizr", '')))
+            {
+                $yooTooltipLink = "index.php?option=com_jevents&task=icalrepeat.yootooltip&rp_id=$evid&uid=$uid&Itemid=$Itemid";
+                $yooCellLink = "index.php?option=com_jevents&task=icalrepeat.yoocalendarcell&rp_id=$evid&uid=$uid&Itemid=$Itemid";
+                ?>
+				<a href="<?php echo Route::_($yooTooltipLink);?>" target="_self">YOOTheme tooltip</a><br>
+	            <a href="<?php echo Route::_($yooCellLink);?>" target="_self">YOOTheme Calendar cell</a><br>
+                <?php
+            }
+		}
+		catch (Throwable $e)
+        {
+			//echo $e->getMessage();
+        }
+		*/
+        // View caching logic -- simple... are we logged in?
 		if ($user->get('id') || !$useCache)
 		{
 			$this->view->display();

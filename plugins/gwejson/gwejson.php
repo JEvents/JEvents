@@ -17,6 +17,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Component\ComponentHelper;
 
 /*
   if (defined('_SC_START')){
@@ -480,4 +481,38 @@ class PlgSystemGwejson extends CMSPlugin {
 
         }
     }
+
+    /*
+     * Download Package URL checking - called from InstallerHelper::downloadPackage
+     */
+    public function onInstallerBeforePackageDownload(&$url, &$headers)
+    {
+        // Fix the update URL!
+        $pos  = strpos($url, "www.jevents.net/newupdates/update");
+        if ( $pos > 0 )
+        {
+
+            $urlQueryParts = parse_url($url, PHP_URL_QUERY);
+            parse_str($urlQueryParts, $urlQueryPartsArray);
+
+            if (!isset($urlQueryPartsArray['dlid']) && isset($urlQueryPartsArray['file']))
+            {
+
+                $params = ComponentHelper::getParams( "com_jevents" );
+
+                $sitedomain = rtrim( str_replace( array( 'https://', 'http://' ), "", Uri::root() ), '/' );
+
+                $params   = ComponentHelper::getParams( 'com_jevents' );
+                $clubcode = $params->get( "clubcode", "" );
+                $filter   = new InputFilter();
+                $clubcode = $filter->clean( $clubcode, "CMD" );
+                $clubcode = $clubcode . "-" . base64_encode( $sitedomain );
+
+                $url .= "&dlid=$clubcode";
+
+            }
+
+        }
+    }
+
 }
