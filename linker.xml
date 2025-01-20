@@ -9,37 +9,25 @@
     <property name="component" value="com_jevents"/>
     <property name="rootPath" value="${URI.base}"/>
 
+    <property name="uikitdir" value="../uikit" override="true" />
+    <if>
+        <not>
+            <available file='${uikitdir}/package.json' type='file' property="nouikit"/>
+        </not>
+        <then>
+            <property name="uikitdir" value="../../bitbucket/uikit" override="true" />
+        </then>
+    </if>
+
+    <resolvepath propertyName="uikitdir" file="${uikitdir}" />
+
     <target name="link" description="Build all targets !! ">
 
         <echo>Current Path: ${rootPath}</echo>
         <echo>Target Path: ${p}</echo>
+        <echo msg="uikit directory set to ${uikitdir}" />
 
-        <!-- Delete folders, but don't worry if it fails as it could be a symbolic link -->
-        <delete dir="${p}/administrator/components/${component}/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/components/${component}/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/plugins/finder/jevents/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/plugins/system/gwejson/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/plugins/search/eventsearch/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/plugins/installer/jeventsinstaller/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/plugins/content/jevents/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/media/${component}/css/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/media/${component}/js/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/media/${component}/images/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/media/${component}/lib_jevmodal/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/media/${component}/lib_jevtypeahead/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/libraries/googl/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/libraries/jevents/jevmodal/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/libraries/jevents/lib_jevmodal/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/libraries/jevents/jevbootstrap/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/libraries/jevents/lib_jevbootstrap/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/libraries/jevents/jevtypeahead/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/libraries/jevents/lib_jevtypeahead/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/modules/mod_jevents_cal/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/modules/mod_jevents_custom/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/modules/mod_jevents_filter/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/modules/mod_jevents_latest/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/modules/mod_jevents_legend/" includeemptydirs="true" verbose="true" failonerror="false" />
-        <delete dir="${p}/modules/mod_jevents_switchview/" includeemptydirs="true" verbose="true" failonerror="false" />
+        <phingcall target="deleteall" />
 
         <!-- Create System Links -->
         <symlink target="${rootPath}/component/admin" link="${p}/administrator/components/${component}"  overwrite="true" />
@@ -80,7 +68,7 @@
 
         <symlink target="${rootPath}/modules/mod_jevents_cal/language/en-GB/en-GB.mod_jevents_cal.ini" link="${p}/language/en-GB/en-GB.mod_jevents_cal.ini" overwrite="true" />
         <symlink target="${rootPath}/modules/mod_jevents_cal/language/en-GB/en-GB.mod_jevents_cal.sys.ini" link="${p}/language/en-GB/en-GB.mod_jevents_cal.sys.ini" overwrite="true" />
-        <symlink target="${rootPath}/modules/mod_jevents_custom/languagev/en-GB.mod_jevents_custom.ini" link="${p}/language/en-GB/en-GB.mod_jevents_custom.ini" overwrite="true" />
+        <symlink target="${rootPath}/modules/mod_jevents_custom/language/en-GB/en-GB.mod_jevents_custom.ini" link="${p}/language/en-GB/en-GB.mod_jevents_custom.ini" overwrite="true" />
         <symlink target="${rootPath}/modules/mod_jevents_custom/language/en-GB/en-GB.mod_jevents_custom.sys.ini" link="${p}/language/en-GB/en-GB.mod_jevents_custom.sys.ini" overwrite="true" />
         <symlink target="${rootPath}/modules/mod_jevents_filter/language/en-GB/en-GB.mod_jevents_filter.ini" link="${p}/language/en-GB/en-GB.mod_jevents_filter.ini" overwrite="true" />
         <symlink target="${rootPath}/modules/mod_jevents_filter/language/en-GB/en-GB.mod_jevents_filter.sys.ini" link="${p}/language/en-GB/en-GB.mod_jevents_filter.sys.ini" overwrite="true" />
@@ -101,6 +89,206 @@
         <symlink target="${rootPath}/plugins/jevents/language/en-GB/en-GB.plg_content_jevents.sys.ini" link="${p}/administrator/language/en-GB/en-GB.plg_content_jevents.sys.ini" overwrite="true" />
         <symlink target="${rootPath}/plugins/search/language/en-GB/en-GB.plg_search_eventsearch.ini" link="${p}/administrator/language/en-GB/en-GB.plg_search_eventsearch.ini" overwrite="true" />
         <symlink target="${rootPath}/plugins/search/language/en-GB/en-GB.plg_search_eventsearch.ini" link="${p}/administrator/language/en-GB/en-GB.plg_search_eventsearch.sys.ini" overwrite="true" />
+ 
+       <phingcall target="copyassets" />
+</target>
 
+    <target name="deleteall">
+        <!-- Delete folders and files, even if symlinks -->
+           <foreach param="filename" target="deleteitem" >
+                <filelist dir="/" files="
+                        ${p}/administrator/components/${component}/, 
+                        ${p}/components/${component}/, 
+                        ${p}/plugins/finder/jevents/,
+                        ${p}/plugins/system/gwejson/,
+                        ${p}/plugins/search/eventsearch/,
+                        ${p}/plugins/installer/jeventsinstaller/,
+                        ${p}/plugins/content/jevents/,
+                        ${p}/media/${component}/css/,
+                        ${p}/media/${component}/js/,
+                        ${p}/media/${component}/images/,
+                        ${p}/libraries/googl/,
+                        ${p}/libraries/jevents/jevmodal/,
+                        ${p}/libraries/jevents/jevbootstrap/,
+                        ${p}/libraries/jevents/jevtypeahead/,
+                        ${p}/modules/mod_jevents_cal/,
+                        ${p}/modules/mod_jevents_custom/,
+                        ${p}/modules/mod_jevents_filter/,
+                        ${p}/modules/mod_jevents_latest/,
+                        ${p}/modules/mod_jevents_legend/,
+                        ${p}/modules/mod_jevents_switchview/,
+                        ${p}/administrator/language/en-GB/en-GB.${component}.ini,
+                        ${p}/administrator/language/en-GB/en-GB.${component}.sys.ini,
+                        ${p}/administrator/language/en-GB/en-GB.${component}.menu.ini,
+                        ${p}/administrator/language/en-GB/en-GB.jev_package_title.ini,
+                        ${p}/language/en-GB/en-GB.${component}.ini,
+                        ${p}/language/en-GB/en-GB.mod_jevents_cal.ini,
+                        ${p}/language/en-GB/en-GB.mod_jevents_cal.sys.ini,
+                        ${p}/language/en-GB/en-GB.mod_jevents_custom.ini,
+                        ${p}/language/en-GB/en-GB.mod_jevents_custom.sys.ini,
+                        ${p}/language/en-GB/en-GB.mod_jevents_filter.ini,
+                        ${p}/language/en-GB/en-GB.mod_jevents_filter.sys.ini,
+                        ${p}/language/en-GB/en-GB.mod_jevents_latest.ini,
+                        ${p}/language/en-GB/en-GB.mod_jevents_latest.sys.ini,
+                        ${p}/language/en-GB/en-GB.mod_jevents_legend.ini,
+                        ${p}/language/en-GB/en-GB.mod_jevents_legend.sys.ini,
+                        ${p}/language/en-GB/en-GB.mod_jevents_switchview.ini,
+                        ${p}/language/en-GB/en-GB.mod_jevents_switchview.sys.ini,
+                        ${p}/administrator/language/en-GB/en-GB.plg_finder_jevents.ini,
+                        ${p}/administrator/language/en-GB/en-GB.plg_finder_jevents.sys.ini,
+                        ${p}/administrator/language/en-GB/en-GB.plg_system_gwejson.ini,
+                        ${p}/administrator/language/en-GB/en-GB.plg_system_gwejson.sys.ini,
+                        ${p}/administrator/language/en-GB/en-GB.plg_installer_jeventsinstaller.ini,
+                        ${p}/administrator/language/en-GB/en-GB.plg_installer_jeventsinstaller.sys.ini,
+                        ${p}/administrator/language/en-GB/en-GB.plg_content_jevents.ini,
+                        ${p}/administrator/language/en-GB/en-GB.plg_content_jevents.sys.ini,
+                        ${p}/administrator/language/en-GB/en-GB.plg_search_eventsearch.ini,
+                        ${p}/administrator/language/en-GB/en-GB.plg_search_eventsearch.sys.ini,
+                        " />
+            </foreach>
     </target>
+
+    <target name="deleteitem">
+        <!-- we have to do some magic in here as symlinks directories don't report unless we follow them, BUT, they report as a dir but need to be deleted as a file -->
+        <if><available file="${filename}" type="file" />
+            <then><delete file="${filename}" verbose="true" failonerror="false" /></then>
+        </if>
+        <if><available file="${filename}" type="dir" />
+            <then><delete dir="${filename}" includeemptydirs="true" verbose="false" failonerror="false" /></then>
+        </if>
+        <if><available file="${filename}" type="dir" followSymlinks="true"/>
+            <then><delete file="${filename}" verbose="true" failonerror="false" /></then>
+        </if>
+        <if><available file="${filename}" type="file" followSymlinks="true"/>
+            <then><delete file="${filename}" verbose="true" failonerror="false" /></then>
+        </if>
+     </target>
+
+    <target name="unlink" description="Restore all jevents bits">
+        <property name="URI.base" value="./"/>
+        <resolvepath propertyName="URI.base" file="${URI.base}"/>
+        <property name="p" value="" />
+        <property name="component" value="com_jevents"/>
+        <property name="rootPath" value="${URI.base}"/>
+
+        <phingcall target="deleteall" />
+
+       <!-- Copy the directories -->
+        <phingcall target="copydir"><property name="to" value="${p}/administrator/components/${component}"/><property name="from" value="${rootPath}/component/admin"/></phingcall>
+        <phingcall target="copydir"><property name="to" value="${p}/components/${component}"/><property name="from" value="${rootPath}/component/site"/></phingcall>
+        <phingcall target="copydir"><property name="to" value="${p}/media/${component}/js"/><property name="from" value="${rootPath}/component/media/js"/></phingcall>
+        <phingcall target="copydir"><property name="to" value="${p}/media/${component}/css"/><property name="from" value="${rootPath}/component/media/css"/></phingcall>
+        <phingcall target="copydir"><property name="to" value="${p}/media/${component}/images"/><property name="from" value="${rootPath}/component/media/images"/></phingcall>
+        <phingcall target="copydir"><property name="to" value="${p}/plugins/finder/jevents/"/><property name="from" value="${rootPath}/plugins/finder/jevents"/></phingcall>
+        <phingcall target="copydir"><property name="to" value="${p}/plugins/search/eventsearch/"/><property name="from" value="${rootPath}/plugins/search/"/></phingcall>
+        <phingcall target="copydir"><property name="to" value="${p}/plugins/installer/jeventsinstaller/"/><property name="from" value="${rootPath}/plugins/installer"/></phingcall>
+        <phingcall target="copydir"><property name="to" value="${p}/plugins/content/jevents/"/><property name="from" value="${rootPath}/plugins/jevents"/></phingcall>
+        <phingcall target="copydir"><property name="to" value="${p}/plugins/system/gwejson/"/><property name="from" value="${rootPath}/plugins/gwejson"/></phingcall>
+        <phingcall target="copydir"><property name="to" value="${p}/libraries/googl/"/><property name="from" value="${rootPath}/libraries/googl"/></phingcall>
+        <phingcall target="copydir"><property name="to" value="${p}/libraries/jevents/jevmodal/"/><property name="from" value="${rootPath}/libraries/jevmodal"/></phingcall>
+        <phingcall target="copydir"><property name="to" value="${p}/libraries/jevents/bootstrap/"/><property name="from" value="${rootPath}/libraries/jevbootstrap"/></phingcall>
+        <phingcall target="copydir"><property name="to" value="${p}/libraries/jevents/jevtypeahead/"/><property name="from" value="${rootPath}/libraries/jevtypeahead"/></phingcall>
+        <phingcall target="copydir"><property name="to" value="${p}/modules/mod_jevents_cal/"/><property name="from" value="${rootPath}/modules/mod_jevents_cal"/></phingcall>
+        <phingcall target="copydir"><property name="to" value="${p}/modules/mod_jevents_custom/"/><property name="from" value="${rootPath}/modules/mod_jevents_custom"/></phingcall>
+        <phingcall target="copydir"><property name="to" value="${p}/modules/mod_jevents_filter/"/><property name="from" value="${rootPath}/modules/mod_jevents_filter"/></phingcall>
+        <phingcall target="copydir"><property name="to" value="${p}/modules/mod_jevents_latest/"/><property name="from" value="${rootPath}/modules/mod_jevents_latest"/></phingcall>
+        <phingcall target="copydir"><property name="to" value="${p}/modules/mod_jevents_legend/"/><property name="from" value="${rootPath}/modules/mod_jevents_legend"/></phingcall>
+        <phingcall target="copydir"><property name="to" value="${p}/modules/mod_jevents_switchview/"/><property name="from" value="${rootPath}/modules/mod_jevents_switchview"/></phingcall>
+
+        <!-- Copy the language files -->
+        <copy file="${rootPath}/component/admin/language/en-GB.${component}.ini" todir="${p}/administrator/language/en-GB/" overwrite="true" />
+        <copy file="${rootPath}/component/admin/language/en-GB.${component}.sys.ini" todir="${p}/administrator/language/en-GB/" overwrite="true" />
+        <copy file="${rootPath}/component/admin/language/en-GB.${component}.menu.ini" todir="${p}/administrator/language/en-GB/" overwrite="true" />
+        <copy file="${rootPath}/component/admin/language/en-GB.jev_package_title.ini" todir="${p}/administrator/language/en-GB/" overwrite="true" />
+        <copy file="${rootPath}/component/site/language/en-GB.${component}.ini" todir="${p}/language/en-GB/" overwrite="true" />
+
+        <copy file="${rootPath}/modules/mod_jevents_cal/language/en-GB/en-GB.mod_jevents_cal.ini" todir="${p}/language/en-GB/" overwrite="true" />
+        <copy file="${rootPath}/modules/mod_jevents_cal/language/en-GB/en-GB.mod_jevents_cal.sys.ini" todir="${p}/language/en-GB/" overwrite="true" />
+        <copy file="${rootPath}/modules/mod_jevents_custom/language/en-GB/en-GB.mod_jevents_custom.ini" todir="${p}/language/en-GB/" overwrite="true" />
+        <copy file="${rootPath}/modules/mod_jevents_custom/language/en-GB/en-GB.mod_jevents_custom.sys.ini" todir="${p}/language/en-GB/" overwrite="true" />
+        <copy file="${rootPath}/modules/mod_jevents_filter/language/en-GB/en-GB.mod_jevents_filter.ini" todir="${p}/language/en-GB/" overwrite="true" />
+        <copy file="${rootPath}/modules/mod_jevents_filter/language/en-GB/en-GB.mod_jevents_filter.sys.ini" todir="${p}/language/en-GB/" overwrite="true" />
+        <copy file="${rootPath}/modules/mod_jevents_latest/language/en-GB/en-GB.mod_jevents_latest.ini" todir="${p}/language/en-GB/" overwrite="true" />
+        <copy file="${rootPath}/modules/mod_jevents_latest/language/en-GB/en-GB.mod_jevents_latest.sys.ini" todir="${p}/language/en-GB/" overwrite="true" />
+        <copy file="${rootPath}/modules/mod_jevents_legend/language/en-GB/en-GB.mod_jevents_legend.ini" todir="${p}/language/en-GB/" overwrite="true" />
+        <copy file="${rootPath}/modules/mod_jevents_legend/language/en-GB/en-GB.mod_jevents_legend.sys.ini" todir="${p}/language/en-GB/" overwrite="true" />
+        <copy file="${rootPath}/modules/mod_jevents_switchview/language/en-GB/en-GB.mod_jevents_switchview.ini" todir="${p}/language/en-GB/" overwrite="true" />
+        <copy file="${rootPath}/modules/mod_jevents_switchview/language/en-GB/en-GB.mod_jevents_switchview.sys.ini" todir="${p}/language/en-GB/" overwrite="true" />
+
+        <copy file="${rootPath}/plugins/finder/jevents/language/en-GB.plg_finder_jevents.ini" todir="${p}/administrator/language/en-GB/" overwrite="true" />
+        <copy file="${rootPath}/plugins/finder/jevents/language/en-GB.plg_finder_jevents.sys.ini" todir="${p}/administrator/language/en-GB/" overwrite="true" />
+        <copy file="${rootPath}/plugins/gwejson/language/en-GB/en-GB.plg_system_gwejson.ini" todir="${p}/administrator/language/en-GB/" overwrite="true" />
+        <copy file="${rootPath}/plugins/gwejson/language/en-GB/en-GB.plg_system_gwejson.sys.ini" todir="${p}/administrator/language/en-GB/" overwrite="true" />
+        <copy file="${rootPath}/plugins/installer/language/en-GB/en-GB.plg_installer_jeventsinstaller.ini" todir="${p}/administrator/language/en-GB/" overwrite="true" />
+        <copy file="${rootPath}/plugins/installer/language/en-GB/en-GB.plg_installer_jeventsinstaller.sys.ini" todir="${p}/administrator/language/en-GB/" overwrite="true" />
+        <copy file="${rootPath}/plugins/jevents/language/en-GB/en-GB.plg_content_jevents.ini" todir="${p}/administrator/language/en-GB/" overwrite="true" />
+        <copy file="${rootPath}/plugins/jevents/language/en-GB/en-GB.plg_content_jevents.sys.ini" todir="${p}/administrator/languageen-GB/" overwrite="true" />
+        <copy file="${rootPath}/plugins/search/language/en-GB/en-GB.plg_search_eventsearch.ini" todir="${p}/administrator/language/en-GB/" overwrite="true" />
+        <copy file="${rootPath}/plugins/search/language/en-GB/en-GB.plg_search_eventsearch.ini" todir="${p}/administrator/language/en-GB/" overwrite="true" />
+
+        <phingcall target="copyassets" />
+        <phingcall target="delassets" />
+    </target>
+
+    <target name="copydir">
+        <!-- First make the directory in case it doesn't exist -->
+        <mkdir dir="${to}" />
+        <copy todir="${to}">
+            <fileset dir="${from}">
+                <include name="**"></include>
+                <exclude name="**/.svn/**"></exclude>
+                <exclude name="**/*.zip"></exclude>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="copyfile">
+        <copy file="${from}${name}" tofile="${to}" overwrite="true" />
+    </target>
+
+   <property name="uikitfiles" value="
+        /css/uikit.css,
+        /css/uikit-core.css,
+        /css/uikit.css,
+        /css/uikit.gsl.css,
+        /css/uikit.gsl.min.css,
+        /js/uikit.js,
+        /js/uikit.min.js,
+        /js/uikit-core.js,
+        /js/uikit-core.min.js,
+        /js/uikit-icons.js,
+        /js/uikit-icons.min.js,
+        " />
+<!--        /css/uikit-rtl.css, -->
+
+    <target name="copyassets"> 
+        <!-- JEvents build process copies the admin assets to the site assets folder, we need to do the same on link & unlink -->
+        <!-- copy backend css files to the frontend -->
+        <copy file="${rootPath}/component/admin/assets/js/gslframework.js" todir="${p}/components/${component}/assets/js/" />
+        <copy file="${rootPath}/component/admin/assets/js/jevents.js" todir="${p}/components/${component}/assets/js/" />
+        <copy file="${rootPath}/component/admin/assets/css/j3.css" todir="${p}/components/${component}/assets/css/" />
+        <copy file="${rootPath}/component/admin/assets/css/j4.css" todir="${p}/components/${component}/assets/css/" />
+        <copy file="${rootPath}/component/admin/assets/css/jevents.css" todir="${p}/components/${component}/assets/css/" />
+        <!-- copy the uikit css & js -->
+        <property name="from" value="${uikitdir}/dist" />
+        <foreach param="name" target="copyfile" >
+        <property name="to" value="${p}/media/${component}${name}" />
+            <filelist dir="/" files="${uikitfiles}" />
+        </foreach>
+     </target>
+
+    <target name="delassets"> 
+        <!-- during unlink we need to remove the assets that were copied by the link from admin to site of repo -->
+        <phingcall target="deleteitem"><property name="filename" value="${rootPath}/component/site/assets/js/gslframework.js"/></phingcall>
+        <phingcall target="deleteitem"><property name="filename" value="${rootPath}/component/site/assets/js/jevents.js"/></phingcall>
+        <phingcall target="deleteitem"><property name="filename" value="${rootPath}/component/site/assets/css/j3.css"/></phingcall>
+        <phingcall target="deleteitem"><property name="filename" value="${rootPath}/component/site/assets/css/j4.css" /></phingcall>
+        <phingcall target="deleteitem"><property name="filename" value="${rootPath}/component/site/assets/css/jevents.css" /></phingcall>
+        <!-- delete the uikit css & js repo media -->
+        <foreach param="name" target="deleteitem" >
+            <property name="filename" value="${rootPath}/component/media${name}" />
+            <filelist dir="/" files="${uikitfiles}" />
+        </foreach>
+    </target>
+
 </project>
