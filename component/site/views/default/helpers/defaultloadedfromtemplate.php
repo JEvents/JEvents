@@ -385,14 +385,17 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
             static $pluginscalled = array();
             if (!isset($pluginscalled[$event->rp_id()]))
             {
-                PluginHelper::importPlugin("jevents");
-                if ($multi)
+                if (!isset($event->_pluginscalled))
                 {
-                    $customresults = Factory::getApplication()->triggerEvent( 'onDisplayCustomFieldsMultiRow', array( array( & $event ) ) );
-                }
-                else
-                {
-                    $customresults = Factory::getApplication()->triggerEvent( 'onDisplayCustomFields', array( & $event ) );
+                    PluginHelper::importPlugin( "jevents" );
+                    if ( $multi )
+                    {
+                        $customresults = Factory::getApplication()->triggerEvent( 'onDisplayCustomFieldsMultiRow', array( array( & $event ) ) );
+                    }
+                    else
+                    {
+                        $customresults = Factory::getApplication()->triggerEvent( 'onDisplayCustomFields', array( & $event ) );
+                    }
                 }
                 $pluginscalled[$event->rp_id()] = $event;
             }

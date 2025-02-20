@@ -160,7 +160,7 @@ class JEVHelper
 			$import            = new iCalImport();
 			$instances[$index] = $import->import($filename, $rawtext);
 
-			return $instances[$index];
+            return $instances[$index];
 		}
 
 	}
@@ -1425,6 +1425,7 @@ class JEVHelper
 		{
 			return false;
 		}
+        // !JDEBUG ?: Profiler::getInstance('Application')->mark('Before Access::getAssetRules (id:' . $assetId . ' name:' . $assetName . ')');
 		$access = $user->authorise('core.admin', 'com_jevents');
 
 		return $access;
@@ -4453,7 +4454,12 @@ SCRIPT;
 			PluginHelper::importPlugin('jevents');
            // !JDEBUG ?: Profiler::getInstance('Application')->mark('before onDisplayCustomFieldsMultiRow');
 			Factory::getApplication()->triggerEvent('onDisplayCustomFieldsMultiRow', array(&$icalrows));
-           // !JDEBUG ?: Profiler::getInstance('Application')->mark('after onDisplayCustomFieldsMultiRow');
+            foreach ($icalrows as $k => $row)
+            {
+                $icalrows[$k]->_pluginscalled = true;
+            }
+
+            // !JDEBUG ?: Profiler::getInstance('Application')->mark('after onDisplayCustomFieldsMultiRow');
 		}
 
 	}
@@ -4825,6 +4831,7 @@ SCRIPT;
             array("element" => "extplus", "name" => "extplus", "type" => "file"),
             array("element" => "ruthin", "name" => "ruthin", "type" => "file"),
             array("element" => "flatplus", "name" => "flatplus", "type" => "file"),
+            array("element" => "flatui", "name" => "flatui", "type" => "file"),
             array("element" => "iconic", "name" => "iconic", "type" => "file"),
             array("element" => "map", "name" => "map", "type" => "file"),
             array("element" => "smartphone", "name" => "smartphone", "type" => "file"),
