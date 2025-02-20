@@ -1405,10 +1405,11 @@ SCRIPT;
                             $showon = substr($showon, 0, strlen($showon) - 1);
                             $showon = @json_decode( $showon );
                             $showon  = array_merge( $showon, $originalShowon );
-                        }
-                        $showon = json_encode( $showon );
 
-                        $showon = ' data-showon-gsl=\'' . $showon . '\' ';
+                            $showon = json_encode( $showon );
+
+                            $showon = ' data-showon-gsl=\'' . $showon . '\' ';
+                        }
 						// preserve the custom fields version
                         $showon .= ' ' . $originalShowon2;
 

@@ -177,6 +177,24 @@
 					<option value="1">USE_GLOBAL</option>
 					<option value="0">JEV_NO_CACHING</option>
 				</field>
+				<field
+						name="cache_time"
+						type="number"
+						label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
+						default="0"
+						filter="integer"
+						showon="cache:1"
+				/>
+
+				<field
+						name="cachemode"
+						type="hidden"
+						default="static"
+						showon="cache:1"
+				>
+					<option value="static">static</option>
+				</field>
+
 				<field name="modcal_LinkCloaking" type="jevboolean" class="btn-group" default="0" label="JEV_HIDE_LINKS"
 				       description="JEV_HIDE_LINKS_TIP"/>
 			</fieldset>

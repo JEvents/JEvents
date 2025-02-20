@@ -467,12 +467,13 @@ class DefaultModLatestView
 		{
 			$this->maxEvents = $limit;
 		}
+        /*
         $limitstart = intval($limitstart);
         if ($limitstart > 0)
         {
            // $this->maxEvents = $limit;
         }
-
+        */
 		$db = Factory::getDbo();
 
 		$t_datenow       = JEVHelper::getNow();
