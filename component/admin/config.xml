@@ -142,8 +142,10 @@
 			<option value="1">JEV_YES</option>
 			<option value="2">JEV_INLINE_PRINT_MECHANISM</option>
 		</field>
+		<!--
 		<field name="com_email_icon_view" type="jevboolean" class="gsl-button-group" default="1" menu="hide"
 		       label="JEV_SHOW_EMAIL_ICON" description="JEV_SHOW_EMAIL_ICON_TIP" difficulty="1"/>
+		-->
 		<field name="fixjquery" type="jevboolean" class="gsl-button-group" default="1" label="JEV_FIX_JQUERY"
 		       description="JEV_FIX_JQUERY_TIP" difficulty="2" maxjoomlaversion="3.99.99"/>
 		<!--
@@ -752,6 +754,9 @@ Default should be set by the custom field
 		       description="JEV_LARGE_DATASET_TIP" difficulty="3"/>
 		<field name="subquery" type="jevboolean" class="gsl-button-group" default="0" menu="hide"
 		       label="JEV_USE_SUBQUERIES_NOT_JOINS" description="JEV_USE_SUBQUERIES_NOT_JOINS_DESC" difficulty="3"/>
+
+		<field name="stricturls" type="jevboolean" class="gsl-button-group" default="0" menu="hide"
+			   label="JEV_STRICT_MATCHING_TITLES_DETAIL_VIEW" description="JEV_STRICT_MATCHING_TITLES_DETAIL_VIEW_DESC"/>
 
 	</fieldset>
 	<fieldset name="JEV_MODULE_CONFIG" difficulty="3">

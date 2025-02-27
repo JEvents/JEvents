@@ -168,7 +168,7 @@ class FormFieldJeveventcreator extends FormField
 				}
 				$userOptions[] = HTMLHelper::_('select.option', $user->id, $user->name . " ( " . $user->username . " )");
 			}
-			$userlist = HTMLHelper::_('select.genericlist', $userOptions, 'jev_creatorid', 'class="inputbox" size="1" ', 'value', 'text', $creator);
+			$userlist = HTMLHelper::_('select.genericlist', $userOptions, 'jev_creatorid', 'class="inputbox gsl-select" size="1" ', 'value', 'text', $creator);
 
 			return $userlist;
 		}

@@ -160,7 +160,7 @@ class JEVHelper
 			$import            = new iCalImport();
 			$instances[$index] = $import->import($filename, $rawtext);
 
-			return $instances[$index];
+            return $instances[$index];
 		}
 
 	}
@@ -1425,6 +1425,7 @@ class JEVHelper
 		{
 			return false;
 		}
+        // !JDEBUG ?: Profiler::getInstance('Application')->mark('Before Access::getAssetRules (id:' . $assetId . ' name:' . $assetName . ')');
 		$access = $user->authorise('core.admin', 'com_jevents');
 
 		return $access;
@@ -1459,7 +1460,18 @@ class JEVHelper
 			$menu             = $app->getMenu();
 			$active           = $menu->getActive();
 			$Itemid           = $input-> getInt("Itemid");
-			if (is_null($active))
+
+            $registry     = \JevRegistry::getinstance( "jevents" );
+            $moduleparams = $registry->get( "jevents.moduleparams", false);
+
+            if ($moduleparams && $moduleparams->get("target_itemid", 0) > 0)
+            {
+                $Itemid           =  $moduleparams->get("target_itemid", 0);
+                $jevitemid[$evid] = $Itemid;
+                return $Itemid;
+            }
+
+            if (is_null($active))
 			{
 				// wierd bug in Joomla when SEF is disabled but with xhtml urls sometimes &amp;Itemid is misinterpretted !!!
 				$Itemid = $input->getInt("Itemid");
@@ -1575,7 +1587,7 @@ class JEVHelper
 
 							if ($forcecheck)
 							{
-								$mparams = is_string($jevitem->params) ? new JevRegistry($jevitem->params) : $jevitem->params;
+                                $mparams = is_string($jevitem->getParams()) ? new JevRegistry($jevitem->getParams()) : $jevitem->getParams();
 								$mcatids = array();
 								// New system
 								$newcats = $mparams->get("catidnew", false);
@@ -4442,7 +4454,12 @@ SCRIPT;
 			PluginHelper::importPlugin('jevents');
            // !JDEBUG ?: Profiler::getInstance('Application')->mark('before onDisplayCustomFieldsMultiRow');
 			Factory::getApplication()->triggerEvent('onDisplayCustomFieldsMultiRow', array(&$icalrows));
-           // !JDEBUG ?: Profiler::getInstance('Application')->mark('after onDisplayCustomFieldsMultiRow');
+            foreach ($icalrows as $k => $row)
+            {
+                $icalrows[$k]->_pluginscalled = true;
+            }
+
+            // !JDEBUG ?: Profiler::getInstance('Application')->mark('after onDisplayCustomFieldsMultiRow');
 		}
 
 	}
@@ -4814,6 +4831,7 @@ SCRIPT;
             array("element" => "extplus", "name" => "extplus", "type" => "file"),
             array("element" => "ruthin", "name" => "ruthin", "type" => "file"),
             array("element" => "flatplus", "name" => "flatplus", "type" => "file"),
+            array("element" => "flatui", "name" => "flatui", "type" => "file"),
             array("element" => "iconic", "name" => "iconic", "type" => "file"),
             array("element" => "map", "name" => "map", "type" => "file"),
             array("element" => "smartphone", "name" => "smartphone", "type" => "file"),

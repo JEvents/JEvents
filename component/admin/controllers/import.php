@@ -19,6 +19,7 @@ use Joomla\CMS\Session\Session;
 use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
 
+#[\AllowDynamicProperties]
 class ImportController extends Joomla\CMS\MVC\Controller\FormController
 {
 

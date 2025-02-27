@@ -126,7 +126,7 @@ class AdminUserViewUser extends JEventsAbstractView
 			$userOptions[] = HTMLHelper::_('select.option', $user->id, $user->name . " ($user->username)");
 		}
 		$jevuser  = $this->get('user');
-		$userlist = HTMLHelper::_('select.genericlist', $userOptions, 'user_id', 'class="inputbox" size="1" ', 'value', 'text', $jevuser->user_id);
+		$userlist = HTMLHelper::_('select.genericlist', $userOptions, 'user_id', 'class="inputbox gsl-select" size="1" ', 'value', 'text', $jevuser->user_id);
 
 		JLoader::register('JEventsCategory', JEV_ADMINPATH . "/libraries/categoryClass.php");
 

@@ -30,10 +30,7 @@
 					   label="JEV_VIEWNAME"
 					   description="JEV_TIP_VIEWNAME"
 					   viewtype="mod_jevents_latest"/>
-				<field name="cache" type="radio" class="btn-group" default="0" label="JEV_LATEST_CACHE_ENABLE" description="JEV_LATEST_CACHE_CONTENT">
-					<option value="0">JEV_NO</option>
-					<option value="1">JEV_Yes</option>
-				</field>
+
 				<field name="contentplugins" type="radio" class="btn-group" default="0"
 				       label="JEV_LATESTEVENTS_USE_CONTENT_PLUGINS"
 				       description="JEV_LATESTEVENTS_USE_CONTENT_PLUGINS_TIP">
@@ -310,6 +307,31 @@
 					   description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC"/>
 				<field name="extras20" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS"
 					   description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC"/>
+			</fieldset>
+			<fieldset name="advanced">
+				<field name="cache" type="radio" class="btn-group" default="0" label="JEV_LATEST_CACHE_ENABLE" description="JEV_LATEST_CACHE_CONTENT">
+					<option value="0">JEV_NO</option>
+					<option value="1">JEV_Yes</option>
+				</field>
+
+				<field
+						name="cache_time"
+						type="number"
+						label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
+						default="900"
+						filter="integer"
+						showon="cache:1"
+				/>
+
+				<field
+						name="cachemode"
+						type="hidden"
+						default="static"
+						showon="cache:1"
+				>
+					<option value="static">static</option>
+				</field>
+
 			</fieldset>
 		</fields>
 	</config>

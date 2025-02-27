@@ -17,6 +17,7 @@ use Joomla\CMS\Router\Route;
 
 jimport('joomla.application.component.controller');
 
+#[\AllowDynamicProperties]
 class GetjsonController extends Joomla\CMS\MVC\Controller\BaseController
 {
 

@@ -20,6 +20,7 @@ use Joomla\CMS\Component\ComponentHelper;
  *
  * @static
  */
+#[\AllowDynamicProperties]
 class AlternativeViewDay extends JEventsAlternativeView
 {
 	function listevents($tpl = null)

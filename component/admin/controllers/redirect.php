@@ -20,7 +20,7 @@ use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Helper\TagsHelper;
-
+#[\AllowDynamicProperties]
 class AdminRedirectController extends Joomla\CMS\MVC\Controller\AdminController
 {
 

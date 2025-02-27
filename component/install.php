@@ -212,11 +212,11 @@ CREATE TABLE IF NOT EXISTS #__jevents_vevdetail(
 	evdet_id int(12) NOT NULL auto_increment,
 
 	rawdata longtext NOT NULL ,
-	dtstart int(11) NOT NULL default 0,
+	dtstart bigint NOT NULL default 0,
 	dtstartraw varchar(30) NOT NULL default "",
 	duration int(11) NOT NULL default 0,
 	durationraw varchar(30) NOT NULL default "",
-	dtend int(11) NOT NULL default 0,
+	dtend bigint NOT NULL default 0,
 	dtendraw varchar(30) NOT NULL default "",
 	dtstamp varchar(30) NOT NULL default "",
 	class  varchar(10) NOT NULL default "",

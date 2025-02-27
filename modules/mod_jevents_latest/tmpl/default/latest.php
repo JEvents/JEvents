@@ -461,13 +461,19 @@ class DefaultModLatestView
 		$page          = (int) $app->getUserState("jevents.moduleid" . $this->_modid . ".page", 0);
 		$direction     = (int) $app->getUserState("jevents.moduleid" . $this->_modid . ".direction", 1);
 
-		// RSS situation overrides maxecents
+		// RSS situation overrides max events
 		$limit = intval($limit);
 		if ($limit > 0)
 		{
 			$this->maxEvents = $limit;
 		}
-
+        /*
+        $limitstart = intval($limitstart);
+        if ($limitstart > 0)
+        {
+           // $this->maxEvents = $limit;
+        }
+        */
 		$db = Factory::getDbo();
 
 		$t_datenow       = JEVHelper::getNow();

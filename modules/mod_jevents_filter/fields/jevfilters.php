@@ -83,7 +83,9 @@ class JFormFieldJevfilters extends TextField
 		}
 
 		$filters = array();
-		include_once(JPATH_SITE . "/components/com_jevents/libraries/filters.php");
+        $filterGroups = array();
+
+        include_once(JPATH_SITE . "/components/com_jevents/libraries/filters.php");
 		foreach ($this->filterpath as $path)
 		{
 			foreach (Folder::files($path, ".php") as $filtername)
@@ -157,12 +159,21 @@ class JFormFieldJevfilters extends TextField
         $validvalues = array();
 		$input       = '<div style="clear:left"></div><table><tr valign="top">
 			<td><div style="font-weight:bold">' . Text::_("JEV_CLICK_TO_ADD_FILTER") . '</div>
-			<div id="filterchoices" style="width:300px;margin-top:10px;height:100px;border:solid 1px #ccc;overflow-y:auto" >';
+			<div id="filterchoices" style="width:400px;margin-top:10px;height:200px;border:solid 1px #ccc;overflow-y:auto" >';
 		foreach ($filters as $filter => $filterpath)
 		{
-			if (!in_array($filter, $invalue) && !in_array(strtolower($filter), $invalue))
+            $filterFolder = basename(dirname(dirname($filterpath)));
+            if ($filterFolder === 'libraries')
+            {
+                $filterFolder = '';
+            }
+            else
+            {
+                $filterFolder = ' (' .$filterFolder . ')';
+            }
+            if (!in_array($filter, $invalue) && !in_array(strtolower($filter), $invalue))
 			{
-				$input          .= '<div>' . $filter . "<span style='display:none'>$filter</span></div>";
+				$input          .= '<div>' . $filter . $filterFolder . "<span style='display:none'>$filter</span></div>";
 				$validvalues [] = $filter;
 			}
 		}
@@ -175,8 +186,18 @@ class JFormFieldJevfilters extends TextField
 		{
 			if (array_key_exists($filter, $filters) || array_key_exists(ucfirst($filter), $filters))
 			{
+                $filterFolder = basename(dirname(dirname($filters[$filter])));
+                if ($filterFolder === 'libraries')
+                {
+                    $filterFolder = '';
+                }
+                else
+                {
+                    $filterFolder = ' (' .$filterFolder . ')';
+                }
+
 				$filter     = ucfirst($filter);
-				$input      .= '<div id="filter' . $filter . '">' . $filter . "</div>";
+				$input      .= '<div id="filter' . $filter . '">' . $filter . $filterFolder . "</div>";
 				$invalues[] = $filter;
 			}
 		}

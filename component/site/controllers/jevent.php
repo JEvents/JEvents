@@ -14,7 +14,7 @@ defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.controller');
-
+#[\AllowDynamicProperties]
 class JEventController extends Joomla\CMS\MVC\Controller\BaseController
 {
 

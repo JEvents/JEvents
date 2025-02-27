@@ -247,22 +247,22 @@ $index  = Route::_("index.php");
 							<td valign="top" class="key"><?php echo Text::_('JEV_Categories'); ?>:</td>
 							<td><?php if ($this->jevuser->categories == 'all' || $this->jevuser->categories == '') { ?>
 									<label for="categories-all">
-										<input id="categories-all" type="radio" name="categories" value="all"
+										<input class="gsl-radio" id="categories-all" type="radio" name="categories" value="all"
 										       onclick="allselections('categories');" checked="checked"/>
 										<?php echo Text::_('JEV_All'); ?></label>
 									<label for="categories-select">
-										<input id="categories-select" type="radio" name="categories" value="select"
+										<input class="gsl-radio" id="categories-select" type="radio" name="categories" value="select"
 										       onclick="enableselections('categories');"/>
 										<?php echo Text::_('JEV_Select_From_List'); ?></label>
 								<?php }
 								else
 								{ ?>
 									<label for="categories-all">
-										<input id="categories-all" type="radio" name="categories" value="all"
+										<input class="gsl-radio" id="categories-all" type="radio" name="categories" value="all"
 										       onclick="allselections('categories');"/>
 										<?php echo Text::_('JEV_All'); ?></label>
 									<label for="categories-select">
-										<input id="categories-select" type="radio" name="categories" value="select"
+										<input class="gsl-radio" id="categories-select" type="radio" name="categories" value="select"
 										       onclick="enableselections('categories');" checked="checked"/>
 										<?php echo Text::_('JEV_Select_From_List'); ?></label>
 								<?php } ?></td>

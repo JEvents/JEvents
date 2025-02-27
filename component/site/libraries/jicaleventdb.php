@@ -1048,7 +1048,7 @@ class jIcalEventDB extends jEventCal
 
 	// Gets first repeat for this event from databases before it was tampered as an exception
 
-	function getOriginalFirstRepeat(){
+	function getOriginalFirstRepeat( $skipPlugins = false){
 
 		// process the new plugins
 		// get extra data and conditionality from plugins
@@ -1094,7 +1094,10 @@ class jIcalEventDB extends jEventCal
 		if ($rows)
 		{
 			$row        = new jIcalEventRepeat($rows[0]);
-			Factory::getApplication()->triggerEvent('onDisplayCustomFields', array(&$row));
+            if (!$skipPlugins)
+            {
+                Factory::getApplication()->triggerEvent( 'onDisplayCustomFields', array( &$row ) );
+            }
 		}
 
 		return $row;
