@@ -22,6 +22,8 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\HTML\Helpers\Sidebar;
 use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Editor\Editor;
+use Joomla\CMS\Toolbar\Toolbar;
+
 /**
  * HTML View class for the component
  *
@@ -361,7 +363,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		ToolbarHelper::save('icalevent.savetranslation');
 		ToolbarHelper::cancel('icalevent.close');
 
-		$bar =  JToolBar::getInstance('toolbar');
+		$bar =  Toolbar::getInstance('toolbar');
 
 		// Add a standard button
 		$bar->appendButton('confirm', Text::_("JEV_DELETE_TRANSLATION_WARNING"),  'trash',  'JEV_DELETE', "icalevent.deletetranslation", false);
@@ -476,7 +478,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 	}
 
 	function toolbarButton($task = '', $icon = '', $iconOver = '', $alt = '', $listSelect = true) {
-		$bar = JToolBar::getInstance('toolbar');
+		$bar = Toolbar::getInstance('toolbar');
 
 		// Add a standard button
 		$bar->appendButton('Jev', $icon, $alt, $task, $listSelect);
@@ -484,7 +486,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 	function toolbarConfirmButton($task = '', $msg = '', $icon = '', $iconOver = '', $alt = '', $listSelect = true)
 	{
-		$bar =  JToolBar::getInstance('toolbar');
+		$bar =  Toolbar::getInstance('toolbar');
 
 		// Add a standard button
 		$bar->appendButton('Jevconfirm', $msg, $icon, $alt, $task, $listSelect, false, "document.adminForm.updaterepeats.value");
@@ -493,7 +495,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 	function toolbarConfirmvarButton($task = '', $msg = '', $icon = '', $iconOver = '', $alt = '', $listSelect = true, $varCheck = "")
 	{
-		$bar =  JToolBar::getInstance('toolbar');
+		$bar =  Toolbar::getInstance('toolbar');
 
 		$bar->appendButton('Jevconfirmvar', $msg, $icon, $alt, $task, $listSelect, false, $varCheck);
 

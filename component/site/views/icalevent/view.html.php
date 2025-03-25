@@ -20,10 +20,8 @@ use Joomla\String\StringHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Toolbar\Toolbar;
 
-if (File::exists(JPATH_ADMINISTRATOR . '/includes/toolbar.php')) {
-    require_once(JPATH_ADMINISTRATOR . '/includes/toolbar.php');
-}
 
 /**
  * HTML View class for the component frontend
@@ -97,7 +95,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 			$document->setTitle(Text::_('CREATE_ICAL_EVENT'));
 		}
 
-		$bar = JToolBar::getInstance('toolbar');
+		$bar = Toolbar::getInstance('toolbar');
 
 		if ($this->id > 0)
 		{
@@ -211,7 +209,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 	function toolbarConfirmButton($task = '', $msg = '', $icon = '', $iconOver = '', $alt = '', $listSelect = true)
 	{
 
-		$bar = JToolBar::getInstance('toolbar');
+		$bar = Toolbar::getInstance('toolbar');
 
 		// Add a standard button
 		$bar->appendButton('Jevconfirm', $msg, $icon, $alt, $task, $listSelect, false, "document.adminForm.updaterepeats.value");
@@ -220,7 +218,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 	function toolbarButton($task = '', $icon = '', $iconOver = '', $alt = '', $listSelect = true)
 	{
 
-		$bar = JToolBar::getInstance('toolbar');
+		$bar = Toolbar::getInstance('toolbar');
 
 		// Add a standard button
 		$bar->appendButton('Jev', $icon, $alt, $task, $listSelect);
@@ -242,7 +240,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		?>>
 		<div id="toolbar-box">
 			<?php
-			$bar     = JToolBar::getInstance('toolbar');
+			$bar     = Toolbar::getInstance('toolbar');
 			$barhtml = $bar->render();
 			echo $barhtml;
 			?>
@@ -263,7 +261,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 	function toolbarLinkButton($task = '', $icon = '', $iconOver = '', $alt = '')
 	{
 
-		$bar = JToolBar::getInstance('toolbar');
+		$bar = Toolbar::getInstance('toolbar');
 
 		// Add a standard button
 		$bar->appendButton('Jevlink', $icon, $alt, $task, false);

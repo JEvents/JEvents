@@ -58,7 +58,7 @@ class CustomCssController extends Joomla\CMS\MVC\Controller\BaseController
 
 		if (!$user->authorise('core.admin'))
 		{
-			$msg     = JTExt::_('JEV_ERROR_NOT_AUTH_CSS');
+			$msg     = Text::_('JEV_ERROR_NOT_AUTH_CSS');
 			$msgType = 'error';
 			$mainframe->enqueueMessage($msg, $msgType);
 			$mainframe->redirect('index.php?option=com_jevents&msg=' . $msg . '&msgtype=' . $msgType . '');

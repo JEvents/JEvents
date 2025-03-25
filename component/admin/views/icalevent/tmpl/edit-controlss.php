@@ -22,6 +22,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Toolbar\Toolbar;
 
 $app    = Factory::getApplication();
 $input  = $app->input;
@@ -637,7 +638,7 @@ if ($app->isClient('site'))
 	if ($params->get('com_edit_toolbar', 0) == 1 || $params->get('com_edit_toolbar', 0) == 2)
 	{
 		//Load the toolbar at the bottom!
-		$bar     = JToolBar::getInstance('toolbar');
+		$bar     = Toolbar::getInstance('toolbar');
 		$barhtml = $bar->render();
 		echo $barhtml;
 	}

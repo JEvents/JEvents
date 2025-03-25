@@ -826,7 +826,27 @@ function JEventsBuildRouteNew( &$query, $task ) {
                 }
                 if ( isset( $query['catids'] ) && StringHelper::strlen( $query['catids'] ) > 0 )
                 {
-                    $segments[] = $query['catids'];
+                    $menu     = Factory::getApplication()->getMenu();
+                    if (isset($query["Itemid"]))
+                    {
+                        $menuitem = $menu->getItem( $query["Itemid"] );
+                    }
+                    else
+                    {
+                        $menuItem      = $menu->getActive();
+                    }
+                    $menuCatIds =  $menuItem->getParams()->get('catidnew', []);
+                    $separator = $cfg->get("catseparator","|");
+                    $queryCateIds = explode($separator, $query['catids']);
+                    $diff = array_diff($menuCatIds, $queryCateIds);
+                    if (count(array_diff($menuCatIds, $queryCateIds)) == 0)
+                    {
+                        $segments[] = '-';
+                    }
+                    else
+                    {
+                        $segments[] = $query['catids'];
+                    }
                 }
                 else
                 {

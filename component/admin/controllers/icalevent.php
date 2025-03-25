@@ -1358,7 +1358,7 @@ SQL;
 				unset($cid[$key]);
 				if (count($cid) == 0)
 				{
-					$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.list', JTEXT::_("JEV_NO_DELETE_ROW") . " : " . (is_null($event) ? $id : 0));
+					$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.list', Text::_("JEV_NO_DELETE_ROW") . " : " . (is_null($event) ? $id : 0));
 					$this->redirect();
 				}
 				else
@@ -1386,7 +1386,7 @@ SQL;
 
 		if ($app->isClient('administrator'))
 		{
-			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.list', JTEXT::_("JEV_EVENT_STATE_CHANGED"));
+			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.list', Text::_("JEV_EVENT_STATE_CHANGED"));
 			$this->redirect();
 		}
 		else
@@ -1514,7 +1514,7 @@ SQL;
 
 			if ($app->isClient('administrator'))
 			{
-				$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icalevent.list", JTEXT::_("ICAL_EVENTS_DELETED"));
+				$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icalevent.list", Text::_("ICAL_EVENTS_DELETED"));
 				$this->redirect();
 			}
 			else
@@ -1522,7 +1522,7 @@ SQL;
 				$Itemid = $input->getInt("Itemid");
 				list($year, $month, $day) = JEVHelper::getYMD();
 				$rettask = $input->getString("rettask", "day.listevents");
-				$this->setRedirect(Route::_('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&year=$year&month=$month&day=$day&Itemid=$Itemid", false), JTEXT::_("ICAL_EVENT_DELETED"));
+				$this->setRedirect(Route::_('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&year=$year&month=$month&day=$day&Itemid=$Itemid", false), Text::_("ICAL_EVENT_DELETED"));
 				$this->redirect();
 			}
 		}

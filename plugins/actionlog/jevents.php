@@ -12,13 +12,13 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\Component\Actionlogs\Administrator\Plugin\ActionLogPlugin;
+use Joomla\Component\Actionlogs\Administrator\Helper\ActionlogsHelper;
 
-JLoader::register('ActionLogPlugin', JPATH_ADMINISTRATOR . '/components/com_actionlogs/libraries/actionlogplugin.php');
-JLoader::register('ActionlogsHelper', JPATH_ADMINISTRATOR . '/components/com_actionlogs/helpers/actionlogs.php');
 JLoader::register('JevDate', JPATH_SITE . "/components/com_jevents/libraries/jevdate.php");
 
 
-class PlgActionlogJEvents extends \Joomla\CMS\Plugin\CMSPlugin
+class PlgActionlogJEvents extends ActionLogPlugin
 {
 
 	// Event State Triggers

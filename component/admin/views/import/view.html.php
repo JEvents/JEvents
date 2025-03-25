@@ -18,6 +18,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Toolbar\Toolbar;
 
 /**
  * HTML View class for the component
@@ -64,7 +65,7 @@ class importViewimport extends JEventsAbstractView
 		ToolbarHelper::title(Text::_('EDIT_ICS'), 'jevents');
 
 		//ToolbarHelper::save('icals.save');
-		$bar = JToolBar::getInstance('toolbar');
+		$bar = Toolbar::getInstance('toolbar');
 		if ($this->editItem && isset($this->editItem->ics_id) && $this->editItem->ics_id > 0)
 		{
 			ToolbarHelper::save('icals.savedetails');

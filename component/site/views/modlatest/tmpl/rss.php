@@ -19,6 +19,9 @@ use Joomla\CMS\Filter\OutputFilter;
 use Joomla\String\StringHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\Registry\Registry;
+use Joomla\CMS\Uri\Uri;
 
 // Setup the document
 $doc = Factory::getDocument();
@@ -135,6 +138,23 @@ foreach ($this->eventsByRelDay as $relDay => $ebrd)
 			$item->title = $temptime->toFormat(Text::_('JEV_RSS_DATETIME')) . " : " . $item_title;
 		}
 		$item->link        = $item_link;
+
+        /*
+        if (isset($row->_imageurl1) && !empty($row->_imageurl1)){
+            $plugin = PluginHelper::getPlugin("jevents", "jevfiles");
+            $params = new Registry($plugin->params);
+            $name = "_imageurl1";
+
+            $img =  plgJEventsjevfiles::getSizedImageUrl($row, $name, plgJEventsjevfiles::imageSpecificParameterStatic($params, "imagew", 300, 1) . "x" . plgJEventsjevfiles::imageSpecificParameterStatic($params, "imageh", 225, 1), $params);
+            if (strpos($img, "/") === 0)
+            {
+                $img = substr($img, 1);
+            }
+            $img = URI::root(false) . $img;
+
+            $item_description = htmlspecialchars($img) . $item_description;
+        }
+        */
 		$item->description = $item_description;
 		$item->category    = $item_type;
 

@@ -301,7 +301,7 @@ class SaveIcalEvent
 		}
 		if ($overlaprepeats)
 		{
-			$app->enqueueMessage(JTExt::_("JEV_CHECK_OVERLAPPING_REPEATS"), "warning");
+			$app->enqueueMessage(Text::_("JEV_CHECK_OVERLAPPING_REPEATS"), "warning");
 		}
 
 		// If not authorised to publish in the frontend then notify the administrator

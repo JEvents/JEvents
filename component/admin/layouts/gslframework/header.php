@@ -23,6 +23,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Toolbar\ToolbarButton;
+use Joomla\CMS\Toolbar\Toolbar;
 
 // Skip Chosen in Joomla 4.x+
 $jversion = new Version;
@@ -175,12 +176,12 @@ $j5plus = version_compare(JVERSION, "5.0", "ge") ? "j5plus" : "";
                 <nav class="gsl-navbar-container ys-gsl-action-buttons gsl-navbar" gsl-navbar>
                     <div class="gsl-navbar-left gsl-background-primary gsl-width-expand@m">
                         <?php
-                        $bar            = JToolBar::getInstance('toolbar2');
+                        $bar            = Toolbar::getInstance('toolbar2');
                         $toolbarButtons = $bar->getItems();
 
                         if (!count($toolbarButtons))
                         {
-                            $bar            = JToolBar::getInstance('toolbar');
+                            $bar            = Toolbar::getInstance('toolbar');
                             $toolbarButtons = $bar->getItems();
                         }
 

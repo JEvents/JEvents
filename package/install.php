@@ -175,7 +175,7 @@ class Pkg_JeventsInstallerScript
 					<li>A new, more modern, interface for event creation/editing (with new configuration options)</li>
 					<li>Joomla 4.0 support</li>
 				</ul>
-				<p>Please see our latest <a href='https://www.jevents.net/blog/jevents-3-6-exciting-new-styling-featured' target='_blank'>blog post</a> for more information about these features and how they can be configured.</p>
+				<p>Please see our latest <a href='https://www.jevents.net/blog/588-exciting-new-styling-joomla-5-support' target='_blank'>blog post</a> for more information about these features and how they can be configured.</p>
 				<div class='installed'>
 					<ul>
 						<li><a href='index.php?option=com_jevents' >JEvents Core Component</a></li>

@@ -275,7 +275,7 @@ class plgFinderJEvents extends Adapter
 	}
 
 	/**
-	 * Method to index an item. The item must be a FinderIndexerResult object.
+	 * Method to index an item. The item must be a Joomla\Component\Finder\Administrator\Indexer\Result object.
 	 *
 	 * @param   Result $item   The item to index as an Result object.
 	 *
@@ -528,7 +528,7 @@ class plgFinderJEvents extends Adapter
 */
 
 		// Convert the item to a result object.
-		$item = ArrayHelper::toObject($row, 'FinderIndexerResult');
+		$item = ArrayHelper::toObject($row, 'Joomla\Component\Finder\Administrator\Indexer\Result');
 
 		// Set the item type.
 		$item->type_id = $this->type_id;
