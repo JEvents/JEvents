@@ -769,6 +769,38 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
                 $blank[]   = "";
                 break;
 
+            case "{{ALLCATEGORIES_CAT_BACKGROUND_COLOURED}}":
+                $search[] = "{{ALLCATEGORIES_CAT_BACKGROUND_COLOURED}}";
+
+                if (!isset($allcat_catids))
+                {
+                    $db         = Factory::getDbo();
+                    $catsql     = "SELECT cat.id, cat.title as name, cat.params FROM #__categories  as cat WHERE cat.extension='com_jevents' ";
+                    $db->setQuery($catsql);
+                    $allcat_catids = $db->loadObjectList('id');
+                }
+                $db = Factory::getDbo();
+                $db->setQuery("Select catid from #__jevents_catmap  WHERE evid = " . $event->ev_id());
+                $allcat_eventcats = $db->loadColumn();
+
+                $allcats = array();
+                foreach ($allcat_eventcats as $catid)
+                {
+                    if (isset($allcat_catids[$catid]))
+                    {
+                        $params    = json_decode($allcat_catids[$catid]->params);
+                        $style = '';
+
+                        if(!empty($params->catcolour)) {
+                            $style = ' style="background-color:' . $params->catcolour . ';color:' . JevMapColor($params->catcolour) . ';"';
+                        }
+                        $allcats[] = '<span ' . $style . '>' . $allcat_catids[$catid]->name . '</span>';
+                    }
+                }
+                $replace[] = implode(", ", $allcats);
+                $blank[]   = "";
+                break;
+
             case "{{CALENDAR}}":
                 $search[]  = "{{CALENDAR}}";
                 $replace[] = $event->getCalendarName();

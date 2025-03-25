@@ -20,6 +20,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\String\StringHelper;
+use Joomla\CMS\Toolbar\Toolbar;
+
 
 /**
  * HTML View class for the component frontend
@@ -66,7 +68,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 		// Set toolbar items for the page
 		ToolbarHelper::title(Text::_('EDIT_ICAL_REPEAT'), 'jevents');
 
-		$bar = JToolBar::getInstance('toolbar');
+		$bar = Toolbar::getInstance('toolbar');
 		if (JEVHelper::isEventEditor())
 		{
 			ToolbarHelper::apply('icalrepeat.apply', "JEV_SAVE");
@@ -120,7 +122,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 	function toolbarButton($task = '', $icon = '', $iconOver = '', $alt = '', $listSelect = true)
 	{
 
-		$bar = JToolBar::getInstance('toolbar');
+		$bar = Toolbar::getInstance('toolbar');
 
 		// Add a standard button
 		$bar->appendButton('Jev', $icon, $alt, $task, $listSelect);
@@ -144,7 +146,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 		?>>
 		<div id="toolbar-box">
 			<?php
-			$bar     = JToolBar::getInstance('toolbar');
+			$bar     = Toolbar::getInstance('toolbar');
 			$barhtml = $bar->render();
 			//$barhtml = str_replace('href="#"','href="javascript void();"',$barhtml);
 			//$barhtml = str_replace('submitbutton','return submitbutton',$barhtml);
@@ -185,7 +187,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 			</div>
 			<div class="m">
 				<?php
-				$bar     = JToolBar::getInstance('toolbar');
+				$bar     = Toolbar::getInstance('toolbar');
 				$barhtml = $bar->render();
 				//$barhtml = str_replace('href="#"','href="javascript void();"',$barhtml);
 				//$barhtml = str_replace('submitbutton','return submitbutton',$barhtml);
@@ -343,7 +345,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 	function toolbarLinkButton($task = '', $icon = '', $iconOver = '', $alt = '')
 	{
 
-		$bar = JToolBar::getInstance('toolbar');
+		$bar = Toolbar::getInstance('toolbar');
 
 		// Add a standard button
 		$bar->appendButton('Jevlink', $icon, $alt, $task, false);

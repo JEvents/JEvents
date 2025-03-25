@@ -22,6 +22,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Toolbar\Toolbar;
 
 // needed for sortable category IDs
 HTMLHelper::script('media/com_jevents/js/Sortable.js', array('version' => JeventsHelper::JEvents_Version(false), 'relative' => false));
@@ -293,7 +294,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 						?>
                         // reformat start and end dates  to Y-m-d format
                         reformatStartEndDates();
-                        checkConflict('<?php echo $checkURL; ?>', pressbutton, '<?php echo Session::getFormToken(); ?>', '<?php echo Factory::getApplication()->isClient('administrator') ? 'administrator' : 'site'; ?>', <?php echo $this->repeatId; ?>);
+                        checkConflict('<?php echo $checkURL; ?>', pressbutton, '<?php echo Session::getFormToken(); ?>', '<?php echo Factory::getApplication()->isClient('administrator') ? 'administrator' : 'site'; ?>', <?php echo $this->repeatId; ?>, 1, '<?php echo Factory::getLanguage()->getTag(); ?>'););
 						<?php
 						}
 						else
@@ -783,7 +784,7 @@ if ($app->isClient('site'))
 	if ($params->get('com_edit_toolbar', 0) == 1 || $params->get('com_edit_toolbar', 0) == 2)
 	{
 		//Load the toolbar at the bottom!
-		$bar     = JToolBar::getInstance('toolbar');
+		$bar     = Toolbar::getInstance('toolbar');
 		$barhtml = $bar->render();
 		echo $barhtml;
 	}

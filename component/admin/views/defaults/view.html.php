@@ -17,7 +17,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\String\StringHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Service\Provider\Toolbar;
+use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Uri\Uri;
 
@@ -161,7 +161,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 			</div>
 			<div class="m">
 				<?php
-				$bar     = JToolBar::getInstance('toolbar');
+				$bar     = Toolbar::getInstance('toolbar');
 				$barhtml = $bar->render();
 				//$barhtml = str_replace('href="#"','href="javascript void();"',$barhtml);
 				//$barhtml = str_replace('submitbutton','return submitbutton',$barhtml);

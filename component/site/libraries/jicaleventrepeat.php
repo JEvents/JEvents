@@ -286,15 +286,8 @@ class jIcalEventRepeat extends jIcalEventDB
 		}
 
 		$associations = array();
-		if (version_compare(JVERSION, '4.0.0', 'lt'))
-		{
-			require_once JPATH_ROOT . '/administrator/components/com_menus/helpers/menus.php';
-			$associations = \MenusHelper::getAssociations($Itemid);
-		}
-		else
-		{
-			$associations = MenusHelper::getAssociations($Itemid);
-		}
+		$associations = MenusHelper::getAssociations($Itemid);
+
 		$lang = Factory::getLanguage();
 		if (isset($associations[$lang->getTag()]))
 		{
@@ -316,6 +309,7 @@ class jIcalEventRepeat extends jIcalEventDB
 		if ($input->getCmd("tmpl", "") == "component" &&
 			$input->getCmd('task', 'selectfunction') != 'icalevent.select' &&
 			$input->getCmd("option", "") != "com_acymailing" &&
+            $input->getCmd("option", "") != "com_acym" &&
 			$input->getCmd("option", "") != "com_jnews" &&
 			$input->getCmd("option", "") != "com_search" &&
 			$input->getCmd("jevtask", "") != "crawler.listevents" &&

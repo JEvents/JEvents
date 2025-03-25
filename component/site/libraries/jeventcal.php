@@ -1167,6 +1167,7 @@ class jEventCal
 		if ($input->getCmd("tmpl", "") == "component" &&
 			$input->getCmd('task', 'selectfunction') != 'icalevent.select' &&
 			$input->getCmd("option", "") != "com_acymailing" &&
+            $input->getCmd("option", "") != "com_acym" &&
 			$input->getCmd("option", "") != "com_jnews" &&
 			$input->getCmd("jevtask", "") != "crawler.listevents")
 		{

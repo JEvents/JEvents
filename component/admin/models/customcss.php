@@ -15,9 +15,6 @@ use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Path;
 use Joomla\CMS\Factory;
 
-jimport('joomla.filesystem.folder');
-jimport('joomla.filesystem.file');
-
 /**
  * JEvents Custom CSS overview Model
  *
@@ -73,7 +70,7 @@ class CustomcssModelCustomcss extends FormModel
 		if (!File::exists($filepath))
 		{
 			//Create the new file so we have a base file to save to
-			Jfile::copy($srcfilepath, $filepath);
+			File::copy($srcfilepath, $filepath);
 		}
 
 		$filePath = Path::clean($filepath);
