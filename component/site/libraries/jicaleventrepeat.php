@@ -286,15 +286,8 @@ class jIcalEventRepeat extends jIcalEventDB
 		}
 
 		$associations = array();
-		if (version_compare(JVERSION, '4.0.0', 'lt'))
-		{
-			require_once JPATH_ROOT . '/administrator/components/com_menus/helpers/menus.php';
-			$associations = \MenusHelper::getAssociations($Itemid);
-		}
-		else
-		{
-			$associations = MenusHelper::getAssociations($Itemid);
-		}
+		$associations = MenusHelper::getAssociations($Itemid);
+
 		$lang = Factory::getLanguage();
 		if (isset($associations[$lang->getTag()]))
 		{

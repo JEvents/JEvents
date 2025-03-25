@@ -290,7 +290,7 @@ class JEventsHTML
 	                $item->title .= ' (' . $item->language . ')';
 	            }
 			}
-			else if ($item->language !== '*')
+			else if ($item->language !== '*'  && $item->language != $lang->getTag())
             {
                 $item->title .= ' (' . $item->language . ')';
             }
