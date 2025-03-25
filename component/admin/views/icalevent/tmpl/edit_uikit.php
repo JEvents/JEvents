@@ -294,7 +294,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 						?>
                         // reformat start and end dates  to Y-m-d format
                         reformatStartEndDates();
-                        checkConflict('<?php echo $checkURL; ?>', pressbutton, '<?php echo Session::getFormToken(); ?>', '<?php echo Factory::getApplication()->isClient('administrator') ? 'administrator' : 'site'; ?>', <?php echo $this->repeatId; ?>, 1, '<?php echo Factory::getLanguage()->getTag(); ?>'););
+                        checkConflict('<?php echo $checkURL; ?>', pressbutton, '<?php echo Session::getFormToken(); ?>', '<?php echo Factory::getApplication()->isClient('administrator') ? 'administrator' : 'site'; ?>', <?php echo $this->repeatId; ?>, 1, '<?php echo Factory::getLanguage()->getTag(); ?>');
 						<?php
 						}
 						else
