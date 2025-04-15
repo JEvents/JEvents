@@ -43,6 +43,13 @@
 			<option value="1" maxjoomlaversion="3.99999">JEV_USE_JEVENTS_BOOTSTRAP</option>
 			<option value="2">JEV_USE_JOOMLA_BOOTSTRAP</option>
 		</field>
+		<field name="fontawesome" type="jevlist" default="1" label="JEV_LOAD_FONTAWESOME"
+			   description="JEV_LOAD_FONTAWESOME_DESC" difficulty="2" minjoomlaversion="2.5.0"
+			   showon="framework!:uikit3"
+		>
+			<option value="0">JEV_DO_NOT_LOAD_FONTAWESOME</option>
+			<option value="1">JEV_USE_JOOMLA_FONTAWESOME</option>
+		</field>
 
 		<field name="clubcode_spacer" type="jevinfo" default='JEV_JOOMLA_UPDATE_CLUBCODE_INFO' menu="hide" label=""
 		       description="" difficulty="1"/>

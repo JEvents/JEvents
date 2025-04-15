@@ -28,6 +28,7 @@ class JEventsDBModel
 {
 
 	var $cfg = null;
+    var $db  = null;
 	var $datamodel = null;
 	var $subquery = false;
 	// default multi-day event treatment
@@ -37,7 +38,8 @@ class JEventsDBModel
 	{
 
 		$this->cfg = JEVConfig::getInstance();
-
+        $this->db  = Factory::getDbo();
+        
 		$this->datamodel = &$datamodel;
 
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
@@ -252,7 +254,7 @@ class JEventsDBModel
 			. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 			. $extrajoin
 			. $catwhere
-			. "\n AND ev.created >= '$startdate' AND ev.created <= '$enddate'"
+			. "\n AND ev.created >= " . $this->db->quote($startdate) . " AND ev.created <= " . $this->db->quote($enddate) . " "
 			. $extrawhere
 			. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 			. " \n AND icsf.state=1"
@@ -291,7 +293,7 @@ class JEventsDBModel
 			. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 			. $extrajoin
 			. $catwhere
-			. "\n AND ev.created >= '$startdate' AND ev.created <= '$enddate'"
+			. "\n AND ev.created >= " . $this->db->quote($startdate) . " AND ev.created <= " . $this->db->quote($enddate) . " "
 			. $extrawhere
 			. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 			. "  AND icsf.state=1 "
@@ -918,7 +920,7 @@ class JEventsDBModel
 			. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 			. $extrajoin
 			. $catwhere
-			. "\n AND det.modified >= '$startdate' AND det.modified <= '$enddate'"
+			. "\n AND det.modified >= " . $this->db->quote($startdate) . " AND det.modified <= " . $this->db->quote($enddate) . " "
 			. $extrawhere
 			. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 			. " \n AND icsf.state=1"
@@ -955,7 +957,7 @@ class JEventsDBModel
 			. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 			. $extrajoin
 			. $catwhere
-			. "\n AND det.modified >= '$startdate' AND det.modified <= '$enddate'"
+			. "\n AND det.modified >= " . $this->db->quote($startdate) . " AND det.modified <= " . $this->db->quote($enddate) . " "
 			. $extrawhere
 			. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 			. "  AND icsf.state=1 "
@@ -1129,11 +1131,11 @@ class JEventsDBModel
 			// We only show events on their first day if they are not to be shown on multiple days so also add this condition
 			// i.e. the event settings are used
 			// This is the true version of these conditions
-			//$multiday = "\n AND ((rpt.startrepeat >= '$startdate' AND det.multiday=0) OR  det.multiday=1)";
-			//$multiday2 = "\n AND ((rpt.startrepeat <= '$startdate' AND det.multiday=0) OR  det.multiday=1)";
+			//$multiday = "\n AND ((rpt.startrepeat >= " . $this->db->quote($startdate) . " AND det.multiday=0) OR  det.multiday=1)";
+			//$multiday2 = "\n AND ((rpt.startrepeat <= " . $this->db->quote($startdate) . " AND det.multiday=0) OR  det.multiday=1)";
 			// BUT this is logically equivalent and appears much faster  on some databases
-			$multiday  = "\n AND (rpt.startrepeat >= '$startdate' OR  det.multiday=1)";
-			$multiday2 = "\n AND (rpt.startrepeat <= '$startdate'OR  det.multiday=1)";
+			$multiday  = "\n AND (rpt.startrepeat >= " . $this->db->quote($startdate) . " OR  det.multiday=1)";
+			$multiday2 = "\n AND (rpt.startrepeat <= " . $this->db->quote($startdate) . "OR  det.multiday=1)";
 			$multiday3 = "AND det.multiday=1";
 		}
 
@@ -1143,10 +1145,10 @@ class JEventsDBModel
 		$multiday2 = "";
 		$multiday3 = "";
 
-		$daterange  = "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= '$enddate'";
+		$daterange  = "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= " . $this->db->quote($enddate) . " ";
 		$multidate  = "\n AND ((rpt.startrepeat >= '$t_datenowSQL' AND det.multiday=0) OR  det.multiday=1)";
 
-		$daterange2 = "\n rptx.endrepeat >= '$t_datenowSQL' AND rptx.startrepeat <= '$enddate'";
+		$daterange2 = "\n rptx.endrepeat >= '$t_datenowSQL' AND rptx.startrepeat <= " . $this->db->quote($enddate) . " ";
 		$multidate2 = "\n AND ((rptx.startrepeat >= '$t_datenowSQL' AND det2.multiday=0) OR  det2.multiday=1)";
 		$daterange2 = "\n AND rpt.rp_id in (SELECT rptx.rp_id FROM #__jevents_repetition as rptx "
 			. "\n INNER JOIN #__jevents_vevdetail as det2  ON det2.evdet_id = rptx.eventdetail_id"
@@ -1172,7 +1174,7 @@ class JEventsDBModel
 			. " \n AND icsf.state=1"
 			. "\n AND icsf.access  IN (" . JEVHelper::getAid($user) . ")"
 			// published state is now handled by filter
-			. "\n AND rpt.startrepeat=(SELECT MIN(rptq.startrepeat) FROM #__jevents_repetition as rptq WHERE rptq.eventid=ev.ev_id AND rptq.startrepeat >= '$t_datenowSQL' AND rptq.startrepeat <= '$enddate' $multiday3)"
+			. "\n AND rpt.startrepeat=(SELECT MIN(rptq.startrepeat) FROM #__jevents_repetition as rptq WHERE rptq.eventid=ev.ev_id AND rptq.startrepeat >= '$t_datenowSQL' AND rptq.startrepeat <= " . $this->db->quote($enddate) . " $multiday3)"
 			. "\n GROUP BY ev.ev_id";
 
 		// always in reverse hits  order!
@@ -1192,9 +1194,9 @@ class JEventsDBModel
 		if ($repeatdisplayoptions)
 			$groupby = "\n GROUP BY ev.ev_id";
 
-		$daterange  = "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$enddate'";
+		$daterange  = "\n AND rpt.endrepeat >= " . $this->db->quote($startdate) . " AND rpt.startrepeat <= " . $this->db->quote($enddate) . " ";
 
-		$daterange2 = "\n rptx.endrepeat >= '$startdate' AND rptx.startrepeat <= '$enddate'";
+		$daterange2 = "\n rptx.endrepeat >= " . $this->db->quote($startdate) . " AND rptx.startrepeat <= " . $this->db->quote($enddate) . " ";
 		$daterange2 = "\n AND rpt.rp_id in (SELECT rptx.rp_id FROM #__jevents_repetition as rptx "
 			. "\n WHERE  $daterange2 )";
 
@@ -1409,8 +1411,8 @@ class JEventsDBModel
 		{
 			// We only show events on their first day only regardless of multiday setting of event so we allow them all through here!
 			// BUT NOT events where the startrepeat is on a date previous to the start date
-			$multiday  = "\n AND rpt.startrepeat >= '$startdate' ";
-			$multiday2 = "\n AND rpt.startrepeat >= '$startdate' ";
+			$multiday  = "\n AND rpt.startrepeat >= " . $this->db->quote($startdate) . " ";
+			$multiday2 = "\n AND rpt.startrepeat >= " . $this->db->quote($startdate) . " ";
 			$multiday3 = "";
 		}
 		else if ($multidayTreatment == 1)
@@ -1425,11 +1427,11 @@ class JEventsDBModel
 			// We only show events on their first day if they are not to be shown on multiple days so also add this condition
 			// i.e. the event settings are used
 			// This is the true version of these conditions
-			//$multiday = "\n AND ((rpt.startrepeat >= '$startdate' AND det.multiday=0) OR  det.multiday=1)";
-			//$multiday2 = "\n AND ((rpt.startrepeat <= '$startdate' AND det.multiday=0) OR  det.multiday=1)";
+			//$multiday = "\n AND ((rpt.startrepeat >= " . $this->db->quote($startdate) . " AND det.multiday=0) OR  det.multiday=1)";
+			//$multiday2 = "\n AND ((rpt.startrepeat <= " . $this->db->quote($startdate) . " AND det.multiday=0) OR  det.multiday=1)";
 			// BUT this is logically equivalent and appears much faster  on some databases
-			$multiday  = "\n AND (rpt.startrepeat >= '$startdate' OR  det.multiday=1)";
-			$multiday2 = "\n AND (rpt.startrepeat <= '$startdate' OR  det.multiday=1)";
+			$multiday  = "\n AND (rpt.startrepeat >= " . $this->db->quote($startdate) . " OR  det.multiday=1)";
+			$multiday2 = "\n AND (rpt.startrepeat <= " . $this->db->quote($startdate) . " OR  det.multiday=1)";
 			$multiday3 = "AND det.multiday=1";
 		}
 
@@ -1444,9 +1446,9 @@ class JEventsDBModel
 			$rows1 = array();
 			if ($enddate >= $t_datenowSQL && $modparams && $modparams->get("pastonly", 0) != 1)
 			{
-				$daterange  = "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= '$enddate'";
+				$daterange  = "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= " . $this->db->quote($enddate) . " ";
 
-				$daterange2 = "\n rptx.endrepeat >= '$t_datenowSQL' AND rptx.startrepeat <= '$enddate'";
+				$daterange2 = "\n rptx.endrepeat >= '$t_datenowSQL' AND rptx.startrepeat <= " . $this->db->quote($enddate) . " ";
 				$daterange2 = "\n AND rpt.rp_id in (SELECT rptx.rp_id FROM #__jevents_repetition as rptx "
 					. "\n WHERE  $daterange2 )";
 
@@ -1476,7 +1478,7 @@ class JEventsDBModel
 				SELECT MIN(rptq.startrepeat) FROM #__jevents_repetition as rptq
 				WHERE rptq.eventid=ev.ev_id
 				AND  (
-					(rptq.startrepeat >= '$t_datenowSQL' AND rptq.startrepeat <= '$enddate')
+					(rptq.startrepeat >= '$t_datenowSQL' AND rptq.startrepeat <= " . $this->db->quote($enddate) . ")
 					OR (rptq.startrepeat <= '$t_datenowSQL' AND rptq.endrepeat  > '$t_datenowSQL'  $multiday3)
 					)
 				$rptwhere
@@ -1510,9 +1512,9 @@ class JEventsDBModel
 			$rows2 = array();
 			if ($startdate <= $t_datenowSQL && $modparams && $modparams->get("pastonly", 0) < 2)
 			{
-				$daterange  = "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'";
+				$daterange  = "\n AND rpt.endrepeat >= " . $this->db->quote($startdate) . " AND rpt.startrepeat <= '$t_datenowSQL'";
 
-				$daterange2 = "\n rptx.endrepeat >= '$startdate' AND rptx.startrepeat <= '$t_datenowSQL'";
+				$daterange2 = "\n rptx.endrepeat >= " . $this->db->quote($startdate) . " AND rptx.startrepeat <= '$t_datenowSQL'";
 				$daterange2 = "\n AND rpt.rp_id in (SELECT rptx.rp_id FROM #__jevents_repetition as rptx "
 					. "\n WHERE  $daterange2 )";
 
@@ -1541,7 +1543,7 @@ class JEventsDBModel
 					. "\n AND rpt.startrepeat=(
 					SELECT MAX(rptq.startrepeat) FROM #__jevents_repetition as rptq
 					 WHERE rptq.eventid=ev.ev_id
-					AND rptq.startrepeat <= '$t_datenowSQL' AND rptq.startrepeat >= '$startdate'
+					AND rptq.startrepeat <= '$t_datenowSQL' AND rptq.startrepeat >= " . $this->db->quote($startdate) . "
 					$rptwhere
 				)
 				GROUP BY ev.ev_id
@@ -1573,9 +1575,9 @@ class JEventsDBModel
 			$rows3 = array();
 			if ($multidayTreatment != 2 && $multidayTreatment != 3)
 			{
-				$daterange  = "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'";
+				$daterange  = "\n AND rpt.endrepeat >= " . $this->db->quote($startdate) . " AND rpt.startrepeat <= '$t_datenowSQL'";
 
-				$daterange2 = "\n rptx.endrepeat >= '$startdate' AND rptx.startrepeat <= '$t_datenowSQL'";
+				$daterange2 = "\n rptx.endrepeat >= " . $this->db->quote($startdate) . " AND rptx.startrepeat <= '$t_datenowSQL'";
 				$daterange2 = "\n AND rpt.rp_id in (SELECT rptx.rp_id FROM #__jevents_repetition as rptx "
 					. "\n WHERE  $daterange2 )";
 
@@ -1709,9 +1711,9 @@ class JEventsDBModel
 				$ids1 = array();
 				if ($enddate >= $t_datenowSQL && $modparams && $modparams->get("pastonly", 0) != 1)
 				{
-					$daterange  = "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= '$enddate'";
+					$daterange  = "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= " . $this->db->quote($enddate) . " ";
 
-					$daterange2 = "\n rptx.endrepeat >= '$t_datenowSQL' AND rptx.startrepeat <= '$enddate'";
+					$daterange2 = "\n rptx.endrepeat >= '$t_datenowSQL' AND rptx.startrepeat <= " . $this->db->quote($enddate) . " ";
 					$daterange2 = "\n AND rpt.rp_id in (SELECT rptx.rp_id FROM #__jevents_repetition as rptx "
 						. "\n WHERE  $daterange2 )";
 
@@ -1748,9 +1750,9 @@ class JEventsDBModel
 				$ids2 = array();
 				if ($startdate <= $t_datenowSQL && $modparams && $modparams->get("pastonly", 0) < 2)
 				{
-					$daterange  = "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'";
+					$daterange  = "\n AND rpt.endrepeat >= " . $this->db->quote($startdate) . " AND rpt.startrepeat <= '$t_datenowSQL'";
 
-					$daterange2 = "\n rptx.endrepeat >= '$startdate' AND rptx.startrepeat <= '$t_datenowSQL'";
+					$daterange2 = "\n rptx.endrepeat >= " . $this->db->quote($startdate) . " AND rptx.startrepeat <= '$t_datenowSQL'";
 					$daterange2 = "\n AND rpt.rp_id in (SELECT rptx.rp_id FROM #__jevents_repetition as rptx "
 						. "\n WHERE  $daterange2 )";
 
@@ -1788,9 +1790,9 @@ class JEventsDBModel
 				$ids3 = array();
 				if ($multidayTreatment != 2 && $multidayTreatment != 3)
 				{
-					$daterange  = "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'";
+					$daterange  = "\n AND rpt.endrepeat >= " . $this->db->quote($startdate) . " AND rpt.startrepeat <= '$t_datenowSQL'";
 
-					$daterange2 = "\n rptx.endrepeat >= '$startdate' AND rptx.startrepeat <= '$t_datenowSQL'";
+					$daterange2 = "\n rptx.endrepeat >= " . $this->db->quote($startdate) . " AND rptx.startrepeat <= '$t_datenowSQL'";
 					$daterange2 = "\n AND rpt.rp_id in (SELECT rptx.rp_id FROM #__jevents_repetition as rptx "
 						. "\n WHERE  $daterange2 )";
 
@@ -1882,9 +1884,9 @@ class JEventsDBModel
 				$rows1 = array();
 				if ($enddate >= $t_datenowSQL && $modparams && $modparams->get("pastonly", 0) != 1)
 				{
-					$daterange  = "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= '$enddate'";
+					$daterange  = "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= " . $this->db->quote($enddate) . " ";
 
-					$daterange2 = "\n rptx.endrepeat >= '$t_datenowSQL' AND rptx.startrepeat <= '$enddate'";
+					$daterange2 = "\n rptx.endrepeat >= '$t_datenowSQL' AND rptx.startrepeat <= " . $this->db->quote($enddate) . " ";
 					$daterange2 = "\n AND rpt.rp_id in (SELECT rptx.rp_id FROM #__jevents_repetition as rptx "
 						. "\n WHERE  $daterange2 )";
 
@@ -1938,9 +1940,9 @@ class JEventsDBModel
 				$rows2 = array();
 				if ($startdate <= $t_datenowSQL && $modparams && $modparams->get("pastonly", 0) < 2)
 				{
-					$daterange  = "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'";
+					$daterange  = "\n AND rpt.endrepeat >= " . $this->db->quote($startdate) . " AND rpt.startrepeat <= '$t_datenowSQL'";
 
-					$daterange2 = "\n rptx.endrepeat >= '$startdate' AND rptx.startrepeat <= '$t_datenowSQL'";
+					$daterange2 = "\n rptx.endrepeat >= " . $this->db->quote($startdate) . " AND rptx.startrepeat <= '$t_datenowSQL'";
 					$daterange2 = "\n AND rpt.rp_id in (SELECT rptx.rp_id FROM #__jevents_repetition as rptx "
 						. "\n WHERE  $daterange2 )";
 
@@ -1996,9 +1998,9 @@ class JEventsDBModel
 				if ($multidayTreatment != 2 && $multidayTreatment != 3)
 				{
 					// Must be starting before NOW otherwise would already be picked up
-					$daterange  = "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'";
+					$daterange  = "\n AND rpt.endrepeat >= " . $this->db->quote($startdate) . " AND rpt.startrepeat <= '$t_datenowSQL'";
 
-					$daterange2 = "\n rptx.endrepeat >= '$startdate' AND rptx.startrepeat <= '$t_datenowSQL'";
+					$daterange2 = "\n rptx.endrepeat >= " . $this->db->quote($startdate) . " AND rptx.startrepeat <= '$t_datenowSQL'";
 					$daterange2 = "\n AND rpt.rp_id in (SELECT rptx.rp_id FROM #__jevents_repetition as rptx "
 						. "\n WHERE  $daterange2 )";
 
@@ -2336,11 +2338,11 @@ class JEventsDBModel
 			// We only show events on their first day if they are not to be shown on multiple days so also add this condition
 			// i.e. the event settings are used
 			// This is the true version of these conditions
-			//$multiday = "\n AND ((rpt.startrepeat >= '$startdate' AND det.multiday=0) OR  det.multiday=1)";
-			//$multiday2 = "\n AND ((rpt.startrepeat <= '$startdate' AND det.multiday=0) OR  det.multiday=1)";
+			//$multiday = "\n AND ((rpt.startrepeat >= " . $this->db->quote($startdate) . " AND det.multiday=0) OR  det.multiday=1)";
+			//$multiday2 = "\n AND ((rpt.startrepeat <= " . $this->db->quote($startdate) . " AND det.multiday=0) OR  det.multiday=1)";
 			// BUT this is logically equivalent and appears much faster  on some databases
-			$multiday  = "\n AND (rpt.startrepeat >= '$startdate' OR  det.multiday=1)";
-			$multiday2 = "\n AND (rpt.startrepeat <= '$startdate'OR  det.multiday=1)";
+			$multiday  = "\n AND (rpt.startrepeat >= " . $this->db->quote($startdate) . " OR  det.multiday=1)";
+			$multiday2 = "\n AND (rpt.startrepeat <= " . $this->db->quote($startdate) . "OR  det.multiday=1)";
 			$multiday3 = "AND det.multiday=1";
 		}
 
@@ -2351,9 +2353,9 @@ class JEventsDBModel
 			$rows1 = array();
 			if ($enddate >= $t_datenowSQL && $modparams && $modparams->get("pastonly", 0) != 1)
 			{
-				$daterange  = "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= '$enddate'";
+				$daterange  = "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= " . $this->db->quote($enddate) . " ";
 
-				$daterange2 = "\n rptx.endrepeat >= '$t_datenowSQL' AND rptx.startrepeat <= '$enddate'";
+				$daterange2 = "\n rptx.endrepeat >= '$t_datenowSQL' AND rptx.startrepeat <= " . $this->db->quote($enddate) . " ";
 				$daterange2 = "\n AND rpt.rp_id in (SELECT rptx.rp_id FROM #__jevents_repetition as rptx "
 					. "\n WHERE  $daterange2 )";
 
@@ -2382,7 +2384,7 @@ class JEventsDBModel
 				SELECT MIN(rptq.startrepeat) FROM #__jevents_repetition as rptq
 				WHERE rptq.eventid=ev.ev_id
 				AND  (
-					(rptq.startrepeat >= '$t_datenowSQL' AND rptq.startrepeat <= '$enddate')
+					(rptq.startrepeat >= '$t_datenowSQL' AND rptq.startrepeat <= " . $this->db->quote($enddate) . ")
 					OR (rptq.startrepeat <= '$t_datenowSQL' AND rptq.endrepeat  > '$t_datenowSQL'  $multiday3)
 					)
 				$rptwhere
@@ -2411,9 +2413,9 @@ class JEventsDBModel
 			$rows2 = array();
 			if ($startdate <= $t_datenowSQL && $modparams && $modparams->get("pastonly", 0) < 2)
 			{
-				$daterange  = "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'";
+				$daterange  = "\n AND rpt.endrepeat >= " . $this->db->quote($startdate) . " AND rpt.startrepeat <= '$t_datenowSQL'";
 
-				$daterange2 = "\n rptx.endrepeat >= '$startdate' AND rptx.startrepeat <= '$t_datenowSQL'";
+				$daterange2 = "\n rptx.endrepeat >= " . $this->db->quote($startdate) . " AND rptx.startrepeat <= '$t_datenowSQL'";
 				$daterange2 = "\n AND rpt.rp_id in (SELECT rptx.rp_id FROM #__jevents_repetition as rptx "
 					. "\n WHERE  $daterange2 )";
 
@@ -2442,7 +2444,7 @@ class JEventsDBModel
 					. "\n AND rpt.startrepeat=(
 					SELECT MAX(rptq.startrepeat) FROM #__jevents_repetition as rptq
 					 WHERE rptq.eventid=ev.ev_id
-					AND rptq.startrepeat <= '$t_datenowSQL' AND rptq.startrepeat >= '$startdate'
+					AND rptq.startrepeat <= '$t_datenowSQL' AND rptq.startrepeat >= " . $this->db->quote($startdate) . "
 					$rptwhere
 				)
 				GROUP BY ev.ev_id
@@ -2467,9 +2469,9 @@ class JEventsDBModel
 			if ($multidayTreatment != 2 && $multidayTreatment != 3)
 			{
 				// Must be starting before NOW otherwise would already be picked up
-				$daterange  = "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'";
+				$daterange  = "\n AND rpt.endrepeat >= " . $this->db->quote($startdate) . " AND rpt.startrepeat <= '$t_datenowSQL'";
 
-				$daterange2 = "\n rptx.endrepeat >= '$startdate' AND rptx.startrepeat <= '$t_datenowSQL'";
+				$daterange2 = "\n rptx.endrepeat >= " . $this->db->quote($startdate) . " AND rptx.startrepeat <= '$t_datenowSQL'";
 				$daterange2 = "\n AND rpt.rp_id in (SELECT rptx.rp_id FROM #__jevents_repetition as rptx "
 					. "\n WHERE  $daterange2 )";
 
@@ -2580,9 +2582,9 @@ class JEventsDBModel
 				if ($enddate >= $t_datenowSQL && $modparams && $modparams->get("pastonly", 0) != 1)
 				{
 					// New equivalent but simpler test
-					$daterange  = "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= '$enddate'";
+					$daterange  = "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= " . $this->db->quote($enddate) . " ";
 
-					$daterange2 = "\n rptx.endrepeat >= '$t_datenowSQL' AND rptx.startrepeat <= '$enddate'";
+					$daterange2 = "\n rptx.endrepeat >= '$t_datenowSQL' AND rptx.startrepeat <= " . $this->db->quote($enddate) . " ";
 					$daterange2 = "\n AND rpt.rp_id in (SELECT rptx.rp_id FROM #__jevents_repetition as rptx "
 						. "\n WHERE  $daterange2 )";
 
@@ -2617,9 +2619,9 @@ class JEventsDBModel
 				$ids2 = array();
 				if ($startdate <= $t_datenowSQL && $modparams && $modparams->get("pastonly", 0) < 2)
 				{
-					$daterange  = "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'";
+					$daterange  = "\n AND rpt.endrepeat >= " . $this->db->quote($startdate) . " AND rpt.startrepeat <= '$t_datenowSQL'";
 
-					$daterange2 = "\n rptx.endrepeat >= '$startdate' AND rptx.startrepeat <= '$t_datenowSQL'";
+					$daterange2 = "\n rptx.endrepeat >= " . $this->db->quote($startdate) . " AND rptx.startrepeat <= '$t_datenowSQL'";
 					$daterange2 = "\n AND rpt.rp_id in (SELECT rptx.rp_id FROM #__jevents_repetition as rptx "
 						. "\n WHERE  $daterange2 )";
 
@@ -2657,9 +2659,9 @@ class JEventsDBModel
 				if ($multidayTreatment != 2 && $multidayTreatment != 3)
 				{
 					// Must be starting before NOW otherwise would already be picked up
-					$daterange  = "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'";
+					$daterange  = "\n AND rpt.endrepeat >= " . $this->db->quote($startdate) . " AND rpt.startrepeat <= '$t_datenowSQL'";
 
-					$daterange2 = "\n rptx.endrepeat >= '$startdate' AND rptx.startrepeat <= '$t_datenowSQL'";
+					$daterange2 = "\n rptx.endrepeat >= " . $this->db->quote($startdate) . " AND rptx.startrepeat <= '$t_datenowSQL'";
 					$daterange2 = "\n AND rpt.rp_id in (SELECT rptx.rp_id FROM #__jevents_repetition as rptx "
 						. "\n WHERE  $daterange2 )";
 					// Mutli day events
@@ -2744,9 +2746,9 @@ class JEventsDBModel
 				$rows1 = array();
 				if ($enddate >= $t_datenowSQL && $modparams && $modparams->get("pastonly", 0) != 1)
 				{
-					$daterange  = "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= '$enddate'";
+					$daterange  = "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= " . $this->db->quote($enddate) . " ";
 
-					$daterange2 = "\n rptx.endrepeat >= '$t_datenowSQL' AND rptx.startrepeat <= '$enddate'";
+					$daterange2 = "\n rptx.endrepeat >= '$t_datenowSQL' AND rptx.startrepeat <= " . $this->db->quote($enddate) . " ";
 					$daterange2 = "\n AND rpt.rp_id in (SELECT rptx.rp_id FROM #__jevents_repetition as rptx "
 						. "\n WHERE  $daterange2 )";
 
@@ -2794,9 +2796,9 @@ class JEventsDBModel
 				$rows2 = array();
 				if ($startdate <= $t_datenowSQL && $modparams && $modparams->get("pastonly", 0) < 2)
 				{
-					$daterange  = "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'";
+					$daterange  = "\n AND rpt.endrepeat >= " . $this->db->quote($startdate) . " AND rpt.startrepeat <= '$t_datenowSQL'";
 
-					$daterange2 = "\n rptx.endrepeat >= '$startdate' AND rptx.startrepeat <= '$t_datenowSQL'";
+					$daterange2 = "\n rptx.endrepeat >= " . $this->db->quote($startdate) . " AND rptx.startrepeat <= '$t_datenowSQL'";
 					$daterange2 = "\n AND rpt.rp_id in (SELECT rptx.rp_id FROM #__jevents_repetition as rptx "
 						. "\n WHERE  $daterange2 )";
 
@@ -2844,9 +2846,9 @@ class JEventsDBModel
 				$rows3 = array();
 				if ($multidayTreatment != 2 && $multidayTreatment != 3)
 				{
-					$daterange  = "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'";
+					$daterange  = "\n AND rpt.endrepeat >= " . $this->db->quote($startdate) . " AND rpt.startrepeat <= '$t_datenowSQL'";
 
-					$daterange2 = "\n rptx.endrepeat >= '$startdate' AND rptx.startrepeat <= '$t_datenowSQL'";
+					$daterange2 = "\n rptx.endrepeat >= " . $this->db->quote($startdate) . " AND rptx.startrepeat <= '$t_datenowSQL'";
 					$daterange2 = "\n AND rpt.rp_id in (SELECT rptx.rp_id FROM #__jevents_repetition as rptx "
 						. "\n WHERE  $daterange2 )";
 
@@ -3025,7 +3027,7 @@ class JEventsDBModel
 		if ($this->daymultiday == 2)
 		{
 
-			$extrawhere[] = "rpt.startrepeat >= '$startdate' ";
+			$extrawhere[] = "rpt.startrepeat >= " . $this->db->quote($startdate) . " ";
 
 		}
 
@@ -3066,13 +3068,13 @@ class JEventsDBModel
 			$newextrajoin = (count($newextrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $newextrajoin) : '');
 			$extrawhere   = (count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '');
 
-			$daterange  = "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$enddate'";
+			$daterange  = "\n AND rpt.endrepeat >= " . $this->db->quote($startdate) . " AND rpt.startrepeat <= " . $this->db->quote($enddate) . " ";
 
-			$daterange2 = "\n rptx.endrepeat >= '$startdate' AND rptx.startrepeat <= '$enddate'";
+			$daterange2 = "\n rptx.endrepeat >= " . $this->db->quote($startdate) . " AND rptx.startrepeat <= " . $this->db->quote($enddate) . " ";
 			$daterange2 = "\n AND rpt.rp_id in (SELECT rptx.rp_id FROM #__jevents_repetition as rptx "
 				. "\n INNER JOIN #__jevents_vevdetail as det2 ON det2.evdet_id = rptx.eventdetail_id"
 				. "\n WHERE  $daterange2 "
-				. "\n AND NOT (rptx.startrepeat < '$startdate' AND det2.multiday=0) "
+				. "\n AND NOT (rptx.startrepeat < " . $this->db->quote($startdate) . " AND det2.multiday=0) "
 				. ")";
 
 			$query = "SELECT DISTINCT rpt.rp_id "
@@ -3084,7 +3086,7 @@ class JEventsDBModel
 				. $catwhere
 				// New equivalent but simpler test
 				. ($this->subquery ? $daterange2 : $daterange)
-				. ($this->subquery ? "" : "\n AND NOT (rpt.startrepeat < '$startdate' AND det.multiday=0) ")
+				. ($this->subquery ? "" : "\n AND NOT (rpt.startrepeat < " . $this->db->quote($startdate) . " AND det.multiday=0) ")
 				. $extrawhere
 				. "\n AND ev.access IN (" . JEVHelper::getAid($user) . ")"
 				. "  AND icsf.state=1 AND icsf.access IN (" . JEVHelper::getAid($user) . ")"
@@ -3162,13 +3164,13 @@ class JEventsDBModel
 			$extrajoin  = (count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '');
 			$extrawhere = (count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '');
 
-			$daterange  = "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$enddate'";
+			$daterange  = "\n AND rpt.endrepeat >= " . $this->db->quote($startdate) . " AND rpt.startrepeat <= " . $this->db->quote($enddate) . " ";
 
-			$daterange2 = "\n rptx.endrepeat >= '$startdate' AND rptx.startrepeat <= '$enddate'";
+			$daterange2 = "\n rptx.endrepeat >= " . $this->db->quote($startdate) . " AND rptx.startrepeat <= " . $this->db->quote($enddate) . " ";
 			$daterange2 = "\n AND rpt.rp_id in (SELECT rptx.rp_id FROM #__jevents_repetition as rptx "
 				. "\n INNER JOIN #__jevents_vevdetail as det2 ON det2.evdet_id = rptx.eventdetail_id"
 				. "\n WHERE  $daterange2 "
-				. "\n AND NOT (rptx.startrepeat < '$startdate' AND det2.multiday=0) "
+				. "\n AND NOT (rptx.startrepeat < " . $this->db->quote($startdate) . " AND det2.multiday=0) "
 				. ")";
 
 			// This version picks the details from the details table
@@ -3188,7 +3190,7 @@ class JEventsDBModel
 				// New equivalent but simpler test
 				. ($this->subquery ? $daterange2 : $daterange)
 				// Should be blocking multi-day events started before the time window
-				. ($this->subquery ? "" : "\n AND NOT (rpt.startrepeat < '$startdate' AND det.multiday=0) ")
+				. ($this->subquery ? "" : "\n AND NOT (rpt.startrepeat < " . $this->db->quote($startdate) . " AND det.multiday=0) ")
 				. $extrawhere
 				. "\n AND ev.access IN (" . JEVHelper::getAid($user) . ")"
 				. "  AND icsf.state=1 AND icsf.access IN (" . JEVHelper::getAid($user) . ")"
@@ -3449,12 +3451,12 @@ class JEventsDBModel
             $extrawhere .= "\n AND rpt.startrepeat = (SELECT MIN(rptf.startrepeat) FROM #__jevents_repetition as rptf WHERE rptf.eventid = rpt.eventid) " ;
         }
 
-		$daterange = "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$enddate'";
+		$daterange = "\n AND rpt.endrepeat >= " . $this->db->quote($startdate) . " AND rpt.startrepeat <= " . $this->db->quote($enddate) . " ";
 		// Must suppress multiday events that have already started
-		$multidate  = "\n AND NOT (rpt.startrepeat < '$startdate' AND det.multiday=0) ";
+		$multidate  = "\n AND NOT (rpt.startrepeat < " . $this->db->quote($startdate) . " AND det.multiday=0) ";
 
-		$daterange2 = "\n rptx.endrepeat >= '$startdate' AND rptx.startrepeat <= '$enddate'";
-		$multidate2 = "\n AND NOT (rptx.startrepeat < '$startdate' AND det2.multiday=0) ";
+		$daterange2 = "\n rptx.endrepeat >= " . $this->db->quote($startdate) . " AND rptx.startrepeat <= " . $this->db->quote($enddate) . " ";
+		$multidate2 = "\n AND NOT (rptx.startrepeat < " . $this->db->quote($startdate) . " AND det2.multiday=0) ";
 		$daterange2 = "\n AND rpt.rp_id in (SELECT rptx.rp_id FROM #__jevents_repetition as rptx "
 			. "\n INNER JOIN #__jevents_vevdetail as det2  ON det2.evdet_id = rptx.eventdetail_id"
 			. "\n WHERE  $daterange2 "
@@ -3600,9 +3602,9 @@ class JEventsDBModel
 		{
 			$query .= "\n FROM #__jevents_repetition as rpt ";
 		}
-		$daterange  = "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$enddate'";
+		$daterange  = "\n AND rpt.endrepeat >= " . $this->db->quote($startdate) . " AND rpt.startrepeat <= " . $this->db->quote($enddate) . " ";
 
-		$daterange2 = "\n rptx.endrepeat >= '$startdate' AND rptx.startrepeat <= '$enddate'";
+		$daterange2 = "\n rptx.endrepeat >= " . $this->db->quote($startdate) . " AND rptx.startrepeat <= " . $this->db->quote($enddate) . " ";
 		$daterange2 = "\n AND rpt.rp_id in (SELECT rptx.rp_id FROM #__jevents_repetition as rptx "
 			. "\n WHERE  $daterange2 )";
 
@@ -3675,6 +3677,10 @@ class JEventsDBModel
 	    $app = Factory::getApplication();
         $input = $app->input;
         list($year, $month, $day) = explode('-', $startdate);
+
+        //list($eyear, $emonth, $eday) = explode('-', $enddate);
+        //$enddate   = intval($eyear) . '-' . intval($emonth)  . '-' .  intval($eday);
+
         list($thisyear, $thismonth, $thisday) = JEVHelper::getYMD();
 
         //$startdate 	= $this->cfg->get("showyearpast",1)?JevDate::mktime( 0, 0, 0, intval($month),intval($day),intval($year) ):JevDate::mktime( 0, 0, 0, $thismonth,$thisday, $thisyear );
@@ -3745,7 +3751,7 @@ class JEventsDBModel
 	    if ($this->daymultiday == 2)
 	    {
 
-		    $extrawhere[] = "rpt.startrepeat >= '$startdate' ";
+		    $extrawhere[] = "rpt.startrepeat >= " . $this->db->quote($startdate) . " ";
 
 	    }
 
@@ -3773,36 +3779,36 @@ class JEventsDBModel
         // Do we want to only use start or end dates in the range?
         $usedates = $params->get("usedates", "both");
         if ($usedates == "both") {
-            $daterange = "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$enddate'";
+            $daterange = "\n AND rpt.endrepeat >= " . $this->db->quote($startdate) . " AND rpt.startrepeat <= " . $this->db->quote($enddate) . " ";
             // Must suppress multiday events that have already started
-            $multidate = "\n AND NOT (rpt.startrepeat < '$startdate' AND det.multiday=0) ";
+            $multidate = "\n AND NOT (rpt.startrepeat < " . $this->db->quote($startdate) . " AND det.multiday=0) ";
 
-            $daterange2 = "\n rptx.endrepeat >= '$startdate' AND rptx.startrepeat <= '$enddate'";
-            $multidate2 = "\n AND NOT (rptx.startrepeat < '$startdate' AND det2.multiday=0) ";
+            $daterange2 = "\n rptx.endrepeat >= " . $this->db->quote($startdate) . " AND rptx.startrepeat <= " . $this->db->quote($enddate) . " ";
+            $multidate2 = "\n AND NOT (rptx.startrepeat < " . $this->db->quote($startdate) . " AND det2.multiday=0) ";
             $daterange2 = "\n AND rpt.rp_id in (SELECT rptx.rp_id FROM #__jevents_repetition as rptx "
                 . "\n INNER JOIN #__jevents_vevdetail as det2  ON det2.evdet_id = rptx.eventdetail_id"
                 . "\n WHERE  $daterange2 "
                 . $multidate2
                 . ")";
         } else if ($usedates == "start") {
-            $daterange = "\n AND rpt.endrepeat >= '$startdate' ";
+            $daterange = "\n AND rpt.endrepeat >= " . $this->db->quote($startdate) . " ";
             // Must suppress multiday events that have already started
-            $multidate = "\n AND NOT (rpt.startrepeat < '$startdate' AND det.multiday=0) ";
+            $multidate = "\n AND NOT (rpt.startrepeat < " . $this->db->quote($startdate) . " AND det.multiday=0) ";
 
-            $daterange2 = "\n rptx.endrepeat >= '$startdate' ";
-            $multidate2 = "\n AND NOT (rptx.startrepeat < '$startdate' AND det2.multiday=0) ";
+            $daterange2 = "\n rptx.endrepeat >= " . $this->db->quote($startdate) . " ";
+            $multidate2 = "\n AND NOT (rptx.startrepeat < " . $this->db->quote($startdate) . " AND det2.multiday=0) ";
             $daterange2 = "\n AND rpt.rp_id in (SELECT rptx.rp_id FROM #__jevents_repetition as rptx "
                 . "\n INNER JOIN #__jevents_vevdetail as det2  ON det2.evdet_id = rptx.eventdetail_id"
                 . "\n WHERE  $daterange2 "
                 . $multidate2
                 . ")";
         } else if ($usedates == "end") {
-            $daterange = "\n AND rpt.startrepeat <= '$enddate' ";
+            $daterange = "\n AND rpt.startrepeat <= " . $this->db->quote($enddate) . " ";
             // Must suppress multiday events that haven't already ended
-            $multidate = "\n AND NOT (rpt.endrepeat > '$enddate' AND det.multiday=0) ";
+            $multidate = "\n AND NOT (rpt.endrepeat > " . $this->db->quote($enddate) . " AND det.multiday=0) ";
 
-            $daterange2 = "\n rptx.startrepeat <= '$enddate' ";
-            $multidate2 = "\n AND NOT (rptx.endrepeat > '$enddate' AND det2.multiday=0) ";
+            $daterange2 = "\n rptx.startrepeat <= " . $this->db->quote($enddate) . " ";
+            $multidate2 = "\n AND NOT (rptx.endrepeat > " . $this->db->quote($enddate) . " AND det2.multiday=0) ";
             $daterange2 = "\n AND rpt.rp_id in (SELECT rptx.rp_id FROM #__jevents_repetition as rptx "
                 . "\n INNER JOIN #__jevents_vevdetail as det2  ON det2.evdet_id = rptx.eventdetail_id"
                 . "\n WHERE  $daterange2 "
@@ -4632,7 +4638,7 @@ class JEventsDBModel
 			if ($startdate < $today)
 				$startdate = $today;
 			$startdate    = JevDate::strftime('%Y-%m-%d 00:00:00', $startdate);
-			$extrawhere[] = "rpt.endrepeat >=  '$startdate'";
+			$extrawhere[] = "rpt.endrepeat >=  " . $this->db->quote($startdate) . " ";
 		}
 
 		if ($limit == 0 && $this->cfg->get("maxevents", 10) > 0)
@@ -4814,7 +4820,7 @@ class JEventsDBModel
 			list($year, $month, $day) = JEVHelper::getYMD();
 			$startdate    = JevDate::mktime(0, 0, 0, $month, $day, $year);
 			$startdate    = JevDate::strftime('%Y-%m-%d 00:00:00', $startdate);
-			$extrawhere[] = "rpt.endrepeat >=  '$startdate'";
+			$extrawhere[] = "rpt.endrepeat >=  " . $this->db->quote($startdate) ;
 		}
 
 		$filters = jevFilterProcessing::getInstance(array("published", "justmine", "category", "search", "repeating"));
