@@ -284,7 +284,7 @@ class CsvLine
 		if (isset($this->color) && $this->color !== "") $ical .= "X-COLOR:".$this->color."\n";
 		if ($this->rrule !== "") $ical .= "RRULE:" . $this->rrule . "\n";
 		if ($this->noendtime !== "") $ical .= "NOENDTIME:" . $this->noendtime . "\n";
-		if ($this->published !== "" && !is_null($this->published)) $ical .= "X-STATE:" . $this->published . "\n";
+		if (isset($this->published) && $this->published !== "" && !is_null($this->published)) $ical .= "X-STATE:" . $this->published . "\n";
 		if ($this->multiday !== "") $ical .= "MULTIDAY:" . $this->multiday . "\n";
 		if (isset($this->lockevent) && $this->lockevent !== "") $ical .= "LOCKEVENT:" . $this->lockevent . "\n";
 
