@@ -1087,7 +1087,15 @@ class jIcalEventDB extends jEventCal
 			. "\n ORDER BY rpt.startrepeat asc LIMIT 1";
 
 		$db->setQuery($query);
-		$rows = $db->loadObjectList();
+        try
+        {
+            $rows = $db->loadObjectList();
+        }
+        catch (\Throwable $ex)
+        {
+            $x = 1;
+            $rows = [];
+        }
 
 		$row = null;
 		// iCal agid uses GUID or UUID as identifier

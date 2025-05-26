@@ -19,6 +19,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\HTML\Helpers\Sidebar;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Toolbar\Toolbar;
 
 if (defined("EDITING_JEVENT"))
 	return;
@@ -310,7 +311,7 @@ $accesslevels = "jeval".implode(" jeval", array_unique($accesslevels));
 						?>
 						// reformat start and end dates  to Y-m-d format
 						reformatStartEndDates();
-						checkConflict('<?php echo $checkURL; ?>', pressbutton, '<?php echo Session::getFormToken(); ?>', '<?php echo Factory::getApplication()->isAdmin() ? 'administrator' : 'site'; ?>', <?php echo $this->repeatId; ?>);
+						checkConflict('<?php echo $checkURL; ?>', pressbutton, '<?php echo Session::getFormToken(); ?>', '<?php echo Factory::getApplication()->isAdmin() ? 'administrator' : 'site'; ?>', <?php echo $this->repeatId; ?>, 1, '<?php echo Factory::getLanguage()->getTag(); ?>');
 						<?php
 						}
 						else
@@ -698,7 +699,7 @@ $app = Factory::getApplication();
 if ($app->isSite()) {
 	if ($params->get('com_edit_toolbar', 0) == 1 || $params->get('com_edit_toolbar', 0) == 2 ) {
 		//Load the toolbar at the bottom!
-		$bar = JToolBar::getInstance('toolbar');
+		$bar = Toolbar::getInstance('toolbar');
 		$barhtml = $bar->render();
 		echo $barhtml;
 	}

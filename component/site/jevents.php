@@ -81,7 +81,10 @@ if (strpos($params->get('framework', 'bootstrap'), 'bootstrap') === 0 || $params
 		JevHtmlBootstrap::framework();
 	}
 	JevHtmlBootstrap::loadCss();
-	HTMLHelper::stylesheet('media/system/css/joomla-fontawesome.min.css');
+	if ((int) $params->get('fontawesome', 1))
+    {
+        HTMLHelper::stylesheet( 'media/system/css/joomla-fontawesome.min.css' );
+    }
 }
 else
 {

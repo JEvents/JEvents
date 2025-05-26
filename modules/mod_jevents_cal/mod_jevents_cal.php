@@ -14,6 +14,9 @@ defined('_JEXEC') or die ('Restricted access');
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
 
+use Joomla\CMS\Language\Associations;
+use Joomla\CMS\Factory;
+
 if (version_compare(JVERSION, '4.0.1', 'lt'))
 {
     ?>
@@ -53,6 +56,33 @@ if ($modtheme == "global" || $modtheme == "")
 	$modtheme = $theme;
 }
 $theme = $modtheme;
+/*
+$menu     = Factory::getApplication()->getMenu();
+$lang = Factory::getLanguage();
+
+// 307 308 339 340
+foreach (array(Factory::getApplication()->input->getInt('Itemid'), 307, 308, 339, 340) as $Itemid)
+{
+    if ( Associations::isEnabled() )
+    {
+        $associations = Associations::getAssociations( 'com_menus', '#__menu', 'com_menus.item', (int) $Itemid, 'id', '', '' );
+        $menuitem     = $menu->getItem( $Itemid );
+        if ( $menuitem->language === $lang->getTag() )
+        {
+            echo "Original $Itemid for " . $menuitem->language . "<Br>";
+        }
+        else if ( array_key_exists( $lang->getTag(), $associations ) )
+        {
+            echo "Original was $Itemid which is " . $menuitem->language . " translates to " . $associations[$lang->getTag()]->id . " which is " . $associations[$lang->getTag()]->language . "<Br>";
+        }
+        else
+        {
+            echo "Problem menu item lang is " . $menuitem->language . "<br>";
+        }
+        echo "<br><br>";
+    }
+}
+*/
 
 $viewclass          = $jevhelper->getViewClass($theme, 'mod_jevents_cal', $theme . '/' . "calendar", $params);
 $modview            = new $viewclass ($params, $module->id);

@@ -1130,13 +1130,14 @@ jQuery.fn.formToJson =  function(){
 		return json;
 	}
 
-function checkConflict(checkurl, pressbutton, jsontoken, client, repeatid,  redirect){
+function checkConflict(checkurl, pressbutton, jsontoken, client, repeatid,  redirect, language){
 	var requestObject = {};
 	requestObject.error = false;
 	requestObject.client = client;
 	requestObject.token = jsontoken;
 	requestObject.pressbutton = pressbutton;
 	requestObject.repeatid = repeatid;
+	requestObject.lang = language;
 	requestObject.formdata = jevjq(document.adminForm).formToJson();
 
 	var doRedirect = (typeof redirect =='undefined') ?  1 : redirect;

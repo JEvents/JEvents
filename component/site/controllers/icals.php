@@ -566,7 +566,7 @@ class ICalsController extends AdminIcalsController
 			// Paranoia, should not be here, validation is done by java script
 			// Just load the ical event list on redirect for now.
 			$redirect_task = "icalevent.list";
-			$app->enqueueMessage(JTExt::_('JEV_FATAL_ERROR') . Text::_('JEV_E_WARNCAT'), 'error');
+			$app->enqueueMessage(Text::_('JEV_FATAL_ERROR') . Text::_('JEV_E_WARNCAT'), 'error');
 
 			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=$redirect_task", Text::_('JEV_E_WARNCAT'));
 			$this->redirect();

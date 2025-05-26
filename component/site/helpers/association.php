@@ -95,15 +95,7 @@ abstract class JEventsHelperAssociation extends CategoryHelperAssociation
 				$associations = array();
 				if ($active)
 				{
-					if (version_compare(JVERSION, '4.0.0', 'lt'))
-					{
-						require_once JPATH_ROOT . '/administrator/components/com_menus/helpers/menus.php';
-						$associations = \MenusHelper::getAssociations($active->id);
-					}
-					else
-					{
-						$associations = MenusHelper::getAssociations($active->id);
-					}
+                    $associations = MenusHelper::getAssociations($active->id);
 				}
 
 				$db = Factory::getDbo();

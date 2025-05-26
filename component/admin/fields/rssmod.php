@@ -16,6 +16,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Form\Field\ListField;
+use Joomla\CMS\Language\Text;
 
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
@@ -37,7 +38,7 @@ class JFormFieldRssmod extends ListField
 		// get list of latest_events modules
 		$modules      = $this->dataModel->queryModel->getModulesByName("mod_jevents_latest");
 		$seloptions   = array();
-		$seloptions[] = HTMLHelper::_('select.option', 0, JTEXT::_('JEV_RSS_MODID_MAIN'));
+		$seloptions[] = HTMLHelper::_('select.option', 0, Text::_('JEV_RSS_MODID_MAIN'));
 		for ($i = 0; $i < count($modules); $i++)
 		{
 			$seloptions[] = HTMLHelper::_('select.option', $modules[$i]->id, $modules[$i]->title);

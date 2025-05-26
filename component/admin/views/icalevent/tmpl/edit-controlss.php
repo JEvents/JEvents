@@ -22,6 +22,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Toolbar\Toolbar;
 
 $app    = Factory::getApplication();
 $input  = $app->input;
@@ -284,7 +285,7 @@ $action = $app->isClient('administrator') ? "index.php" : Route::_("index.php?op
 						?>
                         // reformat start and end dates  to Y-m-d format
                         reformatStartEndDates();
-                        checkConflict('<?php echo $checkURL; ?>', pressbutton, '<?php echo Session::getFormToken(); ?>', '<?php echo Factory::getApplication()->isClient('administrator') ? 'administrator' : 'site'; ?>', <?php echo $this->repeatId; ?>);
+                        checkConflict('<?php echo $checkURL; ?>', pressbutton, '<?php echo Session::getFormToken(); ?>', '<?php echo Factory::getApplication()->isClient('administrator') ? 'administrator' : 'site'; ?>', <?php echo $this->repeatId; ?>, 1, '<?php echo Factory::getLanguage()->getTag(); ?>');
 						<?php
 						}
 						else
@@ -637,7 +638,7 @@ if ($app->isClient('site'))
 	if ($params->get('com_edit_toolbar', 0) == 1 || $params->get('com_edit_toolbar', 0) == 2)
 	{
 		//Load the toolbar at the bottom!
-		$bar     = JToolBar::getInstance('toolbar');
+		$bar     = Toolbar::getInstance('toolbar');
 		$barhtml = $bar->render();
 		echo $barhtml;
 	}
