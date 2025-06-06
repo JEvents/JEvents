@@ -589,9 +589,22 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
                     {
                         $rowlink = Route::_($rowlink);
                     }
+					$target = "";
+					if (isset($event->customfields) && !empty($event->customfields)  && is_array($event->customfields))
+                    {
+						foreach ($event->customfields as $customfield)
+                        {
+							if ($customfield['fieldtype'] === 'jevcfurl' && !empty($customfield['value']) && strpos($customfield['value'], 'data-redirect=') !== false  && strpos($customfield['value'], 'target=') !== false)
+                            {
+                                $rowlink = $customfield['rawvalue'];
+                                $target = ' target="_blank" ';
+                            }
+                        }
+
+                    }
                     ob_start();
                     ?>
-					<a class="ev_link_row" href="<?php echo $rowlink; ?>" title="<?php echo JEventsHTML::special($event->title()); ?>">
+					<a class="ev_link_row" href="<?php echo $rowlink; ?>" title="<?php echo JEventsHTML::special($event->title()); ?>" <?php echo $target;?> >
                     <?php
                     $linkstart = ob_get_clean();
                     $search[]  = "{{LINK}}";
@@ -606,7 +619,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
                     $fulllink  = $linkstart . $event->title() . '</a>';
                     $search[]  = "{{TITLE_LINK}}";
-                    $replace[] = $fulllink;
+                              $replace[] = $fulllink;
                     $blank[]   = "";
                 }
                 break;
@@ -2478,7 +2491,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
     ob_start();
     PluginHelper::importPlugin('content');
     ob_end_clean();
-    $app->triggerEvent('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
+     $app->triggerEvent('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
     $template_value = $tmprow->text;
     $template_value = str_replace("@£@", "@", $template_value);
 
