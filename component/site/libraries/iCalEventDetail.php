@@ -280,13 +280,13 @@ class iCalEventDetail extends Joomla\CMS\Table\Table
         $db->setQuery($sql);
         $cols = @$db->loadObjectList("Field");
 
-        if (array_key_exists("dtstart", $cols) && strtoupper($cols["dtstart"]->Type) !== "BIGINT")
+        if (array_key_exists("dtstart", $cols) && strpos(strtoupper($cols["dtstart"]->Type), "BIGINT") === false)
         {
             $sql = "ALTER TABLE #__jevents_vevdetail MODIFY dtstart BIGINT NOT NULL";
             $db->setQuery( $sql );
             @$db->execute();
         }
-        if (array_key_exists("dtend", $cols) && strtoupper($cols["dtend"]->Type) !== "BIGINT")
+        if (array_key_exists("dtend", $cols) && strpos(strtoupper($cols["dtend"]->Type), "BIGINT") === false)
         {
             $sql = "ALTER TABLE #__jevents_vevdetail MODIFY dtend BIGINT NOT NULL";
             $db->setQuery($sql);
