@@ -120,7 +120,7 @@ class iCalImport
 				$this->rawData = curl_exec($ch);
 
 				$charset = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
-
+                //$error = curl_error($ch);
 				curl_close($ch);
 
 				// try file_get_contents as a backup

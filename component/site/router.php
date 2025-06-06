@@ -830,6 +830,10 @@ function JEventsBuildRouteNew( &$query, $task ) {
                     if (isset($query["Itemid"]))
                     {
                         $menuitem = $menu->getItem( $query["Itemid"] );
+                        if (!$menuItem)
+                        {
+                            $menuItem      = $menu->getActive();
+                        }
                     }
                     else
                     {
@@ -839,7 +843,7 @@ function JEventsBuildRouteNew( &$query, $task ) {
                     $separator = $cfg->get("catseparator","|");
                     $queryCateIds = explode($separator, $query['catids']);
                     $diff = array_diff($menuCatIds, $queryCateIds);
-                    if (count(array_diff($menuCatIds, $queryCateIds)) == 0)
+                    if (count($diff) == 0 && count($menuCatIds) === count($queryCateIds))
                     {
                         $segments[] = '-';
                     }
