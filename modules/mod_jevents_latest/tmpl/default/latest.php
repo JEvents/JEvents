@@ -1381,7 +1381,7 @@ SCRIPT;
 					{
 						$link = Route::_($link . $this->datamodel->getCatidsOutLink());
 					}
-					$content .= $this->_htmlLinkCloaking($link, JEventsHTML::special($title));
+					$content .= $this->_htmlLinkCloaking($link, JEventsHTML::special($title), "", $dayEvent);
 				}
 				else
 				{
@@ -1834,11 +1834,31 @@ SCRIPT;
 	 *
 	 * @return string HTML
 	 */
-	function _htmlLinkCloaking($url = '', $text = '', $class = '')
+	function _htmlLinkCloaking($url = '', $text = '', $class = '', $event = false)
 	{
 
 		// Sef already should be already called below
 		$link = $url;
+
+        if ($event && isset($event->customfields) && !empty($event->customfields)  && is_array($event->customfields))
+        {
+            foreach ($event->customfields as $customfield)
+            {
+                if ($customfield['fieldtype'] === 'jevcfurl' && !empty($customfield['value']) && strpos($customfield['value'], 'data-redirect=') !== false  && strpos($customfield['value'], 'target=') !== false)
+                {
+                    $link = $customfield['rawvalue'];
+                    if ($this->linkCloaking)
+                    {
+                        return '<a href="#" onclick="window.open(\'' . $link . '\'); return false;" ' . $class . ' >' . $text . '</a>';
+                    }
+                    else
+                    {
+                        return '<a href="' . $link . '" ' . $class . ' target="_blank" >' . $text . '</a>';
+                    }
+
+                }
+            }
+        }
 
 		if ($this->linkCloaking)
 		{
