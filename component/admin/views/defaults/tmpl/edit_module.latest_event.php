@@ -33,8 +33,10 @@ $tbot = 'params[footer]';
 $version = JEventsVersion::getInstance();
 $release = $version->get("RELEASE", "1.0.0");
 HTMLHelper::script("https://www.jevents.net/jevlayouts/module.latest_event.js?$release");
+//HTMLHelper::script("https://ubu.j5.net/jevlayouts/module.latest_event.js?$release");
+HTMLHelper::_('bootstrap.popover');
 
-$html   =  "<script>jQuery(document).ready(function ($){loadJevPreview('$target', '$csstarget', '$jstarget', '$ttop',  '$tbot');});</script>";
+$html   =  "<script>document.addEventListener('DOMContentLoaded',  () => {loadJevPreview('$target', '$csstarget', '$jstarget', '$ttop',  '$tbot');});</script>";
 $id     = $this->item->id;
 
 if (version_compare(JVERSION, "4", "gt")) {

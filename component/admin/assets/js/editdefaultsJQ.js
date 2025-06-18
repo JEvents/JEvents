@@ -36,7 +36,6 @@ defaultsEditorPlugin = {
         // $result = jInsertEditorText(textToInsert, fieldName);
         Joomla.editors.instances[fieldName].replaceSelection(textToInsert);
 
-
         // reset the selected element back to 'Select...'
         jevjq(pluginNode).selectedIndex = 0;
         // needed for MSIE 9 bug - see jevjq(pluginNode)
@@ -57,13 +56,26 @@ defaultsEditorPlugin = {
             try {
                 document.getElementById(fieldName).value = '';
             }
-            catch (e)
+            catch (e2)
             {
 
             }
         }
+
         // insert the text using the library code
-        Joomla.editors.instances[fieldName].replaceSelection(textToInsert);
+        try {
+            Joomla.editors.instances[fieldName].replaceSelection(textToInsert);
+        }
+        catch (e)
+        {
+            try {
+                document.getElementById(fieldName).value = textToInsert;
+            }
+            catch (e2)
+            {
+
+            }
+        }
         return false;
     },
     extract: function (fieldName) {
