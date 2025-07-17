@@ -84,6 +84,7 @@ class JFormFieldJevcolumns extends TextField
 		$collist[] = array(Text::_("JEV_FIELD_CATEGORY_IMAGE", true), "CATEGORYIMG");
 		$collist[] = array(Text::_("JEV_FIELD_CATEGORY_IMAGES", true), "CATEGORYIMGS");
 		$collist[] = array(Text::_("JEV_FIELD_CATEGORY_DESCRIPTION", true), "CATDESC");
+        $collist[] = array(Text::_("JEV_FIELD_CATEGORY_DESCRIPTIONS", true), "CATDESCS");
 		$collist[] = array(Text::_("JEV_FIELD_COLOUR", true), "COLOUR");
 		$collist[] = array(Text::_("JEV_FIELD_CALENDAR", true), "CALENDAR");
 		$collist[] = array(Text::_("JEV_FIELD_CREATIONDATE", true), "CREATED");

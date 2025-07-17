@@ -107,9 +107,26 @@ class EventCalendarCell_flat extends EventCalendarCell_default
 				$title_event_link = $this->loadOverride("cellcontent");
 				// allow fallback to old method
 				if ($title_event_link == "")
-				{
-					$title_event_link = '<a class="cal_titlelink" href="' . $link . '">'
-						. ($cfg->get('com_calDisplayStarttime') ? $tmp_start_time : '') . ' ' . $tmpTitle . '</a>' . "\n";
+                {
+                    $target = "";
+                    if ( isset( $this->event->customfields ) && ! empty( $this->event->customfields ) && is_array( $this->event->customfields ) )
+                    {
+                        foreach ( $this->event->customfields as $customfield )
+                        {
+                            if ( $customfield['fieldtype'] === 'jevcfurl'
+                                 && ! empty( $customfield['value'] )
+                                 && strpos( $customfield['value'], 'data-redirect=' ) !== false
+                                 && strpos( $customfield['value'], 'target=' ) !== false )
+                            {
+                                $link   = $customfield['rawvalue'];
+                                $target = ' target="_blank" ';
+                            }
+                        }
+
+                    }
+
+                    $title_event_link = '<a class="cal_titlelink" href="' . $link . '" ' . $target . ' >'
+                                        . ( $cfg->get( 'com_calDisplayStarttime' ) ? $tmp_start_time : '' ) . ' ' . $tmpTitle . '</a>' . "\n";
 				}
 				$cellStyle .= ' width:100%;';
 			}
