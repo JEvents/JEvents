@@ -111,6 +111,11 @@
 			<option value="2">ICONS_WITHOUT_NAVIGATION</option>
 			<option value="0">JEV_OLD_STYLE_NAVIGATION</option>
 		</field>
+		<field name="nodatecontext" type="jevboolean" default="0"
+			   size="6" label="COM_JEVENTS_NO_DATE_CONTEXT" description="COM_JEVENTS_NO_DATE_CONTEXT_DESC" difficulty="2"
+			   showon="com_calUseIconic:1,2">
+		</field>
+
 		<field name="iconstoshow" type="jevmultilist" default="byyear,bymonth,byweek,byday,search" multiple="multiple"
 		       size="6" label="JEV_ICONS_TO_SHOW" description="JEV_ICONS_TO_SHOW_DESC" difficulty="2"
 		       showon="com_calUseIconic:1,2">
@@ -120,6 +125,7 @@
 			<option value="byday">JEVENTS_LIST_DAY_DEFAULT_TITLE</option>
 			<option value="bycat">JEVENTS_LIST_CATEGORY_DEFAULT_TITLE</option>
 			<option value="search">JEVENTS_SEARCH_DEFAULT_TITLE</option>
+			<option value="jumpmonth">JEV_JUMPTO</option>
 		</field>
 
 		<field name="com_navbarcolor" type="jevmultilist" default='green' menu="hide" label="JEV_NAV_BAR_COLOR"

@@ -101,8 +101,26 @@ function DefaultViewEventRowNew($view, $row, $args = "")
 	}
 
 	echo $times;
+
+    $target = "";
+    if (isset($row->customfields) && !empty($row->customfields)  && is_array($row->customfields))
+    {
+        foreach ($row->customfields as $customfield)
+        {
+            if ($customfield['fieldtype'] === 'jevcfurl'
+                && !empty($customfield['value'])
+                && strpos($customfield['value'], 'data-redirect=') !== false
+                && strpos($customfield['value'], 'target=') !== false)
+            {
+                $rowlink = $customfield['rawvalue'];
+                $target = ' target="_blank" ';
+            }
+        }
+
+    }
+
 	?>
-	<a class="ev_link_row" href="<?php echo $rowlink; ?>" <?php echo $args; ?> style="color:<?php echo $fgcolor; ?>;"
+	<a class="ev_link_row" href="<?php echo $rowlink; ?>" <?php echo $args; ?> style="color:<?php echo $fgcolor; ?>; <?php echo $target;?>
 	   title="<?php echo JEventsHTML::special($row->title()); ?>"><?php echo $tmpTitle; ?></a>
 	<?php
 	if ($cfg->get('com_byview') == '1')
