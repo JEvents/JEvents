@@ -723,7 +723,7 @@ jevpreview.push({
 });
 
 function loadJevPreview(target, csstarget, jstarget, ttop, tbot) {
-	jQuery(document).ready(function ($) {
+
 		// Setup click action on default option (which is translated)
 		var defaultLI = jQuery("#dropdownUL_" + target + " li:first-child");
 
@@ -764,7 +764,7 @@ function loadJevPreview(target, csstarget, jstarget, ttop, tbot) {
 				window.scrollTo(0,0);
 			});
 		});
-		$('a.dropdownpopover').popover({container: 'body', trigger: 'hover', placement: 'right', html: true});
+		jQuery('a.dropdownpopover').popover({container: 'body', trigger: 'hover', placement: 'right', html: true});
 		jQuery("#" + target).on('change', function (event) {
 			currentCode = defaultsEditorPlugin.extract(target);
 			currentCSS = jQuery("#" + csstarget).val() ;
@@ -783,7 +783,7 @@ function loadJevPreview(target, csstarget, jstarget, ttop, tbot) {
 				window.scrollTo(0,0);
 			});
 		});
-		jQuery("#" + csstarget + ',#\n' + jstarget).on('change', function (event) {
+		jQuery("#" + csstarget + ',#' + jstarget).on('change', function (event) {
 			currentCode = jQuery("#" + target).val();
 			currentCSS = jQuery("#" + csstarget).val();
 			currentJS = jQuery("#" + jstarget).val();
@@ -801,5 +801,5 @@ function loadJevPreview(target, csstarget, jstarget, ttop, tbot) {
 				window.scrollTo(0,0);
 			});
 		});
-	});
+
 }

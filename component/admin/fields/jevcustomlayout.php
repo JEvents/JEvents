@@ -50,9 +50,10 @@ class JFormFieldJevcustomlayout extends ListField
 		$version = JEventsVersion::getInstance();
 		$release = $version->get("RELEASE", "1.0.0");
 		HTMLHelper::script("https://www.jevents.net/jevlayouts/LatestEvents.js?$release");
-		//HTMLHelper::script("http://ubu.j33jq.com/jevlayouts/LatestEvents.js?$release");
+        //HTMLHelper::script("https://ubu.j5.net/jevlayouts/module.latest_event.js?$release");
+        HTMLHelper::_('bootstrap.popover');
 
-		$html =  "<script>jQuery(document).ready(function ($){loadJevPreview('$target', '$csstarget', '$ignorebrtarget', '$ttop', '$trow', '$tbot', '$inccss');});</script>";
+		$html =  "<script>document.addEventListener('DOMContentLoaded',  () => {loadJevPreview('$target', '$csstarget', '$ignorebrtarget', '$ttop', '$trow', '$tbot', '$inccss');});</script>";
 		$id = $this->id;
         if (version_compare(JVERSION, "4", "gt")) {
             $html .= <<<DROPDOWN

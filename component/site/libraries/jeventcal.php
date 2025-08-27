@@ -734,10 +734,28 @@ class jEventCal
 		return "";
 	}
 
-	function getCategoryDescription()
+	function getCategoryDescription($multiple = false)
 	{
 
 		$data = $this->getCategoryData();
+
+        if ($multiple)
+        {
+            if (is_array($data))
+            {
+                $output = "";
+                foreach ($data as $cat)
+                {
+                    if (!empty($cat->description))
+                    {
+                        $output .= '<div class="jevcatdesc">' . $cat->description . '<div>';
+                    }
+                }
+
+                return $output;
+            }
+        }
+
 		if (is_array($data))
 		{
 			$data = $data[0];

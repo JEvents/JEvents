@@ -594,7 +594,10 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
                     {
 						foreach ($event->customfields as $customfield)
                         {
-							if ($customfield['fieldtype'] === 'jevcfurl' && !empty($customfield['value']) && strpos($customfield['value'], 'data-redirect=') !== false  && strpos($customfield['value'], 'target=') !== false)
+							if ($customfield['fieldtype'] === 'jevcfurl'
+							    && !empty($customfield['value'])
+							    && strpos($customfield['value'], 'data-redirect=') !== false
+							    && strpos($customfield['value'], 'target=') !== false)
                             {
                                 $rowlink = $customfield['rawvalue'];
                                 $target = ' target="_blank" ';
@@ -1033,6 +1036,11 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
             case "{{CATDESC}}":
                 $search[]  = "{{CATDESC}}";
                 $replace[] = $event->getCategoryDescription();
+                $blank[]   = "";
+                break;
+            case "{{CATDESCS}}":
+                $search[]  = "{{CATDESCS}}";
+                $replace[] = $event->getCategoryDescription(true);
                 $blank[]   = "";
                 break;
             case "{{CATID}}":
