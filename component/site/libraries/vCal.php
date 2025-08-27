@@ -209,7 +209,17 @@ class vEvent// extends CMSObject
 			$description = str_replace('{mosimage}', '', $description);
 			$description = str_replace('{mospagebreak}', '', $description);
 			$description = strtr($description, array_flip(get_html_translation_table(HTML_ENTITIES)));
-			$description = preg_replace("/&#([0-9]+);/me", "chr('\\1')", $description);
+			//$description = preg_replace("/&#([0-9]+);/me", "chr('\\1')", $description);
+			// PHP 8 compatible version
+			$description = preg_replace_callback("/&#([0-9]+);/", function($matches) {
+				$code = (int)$matches[1];
+				// Optional: Add validation for valid character codes
+				if ($code > 0 && $code <= 1114111) { // Valid Unicode range
+					return chr($code);
+				}
+				return $matches[0]; // Return original if invalid
+			}, $description);
+
 			// quoted_printable_encode	from vCard class
 			//$this->addProperty("DESCRIPTION;ENCODING=QUOTED-PRINTABLE", quoted_printable_encode($description));
 			$this->addProperty("DESCRIPTION", $description);
