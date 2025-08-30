@@ -15,7 +15,7 @@ function DefaultExportWebcal($view, $publiclink, $privatelink)
 
 	//Webcal Subscribe button:
 	//Replace http with webcal	
-	$webcalurl_pub = str_replace(array('http:', 'https:'), array('webcal:', 'webcals:'), $publiclink);
+	$webcalurl_pub = str_replace(array('http:', 'https:'), array('webcal:', 'webcal:'), $publiclink);
 	?>
 <div class='ical_form_button export_public'>
 	<a style="text-decoration:none" href="<?php echo $webcalurl_pub; ?>"
@@ -32,7 +32,7 @@ function DefaultExportWebcal($view, $publiclink, $privatelink)
 	{
 		//Webcal Subscribe button:
 		//Replace http with webcal	
-		$webcalurl_priv = str_replace(array('http:', 'https:'), array('webcal:', 'webcals:'), $privatelink);
+		$webcalurl_priv = str_replace(array('http:', 'https:'), array('webcal:', 'webcal:'), $privatelink);
 		?>
 		<div class='ical_form_button export_private'>
 			<a style="text-decoration:none" href="<?php echo $webcalurl_priv; ?>"
