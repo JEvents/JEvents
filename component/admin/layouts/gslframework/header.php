@@ -30,7 +30,7 @@ $jversion = new Version;
 $document = Factory::getDocument();
 if ($jversion->isCompatible('4.0'))
 {
-	$script = <<< SCRIPT
+    $script = <<< SCRIPT
 var j3php = false;
 //alert('j3php is false from php');
 if (typeof j3 != "undefined") 
@@ -40,23 +40,24 @@ if (typeof j3 != "undefined")
 }
 SCRIPT;
 
-	if (ComponentHelper::getParams('com_jevents')->get("j4sidebar", 0))
-	{
-		$script .= "document.addEventListener('DOMContentLoaded',function() {document.querySelector('body').classList.add('with-joomla-sidebar');});\n";
-	}
-	$document->addScriptDeclaration($script);
+    if (ComponentHelper::getParams('com_jevents')->get("j4sidebar", 0))
+    {
+        $script .= "document.addEventListener('DOMContentLoaded',function() {document.querySelector('body').classList.add('with-joomla-sidebar');});\n";
+    }
+    $document->addScriptDeclaration($script);
 }
 
 $option = Factory::getApplication()->input->getCmd('option', 'com_jevents');
 if ($option == "com_categories")
 {
-	$option = Factory::getApplication()->input->getCmd('extension', 'com_jevents');
+    $option = Factory::getApplication()->input->getCmd('extension', 'com_jevents');
 }
 $componentParams = ComponentHelper::getParams($option);
 $leftmenutrigger = $componentParams->get("leftmenutrigger", 0);
 
 // Load component specific data
-$componentpath = dirname(dirname(dirname(__FILE__)));
+//$componentpath = dirname(dirname(dirname(__FILE__)));
+$componentpath = JPATH_ADMINISTRATOR . '/components/' . $option;
 include_once($componentpath . "/helpers/gslhelper.php");
 
 GslHelper::loadAssets();
@@ -72,34 +73,34 @@ $j5plus = version_compare(JVERSION, "5.0", "ge") ? "j5plus" : "";
     ?>
     <div class="gsl-margin-remove gsl-grid" gsl-grid>
         <!-- LEFT BAR -->
-		<?php
-       if (empty($tmpl) && !$app->isClient('site'))
-       {
-	       echo LayoutHelper::render('gslframework.leftbar', null, dirname(__DIR__, 1));
-       }
+        <?php
+        if (empty($tmpl) && !$app->isClient('site'))
+        {
+            echo LayoutHelper::render('gslframework.leftbar', null, dirname(__DIR__, 1));
+        }
         ?>
         <!-- /LEFT BAR -->
         <div id="right-col" class="gsl-padding-remove <?php echo $leftmenutrigger == 3 ? '' : 'gsl-width-expand@m';?> <?php if (!empty($tmpl) || $app->isClient('site')) echo "noleftbar";?> ">
 
             <!--HEADER-->
             <header id="top-head" >
-	            <?php
-	            if (empty($tmpl) && !$app->isClient('site'))
-	            {
-	            ?>
-                <nav class="gsl-navbar-container gsl-background-secondary ys-titlebar gsl-navbar"  gsl-navbar>
-                    <div class="gsl-navbar-left gsl-background-secondary gsl-width-expand@m">
-                        <?php
-                        echo Factory::getApplication()->JComponentTitle;
-                        ?>
-                    </div>
-                    <div class="gsl-navbar-right  gsl-background-secondary ">
+                <?php
+                if (empty($tmpl) && !$app->isClient('site'))
+                {
+                    ?>
+                    <nav class="gsl-navbar-container gsl-background-secondary ys-titlebar gsl-navbar"  gsl-navbar>
+                        <div class="gsl-navbar-left gsl-background-secondary gsl-width-expand@m">
+                            <?php
+                            echo Factory::getApplication()->JComponentTitle;
+                            ?>
+                        </div>
+                        <div class="gsl-navbar-right  gsl-background-secondary ">
                             <ul class="gsl-navbar-nav gsl-hidden">
-	                            <?php
-	                            $jversion = new Joomla\CMS\Version;
-	                            if (true || $jversion->isCompatible('4.0'))
-	                            {
-		                            ?>
+                                <?php
+                                $jversion = new Joomla\CMS\Version;
+                                if (true || $jversion->isCompatible('4.0'))
+                                {
+                                    ?>
                                     <li class="hasYsPopover ys_joomla"
                                         data-yspoptitle="<?php echo Text::_('COM_JEVENTS_RETURN_TO_JOOMLA', true); ?>"
                                         data-yspopcontent="<?php echo Text::_('COM_JEVENTS_RETURN_TO_JOOMLA_TOOLTIP', true); ?>"
@@ -111,13 +112,13 @@ $j5plus = version_compare(JVERSION, "5.0", "ge") ? "j5plus" : "";
                                            aria-expanded="false">
                                         </a>
                                     </li>
-		                            <?php
-	                            }
-	                            ?>
-				                <?php
-				                if (GslHelper::isAdminUser())
-				                {
-					                ?>
+                                    <?php
+                                }
+                                ?>
+                                <?php
+                                if (GslHelper::isAdminUser())
+                                {
+                                    ?>
                                     <li class="hasYsPopover ys_support"
                                         data-yspoptitle="<?php echo GslHelper::translate('SUPPORT_FORUM'); ?>"
                                         data-yspopcontent="<?php echo GslHelper::translate('SUPPORT_FORUM_TOOLTIP'); ?>"
@@ -154,25 +155,25 @@ $j5plus = version_compare(JVERSION, "5.0", "ge") ? "j5plus" : "";
                                            aria-expanded="false">
                                         </a>
                                     </li>
-	                            <?php
-                            }
-                            ?>
-                            <li class="hasYsPopover  ys_logout"
-                                data-yspoptitle = "<?php echo  Text::_('JLOGOUT', true); ?>"
-                                data-yspopcontent = "<?php echo Text::_('JLOGOUT', true); ?>"
-                            >
-                                <a href="<?php echo Uri::base() . 'index.php?option=com_login&amp;task=logout&amp;' . Session::getFormToken() . '=1'; ?>"
-                                   data-gsl-icon="icon:  sign-out"
-                                   title="<?php Text::_('JLOGOUT'); ?>"
-                                   aria-expanded="false">
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-		            <?php
-	            }
-	            ?>
+                                    <?php
+                                }
+                                ?>
+                                <li class="hasYsPopover  ys_logout"
+                                    data-yspoptitle = "<?php echo  Text::_('JLOGOUT', true); ?>"
+                                    data-yspopcontent = "<?php echo Text::_('JLOGOUT', true); ?>"
+                                >
+                                    <a href="<?php echo Uri::base() . 'index.php' . Session::getFormToken() . '=1'; ?>"
+                                       data-gsl-icon="icon:  sign-out"
+                                       title="<?php Text::_('JLOGOUT'); ?>"
+                                       aria-expanded="false">
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                    <?php
+                }
+                ?>
                 <nav class="gsl-navbar-container ys-gsl-action-buttons gsl-navbar" gsl-navbar>
                     <div class="gsl-navbar-left gsl-background-primary gsl-width-expand@m">
                         <?php
@@ -210,13 +211,13 @@ $j5plus = version_compare(JVERSION, "5.0", "ge") ? "j5plus" : "";
                                 }
 
                             }
-	                        $buttonoutput = str_replace("btn-danger", "gsl-button gsl-button-danger   ", $buttonoutput);
+                            $buttonoutput = str_replace("btn-danger", "gsl-button gsl-button-danger   ", $buttonoutput);
                             $buttonoutput = str_replace("btn ", "gsl-button gsl-button-primary  ", $buttonoutput);
                             $buttonoutput = str_replace('class=""', "class='gsl-button gsl-button-primary  ' ", $buttonoutput);
-							if (strpos($buttonoutput, "type=") === false)
-							{
-								$buttonoutput = str_replace('<button ', '<button type="button" ', $buttonoutput);
-							}
+                            if (strpos($buttonoutput, "type=") === false)
+                            {
+                                $buttonoutput = str_replace('<button ', '<button type="button" ', $buttonoutput);
+                            }
                             $buttonoutput = str_replace(array("btn-small"), "", $buttonoutput);
                             echo $buttonoutput;
                         }
@@ -228,7 +229,7 @@ $j5plus = version_compare(JVERSION, "5.0", "ge") ? "j5plus" : "";
             </header>
             <!--/HEADER-->
 
-	        <div id="ysts_system_messages"></div>
+            <div id="ysts_system_messages"></div>
 
             <div class="gsl-content  <?php echo Factory::getApplication()->isClient('administrator') ? "gsl-backend" : "gsl-frontend";?>"  style="max-height: 100%;height:fit-content;">
 
