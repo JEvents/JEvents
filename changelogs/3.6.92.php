@@ -10,3 +10,5 @@ $changelog[$extension][$version]["features"][]      = "Changes to header file to
 $changelog[$extension][$version]["bugfixes"]        = array();
 $changelog[$extension][$version]["bugfixes"][]      = "Revert changes to use webcals in secure urls";
 $changelog[$extension][$version]["bugfixes"][]      = "Fix to getjson methods for Joomla 5 - relevant to specialist usage to extract event data in JSON format for export";
+$changelog[$extension][$version]["bugfixes"][]      = "Remove duplicate list limit form element in backend events overview";
+$changelog[$extension][$version]["bugfixes"][]      = "\e preg_replace modifier is no longer supported fir vCal imports";
