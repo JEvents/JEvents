@@ -14,7 +14,7 @@ function DefaultExportGoogle($view, $publiclink, $privatelink)
 {
 	?>
 	<div class='ical_form_button export_public'>
-		<a href='https://www.google.com/calendar/render?cid=<?php echo  urlencode(str_replace(array(' http://','https://'), array('webcal://', 'webcals://'), $publiclink));?>' target='_blank' rel='nofollow'>
+		<a href='https://www.google.com/calendar/render?cid=<?php echo  urlencode(str_replace(array(' http://','https://'), array('webcal://', 'webcal://'), $publiclink));?>' target='_blank' rel='nofollow'>
 			<span style="display:inline-block;width:24px;"><?php echo HTMLHelper::image('com_jevents/icons-32/gcal32.png', Text::_("JEV_ADDTOGCAL"), null, true); ?></span>
 			<span style="display:inline-block;"><?php echo Text::_("JEV_SAVE_EVENT_IN_GCAL"); ?></span>
 		</a>
@@ -25,7 +25,7 @@ function DefaultExportGoogle($view, $publiclink, $privatelink)
 		{
 			?>
 			<div class='ical_form_button export_private'>
-				<a href='https://www.google.com/calendar/render?cid=<?php echo  urlencode(str_replace(array(' http://','https://'), array('webcal://', 'webcals://'), $privatelink));?>' target='_blank'>
+				<a href='https://www.google.com/calendar/render?cid=<?php echo  urlencode(str_replace(array(' http://','https://'), array('webcal://', 'webcal://'), $privatelink));?>' target='_blank'>
 					<span style="display:inline-block;width:24px;"><?php echo HTMLHelper::image('com_jevents/icons-32/gcal32.png', Text::_("JEV_ADDTOGCAL"), null, true); ?></span>
 					<span style="display:inline-block;"><?php echo Text::_("JEV_SAVE_EVENT_IN_GCAL"); ?></span>
 				</a>

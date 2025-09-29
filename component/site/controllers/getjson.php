@@ -246,6 +246,10 @@ class GetjsonController extends Joomla\CMS\MVC\Controller\BaseController
 			$events[] = $eventArray;
 		}
 
+        $result = new JsonResponse($events);
+
+        echo $result;
+/*
 		// Get the document object.
 		$document = Factory::getDocument();
 
@@ -253,10 +257,11 @@ class GetjsonController extends Joomla\CMS\MVC\Controller\BaseController
 		$document->setMimeEncoding('application/json');
 
 		// Change the suggested filename.
-		JResponse::setHeader('Content-Disposition', 'attachment;filename="eventdata.json"');
+		JsonResponse::setHeader('Content-Disposition', 'attachment;filename="eventdata.json"');
 
 		// Output the JSON data.
 		echo json_encode($events);
+*/
 		exit();
 	}
 
