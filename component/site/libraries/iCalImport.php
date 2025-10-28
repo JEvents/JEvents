@@ -543,6 +543,9 @@ class iCalImport
                 {
                     if (strpos($value, "<body>") !== false)
                     {
+                        // Badly formatted content handing
+                        $value = substr($value, strpos($value, "<body>"));
+                        $value = str_replace(" ", "", $value);
                         $dom = new DOMDocument();
                         try
                         {

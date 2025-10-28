@@ -19,6 +19,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Table\Table;
 
 if (version_compare(JVERSION, '4.0.1', 'lt'))
 {
@@ -49,6 +50,8 @@ else if(!defined('GSLMSIE10'))
 {
 	define ("GSLMSIE10" , 0);
 }
+
+Table::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_jevents/tables');
 
 // remove metadata.xml if its there.
 jimport('joomla.filesystem.file');
