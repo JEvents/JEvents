@@ -2,7 +2,7 @@
 <extension type="package" version="2.5" method="upgrade">
 	<name>JEV_PACKAGE_TITLE</name>
 	<packagename>jevents</packagename>
-	<version>3.6.93alpha</version>
+	<version>3.6.93</version>
 	<url>http://www.jevents.net</url>
 	<creationDate>October 2025</creationDate>
 	<author>GWE Systems Ltd</author>
