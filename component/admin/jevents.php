@@ -13,7 +13,7 @@ defined('JPATH_BASE') or die('No Direct Access');
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Version;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Plugin\PluginHelper;

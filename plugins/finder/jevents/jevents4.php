@@ -27,7 +27,7 @@ jimport('joomla.application.component.helper');
 use Joomla\Utilities\ArrayHelper;
 
 // Load the base adapter.
-require_once JPATH_ADMINISTRATOR . '/components/com_finder/helpers/indexer/adapter.php';
+//require_once JPATH_ADMINISTRATOR . '/components/com_finder/helpers/indexer/adapter.php';
 
 /**
  * Finder adapter for com_jevents.

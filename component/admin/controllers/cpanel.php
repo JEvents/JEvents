@@ -16,7 +16,7 @@ jimport('joomla.application.component.controlleradmin');
 use Joomla\CMS\MVC\Controller\AdminController;
 use Joomla\CMS\Language\Language;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Table\Table;
@@ -244,7 +244,7 @@ class AdminCpanelController extends AdminController
 
 		if (count($oldrows) || $rebuild)
 		{
-			JLoader::register('TableMenu', JPATH_PLATFORM . '/joomla/database/table/menu.php');
+			JLoader::register('TableMenu', _JEXEC . '/joomla/database/table/menu.php');
 			// rebuild the menus
 			$menu = Table::getInstance('Menu');
 			$menu->rebuild();
@@ -300,7 +300,7 @@ class AdminCpanelController extends AdminController
 		}
 		if ($updatemenus)
 		{
-			JLoader::register('TableMenu', JPATH_PLATFORM . '/joomla/database/table/menu.php');
+			JLoader::register('TableMenu', _JEXEC . '/joomla/database/table/menu.php');
 			// rebuild the menus
 			$menu = Table::getInstance('Menu');
 			$menu->rebuild();
@@ -321,7 +321,7 @@ class AdminCpanelController extends AdminController
 			{
 				continue;
 			}
-			JLoader::register('TableMenu', JPATH_PLATFORM . '/joomla/database/table/menu.php');
+			JLoader::register('TableMenu', _JEXEC . '/joomla/database/table/menu.php');
 			$table                   = Table::getInstance('Menu', 'Table');
 			$table->id               = 0;
 			$table->title            = $missingmenu->element;
@@ -456,7 +456,7 @@ class AdminCpanelController extends AdminController
 
 		if ($updatemenus)
 		{
-			JLoader::register('TableMenu', JPATH_PLATFORM . '/joomla/database/table/menu.php');
+			JLoader::register('TableMenu', _JEXEC . '/joomla/database/table/menu.php');
 			// rebuild the menus
 			$menu = Table::getInstance('Menu');
 			$menu->rebuild();

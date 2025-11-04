@@ -11,7 +11,7 @@
 
 defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
-use Joomla\CMS\Filesystem\Folder;
+use Joomla\Filesystem\Folder;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;

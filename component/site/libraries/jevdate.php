@@ -21,6 +21,29 @@ if (!defined("JEVDATE"))
             public $mytz;
 
             /**
+             * Placeholder for a \DateTimeZone object with GMT as the time zone.
+             *
+             * @var    object
+             * @since  1.7.0
+             *
+             * @deprecated  4.0 will be removed in 6.0
+             *              Will be removed without replacement
+             */
+            protected static $gmt;
+
+            /**
+             * Placeholder for a \DateTimeZone object with the default server
+             * time zone as the time zone.
+             *
+             * @var    object
+             * @since  1.7.0
+             *
+             * @deprecated  4.0 will be removed in 6.0
+             *              Will be removed without replacement
+             */
+            protected static $stz;
+
+            /**
              * Constructor.
              *
              * @param   string    String in a format accepted by JevDate::strtotime(), defaults to "now".
@@ -235,7 +258,7 @@ if (!defined("JEVDATE"))
             }
 
             // Timezone aware version!!
-            public function toSql( $local = false, DatabaseDriver $db = null ) {
+            public function toSql( $local = false, ?DatabaseDriver $db = null ) {
 
                 return $this->toFormat( '%Y-%m-%d %H:%M:%S', $local );
 
@@ -591,7 +614,7 @@ if (!defined("JEVDATE"))
             }
 
             // Timezone aware version!!
-            public function toSql( $local = false, DatabaseDriver $db = null ) {
+            public function toSql( $local = false, ?DatabaseDriver $db = null ) {
 
                 return $this->toFormat( '%Y-%m-%d %H:%M:%S', $local );
 

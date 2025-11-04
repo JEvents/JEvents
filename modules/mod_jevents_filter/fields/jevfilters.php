@@ -14,13 +14,13 @@ defined('JPATH_BASE') or die();
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormHelper;
-use Joomla\CMS\Filesystem\Folder;
+use Joomla\Filesystem\Folder;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\String\StringHelper;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Plugin\PluginHelper;
-use Joomla\CMS\Filesystem\Path;
+use Joomla\Filesystem\Path;
 
 jimport('joomla.filesystem.folder');
 jimport('joomla.html.html');

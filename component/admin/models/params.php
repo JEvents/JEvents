@@ -18,7 +18,7 @@ use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Access\Rules;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\Form;
-use Joomla\CMS\Filesystem\Path;
+use Joomla\Filesystem\Path;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
 
