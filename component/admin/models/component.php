@@ -13,7 +13,7 @@ jimport('joomla.application.component.modelform');
 
 use Joomla\CMS\MVC\Model\FormModel;
 use Joomla\CMS\Access\Rules;
-use Joomla\CMS\Filesystem\Path;
+use Joomla\Filesystem\Path;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Table\Table;
