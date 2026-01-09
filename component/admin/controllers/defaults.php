@@ -696,6 +696,10 @@ function edit($key = null, $urlVar = null)
 			{
 				//TODO find a work around for getting post array with input.
 				$data = $input->getArray(array(), null, 'RAW');
+                foreach (array_keys($data) as $key )
+                {
+                    $data[$key] = $input->getRaw($key, $data[$key]);
+                }
 				if ($model->store($data))
 				{
 					if ($input->getCmd("task") == "defaults.apply")
