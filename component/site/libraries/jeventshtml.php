@@ -351,7 +351,7 @@ class JEventsHTML
 		$count = count($options);
 		for ($o = 0; $o < $count; $o++)
 		{
-			$options[$o]->text = strpos($options[$o]->text, "JEV_") === 0 ? Text::_($options[$o]->text) : $options[$o]->text;
+			$options[$o]->text = ( strpos($options[$o]->text, "JEV_") === 0 || strtoupper($options[$o]->text) === $options[$o]->text ) ? Text::_($options[$o]->text) : $options[$o]->text;
 		}
 
 		// Thanks to ssobada
