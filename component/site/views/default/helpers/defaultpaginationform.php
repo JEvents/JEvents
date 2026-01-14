@@ -26,6 +26,8 @@ function DefaultPaginationForm($total, $limitstart, $limit, $keyword = "")
 	$task   = $input->get("jevtask", null, null);
 	// include catids to make sure not lost when category is pre-selected
 	$catids = $input->getString("catids", $input->getString("category_fv", ""));
+
+
 	if (StringHelper::strlen($catids) > 0)
 	{
 		$catids = explode("|", $catids);
@@ -36,11 +38,13 @@ function DefaultPaginationForm($total, $limitstart, $limit, $keyword = "")
 	if ($input->getInt("year", 0) > 0)
 	{
 		$year = "&year=" . $input->getInt("year", 0);
+        $pageNav->setAdditionalUrlParam("year", $input->getInt("year", 0));
 	}
 	$month = "";
 	if ($input->getInt("month", 0) > 0)
 	{
 		$month = "&month=" . $input->getInt("month", 0);
+        $pageNav->setAdditionalUrlParam("month", $input->getInt("month", 0));
 	}
 	if ($keyword != "")
 	{

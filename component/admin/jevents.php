@@ -54,7 +54,7 @@ else if(!defined('GSLMSIE10'))
 Table::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_jevents/tables');
 
 // remove metadata.xml if its there.
-jimport('joomla.filesystem.file');
+//jimport('joomla.filesystem.file');
 
 if (File::exists(JPATH_COMPONENT_SITE . '/' . "metadata.xml"))
 {
