@@ -156,7 +156,6 @@ class plgFinderJEvents extends Adapter
         $x = 1;
 	}
 
-
 	public function onAfterSaveEvent(& $vevent, $dryrun)
 	{
 
@@ -352,6 +351,18 @@ class plgFinderJEvents extends Adapter
 				$item->description = $theevent[0]->content();
 				$item->setElement('body', $theevent[0]->content());
 				$item->setElement('summary', $theevent[0]->content());
+
+                // Add the metadata processing instructions.
+                $item->addInstruction(Indexer::META_CONTEXT, 'extrainfo');
+                $item->addInstruction(Indexer::META_CONTEXT, 'contactinfo');
+
+                $item->setElement('extrainfo', $theevent[0]->extra_info());
+                $item->setElement('contactinfo', $theevent[0]->contact_info());
+
+                if (isset($theevent[0]->_locationsummary) && !empty($theevent[0]->_locationsummary)) {
+                    $item->addInstruction(Indexer::META_CONTEXT, 'location');
+                    $item->setElement('location', $theevent[0]->_locationsummary);
+                }
 			}
 			catch (Exception $e)
 			{
@@ -369,6 +380,10 @@ class plgFinderJEvents extends Adapter
 				$images = $db->loadObject();
 				if ($images && isset($images->imagename1) &&  !empty($images->imagename1))
 				{
+                    // Add the metadata processing instructions.
+                    $item->addInstruction(Indexer::META_CONTEXT, 'imageUrl');
+                    $item->addInstruction(Indexer::META_CONTEXT, 'imageAlt');
+
 					$item->imageUrl = $images->imagename1;
 					$item->imageAlt = $images->imagetitle1 ?? '';
 				}
