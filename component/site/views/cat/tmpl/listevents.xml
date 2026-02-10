@@ -43,6 +43,7 @@
 				<option value="byday">JEVENTS_LIST_DAY_DEFAULT_TITLE</option>
 				<option value="bycat">JEVENTS_LIST_CATEGORY_DEFAULT_TITLE</option>
 				<option value="search">JEVENTS_SEARCH_DEFAULT_TITLE</option>
+				<option value="jumpmonth">JEV_JUMPTO</option>
 			</field>
 
 			<field name="include_subcats" class="btn-group" type="jevboolean" default="1"
