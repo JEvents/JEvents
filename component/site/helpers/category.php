@@ -70,7 +70,7 @@ class JEventsCategories extends Joomla\CMS\Categories\Categories
 		$case_when = ' CASE WHEN ';
 		$case_when .= $query->charLength('c.alias');
 		$case_when .= ' THEN ';
-		$c_id      = $query->castAsChar('c.id');
+		$c_id      = $query->castAs('CHAR', 'c.id');
 		$case_when .= $query->concatenate(array($c_id, 'c.alias'), ':');
 		$case_when .= ' ELSE ';
 		$case_when .= $c_id . ' END as slug';

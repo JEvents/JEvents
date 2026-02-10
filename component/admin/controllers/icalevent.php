@@ -247,7 +247,19 @@ class AdminIcaleventController extends Joomla\CMS\MVC\Controller\AdminController
 				$array['jevcontent'] = $input->post->get("jevcontent", "", 'RAW');
 				$array['extra_info'] = $input->post->get("extra_info", "", 'RAW');
 			}
-			// Convert nl2br if there is no HTML
+			else
+            {
+                // For contents, we need to get the raw data and filter safehtml
+                $safeHtmlFilter  = Joomla\CMS\Filter\InputFilter::getInstance( [], [], 1, 1 );
+
+                $array['jevcontent'] = $input->post->get("jevcontent", "", 'RAW');
+                $array['jevcontent'] = $safeHtmlFilter->clean( $array['jevcontent'], 'html' );
+
+                $array['extra_info'] = $input->post->get("extra_info", "", 'RAW');
+                $array['extra_info'] = $safeHtmlFilter->clean( $array['extra_info'], 'html' );
+            }
+
+            // Convert nl2br if there is no HTML
 			if (strip_tags($array['jevcontent']) == $array['jevcontent'])
 			{
 				$array['jevcontent'] = nl2br($array['jevcontent']);
@@ -912,6 +924,18 @@ SQL;
 			$array['jevcontent'] = $input->post->get("jevcontent", "", 'RAW');
 			$array['extra_info'] = $input->post->get("extra_info", "", 'RAW');
 		}
+        else
+        {
+            // For contents, we need to get the raw data and filter safehtml
+            $safeHtmlFilter  = Joomla\CMS\Filter\InputFilter::getInstance( [], [], 1, 1 );
+
+            $array['jevcontent'] = $input->post->get("jevcontent", "", 'RAW');
+            $array['jevcontent'] = $safeHtmlFilter->clean( $array['jevcontent'], 'html' );
+
+            $array['extra_info'] = $input->post->get("extra_info", "", 'RAW');
+            $array['extra_info'] = $safeHtmlFilter->clean( $array['extra_info'], 'html' );
+        }
+
 		// Convert nl2br if there is no HTML
 		if (strip_tags($array['jevcontent']) == $array['jevcontent'])
 		{

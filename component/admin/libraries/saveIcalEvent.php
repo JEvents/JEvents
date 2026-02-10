@@ -434,10 +434,15 @@ class SaveIcalEvent
 			}
 			$rrule["INTERVAL"]       = $interval;
 			$rrule["IRREGULARDATES"] = ArrayHelper::getValue($array, "irregularDates", array(), "ARRAY");
+
 			array_walk($rrule["IRREGULARDATES"], function (& $item, $index) {
+                //$tempDate = new JevDate($item);
+                //$tempItem = $tempDate->format('U');
+                //$item = $tempItem;
 
 				$item = JevDate::strtotime($item . " 00:00:00");
 			});
+
 		}
 
 		$whichby = ArrayHelper::getValue($array, "whichby", "bd");

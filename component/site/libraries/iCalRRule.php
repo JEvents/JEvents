@@ -867,7 +867,7 @@ class iCalRRule extends Joomla\CMS\Table\Table
 				if (is_string($this->irregulardates) && $this->irregulardates != "")
 				{
 					$this->irregulardates = @json_decode(str_replace("'", '"', trim($this->irregulardates, '"')));
-					if (is_array($this->_irregulardates))
+					if (is_array($this->irregulardates))
 					{
 						array_walk($this->irregulardates, function (& $item, $index) {
 
@@ -885,17 +885,24 @@ class iCalRRule extends Joomla\CMS\Table\Table
 				sort($this->irregulardates);
 				foreach ($this->irregulardates as $irregulardate)
 				{
-					// avoid duplicate values
-					if (in_array($irregulardate, $processedDates))
-					{
-						continue;
-					}
-					$processedDates[] = $irregulardate;
+                    // avoid duplicate values
+                    if (in_array($irregulardate, $processedDates))
+                    {
+                        continue;
+                    }
+
+                    $processedDates[] = $irregulardate;
+                    // $irregulardate should be at midnight but this is wrong when DTS changes in the spring
+                    $tempDateTime = jevDate::strftime("%Y-%m-%d %H:%M:%S", $irregulardate);
+                    $tempTime = DateTime::createFromFormat("Y-m-d H:i:s", $tempDateTime);
+
+                    $tempTime->setTime(intval($startHour), intval($startMin));
+
+                    $irregulardate = $tempTime->format('U');
 					// find the start and end times of the initial event
-					$irregulardate += ($dtstart - $dtstartMidnight);
+					//$irregulardate += ($dtstart - $dtstartMidnight);
 					$this->_makeRepeat($irregulardate, $irregulardate + $duration);
 				}
-
 				return $this->_repetitions;
 				break;
 			default:

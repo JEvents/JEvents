@@ -632,6 +632,17 @@ class JEventsModelicalevent extends ListModel
 			$array['trans_description'] = $input->post->get("trans_description", "", 'RAW');
 			$array['trans_extra_info']  = $input->post->get("trans_extra_info", "", 'RAW');
 		}
+        else
+        {
+            // For contents, we need to get the raw data and filter safehtml
+            $safeHtmlFilter  = Joomla\CMS\Filter\InputFilter::getInstance( [], [], 1, 1 );
+
+            $array['trans_description'] = $input->post->get("trans_description", "", 'RAW');
+            $array['trans_description'] = $safeHtmlFilter->clean( $array['trans_description'], 'html' );
+
+            $array['trans_extra_info'] = $input->post->get("trans_extra_info", "", 'RAW');
+            $array['extra_intrans_extra_infofo'] = $safeHtmlFilter->clean( $array['trans_extra_info'], 'html' );
+        }
 
 		include_once JPATH_COMPONENT . "/tables/translate.php";
 		$translation = new TableTranslate();
