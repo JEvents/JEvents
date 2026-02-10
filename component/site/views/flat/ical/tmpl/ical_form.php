@@ -147,7 +147,7 @@ if ($input->getString("submit", "") != "")
 		<?php
 		echo "<h3>" . Text::_('JEV_EVENT_CHOOSE_CATEG') . "</h3>\n";
 		// All categories
-		$cb      = "<input name=\"categories[]\" value=\"0\" type=\"checkbox\" onclick='clearIcalCategories(this);' ";
+		$cb      = "<input id=\"clearCategories\" name=\"categories[]\" value=\"0\" type=\"checkbox\" onclick='clearIcalCategories(this);' ";
 		$checked = false;
 		if (!$input->post->get('categories', 0, 'ARRAY'))
 		{
@@ -159,7 +159,7 @@ if ($input->getString("submit", "") != "")
 			$cb      = $cb . " CHECKED";
 			$checked = true;
 		}
-		echo $cb . "><strong>" . Text::_("JEV_EVENT_ALLCAT") . "</strong><br/>\n";
+        echo $cb . " /><label for='clearCategories' ><strong>" . Text::_("JEV_EVENT_ALLCAT") . "</strong></label><br/>\n";
 		?>
 		<div id='othercats' <?php echo $checked ? 'style="display:none;max-height:100px;overflow-y:auto;"' : 'style="display:block;"'; ?> >
 			<?php
@@ -168,7 +168,7 @@ if ($input->getString("submit", "") != "")
 				// Make sure the user is authorised to view this category and the menu item doesn't block it!
 				if (!in_array($c->id, $accessiblecats))
 					continue;
-				$cb = "<input name=\"categories[]\" value=\"" . $c->id . "\" type=\"checkbox\" onclick='clearAllIcalCategories(this);' ";
+				$cb = "<input id=\"clearCategories\" name=\"categories[]\" value=\"" . $c->id . "\" type=\"checkbox\" onclick='clearAllIcalCategories(this);' ";
 				if (!$input->get('categories', 0, 'ARRAY'))
 				{
 					//$cb=$cb." CHECKED";
@@ -188,7 +188,7 @@ if ($input->getString("submit", "") != "")
 		echo "<h3>" . Text::_('JEV_SELECT_REP_YEAR') . "</h3>\n";
 
 		// All years
-		$yt      = "<input name=\"years[]\" type=\"checkbox\" value=\"0\"  onclick='clearIcalYears(this);' ";
+		$yt      = "<input id=\"clearYears\" name=\"years[]\" type=\"checkbox\" value=\"0\"  onclick='clearIcalYears(this);' ";
 		$checked = false;
 		if (!$input->get('years', 0))
 		{
@@ -200,7 +200,7 @@ if ($input->getString("submit", "") != "")
 			$yt      = $yt . " CHECKED";
 			$checked = true;
 		}
-		$yt = $yt . "><strong>" . Text::_("JEV_EVENT_ALLYEARS") . "</strong><br/>\n";
+		$yt = $yt . "><label for='clearYears' ><strong>" . Text::_("JEV_EVENT_ALLYEARS") . "</strong></label><br/>\n";
 		echo $yt;
 		?>
 		<div id='otheryears' <?php echo $checked ? 'style="display:none;max-height:100px;overflow-y:auto;"' : ''; ?> >
@@ -227,7 +227,7 @@ if ($input->getString("submit", "") != "")
 
 			foreach ($year AS $y)
 			{
-				$yt = "<input name=\"years[]\" type=\"checkbox\" value=\"" . $y . "\" onclick='clearAllIcalYears(this);' ";
+				$yt = "<input id=\"clearYears\" name=\"years[]\" type=\"checkbox\" value=\"" . $y . "\" onclick='clearAllIcalYears(this);' ";
 				 if ($input->get('years', 0) && in_array($y, $input->post->get('years', '')))
 				{
 					$yt = $yt . " CHECKED";
