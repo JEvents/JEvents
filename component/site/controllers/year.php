@@ -17,7 +17,6 @@ use Joomla\CMS\Component\ComponentHelper;
 jimport('joomla.application.component.controller');
 
 #[\AllowDynamicProperties]
-
 class YearController extends Joomla\CMS\MVC\Controller\BaseController
 {
 
