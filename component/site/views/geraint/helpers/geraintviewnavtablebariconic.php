@@ -7,6 +7,8 @@ use Joomla\CMS\Uri\Uri;
 
 JLoader::register('DefaultViewNavTableBarIconic', JEV_VIEWS . "/default/helpers/defaultviewnavtablebariconic.php");
 
+#[\AllowDynamicProperties]
+
 class GeraintViewNavTableBarIconic extends DefaultViewNavTableBarIconic
 {
 

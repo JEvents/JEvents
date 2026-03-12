@@ -8,6 +8,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Component\ComponentHelper;
 
 
+#[\AllowDynamicProperties]
 class ExtViewNavTableBarIconic
 {
 
