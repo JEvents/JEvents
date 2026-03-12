@@ -52,6 +52,12 @@ if ($option == "com_categories")
 {
     $option = Factory::getApplication()->input->getCmd('extension', 'com_jevents');
 }
+else if ($option == "com_fields")
+{
+    $option = Factory::getApplication()->input->getCmd('context', 'com_jevents.event');
+    $option = substr($option, 0, strpos($option, '.'));
+}
+
 $componentParams = ComponentHelper::getParams($option);
 $leftmenutrigger = $componentParams->get("leftmenutrigger", 0);
 
