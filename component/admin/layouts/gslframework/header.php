@@ -162,7 +162,7 @@ $j5plus = version_compare(JVERSION, "5.0", "ge") ? "j5plus" : "";
                                     data-yspoptitle = "<?php echo  Text::_('JLOGOUT', true); ?>"
                                     data-yspopcontent = "<?php echo Text::_('JLOGOUT', true); ?>"
                                 >
-                                    <a href="<?php echo Uri::base() . 'index.php' . Session::getFormToken() . '=1'; ?>"
+	                                <a href="<?php echo Uri::base() . 'index.php?option=com_login&amp;task=logout&amp;' . Session::getFormToken() . '=1'; ?>"
                                        data-gsl-icon="icon:  sign-out"
                                        title="<?php Text::_('JLOGOUT'); ?>"
                                        aria-expanded="false">

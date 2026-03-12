@@ -1383,7 +1383,7 @@ SCRIPT;
 			ob_start();
 			// this echos the showon
 			JEventsHelper::showOnRel($this->form, 'customfields');
-			$showon = ob_get_clean();
+ 			$showon = ob_get_clean();
 			if (isset($this->customfields[$key]["showon"]) && !empty($this->customfields[$key]["showon"]) &&  strpos($this->customfields[$key]["showon"], "data-showon-gsl='") !== false)
 			{
 				// merge a copy for custom fields since for customised layouts we loose the general showon handling!

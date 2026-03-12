@@ -7,6 +7,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Component\ComponentHelper;
 
+#[\AllowDynamicProperties]
 class DefaultViewNavTableBarIconic
 {
 

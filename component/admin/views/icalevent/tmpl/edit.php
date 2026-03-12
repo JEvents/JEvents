@@ -33,6 +33,12 @@ if ($app->isClient('administrator') || $params->get("newfrontendediting", 1) || 
 {
 	$editPage = $this->loadTemplate('uikit');
 	//$editPage = str_replace("hasPopover", "hasYsPopover", $editPage);
+
+    // Disable general showon effects if using a non-customised event editing form
+    $editPage = str_replace("data-showon-gsl", "data-showon-gsl-disabled", $editPage);
+    $editPage = str_replace("data-showon-2gsl", "data-showon-gsl", $editPage);
+    $editPage = str_replace("data-showon=", "data-showon-gsl=", $editPage);
+
 	echo $editPage;
 	return;
 }

@@ -399,6 +399,12 @@ if ($input->getCmd("format") != "feed")
 	Factory::getDocument()->SetTitle($title);
 }
 
+$template = Factory::getApplication()->getTemplate();
+// Call the MetaTag setter function in case we are in YOOtheme and have not done this yet
+if (is_callable(array("JEVHelper","SetMetaTags")) && $template === 'yootheme'){
+    JEVHelper::SetMetaTags();
+}
+
 // Redirect if set by the controller
 $controller->redirect();
 
