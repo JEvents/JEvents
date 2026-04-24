@@ -7,7 +7,7 @@ $changelog[$extension][$version]["date"]            = $date;
 $changelog[$extension][$version]["features"]        = array();
 
 $changelog[$extension][$version]["bugfixes"]        = array();
-$changelog[$extension][$version]["bugfixes"][]      = "Dynamic propertiees fix in Year list view";
+$changelog[$extension][$version]["bugfixes"][]      = "Dynamic properties fix in Year list view";
 $changelog[$extension][$version]["bugfixes"][]      = "Fix loading of GSLHelper";
 $changelog[$extension][$version]["bugfixes"][]      = "Fix logout button in the backend";
 $changelog[$extension][$version]["bugfixes"][]      = "Disable general showon effects if using a non-customised event editing form";

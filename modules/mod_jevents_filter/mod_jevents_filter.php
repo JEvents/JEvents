@@ -56,7 +56,8 @@ if ($input->getCmd("task") == "icalrepeat.detail" && $params->get('showindetails
 	return;
 }
 
-$app->activeModule = $module;
+$app->setUserState("jevents.activeModule", $module);
+//$app->activeModule = $module;
 require(ModuleHelper::getLayoutPath('mod_jevents_filter'));
 
 

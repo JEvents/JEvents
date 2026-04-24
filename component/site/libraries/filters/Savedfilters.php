@@ -25,8 +25,8 @@ class jevSavedfiltersFilter extends jevFilter
 
 		$this->filterNullValue = -1;
 		$this->filterType      = "savedfilters";
-		$this->filterField     = "";
-		parent::__construct($contentElement, "");
+		$this->filterField     = "savedFilter";
+		parent::__construct($contentElement, "savedFilter");
 	}
 
 	function _createFilter($prefix = "")
@@ -48,7 +48,8 @@ class jevSavedfiltersFilter extends jevFilter
 			return false;
 		}
 		$app          = Factory::getApplication();
-		$activeModule = isset($app->activeModule) ? $app->activeModule : false;
+        $activeModule = $app->getUserState("jevents.activeModule", null);
+		//$activeModule = isset($app->activeModule) ? $app->activeModule : false;
 		$activemodid  = (isset($activeModule) ? $activeModule->id : 0);
 
 		$filter          = array();
@@ -72,15 +73,73 @@ class jevSavedfiltersFilter extends jevFilter
 				$base = Route::_($base);
 				*/
 
-				$filter["html"] .= '<div class="saved_filter_buttons uk-button-group"><a href="' . $base . '" class="uk-button uk-button-small uk-button-primary" >' . $fltr->name . ' </a>';
-				$filter["html"] .= '<button id="saved_filter_buttons_img" class="uk-button uk-button-small uk-button-danger" type="button" onclick="jQuery(\'#deletefilter\').val(' . $fltr->fid . ');form.submit();" ><span class="uk-icon" data-uk-icon="icon:trash"></span></button>';
+				$filter["html"] .= '<div class="saved_filter_buttons btn-group"><a href="' . $base . '" class="btn btn-primary" >' . $fltr->name . ' </a>';
+				$filter["html"] .= '<button id="saved_filter_buttons_img" class="btn btn-danger" type="button" onclick="jQuery(\'#deletefilter\').val(' . $fltr->fid . ');form.submit();" ><span class="fas fa-trash" ></span></button>';
 				$filter["html"] .= '</div>';
 			}
 			$filter["html"] .= "</br/>";
 		}
+        else
+        {
+            return false;
+        }
 
 		return $filter;
 
 	}
+
+    /**
+     * Creates facility to save filter values
+     *
+     */
+    function _createfilterHTMLUIkit()
+    {
+
+        // Only save filters for non-guests
+        if (Factory::getUser()->id == 0)
+        {
+            return false;
+        }
+        $app          = Factory::getApplication();
+        $activeModule = $app->getUserState("jevents.activeModule", null);
+        //$activeModule = isset($app->activeModule) ? $app->activeModule : false;
+        $activemodid  = (isset($activeModule) ? $activeModule->id : 0);
+
+        $filter          = array();
+        $filter["title"] = Text::_("JEV_SAVED_FILTERS");
+        $db              = Factory::getDbo();
+        $db->setQuery("SELECT * FROM #__jevents_filtermap where userid = " . $db->quote(Factory::getUser()->id . " and modid=" . $activemodid));
+        $filters        = $db->loadObjectList();
+        $filter["html"] = '<input type="hidden" name="deletefilter" id="deletefilter" value="0"  />';
+        if ($filters)
+        {
+            foreach ($filters as $fltr)
+            {
+                $base = Uri::current();
+                $base .= (strpos($base, "?") > 0 ? "&" : "?") . "jfilter=" . $fltr->fid;
+                // OR USE this
+                /*
+                $router = Router::getInstance("site");
+                $vars = $router->getVars();
+                $vars["jfilter"]=$fltr->fid;
+                $base = "index.php?".http_build_query($vars);
+                $base = Route::_($base);
+                */
+
+                $filter["html"] .= '<div class="saved_filter_buttons uk-button-group"><a href="' . $base . '" class="uk-button uk-button-small uk-button-primary" >' . $fltr->name . ' </a>';
+                $filter["html"] .= '<button id="saved_filter_buttons_img" class="uk-button uk-button-small uk-button-danger" type="button" onclick="jQuery(\'#deletefilter\').val(' . $fltr->fid . ');form.submit();" ><span class="uk-icon" data-uk-icon="icon:trash"></span></button>';
+                $filter["html"] .= '</div>';
+            }
+            $filter["html"] .= "</br/>";
+        }
+        else
+        {
+            return false;
+        }
+
+
+        return $filter;
+
+    }
 
 }

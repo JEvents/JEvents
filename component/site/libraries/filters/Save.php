@@ -22,8 +22,8 @@ class jevSaveFilter extends jevFilter
 
 		$this->filterNullValue = -1;
 		$this->filterType      = "save";
-		$this->filterField     = "";
-		parent::__construct($contentElement, "");
+		$this->filterField     = "saveFilter";
+		parent::__construct($contentElement, "saveFilter");
 	}
 
 	function _createFilter($prefix = "")
@@ -46,7 +46,8 @@ class jevSaveFilter extends jevFilter
 		}
 
 		$app          = Factory::getApplication();
-		$activeModule = isset($app->activeModule) ? $app->activeModule : false;
+        $activeModule = $app->getUserState("jevents.activeModule", null);
+        //$activeModule = isset($app->activeModule) ? $app->activeModule : false;
 		$activemodid  = (isset($activeModule) ? $activeModule->id : 0);
 
 		$value           = Factory::getApplication()->input->getString("filtername", "");

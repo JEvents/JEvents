@@ -251,7 +251,7 @@ class FlatModLegendView extends DefaultModLegendView
 			. '<a href="' . Route::_("index.php?option=" . JEV_COM_COMPONENT . "$cat$itm$tsk") . '" title="' . JEventsHTML::special($row->name) . '">'
 			. JEventsHTML::special($row->name) . '</a>';
 		$content .= '</div>' . "\n";
-		if (StringHelper::strlen($row->description) > 0)
+		if (StringHelper::strlen($row->description ?? '') > 0)
 		{
 			$content .= '<div class="event_legend_desc"  style="border-color:' . $row->color . '">' . $row->description . '</div>';
 		}
