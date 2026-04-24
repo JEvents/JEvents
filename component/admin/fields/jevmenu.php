@@ -173,3 +173,5 @@ class JFormFieldJEVmenu extends ListField
 		return parent::getInput();
 	}
 }
+
+class_alias("JFormFieldJEVmenu", "FormFieldJEVmenu");

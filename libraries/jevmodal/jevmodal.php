@@ -408,13 +408,16 @@ function jevPopover(selector, container) {
 					(title != '' ? '<div class="uk-text-emphasis">' + title + '</div>' : '') +
 					(body != '' ? '<div class="uk-card-body uk-text-secondary uk-padding-small" style="width:max-content">' + body + '</div>' : '') +
 					'</div>';
-					*/						
-					var phtml = '' +
-					(title != '' ? title.replace("jevtt_title", "uk-card-title uk-text-emphasis uk-padding-small").replace(/color:#(.*);/,'color:#$1!important;')  : '') +
-					(body != '' ?  body.replace("jevtt_text", "uk-card-body uk-padding-small uk-text-secondary  uk-background-default")  : '') +
-					'';
-					options.title = phtml;
+					*/
 					
+					title = (title != '' ? title.replaceAll(/color: *#(.*?);/g,'color:#$1!important;').replaceAll('!important!important','!important') : '');
+					
+					var phtml = '<div class="uk-card uk-card-default uk-padding-remove" style="width:max-content;border-top-left-radius: 5px;border-top-right-radius: 5px;">' +
+					(title != '' ? title.replace("jevtt_title", "uk-card-title uk-text-emphasis uk-padding-small")  : '') +
+					(body != '' ?  body.replace("jevtt_text", "uk-card-body uk-padding-small uk-width-1-1")  : '') +
+					'</div>';
+					options.title = phtml;
+					alert(phtml);
 					if (hoveritem.hasAttribute('title')) {
 						hoveritem.removeAttribute('title');
 					}
