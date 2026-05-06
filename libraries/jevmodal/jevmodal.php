@@ -417,7 +417,7 @@ function jevPopover(selector, container) {
 					(body != '' ?  body.replace("jevtt_text", "uk-card-body uk-padding-small uk-width-1-1")  : '') +
 					'</div>';
 					options.title = phtml;
-					alert(phtml);
+					//alert(phtml);
 					if (hoveritem.hasAttribute('title')) {
 						hoveritem.removeAttribute('title');
 					}
