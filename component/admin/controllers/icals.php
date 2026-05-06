@@ -399,7 +399,7 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
             $autorefresh = $input->getInt('autorefresh', 0);
 
         }
-		if ($catid == 0)
+		if ($catid == 0 && $createnewcategories === 0)
 		{
 			// Paranoia, should not be here, validation is done by java script
 			$app->enqueueMessage('Fatal Error - ' . Text::_('JEV_E_WARNCAT'), 'error');

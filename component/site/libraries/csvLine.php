@@ -20,6 +20,7 @@ use Joomla\String\StringHelper;
  *
  * Part of the CSV to iCal conversion mechanism
  */
+#[\AllowDynamicProperties]
 class CsvLine
 {
 
@@ -276,7 +277,7 @@ class CsvLine
 			. "DTSTART" . $this->timezoneoutput() . ":" . $this->datetimeToIcsFormat($this->dtstart) . "\n";
 
 		if ($this->dtend !== "") $ical .= "DTEND" . $this->timezoneoutput() . ":" . $this->datetimeToIcsFormat($this->dtend) . "\n";
-		if ($this->dtstamp !== "") $ical .= "DTSTAMP:" . $this->datetimeToUtcIcsFormat($this->dtstamp) . "\n";
+		if (!empty($this->dtstamp)) $ical .= "DTSTAMP:" . $this->datetimeToUtcIcsFormat($this->dtstamp) . "\n";
 		if ($this->location !== "") $ical .= "LOCATION:" . $this->location . "\n";
 		if ($this->description !== "") $ical .= "DESCRIPTION:" . $this->description . "\n";
 		if ($this->contact !== "") $ical .= "CONTACT:" . $this->contact . "\n";

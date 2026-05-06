@@ -561,7 +561,7 @@ class ICalsController extends AdminIcalsController
 		$icsFile     = false;
 		$autorefresh = 0;
 
-		if ($catid == 0)
+		if ($catid == 0 && $createnewcategories === 0)
 		{
 			// Paranoia, should not be here, validation is done by java script
 			// Just load the ical event list on redirect for now.
