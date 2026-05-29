@@ -14,7 +14,7 @@ function DefaultPaginationForm($total, $limitstart, $limit, $keyword = "")
 
 	jimport('joomla.html.pagination');
 
-	$input = Factory::getApplication()->input;
+	$input = Factory::getApplication()->getInput();
 
 	$pageNav = new Pagination($total, $limitstart, $limit);
 	if ($keyword != "" && method_exists($pageNav, "setAdditionalUrlParam"))
@@ -23,7 +23,7 @@ function DefaultPaginationForm($total, $limitstart, $limit, $keyword = "")
 		$pageNav->setAdditionalUrlParam("showpast", $input->getInt("showpast", 0));
 	}
 	$Itemid = $input->getInt("Itemid");
-	$task   = $input->get("jevtask", null, null);
+	$task   = $input->getCmd("jevtask");
 	// include catids to make sure not lost when category is pre-selected
 	$catids = $input->getString("catids", $input->getString("category_fv", ""));
 

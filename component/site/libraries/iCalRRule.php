@@ -847,7 +847,7 @@ class iCalRRule extends Joomla\CMS\Table\Table
 				$countRepeats = 0;
 
 				$startYear = JevDate::strftime("%Y", $start);
-				while ($startYear < 2027 && $countRepeats < $this->count && !$this->_afterUntil($start))
+				while ($startYear < 2199 && $countRepeats < $this->count && !$this->_afterUntil($start))
 				{
 					//while ($startYear<5027 && $countRepeats < $this->count && !$this->_afterUntil($start)) {
 					$countRepeats += $this->_makeRepeat($start, $end);
