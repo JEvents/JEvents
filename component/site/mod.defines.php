@@ -30,35 +30,41 @@ if (!defined("JEV_LIBS")){
 	define("JEV_ADMINLIBS", JEV_ADMINPATH . "libraries/");
 }
 
+// PSR-4 namespace roots — shared classes under JEvents\, site-only under JEvents\Site\,
+// admin-only under JEvents\Administrator\. Both roots registered so all three sub-namespaces
+// resolve correctly whether running from site or admin context.
+JLoader::registerNamespace('JEvents', JEV_PATH . 'libraries/src', false, false);
+JLoader::registerNamespace('JEvents', JEV_ADMINPATH . 'libraries/src', false, false);
+
 JLoader::register('JSite', JPATH_SITE . '/includes/application.php');
-JLoader::register('JevRegistry', JEV_PATH . "/libraries/registry.php");
+JLoader::registerAlias('JevRegistry', 'JEvents\\Site\\Registry', '7.0');
 
 
-JLoader::register('JEVConfig', JEV_ADMINPATH . "/libraries/config.php");
+JLoader::registerAlias('JEVConfig', 'JEvents\\Config', '7.0');
 
-JLoader::register('JEVHelper', JEV_PATH . "/libraries/helper.php");
-JLoader::register('JevModuleHelper', JEV_PATH . "/libraries/jevmodulehelper.php"); // RSH Required registration for class!
+JLoader::registerAlias('JEVHelper', 'JEvents\\Helper', '7.0');
+JLoader::registerAlias('JevModuleHelper', 'JEvents\\ModuleHelper', '7.0');
 
-// TODO replace with Date
-JLoader::register('JEventDate', JEV_PATH . "/libraries/jeventdate.php");
-JLoader::register('JevDate', JEV_PATH . "/libraries/jevdate.php");
-JLoader::register('JEventsHTML', JEV_PATH . "/libraries/jeventshtml.php");
+JLoader::registerAlias('JevDate', 'JEvents\\Date', '7.0');
+JLoader::registerAlias('JEventDate', 'JEvents\\Date', '7.0');
+JLoader::registerAlias('JEventsHTML', 'JEvents\\HtmlHelper', '7.0');
 
-JLoader::register('JEventsVersion', JEV_ADMINPATH . "/libraries/version.php");
+JLoader::registerAlias('JEventsVersion', 'JEvents\\Version', '7.0');
+JLoader::registerAlias('JevJoomlaVersion', 'JEvents\\JevJoomlaVersion', '7.0');
 
-JLoader::register('catLegend', JEV_PATH . "/libraries/catLegend.php");
+JLoader::registerAlias('catLegend', 'JEvents\\Site\\CatLegend', '7.0');
 
-JLoader::register('JEventsDBModel', JEV_PATH . "/libraries/dbmodel.php");
-JLoader::register('JEventsDataModel', JEV_PATH . "/libraries/datamodel.php");
+JLoader::registerAlias('JEventsDBModel', 'JEvents\\DBModel', '7.0');
+JLoader::registerAlias('JEventsDataModel', 'JEvents\\DataModel', '7.0');
 
-JLoader::register('jEventCal', JEV_PATH . "/libraries/jeventcal.php");
-JLoader::register('jIcal', JEV_PATH . "/libraries/jical.php");
-JLoader::register('jIcalEventDB', JEV_PATH . "/libraries/jicaleventdb.php");
-JLoader::register('jIcalEventRepeat', JEV_PATH . "/libraries/jicaleventrepeat.php");
+JLoader::registerAlias('jEventCal', 'JEvents\\EventCal', '7.0');
+JLoader::registerAlias('jIcal', 'JEvents\\ICal', '7.0');
+JLoader::registerAlias('jIcalEventDB', 'JEvents\\IcalEventDB', '7.0');
+JLoader::registerAlias('jIcalEventRepeat', 'JEvents\\IcalEventRepeat', '7.0');
 
-JLoader::register('JEventsAbstractView', JEV_ADMINPATH . "/views/abstract/abstract.php");
+JLoader::registerAlias('JEventsAbstractView', 'JEvents\\Administrator\\View\\AbstractView', '7.0');
 
-JLoader::register('jevFilterProcessing', JEV_PATH . "/libraries/filters.php");
+JLoader::registerAlias('jevFilterProcessing', 'JEvents\\FilterProcessing', '7.0');
 
 // TODO retire this sometime?
 JLoader::register('JEV_CommonFunctions', JEV_PATH . "/libraries/commonfunctions.php");

@@ -31,47 +31,55 @@ if (!defined("JEV_LIBS"))
 	define("JEV_FILTERS", JEV_ADMINPATH . "filters/");
 	define("JEV_VIEWS", JEV_ADMINPATH . "views");
 }
+// PSR-4 namespace roots — shared classes under JEvents\, site-only under JEvents\Site\,
+// admin-only under JEvents\Administrator\. Both roots registered so all three sub-namespaces
+// resolve correctly whether running from site or admin context.
+JLoader::registerNamespace('JEvents', JEV_PATH . 'libraries/src', false, false);
+JLoader::registerNamespace('JEvents', JEV_ADMINPATH . 'libraries/src', false, false);
+
 JLoader::register('JSite', JPATH_SITE . '/includes/application.php');
 
-JLoader::register('JEVConfig', JEV_ADMINLIBS . "config.php");
+JLoader::registerAlias('JEVConfig', 'JEvents\\Config', '7.0');
 
 JLoader::register('SaveIcalEvent', JEV_ADMINLIBS . "saveIcalEvent.php");
 
-JLoader::register('JEventsVersion', JEV_ADMINLIBS . "version.php");
-JLoader::register('JEventsDBModel', JEV_PATH . "libraries/dbmodel.php");
-JLoader::register('JEventsDataModel', JEV_PATH . "libraries/datamodel.php");
+JLoader::registerAlias('JEventsVersion', 'JEvents\\Version', '7.0');
+JLoader::registerAlias('JevJoomlaVersion', 'JEvents\\JevJoomlaVersion', '7.0');
+JLoader::registerAlias('JEventsDBModel', 'JEvents\\DBModel', '7.0');
+JLoader::registerAlias('JEventsDataModel', 'JEvents\\DataModel', '7.0');
 
-JLoader::register('JEVHelper', JEV_PATH . "libraries/helper.php");
-JLoader::register('JevModuleHelper', JEV_PATH . "/libraries/jevmodulehelper.php");
-JLoader::register('JevHtmlBootstrap', JEV_PATH . "libraries/bootstrap.php");
+JLoader::registerAlias('JEVHelper', 'JEvents\\Helper', '7.0');
+JLoader::registerAlias('JevModuleHelper', 'JEvents\\ModuleHelper', '7.0');
+JLoader::registerAlias('JevHtmlBootstrap', 'JEvents\\HtmlBootstrap', '7.0');
 
-JLoader::register('JEventsAbstractView', JEV_ADMINPATH . "views/abstract/abstract.php");
+JLoader::registerAlias('JEventsAbstractView', 'JEvents\\Administrator\\View\\AbstractView', '7.0');
 
-JLoader::register('jEventCal', JEV_PATH . "libraries/jeventcal.php");
-JLoader::register('jIcal', JEV_PATH . "libraries/jical.php");
-JLoader::register('jIcalEventDB', JEV_PATH . "libraries/jicaleventdb.php");
-JLoader::register('jIcalEventRepeat', JEV_PATH . "libraries/jicaleventrepeat.php");
+JLoader::registerAlias('jEventCal', 'JEvents\\EventCal', '7.0');
+JLoader::registerAlias('jIcal', 'JEvents\\ICal', '7.0');
+JLoader::registerAlias('jIcalEventDB', 'JEvents\\IcalEventDB', '7.0');
+JLoader::registerAlias('jIcalEventRepeat', 'JEvents\\IcalEventRepeat', '7.0');
 
-JLoader::register('jevFilterProcessing', JEV_PATH . "/libraries/filters.php");
+JLoader::registerAlias('jevFilterProcessing', 'JEvents\\FilterProcessing', '7.0');
 
-JLoader::register('iCalImport', JEV_PATH . "libraries/iCalImport.php");
-JLoader::register('iCalRepetition', JEV_PATH . "libraries/iCalRepetition.php");
-JLoader::register('iCalException', JEV_PATH . "libraries/iCalException.php");
-JLoader::register('iCalRRule', JEV_PATH . "libraries/iCalRRule.php");
-JLoader::register('iCalEvent', JEV_PATH . "libraries/iCalEvent.php");
-JLoader::register('iCalEventDetail', JEV_PATH . "libraries/iCalEventDetail.php");
-JLoader::register('iCalICSFile', JEV_PATH . "libraries/iCalICSFile.php");
-JLoader::register('CsvToiCal', JEV_PATH . "/libraries/csvToiCal.php");
+JLoader::registerAlias('iCalImport', 'JEvents\\IcalImport', '7.0');
+JLoader::registerAlias('iCalRepetition', 'JEvents\\IcalRepetition', '7.0');
+JLoader::registerAlias('iCalException', 'JEvents\\IcalException', '7.0');
+JLoader::registerAlias('iCalRRule', 'JEvents\\IcalRRule', '7.0');
+JLoader::registerAlias('iCalEvent', 'JEvents\\IcalEvent', '7.0');
+JLoader::registerAlias('iCalEventDetail', 'JEvents\\IcalEventDetail', '7.0');
+JLoader::registerAlias('iCalICSFile', 'JEvents\\IcalICSFile', '7.0');
+JLoader::registerAlias('CsvToiCal', 'JEvents\\CsvToIcal', '7.0');
 
-// TODO replace with Date
-JLoader::register('JEventDate', JEV_PATH . "libraries/jeventdate.php");
-JLoader::register('JevDate', JEV_PATH . "/libraries/jevdate.php");
-JLoader::register('JEventsHTML', JEV_PATH . "libraries/jeventshtml.php");
+JLoader::registerAlias('JevDate', 'JEvents\\Date', '7.0');
+JLoader::registerAlias('JEventDate', 'JEvents\\Date', '7.0');
+JLoader::registerAlias('JEventsHTML', 'JEvents\\HtmlHelper', '7.0');
 
 // TODO retire this sometime? - check usage by session registration code first
 JLoader::register('JEV_CommonFunctions', JEV_PATH . "libraries/commonfunctions.php");
 
-JLoader::register('JEventsHelper', JEV_ADMINPATH . "helpers/jevents.php");
+JLoader::registerAlias('JEventsHelper', 'JEvents\\Administrator\\Helper', '7.0');
+// JevRegistry: not previously registered in admin defines, added here for completeness
+JLoader::registerAlias('JevRegistry', 'JEvents\\Site\\Registry', '7.0');
 
 // joomla 3.0
 JLoader::register('JToolbarButtonJev', JEV_ADMINPATH . "libraries/jevtoolbarbuttons.php");
