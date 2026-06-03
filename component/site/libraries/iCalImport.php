@@ -91,6 +91,13 @@ class iCalImport
 
 			if (!$isFile && is_callable("curl_exec"))
 			{
+
+                // 1. Validate URL before fetching — whitelist schemes, block RFC-1918 addresses
+                $parsed = parse_url($file);
+                if (!in_array($parsed['scheme'] ?? '', ['http', 'https', 'webcal'], true)) {
+                    throw new \InvalidArgumentException('URL scheme not permitted');
+                }
+
 				$ch = curl_init();
 
 				// Set curl option CURLOPT_HTTPAUTH, if the url includes user name and password.
@@ -109,6 +116,10 @@ class iCalImport
 					curl_setopt($ch, CURLOPT_PROXY, $jConfig->get('proxy_host') . ":" . $jConfig->get('proxy_port'));
 					curl_setopt($ch, CURLOPT_PROXYUSERPWD, $jConfig->get('proxy_user') . ":" . $jConfig->get('proxy_password'));
 				}
+
+                // 2. Restrict protocols
+                curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+                curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
 
 				curl_setopt($ch, CURLOPT_URL, $file);
 				curl_setopt($ch, CURLOPT_VERBOSE, 1);

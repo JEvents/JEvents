@@ -31,9 +31,9 @@ class FormFieldJeveventpublished extends FormField
 
 		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
 		JEVHelper::ConditionalFields($this->element, $this->form->getName());
-		if (Factory::getApplication()->isClient('administrator') || JEVHelper::isEventPublisher() || JEVHelper::canPublishOwnEvents($this->form->jevdata[$this->name]["ev_id"]))
+		if (Factory::getApplication()->isClient('administrator') || JEVHelper::isEventPublisher() || JEVHelper::canPublishOwnEvents(JEventsHelper::getJevData($this->form)[$this->name]["ev_id"]))
 		{
-			$ev_id = $this->form->jevdata[$this->name]["ev_id"];
+			$ev_id = JEventsHelper::getJevData($this->form)[$this->name]["ev_id"];
 
 			if ($ev_id == 0 && Factory::getApplication()->input->getCmd("task") != "icalevent.editcopy")
 			{
@@ -58,7 +58,7 @@ class FormFieldJeveventpublished extends FormField
 	protected function getLabel()
 	{
 
-		if (Factory::getApplication()->isClient('administrator') || JEVHelper::isEventPublisher() || JEVHelper::canPublishOwnEvents($this->form->jevdata[$this->name]["ev_id"]))
+		if (Factory::getApplication()->isClient('administrator') || JEVHelper::isEventPublisher() || JEVHelper::canPublishOwnEvents(JEventsHelper::getJevData($this->form)[$this->name]["ev_id"]))
 		{
 			return parent::getLabel();
 		}

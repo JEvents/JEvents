@@ -26,6 +26,27 @@ class JEventsHelper
 
 	public static $extention = 'com_jevents';
 
+	public static function getJevData($form)
+	{
+		$formData = $form->getData();
+		$jevData = $formData->get('jevData', []);
+		return $jevData;
+	}
+
+	public static function setJevData($form, $jevdata)
+	{
+		/*
+        $jevdatamap = isset($_SESSION['jevdatamap']) ? $_SESSION['jevdatamap'] : new WeakMap();
+        $jevdatamap[$this->form] = $jevdata;
+        $_SESSION['jevdatamap'] = $jevdatamap;
+		*/
+
+		// This is how we could pass custom form data without depcrecation message
+		$formData = $form->getData();
+		$formData->set('jevData', $jevdata);
+	}
+
+
 	public static function validateSection($context, $form = null)
 	{
 		// only called from com_fields

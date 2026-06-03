@@ -344,7 +344,10 @@ Claude must ONLY modify, or create files within these paths under /black/var/www
 - `plugins`
 - `modules`
 
-Claude can read files within  /black/var/www/clients/j6
+Claude can read files within /black/var/www/clients/j6 (the live Joomla installation).
+IMPORTANT: Only read from these two full paths — do NOT attempt to read or list /black/var/www/clients/ itself:
+- `/black/var/www/clients/gitjquery/JEvents/` — the JEvents source
+- `/black/var/www/clients/j6/` — Joomla core (read-only reference, e.g. for framework class implementations)
 
 ### NEVER modify:
 - Any Joomla core files within /black/var/www/clients/j6 (`libraries/`, `includes/`,

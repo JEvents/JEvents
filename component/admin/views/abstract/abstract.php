@@ -1209,16 +1209,7 @@ SCRIPT;
 		$jevdata["start_time"]["event"]   = $this->row;
 		$jevdata["end_time"]["event"]     = $this->row;
 
-		/*
-        $jevdatamap = isset($_SESSION['jevdatamap']) ? $_SESSION['jevdatamap'] : new WeakMap();
-        $jevdatamap[$this->form] = $jevdata;
-        $_SESSION['jevdatamap'] = $jevdatamap;
-		*/
-
-		// This is how we could pass custom form data without depcrecation message
-        //$formData = $this->form->getData();
-        //$formData->set('jevData', $jevdata);
-        $this->form->jevdata = $jevdata;
+		JEventsHelper::setJevData($this->form, $jevdata);
 
         //custom requiredfields selected by the user in configuration
 		$requiredFields = $params->get('com_jeveditionrequiredfields', array());

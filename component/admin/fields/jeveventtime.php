@@ -30,7 +30,7 @@ class FormFieldJeveventtime extends FormField
 	function getInput()
 	{
 
-		$event = $this->form->jevdata[$this->name]["event"];
+		$event = JEventsHelper::getJevData($this->form)[$this->name]["event"];
 
 		// Adjust date/time for timezones!
 		if ($event->_tzid && !isset($event->tzid_adjusted))

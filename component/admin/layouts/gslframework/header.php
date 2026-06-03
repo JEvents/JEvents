@@ -82,7 +82,7 @@ $j5plus = version_compare(JVERSION, "5.0", "ge") ? "j5plus" : "";
         <?php
         if (empty($tmpl) && !$app->isClient('site'))
         {
-            echo LayoutHelper::render('gslframework.leftbar', null, dirname(__DIR__, 1));
+	        echo LayoutHelper::render('gslframework.leftbar');
         }
         ?>
         <!-- /LEFT BAR -->

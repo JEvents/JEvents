@@ -21,7 +21,7 @@ class FormFieldJeveventaccess extends FormField
 	protected function getLabel()
 	{
 
-		$row   = $this->form->jevdata[$this->name]["event"];
+		$row   = JEventsHelper::getJevData($this->form)[$this->name]["event"];
 		$glist = JEventsHTML::buildAccessSelect(intval($row->access()), 'class="inputbox" size="1"');
 
 		if ($this->getInput() && $glist && strpos($glist, "<input ") === false)
@@ -41,7 +41,7 @@ class FormFieldJeveventaccess extends FormField
 	protected function getInput()
 	{
 
-		$row   = $this->form->jevdata[$this->name]["event"];
+		$row   = JEventsHelper::getJevData($this->form)[$this->name]["event"];
 		$glist = JEventsHTML::buildAccessSelect(intval($row->access()), 'class="inputbox" size="1"');
 
 		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");

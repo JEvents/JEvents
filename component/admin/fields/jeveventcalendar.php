@@ -21,7 +21,7 @@ class FormFieldJeveventcalendar extends FormField
 	protected function getLabel()
 	{
 
-		$clistChoice = $this->form->jevdata[$this->name]["clistChoice"];
+		$clistChoice = JEventsHelper::getJevData($this->form)[$this->name]["clistChoice"];
 		if ($this->getInput() && $clistChoice)
 		{
 			return parent::getLabel();
@@ -41,10 +41,10 @@ class FormFieldJeveventcalendar extends FormField
 	{
 
 		ob_start();
-		$native      = $this->form->jevdata[$this->name]["native"];
-		$clistChoice = $this->form->jevdata[$this->name]["clistChoice"];
-		$clist       = $this->form->jevdata[$this->name]["clist"];
-		$nativeCals  = $this->form->jevdata[$this->name]["nativeCals"];
+		$native      = JEventsHelper::getJevData($this->form)[$this->name]["native"];
+		$clistChoice = JEventsHelper::getJevData($this->form)[$this->name]["clistChoice"];
+		$clist       = JEventsHelper::getJevData($this->form)[$this->name]["clist"];
+		$nativeCals  = JEventsHelper::getJevData($this->form)[$this->name]["nativeCals"];
 
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
