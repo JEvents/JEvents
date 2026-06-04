@@ -24,6 +24,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Toolbar\ToolbarButton;
 use Joomla\CMS\Toolbar\Toolbar;
+use JEvents\Administrator\GslHelper;
 
 // Skip Chosen in Joomla 4.x+
 $jversion = new Version;
@@ -64,6 +65,8 @@ $leftmenutrigger = $componentParams->get("leftmenutrigger", 0);
 // Load component specific data
 //$componentpath = dirname(dirname(dirname(__FILE__)));
 $componentpath = JPATH_ADMINISTRATOR . '/components/' . $option;
+
+// leave this in because the alias may be needed for template overrides
 include_once($componentpath . "/helpers/gslhelper.php");
 
 GslHelper::loadAssets();

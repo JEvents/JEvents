@@ -8,6 +8,7 @@
  */
 
 defined('_JEXEC') or die;
+@trigger_error('formbehavior.php (JevHtmlFormbehavior) is deprecated and unused. HTMLHelper::_(\'formbehavior.*\') uses Joomla core adapters, not this class.', E_USER_DEPRECATED);
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;

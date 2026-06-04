@@ -351,8 +351,6 @@ class JEV_CommonFunctions
 	{
 
 
-		JLoader::register('JEventsCategory', JEV_ADMINPATH . "/libraries/categoryClass.php");
-
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
 		$app   = Factory::getApplication();

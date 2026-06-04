@@ -1,133 +1,26 @@
 <?php
 /**
- * JEvents Component for Joomla! 3.x
- *
- * @version     $Id: version.php 3576 2012-05-01 14:11:04Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-JEVENTS_COPYRIGHT GWESystems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) GWESystems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
- * @link        http://www.jevents.net
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 
-JLoader::register('JEventsHelper', JPATH_ADMINISTRATOR . "/components/com_jevents/helpers/jevents.php");
-
-class JEventsVersion
+// Class bodies moved to component/site/libraries/src/Version.php
+// (JEvents\Version and JEvents\JevJoomlaVersion).
+// This file is kept for extensions that include it directly.
+if (!class_exists('JEvents\\Version', false))
 {
-	/** @var string Product */
-	var $PRODUCT = 'JEvents';
-	/** @var string Release Level */
-	var $RELEASE 	= '99.99.99';
-	/** @var int Sub Release - backwards compatability only for club addons */
-	var $DEV_LEVEL = '0';
-	/** @var string Patch Level  - backwards compatability only for club addons */
-	var $PATCH_LEVEL = '0';
-
-	/** @var string Development Status */
-	var $DEV_STATUS = 'Stable';
-	/** @var string Copyright Text */
-	var $COPYRIGHT = 'Copyright &copy; 2006-JEVENTS_COPYRIGHT';
-	/** @var string Copyright Text */
-	var $COPYRIGHTBY = 'GWE Systems Ltd, JEvents Project Group';
-	/** @var string LINK */
-	var $LINK = 'http://www.jevents.net';
-
-	public static function &getInstance()
-	{
-
-		static $instance;
-
-		if ($instance == null)
-		{
-			$instance = new JEventsVersion();
-
-			$instance->RELEASE = JEventsHelper::JEvents_Version(false);
-		}
-
-		return $instance;
-	}
-
-	/**
-	 * access instance properties
-	 * @var    string        property name
-	 * @return mixed        property content
-	 */
-	public function get($property)
-	{
-
-		if (isset($this->$property))
-		{
-			return $this->$property;
-		}
-
-		return null;
-	}
-
-	/**
-	 * Returns a reference to a global EventsVersion object, only creating it
-	 * if it doesn't already exist.
-	 *
-	 * @static
-	 * @access public
-	 * @return object            The EventsVersion object.
-	 */
-
-	/**
-	 * @return string URL
-	 */
-	public function getUrl()
-	{
-
-		return $this->LINK;
-	}
-
-	/**
-	 * @return string short Copyright
-	 */
-	public function getShortCopyright()
-	{
-
-		return $this->COPYRIGHT;
-	}
-
-	/**
-	 * @return string long Copyright
-	 */
-	public function getLongCopyright()
-	{
-
-		return $this->COPYRIGHT . ' ' . $this->COPYRIGHTBY;
-	}
-
-	/**
-	 * @return string Long format version
-	 */
-	public function getLongVersion()
-	{
-
-		return $this->PRODUCT . ' ' . $this->getShortVersion();
-	}
-
-	/**
-	 * @return string Short version format
-	 */
-	public function getShortVersion()
-	{
-
-		return 'v' . $this->RELEASE . ' ' . $this->DEV_STATUS;
-	}
-
+	require_once JPATH_SITE . '/components/com_jevents/libraries/src/Version.php';
 }
 
-class JevJoomlaVersion
+if (!class_exists('JEventsVersion', false))
 {
+	class_alias('JEvents\\Version', 'JEventsVersion');
+}
 
-	public static function isCompatible($minimum)
-	{
-
-		return version_compare(JVERSION, $minimum, 'ge');
-	}
-
+if (!class_exists('JevJoomlaVersion', false))
+{
+	class_alias('JEvents\\JevJoomlaVersion', 'JevJoomlaVersion');
 }

@@ -36,8 +36,6 @@ if (!defined("JEV_LIBS"))
 JLoader::registerNamespace('JEvents', JEV_PATH . 'libraries/src', false, false);
 JLoader::registerNamespace('JEvents', JEV_ADMINPATH . 'libraries/src', false, false);
 
-JLoader::register('JSite', JPATH_SITE . '/includes/application.php');
-
 JLoader::registerAlias('JEVConfig', 'JEvents\\Config', '7.0');
 JLoader::registerAlias('JevRegistry', 'JEvents\\Site\\Registry', '7.0');
 
@@ -79,6 +77,11 @@ JLoader::registerAlias('jevFilterProcessing', 'JEvents\\FilterProcessing', '7.0'
 
 JLoader::registerAlias('JEventsAbstractView', 'JEvents\\Administrator\\View\\AbstractView', '7.0');
 JLoader::registerAlias('JEventsDefaultView', 'JEvents\\Site\\View\\DefaultView', '7.0');
+
+JLoader::registerAlias('jevCache', 'JEvents\\Cache', '7.0');
+JLoader::registerAlias('JEV_CompatWin', 'JEvents\\CompatWin', '7.0');
+JLoader::registerAlias('JEventsCategory', 'JEvents\\Administrator\\Category', '7.0');
+JLoader::registerAlias('JevParameter', 'JEvents\\Administrator\\Parameter', '7.0');
 
 // joomla 3.0
 JLoader::register('JToolbarButtonJev', JEV_ADMINPATH . "libraries/jevtoolbarbuttons.php");

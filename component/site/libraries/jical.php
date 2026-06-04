@@ -1,29 +1,22 @@
 <?php
 /**
- * JEvents Component for Joomla! 3.x
- *
- * @version     $Id: jical.php 941 2010-05-20 13:21:57Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-JEVENTS_COPYRIGHT GWESystems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) GWESystems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
- * @link        http://www.jevents.net
  */
 
 defined('_JEXEC') or die('Restricted access');
+@trigger_error('Directly including jical.php is deprecated. Use JEvents\ICal via PSR-4 autoloading instead.', E_USER_DEPRECATED);
 
-/**
- * Utility class that holds an instanceof an iCalICSFile and its associated collection
- * of iCalEvent
- *
- */
-class jIcal
+
+// Class body moved to component/site/libraries/src/ICal.php (JEvents\ICal).
+// This file is kept for extensions that include it directly.
+if (!class_exists('JEvents\\ICal', false))
 {
-	var $icalFile;
-	var $icalEvents;
+	require_once __DIR__ . '/src/ICal.php';
+}
 
-	function iCal()
-	{
-
-		$this->icalEvents = array();
-	}
+if (!class_exists('jIcal', false))
+{
+	class_alias('JEvents\\ICal', 'jIcal');
 }

@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+@trigger_error('access.php (JEVAccess) is deprecated and unused. It relies on the Joomla 1.5 ACL API which no longer exists.', E_USER_DEPRECATED);
 
 use Joomla\CMS\Factory;
 

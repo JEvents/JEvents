@@ -1,30 +1,22 @@
 <?php
 /**
- * JEvents Component for Joomla! 3.x
- *
- * @version     $Id: iCalRepetition.php 941 2010-05-20 13:21:57Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-JEVENTS_COPYRIGHT GWESystems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) GWESystems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
- * @link        http://www.jevents.net
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
+@trigger_error('Directly including iCalRepetition.php is deprecated. Use JEvents\IcalRepetition via PSR-4 autoloading instead.', E_USER_DEPRECATED);
 
-class iCalRepetition extends Joomla\CMS\Table\Table
+
+// Class body moved to component/site/libraries/src/IcalRepetition.php (JEvents\IcalRepetition).
+// This file is kept for extensions that include it directly.
+if (!class_exists('JEvents\\IcalRepetition', false))
 {
+	require_once __DIR__ . '/src/IcalRepetition.php';
+}
 
-	/** @var int Primary key */
-	var $rp_id = null;
-	var $eventid = null;
-	var $eventdetail_id = null;
-	var $startrepeat = null;
-	var $endrepeat = null;
-
-	public function __construct(&$db)
-	{
-
-		parent::__construct('#__jevents_repetition', 'rp_id', $db);
-	}
+if (!class_exists('iCalRepetition', false))
+{
+	class_alias('JEvents\\IcalRepetition', 'iCalRepetition');
 }

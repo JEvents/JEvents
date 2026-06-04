@@ -28,7 +28,9 @@ class Version
 	{
 		static $instance;
 
-		if ($instance === null)
+        include_once ( JPATH_ADMINISTRATOR . "/components/com_jevents/helpers/jevents.php");
+
+        if ($instance === null)
 		{
 			$instance          = new self();
 			$instance->RELEASE = \JEventsHelper::JEvents_Version(false);

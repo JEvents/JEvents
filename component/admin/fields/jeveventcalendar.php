@@ -48,8 +48,6 @@ class FormFieldJeveventcalendar extends FormField
 
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		JLoader::register('JEventsCategory', JEV_ADMINPATH . "/libraries/categoryClass.php");
-
 		$categories = JEventsCategory::categoriesTree();
 
 

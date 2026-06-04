@@ -37,8 +37,6 @@ if (!defined("JEV_LIBS"))
 JLoader::registerNamespace('JEvents', JEV_PATH . 'libraries/src', false, false);
 JLoader::registerNamespace('JEvents', JEV_ADMINPATH . 'libraries/src', false, false);
 
-JLoader::register('JSite', JPATH_SITE . '/includes/application.php');
-
 JLoader::registerAlias('JEVConfig', 'JEvents\\Config', '7.0');
 
 JLoader::register('SaveIcalEvent', JEV_ADMINLIBS . "saveIcalEvent.php");
@@ -71,6 +69,7 @@ JLoader::registerAlias('iCalICSFile', 'JEvents\\IcalICSFile', '7.0');
 JLoader::registerAlias('CsvToiCal', 'JEvents\\CsvToIcal', '7.0');
 
 JLoader::registerAlias('JevDate', 'JEvents\\Date', '7.0');
+// JEventDate is retired — alias to JEvents\Date (was JevDate); JEventDate marked TODO:retire
 JLoader::registerAlias('JEventDate', 'JEvents\\Date', '7.0');
 JLoader::registerAlias('JEventsHTML', 'JEvents\\HtmlHelper', '7.0');
 

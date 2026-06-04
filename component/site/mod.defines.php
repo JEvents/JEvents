@@ -36,7 +36,6 @@ if (!defined("JEV_LIBS")){
 JLoader::registerNamespace('JEvents', JEV_PATH . 'libraries/src', false, false);
 JLoader::registerNamespace('JEvents', JEV_ADMINPATH . 'libraries/src', false, false);
 
-JLoader::register('JSite', JPATH_SITE . '/includes/application.php');
 JLoader::registerAlias('JevRegistry', 'JEvents\\Site\\Registry', '7.0');
 
 

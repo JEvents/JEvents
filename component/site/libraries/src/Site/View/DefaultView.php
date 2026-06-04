@@ -1,27 +1,235 @@
 <?php
 /**
  * @package     JEvents
- * @copyright   Copyright (C) GWESystems Ltd
+ * @copyright   Copyright (C) 2008-JEVENTS_COPYRIGHT GWESystems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
+ * @link        http://www.jevents.net
  */
 
 namespace JEvents\Site\View;
 
-// Transitional shim: loads the legacy global class and exposes it under the
-// JEvents namespace. Move the class body here when ready to fully migrate.
-//
-// The source file also defines the MASK_* global constants at file scope —
-// these are emitted as a side-effect of the require_once below and remain
-// available globally after the first load.
-//
-// Dependency: JEventsDefaultView extends JEventsAbstractView. If AbstractView
-// is not yet loaded when this shim runs, JLoader's alias mechanism triggers
-// loading JEvents\Administrator\View\AbstractView automatically.
-//
-// TODO: migrate body from component/site/views/default/abstract/abstract.php
-if (!class_exists('JEventsDefaultView', false))
-{
-	require_once \JEV_PATH . 'views/default/abstract/abstract.php';
-}
+defined('_JEXEC') or die();
 
-\class_alias('JEventsDefaultView', __NAMESPACE__ . '\\DefaultView');
+use Joomla\Filesystem\Path;
+use Joomla\CMS\Factory;
+use Joomla\String\StringHelper;
+
+// Option masks — define() creates global constants regardless of namespace.
+// Guards prevent redefinition errors if this file is somehow included twice.
+if (!defined('MASK_BACKTOLIST'))    { define('MASK_BACKTOLIST',    0x0001); }
+if (!defined('MASK_READON'))        { define('MASK_READON',        0x0002); }
+if (!defined('MASK_POPUP'))         { define('MASK_POPUP',         0x0004); }
+if (!defined('MASK_HIDEPDF'))       { define('MASK_HIDEPDF',       0x0008); }
+if (!defined('MASK_HIDEPRINT'))     { define('MASK_HIDEPRINT',     0x0010); }
+if (!defined('MASK_HIDEEMAIL'))     { define('MASK_HIDEEMAIL',     0x0020); }
+if (!defined('MASK_IMAGES'))        { define('MASK_IMAGES',        0x0040); }
+if (!defined('MASK_VOTES'))         { define('MASK_VOTES',         0x0080); }
+if (!defined('MASK_VOTEFORM'))      { define('MASK_VOTEFORM',      0x0100); }
+if (!defined('MASK_HIDEAUTHOR'))    { define('MASK_HIDEAUTHOR',    0x0200); }
+if (!defined('MASK_HIDECREATEDATE')){ define('MASK_HIDECREATEDATE',0x0400); }
+if (!defined('MASK_HIDEMODIFYDATE')){ define('MASK_HIDEMODIFYDATE',0x0800); }
+if (!defined('MASK_LINK_TITLES'))   { define('MASK_LINK_TITLES',   0x1000); }
+
+// mos_content.mask masks
+if (!defined('MASK_HIDE_TITLE'))    { define('MASK_HIDE_TITLE',    0x0001); }
+if (!defined('MASK_HIDE_INTRO'))    { define('MASK_HIDE_INTRO',    0x0002); }
+
+/**
+ * HTML Abstract view class for the component frontend
+ *
+ * @static
+ */
+class DefaultView extends \JEventsAbstractView
+{
+	var $jevlayout = null;
+
+	function __construct($config = null)
+	{
+
+		parent::__construct($config);
+
+		$this->jevlayout = "default";
+
+		$this->addHelperPath(JEV_VIEWS . '/default/helpers');
+
+		$this->addHelperPath(JPATH_BASE . '/templates/' . Factory::getApplication()->getTemplate() . '/html/' . JEV_COM_COMPONENT . '/helpers');
+
+		$reg             = \JevRegistry::getInstanceWithReferences("jevents");
+		$this->datamodel = $reg->getReference("jevents.datamodel");
+
+		if (!$this->datamodel)
+		{
+			// attach data model
+			$this->datamodel = new \JEventsDataModel();
+			$this->datamodel->setupComponentCatids();
+			$reg->setReference("jevents.datamodel", $this->datamodel);
+		}
+
+
+	}
+
+	function getViewName()
+	{
+
+		return $this->jevlayout;
+	}
+
+	function _datecellAddEvent($year, $month, $day)
+	{
+
+		$this->loadHelper("DefaultViewDatecellAddEvent");
+		DefaultViewDatecellAddEvent($this, $year, $month, $day);
+	}
+	/*
+		function _header() {
+			$this->loadHelper("DefaultViewHelperHeader");
+			DefaultViewHelperHeader($this);
+		}
+
+		function _footer() {
+			$this->loadHelper("DefaultViewHelperFooter");
+			DefaultViewHelperFooter($this);
+		}
+
+		function _showNavTableBar() {
+			$this->loadHelper("DefaultViewHelperShowNavTableBar");
+			DefaultViewHelperShowNavTableBar($this);
+		}
+
+		function _viewNavAdminPanel(){
+			$this->loadHelper("DefaultViewHelperViewNavAdminPanel");
+			DefaultViewHelperViewNavAdminPanel($this);
+		}
+	*/
+	// this doesn't follow naming convention so must declare
+
+	function loadHelper($file = null)
+	{
+
+		if (function_exists($file) || class_exists($file)) return true;
+
+		// load the template script
+		jimport('joomla.filesystem.path');
+		$helper = Path::find($this->_path['helper'], $this->_createFileName('helper', array('name' => $file)));
+
+		if ($helper != false)
+		{
+			// include the requested template filename in the local scope
+			include_once $helper;
+		}
+
+		return $helper;
+	}
+
+	// These don't follow argument pattern
+
+	function paginationForm($total, $limitstart, $limit)
+	{
+
+		if ($this->loadHelper("DefaultPaginationForm"))
+		{
+			DefaultPaginationForm($total, $limitstart, $limit, isset($this->keyword) ? $this->keyword : "");
+		}
+	}
+
+	function paginationSearchForm($total, $limitstart, $limit)
+	{
+
+		if ($this->loadHelper("DefaultPaginationSearchForm"))
+		{
+			DefaultPaginationSearchForm($total, $limitstart, $limit, isset($this->keyword) ? $this->keyword : "");
+		}
+	}
+
+	// This handles all methods where the view is passed as the first argument
+	function __call($name, $arguments)
+	{
+
+		if (strpos($name, "_") === 0)
+		{
+			$name = "ViewHelper" . ucfirst(StringHelper::substr($name, 1));
+		}
+		$helper = ucfirst($this->jevlayout) . ucfirst($name);
+		if (!$this->loadHelper($helper))
+		{
+			$helper = "Default" . ucfirst($name);
+			if (!$this->loadHelper($helper))
+			{
+				return;
+			}
+		}
+		$args = array_unshift($arguments, $this);
+		if (class_exists($helper))
+		{
+			if (class_exists("ReflectionClass"))
+			{
+				$reflectionObj = new \ReflectionClass($helper);
+				if (method_exists($reflectionObj, "newInstanceArgs"))
+				{
+					$var = $reflectionObj->newInstanceArgs($arguments);
+				}
+				else
+				{
+					$var = $this->CreateClass($helper, $arguments);
+				}
+			}
+			else
+			{
+				$var = $this->CreateClass($helper, $arguments);
+			}
+
+			return;
+		}
+		else if (is_callable($helper))
+		{
+			return call_user_func_array($helper, $arguments);
+		}
+	}
+
+	protected function CreateClass($className, $params)
+	{
+
+		switch (count($params))
+		{
+			case 0:
+				return new $className();
+				break;
+			case 1:
+				return new $className($params[0]);
+				break;
+			case 2:
+				return new $className($params[0], $params[1]);
+				break;
+			case 3:
+				return new $className($params[0], $params[1], $params[2]);
+				break;
+			case 4:
+				return new $className($params[0], $params[1], $params[2], $params[3]);
+				break;
+			case 5:
+				return new $className($params[0], $params[1], $params[2], $params[3], $params[4]);
+				break;
+			case 6:
+				return new $className($params[0], $params[1], $params[2], $params[3], $params[4], $params[5]);
+				break;
+			case 7:
+				return new $className($params[0], $params[1], $params[2], $params[3], $params[4], $params[5], $params[6]);
+				break;
+			case 8:
+				return new $className($params[0], $params[1], $params[2], $params[3], $params[4], $params[5], $params[6], $params[7]);
+				break;
+			case 9:
+				return new $className($params[0], $params[1], $params[2], $params[3], $params[4], $params[5], $params[6], $params[7], $params[8]);
+				break;
+			case 10:
+				return new $className($params[0], $params[1], $params[2], $params[3], $params[4], $params[5], $params[6], $params[7], $params[8], $params[9]);
+				break;
+			default:
+				echo "Too many arguments";
+
+				return null;
+				break;
+		}
+	}
+
+}
