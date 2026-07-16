@@ -20,6 +20,8 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Table\Table;
+use Joomla\CMS\Table\Asset;
+use Joomla\CMS\Access\Access;
 
 if (version_compare(JVERSION, '4.0.1', 'lt'))
 {
@@ -260,6 +262,54 @@ else
 $input->set("jevtask", $cmd);
 $input->set("jevcmd", $cmd);
 
+// Asset fixes for new config options
+$asset = Table::getInstance('asset');
+$coreAsset = Table::getInstance('asset');
+
+if ($asset->loadByName('com_jevents') && $asset->loadByName('root.1')) {
+    // Decode the raw rule matrix from the database
+    $rules = json_decode($asset->rules, true) ?: [];
+    $coreRules = json_decode($asset->rules, true) ?: [];
+
+    if (!isset($rules['core.media']))
+    {
+        // Isolate the strict configuration array for 'core.create'
+        $createRules     = isset( $rules['core.create'] ) ? $rules['core.create'] : [];
+        $coreCreateRules = isset( $coreRules['core.create'] ) ? $coreRules['core.create'] : [];
+
+        $newRules = array('core.wysiwyg', 'core.media', 'core.links');
+
+        foreach ( $newRules as $newRule )
+        {
+
+            foreach ( $createRules as $groupId => $permissionValue )
+            {
+                // Check strictly for the literal value 1 (Allowed).
+                // Avoids 0 (Denied) and ignores groups not explicitly listed (Inherited).
+                if ( $permissionValue === 1 )
+                {
+                    $rules[$newRule][$groupId] = 1;
+                }
+            }
+
+            foreach ( $coreCreateRules as $groupId => $permissionValue )
+            {
+                // Check strictly for the literal value 1 (Allowed).
+                // Avoids 0 (Denied) and ignores groups not explicitly listed (Inherited).
+                if ( $permissionValue === 1 && ( ! isset( $rules[$newRule][$groupId] ) || $rules[$newRule][$groupId] !== 0 ) )
+                {
+                    $rules[$newRule][$groupId] = 1;
+                }
+            }
+
+        }
+        // Save the exact configuration back to the component asset row
+        $asset->rules = json_encode( $rules );
+        $asset->store();
+
+        Factory::getApplication()->enqueueMessage(Text::_("COM_JEVENTS_PERMISSIONS_UPDATED_PLEASE_RELOAD_PAGE"), 'notice');
+    }
+}
 
 // Make this a config option - should not normally be needed
 //$db = Factory::getDbo();

@@ -269,6 +269,9 @@ class AdminIcaleventController extends Joomla\CMS\MVC\Controller\AdminController
 				$array['extra_info'] = nl2br($array['extra_info']);
 			}
 
+			$array['extra_info'] = JEvents\Helper::stripAllModernEmojis($array['extra_info']);
+			$array['jevcontent'] = JEvents\Helper::stripAllModernEmojis($array['jevcontent']);
+
 			if (!isset($array['freq']))
 			{
 				$array['freq']      = "none";
@@ -945,6 +948,9 @@ SQL;
 		{
 			$array['extra_info'] = nl2br($array['extra_info']);
 		}
+
+		$array['extra_info'] = JEvents\Helper::stripAllModernEmojis($array['extra_info']);
+		$array['jevcontent'] = JEvents\Helper::stripAllModernEmojis($array['jevcontent']);
 
 		// Convert event data to objewct so we can test permissions
 		$eventobj = new stdClass();

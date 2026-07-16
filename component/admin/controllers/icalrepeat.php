@@ -451,6 +451,9 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 			$data["DESCRIPTION"] = $filter->clean($data["DESCRIPTION"] , 'html');
 		}
 
+		$data["X-EXTRAINFO"] = JEvents\Helper::stripAllModernEmojis($data["X-EXTRAINFO"]);
+		$data["DESCRIPTION"] = JEvents\Helper::stripAllModernEmojis($data["DESCRIPTION"]);
+
 		$data["LOCATION"]    = $input->getString("location", "");
 		$data["GEOLON"]      = $input->getFloat("geolon", 0);
 		$data["GEOLAT"]      = $input->getFloat("geolat", 0);

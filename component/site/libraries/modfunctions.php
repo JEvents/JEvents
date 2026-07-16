@@ -1,4 +1,4 @@
-<?php
+, mod<?php
 /**
  * JEvents Component for Joomla! 3.x
  *

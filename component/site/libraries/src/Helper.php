@@ -5255,4 +5255,11 @@ SCRIPT;
         Factory::getApplication()->enqueueMessage(Text::_("JEV_SORRY_UPDATED"), 'warning');
         Factory::getApplication()->redirect(Route::_("index.php?Itemid=$Itemid", false));
     }
+
+    public static function stripAllModernEmojis(string $text): string {
+        return $text;
+        // Matches and removes complete emoji grapheme clusters, including ZWJ and modifiers
+        return preg_replace('/(?:\p{Emoji_Modifier_Base}\p{Emoji_Modifier}?|\p{Emoji}(?:\x{200D}\p{Emoji})*)/u', '', $text);
+    }
+
 }

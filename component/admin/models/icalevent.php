@@ -641,10 +641,13 @@ class JEventsModelicalevent extends ListModel
             $array['trans_description'] = $safeHtmlFilter->clean( $array['trans_description'], 'html' );
 
             $array['trans_extra_info'] = $input->post->get("trans_extra_info", "", 'RAW');
-            $array['extra_intrans_extra_infofo'] = $safeHtmlFilter->clean( $array['trans_extra_info'], 'html' );
+            $array['trans_extra_info'] = $safeHtmlFilter->clean( $array['trans_extra_info'], 'html' );
         }
 
-		include_once JPATH_COMPONENT . "/tables/translate.php";
+        $array['trans_description'] = JEvents\Helper::stripAllModernEmojis($array['trans_description']);
+        $array['trans_extra_info'] = JEvents\Helper::stripAllModernEmojis($array['trans_extra_info']);
+
+        include_once JPATH_COMPONENT . "/tables/translate.php";
 		$translation = new TableTranslate();
 		$success     = $translation->save($array);
 
