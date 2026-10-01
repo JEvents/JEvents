@@ -31,15 +31,15 @@ class FormFieldJeveventcategory extends FormField
 
        // $jevdata = $jevdatamap[$this->form];
 
-		if (!isset($this->form->jevdata[$this->name]["excats"]))
+		if (!isset(JEventsHelper::getJevData($this->form)[$this->name]["excats"]))
 		{
-			$this->form->jevdata[$this->name]["excats"] = false;
+			JEventsHelper::getJevData($this->form)[$this->name]["excats"] = false;
 		}
 		$selectSomeCategories = Text::_("JEV_SELECT_SOME_CATEGORIES", true);
-		$input                = JEventsHTML::buildCategorySelect($this->value, 'data-placeholder="' . $selectSomeCategories . '" ', $this->form->jevdata[$this->name]["dataModel"]->accessibleCategoryList(),
-		$this->form->jevdata[$this->name]["with_unpublished_cat"], true, 0, 'catid', JEV_COM_COMPONENT, $this->form->jevdata[$this->name]["excats"], "ordering", true);
+		$input                = JEventsHTML::buildCategorySelect($this->value, 'data-placeholder="' . $selectSomeCategories . '" ', JEventsHelper::getJevData($this->form)[$this->name]["dataModel"]->accessibleCategoryList(),
+		JEventsHelper::getJevData($this->form)[$this->name]["with_unpublished_cat"], true, 0, 'catid', JEV_COM_COMPONENT, JEventsHelper::getJevData($this->form)[$this->name]["excats"], "ordering", true);
 
-		if ($this->form->jevdata[$this->name]["repeatId"] !== 0)
+		if (JEventsHelper::getJevData($this->form)[$this->name]["repeatId"] !== 0)
 		{
 			return $input;
 		}
@@ -52,7 +52,7 @@ class FormFieldJeveventcategory extends FormField
 	protected function getLabel()
 	{
 
-		if ($this->form->jevdata[$this->name]["repeatId"] == 0)
+		if (JEventsHelper::getJevData($this->form)[$this->name]["repeatId"] == 0)
 		{
 			return parent::getLabel();
 		}

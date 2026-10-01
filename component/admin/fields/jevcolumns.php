@@ -101,6 +101,11 @@ class JFormFieldJevcolumns extends TextField
 		$collist[] = array(Text::_("JEV_FIELD_CREATOR_NAME_AFTER_FIRST_SPACE",true), "CREATOR_DISPLAY_BEFORE_FIRST_SPACE");
         $collist[] = array(Text::_("JEV_FIELD_RPID",true), "RPID");
         $collist[] = array(Text::_("JEV_FIELD_EVID",true), "EVID");
+        $collist[] = array(Text::_("JEV_FIELD_MANAGE",true), "EDITBUTTON");
+
+        $collist[] = array(Text::_("JEV_FIELD_EVENT_STATUS",true), "STATUS");
+        //$collist[] = array(Text::_("JEV_FIELD_SHOW_REPEATS",true), "REPEATS");
+        $collist[] = array(Text::_("JEV_FIELD_CREATOR_FILTER",true), "CREATORFILTER");
 
 		// get list of enabled plugins
 		$jevplugins = PluginHelper::getPlugin("jevents");

@@ -74,7 +74,6 @@ class AdminCpanelController extends AdminController
 
 		if (!$catid)
 		{
-			JLoader::register('JEventsCategory', JEV_ADMINPATH . "/libraries/categoryClass.php");
 			$cat = new JEventsCategory($db);
 			$cat->bind(array("title" => Text::_('DEFAULT'), "alias" => "default", "published" => 1, "color" => "#CCCCFF", "access" => 1));
 			$cat->store();
@@ -726,7 +725,6 @@ WHERE ics.ics_id is null
 		// Add orphan category if none exist already
 		if (!$catid)
 		{
-			JLoader::register('JEventsCategory', JEV_ADMINPATH . "/libraries/categoryClass.php");
 			$cat = new JEventsCategory($db);
 			$cat->bind(array("title" => "Orphans", "published" => 0, "color" => "#CCCCFF", "access" => 1));
 			$cat->store();

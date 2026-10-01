@@ -32,7 +32,7 @@ class FormFieldJeveventdate extends CalendarField
 	function getInput()
 	{
 
-		$event      = $this->form->jevdata[$this->name]["event"];
+		$event      = JEventsHelper::getJevData($this->form)[$this->name]["event"];
 		$eventfield = $this->name == "publish_up" ? "startDate" : "endDate";
 		$showtime = in_array($eventfield, array("starttimelimit", "endtimelimit"));
 		$params     = ComponentHelper::getParams(JEV_COM_COMPONENT);

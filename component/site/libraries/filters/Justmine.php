@@ -45,7 +45,7 @@ class jevJustmineFilter extends jevFilter
 		$this->filter_value = Factory::getApplication()->getUserStateFromRequest($this->filterType . '_fv_ses', $this->filterType . '_fv', $this->filterNullValue);
 		$input->set($this->filterType . '_fv', $this->filter_value);
 
-		parent::__construct($tablename, "state", $isstring);
+		parent::__construct($tablename, "justmine", $isstring);
 
 		// Should these be ignored?
 		$reg       = Factory::getConfig();

@@ -22,7 +22,7 @@ class FormFieldJeveventlock extends FormField
 	protected function getLabel()
 	{
 
-		$offerlock = $this->form->jevdata[$this->name]["offerlock"];
+		$offerlock = JEventsHelper::getJevData($this->form)[$this->name]["offerlock"];
 		if ($this->getInput() && $offerlock)
 		{
 			return parent::getLabel();
@@ -42,7 +42,7 @@ class FormFieldJeveventlock extends FormField
 	{
 
 		ob_start();
-		$offerlock = $this->form->jevdata[$this->name]["offerlock"];
+		$offerlock = JEventsHelper::getJevData($this->form)[$this->name]["offerlock"];
 
 		$btngroup = "btn-group";
 		$btn      = "btn";

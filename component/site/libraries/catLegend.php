@@ -1,26 +1,22 @@
 <?php
 /**
- * JEvents Component for Joomla! 3.x
- *
- * @version     $Id: catLegend.php 941 2010-05-20 13:21:57Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-JEVENTS_COPYRIGHT GWESystems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) GWESystems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
- * @link        http://www.jevents.net
  */
 
 defined('_JEXEC') or die('Restricted access');
+@trigger_error('Directly including catLegend.php is deprecated. Use JEvents\Site\CatLegend via PSR-4 autoloading instead.', E_USER_DEPRECATED);
 
-#[\AllowDynamicProperties]
-class catLegend
+
+// Class body moved to component/site/libraries/src/Site/CatLegend.php (JEvents\Site\CatLegend).
+// This file is kept for extensions that include it directly.
+if (!class_exists('JEvents\\Site\\CatLegend', false))
 {
-	function __construct($id, $name, $color, $description, $parent_id = 0)
-	{
+	require_once __DIR__ . '/src/Site/CatLegend.php';
+}
 
-		$this->id          = $id;
-		$this->name        = $name;
-		$this->color       = $color;
-		$this->description = $description;
-		$this->parent_id   = $parent_id;
-	}
+if (!class_exists('catLegend', false))
+{
+	class_alias('JEvents\\Site\\CatLegend', 'catLegend');
 }

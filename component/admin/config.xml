@@ -430,6 +430,12 @@ Default should be set by the custom field
 		       description='POPUP_WINDOW_WIDTH_DESC' difficulty="2" showon="editpopup:1"/>
 		<field name="popuph" type="jevtext" default="500" size="6" menu="hide" label='POPUP_WINDOW_HEIGHT'
 		       description='POPUP_WINDOW_HEIGHT_DESC' difficulty="2" showon="editpopup:1"/>
+		<field name="autoreloadfrompopup" type="radio" class="btn-group" default="0" label="JEV_AUTORELOAD_FROM_POPUP_ON_CLOSE" description="JEV_AUTORELOAD_FROM_POPUP_ON_CLOSE_DESC"  >
+			<option value='0'>JNO</option>
+			<option value='1'>JYES</option>
+		</field>
+
+
 		<field name="com_single_pane_edit" type="jevboolean" class="gsl-button-group" default="0" menu="hide"
 		       label="JEV_ONE_TAB_EVENT" description="JEV_ONE_TAB_EVENT_TIP" difficulty="2"/>
 
@@ -503,6 +509,9 @@ Default should be set by the custom field
 
 		<field name="allowraw" type="jevboolean" class="gsl-button-group" default="0" menu="hide"
 		       label="JEV_ALLOW_RAW_DESCRIPTIONS" description="JEV_ALLOW_RAW_DESCRIPTIONS_DESC" difficulty="2"/>
+
+		<field name="allowrawaddons" type="jevboolean" class="gsl-button-group" default="0" menu="hide"
+		       label="JEV_ALLOW_RAW_DESCRIPTIONS_ADDONS" description="JEV_ALLOW_RAW_DESCRIPTIONS_ADDONS_DESC" difficulty="2"/>
 
 		<field name="com_edit_toolbar" type="jevlist" default="0" menu="hide" label="JEV_EDIT_TOOLBAR_POSITION"
 		       description="JEV_EDIT_TOOLBAR_POSITION_DESC" difficulty="2">

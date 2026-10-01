@@ -13,6 +13,7 @@
 
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
+@trigger_error('jevlayout.php (JInstallerJevlayout) is deprecated. The Joomla 2/3 installer adapter path it targets does not exist in Joomla 5/6.', E_USER_DEPRECATED);
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Filter\InputFilter;

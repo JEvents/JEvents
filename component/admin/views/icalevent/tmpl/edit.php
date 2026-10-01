@@ -23,6 +23,7 @@ use Joomla\CMS\Toolbar\Toolbar;
 $app    = Factory::getApplication();
 $params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
+$user         = Factory::getUser();
 if ($app->isClient('administrator') && $params->get("customcssbackend", 0))
 {
 
@@ -93,7 +94,6 @@ JevHtmlBootstrap::loadCss();
 // use Route to preseve language selection
 $action = Factory::getApplication()->isClient('administrator') ? "index.php" : Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=" . JEVHelper::getItemid());
 
-$user         = Factory::getUser();
 $accesslevels = $user->getAuthorisedViewLevels();
 $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 

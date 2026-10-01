@@ -20,6 +20,9 @@ use Joomla\String\StringHelper;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Table\Asset;
+use Joomla\CMS\Access\Access;
+use Joomla\CMS\Table\Table;
 
 // We need to get the params first
 

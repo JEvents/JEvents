@@ -269,6 +269,9 @@ class AdminIcaleventController extends Joomla\CMS\MVC\Controller\AdminController
 				$array['extra_info'] = nl2br($array['extra_info']);
 			}
 
+			$array['extra_info'] = JEvents\Helper::stripAllModernEmojis($array['extra_info']);
+			$array['jevcontent'] = JEvents\Helper::stripAllModernEmojis($array['jevcontent']);
+
 			if (!isset($array['freq']))
 			{
 				$array['freq']      = "none";
@@ -762,7 +765,7 @@ SQL;
 		$msg   = "";
 		$event = $this->doSave($msg);
 
-		if ($app->isClient('administrator'))
+   		if ($app->isClient('administrator'))
 		{
 			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.list', $msg);
 			$this->redirect();
@@ -818,6 +821,25 @@ SQL;
 			$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 			if ($params->get("editpopup", 0) || $popupdetail)
 			{
+
+				$autoreload = $params->get("autoreloadfrompopup",0);
+				if ($autoreload)
+				{
+					ob_end_clean();
+					if (!headers_sent())
+					{
+						header('Content-Type:text/html;charset=utf-8');
+					}
+					?>
+					<script type="text/javascript">
+                      window.parent.alert("<?php echo $msg; ?>");
+                      window.parent.location.reload();
+					</script>
+					<?php
+					exit();
+
+				}
+
 				ob_end_clean();
 				if (!headers_sent() && $popupdetail == "")
 				{
@@ -945,6 +967,9 @@ SQL;
 		{
 			$array['extra_info'] = nl2br($array['extra_info']);
 		}
+
+		$array['extra_info'] = JEvents\Helper::stripAllModernEmojis($array['extra_info']);
+		$array['jevcontent'] = JEvents\Helper::stripAllModernEmojis($array['jevcontent']);
 
 		// Convert event data to objewct so we can test permissions
 		$eventobj = new stdClass();

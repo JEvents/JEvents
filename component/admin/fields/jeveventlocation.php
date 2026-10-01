@@ -28,7 +28,7 @@ class FormFieldJeveventlocation extends FormField
 	{
 
 		ob_start();
-		$event      = $this->form->jevdata[$this->name]["event"];
+		$event      = JEventsHelper::getJevData($this->form)[$this->name]["event"];
 		$res        = Factory::getApplication()->triggerEvent('onEditLocation', array(&$event));
 		if (count($res) == 0 || !$res[0])
 		{

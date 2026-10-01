@@ -1,38 +1,20 @@
 <?php
-
 /**
- * JEvents Component for Joomla! 3.x
- *
- * @version     $Id: config.php 2490 2011-08-24 14:15:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-JEVENTS_COPYRIGHT GWESystems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) GWESystems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
- * @link        http://www.jevents.net
  */
-// no direct access
+
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Component\ComponentHelper;
-
-/**
- * convenience wrapper for config - to ensure backwards compatability
- */
-// on some servers with Xcache both classes seem to be 'compiled' and it throws an error but if we add this second test its ok - go figure .
-if (!defined("JEVCONFIG"))
+// Class body moved to component/site/libraries/src/Config.php (JEvents\Config).
+// This file is kept for extensions that include it directly.
+if (!class_exists('JEvents\\Config', false))
 {
-	define("JEVCONFIG", 1);
+	require_once JPATH_SITE . '/components/com_jevents/libraries/src/Config.php';
+}
 
-	class JEVConfig
-	{
-
-		// 1.6 mod
-		static function & getInstance($inifile = '')
-		{
-
-			$params = ComponentHelper::getParams("com_jevents");
-
-			return $params;
-		}
-
-	}
+if (!class_exists('JEVConfig', false))
+{
+	class_alias('JEvents\\Config', 'JEVConfig');
 }
