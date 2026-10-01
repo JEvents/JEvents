@@ -228,13 +228,30 @@ STYLE;
 						}
 					}
 					?>
-					<li>
+					<li  class="control-group">
+						<?php
+						if ($params->get("showlabels", 1))
+						{
+							?>
+							<label>&nbsp;</label>
+							<div class="jevfilterinput controls">
+							<?php
+						}
+						?>
 						<div class="jevfilterinput btn btn-group">
 							<input class="modfilter_button btn btn-danger" type="button" onclick="JeventsFilters.reset(this.form)"
 							       value="<?php echo Text::_('RESET'); ?>"/>
 							<input class="modfilter_button btn btn-primary" type="submit" value="<?php echo Text::_('ok'); ?>"
 							       name="jevents_filter_submit"/>
 						</div>
+						<?php
+						if ($params->get("showlabels", 1))
+						{
+						?>
+						</div>
+						<?php
+						}
+						?>
 					</li>
 				</ul>
 				<?php

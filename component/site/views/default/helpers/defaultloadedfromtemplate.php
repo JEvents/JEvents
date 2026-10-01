@@ -1137,7 +1137,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
                         $search[] = "{{EDITBUTTON}}";
                         if (!empty($dialog))
                         {
-                        $replace[] = ob_get_clean();
+                            $replace[] = ob_get_clean();
                         }
                         else {
                          $junk = ob_get_clean();
@@ -1157,8 +1157,36 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
                 }
 
                 break;
+	        case "{{STATUS}}" :
+		        $search[]  = "{{STATUS}}";
+                if ($event->published())
+                {
+	                $img = "<span class='fas fa-check'></span>";
+                }
+                else if (!$event->published())
+                {
+	                $img = "<span class='fas fa-xmark'></span>";
+                }
 
-            case "{{CREATED}}":
+				$replace[] = $img;
+				$blank[] = '';
+		        break;
+
+	        case "{{REPEATS}}" :
+		        $search[]  = "{{REPEATS}}";
+		        if (($event->until() != $event->dtstart() || $event->count() > 1 || $event->freq() == "IRREGULAR") && ($event->freq() !== 'none'))
+		        {
+			        $replace[] = 'repeats';
+		        }
+				else
+				{
+					$replace[] = '';
+				}
+
+		        $blank[] = '';
+		        break;
+
+	        case "{{CREATED}}":
                 $jtz        = $jevparams->get("icaltimezonelive", "");
                 if ($jtz == "")
                 {
@@ -1249,7 +1277,6 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
                     $blank[]   = "";
                 }
                 break;
-
             case "{{TODAY}}" :
             case "{{TOMORROW}}" :
                 if(strtotime($event->startDate()) === strtotime(date( 'Y-m-d'))) {
@@ -1829,6 +1856,64 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
                 }
                 $blank[] = "";
                 break;
+	        case "{{CREATORFILTER}}":
+		        $search[] = "{{CREATORFILTER}}";
+				$creator  =  $event->created_by();
+		        $name     = Factory::getUser($event->created_by())->name;
+
+		        $router   = Router::getInstance("site");
+		        $viewItemid = Factory::getApplication()->input->getInt("Itemid", 0);
+		        $menuItem  = Factory::getApplication()->getMenu('site')->getItem($viewItemid);
+		        $vars      = $menuItem->query;
+
+		        $eventlink = "index.php?";
+		        $itemidSet = false;
+		        $hastask   = false;
+		        $task      = "";
+		        foreach ($vars as $key => $val)
+		        {
+			        // this is only used in the latest events module so do not perpetuate it here
+			        if ($key == "filter_reset")
+				        continue;
+			        if ($key == "task")
+			        {
+				        $hastask = true;
+				        $val = "list.events";
+				        $task    = $val;
+			        }
+			        if ($key == "view")
+			        {
+				        $task = $val;
+			        }
+			        if ($key == "layout")
+			        {
+				        $task .= "." . $val;
+			        }
+
+			        if ($key == "Itemid" && $viewItemid)
+			        {
+				        $val       = $viewItemid;
+				        $itemidSet = true;
+			        }
+			        $eventlink .= $key . "=" . $val . "&";
+		        }
+		        if (!$hastask && $task)
+		        {
+			        $eventlink .= "task=" . $task . "&";
+		        }
+		        if (!$itemidSet && $modItemid)
+		        {
+			        $eventlink .= "Itemid=" . $modItemid . "&";
+		        }
+		        $eventlink .= 'jevcr_fv=' . $creator . '&';
+
+				// strip trailing &
+		        $eventlink = StringHelper::substr($eventlink, 0, StringHelper::strlen($eventlink) - 1);
+
+		        $eventlink = Route::_($eventlink);
+		        $replace[] = '<a class="ev_link_creator" href="' . $eventlink . '"  title="' . JEventsHTML::special($name) . '">' . $name . '</a>';
+		        $blank[] = '';
+		        break;
             case "{{CREATOR_ID}}":
                 $search[]   = "{{CREATOR_ID}}";
                 $replace[]  = $event->created_by();
