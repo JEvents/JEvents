@@ -16,6 +16,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Filter\InputFilter;
 
 /**
  * Saves an iCal event (vevent + repetitions) from form data.
@@ -132,10 +133,15 @@ class SaveIcalEvent
 
 		$data["LOCKEVENT"] = ArrayHelper::getValue($array, "lockevent", "0");
 
+        // For custom fields, we need to get the raw data and filter safehtml
+        $safeHtmlFilter  = InputFilter::getInstance( [], [], 1, 1 );
+        $jformsafe = $input->post->get("jform", [], 'RAW');
+        $jformsafe = $safeHtmlFilter->clean( $jformsafe, 'html' );
+
 		// Add any custom fields into $data array
 		foreach ($array as $key => $value)
 		{
-			if (strpos($key, "custom_") === 0)
+            if (strpos($key, "custom_") === 0)
 			{
 				$data[$key] = $value;
 			}
@@ -144,11 +150,17 @@ class SaveIcalEvent
 			{
 				foreach ($value as $cfkey => $cfvalue)
 				{
-					$data["custom_" . $cfkey] = $cfvalue;
+                    if (is_string($cfvalue))
+                    {
+                        $data["custom_" . $cfkey] = isset($jformsafe[$cfkey]) ? $jformsafe[$cfkey] : $cfvalue;
+                    }
+                    else
+                    {
+                        $data["custom_" . $cfkey] = $cfvalue;
+                    }
 				}
 			}
 		}
-
 
 		$vevent = \iCalEvent::iCalEventFromData($data);
 

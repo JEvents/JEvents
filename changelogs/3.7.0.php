@@ -1,6 +1,6 @@
 <?php
 $version                                            = "3.7.0";
-$date                                               = "2026-10-01";
+$date                                               = "2026-10-23";
 $extension                                          = "package_jevents";
 $changelog[$extension][$version]                    = array();
 $changelog[$extension][$version]["date"]            = $date;
@@ -14,3 +14,4 @@ $changelog[$extension][$version]["features"][]      = "When editing frontend eve
 $changelog[$extension][$version]["bugfixes"]        = array();
 $changelog[$extension][$version]["bugfixes"][]      = "change how we store jevdata in form";
 $changelog[$extension][$version]["bugfixes"][]      = "minor security enhanced for iCalImport";
+$changelog[$extension][$version]["bugfixes"][]      = "Truncate categories column in iCalDetail table when the value is too long";
