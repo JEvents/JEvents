@@ -296,7 +296,17 @@ class IcalEventDetail extends Table
 			$success = parent::store($updateNulls);
 			if (!$success)
 			{
-				throw new \Exception("Problem saving event (" . $this->dtstart. ") : " . $this->getError(), 321);
+                // trap too many long categry names
+                if (strlen($this->categories) > 120)
+                {
+                    $this->categories = substr($this->categories, 0, 120);
+
+                    $success = parent::store($updateNulls);
+                    if (!$success)
+                    {
+                        throw new \Exception( "Problem saving event (" . $this->dtstart . ") : " . $this->getError(), 321 );
+                    }
+                }
 			}
 			// just in case we don't have jevents plugins registered yet
 			PluginHelper::importPlugin("jevents");
