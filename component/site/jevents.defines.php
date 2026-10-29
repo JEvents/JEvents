@@ -48,7 +48,7 @@ JLoader::registerAlias('JevModal', 'JEvents\\Site\\Modal', '7.0');
 
 // JEventDate is retired — alias to JEvents\Date (was JevDate); JEventDate marked TODO:retire
 JLoader::registerAlias('JevDate', 'JEvents\\Date', '7.0');
-JLoader::registerAlias('JEventDate', 'JEvents\\Date', '7.0');
+JLoader::registerAlias('JEventDate', 'JEvents\\EventDate', '7.0');
 JLoader::registerAlias('JEventsHTML', 'JEvents\\HtmlHelper', '7.0');
 
 JLoader::registerAlias('JEventsVersion', 'JEvents\\Version', '7.0');
