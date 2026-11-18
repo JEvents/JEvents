@@ -1218,7 +1218,7 @@ class HtmlHelper
 				    $html = "\n" . '/* ]]> */' . "\n"
 					    . '</script>' . "\n";
 				    break;
-			    default;
+			    default:
 				    $html = '<!-- wrong javascript tag parameter-->' . "\n";
 		    }
 		    return $html;
